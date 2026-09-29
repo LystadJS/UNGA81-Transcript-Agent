@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "scope_label": "UN General Debate | Country Readout",
+  "timezone": "America/New_York",
+  "analysis_mode": "extractive",
+  "allow_external_ai": false,
+  "live": {
+    "base_url": "https://transcripts.un.org",
+    "locale": "en",
+    "meeting_title_regex": "general debate",
+    "meeting_body_regex": "General Assembly|\\bGA\\b",
+    "min_statement_words": 250,
+    "max_pages": 20,
+    "max_response_bytes": 25000000,
+    "timeout_seconds": 60,
+    "max_attempts": 3,
+    "request_interval_seconds": 1.0
+  },
+  "model": {
+    "name": "gpt-6-astra",
+    "review_name": "gpt-6-astra",
+    "endpoint": "https://api.openai.com/v1/responses",
+    "max_output_tokens": 7000,
+    "max_calls_per_run": 120,
+    "max_input_chars_per_country": 180000,
+    "timeout_seconds": 150,
+    "max_attempts": 3,
+    "cache": true
+  },
+  "email": {
+    "from_address": "",
+    "to_addresses": [],
+    "subject_prefix": "USUN | Daily UN Readout",
+    "brand_name": "U.S. MISSION TO THE UNITED NATIONS",
+    "max_image_width": 840,
+    "max_message_bytes": 10000000
+  },
+  "generation": {
+    "allow_partial_draft": true,
+    "max_countries": 250,
+    "network_max_edges": 14,
+    "network_min_jaccard": 0.35,
+    "network_min_copresent": 2,
+    "fail_on_review_required": true
+  },
+  "storage": {
+    "output_dir": "output",
+    "cache_dir": "cache"
+  },
+  "display": {
+    "group_by": "region",
+    "region_order": [
+      "Africa",
+      "Asia-Pacific",
+      "Europe & Eurasia",
+      "Near East",
+      "Western Hemisphere"
+    ],
+    "country_order": "alphabetical",
+    "fixed_issue_order": [
+      "iran",
+      "cuba",
+      "ukraine",
+      "ai"
+    ]
+  },
+  "analytics": {
+    "design": "D1",
+    "implementation": "I2",
+    "history_dir": "history",
+    "method_cache_dir": "cache/methods",
+    "engine": "base_r_registry",
+    "allow_ready_packets": false,
+    "packet_schema": "D1-I2",
+    "max_store_objects_per_query": 100000,
+    "max_raw_blob_bytes": 250000000,
+    "allow_automatic_promotion": false,
+    "history_backend": "rds_append_only_v1",
+    "feature_reference_dir": "models/tfidf_references",
+    "projection_reference_dir": "models/projection_references",
+    "feature_reference_mode": "bootstrap_then_frozen",
+    "feature_reference_namespace": "default"
+  }
+}

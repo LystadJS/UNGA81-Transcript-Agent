@@ -1,0 +1,23 @@
+[
+  {
+    "from": "history",
+    "to": "examples/hhc",
+    "files": 562,
+    "all_bytes_preserved": true,
+    "active_directory_empty": true
+  },
+  {
+    "from": "models",
+    "to": "examples/mhc",
+    "files": 7,
+    "all_bytes_preserved": true,
+    "active_directory_empty": true
+  },
+  {
+    "from": "cache",
+    "to": "examples/chc",
+    "files": 6,
+    "all_bytes_preserved": true,
+    "active_directory_empty": true
+  }
+]

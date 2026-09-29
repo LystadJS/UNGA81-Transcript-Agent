@@ -1,0 +1,125 @@
+{
+  "removed_trivial_context_references": [
+    {
+      "iso3": "BWA",
+      "label": "UN reform",
+      "sentence_id": "S075",
+      "quote": "Mr."
+    },
+    {
+      "iso3": "BWA",
+      "label": "Finance and jobs",
+      "sentence_id": "S038",
+      "quote": "Mr."
+    },
+    {
+      "iso3": "BDI",
+      "label": "African representation",
+      "sentence_id": "S042",
+      "quote": "Mr."
+    },
+    {
+      "iso3": "BDI",
+      "label": "African representation",
+      "sentence_id": "S050",
+      "quote": "Mr."
+    },
+    {
+      "iso3": "BDI",
+      "label": "Peace and development",
+      "sentence_id": "S065",
+      "quote": "Mr."
+    },
+    {
+      "iso3": "CAF",
+      "label": "Peace operations",
+      "sentence_id": "S068",
+      "quote": "Mr."
+    },
+    {
+      "iso3": "CAF",
+      "label": "Representation and technology",
+      "sentence_id": "S084",
+      "quote": "Mr."
+    },
+    {
+      "iso3": "COD",
+      "label": "Development and resilience",
+      "sentence_id": "S115",
+      "quote": "Mr."
+    },
+    {
+      "iso3": "COD",
+      "label": "Development and resilience",
+      "sentence_id": "S124",
+      "quote": "Mr."
+    },
+    {
+      "iso3": "COD",
+      "label": "Development and resilience",
+      "sentence_id": "S142",
+      "quote": "Mr."
+    },
+    {
+      "iso3": "SWZ",
+      "label": "UN representation and peace",
+      "sentence_id": "S022",
+      "quote": "Mr."
+    },
+    {
+      "iso3": "GIN",
+      "label": "Governance and sovereignty",
+      "sentence_id": "S045",
+      "quote": "Mr."
+    },
+    {
+      "iso3": "MOZ",
+      "label": "Climate and AI capacity",
+      "sentence_id": "S072",
+      "quote": "Mr."
+    },
+    {
+      "iso3": "NAM",
+      "label": "Finance and resilience",
+      "sentence_id": "S033",
+      "quote": "Mr."
+    },
+    {
+      "iso3": "SRB",
+      "label": "Kosovo and international law",
+      "sentence_id": "S036",
+      "quote": "Why?"
+    },
+    {
+      "iso3": "TLS",
+      "label": "UN reform",
+      "sentence_id": "S123",
+      "quote": "Mr."
+    },
+    {
+      "iso3": "TLS",
+      "label": "Development and inclusion",
+      "sentence_id": "S138",
+      "quote": "Mr."
+    },
+    {
+      "iso3": "UGA",
+      "label": "UN leadership and representation",
+      "sentence_id": "S050",
+      "quote": "Mr."
+    },
+    {
+      "iso3": "UGA",
+      "label": "Peace and health",
+      "sentence_id": "S035",
+      "quote": "Mr."
+    },
+    {
+      "iso3": "UGA",
+      "label": "Peace and health",
+      "sentence_id": "S040",
+      "quote": "Mr."
+    }
+  ],
+  "note": "Removed salutations/fragments shorter than five characters from the DERIVED evidence list only; summary prose, full source sentences and topic codes unchanged."
+}

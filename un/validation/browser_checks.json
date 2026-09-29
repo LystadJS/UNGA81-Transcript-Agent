@@ -1,0 +1,94 @@
+{
+  "checks": [
+    {
+      "viewport": 390,
+      "document_width": 390,
+      "analytical_slots": 5,
+      "countries": 39,
+      "regions": 5,
+      "images": [
+        {
+          "loaded": true,
+          "src_kind": "data:image"
+        }
+      ],
+      "titles": [
+        "1. Fixed-topic monitor",
+        "2. Emerging issues",
+        "3. Country discourse map",
+        "4. Rhetorical movement",
+        "5. Discourse-network changes"
+      ],
+      "horizontal_outliers": 0,
+      "page_errors": []
+    },
+    {
+      "viewport": 720,
+      "document_width": 720,
+      "analytical_slots": 5,
+      "countries": 39,
+      "regions": 5,
+      "images": [
+        {
+          "loaded": true,
+          "src_kind": "data:image"
+        }
+      ],
+      "titles": [
+        "1. Fixed-topic monitor",
+        "2. Emerging issues",
+        "3. Country discourse map",
+        "4. Rhetorical movement",
+        "5. Discourse-network changes"
+      ],
+      "horizontal_outliers": 0,
+      "page_errors": []
+    },
+    {
+      "viewport": 1280,
+      "document_width": 1280,
+      "analytical_slots": 5,
+      "countries": 39,
+      "regions": 5,
+      "images": [
+        {
+          "loaded": true,
+          "src_kind": "data:image"
+        }
+      ],
+      "titles": [
+        "1. Fixed-topic monitor",
+        "2. Emerging issues",
+        "3. Country discourse map",
+        "4. Rhetorical movement",
+        "5. Discourse-network changes"
+      ],
+      "horizontal_outliers": 0,
+      "page_errors": []
+    },
+    {
+      "viewport": 1600,
+      "document_width": 1600,
+      "analytical_slots": 5,
+      "countries": 39,
+      "regions": 5,
+      "images": [
+        {
+          "loaded": true,
+          "src_kind": "data:image"
+        }
+      ],
+      "titles": [
+        "1. Fixed-topic monitor",
+        "2. Emerging issues",
+        "3. Country discourse map",
+        "4. Rhetorical movement",
+        "5. Discourse-network changes"
+      ],
+      "horizontal_outliers": 0,
+      "page_errors": []
+    }
+  ],
+  "client": "Chromium via independent development Playwright",
+  "Outlook_native": false
+}

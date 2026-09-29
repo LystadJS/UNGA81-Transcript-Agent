@@ -1,0 +1,40 @@
+"iso3","country","region","date","n_statements","zero_statements","observation_versions","language","genre","nonzero"
+"AND","Andorra","Europe & Eurasia","2026-09-23",1,0,"0ed968d8eee369ed602ed46be548facf9f0fbcc2685ae27176056da3b51a46ff","unspecified","general_debate_supplied",TRUE
+"ARG","Argentina","Western Hemisphere","2026-09-23",1,0,"3d3b1fb1e21373223fd64fac6e4fe107134692d01a3d71aa271f7214f659cd5a","unspecified","general_debate_supplied",TRUE
+"BDI","Burundi","Africa","2026-09-23",1,0,"ac54d9d5144f6865d468594fa5e20e7991fa4ec80fd99390434e66606a3c7d40","unspecified","general_debate_supplied",TRUE
+"BGR","Bulgaria","Europe & Eurasia","2026-09-23",1,0,"bef96f343ef5b51b35659aeaf534e61fdcc701241079db6359bd2c66da69a249","unspecified","general_debate_supplied",TRUE
+"BWA","Botswana","Africa","2026-09-23",1,0,"a2bdbf4fe98a025e42d875310888632064b8ef7ab5699138517c66aca5527490","unspecified","general_debate_supplied",TRUE
+"CAF","Central African Republic","Africa","2026-09-23",1,0,"829fb1f2e4804a6ba7a1f5212a1e0eb8773fce2ccbdf2848dfcefb5068c58fd7","unspecified","general_debate_supplied",TRUE
+"COD","Democratic Republic of the Congo","Africa","2026-09-23",1,0,"197fd3062a2652f41dd1b469ade825b8109d7b2622f710315726f723a7def071","unspecified","general_debate_supplied",TRUE
+"CYP","Cyprus","Europe & Eurasia","2026-09-23",1,0,"f3bc90d4c4879ef05c139ac39fe75a385c3a373dd7e7d68ba9dd3ab4f4aec5e9","unspecified","general_debate_supplied",TRUE
+"CZE","Czech Republic","Europe & Eurasia","2026-09-23",1,0,"bc85a6978382df9198b0210073d8e024acbf37115ec221eae42f31f946f1b14b","unspecified","general_debate_supplied",TRUE
+"DOM","Dominican Republic","Western Hemisphere","2026-09-23",1,0,"e277261bffcec70daa253f06d9786e9c9e3818c3120d9789f817a8d34724d3f2","unspecified","general_debate_supplied",TRUE
+"ECU","Ecuador","Western Hemisphere","2026-09-23",1,0,"c474c1359a9b680eb8eaea27aadabb66439b701437d071e1f101cc5b7b46fa20","unspecified","general_debate_supplied",TRUE
+"ESP","Spain","Europe & Eurasia","2026-09-23",1,0,"784029da2e1408efeaf55fe6c0ea7eaa38f3cf036dfded24f05e860697e4f2e5","unspecified","general_debate_supplied",TRUE
+"EST","Estonia","Europe & Eurasia","2026-09-23",1,0,"f76c620e67fcc4883c96b49bb7e479b51fa0fafe78e28d322d658da1302e4793","unspecified","general_debate_supplied",TRUE
+"ETH","Ethiopia","Africa","2026-09-23",1,0,"153f5522862f486cf3a648d949b38b58c8348f2088250ba25d4ceb5b01a1d3a9","unspecified","general_debate_supplied",TRUE
+"GIN","Guinea","Africa","2026-09-23",1,0,"cd9dfba7a73915cb703c10ade23e2e17ae3ea76929088b9f090d13ac1c2befd6","unspecified","general_debate_supplied",TRUE
+"HND","Honduras","Western Hemisphere","2026-09-23",1,0,"1e8213168be53bf622e67e644f09d408da5a6348e3cd67bcd5cc0cf6e3c19dcf","unspecified","general_debate_supplied",TRUE
+"IRN","Iran","Near East","2026-09-23",1,0,"385d77c2dc3387a0d9766c569acc087145332e2fa6d121196f6c07ac56cd3cab","unspecified","general_debate_supplied",TRUE
+"ITA","Italy","Europe & Eurasia","2026-09-23",1,0,"348dcaed24079156ecc3bdcf6297605cb0e24ed85f6ce6dde17044e82f811974","unspecified","general_debate_supplied",TRUE
+"KEN","Kenya","Africa","2026-09-23",1,0,"4e9c947c8be766e19e0109fa35c754d19fd42f802b9773f546fb0334c3c3e16b","unspecified","general_debate_supplied",TRUE
+"LBY","Libya","Near East","2026-09-23",1,0,"a56e32f5f968f1c5a0fcef1defd2b6f7b837baac833323c76e1031513cb1da83","unspecified","general_debate_supplied",TRUE
+"LVA","Latvia","Europe & Eurasia","2026-09-23",1,0,"21f6ea5fb1bd2277ce27d86ee7ffbe4aa8fe1e7dd51159f0a9358f1becf49241","unspecified","general_debate_supplied",TRUE
+"MNE","Montenegro","Europe & Eurasia","2026-09-23",1,0,"2acffe9015dbb50a17a8b96f82c993fe45ac2fc5f007e47e2f6d1c062480d884","unspecified","general_debate_supplied",TRUE
+"MOZ","Mozambique","Africa","2026-09-23",1,0,"e8ae5434db7c92c27636bc39fe0a6c003fa493dcb37079b7c6cb2a51644703e5","unspecified","general_debate_supplied",TRUE
+"NAM","Namibia","Africa","2026-09-23",1,0,"1ce903cedfef4f4d8763cfbb38cf3c9bfa9493d12e2a78f20a45ab3d8ac94574","unspecified","general_debate_supplied",TRUE
+"PAN","Panama","Western Hemisphere","2026-09-23",1,0,"45f37d62b3ff5cbf6de16571473f9f3b5f2adad1a8898a69d080b7209bab1942","unspecified","general_debate_supplied",TRUE
+"PLW","Palau","Asia-Pacific","2026-09-23",1,0,"4e342bc4bb1b2075e2aa4d4f47231dd7700d1fdf9d98856959615b6567b4e9a0","unspecified","general_debate_supplied",TRUE
+"POL","Poland","Europe & Eurasia","2026-09-23",1,0,"62a664a2a92e39e9fd34acb10e46cbd5698e359ed4388e21fa072533ecd69dad","unspecified","general_debate_supplied",TRUE
+"PRY","Paraguay","Western Hemisphere","2026-09-23",1,0,"96ebeefd7fa30950fc87c7007c04ea012d77e586ea1c51d413693150dd3daf0c","unspecified","general_debate_supplied",TRUE
+"ROU","Romania","Europe & Eurasia","2026-09-23",1,0,"2bc21ba858a132a06ca856bffa82756aaf371b740b5ff15b4ae389d5e3fce0d7","unspecified","general_debate_supplied",TRUE
+"RWA","Rwanda","Africa","2026-09-23",1,0,"4f02477d1ab984268b3c88721a45c433df28b2152d69c5602096ccea35957d7c","unspecified","general_debate_supplied",TRUE
+"SRB","Serbia","Europe & Eurasia","2026-09-23",1,0,"f74d674a1fd0b1341e6ce06bf54e7b129e21a2f0b557f47b43997b22159583d7","unspecified","general_debate_supplied",TRUE
+"SVK","Slovakia","Europe & Eurasia","2026-09-23",1,0,"ead86b3e4ef2227a9eacba61caa70348ad36d315ec992c669e547fdbafa61329","unspecified","general_debate_supplied",TRUE
+"SWZ","Eswatini","Africa","2026-09-23",1,0,"f5b5548a9a835514710c2e900313da34bb405cafe51ee47ea1655dd6a9527c37","unspecified","general_debate_supplied",TRUE
+"SYR","Syria","Near East","2026-09-23",1,0,"ebc5ad75551723a5775963fa5169ec378329fb97df3e94e00a656f677690483f","unspecified","general_debate_supplied",TRUE
+"TLS","Timor-Leste","Asia-Pacific","2026-09-23",1,0,"3e1f8808c3c76bd3b5d628525a0854501b09ac547f46116d2c8eb943d010dcc5","unspecified","general_debate_supplied",TRUE
+"UGA","Uganda","Africa","2026-09-23",1,0,"a451dc543aca0d8d4be20f661717227594e4b7ba2de0c5e062cb406ad694d5fb","unspecified","general_debate_supplied",TRUE
+"UKR","Ukraine","Europe & Eurasia","2026-09-23",1,0,"1c25ba9b64fe2c2d46d5020d09434a595478891eaedbcc81343c925605fac1dd","unspecified","general_debate_supplied",TRUE
+"UZB","Uzbekistan","Asia-Pacific","2026-09-23",1,0,"a1fc06d1a65286d1eff8a8042741062725c1de7ab7d5c60639a2c09898d0efab","unspecified","general_debate_supplied",TRUE
+"VEN","Venezuela","Western Hemisphere","2026-09-23",1,0,"6b233619fdee3af86a571772e2e6ffca4be1f8a0f7be73eee515f92990ef719b","unspecified","general_debate_supplied",TRUE

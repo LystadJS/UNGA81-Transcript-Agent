@@ -1,0 +1,21 @@
+{
+  "schema": "D1-I2-tfidf-v1",
+  "tokenizer": "unicode_letter_runs_lowercase_v1",
+  "language_scope": "English only for publication; unspecified/mixed languages audit-only",
+  "tf": "1+ln(count) for count>0; zero otherwise",
+  "idf": "1+ln((1+N_unique_texts)/(1+df))",
+  "normalization": "statement L2; equal-weight statement mean per country; country L2",
+  "min_term_chars": 2,
+  "min_document_frequency": 2,
+  "max_document_fraction": 0.98,
+  "max_terms": 10000,
+  "min_reference_unique_texts": 2,
+  "max_source_chars": 15000000,
+  "max_statements": 1000,
+  "max_countries": 250,
+  "max_sparse_nonzero": 3000000,
+  "max_dense_cells": 2500000,
+  "duplicate_policy": "DF over unique exact text hashes; remove duplicate text within country before pooling; cross-country duplicate text blocks publication",
+  "unknown_term_policy": "discard from fixed feature matrix; retain eligible-token OOV counts; zero rows have undefined similarity",
+  "reference_policy": "bootstrap once per provenance/genre/language namespace, then frozen; never refit during transform"
+}

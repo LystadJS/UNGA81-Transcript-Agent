@@ -1,0 +1,166 @@
+UN TRANSCRIPT INTELLIGENCE | Daily Readout
+
+PRACTICE DATA — NOT A UN ASSESSMENT
+
+Reporting period: 2026-09-23 to 2026-09-25
+
+18 available texts; 0 missing-text entries; 0 excluded or duplicate entries. Scope is the supplied files, not all UN members.
+
+Exact source extracts; not a validated analytical readout. Learned groupings remain audit-only.
+
+O1. Tracked issues
+Requested topics: Iran; Cuba; Ukraine; Artificial Intelligence. Literal phrase candidates are available in the application audit view. No validated issue-presence classifier is released in this prototype.
+
+O2. Emerging themes
+Insufficient comparable history to assess emergence. Current-corpus text groupings remain audit-only.
+
+O3. Country discourse map
+Map withheld. The prototype has no D1-approved fixed-reference projection release.
+
+O4. Rhetorical movement
+No comparable prior observation is available to establish rhetorical movement.
+
+O5. Discourse-network changes
+No comparable prior network is available to establish discourse-network changes.
+
+COUNTRY SOURCE EXTRACTS
+
+Africa | Training delegation 05
+2026-09-24 | Fictional speaker 05
+SOURCE EXTRACTS
+This fictional statement includes an example concerning Ukraine for literal-matching tests.
+Artificial intelligence requires careful oversight, reliable training data, and accessible computing infrastructure.
+Source: SYNTHETIC_TRAINING_DATA.csv
+Statement ID: DEMO-005
+
+Africa | Training delegation 10
+2026-09-24 | Fictional speaker 10
+SOURCE EXTRACTS
+This fictional statement includes an example concerning Cuba for literal-matching tests.
+Source: SYNTHETIC_TRAINING_DATA.csv
+Statement ID: DEMO-010
+
+Africa | Training delegation 15
+2026-09-24 | Fictional speaker 15
+SOURCE EXTRACTS
+This fictional statement includes an example concerning Iran for literal-matching tests.
+Source: SYNTHETIC_TRAINING_DATA.csv
+Statement ID: DEMO-015
+
+Asia-Pacific | Training delegation 01
+2026-09-24 | Fictional speaker 01
+SOURCE EXTRACTS
+Artificial intelligence requires careful oversight, reliable training data, and accessible computing infrastructure.
+AI systems need independent evaluation, technical standards, and transparent algorithm testing.
+Source: SYNTHETIC_TRAINING_DATA.csv
+Statement ID: DEMO-001
+
+Asia-Pacific | Training delegation 06
+2026-09-24 | Fictional speaker 06
+SOURCE EXTRACTS
+Artificial intelligence requires careful oversight, reliable training data, and accessible computing infrastructure.
+AI systems need independent evaluation, technical standards, and transparent algorithm testing.
+Source: SYNTHETIC_TRAINING_DATA.csv
+Statement ID: DEMO-006
+
+Asia-Pacific | Training delegation 11
+2026-09-24 | Fictional speaker 11
+SOURCE EXTRACTS
+This fictional statement includes an example concerning Ukraine for literal-matching tests.
+Source: SYNTHETIC_TRAINING_DATA.csv
+Statement ID: DEMO-011
+
+Asia-Pacific | Training delegation 16
+2026-09-24 | Fictional speaker 16
+SOURCE EXTRACTS
+This fictional statement includes an example concerning Cuba for literal-matching tests.
+Source: SYNTHETIC_TRAINING_DATA.csv
+Statement ID: DEMO-016
+
+Europe & Eurasia | Training delegation 02
+2026-09-24 | Fictional speaker 02
+SOURCE EXTRACTS
+Artificial intelligence requires careful oversight, reliable training data, and accessible computing infrastructure.
+AI systems need independent evaluation, technical standards, and transparent algorithm testing.
+Source: SYNTHETIC_TRAINING_DATA.csv
+Statement ID: DEMO-002
+
+Europe & Eurasia | Training delegation 07
+2026-09-24 | Fictional speaker 07
+SOURCE EXTRACTS
+Climate finance should support coastal adaptation, resilient infrastructure, and early warning for floods.
+Adaptation funding and coastal resilience connect energy transition with disaster preparedness.
+Source: SYNTHETIC_TRAINING_DATA.csv
+Statement ID: DEMO-007
+
+Europe & Eurasia | Training delegation 12
+2026-09-24 | Fictional speaker 12
+SOURCE EXTRACTS
+Climate finance should support coastal adaptation, resilient infrastructure, and early warning for floods.
+Adaptation funding and coastal resilience connect energy transition with disaster preparedness.
+Source: SYNTHETIC_TRAINING_DATA.csv
+Statement ID: DEMO-012
+
+Europe & Eurasia | Training delegation 17
+2026-09-24 | Fictional speaker 17
+SOURCE EXTRACTS
+This fictional statement includes an example concerning Ukraine for literal-matching tests.
+Source: SYNTHETIC_TRAINING_DATA.csv
+Statement ID: DEMO-017
+
+Near East | Training delegation 03
+2026-09-24 | Fictional speaker 03
+SOURCE EXTRACTS
+This fictional statement includes an example concerning Iran for literal-matching tests.
+Artificial intelligence requires careful oversight, reliable training data, and accessible computing infrastructure.
+Source: SYNTHETIC_TRAINING_DATA.csv
+Statement ID: DEMO-003
+
+Near East | Training delegation 08
+2026-09-24 | Fictional speaker 08
+SOURCE EXTRACTS
+Climate finance should support coastal adaptation, resilient infrastructure, and early warning for floods.
+Adaptation funding and coastal resilience connect energy transition with disaster preparedness.
+Source: SYNTHETIC_TRAINING_DATA.csv
+Statement ID: DEMO-008
+
+Near East | Training delegation 13
+2026-09-24 | Fictional speaker 13
+SOURCE EXTRACTS
+Food security requires reliable nutrition programmes, agricultural supply, and emergency food delivery.
+Humanitarian relief should protect displaced families and improve access to nutrition and safe shelter.
+Source: SYNTHETIC_TRAINING_DATA.csv
+Statement ID: DEMO-013
+
+Near East | Training delegation 18
+2026-09-24 | Fictional speaker 18
+SOURCE EXTRACTS
+Food security requires reliable nutrition programmes, agricultural supply, and emergency food delivery.
+Humanitarian relief should protect displaced families and improve access to nutrition and safe shelter.
+Source: SYNTHETIC_TRAINING_DATA.csv
+Statement ID: DEMO-018
+
+Western Hemisphere | Training delegation 04
+2026-09-24 | Fictional speaker 04
+SOURCE EXTRACTS
+This fictional statement includes an example concerning Cuba for literal-matching tests.
+Artificial intelligence requires careful oversight, reliable training data, and accessible computing infrastructure.
+Source: SYNTHETIC_TRAINING_DATA.csv
+Statement ID: DEMO-004
+
+Western Hemisphere | Training delegation 09
+2026-09-24 | Fictional speaker 09
+SOURCE EXTRACTS
+This fictional statement includes an example concerning Iran for literal-matching tests.
+Source: SYNTHETIC_TRAINING_DATA.csv
+Statement ID: DEMO-009
+
+Western Hemisphere | Training delegation 14
+2026-09-24 | Fictional speaker 14
+SOURCE EXTRACTS
+Food security requires reliable nutrition programmes, agricultural supply, and emergency food delivery.
+Humanitarian relief should protect displaced families and improve access to nutrition and safe shelter.
+Source: SYNTHETIC_TRAINING_DATA.csv
+Statement ID: DEMO-014
+
+Unsent draft | demo_run

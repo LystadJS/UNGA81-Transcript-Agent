@@ -1,0 +1,144 @@
+{
+  "type": "object",
+  "properties": {
+    "decision": {
+      "type": "string",
+      "enum": [
+        "accept",
+        "revise",
+        "hold"
+      ]
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "analysis": {
+      "type": "object",
+      "properties": {
+        "bullets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              },
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "sentence_id": {
+                      "type": "string"
+                    },
+                    "quote": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "sentence_id",
+                    "quote"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "label",
+              "text",
+              "evidence"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "issue_id": {
+                "type": "string",
+                "enum": [
+                  "iran",
+                  "cuba",
+                  "ukraine",
+                  "ai",
+                  "un_reform",
+                  "rights_social",
+                  "other_security",
+                  "ai_digital",
+                  "development",
+                  "climate",
+                  "middle_east",
+                  "humanitarian",
+                  "sovereignty"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "present",
+                  "absent",
+                  "uncertain"
+                ]
+              },
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "sentence_id": {
+                      "type": "string"
+                    },
+                    "quote": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "sentence_id",
+                    "quote"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "rationale": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "issue_id",
+              "status",
+              "evidence",
+              "rationale"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "flags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "bullets",
+        "issues",
+        "flags"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "decision",
+    "notes",
+    "analysis"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,48 @@
+{
+  "design_version": "D1",
+  "all_methods_registered": true,
+  "check_each_method_each_daily_run": true,
+  "new_data_processing": "changed_source_hashes_only",
+  "daily_inference": "every_eligible_model; reuse only with matching input/model/policy hashes",
+  "training": {
+    "weekly": [
+      "classifiers",
+      "topic_models",
+      "anomaly_reference",
+      "network_models"
+    ],
+    "monthly": [
+      "latent_state_models",
+      "neural_models",
+      "Bayesian_diffusion"
+    ],
+    "trigger": "new approved data, validation drift, or scheduled refit; each fit produces a candidate, not immediate promotion"
+  },
+  "deadline_policy": "bounded branch budgets; preserve ledger; no active method or research fit may indefinitely block the five-slot draft",
+  "computer_defaults": {
+    "outer_workers": 2,
+    "heavy_training_workers": 1,
+    "total_ram_gib_soft_ceiling": 8,
+    "nested_parallelism": false,
+    "dense_all_passage_pairwise_matrix": false,
+    "gpu_use": "only_after_measured_VRAM_and_driver_benchmark",
+    "basis": "proposed conservative settings for the stated 16 GB machine; not measured performance"
+  },
+  "cold_start": "publish only supported descriptive sections; exact reasons for unavailable sections; all model status rows retained",
+  "numeric_data_thresholds": "no universal sample-count guarantees; release gates set from grouped temporal learning curves and predeclared task loss",
+  "cache_key_components": [
+    "source_sha256",
+    "normalization_version",
+    "codebook_version",
+    "label_version",
+    "embedding_model_and_weights",
+    "representation_reference",
+    "model_artifact_sha256",
+    "window_definition",
+    "as_of_cutoff",
+    "hyperparameters",
+    "seed",
+    "software_and_font_environment",
+    "report_policy_sha256"
+  ]
+}

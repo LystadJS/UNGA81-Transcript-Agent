@@ -1,0 +1,22 @@
+{
+  "theme": "integrated-email",
+  "checks": [
+    {
+      "width": 1440,
+      "scrollWidth": 1440,
+      "sealLoaded": true,
+      "headerColor": "rgb(6, 33, 53)",
+      "accent": "rgb(208, 19, 25)",
+      "icons": 10
+    },
+    {
+      "width": 390,
+      "scrollWidth": 390,
+      "sealLoaded": true,
+      "headerColor": "rgb(6, 33, 53)",
+      "accent": "rgb(208, 19, 25)",
+      "icons": 10
+    }
+  ],
+  "live_shiny": false
+}

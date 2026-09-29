@@ -1,0 +1,3 @@
+Parsed successfully: R workflow modules.
+COMPLETE: /mnt/data/UN_Daily_Briefing_R_2_4_HC_ONLY/output/2026-09-23/hierarchical_rebuild/daily_briefing.eml 
+Executed successfully: archived run rebuilt entirely in R. Byte-identical EML: TRUE 

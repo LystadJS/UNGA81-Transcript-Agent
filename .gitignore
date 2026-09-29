@@ -1,0 +1,6 @@
+.env
+.Renviron
+.Rhistory
+.RData
+.secrets/
+__pycache__/

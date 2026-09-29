@@ -1,0 +1,114 @@
+PASS Changing a release threshold without its frozen design revision is rejected  
+PASS R Matrix package used for sparse features  
+PASS Frozen vocabulary excludes universal boilerplate  
+PASS Document frequency is unique-document presence  
+PASS Smoothed natural-log IDF matches declared formula  
+PASS Positive TF uses one plus natural-log count  
+PASS Every nonzero statement vector has unit L2 norm  
+PASS Every nonzero country vector has unit L2 norm  
+PASS Cosine matches independently computed dot products  
+PASS Cosine is symmetric and self-similarity one  
+PASS Negation is not discarded  
+PASS Unicode letter runs retained without transliteration  
+PASS Tokenization does not mutate source text  
+PASS Exact duplicate text does not change reference IDF  
+PASS Exact duplicate within country does not change pooled vector  
+PASS Additional intervention pooling is equal-weight then L2  
+PASS New terms cannot grow the frozen vocabulary  
+PASS Daily transformation leaves frozen IDF byte-identical  
+PASS Transform is batch invariant  
+PASS All-OOV text remains an undefined similarity  
+PASS Stopword-only text remains an empty vector  
+PASS Single unique reference text explicitly blocked  
+PASS Empty vocabulary explicitly blocked  
+PASS Source-character resource cap is enforced  
+PASS Statement resource cap is enforced  
+PASS Sparse-nonzero cap is enforced  
+PASS Dense-cell cap checked before materialization  
+PASS Valid frozen source reference revalidates  
+PASS Changed IDF rejected even with recomputed object identity  
+PASS Future current input rejected even though availability is excluded from lexical cache identity  
+PASS Future feature creation ordering rejected  
+PASS Changed source text rejected  
+PASS Future reference input rejected  
+PASS Runtime or tokenizer drift rejected  
+PASS Reference/current provenance classes use separate namespaces  
+PASS Reference/current language changes use separate namespaces  
+PASS Acquisition replay does not alter feature input identity  
+PASS Chord distance equals square root two minus two cosine  
+PASS PCA scores match fixed-center loading multiplication  
+PASS PCA matches stats prcomp retained variance  
+PASS PCA loading vectors are orthonormal  
+PASS PCA loading signs are deterministic  
+PASS PCoA eigenvalues match stats cmdscale  
+PASS PCoA and PCA preserve same two-dimensional distances  
+PASS PCoA reference transform reconstructs fitted coordinates  
+PASS Out-of-sample PCA equals predict(prcomp) up to signs  
+PASS Out-of-sample PCoA agrees with frozen PCA via reference rotation  
+PASS PCoA new points do not recenter the reference  
+PASS PCA new points do not recenter the reference  
+PASS Projection leaves trained objects unchanged  
+PASS Wrong feature order is rejected  
+PASS Wrong PCoA anchor order is rejected  
+PASS Asymmetric distances are rejected  
+PASS Negative distances are rejected  
+PASS Nonzero diagonal is rejected  
+PASS Nonfinite distances are rejected  
+PASS Material non-Euclidean spectrum is withheld, not corrected  
+PASS Rank-one PCA is not made into artificial 2D coordinates  
+PASS Identical-point PCoA is rejected  
+PASS Tiny references are explicitly blocked  
+PASS PCA metrics use all high-dimensional pair distances  
+PASS Two-dimensional energy cannot exceed source energy  
+PASS All missing projection coordinates yield unavailable diagnostics  
+PASS Only one observed coordinate cannot establish fidelity  
+PASS Low-rank numerical conformance fixture passes display gates  
+PASS All seventeen independent display checks recorded  
+PASS No inference or alignment guarantee is inferred from gate pass  
+PASS Engineering source provenance blocks publication  
+PASS Replay provenance in reference also blocks publication  
+PASS Unknown language blocks publication  
+PASS Mixed genre blocks publication  
+PASS Source flags block automatic display  
+PASS Collection failures block automatic display  
+PASS Excessive OOV blocks automatic display  
+PASS Too-short statement blocks automatic display  
+PASS A missing contributing statement cannot disappear in country pooling  
+PASS Cross-country exact duplicate blocks automatic display  
+PASS Changing retained-variance gate values cannot pass revalidation  
+PASS Changed PCA loadings fail eigen-equation validation  
+PASS Changed frozen center is rejected  
+Analyze 1/9: Andorra
+Analyze 2/9: Argentina
+Analyze 3/9: Botswana
+Analyze 4/9: Bulgaria
+Analyze 5/9: Burundi
+Analyze 6/9: Central African Republic
+Analyze 7/9: Cyprus
+Analyze 8/9: Czech Republic
+Analyze 9/9: Ecuador
+PREPARED: 9 countries; REVIEW_REQUIRED
+ANALYTICS: 9 statements archived; 42 methods accounted; 133 prerequisite checks; exactly five report packets.
+FAIL Positive mock records five real adapters, not 42 fits : sum(l$implementation_status == "implemented") == 5 is not TRUE 
+PASS Positive mock releases O3 only through evidence factory  
+PASS PCoA remains audit-only even after passing checks  
+PASS Ready O3 independently revalidates  
+PASS Changed published metrics are rejected  
+PASS Challenger cannot replace primary in the ready slot  
+PASS Readiness config still cannot override publication checks  
+PASS Sixth packet still rejected with valid O3 present  
+PASS Ready map has exactly one allowlisted numerical image  
+PASS Positive mock MIME includes seal plus PCA and no other chart  
+PASS Ready map caption retained in plaintext  
+PASS Second feature call reuses the exact frozen reference  
+PASS Repeated transform matches the prior sparse feature matrix  
+PASS Projection transform reuses its trained reference model  
+PASS Reused projection has unchanged coordinates  
+PASS Future report cutoff cannot admit later reference  
+PASS Read-only reference list CLI executes successfully  
+PASS Reference verification CLI executes source recomputation  
+PASS Both CLI commands leave every reference byte unchanged  
+PASS Corrupt pointer fails rather than rebootstrap  
+PASS Corrupt projection cache fails rather than refit  
+
+101 I2 engineering tests; 1 failures.

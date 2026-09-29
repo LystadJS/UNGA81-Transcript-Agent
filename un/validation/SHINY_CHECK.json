@@ -1,0 +1,63 @@
+{
+  "release": "0.2.0-d1-i4",
+  "checkpoint": "2.5.0-d1-i4-checkpoint",
+  "status": "PASS_WITH_LIVE_SHINY_PENDING",
+  "tests": {
+    "legacy_base": {
+      "passed": 87,
+      "failed": 0
+    },
+    "d1": {
+      "passed": 94,
+      "failed": 0
+    },
+    "i2": {
+      "passed": 101,
+      "failed": 0
+    },
+    "hierarchical": {
+      "passed": 58,
+      "failed": 0
+    },
+    "pam": {
+      "passed": 33,
+      "failed": 0
+    },
+    "inherited_total": {
+      "passed": 373,
+      "failed": 0
+    },
+    "ui_backend": {
+      "passed": 97,
+      "failed": 0
+    },
+    "adapter": {
+      "passed": 9,
+      "failed": 0
+    },
+    "full_replay_acceptance": "PASS",
+    "dynamic_topic_invariance": "PASS",
+    "static_ui_1440": "PASS",
+    "static_ui_390": "PASS",
+    "live_shiny": "NOT_EXECUTED_MISSING_PACKAGES"
+  },
+  "replay": {
+    "speeches": 39,
+    "registered_methods_accounted": 42,
+    "prerequisite_checks": 133,
+    "slots": [
+      "O1",
+      "O2",
+      "O3",
+      "O4",
+      "O5"
+    ],
+    "email_sent": false
+  },
+  "hashes": {
+    "legacy_issue_codebook": "6889769c3aeb9b5cdaea75872fe1a5892a027187edc73a4b0979dc0561569303",
+    "shiny_adapter": "8ba75a9a667867f500eb37c2d56f3f49637810de62e52b5177bd262b85f8408f",
+    "d1_m02_acceptance": "7e37ed84a1bf5a21f45ad41019d99358a7fa4cb96fb269a78407fff4f7061691",
+    "interface_feature_acceptance": "c54031831cd900eebd9f12abc01cdc9ff503ad91aeb93bafb5fabd370fc445dc"
+  }
+}

@@ -1,0 +1,8 @@
+Country: Example One
+Country ID: X1
+Region: Africa
+Date: 2026-09-24
+Language: en
+Title: Artificial Intelligence
+--- TRANSCRIPT ---
+We discuss agricultural policy and nutrition.

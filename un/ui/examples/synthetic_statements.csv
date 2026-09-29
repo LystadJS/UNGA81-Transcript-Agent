@@ -1,0 +1,55 @@
+statement_id,country,country_id,region,speaker,speech_date,language,text,source_url
+DEMO-001,Training delegation 01,DEMO001,Asia-Pacific,Fictional speaker 01,2026-09-24,en,"Artificial intelligence requires careful oversight, reliable training data, and accessible computing infrastructure. AI systems need independent evaluation, technical standards, and transparent algorithm testing. Digital capacity, research collaboration, and technology access are recurring priorities in this synthetic exercise.
+
+Training participants compare implementation plans and administrative records.",
+DEMO-002,Training delegation 02,DEMO002,Europe & Eurasia,Fictional speaker 02,2026-09-24,en,"Artificial intelligence requires careful oversight, reliable training data, and accessible computing infrastructure. AI systems need independent evaluation, technical standards, and transparent algorithm testing. Digital capacity, research collaboration, and technology access are recurring priorities in this synthetic exercise.
+
+The exercise asks reviewers to record source quotations and their context.",
+DEMO-003,Training delegation 03,DEMO003,Near East,Fictional speaker 03,2026-09-24,en,"Artificial intelligence requires careful oversight, reliable training data, and accessible computing infrastructure. AI systems need independent evaluation, technical standards, and transparent algorithm testing. Digital capacity, research collaboration, and technology access are recurring priorities in this synthetic exercise.
+
+This fictional statement includes an example concerning Iran for literal-matching tests.",
+DEMO-004,Training delegation 04,DEMO004,Western Hemisphere,Fictional speaker 04,2026-09-24,en,"Artificial intelligence requires careful oversight, reliable training data, and accessible computing infrastructure. AI systems need independent evaluation, technical standards, and transparent algorithm testing. Digital capacity, research collaboration, and technology access are recurring priorities in this synthetic exercise.
+
+This fictional statement includes an example concerning Cuba for literal-matching tests.",
+DEMO-005,Training delegation 05,DEMO005,Africa,Fictional speaker 05,2026-09-24,en,"Artificial intelligence requires careful oversight, reliable training data, and accessible computing infrastructure. AI systems need independent evaluation, technical standards, and transparent algorithm testing. Digital capacity, research collaboration, and technology access are recurring priorities in this synthetic exercise.
+
+This fictional statement includes an example concerning Ukraine for literal-matching tests.",
+DEMO-006,Training delegation 06,DEMO006,Asia-Pacific,Fictional speaker 06,2026-09-24,en,"Artificial intelligence requires careful oversight, reliable training data, and accessible computing infrastructure. AI systems need independent evaluation, technical standards, and transparent algorithm testing. Digital capacity, research collaboration, and technology access are recurring priorities in this synthetic exercise.
+
+The demonstration does not describe any actual national position.",
+DEMO-007,Training delegation 07,DEMO007,Europe & Eurasia,Fictional speaker 07,2026-09-24,en,"Climate finance should support coastal adaptation, resilient infrastructure, and early warning for floods. Adaptation funding and coastal resilience connect energy transition with disaster preparedness. Flood protection, climate insurance, and resilient agriculture are recurring priorities in this synthetic exercise.
+
+Training participants compare implementation plans and administrative records.",
+DEMO-008,Training delegation 08,DEMO008,Near East,Fictional speaker 08,2026-09-24,en,"Climate finance should support coastal adaptation, resilient infrastructure, and early warning for floods. Adaptation funding and coastal resilience connect energy transition with disaster preparedness. Flood protection, climate insurance, and resilient agriculture are recurring priorities in this synthetic exercise.
+
+The exercise asks reviewers to record source quotations and their context.",
+DEMO-009,Training delegation 09,DEMO009,Western Hemisphere,Fictional speaker 09,2026-09-24,en,"Climate finance should support coastal adaptation, resilient infrastructure, and early warning for floods. Adaptation funding and coastal resilience connect energy transition with disaster preparedness. Flood protection, climate insurance, and resilient agriculture are recurring priorities in this synthetic exercise.
+
+This fictional statement includes an example concerning Iran for literal-matching tests.",
+DEMO-010,Training delegation 10,DEMO010,Africa,Fictional speaker 10,2026-09-24,en,"Climate finance should support coastal adaptation, resilient infrastructure, and early warning for floods. Adaptation funding and coastal resilience connect energy transition with disaster preparedness. Flood protection, climate insurance, and resilient agriculture are recurring priorities in this synthetic exercise.
+
+This fictional statement includes an example concerning Cuba for literal-matching tests.",
+DEMO-011,Training delegation 11,DEMO011,Asia-Pacific,Fictional speaker 11,2026-09-24,en,"Climate finance should support coastal adaptation, resilient infrastructure, and early warning for floods. Adaptation funding and coastal resilience connect energy transition with disaster preparedness. Flood protection, climate insurance, and resilient agriculture are recurring priorities in this synthetic exercise.
+
+This fictional statement includes an example concerning Ukraine for literal-matching tests.",
+DEMO-012,Training delegation 12,DEMO012,Europe & Eurasia,Fictional speaker 12,2026-09-24,en,"Climate finance should support coastal adaptation, resilient infrastructure, and early warning for floods. Adaptation funding and coastal resilience connect energy transition with disaster preparedness. Flood protection, climate insurance, and resilient agriculture are recurring priorities in this synthetic exercise.
+
+The demonstration does not describe any actual national position.",
+DEMO-013,Training delegation 13,DEMO013,Near East,Fictional speaker 13,2026-09-24,en,"Food security requires reliable nutrition programmes, agricultural supply, and emergency food delivery. Humanitarian relief should protect displaced families and improve access to nutrition and safe shelter. Drought response, famine prevention, and emergency logistics are recurring priorities in this synthetic exercise.
+
+Training participants compare implementation plans and administrative records.",
+DEMO-014,Training delegation 14,DEMO014,Western Hemisphere,Fictional speaker 14,2026-09-24,en,"Food security requires reliable nutrition programmes, agricultural supply, and emergency food delivery. Humanitarian relief should protect displaced families and improve access to nutrition and safe shelter. Drought response, famine prevention, and emergency logistics are recurring priorities in this synthetic exercise.
+
+The exercise asks reviewers to record source quotations and their context.",
+DEMO-015,Training delegation 15,DEMO015,Africa,Fictional speaker 15,2026-09-24,en,"Food security requires reliable nutrition programmes, agricultural supply, and emergency food delivery. Humanitarian relief should protect displaced families and improve access to nutrition and safe shelter. Drought response, famine prevention, and emergency logistics are recurring priorities in this synthetic exercise.
+
+This fictional statement includes an example concerning Iran for literal-matching tests.",
+DEMO-016,Training delegation 16,DEMO016,Asia-Pacific,Fictional speaker 16,2026-09-24,en,"Food security requires reliable nutrition programmes, agricultural supply, and emergency food delivery. Humanitarian relief should protect displaced families and improve access to nutrition and safe shelter. Drought response, famine prevention, and emergency logistics are recurring priorities in this synthetic exercise.
+
+This fictional statement includes an example concerning Cuba for literal-matching tests.",
+DEMO-017,Training delegation 17,DEMO017,Europe & Eurasia,Fictional speaker 17,2026-09-24,en,"Food security requires reliable nutrition programmes, agricultural supply, and emergency food delivery. Humanitarian relief should protect displaced families and improve access to nutrition and safe shelter. Drought response, famine prevention, and emergency logistics are recurring priorities in this synthetic exercise.
+
+This fictional statement includes an example concerning Ukraine for literal-matching tests.",
+DEMO-018,Training delegation 18,DEMO018,Near East,Fictional speaker 18,2026-09-24,en,"Food security requires reliable nutrition programmes, agricultural supply, and emergency food delivery. Humanitarian relief should protect displaced families and improve access to nutrition and safe shelter. Drought response, famine prevention, and emergency logistics are recurring priorities in this synthetic exercise.
+
+The demonstration does not describe any actual national position.",

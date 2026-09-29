@@ -1,0 +1,553 @@
+===== tests/run_tests.R =====
+PASS JSON UTF-8, quotes, arrays and null round-trip  
+PASS JSON escaped surrogate pair  
+PASS JSON duplicate keys rejected  
+PASS JSON trailing tokens rejected  
+PASS JSON invalid escape rejected  
+PASS JSON unpaired surrogate rejected  
+PASS JSON leading-zero number rejected  
+PASS JSON trailing comma rejected  
+PASS JSON raw newline in string rejected  
+PASS Base64 round-trips 0-512 bytes  
+PASS Base64 known RFC encoding  
+PASS Base64 corrupt padding rejected  
+PASS SHA-256 known abc digest  
+PASS Source URL host allowlist  
+PASS Off-host source URL rejected  
+PASS Misleading suffix host rejected  
+PASS Header CRLF injection rejected  
+PASS Invalid email placeholder rejected  
+PASS Email address accepted  
+PASS HTML special characters escaped  
+PASS Broken table balance rejected  
+PASS Valid table balance accepted  
+PASS Source date parsed  
+PASS Invalid calendar date rejected  
+PASS Structured country resolves  
+PASS Unresolved speaker name not mapped to country  
+PASS Legacy and fresh codebooks retain distinct versions  
+PASS All 39 original DOCX hashes match  
+PASS All 39 normalized texts and hashes validate  
+PASS All 155 inherited summary points retain exact evidence  
+PASS Text hash corruption rejected  
+PASS Country/ISO3 mismatch rejected  
+PASS Sentence reconstruction mismatch rejected  
+PASS Unsupported evidence quote rejected  
+PASS Unknown evidence sentence rejected  
+PASS Missing issue decision rejected  
+PASS Duplicate issue decision rejected  
+PASS Prose artifacts rejected  
+PASS Extractive bullets are exact source excerpts  
+PASS No keyword hit is uncertain, not absent  
+PASS Identical country texts deduplicate  
+PASS Distinct interventions preserve sentence provenance  
+PASS UN JSON detail parser accepts fixture  
+PASS UN date mismatch rejected  
+PASS UN language mismatch rejected  
+PASS UN invalid timing rejected  
+PASS UN institutional speaker excluded  
+PASS Long unresolved-country statement requires review  
+PASS Inventory and detail collection with mocked transport  
+PASS Missing transcript remains a collection error  
+PASS Pagination inventory drift rejected  
+PASS Two-pass model control flow with mocked responses  
+PASS Source-bound cache avoids new model calls  
+PASS External model processing disabled by default  
+PASS Invocation-wide request budget enforced  
+PASS Incomplete model response rejected  
+PASS MIME round-trip with UTF-8 and inline image  
+PASS MIME bare LF rejected  
+FAIL Generated replay MIME and chart totals validate : Missing file: /mnt/data/un_combined_work/checkpoint/UN_Daily_Briefing_R_2_5_D1_I4_CHECKPOINT//brief.json 
+FAIL Replay carries distinct inherited and provisional versions : Missing file: /mnt/data/un_combined_work/checkpoint/UN_Daily_Briefing_R_2_5_D1_I4_CHECKPOINT//brief.json 
+PASS Permanent topics have exact labels and order  
+PASS Missing permanent topic rejected  
+PASS Reordered permanent topics rejected  
+PASS Duplicate issue ID rejected  
+PASS Fixed order config cannot silently change  
+PASS Old configuration receives region-first defaults  
+PASS Schema is bound to all configured topics  
+PASS Optional topic extension reaches schema  
+PASS AI separate from generic digital policy  
+PASS AI pattern excludes aid and paid  
+PASS Iran separate from generic Middle East  
+PASS Cuba separate from generic sanctions  
+PASS Ukraine separate from generic Russia and Black Sea  
+PASS Incidental Franco-Iranian nationality excluded  
+PASS Countries grouped in configured regional order  
+PASS Country names alphabetized inside each region  
+PASS Unmapped region displayed last  
+PASS All 39 source regions are preserved  
+PASS Replay keeps all inherited summary bytes  
+PASS Replay keeps all original ten issue decisions  
+PASS Replay expands to 507 explicitly versioned cells  
+PASS New topic no-hit is unresolved, never absent  
+PASS Every provisional positive retains exact evidence  
+PASS All four topics appear with zero confirmed mentions  
+PASS No-source day is not displayed as zero prevalence  
+PASS Unresolved counts cannot disappear from watchlist  
+PASS Regional heading escapes HTML  
+
+87 tests; 2 failures.
+===== tests/run_d1_tests.R =====
+Parsed successfully: D1-I2 native-R modules.
+PASS Exact 42-method registry and 133 required gates  
+PASS Ready-packet config toggle rejected  
+PASS Automatic model promotion toggle rejected  
+PASS Unsafe historical directory rejected  
+PASS Unknown storage backend rejected  
+PASS Old config cannot silently enable D1  
+PASS Strict UTC timestamp rejects invalid calendar date  
+PASS UTC timestamp without timezone rejected  
+PASS Fractional UTC timestamps remain ordered  
+PASS One source statement is stored with its event date  
+PASS No backdating availability to event time  
+PASS Known source before store commit excluded from historical query  
+PASS Event-date cutoff excludes future event despite acquisition  
+PASS Date-only source does not invent event seconds  
+PASS Exact passage character offsets reconstruct source text  
+PASS Near-duplicate discovery not falsely claimed  
+PASS Synthetic observations are explicitly excluded from historical modeling  
+PASS Automatic labels are never gold  
+PASS No future labels in as-of view  
+PASS Human gold selection cannot pick rule labels  
+PASS Revised transcript retains stable observation identity  
+PASS Historical view before correction sees original text version  
+PASS Historical view after correction sees corrected text version  
+PASS Old and revised objects are both retained  
+$schema
+[1] "d1-history-rds-v1"
+
+$kind
+[1] "as_of_snapshot"
+
+$event_cutoff
+[1] "2026-09-20"
+
+$as_of_cutoff
+[1] "2026-09-23T02:00:00Z"
+
+$commit_tip_sha256
+[1] "370f785c0854896aa0455c5065703b49eb3626cc59ce9d01065459c5237fb825"
+
+$observations
+                                                        observation_id
+1 obs_3458bfa0197042e5af524e812da29c067ef2ea14cf58c11cf5cd2c35e36c1a35
+                                            observation_version_id iso3 country
+1 6b168b4334385464d36557859b1c611a082680dd998a0e4fdf14e00257945ab0  AND Andorra
+  event_date                genre meeting_id statement_number
+1 2026-09-20 synthetic_test_genre                            
+                                                       text_sha256
+1 8a4fd9ca7a4dc53d28033804366998507a84d11adc6e97b76874bd74c75ae419
+                                                     source_sha256 source_mode
+1 8a4fd9ca7a4dc53d28033804366998507a84d11adc6e97b76874bd74c75ae419       local
+    eligibility_class          identity_method
+1 engineering_fixture explicit_observation_key
+                                                                      object_path
+1 objects/a9/a9d729e2da14c866f6e1fd6fe03c310b3d3d31235191e6190cc1ed8713dbb642.rds
+                                                     object_sha256
+1 a9d729e2da14c866f6e1fd6fe03c310b3d3d31235191e6190cc1ed8713dbb642
+         first_seen_at          recorded_at commit_sequence
+1 2026-09-22T01:00:00Z 2026-09-23T02:00:00Z               3
+
+$codebook_sha256
+[1] "847e752b454d1b8bf39cbc6a54456c0fd126f9b5825535fdf2f8c10efeb8100b"
+
+$source_mode
+[1] "local"
+
+$training_gold_count
+[1] 0
+
+$gold_policy
+[1] "automatic/inherited labels are never promoted"
+
+$snapshot_id
+[1] "3bfcc62a05a2cb1b6bb4f19fa5ff7f1cd7ea71a601239f30f553d53e9c8e3ed4"
+
+PASS Repeated acquisition does not duplicate versions  
+PASS Repeated acquisition preserves original version availability  
+$schema
+[1] "d1-history-rds-v1"
+
+$kind
+[1] "as_of_snapshot"
+
+$event_cutoff
+[1] "2026-09-20"
+
+$as_of_cutoff
+[1] "2026-09-24T02:00:00Z"
+
+$commit_tip_sha256
+[1] "75077b03b015d0182276d1e95ee406baa6bd095aae739c0064a448b3e6388c59"
+
+$observations
+                                                        observation_id
+1 obs_3458bfa0197042e5af524e812da29c067ef2ea14cf58c11cf5cd2c35e36c1a35
+                                            observation_version_id iso3 country
+1 9bbf3ef1415465f4096db6a35c714dd16a4811f0f0ee688f77baa378d7b08984  AND Andorra
+  event_date                genre meeting_id statement_number
+1 2026-09-20 synthetic_test_genre                            
+                                                       text_sha256
+1 28702de3dfd0ed55e288b9a94771338efdd5462ef769fad60b88faaee7619327
+                                                     source_sha256 source_mode
+1 28702de3dfd0ed55e288b9a94771338efdd5462ef769fad60b88faaee7619327       local
+    eligibility_class          identity_method
+1 engineering_fixture explicit_observation_key
+                                                                      object_path
+1 objects/b0/b0f72dcc66e499b0e17cc6dff87d1dfa3a7a6bd268678de324ee5327c7e4098b.rds
+                                                     object_sha256
+1 b0f72dcc66e499b0e17cc6dff87d1dfa3a7a6bd268678de324ee5327c7e4098b
+         first_seen_at          recorded_at commit_sequence
+1 2026-09-21T01:00:00Z 2026-09-24T02:00:00Z               4
+
+$codebook_sha256
+[1] "847e752b454d1b8bf39cbc6a54456c0fd126f9b5825535fdf2f8c10efeb8100b"
+
+$source_mode
+[1] "local"
+
+$training_gold_count
+[1] 0
+
+$gold_policy
+[1] "automatic/inherited labels are never promoted"
+
+$snapshot_id
+[1] "17a5da48e8650eba5bbbe8847ff8f5250231d8c72a2a0334cf06a674239ee7ce"
+
+PASS Explicit later reversion to original bytes is represented  
+$schema
+[1] "d1-history-rds-v1"
+
+$kind
+[1] "as_of_snapshot"
+
+$event_cutoff
+[1] "2026-09-01"
+
+$as_of_cutoff
+[1] "2026-09-25T02:00:00Z"
+
+$commit_tip_sha256
+[1] "604e64d2b4f165119a57cc69fd2eac89892da1b98aa42964eab4cc131bb11a59"
+
+$observations
+                                                        observation_id
+1 obs_ca73470fc885b3a9cd362e2f608bb8c54f4380ac64928adfe76cbc17f061d50d
+                                            observation_version_id iso3 country
+1 40e4183c0604184146188b16d95796abec84e424a87e43470543f974f68b3c4a  AND Andorra
+  event_date                genre meeting_id statement_number
+1 2026-09-01 synthetic_test_genre                            
+                                                       text_sha256
+1 28702de3dfd0ed55e288b9a94771338efdd5462ef769fad60b88faaee7619327
+                                                     source_sha256 source_mode
+1 28702de3dfd0ed55e288b9a94771338efdd5462ef769fad60b88faaee7619327       local
+    eligibility_class          identity_method
+1 engineering_fixture explicit_observation_key
+                                                                      object_path
+1 objects/57/579c268e891da240793618f083a6640acc5507f113b772d0a5ee05673fde3db7.rds
+                                                     object_sha256
+1 579c268e891da240793618f083a6640acc5507f113b772d0a5ee05673fde3db7
+         first_seen_at          recorded_at commit_sequence
+1 2026-09-25T01:00:00Z 2026-09-25T02:00:00Z               5
+
+$codebook_sha256
+[1] "847e752b454d1b8bf39cbc6a54456c0fd126f9b5825535fdf2f8c10efeb8100b"
+
+$source_mode
+[1] "local"
+
+$training_gold_count
+[1] 0
+
+$gold_policy
+[1] "automatic/inherited labels are never promoted"
+
+$snapshot_id
+[1] "1a17de9a258ebe05b6806f27083c867133b2c53c6adff9246a11b8c5e5d807f1"
+
+PASS Late backfill cannot leak into earlier knowledge cutoff  
+PASS Commit chain verifies immutable objects  
+PASS Clock regression rejected  
+PASS Future source acquisition rejected  
+PASS Text hash mismatch rejected at history boundary  
+PASS Conflicting same-collection versions are not arbitrarily ordered  
+PASS Interrupted precommit write leaves no visible commit  
+PASS Staging directory never appears as committed history  
+PASS Concurrent history writer is blocked  
+PASS Different lock owner cannot release another writer  
+PASS Tampered observation bytes fail verification  
+PASS Tampered commit bytes fail chain verification  
+PASS Missing interior commit is detected  
+PASS Ungrouped statements survive one-country aggregation  
+PASS Statement-level source versions are distinct  
+PASS Every country label binds both contributing statements  
+PASS Complete daily method ledger  
+PASS Every method has all prerequisite decisions  
+PASS Rule diagnostic is not a trained classifier  
+PASS Rule candidates keep exact source quotes  
+PASS Rule nonhits never become absent  
+PASS Repeated identical input observations do not multiply issue decisions  
+PASS M01 accounts at statement level, not only country level  
+PASS Unchanged diagnostic reuses exact validated cache  
+PASS Model-training absence is not disguised as a fit  
+PASS Driftmap operating regime is explicitly unestablished  
+PASS Synthetic history cannot satisfy model history gates  
+PASS Failed adapter still leaves all 42 rows  
+PASS Failed adapter never claims an output artifact  
+PASS Missing actual dependency is explicit  
+PASS Corrupt cache fails instead of silently recomputing  
+PASS Future-dated cache artifact rejected  
+PASS Missing method row rejected  
+PASS Duplicate method row rejected  
+PASS Unknown terminal status rejected  
+PASS Empty non-delivery reason rejected  
+PASS Missing required gate rejected  
+PASS Pass flag conflicting with gate evidence rejected  
+PASS Unimplemented method cannot claim execution  
+PASS Unexecuted row cannot carry stale artifact  
+PASS Internal sentence range removed from reader-facing notes  
+PASS Original source-note substance preserved  
+PASS Exactly five unavailable packets in fixed order  
+PASS Sixth packet rejected  
+PASS Missing packet rejected  
+PASS Reordered packets rejected  
+PASS Stale numerical payload on unavailable output rejected  
+PASS Boolean flags cannot promote a fabricated ready packet  
+PASS Forecasts cannot enter an observed-output slot  
+PASS Misleading slot title rejected  
+PASS Source snapshot substitution rejected  
+PASS Future packet cutoff rejected  
+PASS Unsafe artifact reference rejected  
+PASS Publication check hash must match actual evidence  
+PASS Five analytical HTML sections, no extra charts  
+PASS Permanent topics ordered Iran Cuba Ukraine AI  
+PASS Unavailable topic table does not fabricate zero prevalence  
+PASS Every unavailable-state reason is identical in HTML and plaintext  
+PASS Unreleased images cannot be inserted through manifest  
+Analyze 1/1: Andorra
+PREPARED: 1 countries; REVIEW_REQUIRED
+ANALYTICS: 2 statements archived; 42 methods accounted; 133 prerequisite checks; exactly five report packets.
+PASS Failed audit-only charts do not block five-output email  
+PASS Country summaries survive withheld analytical outputs  
+PASS Email explicitly excludes all three legacy figure filenames  
+PASS Frozen checkpoint renders byte-identical email  
+PREPARED: 0 countries; EMPTY
+ANALYTICS: 0 statements archived; 42 methods accounted; 133 prerequisite checks; exactly five report packets.
+PASS Empty source day retains exactly five unavailable outputs  
+PASS No-source M01 correctly records blocked_data  
+PASS Empty watchlist says no qualifying text, not zero prevalence  
+PASS Preparation failure still accounts for all 42 methods  
+
+94 D1 engineering tests; 0 failures.
+===== tests/run_i2_tests.R =====
+PASS Changing a release threshold without its frozen design revision is rejected  
+PASS R Matrix package used for sparse features  
+PASS Frozen vocabulary excludes universal boilerplate  
+PASS Document frequency is unique-document presence  
+PASS Smoothed natural-log IDF matches declared formula  
+PASS Positive TF uses one plus natural-log count  
+PASS Every nonzero statement vector has unit L2 norm  
+PASS Every nonzero country vector has unit L2 norm  
+PASS Cosine matches independently computed dot products  
+PASS Cosine is symmetric and self-similarity one  
+PASS Negation is not discarded  
+PASS Unicode letter runs retained without transliteration  
+PASS Tokenization does not mutate source text  
+PASS Exact duplicate text does not change reference IDF  
+PASS Exact duplicate within country does not change pooled vector  
+PASS Additional intervention pooling is equal-weight then L2  
+PASS New terms cannot grow the frozen vocabulary  
+PASS Daily transformation leaves frozen IDF byte-identical  
+PASS Transform is batch invariant  
+PASS All-OOV text remains an undefined similarity  
+PASS Stopword-only text remains an empty vector  
+PASS Single unique reference text explicitly blocked  
+PASS Empty vocabulary explicitly blocked  
+PASS Source-character resource cap is enforced  
+PASS Statement resource cap is enforced  
+PASS Sparse-nonzero cap is enforced  
+PASS Dense-cell cap checked before materialization  
+PASS Valid frozen source reference revalidates  
+PASS Changed IDF rejected even with recomputed object identity  
+PASS Future current input rejected even though availability is excluded from lexical cache identity  
+PASS Future feature creation ordering rejected  
+PASS Changed source text rejected  
+PASS Future reference input rejected  
+PASS Runtime or tokenizer drift rejected  
+PASS Reference/current provenance classes use separate namespaces  
+PASS Reference/current language changes use separate namespaces  
+PASS Acquisition replay does not alter feature input identity  
+PASS Chord distance equals square root two minus two cosine  
+PASS PCA scores match fixed-center loading multiplication  
+PASS PCA matches stats prcomp retained variance  
+PASS PCA loading vectors are orthonormal  
+PASS PCA loading signs are deterministic  
+PASS PCoA eigenvalues match stats cmdscale  
+PASS PCoA and PCA preserve same two-dimensional distances  
+PASS PCoA reference transform reconstructs fitted coordinates  
+PASS Out-of-sample PCA equals predict(prcomp) up to signs  
+PASS Out-of-sample PCoA agrees with frozen PCA via reference rotation  
+PASS PCoA new points do not recenter the reference  
+PASS PCA new points do not recenter the reference  
+PASS Projection leaves trained objects unchanged  
+PASS Wrong feature order is rejected  
+PASS Wrong PCoA anchor order is rejected  
+PASS Asymmetric distances are rejected  
+PASS Negative distances are rejected  
+PASS Nonzero diagonal is rejected  
+PASS Nonfinite distances are rejected  
+PASS Material non-Euclidean spectrum is withheld, not corrected  
+PASS Rank-one PCA is not made into artificial 2D coordinates  
+PASS Identical-point PCoA is rejected  
+PASS Tiny references are explicitly blocked  
+PASS PCA metrics use all high-dimensional pair distances  
+PASS Two-dimensional energy cannot exceed source energy  
+PASS All missing projection coordinates yield unavailable diagnostics  
+PASS Only one observed coordinate cannot establish fidelity  
+PASS Low-rank numerical conformance fixture passes display gates  
+PASS All seventeen independent display checks recorded  
+PASS No inference or alignment guarantee is inferred from gate pass  
+PASS Engineering source provenance blocks publication  
+PASS Replay provenance in reference also blocks publication  
+PASS Unknown language blocks publication  
+PASS Mixed genre blocks publication  
+PASS Source flags block automatic display  
+PASS Collection failures block automatic display  
+PASS Excessive OOV blocks automatic display  
+PASS Too-short statement blocks automatic display  
+PASS A missing contributing statement cannot disappear in country pooling  
+PASS Cross-country exact duplicate blocks automatic display  
+PASS Changing retained-variance gate values cannot pass revalidation  
+PASS Changed PCA loadings fail eigen-equation validation  
+PASS Changed frozen center is rejected  
+Analyze 1/9: Andorra
+Analyze 2/9: Argentina
+Analyze 3/9: Botswana
+Analyze 4/9: Bulgaria
+Analyze 5/9: Burundi
+Analyze 6/9: Central African Republic
+Analyze 7/9: Cyprus
+Analyze 8/9: Czech Republic
+Analyze 9/9: Ecuador
+PREPARED: 9 countries; REVIEW_REQUIRED
+ANALYTICS: 9 statements archived; 42 methods accounted; 133 prerequisite checks; exactly five report packets.
+PASS Positive mock records six real adapters, not 42 fits  
+PASS Positive mock releases O3 only through evidence factory  
+PASS PCoA remains audit-only even after passing checks  
+PASS Ready O3 independently revalidates  
+PASS Changed published metrics are rejected  
+PASS Challenger cannot replace primary in the ready slot  
+PASS Readiness config still cannot override publication checks  
+PASS Sixth packet still rejected with valid O3 present  
+PASS Ready map has exactly one allowlisted numerical image  
+PASS Positive mock MIME includes seal plus PCA and no other chart  
+PASS Ready map caption retained in plaintext  
+PASS Second feature call reuses the exact frozen reference  
+PASS Repeated transform matches the prior sparse feature matrix  
+PASS Projection transform reuses its trained reference model  
+PASS Reused projection has unchanged coordinates  
+PASS Future report cutoff cannot admit later reference  
+PASS Read-only reference list CLI executes successfully  
+PASS Reference verification CLI executes source recomputation  
+PASS Both CLI commands leave every reference byte unchanged  
+PASS Corrupt pointer fails rather than rebootstrap  
+PASS Corrupt projection cache fails rather than refit  
+
+101 I2 engineering tests; 0 failures.
+===== tests/run_hierarchical_tests.R =====
+PASS Exactly six implemented adapters; M07 and M09 added 
+PASS Original 42-method registry is unchanged 
+PASS Frozen policy explicitly prohibits publication 
+PASS Full feature distances match independent stats dist 
+PASS Distance computed from normalized vectors matches cosine chord 
+PASS Sparse and dense feature paths agree 
+PASS Permuting row order is resolved by country identity 
+PASS Deterministic repeat produces the same complete artifact 
+PASS Caller RNG state and kind are unchanged 
+PASS All 15 predeclared linkage/k candidates retained 
+PASS Average linkage remains primary even when challengers differ 
+PASS Separated synthetic features recover three average-linkage groups 
+PASS No smaller than minimum-size cut is silently accepted 
+PASS Average tree matches stats hclust 
+PASS Complete tree matches stats hclust 
+PASS Ward uses Ward.D2 on unsquared Euclidean distances 
+PASS Silhouette matches cluster package 
+PASS One replicate row per planned candidate and sample 
+PASS Subsamples have 80 percent unique countries 
+PASS Fixed k is used inside every successful replicate 
+PASS Every stability candidate accounts for all repeats 
+PASS ARI is invariant to numeric labels 
+PASS ARI negative value is retained 
+PASS Identical trivial partitions have ARI one 
+PASS ARI requires at least two comparable observations 
+PASS Cluster singleton has zero silhouette, not missing 
+PASS Restricted exact clusters have Jaccard one 
+PASS Unsampled small clusters are not assigned artificial stability 
+PASS Primary pair exposure denominators are symmetric 
+PASS Coassignment ratios equal archived counts 
+PASS All conditional consensus values are valid fractions 
+PASS Both same-k linkage comparisons retained 
+PASS Zero vectors are excluded and identified 
+PASS All zero vectors fail, not a one-cluster success 
+PASS All identical nonzero vectors fail 
+PASS Nonfinite features fail 
+PASS Unnormalized input fails 
+PASS Duplicate country IDs fail 
+PASS Missing country IDs fail 
+PASS Country resource cap enforced 
+PASS Pairwise allocation cap enforced 
+PASS Refit failures are fully counted 
+PASS Failed replicates do not become stability zeros 
+PASS Never observed pairs remain NA 
+PASS Oversized k in a subset is blocked and retained 
+PASS Full production repeat policy executed on synthetic text 
+PASS Feature artifact is never mutated 
+PASS All 13 source and numeric screens retained 
+PASS Synthetic data never becomes published evidence 
+PASS Source-bound result independently recomputes 
+PASS A forged ready flag is rejected 
+PASS Modified distance is rejected even after rehash 
+PASS Modified reference binding rejected 
+PASS Modified quality flags rejected 
+PASS No M07 ready producer exists 
+PASS M07 cannot be substituted in O3 
+PASS Unversioned policy edits rejected 
+PASS Audit renders undefined stability as Not evaluable without changing data 
+58 hierarchical tests, 0 failures.
+===== tests/run_pam_tests.R =====
+PASS M09 is registered 
+PASS PAM policy frozen and audit only 
+PASS PAM uses same full-feature distance as hierarchical 
+PASS Five k candidates retained 
+PASS Separated features recover k=3 
+PASS Selected medoids are observed countries 
+PASS Silhouette independently matches cluster 
+PASS Every candidate accounts for repeats 
+PASS Roster subsamples deterministic 
+PASS Caller RNG unchanged 
+PASS Sparse and dense agree 
+PASS Row order canonicalized 
+PASS Coassignment fractions valid 
+PASS Medoid stability is bounded 
+PASS Zero vectors excluded 
+PASS All zero vectors fail 
+PASS Nonfinite input fails 
+PASS Unnormalized input fails 
+PASS Duplicate IDs fail 
+PASS Resource cap enforced 
+PASS Failed PAM resamples are fully counted 
+PASS Failed PAM resamples remain unevaluable, not zero stability 
+PASS Never observed PAM pairs remain NA 
+PASS Full production PAM repeats executed 
+PASS Frozen feature artifact not mutated 
+PASS All PAM quality checks retained 
+PASS Synthetic provenance remains audit only 
+PASS Source-bound result recomputes 
+PASS Forged publication flag rejected 
+PASS Modified distance rejected 
+PASS No M09 ready producer exists 
+PASS M09 cannot populate O3 
+PASS Unversioned PAM policy edit rejected 
+33 PAM tests, 0 failures.

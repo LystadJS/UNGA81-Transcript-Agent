@@ -1,0 +1,100 @@
+{
+  "schema": "D1-I4-checkpoint-manifest-v1",
+  "release": "2.5.0-d1-i4-checkpoint",
+  "created_at": "2026-09-25T21:46:17Z",
+  "file_count_excluding_manifest_and_sha": 2288,
+  "total_bytes_excluding_manifest_and_sha": 127035339,
+  "key_files": [
+    {
+      "path": "README.md",
+      "sha256": "1045026e2f08cf8daa13e802da9d6db4c48287eb39c7a84f3ab073cb3c51d852",
+      "bytes": 3570
+    },
+    {
+      "path": "START_HERE.md",
+      "sha256": "da2d25db2cfdc6492fe13fe68d4fbd3a64251a93527db3791623d57a5ef92549",
+      "bytes": 1565
+    },
+    {
+      "path": "CHECKPOINT_STATUS.md",
+      "sha256": "f3b00f4ff288b92ee48fbc9831cbd59430c1bfdf9d5297c9b159931627ab0103",
+      "bytes": 1186
+    },
+    {
+      "path": "RELEASE_NOTES.md",
+      "sha256": "9f4ddde79065e54832fce4b310daf0704683016f428589532b512d136babb0ee",
+      "bytes": 857
+    },
+    {
+      "path": "config/pam_policy.json",
+      "sha256": "48fe939bd639286d0c30745b12078eed46bd1d51b474ef6a95e6281d96016731",
+      "bytes": 965
+    },
+    {
+      "path": "design/D1-PAM/pam_policy.json",
+      "sha256": "48fe939bd639286d0c30745b12078eed46bd1d51b474ef6a95e6281d96016731",
+      "bytes": 965
+    },
+    {
+      "path": "R/12_pam.R",
+      "sha256": "a8bc22541a2d40af973e9abbbfc992798ab840ba4eee89c4ff98b3c404452851",
+      "bytes": 16635
+    },
+    {
+      "path": "R/20_pam_accounting.R",
+      "sha256": "6aa943cf54520e12b2f53d3eb7639a732c237374ffdd2126f6ad0f21cf6170a3",
+      "bytes": 7111
+    },
+    {
+      "path": "R/Figure_7_PAM_Audit.R",
+      "sha256": "0288a0ddd83acaadae8f25e75dceb3a951a4afdbd3acdd7cea4a2d8c0d627668",
+      "bytes": 4743
+    },
+    {
+      "path": "pam_only.R",
+      "sha256": "c005ad2e8c190d1243d0d069105f165353cb4ade193083ef867b4fcc2cdbb52b",
+      "bytes": 3298
+    },
+    {
+      "path": "tests/run_pam_tests.R",
+      "sha256": "d4c866cc3a8590d8e20b1b6edaac520a7d98c24bf5c6975914f3045ec0fd5103",
+      "bytes": 7690
+    },
+    {
+      "path": "validation/FINAL_VALIDATION.md",
+      "sha256": "8392c65afab17b8e05b43516512a9f32534a29b3a852d1d1386682299f53213e",
+      "bytes": 4366
+    },
+    {
+      "path": "validation/PROJECT_AUDIT.json",
+      "sha256": "3a430eded3e36325078e56a2ae93ce5451474b283eb5b1af338eda2b7f3907c0",
+      "bytes": 1130
+    },
+    {
+      "path": "validation/CHECKPOINT_CLUSTERING_AUDIT.json",
+      "sha256": "81415084b95a5d180d2e63240dbb57a62738187697cadd1a2eaff1729923a2e6",
+      "bytes": 815
+    },
+    {
+      "path": "validation/pam_reference_final/validation.json",
+      "sha256": "e034453acb42d9d7f12037fb04f72a35e889a9f873a8628dd75133c645ec0421",
+      "bytes": 249
+    }
+  ],
+  "validation": {
+    "total_tests": 371,
+    "failures": 0,
+    "r_scripts_parsed": 34,
+    "methods_registered": 42,
+    "implemented": 6,
+    "unimplemented": 36
+  },
+  "source_reference": {
+    "countries": 39,
+    "frozen_feature_sha256": "3235a50c3d5b9853887ce7da9058d636f963666ca885fcb82cf27175d54f7782",
+    "pam_quality_passed": false,
+    "hierarchical_quality_passed": false
+  },
+  "no_email_sent": true,
+  "packaging_note": "Short-path UI theme update; inherited validation results are historical."
+}

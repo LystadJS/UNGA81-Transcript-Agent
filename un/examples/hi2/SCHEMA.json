@@ -1,0 +1,1 @@
+{"schema":"d1-history-rds-v1","backend":"append_only_RDS_CSV","clock":"UTC","queries":"event cutoff AND recorded/first-seen cutoff","is_database_ACID":false}

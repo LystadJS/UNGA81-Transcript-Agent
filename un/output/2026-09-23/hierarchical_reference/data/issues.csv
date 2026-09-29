@@ -1,0 +1,21 @@
+"issue_id","label","short_label","definition","version","fixed","fixed_order"
+"iran","Iran","Iran","Substantive discussion of Iran: its government, security, nuclear program, sanctions, human rights, diplomacy or explicitly linked regional actions. Do not infer presence from Middle East, Gaza, Gulf or Hormuz alone. A nationality adjective in a cultural quotation or speaker metadata alone does not qualify.","2.1-provisional-replay-scan",TRUE,1
+"cuba","Cuba","Cuba","Substantive discussion of Cuba: embargo, sanctions, terrorism-list designation, energy restrictions, political or human-rights conditions, development, assistance or bilateral relations. Do not infer presence from Latin America or sanctions in general. A greeting, list of visiting delegations or speaker metadata alone does not qualify.","2.1-provisional-replay-scan",TRUE,2
+"ukraine","Ukraine","Ukraine","Russia-Ukraine war, Russia-related European security, Black Sea or directly linked regional security.","1.0-inherited-reviewed-and-lexicon",TRUE,3
+"ai","AI","AI","Substantive discussion of artificial intelligence: governance, models, capability, access, investment, risk, safety, applications, standards or AI-enabled weapons. Generic digitalization, cyber policy, connectivity, algorithms or technology do not qualify without an explicit AI connection. Do not transfer a broad AI & digital code into this narrower category.","2.1-provisional-replay-scan",TRUE,4
+"un_reform","UN reform & representation","UN reform /
+representation","Institutional reform, UN80, Security Council reform/representation, veto or leadership-selection issues.","1.0-inherited-reviewed-and-lexicon",FALSE,0
+"rights_social","Human rights, health & social","Rights / health /
+social","Human rights, health, gender, children/youth, education and related social policy.","1.0-inherited-reviewed-and-lexicon",FALSE,0
+"other_security","Other peace & security","Other peace /
+security","Substantive peace/security issues other than the separately coded Ukraine/Russia and Middle East categories, including peacekeeping, terrorism, crime, DRC/Haiti/Sudan/Afghanistan and disarmament.","1.0-inherited-reviewed-and-lexicon",FALSE,0
+"ai_digital","AI & digital","AI / digital","AI governance/capacity, digital policy, cyber issues and emerging-technology governance.","1.0-inherited-reviewed-and-lexicon",FALSE,0
+"development","Development & finance","Development /
+finance","Development financing, debt/financial architecture, SDGs, jobs, industrialization, investment, taxation, technology transfer.","1.0-inherited-reviewed-and-lexicon",FALSE,0
+"climate","Climate & environment","Climate /
+environment","Climate mitigation/adaptation/finance, biodiversity, oceans, drought/flood, water security and environmental policy.","1.0-inherited-reviewed-and-lexicon",FALSE,0
+"middle_east","Middle East","Middle East","Israel/Palestine/Gaza, Iran/Gulf/Hormuz, Golan and directly linked regional issues.","1.0-inherited-reviewed-and-lexicon",FALSE,0
+"humanitarian","Humanitarian, migration & refugees","Humanitarian /
+migration","Humanitarian assistance/access, migration, displacement, refugees and asylum/return issues.","1.0-inherited-reviewed-and-lexicon",FALSE,0
+"sovereignty","Sovereignty & territorial disputes","Sovereignty /
+territorial","Self-determination, territorial disputes/claims, decolonization, Kosovo, Cyprus, Essequibo and analogous disputes.","1.0-inherited-reviewed-and-lexicon",FALSE,0

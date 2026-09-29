@@ -1,0 +1,32 @@
+[
+  {
+    "excluded_from_release": "validation/hc_source_reference",
+    "reason": "Earlier development fixture or failed/interrupted run; final logs retained; not counted as delivered",
+    "files": 20,
+    "bytes": 4376996
+  },
+  {
+    "excluded_from_release": "validation/standalone_source_audit",
+    "reason": "Earlier development fixture or failed/interrupted run; final logs retained; not counted as delivered",
+    "files": 21,
+    "bytes": 6640874
+  },
+  {
+    "excluded_from_release": "validation/i2_fixture_1311",
+    "reason": "Earlier development fixture or failed/interrupted run; final logs retained; not counted as delivered",
+    "files": 212,
+    "bytes": 2331914
+  },
+  {
+    "excluded_from_release": "output/2026-09-23/hc_only_reference",
+    "reason": "Earlier development fixture or failed/interrupted run; final logs retained; not counted as delivered",
+    "files": 34,
+    "bytes": 14214183
+  },
+  {
+    "excluded_from_release": "output/2026-09-23/hc_final_reference",
+    "reason": "Earlier development fixture or failed/interrupted run; final logs retained; not counted as delivered",
+    "files": 111,
+    "bytes": 25208688
+  }
+]

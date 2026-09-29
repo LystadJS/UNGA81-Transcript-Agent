@@ -1,0 +1,66 @@
+"region","issue_id","issue","n_present","n_countries","n_unknown","share"
+"Africa","iran","Iran",0,12,12,0
+"Africa","cuba","Cuba",2,12,10,0.166666666666667
+"Africa","ukraine","Ukraine",0,12,0,0
+"Africa","ai","AI",7,12,5,0.583333333333333
+"Africa","un_reform","UN reform & representation",11,12,0,0.916666666666667
+"Africa","rights_social","Human rights, health & social",9,12,0,0.75
+"Africa","other_security","Other peace & security",6,12,0,0.5
+"Africa","ai_digital","AI & digital",7,12,0,0.583333333333333
+"Africa","development","Development & finance",11,12,0,0.916666666666667
+"Africa","humanitarian","Humanitarian, migration & refugees",6,12,0,0.5
+"Africa","climate","Climate & environment",8,12,0,0.666666666666667
+"Africa","middle_east","Middle East",2,12,0,0.166666666666667
+"Africa","sovereignty","Sovereignty & territorial disputes",4,12,0,0.333333333333333
+"Asia-Pacific","iran","Iran",2,3,1,0.666666666666667
+"Asia-Pacific","cuba","Cuba",1,3,2,0.333333333333333
+"Asia-Pacific","ukraine","Ukraine",2,3,0,0.666666666666667
+"Asia-Pacific","ai","AI",2,3,1,0.666666666666667
+"Asia-Pacific","un_reform","UN reform & representation",2,3,0,0.666666666666667
+"Asia-Pacific","rights_social","Human rights, health & social",3,3,0,1
+"Asia-Pacific","other_security","Other peace & security",3,3,0,1
+"Asia-Pacific","ai_digital","AI & digital",2,3,0,0.666666666666667
+"Asia-Pacific","development","Development & finance",2,3,0,0.666666666666667
+"Asia-Pacific","humanitarian","Humanitarian, migration & refugees",2,3,0,0.666666666666667
+"Asia-Pacific","climate","Climate & environment",3,3,0,1
+"Asia-Pacific","middle_east","Middle East",2,3,0,0.666666666666667
+"Asia-Pacific","sovereignty","Sovereignty & territorial disputes",0,3,0,0
+"Europe & Eurasia","iran","Iran",5,14,9,0.357142857142857
+"Europe & Eurasia","cuba","Cuba",1,14,13,0.0714285714285714
+"Europe & Eurasia","ukraine","Ukraine",13,14,0,0.928571428571429
+"Europe & Eurasia","ai","AI",14,14,0,1
+"Europe & Eurasia","un_reform","UN reform & representation",13,14,0,0.928571428571429
+"Europe & Eurasia","rights_social","Human rights, health & social",11,14,0,0.785714285714286
+"Europe & Eurasia","other_security","Other peace & security",10,14,0,0.714285714285714
+"Europe & Eurasia","ai_digital","AI & digital",14,14,0,1
+"Europe & Eurasia","development","Development & finance",4,14,0,0.285714285714286
+"Europe & Eurasia","humanitarian","Humanitarian, migration & refugees",10,14,0,0.714285714285714
+"Europe & Eurasia","climate","Climate & environment",6,14,0,0.428571428571429
+"Europe & Eurasia","middle_east","Middle East",10,14,0,0.714285714285714
+"Europe & Eurasia","sovereignty","Sovereignty & territorial disputes",3,14,0,0.214285714285714
+"Near East","iran","Iran",1,3,2,0.333333333333333
+"Near East","cuba","Cuba",0,3,3,0
+"Near East","ukraine","Ukraine",0,3,0,0
+"Near East","ai","AI",0,3,3,0
+"Near East","un_reform","UN reform & representation",1,3,0,0.333333333333333
+"Near East","rights_social","Human rights, health & social",1,3,0,0.333333333333333
+"Near East","other_security","Other peace & security",3,3,0,1
+"Near East","ai_digital","AI & digital",0,3,0,0
+"Near East","development","Development & finance",1,3,0,0.333333333333333
+"Near East","humanitarian","Humanitarian, migration & refugees",2,3,0,0.666666666666667
+"Near East","climate","Climate & environment",0,3,0,0
+"Near East","middle_east","Middle East",3,3,0,1
+"Near East","sovereignty","Sovereignty & territorial disputes",1,3,0,0.333333333333333
+"Western Hemisphere","iran","Iran",1,7,6,0.142857142857143
+"Western Hemisphere","cuba","Cuba",1,7,6,0.142857142857143
+"Western Hemisphere","ukraine","Ukraine",2,7,0,0.285714285714286
+"Western Hemisphere","ai","AI",4,7,3,0.571428571428571
+"Western Hemisphere","un_reform","UN reform & representation",5,7,0,0.714285714285714
+"Western Hemisphere","rights_social","Human rights, health & social",6,7,0,0.857142857142857
+"Western Hemisphere","other_security","Other peace & security",6,7,0,0.857142857142857
+"Western Hemisphere","ai_digital","AI & digital",4,7,0,0.571428571428571
+"Western Hemisphere","development","Development & finance",7,7,0,1
+"Western Hemisphere","humanitarian","Humanitarian, migration & refugees",3,7,0,0.428571428571429
+"Western Hemisphere","climate","Climate & environment",4,7,0,0.571428571428571
+"Western Hemisphere","middle_east","Middle East",3,7,0,0.428571428571429
+"Western Hemisphere","sovereignty","Sovereignty & territorial disputes",3,7,0,0.428571428571429

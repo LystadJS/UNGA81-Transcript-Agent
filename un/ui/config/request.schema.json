@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UN Readout immutable request v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "app_version",
+    "start_date",
+    "end_date",
+    "timezone",
+    "fixed_topics",
+    "discover_themes",
+    "discovery_scope",
+    "source",
+    "external_processing",
+    "email_delivery",
+    "requested_at_utc"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "un.readout.request.v1"
+    },
+    "app_version": {
+      "type": "string"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "timezone": {
+      "const": "America/New_York"
+    },
+    "fixed_topics": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "$ref": "#/$defs/topic"
+      }
+    },
+    "discover_themes": {
+      "const": true
+    },
+    "discovery_scope": {
+      "const": "all_eligible_source_texts_independent_of_fixed_topics"
+    },
+    "source": {
+      "enum": [
+        "demo",
+        "upload",
+        "d1"
+      ]
+    },
+    "external_processing": {
+      "const": false
+    },
+    "email_delivery": {
+      "const": "draft_only"
+    },
+    "requested_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "topic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "include",
+        "exclude",
+        "matching",
+        "semantic_expansion"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^topic_[a-f0-9]{12}$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "include": {
+          "type": "array",
+          "maxItems": 30,
+          "items": {
+            "type": "string"
+          }
+        },
+        "exclude": {
+          "type": "array",
+          "maxItems": 30,
+          "items": {
+            "type": "string"
+          }
+        },
+        "matching": {
+          "const": "literal_phrase_with_boundaries_v1"
+        },
+        "semantic_expansion": {
+          "const": false
+        }
+      }
+    }
+  }
+}

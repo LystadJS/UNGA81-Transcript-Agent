@@ -1,0 +1,6 @@
+"slot_id","title","state","reason","model_id","release_status","as_of_cutoff"
+"O1","Fixed-topic monitor","not_ready","No released issue classifier is available. Rule candidates and inherited codes remain in the audit; they are not published presence or absence decisions.","","unreleased","2026-09-25T21:10:55.918902Z"
+"O2","Emerging issues","not_ready","Insufficient comparable history to assess emergence; topic-discovery models are not yet released.","","unreleased","2026-09-25T21:10:55.918902Z"
+"O3","Country discourse map","withheld","Map withheld. The two-dimensional view retains 9.1% of reference variation; the display policy requires at least 40%. Source, comparability, or projection-quality checks remain unmet; audit coordinates are not a published position map.","","unreleased","2026-09-25T21:10:55.918902Z"
+"O4","Rhetorical movement","not_ready","No comparable prior observation is established. Movement models and representation checks are not yet released.","","unreleased","2026-09-25T21:10:55.918902Z"
+"O5","Discourse-network changes","not_ready","No comparable prior network is established. Edge definitions, matched coverage, and network-change models are not yet released.","","unreleased","2026-09-25T21:10:55.918902Z"

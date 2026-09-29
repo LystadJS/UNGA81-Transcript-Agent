@@ -1,0 +1,3 @@
+"reference","alternative","k","adjusted_rand"
+"average__2","complete__2",2,-0.0263157894736828
+"average__2","ward.D2__2",2,-0.0305007339748816

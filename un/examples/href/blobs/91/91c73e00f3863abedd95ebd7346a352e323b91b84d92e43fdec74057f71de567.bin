@@ -1,0 +1,92 @@
+[
+  {
+    "issue_id": "un_reform",
+    "label": "UN reform & representation",
+    "short_label": "UN reform /\nrepresentation",
+    "definition": "Institutional reform, UN80, Security Council reform/representation, veto or leadership-selection issues.",
+    "decision_rule": "Source priority reference and/or evidence-linked reviewed topic.",
+    "version": "1.0-inherited-reviewed-and-lexicon",
+    "method_note": "Archived decision snapshot; not re-adjudicated under semantic codebook v2."
+  },
+  {
+    "issue_id": "rights_social",
+    "label": "Human rights, health & social",
+    "short_label": "Rights / health /\nsocial",
+    "definition": "Human rights, health, gender, children/youth, education and related social policy.",
+    "decision_rule": "Evidence-linked reviewed topic or >=8 full-text matches to the defined lexicon.",
+    "version": "1.0-inherited-reviewed-and-lexicon",
+    "method_note": "Archived decision snapshot; not re-adjudicated under semantic codebook v2."
+  },
+  {
+    "issue_id": "other_security",
+    "label": "Other peace & security",
+    "short_label": "Other peace /\nsecurity",
+    "definition": "Substantive peace/security issues other than the separately coded Ukraine/Russia and Middle East categories, including peacekeeping, terrorism, crime, DRC/Haiti/Sudan/Afghanistan and disarmament.",
+    "decision_rule": "Evidence-linked reviewed topic or >=3 full-text matches to defined specific-security lexicon.",
+    "version": "1.0-inherited-reviewed-and-lexicon",
+    "method_note": "Archived decision snapshot; not re-adjudicated under semantic codebook v2."
+  },
+  {
+    "issue_id": "ai_digital",
+    "label": "AI & digital",
+    "short_label": "AI / digital",
+    "definition": "AI governance/capacity, digital policy, cyber issues and emerging-technology governance.",
+    "decision_rule": "Source Artificial Intelligence priority reference and/or evidence-linked reviewed topic.",
+    "version": "1.0-inherited-reviewed-and-lexicon",
+    "method_note": "Archived decision snapshot; not re-adjudicated under semantic codebook v2."
+  },
+  {
+    "issue_id": "development",
+    "label": "Development & finance",
+    "short_label": "Development /\nfinance",
+    "definition": "Development financing, debt/financial architecture, SDGs, jobs, industrialization, investment, taxation, technology transfer.",
+    "decision_rule": "Evidence-linked reviewed topic or >=5 full-text matches to the defined lexicon.",
+    "version": "1.0-inherited-reviewed-and-lexicon",
+    "method_note": "Archived decision snapshot; not re-adjudicated under semantic codebook v2."
+  },
+  {
+    "issue_id": "climate",
+    "label": "Climate & environment",
+    "short_label": "Climate /\nenvironment",
+    "definition": "Climate mitigation/adaptation/finance, biodiversity, oceans, drought/flood, water security and environmental policy.",
+    "decision_rule": "Evidence-linked reviewed topic or >=4 full-text matches to the defined lexicon.",
+    "version": "1.0-inherited-reviewed-and-lexicon",
+    "method_note": "Archived decision snapshot; not re-adjudicated under semantic codebook v2."
+  },
+  {
+    "issue_id": "middle_east",
+    "label": "Middle East",
+    "short_label": "Middle East",
+    "definition": "Israel/Palestine/Gaza, Iran/Gulf/Hormuz, Golan and directly linked regional issues.",
+    "decision_rule": "Source Israel/Palestine or Iran/Hormuz priority reference and/or evidence-linked reviewed topic.",
+    "version": "1.0-inherited-reviewed-and-lexicon",
+    "method_note": "Archived decision snapshot; not re-adjudicated under semantic codebook v2."
+  },
+  {
+    "issue_id": "ukraine",
+    "label": "Ukraine / Russia",
+    "short_label": "Ukraine /\nRussia",
+    "definition": "Russia-Ukraine war, Russia-related European security, Black Sea or directly linked regional security.",
+    "decision_rule": "Source Ukraine/Russia priority reference and/or evidence-linked reviewed topic.",
+    "version": "1.0-inherited-reviewed-and-lexicon",
+    "method_note": "Archived decision snapshot; not re-adjudicated under semantic codebook v2."
+  },
+  {
+    "issue_id": "humanitarian",
+    "label": "Humanitarian, migration & refugees",
+    "short_label": "Humanitarian /\nmigration",
+    "definition": "Humanitarian assistance/access, migration, displacement, refugees and asylum/return issues.",
+    "decision_rule": "Source Humanitarian Aid/Migration reference, evidence-linked reviewed topic, or >=3 full-text matches.",
+    "version": "1.0-inherited-reviewed-and-lexicon",
+    "method_note": "Archived decision snapshot; not re-adjudicated under semantic codebook v2."
+  },
+  {
+    "issue_id": "sovereignty",
+    "label": "Sovereignty & territorial disputes",
+    "short_label": "Sovereignty /\nterritorial",
+    "definition": "Self-determination, territorial disputes/claims, decolonization, Kosovo, Cyprus, Essequibo and analogous disputes.",
+    "decision_rule": "Evidence-linked reviewed topic or >=2 full-text matches to the defined specific-dispute lexicon.",
+    "version": "1.0-inherited-reviewed-and-lexicon",
+    "method_note": "Archived decision snapshot; not re-adjudicated under semantic codebook v2."
+  }
+]

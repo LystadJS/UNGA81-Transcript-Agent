@@ -1,0 +1,1 @@
+D1 clustering checkpoint 2.5.0-d1-i4: adds M09 PAM / k-medoids to the existing M07 hierarchical adapter. Both use the same frozen TF-IDF distance space and remain audit-only. No cluster is a political ranking, alliance label, policy score, or validated geopolitical bloc. No email is sent by this project.

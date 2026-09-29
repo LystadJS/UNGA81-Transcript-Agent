@@ -1,0 +1,100 @@
+[1] "C.UTF-8"
+PASS | Four default topics preserve order  
+PASS | Arbitrary topic labels  
+PASS | Case-insensitive duplicate topics collapse  
+PASS | Whitespace is normalized  
+PASS | Empty topic list is valid  
+PASS | Twenty-topic limit enforced  
+PASS | Overlong topic refused  
+PASS | Empty topic refused  
+PASS | Overlapping inclusion/exclusion refused  
+PASS | AI alias explicitly included for default  
+PASS | Acronym AI does not match Haiti  
+PASS | Acronym AI matches uppercase  
+PASS | Acronym AI is case-sensitive  
+PASS | Ordinary phrase matching ignores case  
+PASS | Regex punctuation is literal  
+PASS | Regex wildcard is not interpreted  
+PASS | Valid leap date accepted  
+PASS | Invalid leap date rejected  
+PASS | Date normalization cannot admit invalid day  
+PASS | Reversed dates rejected  
+PASS | Long reporting window rejected  
+PASS | Full corpus discovery cannot be disabled in normal request  
+PASS | External processing defaults off  
+PASS | No-send request contract  
+PASS | SHA-256 matches known fixture  
+PASS | JSON escaping control and quote characters  
+PASS | Base64 single byte  
+PASS | Base64 two bytes  
+PASS | Base64 three bytes  
+PASS | Base64 MIME lines bounded  
+PASS | HTML text is escaped  
+PASS | TXT metadata separated from body  
+PASS | TXT country and date parsed  
+PASS | ZIP traversal is refused before extraction  
+PASS | Safe nested ZIP member accepted  
+PASS | Safe ZIP streamed to generated filenames  
+PASS | English source eligible for discovery  
+PASS | Topic in metadata does not create body hit  
+PASS | Blank record is missing text  
+PASS | Undated source is not silently assigned  
+PASS | Non-English text retained but excluded from English discovery  
+PASS | Duplicate source accounting  
+PASS | Date range excludes outside records  
+PASS | Missing text yields no topic evidence  
+PASS | Exclusion applies to passage, not entire transcript  
+PASS | Multi-label text receives both topic candidates  
+PASS | All quotation character spans verified  
+PASS | Tampered quotation blocks output  
+PASS | No-match is unresolved, not absent  
+PASS | Exactly five ordered analytical slots  
+PASS | Sixth slot rejected  
+PASS | Config flag cannot release research output  
+PASS | Unvalidated numerical payload rejected  
+PASS | Email draft has X-Unsent header  
+PASS | Email has no recipient or sender  
+PASS | MIME has plaintext and HTML  
+PASS | Full-width HTML outer layout  
+PASS | Learned candidate table not inserted into email  
+PASS | Missing D1 folder fails closed  
+PASS | Legacy D1 cannot accept unsupported custom topics  
+PASS | Capability handshake fails closed  
+PASS | Complete bridge capability contract accepted  
+PASS | Path escape is rejected  
+PASS | CSV formulas are exported as text  
+PASS | CSV ordinary text stays unchanged  
+PASS | CSV numeric values stay numeric  
+PASS | CSV protection does not mutate source evidence  
+PASS | Complete synthetic pipeline returns result  
+PASS | 18 synthetic statements available  
+PASS | Six synthetic AI text matches  
+PASS | Source evidence revalidated after full run  
+PASS | Hierarchy and PAM both executed  
+PASS | Research candidates stay audit-only  
+PASS | Unsupervised geometry saved  
+PASS | PDF actually created  
+PASS | Request JSON saved  
+PASS | Completed run cannot be overwritten  
+PASS | Changing topics does not change discovery feature hash  
+PASS | Changing topics does not change learned groups  
+PASS | Custom categories replace default watchlist in request  
+PASS | Unknown category remains unresolved  
+PASS | PCA and PCoA are not published  
+PASS | Empty corpus produces explicit coverage-only draft  
+PASS | No-topic run leaves discovery enabled  
+PASS | R syntax: R/analysis.R  
+PASS | R syntax: R/bridge.R  
+PASS | R syntax: R/core.R  
+PASS | R syntax: R/email.R  
+PASS | R syntax: R/load.R  
+PASS | R syntax: R/runner.R  
+PASS | R syntax: R/sources.R  
+PASS | R syntax: app.R  
+PASS | R syntax: scripts/launch.R  
+PASS | R syntax: scripts/run_demo.R  
+PASS | R syntax: scripts/setup.R  
+PASS | R syntax: tests/run_tests.R  
+PASS | R syntax: tests/test_shiny.R  
+
+RESULT: 97 / 97 checks passed; 0 failed.

@@ -1,0 +1,16 @@
+[
+  {
+    "surface": "static_interface_preview",
+    "viewport": 1440,
+    "no_horizontal_overflow": true,
+    "javascript_errors": [],
+    "not_live_shiny": true
+  },
+  {
+    "surface": "static_interface_preview",
+    "viewport": 390,
+    "no_horizontal_overflow": true,
+    "javascript_errors": [],
+    "not_live_shiny": true
+  }
+]

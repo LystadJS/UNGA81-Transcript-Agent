@@ -1,0 +1,7 @@
+"key","value"
+"allow_partial_draft",1
+"max_countries",250
+"network_max_edges",14
+"network_min_jaccard",0.35
+"network_min_copresent",2
+"fail_on_review_required",1

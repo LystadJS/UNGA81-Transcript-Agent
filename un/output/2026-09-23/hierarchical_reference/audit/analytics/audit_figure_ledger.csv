@@ -1,0 +1,4 @@
+"script","state","artifact_ref","sha256","log","inline_in_email"
+"Figure_1_Issue_Frequency.R","executed","audit/figures/Figure_1_Issue_Frequency.png","7c619df948de4d2ab06f598e58416d2015b0e07d982999f01ed63d41fc42dea7","logs/Figure_1_Issue_Frequency.R.log",FALSE
+"Figure_2_Regional_Heatmap.R","executed","audit/figures/Figure_2_Regional_Issue_Heatmap.png","89328c9c090647cb688568f138f1709d4ba24f1937186d275e4cd010860c3c2e","logs/Figure_2_Regional_Heatmap.R.log",FALSE
+"Figure_3_Issue_Network.R","executed","audit/figures/Figure_3_Issue_Cooccurrence_Network.png","3587e796b0f70e00b9ec2b7ef60a7bf89bd2e7da23e03a90364eb2cd69957a78","logs/Figure_3_Issue_Network.R.log",FALSE

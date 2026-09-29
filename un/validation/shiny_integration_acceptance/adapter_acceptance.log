@@ -1,0 +1,9 @@
+[d1_source 12%] Running the installed transcript pipeline on the full daily corpus.
+PREPARED: 39 countries; REPLAY
+[d1_analytics 45%] Running D1 method accounting and unsupervised diagnostics on the full corpus.
+ANALYTICS: 39 statements archived; 42 methods accounted; 133 prerequisite checks; exactly five report packets.
+COMPLETE: /mnt/data/un_combined_work/adapter_acceptance/d1_run/daily_briefing.eml 
+[tracked 68%] Applying your tracked topics without changing the discovery corpus.
+[discovery 76%] Preparing audit-only suggested themes from the same full corpus.
+[email 86%] Building the D1 country readout with your tracked-issue rows.
+ADAPTER_ACCEPTANCE_PASS

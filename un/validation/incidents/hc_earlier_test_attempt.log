@@ -1,0 +1,59 @@
+PASS Exactly five implemented adapters; only M07 added 
+PASS PAM has no callable adapter 
+PASS Original 42-method registry is unchanged 
+PASS Frozen policy explicitly prohibits publication 
+PASS Full feature distances match independent stats dist 
+PASS Distance computed from normalized vectors matches cosine chord 
+PASS Sparse and dense feature paths agree 
+PASS Permuting row order is resolved by country identity 
+PASS Deterministic repeat produces the same complete artifact 
+PASS Caller RNG state and kind are unchanged 
+PASS All 15 predeclared linkage/k candidates retained 
+PASS Average linkage remains primary even when challengers differ 
+PASS Separated synthetic features recover three average-linkage groups 
+PASS No smaller than minimum-size cut is silently accepted 
+PASS Average tree matches stats hclust 
+PASS Complete tree matches stats hclust 
+PASS Ward uses Ward.D2 on unsquared Euclidean distances 
+PASS Silhouette matches cluster package 
+PASS One replicate row per planned candidate and sample 
+PASS Subsamples have 80 percent unique countries 
+PASS Fixed k is used inside every successful replicate 
+PASS Every stability candidate accounts for all repeats 
+PASS ARI is invariant to numeric labels 
+PASS ARI negative value is retained 
+PASS Identical trivial partitions have ARI one 
+PASS ARI requires at least two comparable observations 
+PASS Cluster singleton has zero silhouette, not missing 
+PASS Restricted exact clusters have Jaccard one 
+PASS Unsampled small clusters are not assigned artificial stability 
+PASS Primary pair exposure denominators are symmetric 
+PASS Coassignment ratios equal archived counts 
+PASS All conditional consensus values are valid fractions 
+PASS Both same-k linkage comparisons retained 
+PASS Zero vectors are excluded and identified 
+PASS All zero vectors fail, not a one-cluster success 
+PASS All identical nonzero vectors fail 
+PASS Nonfinite features fail 
+PASS Unnormalized input fails 
+PASS Duplicate country IDs fail 
+PASS Missing country IDs fail 
+PASS Country resource cap enforced 
+PASS Pairwise allocation cap enforced 
+PASS Refit failures are fully counted 
+PASS Failed replicates do not become stability zeros 
+PASS Never observed pairs remain NA 
+PASS Oversized k in a subset is blocked and retained 
+PASS Full production repeat policy executed on synthetic text 
+PASS Feature artifact is never mutated 
+PASS All 13 source and numeric screens retained 
+PASS Synthetic data never becomes published evidence 
+PASS Source-bound result independently recomputes 
+PASS A forged ready flag is rejected 
+PASS Modified distance is rejected even after rehash 
+PASS Modified reference binding rejected 
+PASS Modified quality flags rejected 
+Error: unexpected symbol in:
+"test("No M07 ready producer exists", stopifnot(!any(grepl('M07',D1_READY_PRODUCERS)))
+test"
+Execution halted

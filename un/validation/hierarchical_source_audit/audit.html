@@ -1,0 +1,22 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Hierarchical audit</title><style>body{font:15px Arial;color:#202B38;padding:24px}table{border-collapse:collapse}td,th{border-bottom:1px solid #D6DEE7;padding:8px;text-align:left}</style></head><body>
+<h2>M07 hierarchical clustering — audit only</h2>
+<p>The full frozen TF-IDF vectors are used, not PCA/PCoA coordinates. Average linkage is the primary descriptive candidate; complete and Ward.D2 are hierarchical sensitivity checks. These are lexical groups, not geopolitical blocs.</p>
+<p>Selected audit cut: average__2. Every candidate and all 1500 planned resampling records are retained. Conditional country-roster subsampling is not a confidence interval; cluster numbers do not persist across days.</p>
+<p><a href="audit/hierarchical/country_assignments.csv">Country assignments</a> · <a href="audit/hierarchical/candidates.csv">All linkage/k candidates</a> · <a href="audit/hierarchical/cluster_stability.csv">Clusterwise stability</a> · <a href="audit/hierarchical/resample_ledger.csv">Replicate accounting</a></p>
+<table><tr><th>Check</th><th>State</th><th>Observed</th><th>Criterion</th></tr>
+<tr><td>complete_nonzero_coverage</td><td>pass</td><td>0</td><td>No excluded country or zero contributing statement</td></tr>
+<tr><td>distinct_country_texts</td><td>pass</td><td>0</td><td>No cross-country exact text/vector duplicates</td></tr>
+<tr><td>observed_source_scope</td><td>fail</td><td>0/78</td><td>Reference and current sources are observed_input, not replay/engineering</td></tr>
+<tr><td>known_language_genre</td><td>fail</td><td>unspecified</td><td>One declared English genre</td></tr>
+<tr><td>source_quality</td><td>fail</td><td>62</td><td>No source flags or collection errors</td></tr>
+<tr><td>vocabulary_coverage</td><td>pass</td><td>0.184588844163312</td><td>Maximum statement OOV &lt;= 0.35</td></tr>
+<tr><td>statement_support</td><td>pass</td><td>338</td><td>At least 30 eligible tokens per statement</td></tr>
+<tr><td>cluster_size</td><td>fail</td><td>1</td><td>Min size &gt;= 3 ; max share &lt;= 0.85</td></tr>
+<tr><td>silhouette</td><td>fail</td><td>0.0439686784821891</td><td>Mean silhouette &gt;= 0.15</td></tr>
+<tr><td>replicate_delivery</td><td>pass</td><td>1</td><td>Successful finite-ARI fraction &gt;= 1</td></tr>
+<tr><td>partition_stability</td><td>fail</td><td>0.573</td><td>Mean subset ARI &gt;= 0.75</td></tr>
+<tr><td>clusterwise_stability</td><td>fail</td><td>Not evaluable</td><td>Every cluster mean subset Jaccard &gt;= 0.75</td></tr>
+<tr><td>clusterwise_evaluability</td><td>fail</td><td>0</td><td>Every cluster evaluable fraction &gt;= 0.8</td></tr>
+</table>
+<img src="audit/figures/Figure_6_Hierarchical_Clustering_Audit.png" alt="Audit-only hierarchical dendrogram and stability diagnostics" style="max-width:100%;height:auto">
+</body></html>

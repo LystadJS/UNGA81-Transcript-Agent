@@ -1,0 +1,14 @@
+"issue_id","issue","fixed","fixed_order","coding_version","n_present","n_absent","n_unknown","n_countries","share"
+"iran","Iran",TRUE,1,"2.1-provisional-replay-scan",9,0,30,39,0.230769230769231
+"cuba","Cuba",TRUE,2,"2.1-provisional-replay-scan",5,0,34,39,0.128205128205128
+"ukraine","Ukraine",TRUE,3,"1.0-inherited-reviewed-and-lexicon",17,22,0,39,0.435897435897436
+"ai","AI",TRUE,4,"2.1-provisional-replay-scan",27,0,12,39,0.692307692307692
+"un_reform","UN reform & representation",FALSE,0,"1.0-inherited-reviewed-and-lexicon",32,7,0,39,0.82051282051282
+"rights_social","Human rights, health & social",FALSE,0,"1.0-inherited-reviewed-and-lexicon",30,9,0,39,0.769230769230769
+"other_security","Other peace & security",FALSE,0,"1.0-inherited-reviewed-and-lexicon",28,11,0,39,0.717948717948718
+"ai_digital","AI & digital",FALSE,0,"1.0-inherited-reviewed-and-lexicon",27,12,0,39,0.692307692307692
+"development","Development & finance",FALSE,0,"1.0-inherited-reviewed-and-lexicon",25,14,0,39,0.641025641025641
+"humanitarian","Humanitarian, migration & refugees",FALSE,0,"1.0-inherited-reviewed-and-lexicon",23,16,0,39,0.58974358974359
+"climate","Climate & environment",FALSE,0,"1.0-inherited-reviewed-and-lexicon",21,18,0,39,0.538461538461538
+"middle_east","Middle East",FALSE,0,"1.0-inherited-reviewed-and-lexicon",20,19,0,39,0.512820512820513
+"sovereignty","Sovereignty & territorial disputes",FALSE,0,"1.0-inherited-reviewed-and-lexicon",11,28,0,39,0.282051282051282

@@ -1,0 +1,1 @@
+Rscript pam_only.R --input=ARCHIVED_RUN --output=NEW_DIRECTORY --minimal=true|false

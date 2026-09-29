@@ -1,0 +1,88 @@
+{
+  "design_version": "D1",
+  "lifecycle": "design_not_deployed",
+  "exactly_five_analytical_slots": true,
+  "fixed_order": [
+    "O1",
+    "O2",
+    "O3",
+    "O4",
+    "O5"
+  ],
+  "country_summaries_retained": true,
+  "country_grouping": "region_then_alphabetical",
+  "region_order": [
+    "Africa",
+    "Asia-Pacific",
+    "Europe & Eurasia",
+    "Near East",
+    "Western Hemisphere"
+  ],
+  "unmapped_last": true,
+  "masthead_preserved": true,
+  "executive_takeaway_max_sentences": 3,
+  "separate_selected_requests_section": false,
+  "additional_analytic_sections": false,
+  "old_three_issue_figures": "archive_only",
+  "max_png_display_width_px": 840,
+  "max_analytical_images": 3,
+  "images_embedded_by_cid": true,
+  "plaintext_parity": true,
+  "automatic_send": false,
+  "publication_policy": "released_primary_or_approved_ensemble_only",
+  "all_method_runs_in_audit": true,
+  "forecast_publication_default": false,
+  "slots": [
+    {
+      "slot_id": "O1",
+      "name": "Fixed-topic monitor",
+      "order": 1,
+      "format": "four_row_table",
+      "required_topics": [
+        "iran",
+        "cuba",
+        "ukraine",
+        "ai"
+      ],
+      "row_limit": 4,
+      "evidence": "presence, unresolved, missing, available denominator, explicit proposition-specific stance only where supported",
+      "cold_start": "retain four rows with Not assessed / No qualifying text; never substitute absence"
+    },
+    {
+      "slot_id": "O2",
+      "name": "Emerging issues",
+      "order": 2,
+      "format": "up_to_three_evidence_linked_items",
+      "row_limit": 3,
+      "evidence": "new-to-observed-corpus theme or changed measured prevalence, baseline definition, country counts and original passages",
+      "cold_start": "Insufficient history to assess emergence; a current-day theme is not renamed an emerging issue"
+    },
+    {
+      "slot_id": "O3",
+      "name": "Country discourse map",
+      "order": 3,
+      "format": "one_png",
+      "row_limit": null,
+      "evidence": "frozen representation/reference, high-dimensional distance, projection diagnostics and observation dates",
+      "cold_start": "show a clearly cross-sectional map if structurally adequate, otherwise withhold; never draw artificial coordinates"
+    },
+    {
+      "slot_id": "O4",
+      "name": "Rhetorical movement",
+      "order": 4,
+      "format": "up_to_three_before_after_evidence_pairs",
+      "row_limit": 3,
+      "evidence": "same-country/genre/issue baseline, observed dates, high-dimensional change and new source passage",
+      "cold_start": "No comparable prior observation / No new comparable text; not zero movement"
+    },
+    {
+      "slot_id": "O5",
+      "name": "Discourse-network changes",
+      "order": 5,
+      "format": "compact_edge_change_table_or_one_png",
+      "row_limit": 3,
+      "evidence": "explicit edge layer, matched node coverage, edge sample denominator, baseline, stability and source passages",
+      "cold_start": "No comparable prior network; never infer coalitions from topical similarity"
+    }
+  ]
+}

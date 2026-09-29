@@ -1,0 +1,23 @@
+#!/usr/bin/env Rscript
+# Standalone deterministic PAM audit figure. Detailed assignments remain in CSV.
+args<-commandArgs(trailingOnly=TRUE);if(length(args)!=1L)stop("Usage: Rscript R/Figure_7_PAM_Audit.R RUN_DIRECTORY")
+run<-normalizePath(args[1],mustWork=TRUE);v<-readRDS(file.path(run,"audit/analytics/artifacts/M09.rds"));stopifnot(identical(v$schema,"D1-PAM-result-v1"),identical(v$publication_eligible,FALSE));n<-v$numerical;p<-v$policy
+cnd<-n$candidates;sel<-cnd[cnd$selected_primary,,drop=FALSE];cs<-n$cluster_stability[n$cluster_stability$candidate_id==n$selected_id,,drop=FALSE];ms<-n$medoid_stability[n$medoid_stability$candidate_id==n$selected_id,,drop=FALSE]
+out<-file.path(run,"audit/figures/Figure_7_PAM_Clustering_Audit.png");dir.create(dirname(out),recursive=TRUE,showWarnings=FALSE);tmp<-tempfile(fileext=".png")
+grDevices::png(tmp,width=1320,height=1100,res=120,type=if(capabilities("cairo"))"cairo" else getOption("bitmapType"))
+layout(matrix(1:4,2,2,byrow=TRUE));par(oma=c(5.1,.5,4.4,.5),family="sans",fg="#202B38",bg="white")
+# Candidate silhouette
+par(mar=c(4.2,4.6,2.7,1.4),mgp=c(2.5,.7,0),tcl=-.2,las=1)
+yr<-range(c(cnd$mean_silhouette,p$min_mean_silhouette,0));plot(cnd$k,cnd$mean_silhouette,type="b",pch=16,lwd=1.6,col="#002D74",xlab="Number of clusters (k)",ylab="Mean silhouette",xaxt="n",ylim=yr+c(-.01,.02),bty="l");axis(1,at=cnd$k);abline(h=p$min_mean_silhouette,lty=3,col="#9EAAB6");points(n$selected_k,sel$mean_silhouette,pch=21,bg="white",col="#002D74",cex=1.45,lwd=2);title("PAM candidate cuts",adj=0,cex.main=1.05,col.main="#062135")
+# Sizes
+par(mar=c(4.2,4.2,2.7,1.4),mgp=c(2.5,.7,0),tcl=-.2,las=1);sz<-table(n$selected_groups);bp<-barplot(sz,col="#B8C8D6",border="#526171",ylab="Countries",xlab="Cluster",ylim=c(0,max(sz)*1.18));abline(h=p$min_cluster_size,lty=3,col="#8B6A49");text(bp,sz+max(sz)*.04,labels=as.integer(sz),cex=.82);title(sprintf("Selected cut: k=%d",n$selected_k),adj=0,cex.main=1.05,col.main="#062135")
+# ARI stability
+par(mar=c(4.2,4.6,2.7,1.4),mgp=c(2.5,.7,0),tcl=-.2,las=1);plot(cnd$k,cnd$mean_ari,type="b",pch=16,lwd=1.6,col="#002D74",xlab="Number of clusters (k)",ylab="Mean subset ARI",xaxt="n",ylim=c(min(0,cnd$mean_ari,na.rm=TRUE),1),bty="l");axis(1,at=cnd$k);abline(h=p$min_mean_ari,lty=3,col="#9EAAB6");points(n$selected_k,sel$mean_ari,pch=21,bg="white",col="#002D74",cex=1.45,lwd=2);title("Roster-deletion stability",adj=0,cex.main=1.05,col.main="#062135")
+# Compact audit summary
+par(mar=c(1.2,1.2,2.7,1.2));plot.new();title("Selected lexical groups",adj=0,cex.main=1.05,col.main="#062135")
+minj<-if(nrow(cs)&&all(is.finite(cs$mean_jaccard)))min(cs$mean_jaccard)else NA_real_;ret<-if(nrow(ms))ms$retention_fraction[1]else NA_real_
+groups<-split(names(n$selected_groups),n$selected_groups);yy<-.88
+for(g in names(groups)){med<-intersect(groups[[g]],n$selected_medoids);text(.02,yy,sprintf("Cluster %s",g),adj=c(0,.5),font=2,cex=.92,col="#062135");text(.27,yy,sprintf("n = %d",length(groups[[g]])),adj=c(0,.5),cex=.86);text(.48,yy,paste("Medoid:",paste(med,collapse=", ")),adj=c(0,.5),cex=.86);yy<-yy-.13}
+text(.02,yy-.03,sprintf("Mean silhouette: %.3f   |   Mean subset ARI: %.3f",sel$mean_silhouette,sel$mean_ari),adj=c(0,.5),cex=.82,col="#526171");text(.02,yy-.14,sprintf("Min cluster Jaccard: %s   |   Medoid retention: %.3f",if(is.finite(minj))sprintf("%.3f",minj)else"not evaluable",ret),adj=c(0,.5),cex=.82,col="#526171");text(.02,yy-.28,"Full country assignments are preserved in audit/pam/country_assignments.csv.",adj=c(0,.5),cex=.78,col="#667085")
+mtext("PAM / k-medoids | frozen TF-IDF",side=3,outer=TRUE,line=2.5,adj=.035,font=2,cex=1.35,col="#062135");mtext("AUDIT ONLY - descriptive lexical structure, not political alignment",side=3,outer=TRUE,line=1,adj=.035,cex=.87,col="#8B5A32");mtext(sprintf("%d roster-deletion subsets retain %d%% of countries. Fixed vocabulary, IDF and k within each candidate.",p$replicates,100*p$subsample_fraction),side=1,outer=TRUE,line=1.1,adj=.035,cex=.78,col="#526171");mtext("Dashed thresholds are predeclared engineering screens. Stability diagnostics are not confidence intervals or independent country samples.",side=1,outer=TRUE,line=2.45,adj=.035,cex=.75,col="#526171");mtext(if(v$quality$passed)"Engineering screens passed; result remains audit-only pending independent release validation." else "One or more engineering screens failed; the fitted result is retained for audit and withheld from publication.",side=1,outer=TRUE,line=3.65,adj=.035,cex=.75,col="#8B5A32")
+grDevices::dev.off();bytes<-readBin(tmp,"raw",n=file.info(tmp)$size);if(file.exists(out))unlink(out);if(!file.copy(tmp,out))stop("Could not commit PAM audit image");unlink(tmp);cat("Executed successfully: PAM audit PNG; no inline email image added.\n")

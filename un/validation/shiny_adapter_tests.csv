@@ -1,0 +1,10 @@
+"test","passed"
+"Capability schema",TRUE
+"Dynamic topics enabled",TRUE
+"Five-output gate retained",TRUE
+"No-send retained",TRUE
+"Legacy codebook declared unchanged",TRUE
+"Pinned adapter hash",TRUE
+"Arbitrary topic preserved",TRUE
+"Discovery independent of watchlist",TRUE
+"Legacy four-topic prefix unchanged",TRUE

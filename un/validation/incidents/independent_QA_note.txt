@@ -1,0 +1,1 @@
+The first independent MIME harness looked for internal O1-O5 identifiers in plaintext. Reader-facing plaintext deliberately uses numbered titles 1-5 instead. The harness was corrected to verify those exact titles and order; no email content or production code changed.

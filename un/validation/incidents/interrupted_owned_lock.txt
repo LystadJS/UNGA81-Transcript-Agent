@@ -1,0 +1,5 @@
+pid=1152
+host=41a157ee03e2
+started=2026-09-25 21:00:05 UTC
+
+Recovered after tool timeout; launched owner absent from /proc in same workspace.

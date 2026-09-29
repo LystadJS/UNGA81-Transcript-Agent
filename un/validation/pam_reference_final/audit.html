@@ -1,0 +1,22 @@
+<!doctype html><html><head><meta charset="utf-8"><title>PAM audit</title><style>body{font:15px Arial;color:#202B38;padding:24px}table{border-collapse:collapse}td,th{border-bottom:1px solid #D6DEE7;padding:8px;text-align:left}</style></head><body>
+<h2>M09 PAM / k-medoids — audit only</h2>
+<p>PAM uses the same full frozen TF-IDF Euclidean-chord distance matrix as M07. Medoids are inspectable lexical exemplars; clusters are not geopolitical blocs.</p>
+<p><strong>Selected audit cut:</strong> k=2; medoids: POL, BDI.</p>
+<table><tr><th>Check</th><th>State</th><th>Observed</th><th>Criterion</th></tr>
+<tr><td>complete_nonzero_coverage</td><td>pass</td><td>0</td><td>No excluded country or zero contributing statement</td></tr>
+<tr><td>distinct_country_texts</td><td>pass</td><td>0</td><td>No cross-country exact text/vector duplicates</td></tr>
+<tr><td>observed_source_scope</td><td>fail</td><td>0/78</td><td>Reference and current sources are observed_input, not replay/engineering</td></tr>
+<tr><td>known_language_genre</td><td>fail</td><td>unspecified</td><td>One declared English genre</td></tr>
+<tr><td>source_quality</td><td>fail</td><td>62</td><td>No source flags or collection errors</td></tr>
+<tr><td>vocabulary_coverage</td><td>pass</td><td>0.184588844163312</td><td>Maximum statement OOV &lt;= 0.35</td></tr>
+<tr><td>statement_support</td><td>pass</td><td>338</td><td>At least 30 eligible tokens per statement</td></tr>
+<tr><td>cluster_size</td><td>pass</td><td>17</td><td>Min size &gt;= 3 ; max share &lt;= 0.85</td></tr>
+<tr><td>silhouette</td><td>fail</td><td>0.0149795889648287</td><td>Mean silhouette &gt;= 0.15</td></tr>
+<tr><td>replicate_delivery</td><td>pass</td><td>1</td><td>Successful finite-ARI fraction &gt;= 1</td></tr>
+<tr><td>partition_stability</td><td>fail</td><td>0.717329665168892</td><td>Mean subset ARI &gt;= 0.75</td></tr>
+<tr><td>clusterwise_stability</td><td>pass</td><td>0.844741802905519</td><td>Every cluster mean subset Jaccard &gt;= 0.75</td></tr>
+<tr><td>clusterwise_evaluability</td><td>pass</td><td>1</td><td>Every cluster evaluable fraction &gt;= 0.8</td></tr>
+<tr><td>medoid_stability</td><td>pass</td><td>0.695</td><td>Full-sample medoid retention fraction &gt;= 0.6</td></tr>
+</table>
+<img src="audit/figures/Figure_7_PAM_Clustering_Audit.png" alt="Audit-only PAM clustering diagnostics" style="max-width:100%;height:auto">
+</body></html>

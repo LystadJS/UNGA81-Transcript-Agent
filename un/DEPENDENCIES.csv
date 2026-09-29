@@ -1,0 +1,15 @@
+package,role,required_for,delivery_status
+jsonlite,JSON parsing and serialization,normal package-backed runs,installed by setup.R; not available in build container
+httr2,HTTPS collection and OpenAI Responses calls,live collection or fresh model analysis,installed by setup.R; not available in build container
+xml2,Safe DOCX XML extraction,local DOCX or ZIP input,installed by setup.R; not available in build container
+digest,SHA-256 source and cache identity,normal package-backed runs,installed by setup.R; base tools::sha256sum tested in minimal mode
+base64enc,MIME Base64 encoding and decoding,normal package-backed runs,installed by setup.R; native R fallback tested in minimal mode
+renv,Actual-environment dependency freeze and restore,setup and reproducible deployment,installed by setup.R; lock created after successful installation
+chromote,Optional browser rendering checks,optional R browser QA,installed with --with-browser=true; not available in build container
+graphics,Chart drawing,all profiles,bundled with R and executed
+grDevices,PNG graphics devices,all profiles,bundled with R and executed
+stats,Deterministic calculations,all profiles,bundled with R and executed
+utils,CSV and archive processing,all profiles,bundled with R and executed
+tools,SHA-256 in R >=4.6,zero-extra-package replay,bundled with R 4.6.1 and executed
+Matrix,Sparse TF-IDF and country matrix operations,M02/M05/M06/M07,Matrix 1.7-5 executed in actual R 4.6.1; freeze actual local installed version
+cluster,Silhouette and PAM/k-medoids diagnostics,M07 and M09,cluster 2.1-8.2 executed for both adapters; freeze actual local installed version

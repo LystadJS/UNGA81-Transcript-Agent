@@ -1,0 +1,22 @@
+PASS | MIME parser reports no defects
+PASS | Exactly one HTML and one plaintext body
+PASS | Draft flag retained and no recipients or sender set
+PASS | EML uses CRLF throughout
+PASS | MIME lines within transport limit
+PASS | text/html round-trip matches saved file
+PASS | text/plain round-trip matches saved file
+PASS | Exactly five ordered analytical sections
+PASS | Email includes no scripts or external image requests
+PASS | Synthetic-data notice is present
+PASS | Country extracts account for all 18 training statements
+PASS | Topic configuration is a list of four objects
+PASS | No analytical packet is released
+PASS | All exported quotations have exact source character spans
+PASS | All evidence body hashes match source text
+PASS | All manifest file hashes verify
+PASS | Receipt explicitly distinguishes prototype from D1
+PASS | Request fingerprint verifies
+PASS | PDF is readable and contains five pages
+PASS | PDF contains synthetic notice and all country source extracts
+PASS | No PDF text blocks extend outside page bounds
+RESULT: 21/21 checks passed

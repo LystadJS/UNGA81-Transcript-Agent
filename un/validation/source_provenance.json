@@ -1,0 +1,7 @@
+{
+  "parent_zip": "UN_Daily_Briefing_R_2.3.0_D1_I2.zip",
+  "parent_sha256": "5fe876198fa4e11f2e0d2004b2b3f34e6d19c5a4891e32891ba99fd73c253478",
+  "parent_release": "2.3.0-d1-i2",
+  "scope": "Only M07 is added. M09/PAM remains not implemented.",
+  "policy_sha256_before_source_fit": "760eb6b5cffd0824c6bfa6d2c76ee9634da7d636a5096e1d522b8d000a3eae75"
+}

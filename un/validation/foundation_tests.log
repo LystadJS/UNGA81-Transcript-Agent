@@ -1,0 +1,252 @@
+Parsed successfully: D1-I2 native-R modules.
+PASS Exact 42-method registry and 133 required gates  
+PASS Ready-packet config toggle rejected  
+PASS Automatic model promotion toggle rejected  
+PASS Unsafe historical directory rejected  
+PASS Unknown storage backend rejected  
+PASS Old config cannot silently enable D1  
+PASS Strict UTC timestamp rejects invalid calendar date  
+PASS UTC timestamp without timezone rejected  
+PASS Fractional UTC timestamps remain ordered  
+PASS One source statement is stored with its event date  
+PASS No backdating availability to event time  
+PASS Known source before store commit excluded from historical query  
+PASS Event-date cutoff excludes future event despite acquisition  
+PASS Date-only source does not invent event seconds  
+PASS Exact passage character offsets reconstruct source text  
+PASS Near-duplicate discovery not falsely claimed  
+PASS Synthetic observations are explicitly excluded from historical modeling  
+PASS Automatic labels are never gold  
+PASS No future labels in as-of view  
+PASS Human gold selection cannot pick rule labels  
+PASS Revised transcript retains stable observation identity  
+PASS Historical view before correction sees original text version  
+PASS Historical view after correction sees corrected text version  
+PASS Old and revised objects are both retained  
+$schema
+[1] "d1-history-rds-v1"
+
+$kind
+[1] "as_of_snapshot"
+
+$event_cutoff
+[1] "2026-09-20"
+
+$as_of_cutoff
+[1] "2026-09-23T02:00:00Z"
+
+$commit_tip_sha256
+[1] "370f785c0854896aa0455c5065703b49eb3626cc59ce9d01065459c5237fb825"
+
+$observations
+                                                        observation_id
+1 obs_3458bfa0197042e5af524e812da29c067ef2ea14cf58c11cf5cd2c35e36c1a35
+                                            observation_version_id iso3 country
+1 6b168b4334385464d36557859b1c611a082680dd998a0e4fdf14e00257945ab0  AND Andorra
+  event_date                genre meeting_id statement_number
+1 2026-09-20 synthetic_test_genre                            
+                                                       text_sha256
+1 8a4fd9ca7a4dc53d28033804366998507a84d11adc6e97b76874bd74c75ae419
+                                                     source_sha256 source_mode
+1 8a4fd9ca7a4dc53d28033804366998507a84d11adc6e97b76874bd74c75ae419       local
+    eligibility_class          identity_method
+1 engineering_fixture explicit_observation_key
+                                                                      object_path
+1 objects/a9/a9d729e2da14c866f6e1fd6fe03c310b3d3d31235191e6190cc1ed8713dbb642.rds
+                                                     object_sha256
+1 a9d729e2da14c866f6e1fd6fe03c310b3d3d31235191e6190cc1ed8713dbb642
+         first_seen_at          recorded_at commit_sequence
+1 2026-09-22T01:00:00Z 2026-09-23T02:00:00Z               3
+
+$codebook_sha256
+[1] "847e752b454d1b8bf39cbc6a54456c0fd126f9b5825535fdf2f8c10efeb8100b"
+
+$source_mode
+[1] "local"
+
+$training_gold_count
+[1] 0
+
+$gold_policy
+[1] "automatic/inherited labels are never promoted"
+
+$snapshot_id
+[1] "3bfcc62a05a2cb1b6bb4f19fa5ff7f1cd7ea71a601239f30f553d53e9c8e3ed4"
+
+PASS Repeated acquisition does not duplicate versions  
+PASS Repeated acquisition preserves original version availability  
+$schema
+[1] "d1-history-rds-v1"
+
+$kind
+[1] "as_of_snapshot"
+
+$event_cutoff
+[1] "2026-09-20"
+
+$as_of_cutoff
+[1] "2026-09-24T02:00:00Z"
+
+$commit_tip_sha256
+[1] "75077b03b015d0182276d1e95ee406baa6bd095aae739c0064a448b3e6388c59"
+
+$observations
+                                                        observation_id
+1 obs_3458bfa0197042e5af524e812da29c067ef2ea14cf58c11cf5cd2c35e36c1a35
+                                            observation_version_id iso3 country
+1 9bbf3ef1415465f4096db6a35c714dd16a4811f0f0ee688f77baa378d7b08984  AND Andorra
+  event_date                genre meeting_id statement_number
+1 2026-09-20 synthetic_test_genre                            
+                                                       text_sha256
+1 28702de3dfd0ed55e288b9a94771338efdd5462ef769fad60b88faaee7619327
+                                                     source_sha256 source_mode
+1 28702de3dfd0ed55e288b9a94771338efdd5462ef769fad60b88faaee7619327       local
+    eligibility_class          identity_method
+1 engineering_fixture explicit_observation_key
+                                                                      object_path
+1 objects/b0/b0f72dcc66e499b0e17cc6dff87d1dfa3a7a6bd268678de324ee5327c7e4098b.rds
+                                                     object_sha256
+1 b0f72dcc66e499b0e17cc6dff87d1dfa3a7a6bd268678de324ee5327c7e4098b
+         first_seen_at          recorded_at commit_sequence
+1 2026-09-21T01:00:00Z 2026-09-24T02:00:00Z               4
+
+$codebook_sha256
+[1] "847e752b454d1b8bf39cbc6a54456c0fd126f9b5825535fdf2f8c10efeb8100b"
+
+$source_mode
+[1] "local"
+
+$training_gold_count
+[1] 0
+
+$gold_policy
+[1] "automatic/inherited labels are never promoted"
+
+$snapshot_id
+[1] "17a5da48e8650eba5bbbe8847ff8f5250231d8c72a2a0334cf06a674239ee7ce"
+
+PASS Explicit later reversion to original bytes is represented  
+$schema
+[1] "d1-history-rds-v1"
+
+$kind
+[1] "as_of_snapshot"
+
+$event_cutoff
+[1] "2026-09-01"
+
+$as_of_cutoff
+[1] "2026-09-25T02:00:00Z"
+
+$commit_tip_sha256
+[1] "604e64d2b4f165119a57cc69fd2eac89892da1b98aa42964eab4cc131bb11a59"
+
+$observations
+                                                        observation_id
+1 obs_ca73470fc885b3a9cd362e2f608bb8c54f4380ac64928adfe76cbc17f061d50d
+                                            observation_version_id iso3 country
+1 40e4183c0604184146188b16d95796abec84e424a87e43470543f974f68b3c4a  AND Andorra
+  event_date                genre meeting_id statement_number
+1 2026-09-01 synthetic_test_genre                            
+                                                       text_sha256
+1 28702de3dfd0ed55e288b9a94771338efdd5462ef769fad60b88faaee7619327
+                                                     source_sha256 source_mode
+1 28702de3dfd0ed55e288b9a94771338efdd5462ef769fad60b88faaee7619327       local
+    eligibility_class          identity_method
+1 engineering_fixture explicit_observation_key
+                                                                      object_path
+1 objects/57/579c268e891da240793618f083a6640acc5507f113b772d0a5ee05673fde3db7.rds
+                                                     object_sha256
+1 579c268e891da240793618f083a6640acc5507f113b772d0a5ee05673fde3db7
+         first_seen_at          recorded_at commit_sequence
+1 2026-09-25T01:00:00Z 2026-09-25T02:00:00Z               5
+
+$codebook_sha256
+[1] "847e752b454d1b8bf39cbc6a54456c0fd126f9b5825535fdf2f8c10efeb8100b"
+
+$source_mode
+[1] "local"
+
+$training_gold_count
+[1] 0
+
+$gold_policy
+[1] "automatic/inherited labels are never promoted"
+
+$snapshot_id
+[1] "1a17de9a258ebe05b6806f27083c867133b2c53c6adff9246a11b8c5e5d807f1"
+
+PASS Late backfill cannot leak into earlier knowledge cutoff  
+PASS Commit chain verifies immutable objects  
+PASS Clock regression rejected  
+PASS Future source acquisition rejected  
+PASS Text hash mismatch rejected at history boundary  
+PASS Conflicting same-collection versions are not arbitrarily ordered  
+PASS Interrupted precommit write leaves no visible commit  
+PASS Staging directory never appears as committed history  
+PASS Concurrent history writer is blocked  
+PASS Different lock owner cannot release another writer  
+PASS Tampered observation bytes fail verification  
+PASS Tampered commit bytes fail chain verification  
+PASS Missing interior commit is detected  
+PASS Ungrouped statements survive one-country aggregation  
+PASS Statement-level source versions are distinct  
+PASS Every country label binds both contributing statements  
+PASS Complete daily method ledger  
+PASS Every method has all prerequisite decisions  
+PASS Rule diagnostic is not a trained classifier  
+PASS Rule candidates keep exact source quotes  
+PASS Rule nonhits never become absent  
+PASS Repeated identical input observations do not multiply issue decisions  
+PASS M01 accounts at statement level, not only country level  
+PASS Unchanged diagnostic reuses exact validated cache  
+PASS Model-training absence is not disguised as a fit  
+PASS Driftmap operating regime is explicitly unestablished  
+PASS Synthetic history cannot satisfy model history gates  
+PASS Failed adapter still leaves all 42 rows  
+PASS Failed adapter never claims an output artifact  
+PASS Missing actual dependency is explicit  
+PASS Corrupt cache fails instead of silently recomputing  
+PASS Future-dated cache artifact rejected  
+PASS Missing method row rejected  
+PASS Duplicate method row rejected  
+PASS Unknown terminal status rejected  
+PASS Empty non-delivery reason rejected  
+PASS Missing required gate rejected  
+PASS Pass flag conflicting with gate evidence rejected  
+PASS Unimplemented method cannot claim execution  
+PASS Unexecuted row cannot carry stale artifact  
+PASS Internal sentence range removed from reader-facing notes  
+PASS Original source-note substance preserved  
+PASS Exactly five unavailable packets in fixed order  
+PASS Sixth packet rejected  
+PASS Missing packet rejected  
+PASS Reordered packets rejected  
+PASS Stale numerical payload on unavailable output rejected  
+PASS Boolean flags cannot promote a fabricated ready packet  
+PASS Forecasts cannot enter an observed-output slot  
+PASS Misleading slot title rejected  
+PASS Source snapshot substitution rejected  
+PASS Future packet cutoff rejected  
+PASS Unsafe artifact reference rejected  
+PASS Publication check hash must match actual evidence  
+PASS Five analytical HTML sections, no extra charts  
+PASS Permanent topics ordered Iran Cuba Ukraine AI  
+PASS Unavailable topic table does not fabricate zero prevalence  
+PASS Every unavailable-state reason is identical in HTML and plaintext  
+PASS Unreleased images cannot be inserted through manifest  
+Analyze 1/1: Andorra
+PREPARED: 1 countries; REVIEW_REQUIRED
+ANALYTICS: 2 statements archived; 42 methods accounted; 133 prerequisite checks; exactly five report packets.
+PASS Failed audit-only charts do not block five-output email  
+PASS Country summaries survive withheld analytical outputs  
+PASS Email explicitly excludes all three legacy figure filenames  
+PASS Frozen checkpoint renders byte-identical email  
+PREPARED: 0 countries; EMPTY
+ANALYTICS: 0 statements archived; 42 methods accounted; 133 prerequisite checks; exactly five report packets.
+PASS Empty source day retains exactly five unavailable outputs  
+PASS No-source M01 correctly records blocked_data  
+PASS Empty watchlist says no qualifying text, not zero prevalence  
+PASS Preparation failure still accounts for all 42 methods  
+
+94 D1 engineering tests; 0 failures.

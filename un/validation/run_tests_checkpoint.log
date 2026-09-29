@@ -1,0 +1,87 @@
+PASS JSON UTF-8, quotes, arrays and null round-trip  
+PASS JSON escaped surrogate pair  
+PASS JSON duplicate keys rejected  
+PASS JSON trailing tokens rejected  
+PASS JSON invalid escape rejected  
+PASS JSON unpaired surrogate rejected  
+PASS JSON leading-zero number rejected  
+PASS JSON trailing comma rejected  
+PASS JSON raw newline in string rejected  
+PASS Base64 round-trips 0-512 bytes  
+PASS Base64 known RFC encoding  
+PASS Base64 corrupt padding rejected  
+PASS SHA-256 known abc digest  
+PASS Source URL host allowlist  
+PASS Off-host source URL rejected  
+PASS Misleading suffix host rejected  
+PASS Header CRLF injection rejected  
+PASS Invalid email placeholder rejected  
+PASS Email address accepted  
+PASS HTML special characters escaped  
+PASS Broken table balance rejected  
+PASS Valid table balance accepted  
+PASS Source date parsed  
+PASS Invalid calendar date rejected  
+PASS Structured country resolves  
+PASS Unresolved speaker name not mapped to country  
+PASS Legacy and fresh codebooks retain distinct versions  
+PASS All 39 original DOCX hashes match  
+PASS All 39 normalized texts and hashes validate  
+PASS All 155 inherited summary points retain exact evidence  
+PASS Text hash corruption rejected  
+PASS Country/ISO3 mismatch rejected  
+PASS Sentence reconstruction mismatch rejected  
+PASS Unsupported evidence quote rejected  
+PASS Unknown evidence sentence rejected  
+PASS Missing issue decision rejected  
+PASS Duplicate issue decision rejected  
+PASS Prose artifacts rejected  
+PASS Extractive bullets are exact source excerpts  
+PASS No keyword hit is uncertain, not absent  
+PASS Identical country texts deduplicate  
+PASS Distinct interventions preserve sentence provenance  
+PASS UN JSON detail parser accepts fixture  
+PASS UN date mismatch rejected  
+PASS UN language mismatch rejected  
+PASS UN invalid timing rejected  
+PASS UN institutional speaker excluded  
+PASS Long unresolved-country statement requires review  
+PASS Inventory and detail collection with mocked transport  
+PASS Missing transcript remains a collection error  
+PASS Pagination inventory drift rejected  
+PASS Two-pass model control flow with mocked responses  
+PASS Source-bound cache avoids new model calls  
+PASS External model processing disabled by default  
+PASS Invocation-wide request budget enforced  
+PASS Incomplete model response rejected  
+PASS MIME round-trip with UTF-8 and inline image  
+PASS MIME bare LF rejected  
+PASS Permanent topics have exact labels and order  
+PASS Missing permanent topic rejected  
+PASS Reordered permanent topics rejected  
+PASS Duplicate issue ID rejected  
+PASS Fixed order config cannot silently change  
+PASS Old configuration receives region-first defaults  
+PASS Schema is bound to all configured topics  
+PASS Optional topic extension reaches schema  
+PASS AI separate from generic digital policy  
+PASS AI pattern excludes aid and paid  
+PASS Iran separate from generic Middle East  
+PASS Cuba separate from generic sanctions  
+PASS Ukraine separate from generic Russia and Black Sea  
+PASS Incidental Franco-Iranian nationality excluded  
+PASS Countries grouped in configured regional order  
+PASS Country names alphabetized inside each region  
+PASS Unmapped region displayed last  
+PASS All 39 source regions are preserved  
+PASS Replay keeps all inherited summary bytes  
+PASS Replay keeps all original ten issue decisions  
+PASS Replay expands to 507 explicitly versioned cells  
+PASS New topic no-hit is unresolved, never absent  
+PASS Every provisional positive retains exact evidence  
+PASS All four topics appear with zero confirmed mentions  
+PASS No-source day is not displayed as zero prevalence  
+PASS Unresolved counts cannot disappear from watchlist  
+PASS Regional heading escapes HTML  
+
+85 tests; 0 failures.

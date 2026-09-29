@@ -1,0 +1,132 @@
+[
+  {
+    "issue_id": "iran",
+    "label": "Iran",
+    "short_label": "Iran",
+    "definition": "Substantive discussion of Iran: its government, security, nuclear program, sanctions, human rights, diplomacy or explicitly linked regional actions. Do not infer presence from Middle East, Gaza, Gulf or Hormuz alone. A nationality adjective in a cultural quotation or speaker metadata alone does not qualify.",
+    "extractive_regex": "(?<![-[:alpha:]])Iran\\b|\\bIranian (government|regime|authorities|military|attack|Revolutionary|nuclear|people|cities)|\\bTehran\\b|\\bIRGC\\b|\\bJCPOA\\b",
+    "version": "2.1-semantic-presence",
+    "fixed": true,
+    "fixed_order": 1
+  },
+  {
+    "issue_id": "cuba",
+    "label": "Cuba",
+    "short_label": "Cuba",
+    "definition": "Substantive discussion of Cuba: embargo, sanctions, terrorism-list designation, energy restrictions, political or human-rights conditions, development, assistance or bilateral relations. Do not infer presence from Latin America or sanctions in general. A greeting, list of visiting delegations or speaker metadata alone does not qualify.",
+    "extractive_regex": "\\bCuba(?:n|ns)?\\b|\\bHavana\\b",
+    "version": "2.1-semantic-presence",
+    "fixed": true,
+    "fixed_order": 2
+  },
+  {
+    "issue_id": "ukraine",
+    "label": "Ukraine",
+    "short_label": "Ukraine",
+    "definition": "Substantive discussion of Ukraine, the Russia-Ukraine war, assistance, sovereignty, reconstruction, refugees or directly linked European/Black Sea security. Generic references to Russia or the Black Sea without a Ukraine connection do not qualify.",
+    "extractive_regex": "\\bUkrain(?:e|ian|ians)\\b|\\bKyiv\\b|\\bKiev\\b",
+    "version": "2.1-semantic-presence",
+    "fixed": true,
+    "fixed_order": 3
+  },
+  {
+    "issue_id": "ai",
+    "label": "AI",
+    "short_label": "AI",
+    "definition": "Substantive discussion of artificial intelligence: governance, models, capability, access, investment, risk, safety, applications, standards or AI-enabled weapons. Generic digitalization, cyber policy, connectivity, algorithms or technology do not qualify without an explicit AI connection. Do not transfer a broad AI & digital code into this narrower category.",
+    "extractive_regex": "artificial intelligence|(?-i:\\bAI\\b)|\\bA\\.I\\.|\\bmachine learning\\b",
+    "version": "2.1-semantic-presence",
+    "fixed": true,
+    "fixed_order": 4
+  },
+  {
+    "issue_id": "un_reform",
+    "label": "UN reform & representation",
+    "short_label": "UN reform /\nrepresentation",
+    "definition": "Institutional reform, UN80, Security Council membership or veto, UN leadership selection. Mere thanks to the UN does not qualify.",
+    "extractive_regex": "UN80|Security Council reform|reform.{0,65}(United Nations|UN\\b|Security Council)|permanent seat|veto",
+    "version": "2.1-semantic-presence",
+    "fixed": false,
+    "fixed_order": 0
+  },
+  {
+    "issue_id": "rights_social",
+    "label": "Human rights, health & social",
+    "short_label": "Rights / health /\nsocial",
+    "definition": "Human rights, public health, education, gender, children, youth or social policy. Require a substantive statement, not a ceremonial greeting.",
+    "extractive_regex": "human rights|public health|UNAIDS|education|gender equality|women.s rights|children|healthcare",
+    "version": "2.1-semantic-presence",
+    "fixed": false,
+    "fixed_order": 0
+  },
+  {
+    "issue_id": "other_security",
+    "label": "Other peace & security",
+    "short_label": "Other peace /\nsecurity",
+    "definition": "Peacekeeping, terrorism, organized crime, disarmament or conflicts outside Ukraine/Russia and the Middle East. Do not count generic peace language alone.",
+    "extractive_regex": "peacekeep|terroris|organized crime|Haiti|Sudan|Congo|Afghanistan|disarmament|MONUSCO|MINUSCA",
+    "version": "2.1-semantic-presence",
+    "fixed": false,
+    "fixed_order": 0
+  },
+  {
+    "issue_id": "ai_digital",
+    "label": "AI & digital",
+    "short_label": "AI / digital",
+    "definition": "AI, digital or cyber governance, capability, access, harms, standards or safeguards. Do not count generic technology without an AI/digital connection.",
+    "extractive_regex": "artificial intelligence|digital|cyber|autonomous weapon",
+    "version": "2.1-semantic-presence",
+    "fixed": false,
+    "fixed_order": 0
+  },
+  {
+    "issue_id": "development",
+    "label": "Development & finance",
+    "short_label": "Development /\nfinance",
+    "definition": "Development finance, debt, SDGs, jobs, industrialization, investment or technology transfer. Broad category; independent of whether the speaker favors a policy.",
+    "extractive_regex": "development financ|debt|SDGs?|2030 Agenda|sustainable development|poverty|industrializ|industrialis|investment|technology transfer",
+    "version": "2.1-semantic-presence",
+    "fixed": false,
+    "fixed_order": 0
+  },
+  {
+    "issue_id": "climate",
+    "label": "Climate & environment",
+    "short_label": "Climate /\nenvironment",
+    "definition": "Climate mitigation, adaptation, finance, oceans, biodiversity, water security or environmental policy.",
+    "extractive_regex": "climate|biodivers|emissions?|ocean|drought|renewable|environment|water secur",
+    "version": "2.1-semantic-presence",
+    "fixed": false,
+    "fixed_order": 0
+  },
+  {
+    "issue_id": "middle_east",
+    "label": "Middle East",
+    "short_label": "Middle East",
+    "definition": "Israel, Palestine, Gaza, Iran, Gulf, Hormuz, Golan or explicitly linked regional issues.",
+    "extractive_regex": "Gaza|Palestin|Israel|Iran|Hormuz|Golan|Middle East",
+    "version": "2.1-semantic-presence",
+    "fixed": false,
+    "fixed_order": 0
+  },
+  {
+    "issue_id": "humanitarian",
+    "label": "Humanitarian, migration & refugees",
+    "short_label": "Humanitarian /\nmigration",
+    "definition": "Humanitarian assistance/access, migration, refugees, displacement, asylum or returns.",
+    "extractive_regex": "humanitarian|refugee|migration|displacement|displaced|asylum",
+    "version": "2.1-semantic-presence",
+    "fixed": false,
+    "fixed_order": 0
+  },
+  {
+    "issue_id": "sovereignty",
+    "label": "Sovereignty & territorial disputes",
+    "short_label": "Sovereignty /\nterritorial",
+    "definition": "Specific sovereignty, territorial, self-determination or decolonization disputes. Generic Charter sovereignty language alone does not qualify.",
+    "extractive_regex": "Kosovo|Cyprus|Essequibo|Malvinas|Falkland|self.determination|decoloni|territorial dispute",
+    "version": "2.1-semantic-presence",
+    "fixed": false,
+    "fixed_order": 0
+  }
+]

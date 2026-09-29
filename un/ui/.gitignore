@@ -1,0 +1,9 @@
+# Local installations, credentials, and user-generated source archives
+library/
+runtime/
+.secrets/
+.Rhistory
+.RData
+config/*.local.*
+config/packages-installed.local.csv
+__pycache__/

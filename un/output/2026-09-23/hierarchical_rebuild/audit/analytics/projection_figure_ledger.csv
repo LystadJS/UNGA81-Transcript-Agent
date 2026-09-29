@@ -1,0 +1,3 @@
+"method_id","script","state","reason","image_path","sha256","role"
+"M05","Figure_4_Country_Discourse_Map.R","executed","PNG rendered; every ISO3 label placed without detected label-box overlap.","audit/figures/Figure_4_Country_Discourse_Map.png","b20c5ed0f990f6b63a26222632a3cba1e8f5e12029210c385ecc967d93699488","eligible_only_after_O3_release"
+"M06","Figure_5_PCoA_Audit.R","executed","PNG rendered; every ISO3 label placed without detected label-box overlap.","audit/figures/Figure_5_PCoA_Audit.png","cf48a7001708e62c83647de819ca3c58fd2c274dce50d0296e5b5d0322641a5a","audit_only"

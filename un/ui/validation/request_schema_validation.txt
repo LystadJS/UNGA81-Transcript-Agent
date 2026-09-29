@@ -1,0 +1,2 @@
+PASSED: saved synthetic request validated against request.schema.json with date/date-time format checks.
+Cross-field dates, deduplication, and phrase controls are separately checked by R.

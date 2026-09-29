@@ -1,57 +1,52 @@
-# UN Daily Briefing — Analytics Design D1
+# UNGA81 Transcript Agent
 
-**Full backend. Exactly five analytical outputs in the email. Native-R design and contract checks.**
+Integrated UN transcript analysis and Shiny readout interface, with the USUN
+executive email theme and Windows-friendly package paths.
 
-This package specifies the next architecture for the user's R workflow 2.1.0. It **does not replace that workflow, run the proposed models, create a task, call an API, or send an email**.
+![Interface preview](un/ui/validation/interface_desktop.png)
 
-## Read first
+## Start on Windows
 
-`ARCHITECTURE_D1.md` is the complete design: five report products, all 42 registered methods, data/label/history gates, computational schedule, model release rules, source integrity, Outlook safeguards and acceptance criteria.
+Clone or extract this repository into a short location such as `C:\work\unga81`.
+The application is in **un/**. Keep this path short for the saved model files.
 
-`docs/IMPLEMENTATION_MAP.md` maps the required changes to the actual inspected v2.1 functions.
+1. Install R 4.3 or later.
+2. Open `un/ui/Setup.bat` to install the interface's declared dependencies.
+3. Open `un/ui/Start.bat` to launch the local Shiny interface.
+4. Choose dates and topics, generate a readout, inspect the evidence, and save an unsent draft.
 
-## Contents
+For the full D1 pipeline setup, use [un/START_HERE.md](un/START_HERE.md).
+The [UI guide](un/ui/START_HERE.md) explains input modes and setup.
+The [read-only preview](un/ui/Interface%20Preview.html) is included for local viewing.
 
-- `config/method_registry.csv` and `.json`: 42 named methods with R dependencies, schedule, readiness gates, roles and allowed email destinations.
-- `config/email_contract.json`: exactly O1–O5; fixed topics and regional ordering; existing summaries preserved.
-- `config/email_policy.R`: R-native policy object.
-- `config/data_contracts.json`: proposed feature, label, snapshot, method-run, evidence and report-packet records.
-- `config/dispatch_policy.json`: inference/refit/cache/resource design.
-- `R/validate_contract.R`: implemented structural checks and five-slot bundle construction. It neither fits models nor renders EML.
-- `tests/test_design.R`: synthetic structural acceptance/rejection tests; no country/model estimates.
-- `validation/`: actual R parsing/test results and source-provenance hashes.
-- `docs/SOURCES.md`: documentation/source register.
+## Included
 
-## Exactly five analytical slots
+- Native R D1-I4 analytical pipeline, publication gates, and exactly five email outputs.
+- Shiny interface with editable topics, source evidence, coverage, and draft exports.
+- USUN seal, navy/red palette, and local outline icons.
+- Replay fixtures, frozen model/reference artifacts, inherited validation and tests.
+- [Path mapping and extraction notes](un/PATHS.md) and current file checksums.
 
-1. Fixed-topic monitor — Iran, Cuba, Ukraine, AI.
-2. Emerging issues.
-3. Country discourse map.
-4. Rhetorical movement.
-5. Discourse-network changes.
+## Validation status
 
-The executive takeaway and existing country summaries remain. Countries stay under Africa, Asia-Pacific, Europe & Eurasia, Near East, and Western Hemisphere, alphabetized within each. The original issue bars, heatmap and issue co-occurrence graph become audit-only in the proposed implementation.
+Windows ZIP extraction and checksums passed. All 62 R files parsed, all 9 Shiny
+adapter checks passed, and all 2,567 checked saved-data references resolved.
+The backend passed 96/97 checks; PDF creation failed because the local Python
+launcher could not run. Desktop and mobile theme previews passed layout checks,
+and the Shiny UI constructor rendered. Full Shiny startup for the theme update
+remains unverified because the local R installation lacked the `zip` package.
 
-A missing historical comparison does not become a zero. Unavailable outputs retain a concise reason. Additional methods never create additional email sections. Current-day text similarity is not automatically policy agreement or coalition membership.
+See [packaging validation](docs/packaging.md) and [theme validation](un/ui/THEME.md).
+Inherited acceptance records describe their original runs, not a new full
+regression run for this repository import. No email is sent automatically.
 
-## Run the design checks
+## Reproduction and provenance
 
-From this directory with an installed R runtime:
+[REPRODUCE.md](REPRODUCE.md) describes this checkout. The source package is the
+latest short-path, themed `un-ui.zip` build. Package checksums are preserved
+in `un/SHA256SUMS.txt`; `.gitattributes` prevents checkout line-ending conversion
+from invalidating them. Keep API keys and local runtime configuration out of Git.
 
-```powershell
-Rscript --vanilla .\tests\test_design.R .
-```
-
-Or on another system:
-
-```sh
-Rscript --vanilla tests/test_design.R .
-```
-
-No non-base R packages are required for these structural tests. The modeling dependencies named in the registry have **not** been installed or benchmarked by this design package. Successful design checks do not establish model accuracy, semantic validity, live-source success, or Outlook rendering.
-
-**Actual development validation:** R 4.6.1; three scripts parsed successfully; 42/42 synthetic engineering checks executed successfully. See `validation/VALIDATION.md`.
-
-## Deployment status
-
-Design complete. Analytical adapters, model training, historical ingestion, five-slot EML integration and operational acceptance are the next implementation stage. Continue running the existing v2.1 installation until that new implementation passes its own acceptance tests. No current source or archive was modified.
+Earlier repository documents are preserved in [docs/legacy](docs/legacy).
+They describe earlier deliverables; this import does not include the separate
+September 28 execution bundle mentioned in the old reproduction document.

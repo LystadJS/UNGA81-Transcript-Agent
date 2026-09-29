@@ -1,0 +1,250 @@
+iso3,country,region,aliases,region_basis
+ABW,Aruba,Western Hemisphere,ABW|Aruba,analytical geography; countryinfo snapshot plus explicit overrides
+AFG,Afghanistan,Asia-Pacific,AFG|Afghanistan|Afġānistān|Islamic Republic of Afghanistan,analytical geography; countryinfo snapshot plus explicit overrides
+AGO,Angola,Africa,AGO|Angola|Republic of Angola|República de Angola|ʁɛpublika de an'ɡɔla,analytical geography; countryinfo snapshot plus explicit overrides
+AIA,Anguilla,Western Hemisphere,AIA|Anguilla,analytical geography; countryinfo snapshot plus explicit overrides
+ALA,Åland Islands,Unmapped,ALA|Åland Islands,analytical geography; countryinfo snapshot plus explicit overrides
+ALB,Albania,Europe & Eurasia,ALB|Albania|Republic of Albania|Shqipnia|Shqipëri|Shqipëria,analytical geography; countryinfo snapshot plus explicit overrides
+AND,Andorra,Europe & Eurasia,AND|Andorra|Principality of Andorra,approved corpus override
+ARE,United Arab Emirates,Near East,ARE|UAE|United Arab Emirates,analytical geography; countryinfo snapshot plus explicit overrides
+ARG,Argentina,Western Hemisphere,ARG|Argentina|Argentine Republic|República Argentina,approved corpus override
+ARM,Armenia,Europe & Eurasia,ARM|Armenia|Hayastan|Republic of Armenia|Հայաստանի Հանրապետություն,analytical geography; countryinfo snapshot plus explicit overrides
+ASM,American Samoa,Asia-Pacific,ASM|Amelika Sāmoa|American Samoa|Amerika Sāmoa|Sāmoa Amelika,analytical geography; countryinfo snapshot plus explicit overrides
+ATA,Antarctica,Unmapped,ATA|Antarctica,analytical geography; countryinfo snapshot plus explicit overrides
+ATF,French Southern Territories,Unmapped,ATF|French Southern Territories,analytical geography; countryinfo snapshot plus explicit overrides
+ATG,Antigua and Barbuda,Western Hemisphere,ATG|Antigua and Barbuda,analytical geography; countryinfo snapshot plus explicit overrides
+AUS,Australia,Asia-Pacific,AUS|Australia,analytical geography; countryinfo snapshot plus explicit overrides
+AUT,Austria,Europe & Eurasia,AUT|Austria|Oesterreich|Osterreich|Republic of Austria|Österreich,analytical geography; countryinfo snapshot plus explicit overrides
+AZE,Azerbaijan,Europe & Eurasia,AZE|Azerbaijan|Azərbaycan Respublikası|Republic of Azerbaijan,analytical geography; countryinfo snapshot plus explicit overrides
+BDI,Burundi,Africa,BDI|Burundi|Republic of Burundi|Republika y'Uburundi|République du Burundi,approved corpus override
+BEL,Belgium,Europe & Eurasia,BEL|Belgie|Belgien|Belgique|Belgium|België|Kingdom of Belgium|Koninkrijk België|Königreich Belgien|Royaume de Belgique,analytical geography; countryinfo snapshot plus explicit overrides
+BEN,Benin,Africa,BEN|Benin|Republic of Benin|République du Bénin,analytical geography; countryinfo snapshot plus explicit overrides
+BES,"Bonaire, Sint Eustatius and Saba",Unmapped,"BES|Bonaire, Sint Eustatius and Saba",analytical geography; countryinfo snapshot plus explicit overrides
+BFA,Burkina Faso,Africa,BFA|Burkina Faso,analytical geography; countryinfo snapshot plus explicit overrides
+BGD,Bangladesh,Asia-Pacific,BGD|Bangladesh|Gônôprôjatôntri Bangladesh|People's Republic of Bangladesh,analytical geography; countryinfo snapshot plus explicit overrides
+BGR,Bulgaria,Europe & Eurasia,BGR|Bulgaria|Republic of Bulgaria|Република България,approved corpus override
+BHR,Bahrain,Near East,BHR|Bahrain|Kingdom of Bahrain|Mamlakat al-Baḥrayn,analytical geography; countryinfo snapshot plus explicit overrides
+BHS,Bahamas,Western Hemisphere,BHS|Bahamas|Commonwealth of the Bahamas,analytical geography; countryinfo snapshot plus explicit overrides
+BIH,Bosnia and Herzegovina,Europe & Eurasia,BIH|Bosnia and Herzegovina|Bosnia-Herzegovina|Republic of Bosnia and Herzegovina|Босна и Херцеговина,analytical geography; countryinfo snapshot plus explicit overrides
+BLM,Saint Barthélemy,Unmapped,BLM|Saint Barthélemy,analytical geography; countryinfo snapshot plus explicit overrides
+BLR,Belarus,Europe & Eurasia,BLR|Belarus|Belorussiya|Bielaruś|Republic of Belarus|Respublika Belarus’|Белоруссия|Республика Беларусь,analytical geography; countryinfo snapshot plus explicit overrides
+BLZ,Belize,Western Hemisphere,BLZ|Belize,analytical geography; countryinfo snapshot plus explicit overrides
+BMU,Bermuda,Western Hemisphere,BMU|Bermuda|Somers Isles|The Bermudas|The Islands of Bermuda,analytical geography; countryinfo snapshot plus explicit overrides
+BOL,"Bolivia, Plurinational State of",Western Hemisphere,"BOL|Bolivia|Bolivia, Plurinational State of|Buliwya|Buliwya Mamallaqta|Estado Plurinacional de Bolivia|Plurinational State of Bolivia|Tetã Volívia|Wuliwya|Wuliwya Suyu",analytical geography; countryinfo snapshot plus explicit overrides
+BRA,Brazil,Western Hemisphere,BRA|Brasil|Brazil|Federative Republic of Brazil|República Federativa do Brasil,analytical geography; countryinfo snapshot plus explicit overrides
+BRB,Barbados,Western Hemisphere,BRB|Barbados,analytical geography; countryinfo snapshot plus explicit overrides
+BRN,Brunei Darussalam,Asia-Pacific, the Abode of Peace|BRN|Brunei Darussalam|Nation of Brunei,analytical geography; countryinfo snapshot plus explicit overrides
+BTN,Bhutan,Asia-Pacific,BTN|Bhutan|Kingdom of Bhutan,analytical geography; countryinfo snapshot plus explicit overrides
+BVT,Bouvet Island,Unmapped,BVT|Bouvet Island,analytical geography; countryinfo snapshot plus explicit overrides
+BWA,Botswana,Africa,BWA|Botswana|Lefatshe la Botswana|Republic of Botswana,approved corpus override
+CAF,Central African Republic,Africa,CAF|Central African Republic|République centrafricaine,approved corpus override
+CAN,Canada,Western Hemisphere,CAN|Canada,analytical geography; countryinfo snapshot plus explicit overrides
+CCK,Cocos (Keeling) Islands,Asia-Pacific,CCK|Cocos (Keeling) Islands|Keeling Islands|Territory of the Cocos (Keeling) Islands,analytical geography; countryinfo snapshot plus explicit overrides
+CHE,Switzerland,Europe & Eurasia,CHE|Schweiz|Suisse|Svizra|Svizzera|Swiss Confederation|Switzerland,analytical geography; countryinfo snapshot plus explicit overrides
+CHL,Chile,Western Hemisphere,CHL|Chile|Republic of Chile|República de Chile,analytical geography; countryinfo snapshot plus explicit overrides
+CHN,China,Asia-Pacific,CHN|China|People's Republic of China|Zhongguo|Zhonghua|Zhōngguó|Zhōnghuá Rénmín Gònghéguó|中华人民共和国,analytical geography; countryinfo snapshot plus explicit overrides
+CIV,Côte d'Ivoire,Africa,CIV|Côte d'Ivoire|Ivory Coast|Republic of Côte d'Ivoire|République de Côte d'Ivoire,analytical geography; countryinfo snapshot plus explicit overrides
+CMR,Cameroon,Africa,CMR|Cameroon|Republic of Cameroon|République du Cameroun,analytical geography; countryinfo snapshot plus explicit overrides
+COD,Democratic Republic of the Congo,Africa,"COD|Congo, The Democratic Republic of the|Congo-Kinshasa|DR Congo|DRC|Democratic Republic of Congo|Democratic Republic of the Congo",approved corpus override
+COG,Congo,Africa,COG|Congo|Congo-Brazzaville|Republic of the Congo,analytical geography; countryinfo snapshot plus explicit overrides
+COK,Cook Islands,Asia-Pacific,COK|Cook Islands|Kūki 'Āirani,analytical geography; countryinfo snapshot plus explicit overrides
+COL,Colombia,Western Hemisphere,COL|Colombia|Republic of Colombia|República de Colombia,analytical geography; countryinfo snapshot plus explicit overrides
+COM,Comoros,Africa,COM|Comoros|Udzima wa Komori|Union des Comores|Union of the Comoros|al-Ittiḥād al-Qumurī,analytical geography; countryinfo snapshot plus explicit overrides
+CPV,Cabo Verde,Africa,CPV|Cabo Verde|Republic of Cabo Verde|República de Cabo Verde,analytical geography; countryinfo snapshot plus explicit overrides
+CRI,Costa Rica,Western Hemisphere,CRI|Costa Rica|Republic of Costa Rica|República de Costa Rica,analytical geography; countryinfo snapshot plus explicit overrides
+CUB,Cuba,Western Hemisphere,CUB|Cuba|Republic of Cuba|República de Cuba,analytical geography; countryinfo snapshot plus explicit overrides
+CUW,Curaçao,Unmapped,CUW|Curaçao,analytical geography; countryinfo snapshot plus explicit overrides
+CXR,Christmas Island,Asia-Pacific,CXR|Christmas Island|Territory of Christmas Island,analytical geography; countryinfo snapshot plus explicit overrides
+CYM,Cayman Islands,Western Hemisphere,CYM|Cayman Islands,analytical geography; countryinfo snapshot plus explicit overrides
+CYP,Cyprus,Europe & Eurasia,CYP|Cyprus|Kýpros|Kıbrıs|Kıbrıs Cumhuriyeti|Republic of Cyprus|Κυπριακή Δημοκρατία,approved corpus override
+CZE,Czech Republic,Europe & Eurasia,CZE|Czech Republic|Czechia|Česko|Česká republika,approved corpus override
+DEU,Germany,Europe & Eurasia,Bundesrepublik Deutschland|DEU|Federal Republic of Germany|Germany,analytical geography; countryinfo snapshot plus explicit overrides
+DJI,Djibouti,Africa,DJI|Djibouti|Gabuuti|Gabuutih Ummuuno|Jabuuti|Jamhuuriyadda Jabuuti|Republic of Djibouti|République de Djibouti,analytical geography; countryinfo snapshot plus explicit overrides
+DMA,Dominica,Western Hemisphere,Commonwealth of Dominica|DMA|Dominica|Dominique|Wai‘tu kubuli,analytical geography; countryinfo snapshot plus explicit overrides
+DNK,Denmark,Europe & Eurasia,DNK|Danmark|Denmark|Kingdom of Denmark|Kongeriget Danmark,analytical geography; countryinfo snapshot plus explicit overrides
+DOM,Dominican Republic,Western Hemisphere,DOM|Dominican Republic,approved corpus override
+DZA,Algeria,Near East,Algeria|Algérie|DZA|Dzayer|People's Democratic Republic of Algeria,analytical geography; countryinfo snapshot plus explicit overrides
+ECU,Ecuador,Western Hemisphere,ECU|Ecuador|Republic of Ecuador|República del Ecuador,approved corpus override
+EGY,Egypt,Near East,Arab Republic of Egypt|EGY|Egypt,analytical geography; countryinfo snapshot plus explicit overrides
+ERI,Eritrea,Africa,Dawlat Iritriyá|ERI|Eritrea|Iritriyā|State of Eritrea|the State of Eritrea|ʾErtrā|ሃገረ ኤርትራ,analytical geography; countryinfo snapshot plus explicit overrides
+ESH,Western Sahara,Africa,ESH|Taneẓroft Tutrimt|Western Sahara,analytical geography; countryinfo snapshot plus explicit overrides
+ESP,Spain,Europe & Eurasia,ESP|Kingdom of Spain|Reino de España|Spain,approved corpus override
+EST,Estonia,Europe & Eurasia,EST|Eesti|Eesti Vabariik|Estonia|Republic of Estonia,approved corpus override
+ETH,Ethiopia,Africa,ETH|Ethiopia|Federal Democratic Republic of Ethiopia|ʾĪtyōṗṗyā|የኢትዮጵያ ፌዴራላዊ ዲሞክራሲያዊ ሪፐብሊክ,approved corpus override
+FIN,Finland,Europe & Eurasia,FIN|Finland|Republic of Finland|Republiken Finland|Suomen tasavalta|Suomi,analytical geography; countryinfo snapshot plus explicit overrides
+FJI,Fiji,Asia-Pacific,FJI|Fiji|Fijī Gaṇarājya|Matanitu ko Viti|Republic of Fiji|Viti,analytical geography; countryinfo snapshot plus explicit overrides
+FLK,Falkland Islands (Malvinas),Western Hemisphere,FLK|Falkland Islands (Malvinas)|Islas Malvinas,analytical geography; countryinfo snapshot plus explicit overrides
+FRA,France,Europe & Eurasia,FRA|France|French Republic|République française,analytical geography; countryinfo snapshot plus explicit overrides
+FRO,Faroe Islands,Europe & Eurasia,FRO|Faroe Islands|Færøerne|Føroyar,analytical geography; countryinfo snapshot plus explicit overrides
+FSM,"Micronesia, Federated States of",Asia-Pacific,"FSM|Federated States of Micronesia|Micronesia, Federated States of",analytical geography; countryinfo snapshot plus explicit overrides
+GAB,Gabon,Africa,GAB|Gabon|Gabonese Republic|République Gabonaise,analytical geography; countryinfo snapshot plus explicit overrides
+GBR,United Kingdom,Unmapped,GBR|United Kingdom|United Kingdom of Great Britain and Northern Ireland,analytical geography; countryinfo snapshot plus explicit overrides
+GEO,Georgia,Europe & Eurasia,GEO|Georgia|Sakartvelo,analytical geography; countryinfo snapshot plus explicit overrides
+GGY,Guernsey,Europe & Eurasia,Bailiwick of Guernsey|Bailliage de Guernesey|GGY|Guernsey,analytical geography; countryinfo snapshot plus explicit overrides
+GHA,Ghana,Africa,GHA|Ghana|Republic of Ghana,analytical geography; countryinfo snapshot plus explicit overrides
+GIB,Gibraltar,Europe & Eurasia,GIB|Gibraltar,analytical geography; countryinfo snapshot plus explicit overrides
+GIN,Guinea,Africa,GIN|Guinea|Republic of Guinea|République de Guinée,approved corpus override
+GLP,Guadeloupe,Western Hemisphere,GLP|Guadeloupe|Gwadloup,analytical geography; countryinfo snapshot plus explicit overrides
+GMB,Gambia,Africa,GMB|Gambia|Republic of the Gambia,analytical geography; countryinfo snapshot plus explicit overrides
+GNB,Guinea-Bissau,Africa,GNB|Guinea-Bissau|Republic of Guinea-Bissau|República da Guiné-Bissau,analytical geography; countryinfo snapshot plus explicit overrides
+GNQ,Equatorial Guinea,Africa,Equatorial Guinea|GNQ|Republic of Equatorial Guinea|República da Guiné Equatorial|República de Guinea Ecuatorial|République de Guinée équatoriale,analytical geography; countryinfo snapshot plus explicit overrides
+GRC,Greece,Europe & Eurasia,Elláda|GRC|Greece|Hellenic Republic|Ελληνική Δημοκρατία,analytical geography; countryinfo snapshot plus explicit overrides
+GRD,Grenada,Western Hemisphere,GRD|Grenada,analytical geography; countryinfo snapshot plus explicit overrides
+GRL,Greenland,Western Hemisphere,GRL|Greenland|Grønland,analytical geography; countryinfo snapshot plus explicit overrides
+GTM,Guatemala,Western Hemisphere,GTM|Guatemala|Republic of Guatemala,analytical geography; countryinfo snapshot plus explicit overrides
+GUF,French Guiana,Western Hemisphere,French Guiana|GUF|Guiana|Guyane,analytical geography; countryinfo snapshot plus explicit overrides
+GUM,Guam,Asia-Pacific,GUM|Guam|Guåhån,analytical geography; countryinfo snapshot plus explicit overrides
+GUY,Guyana,Western Hemisphere,Co-operative Republic of Guyana|GUY|Guyana|Republic of Guyana,analytical geography; countryinfo snapshot plus explicit overrides
+HKG,Hong Kong,Asia-Pacific,HKG|Hong Kong|Hong Kong Special Administrative Region of China,analytical geography; countryinfo snapshot plus explicit overrides
+HMD,Heard Island and McDonald Islands,Unmapped,HMD|Heard Island and McDonald Islands,analytical geography; countryinfo snapshot plus explicit overrides
+HND,Honduras,Western Hemisphere,HND|Honduras|Republic of Honduras|República de Honduras,approved corpus override
+HRV,Croatia,Europe & Eurasia,Croatia|HRV|Hrvatska|Republic of Croatia|Republika Hrvatska,analytical geography; countryinfo snapshot plus explicit overrides
+HTI,Haiti,Western Hemisphere,HTI|Haiti|Repiblik Ayiti|Republic of Haiti|République d'Haïti,analytical geography; countryinfo snapshot plus explicit overrides
+HUN,Hungary,Europe & Eurasia,HUN|Hungary,analytical geography; countryinfo snapshot plus explicit overrides
+IDN,Indonesia,Asia-Pacific,IDN|Indonesia|Republic of Indonesia|Republik Indonesia,analytical geography; countryinfo snapshot plus explicit overrides
+IMN,Isle of Man,Europe & Eurasia,Ellan Vannin|IMN|Isle of Man|Mann|Mannin,analytical geography; countryinfo snapshot plus explicit overrides
+IND,India,Asia-Pacific,Bharat Ganrajya|Bhārat|IND|India|Republic of India,analytical geography; countryinfo snapshot plus explicit overrides
+IOT,British Indian Ocean Territory,Africa,British Indian Ocean Territory|IOT,analytical geography; countryinfo snapshot plus explicit overrides
+IRL,Ireland,Europe & Eurasia,IRL|Ireland|Poblacht na hÉireann|Republic of Ireland|Éire,analytical geography; countryinfo snapshot plus explicit overrides
+IRN,Iran,Near East,"IRN|Iran|Iran, Islamic Republic of|Islamic Republic of Iran|Jomhuri-ye Eslāmi-ye Irān",approved corpus override
+IRQ,Iraq,Near East,IRQ|Iraq|Jumhūriyyat al-‘Irāq|Republic of Iraq,analytical geography; countryinfo snapshot plus explicit overrides
+ISL,Iceland,Europe & Eurasia,ISL|Iceland|Island|Lýðveldið Ísland|Republic of Iceland,analytical geography; countryinfo snapshot plus explicit overrides
+ISR,Israel,Near East,ISR|Israel|Medīnat Yisrā'el|State of Israel,analytical geography; countryinfo snapshot plus explicit overrides
+ITA,Italy,Europe & Eurasia,ITA|Italian Republic|Italy|Repubblica italiana,approved corpus override
+JAM,Jamaica,Western Hemisphere,JAM|Jamaica,analytical geography; countryinfo snapshot plus explicit overrides
+JEY,Jersey,Europe & Eurasia,Bailiwick of Jersey|Bailliage de Jersey|Bailliage dé Jèrri|JEY|Jersey,analytical geography; countryinfo snapshot plus explicit overrides
+JOR,Jordan,Near East,Hashemite Kingdom of Jordan|JOR|Jordan|al-Mamlakah al-Urdunīyah al-Hāshimīyah,analytical geography; countryinfo snapshot plus explicit overrides
+JPN,Japan,Asia-Pacific,JPN|Japan|Nihon|Nippon,analytical geography; countryinfo snapshot plus explicit overrides
+KAZ,Kazakhstan,Asia-Pacific,KAZ|Kazakhstan|Qazaqstan|Qazaqstan Respublïkası|Republic of Kazakhstan|Respublika Kazakhstan|Казахстан|Республика Казахстан|Қазақстан Республикасы,analytical geography; countryinfo snapshot plus explicit overrides
+KEN,Kenya,Africa,Jamhuri ya Kenya|KEN|Kenya|Republic of Kenya,approved corpus override
+KGZ,Kyrgyzstan,Asia-Pacific,KGZ|Kyrgyz Republic|Kyrgyz Respublikasy|Kyrgyzstan|Киргизия|Кыргыз Республикасы,analytical geography; countryinfo snapshot plus explicit overrides
+KHM,Cambodia,Asia-Pacific,Cambodia|KHM|Kingdom of Cambodia,analytical geography; countryinfo snapshot plus explicit overrides
+KIR,Kiribati,Asia-Pacific,KIR|Kiribati|Republic of Kiribati|Ribaberiki Kiribati,analytical geography; countryinfo snapshot plus explicit overrides
+KNA,Saint Kitts and Nevis,Western Hemisphere,Federation of Saint Christopher and Nevis|KNA|Saint Kitts and Nevis,analytical geography; countryinfo snapshot plus explicit overrides
+KOR,"Korea, Republic of",Asia-Pacific,"KOR|Korea, Republic of|Republic of Korea|South Korea",analytical geography; countryinfo snapshot plus explicit overrides
+KWT,Kuwait,Near East,Dawlat al-Kuwait|KWT|Kuwait|State of Kuwait,analytical geography; countryinfo snapshot plus explicit overrides
+LAO,Lao People's Democratic Republic,Asia-Pacific,LAO|Lao|Lao People's Democratic Republic|Laos|Sathalanalat Paxathipatai Paxaxon Lao,analytical geography; countryinfo snapshot plus explicit overrides
+LBN,Lebanon,Near East,Al-Jumhūrīyah Al-Libnānīyah|LBN|Lebanese Republic|Lebanon,analytical geography; countryinfo snapshot plus explicit overrides
+LBR,Liberia,Africa,LBR|Liberia|Republic of Liberia,analytical geography; countryinfo snapshot plus explicit overrides
+LBY,Libya,Near East,Dawlat Libya|LBY|Libya|State of Libya,approved corpus override
+LCA,Saint Lucia,Western Hemisphere,LCA|Saint Lucia,analytical geography; countryinfo snapshot plus explicit overrides
+LIE,Liechtenstein,Europe & Eurasia,Fürstentum Liechtenstein|LIE|Liechtenstein|Principality of Liechtenstein,analytical geography; countryinfo snapshot plus explicit overrides
+LKA,Sri Lanka,Asia-Pacific,Democratic Socialist Republic of Sri Lanka|LKA|Sri Lanka|ilaṅkai,analytical geography; countryinfo snapshot plus explicit overrides
+LSO,Lesotho,Africa,Kingdom of Lesotho|LSO|Lesotho|Muso oa Lesotho,analytical geography; countryinfo snapshot plus explicit overrides
+LTU,Lithuania,Europe & Eurasia,LTU|Lietuvos Respublika|Lithuania|Republic of Lithuania,analytical geography; countryinfo snapshot plus explicit overrides
+LUX,Luxembourg,Europe & Eurasia,Grand Duchy of Luxembourg|Grand-Duché de Luxembourg|Groussherzogtum Lëtzebuerg|Großherzogtum Luxemburg|LUX|Luxembourg,analytical geography; countryinfo snapshot plus explicit overrides
+LVA,Latvia,Europe & Eurasia,LVA|Latvia|Latvijas Republika|Republic of Latvia,approved corpus override
+MAC,Macao,Asia-Pacific,MAC|Macao|Macao Special Administrative Region of China|Macao Special Administrative Region of the People's Republic of China|Região Administrativa Especial de Macau da República Popular da China|中華人民共和國澳門特別行政區,analytical geography; countryinfo snapshot plus explicit overrides
+MAF,Saint Martin (French part),Unmapped,MAF|Saint Martin (French part),analytical geography; countryinfo snapshot plus explicit overrides
+MAR,Morocco,Near East,Al-Mamlakah al-Maġribiyah|Kingdom of Morocco|MAR|Morocco,analytical geography; countryinfo snapshot plus explicit overrides
+MCO,Monaco,Europe & Eurasia,MCO|Monaco|Principality of Monaco|Principauté de Monaco,analytical geography; countryinfo snapshot plus explicit overrides
+MDA,"Moldova, Republic of",Europe & Eurasia,"MDA|Moldova|Moldova, Republic of|Republic of Moldova|Republica Moldova",analytical geography; countryinfo snapshot plus explicit overrides
+MDG,Madagascar,Africa,MDG|Madagascar|Repoblikan'i Madagasikara|Republic of Madagascar|République de Madagascar,analytical geography; countryinfo snapshot plus explicit overrides
+MDV,Maldives,Asia-Pacific,Dhivehi Raajjeyge Jumhooriyya|MDV|Maldive Islands|Maldives|Republic of Maldives|Republic of the Maldives,analytical geography; countryinfo snapshot plus explicit overrides
+MEX,Mexico,Western Hemisphere,Estados Unidos Mexicanos|MEX|Mexicanos|Mexico|United Mexican States,analytical geography; countryinfo snapshot plus explicit overrides
+MHL,Marshall Islands,Asia-Pacific,Aolepān Aorōkin M̧ajeļ|MHL|Marshall Islands|Republic of the Marshall Islands,analytical geography; countryinfo snapshot plus explicit overrides
+MKD,North Macedonia,Europe & Eurasia,MKD|North Macedonia|Republic of Macedonia|Republic of North Macedonia|Република Македонија,analytical geography; countryinfo snapshot plus explicit overrides
+MLI,Mali,Africa,MLI|Mali|Republic of Mali|République du Mali,analytical geography; countryinfo snapshot plus explicit overrides
+MLT,Malta,Europe & Eurasia,MLT|Malta|Repubblika ta' Malta|Republic of Malta,analytical geography; countryinfo snapshot plus explicit overrides
+MMR,Myanmar,Unmapped,MMR|Myanmar|Republic of Myanmar,analytical geography; countryinfo snapshot plus explicit overrides
+MNE,Montenegro,Europe & Eurasia,MNE|Montenegro,approved corpus override
+MNG,Mongolia,Asia-Pacific,MNG|Mongolia,analytical geography; countryinfo snapshot plus explicit overrides
+MNP,Northern Mariana Islands,Asia-Pacific,Commonwealth of the Northern Mariana Islands|MNP|Northern Mariana Islands|Sankattan Siha Na Islas Mariånas,analytical geography; countryinfo snapshot plus explicit overrides
+MOZ,Mozambique,Africa,MOZ|Mozambique|Republic of Mozambique|República de Moçambique,approved corpus override
+MRT,Mauritania,Africa,Islamic Republic of Mauritania|MRT|Mauritania|al-Jumhūriyyah al-ʾIslāmiyyah al-Mūrītāniyyah,analytical geography; countryinfo snapshot plus explicit overrides
+MSR,Montserrat,Western Hemisphere,MSR|Montserrat,analytical geography; countryinfo snapshot plus explicit overrides
+MTQ,Martinique,Western Hemisphere,MTQ|Martinique,analytical geography; countryinfo snapshot plus explicit overrides
+MUS,Mauritius,Africa,MUS|Mauritius|Republic of Mauritius|République de Maurice,analytical geography; countryinfo snapshot plus explicit overrides
+MWI,Malawi,Africa,MWI|Malawi|Republic of Malawi,analytical geography; countryinfo snapshot plus explicit overrides
+MYS,Malaysia,Asia-Pacific,MYS|Malaysia,analytical geography; countryinfo snapshot plus explicit overrides
+MYT,Mayotte,Africa,Department of Mayotte|Département de Mayotte|MYT|Mayotte,analytical geography; countryinfo snapshot plus explicit overrides
+NAM,Namibia,Africa,NAM|Namibia|Namibië|Republic of Namibia,approved corpus override
+NCL,New Caledonia,Asia-Pacific,NCL|New Caledonia,analytical geography; countryinfo snapshot plus explicit overrides
+NER,Niger,Africa,NER|Niger|Nijar|Republic of Niger|Republic of the Niger|République du Niger,analytical geography; countryinfo snapshot plus explicit overrides
+NFK,Norfolk Island,Asia-Pacific,NFK|Norfolk Island|Teratri of Norf'k Ailen|Territory of Norfolk Island,analytical geography; countryinfo snapshot plus explicit overrides
+NGA,Nigeria,Africa,Federal Republic of Nigeria|NGA|Naíjíríà|Nigeria|Nijeriya,analytical geography; countryinfo snapshot plus explicit overrides
+NIC,Nicaragua,Western Hemisphere,NIC|Nicaragua|Republic of Nicaragua|República de Nicaragua,analytical geography; countryinfo snapshot plus explicit overrides
+NIU,Niue,Asia-Pacific,NIU|Niue,analytical geography; countryinfo snapshot plus explicit overrides
+NLD,Netherlands,Europe & Eurasia,Holland|Kingdom of the Netherlands|NLD|Nederland|Netherlands,analytical geography; countryinfo snapshot plus explicit overrides
+NOR,Norway,Europe & Eurasia,Kingdom of Norway|Kongeriket Noreg|Kongeriket Norge|NOR|Noreg|Norge|Norway,analytical geography; countryinfo snapshot plus explicit overrides
+NPL,Nepal,Asia-Pacific,Federal Democratic Republic of Nepal|Loktāntrik Ganatantra Nepāl|NPL|Nepal,analytical geography; countryinfo snapshot plus explicit overrides
+NRU,Nauru,Asia-Pacific,NRU|Naoero|Nauru|Pleasant Island|Republic of Nauru|Ripublik Naoero,analytical geography; countryinfo snapshot plus explicit overrides
+NZL,New Zealand,Asia-Pacific,Aotearoa|NZL|New Zealand,analytical geography; countryinfo snapshot plus explicit overrides
+OMN,Oman,Near East,OMN|Oman|Salṭanat ʻUmān|Sultanate of Oman,analytical geography; countryinfo snapshot plus explicit overrides
+PAK,Pakistan,Asia-Pacific,Islamic Republic of Pakistan|Islāmī Jumhūriya'eh Pākistān|PAK|Pakistan|Pākistān,analytical geography; countryinfo snapshot plus explicit overrides
+PAN,Panama,Western Hemisphere,PAN|Panama|Republic of Panama|República de Panamá,approved corpus override
+PCN,Pitcairn,Asia-Pacific,PCN|Pitcairn|Pitcairn Henderson Ducie and Oeno Islands,analytical geography; countryinfo snapshot plus explicit overrides
+PER,Peru,Western Hemisphere, República del Perú|PER|Peru|Republic of Peru,analytical geography; countryinfo snapshot plus explicit overrides
+PHL,Philippines,Asia-Pacific,PHL|Philippines|Republic of the Philippines|Repúblika ng Pilipinas,analytical geography; countryinfo snapshot plus explicit overrides
+PLW,Palau,Asia-Pacific,Beluu er a Belau|PLW|Palau|Republic of Palau,approved corpus override
+PNG,Papua New Guinea,Asia-Pacific,Independen Stet bilong Papua Niugini|Independent State of Papua New Guinea|PNG|Papua New Guinea,analytical geography; countryinfo snapshot plus explicit overrides
+POL,Poland,Europe & Eurasia,POL|Poland|Republic of Poland|Rzeczpospolita Polska,approved corpus override
+PRI,Puerto Rico,Western Hemisphere,Commonwealth of Puerto Rico|Estado Libre Asociado de Puerto Rico|PRI|Puerto Rico,analytical geography; countryinfo snapshot plus explicit overrides
+PRK,"Korea, Democratic People's Republic of",Asia-Pacific,"Chosŏn Minjujuŭi Inmin Konghwaguk|Democratic People's Republic of Korea|Korea, Democratic People's Republic of|North Korea|PRK|조선민주주의인민공화국",analytical geography; countryinfo snapshot plus explicit overrides
+PRT,Portugal,Europe & Eurasia,PRT|Portugal|Portuguesa|Portuguese Republic|República Portuguesa,analytical geography; countryinfo snapshot plus explicit overrides
+PRY,Paraguay,Western Hemisphere,PRY|Paraguay|Republic of Paraguay|República del Paraguay|Tetã Paraguái,approved corpus override
+PSE,"Palestine, State of",Near East,"PSE|Palestine, State of|the State of Palestine",analytical geography; countryinfo snapshot plus explicit overrides
+PYF,French Polynesia,Asia-Pacific,French Polynesia|PYF|Polynésie française|Pōrīnetia Farāni,analytical geography; countryinfo snapshot plus explicit overrides
+QAT,Qatar,Near East,Dawlat Qaṭar|QAT|Qatar|State of Qatar,analytical geography; countryinfo snapshot plus explicit overrides
+REU,Réunion,Africa,REU|Reunion|Réunion,analytical geography; countryinfo snapshot plus explicit overrides
+ROU,Romania,Europe & Eurasia,ROU|Romania|România|Roumania|Rumania,approved corpus override
+RUS,Russian Federation,Europe & Eurasia,RUS|Rossiya|Rossiyskaya Federatsiya|Russian Federation|Российская Федерация,analytical geography; countryinfo snapshot plus explicit overrides
+RWA,Rwanda,Africa,RWA|Republic of Rwanda|Repubulika y'u Rwanda|Rwanda|Rwandese Republic|République du Rwanda,approved corpus override
+SAU,Saudi Arabia,Near East,Al-Mamlakah al-‘Arabiyyah as-Su‘ūdiyyah|Kingdom of Saudi Arabia|SAU|Saudi Arabia,analytical geography; countryinfo snapshot plus explicit overrides
+SDN,Sudan,Africa,Jumhūrīyat as-Sūdān|Republic of the Sudan|SDN|Sudan,analytical geography; countryinfo snapshot plus explicit overrides
+SEN,Senegal,Africa,Republic of Senegal|République du Sénégal|SEN|Senegal,analytical geography; countryinfo snapshot plus explicit overrides
+SGP,Singapore,Asia-Pacific,Republic of Singapore|Republik Singapura|SGP|Singapore|Singapura|新加坡共和国,analytical geography; countryinfo snapshot plus explicit overrides
+SGS,South Georgia and the South Sandwich Islands,Western Hemisphere,SGS|South Georgia and the South Sandwich Islands,analytical geography; countryinfo snapshot plus explicit overrides
+SHN,"Saint Helena, Ascension and Tristan da Cunha",Africa,"SHN|Saint Helena, Ascension and Tristan da Cunha",analytical geography; countryinfo snapshot plus explicit overrides
+SJM,Svalbard and Jan Mayen,Europe & Eurasia,SJM|Svalbard and Jan Mayen|Svalbard and Jan Mayen Islands,analytical geography; countryinfo snapshot plus explicit overrides
+SLB,Solomon Islands,Asia-Pacific,SLB|Solomon Islands,analytical geography; countryinfo snapshot plus explicit overrides
+SLE,Sierra Leone,Africa,Republic of Sierra Leone|SLE|Sierra Leone,analytical geography; countryinfo snapshot plus explicit overrides
+SLV,El Salvador,Western Hemisphere,El Salvador|Republic of El Salvador|República de El Salvador|SLV,analytical geography; countryinfo snapshot plus explicit overrides
+SMR,San Marino,Europe & Eurasia,Repubblica di San Marino|Republic of San Marino|SMR|San Marino,analytical geography; countryinfo snapshot plus explicit overrides
+SOM,Somalia,Africa,Federal Republic of Somalia|Jamhuuriyadda Federaalka Soomaaliya|Jumhūriyyat aṣ-Ṣūmāl al-Fiderāliyya|SOM|Somalia|aṣ-Ṣūmāl,analytical geography; countryinfo snapshot plus explicit overrides
+SPM,Saint Pierre and Miquelon,Western Hemisphere,Collectivité territoriale de Saint-Pierre-et-Miquelon|SPM|Saint Pierre and Miquelon,analytical geography; countryinfo snapshot plus explicit overrides
+SRB,Serbia,Europe & Eurasia,Republic of Serbia|Republika Srbija|SRB|Serbia|Srbija,approved corpus override
+SSD,South Sudan,Africa,Republic of South Sudan|SSD|South Sudan,analytical geography; countryinfo snapshot plus explicit overrides
+STP,Sao Tome and Principe,Africa,Democratic Republic of Sao Tome and Principe|Democratic Republic of São Tomé and Príncipe|República Democrática de São Tomé e Príncipe|STP|Sao Tome and Principe,analytical geography; countryinfo snapshot plus explicit overrides
+SUR,Suriname,Western Hemisphere,Republic of Suriname|Republiek Suriname|SUR|Sarnam|Sranangron|Suriname,analytical geography; countryinfo snapshot plus explicit overrides
+SVK,Slovakia,Europe & Eurasia,SVK|Slovak Republic|Slovakia|Slovenská republika,approved corpus override
+SVN,Slovenia,Europe & Eurasia,Republic of Slovenia|Republika Slovenija|SVN|Slovenia,analytical geography; countryinfo snapshot plus explicit overrides
+SWE,Sweden,Europe & Eurasia,Kingdom of Sweden|Konungariket Sverige|SWE|Sweden,analytical geography; countryinfo snapshot plus explicit overrides
+SWZ,Eswatini,Africa,Eswatini|Kingdom of Eswatini|Kingdom of Swaziland|Ngwane|SWZ|Swatini|Umbuso waseSwatini|weSwatini,approved corpus override
+SXM,Sint Maarten (Dutch part),Unmapped,SXM|Sint Maarten (Dutch part),analytical geography; countryinfo snapshot plus explicit overrides
+SYC,Seychelles,Africa,Repiblik Sesel|Republic of Seychelles|République des Seychelles|SYC|Seychelles,analytical geography; countryinfo snapshot plus explicit overrides
+SYR,Syria,Near East,Al-Jumhūrīyah Al-ʻArabīyah As-Sūrīyah|SYR|Syria|Syrian Arab Republic,approved corpus override
+TCA,Turks and Caicos Islands,Unmapped,TCA|Turks and Caicos Islands,analytical geography; countryinfo snapshot plus explicit overrides
+TCD,Chad,Africa,Chad|Republic of Chad|République du Tchad|TCD|Tchad,analytical geography; countryinfo snapshot plus explicit overrides
+TGO,Togo,Africa,République Togolaise|TGO|Togo|Togolese|Togolese Republic,analytical geography; countryinfo snapshot plus explicit overrides
+THA,Thailand,Asia-Pacific,Kingdom of Thailand|Prathet|Ratcha Anachak Thai|THA|Thai|Thailand|ราชอาณาจักรไทย,analytical geography; countryinfo snapshot plus explicit overrides
+TJK,Tajikistan,Asia-Pacific,Republic of Tajikistan|TJK|Tajikistan|Toçikiston|Çumhuriyi Toçikiston|Ҷумҳурии Тоҷикистон,analytical geography; countryinfo snapshot plus explicit overrides
+TKL,Tokelau,Asia-Pacific,TKL|Tokelau,analytical geography; countryinfo snapshot plus explicit overrides
+TKM,Turkmenistan,Asia-Pacific,TKM|Turkmenistan,analytical geography; countryinfo snapshot plus explicit overrides
+TLS,Timor-Leste,Asia-Pacific,Democratic Republic of Timor-Leste|East Timor|República Democrática de Timor-Leste|Repúblika Demokrátika Timór-Leste|TLS|Timor-Leste,approved corpus override
+TON,Tonga,Asia-Pacific,Kingdom of Tonga|TON|Tonga,analytical geography; countryinfo snapshot plus explicit overrides
+TTO,Trinidad and Tobago,Western Hemisphere,Republic of Trinidad and Tobago|TTO|Trinidad and Tobago,analytical geography; countryinfo snapshot plus explicit overrides
+TUN,Tunisia,Near East,Republic of Tunisia|TUN|Tunisia|al-Jumhūriyyah at-Tūnisiyyah,analytical geography; countryinfo snapshot plus explicit overrides
+TUR,Türkiye,Europe & Eurasia,Republic of Turkey|Republic of Türkiye|TUR|Turkiye|Türkiye|Türkiye Cumhuriyeti,analytical geography; countryinfo snapshot plus explicit overrides
+TUV,Tuvalu,Asia-Pacific,TUV|Tuvalu,analytical geography; countryinfo snapshot plus explicit overrides
+TWN,"Taiwan, Province of China",Asia-Pacific,"Republic of China|TWN|Taiwan|Taiwan, Province of China|Táiwān|Zhōnghuá Mínguó|中華民國",analytical geography; countryinfo snapshot plus explicit overrides
+TZA,"Tanzania, United Republic of",Africa,"Jamhuri ya Muungano wa Tanzania|TZA|Tanzania|Tanzania, United Republic of|United Republic of Tanzania",analytical geography; countryinfo snapshot plus explicit overrides
+UGA,Uganda,Africa,Jamhuri ya Uganda|Republic of Uganda|UGA|Uganda,approved corpus override
+UKR,Ukraine,Europe & Eurasia,UKR|Ukraine|Ukrayina,approved corpus override
+UMI,United States Minor Outlying Islands,Unmapped,UMI|United States Minor Outlying Islands,analytical geography; countryinfo snapshot plus explicit overrides
+URY,Uruguay,Western Hemisphere,Eastern Republic of Uruguay|Oriental Republic of Uruguay|República Oriental del Uruguay|URY|Uruguay,analytical geography; countryinfo snapshot plus explicit overrides
+USA,United States,Western Hemisphere,USA|United States|United States of America,analytical geography; countryinfo snapshot plus explicit overrides
+UZB,Uzbekistan,Asia-Pacific,O‘zbekiston Respublikasi|Republic of Uzbekistan|UZB|Uzbekistan|Ўзбекистон Республикаси,approved corpus override
+VAT,Holy See (Vatican City State),Unmapped,Holy See (Vatican City State)|VAT,analytical geography; countryinfo snapshot plus explicit overrides
+VCT,Saint Vincent and the Grenadines,Western Hemisphere,Saint Vincent and the Grenadines|VCT,analytical geography; countryinfo snapshot plus explicit overrides
+VEN,Venezuela,Western Hemisphere,"Bolivarian Republic of Venezuela|República Bolivariana de Venezuela|VEN|Venezuela|Venezuela, Bolivarian Republic of",approved corpus override
+VGB,"Virgin Islands, British",Unmapped,"British Virgin Islands|VGB|Virgin Islands, British",analytical geography; countryinfo snapshot plus explicit overrides
+VIR,"Virgin Islands, U.S.",Unmapped,"VIR|Virgin Islands of the United States|Virgin Islands, U.S.",analytical geography; countryinfo snapshot plus explicit overrides
+VNM,Viet Nam,Asia-Pacific,Cộng hòa Xã hội chủ nghĩa Việt Nam|Socialist Republic of Viet Nam|Socialist Republic of Vietnam|VNM|Viet Nam|Vietnam,analytical geography; countryinfo snapshot plus explicit overrides
+VUT,Vanuatu,Asia-Pacific,Republic of Vanuatu|Ripablik blong Vanuatu|République de Vanuatu|VUT|Vanuatu,analytical geography; countryinfo snapshot plus explicit overrides
+WLF,Wallis and Futuna,Asia-Pacific,Territoire des îles Wallis et Futuna|Territory of the Wallis and Futuna Islands|WLF|Wallis and Futuna,analytical geography; countryinfo snapshot plus explicit overrides
+WSM,Samoa,Asia-Pacific,Independent State of Samoa|Malo Saʻoloto Tutoʻatasi o Sāmoa|Samoa|WSM,analytical geography; countryinfo snapshot plus explicit overrides
+YEM,Yemen,Near East,Republic of Yemen|YEM|Yemen|Yemeni Republic|al-Jumhūriyyah al-Yamaniyyah,analytical geography; countryinfo snapshot plus explicit overrides
+ZAF,South Africa,Africa,RSA|Republic of South Africa|South Africa|Suid-Afrika|ZAF,analytical geography; countryinfo snapshot plus explicit overrides
+ZMB,Zambia,Africa,Republic of Zambia|ZMB|Zambia,analytical geography; countryinfo snapshot plus explicit overrides
+ZWE,Zimbabwe,Africa,Republic of Zimbabwe|ZWE|Zimbabwe,analytical geography; countryinfo snapshot plus explicit overrides

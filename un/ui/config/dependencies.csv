@@ -1,0 +1,9 @@
+package,requirement,build_status
+shiny,minimum 1.8.1,not installed
+callr,required,not installed
+jsonlite,required,not installed
+digest,required by app; system SHA-256 fallback tested in core,not installed
+htmltools,required,not installed
+zip,required,not installed
+cluster,recommended R package,2.1.8.2 executed
+pagedown,optional native PDF route,not installed

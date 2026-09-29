@@ -1,0 +1,2 @@
+# Preserve package checksums on Windows and Unix checkouts.
+un/** -text

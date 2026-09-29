@@ -1,0 +1,10 @@
+D1_INSPECT_READY
+$ready
+[1] TRUE
+
+$root
+[1] "/mnt/data/un_final_build/UN_Daily_Briefing_R_2_5_D1_I4_SHINY_INTEGRATED"
+
+$adapter_sha256
+[1] "8ba75a9a667867f500eb37c2d56f3f49637810de62e52b5177bd262b85f8408f"
+

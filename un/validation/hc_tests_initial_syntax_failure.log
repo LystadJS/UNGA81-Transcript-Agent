@@ -1,0 +1,8 @@
+PASS Exactly five implemented adapters; only M07 added 
+PASS PAM has no callable adapter 
+PASS Original 42-method registry is unchanged 
+PASS Frozen policy explicitly prohibits publication 
+PASS Full feature distances match independent stats dist 
+PASS Distance computed from normalized vectors matches cosine chord 
+Error: unexpected ')' in "test("Sparse and dense feature paths agree", stopifnot(identical(hc_compute(Matrix::Matrix(x, sparse = TRUE), quick), n))))"
+Execution halted

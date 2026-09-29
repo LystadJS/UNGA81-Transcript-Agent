@@ -1,0 +1,10 @@
+Country: Example delegation
+Country ID: EXAMPLE
+Region: Unmapped
+Speaker: Example speaker
+Date: 2026-09-24
+Language: en
+Status: available
+Source URL: 
+--- TRANSCRIPT ---
+Paste the transcript text here. Replace all example metadata before a real run.

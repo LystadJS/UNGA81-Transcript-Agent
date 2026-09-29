@@ -1,0 +1,4 @@
+"candidate","suggested_terms","texts","attributed_countries","representative_statement_id","representative_excerpt","engineering_pass","publication_eligible"
+"Group 1","accessible / accessible computing / ai systems / algorithm / algorithm testing",6,6,"DEMO-003","Artificial intelligence requires careful oversight, reliable training data, and accessible computing infrastructure.",TRUE,FALSE
+"Group 2","adaptation / climate / coastal / resilient / adaptation funding",6,6,"DEMO-009","Climate finance should support coastal adaptation, resilient infrastructure, and early warning for floods.",TRUE,FALSE
+"Group 3","emergency / food / nutrition / agricultural / agricultural supply",6,6,"DEMO-015","Food security requires reliable nutrition programmes, agricultural supply, and emergency food delivery.",TRUE,FALSE

@@ -1,0 +1,111 @@
+{
+  "checks": [
+    {
+      "check": "MIME parser reports no defects",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Exactly one HTML and one plaintext body",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Draft flag retained and no recipients or sender set",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "EML uses CRLF throughout",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "MIME lines within transport limit",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "text/html round-trip matches saved file",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "text/plain round-trip matches saved file",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Exactly five ordered analytical sections",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Email includes no scripts or external image requests",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Synthetic-data notice is present",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Country extracts account for all 18 training statements",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Topic configuration is a list of four objects",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "No analytical packet is released",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "All exported quotations have exact source character spans",
+      "passed": true,
+      "detail": "21 source-evidence rows"
+    },
+    {
+      "check": "All evidence body hashes match source text",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "All manifest file hashes verify",
+      "passed": true,
+      "detail": "19 manifest entries"
+    },
+    {
+      "check": "Receipt explicitly distinguishes prototype from D1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Request fingerprint verifies",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "PDF is readable and contains five pages",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "PDF contains synthetic notice and all country source extracts",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "No PDF text blocks extend outside page bounds",
+      "passed": true,
+      "detail": "[]"
+    }
+  ],
+  "passed": 21,
+  "total": 21
+}

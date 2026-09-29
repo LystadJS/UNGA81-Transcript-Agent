@@ -1,0 +1,1 @@
+Integration and standalone execution exposed an unrenderable NA in quality_checks observed values. Only HTML rendering maps missing diagnostics to Not evaluable. Underlying RDS/CSV missingness and gate failure are unchanged. Added explicit regression test. Failed runs retained separately; not counted as delivered.
