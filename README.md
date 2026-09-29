@@ -19,6 +19,11 @@ For the full D1 pipeline setup, use [un/START_HERE.md](un/START_HERE.md).
 The [UI guide](un/ui/START_HERE.md) explains input modes and setup.
 The [read-only preview](un/ui/Interface%20Preview.html) is included for local viewing.
 
+## Current capabilities and methods
+
+See the [repository inventory](docs/INVENTORY.md) for the three input workflows,
+all 42 registered methods, the six implemented adapters, and current limitations.
+
 ## Included
 
 - Native R D1-I4 analytical pipeline, publication gates, and exactly five email outputs.
