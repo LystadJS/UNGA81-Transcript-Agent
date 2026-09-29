@@ -1,13 +1,13 @@
 # Current project inventory
 
-Inspected 29 September 2026 against application commit
-`42125d17bc2add017d9bee1a6a55f3af1b20c431` on `main`. This is a source-code and
-artifact inventory, not a new execution of the application or regression suites.
+Updated 29 September 2026 for the I5 extension. The original inventory used
+application commit `42125d1`; current changes and new acceptance evidence are
+documented in [I5](I5.md). Historical results remain identified below.
 
 The project is a local R transcript-processing and draft-briefing application,
 with a Shiny interface and an explicitly gated analytical research layer.
 It is not yet a fully validated diplomatic stance, forecasting, or autonomous
-monitoring system. Six of 42 registered analytical methods have executable D1
+monitoring system. Twelve of 42 registered analytical methods have executable D1
 adapters. Recording a method's prerequisites is not executing that method.
 
 ## Repository layout
@@ -38,7 +38,8 @@ their full identities; the surrounding descriptive paths were shortened.
   Export evidence CSV, settings JSON and an audit ZIP.
 - Run analysis in a separate R worker, show progress, support cancellation, block
   duplicate clicks, and warn when settings no longer match completed results.
-  These controller features exist in code; complete live acceptance is outstanding.
+  Server generation, duplicate-click, cancellation and disconnect tests pass;
+  complete browser acceptance is outstanding.
 - Save and restore topic preferences in the browser without saving transcript text there.
 - Archive source bytes, hashes, requests, run configuration, artifacts, evidence,
   method status and publication decisions for audit/reproduction.
@@ -82,10 +83,16 @@ Sources: [UI input contract](../un/ui/docs/INPUTS.md),
 | M06 | PCoA/classical MDS | Geometry challenger on Euclidean chord distances from the same TF-IDF space. Not independent confirmation of PCA and not an alternative automatic publication producer. |
 | M07 | Hierarchical clustering | Average linkage primary; complete and Ward.D2 sensitivity checks; candidate k=2..6. Uses full feature distances, not the plotted 2D coordinates. Audit-only. |
 | M09 | PAM/k-medoids | Candidate k=2..6, silhouette/size selection, exemplar medoids and 100 fixed-seed roster-deletion replicates per k. Audit-only. |
+| M08 | K-means | Multistart full-feature clustering with roster-deletion checks. Audit-only. |
+| M31 | Lexical similarity network | Versioned cosine edges; stance/event layers unavailable. Audit-only. |
+| M32 | Louvain | Weighted lexical community detection and stability checks. Audit-only. |
+| M33 | Leiden | Weighted modularity communities and stability checks. Audit-only. |
+| M34 | Spectral clustering | Normalized-adjacency partitioning with eigenspace checks. Audit-only. |
+| M36 | Network metrics | Single-snapshot degree, strength, betweenness, components and density; temporal comparisons unavailable. Audit-only. |
 
 The runtime adapter list in [09_method_registry.R](../un/R/09_method_registry.R)
 is authoritative for implementation. The registry CSV still contains original
-`design_only` labels, even for these six; those static labels are not current
+`design_only` labels, even for executable adapters; those static labels are not current
 execution status. The runtime writes actual method and prerequisite ledgers.
 
 ### Separate UI research analysis
@@ -117,8 +124,8 @@ Source: [publication contract implementation](../un/R/15_publish_packets.R).
 
 - Literal matching is not semantic relevance, stance, support, importance, or
   policy alignment. Non-match is unresolved. Accuracy/recall is not established.
-- Thirty-six registry methods remain unimplemented: embeddings, supervised issue
-  and stance models, advanced topic models, longitudinal change, network models,
+- Thirty registry methods remain unimplemented: embeddings, supervised issue
+  and stance models, advanced topic models, longitudinal change, further network models,
   forecasting and diffusion are roadmap items. No implemented human-gold-label
   import adapter is declared by the current readiness context.
 - The UI discovery branch is English-only based on declared metadata; no language
@@ -136,11 +143,11 @@ Source: [publication contract implementation](../un/R/15_publish_packets.R).
   local reference setup instead of weakening integrity checks.
 - On the archived 39-speech replay, both hierarchical and PAM clustering failed
   their quality screens. Their groupings are not released geopolitical blocs.
-- Live Shiny/browser/controller acceptance and native Outlook rendering remain
+- Full browser acceptance and native Outlook rendering remain
   outstanding. Static screenshots and MIME checks do not establish those.
 - The most recent Windows backend check was 96/97: PDF export failed when the
-  detected Python launcher could not run. Theme-era full app startup was blocked
-  by missing local R `zip`. PDF generation is optional and environment-dependent.
+  detected Python launcher could not run. The subsequent I5 server acceptance installed `zip` in an isolated QA library
+  and passed generation/cancellation/disconnect checks. PDF generation is optional and environment-dependent.
 - EML generated by the UI adapter wraps the portable HTML in a new MIME draft;
   it does not reuse the CLI's CID-image MIME assembly. Treat native Outlook image
   rendering as unverified for that path.
@@ -157,7 +164,7 @@ Source: [publication contract implementation](../un/R/15_publish_packets.R).
 | Later integrated Linux acceptance | 373 inherited tests + 97 UI backend + 9 adapter; full 39-speech replay and topic invariance recorded |
 | Recent Windows packaging checks | 62 R files parsed, 9 adapter checks passed, 2,567 saved references resolved, checksums/extraction passed; backend 96/97 |
 | Theme update | Actual UI constructor rendered; desktop/mobile static previews passed; no full Shiny startup |
-| This inventory | Code/artifact inspection only; no new application acceptance run |
+| I5 extension | New regression and controller acceptance; see [I5 evidence](../un/validation/i5/README.md) |
 
 The 371 and 373 totals are different historical records, not a fresh combined
 claim. Dependency CSVs likewise contain build-environment snapshots, not a live
@@ -178,7 +185,7 @@ list. Registry intent and package candidates are not promises of operational sup
 | M05 | Principal components analysis | Implemented; publication limits above |
 | M06 | Principal coordinates analysis / classical MDS | Implemented; publication limits above |
 | M07 | Hierarchical clustering | Implemented; publication limits above |
-| M08 | K-means | Not implemented |
+| M08 | K-means | Implemented within I5 scope above; audit-only |
 | M09 | PAM / k-medoids | Implemented; publication limits above |
 | M10 | UMAP | Not implemented |
 | M11 | Unpenalized logistic issue classifier | Not implemented |
@@ -201,12 +208,12 @@ list. Registry intent and package candidates are not promises of operational sup
 | M28 | Hidden Markov model | Not implemented |
 | M29 | Latent transition analysis | Not implemented |
 | M30 | Dynamic mixture model | Not implemented |
-| M31 | Separate similarity and stance networks | Not implemented |
-| M32 | Louvain communities | Not implemented |
-| M33 | Leiden communities | Not implemented |
-| M34 | Spectral clustering | Not implemented |
+| M31 | Separate similarity and stance networks | Implemented within I5 scope above; audit-only |
+| M32 | Louvain communities | Implemented within I5 scope above; audit-only |
+| M33 | Leiden communities | Implemented within I5 scope above; audit-only |
+| M34 | Spectral clustering | Implemented within I5 scope above; audit-only |
 | M35 | Stochastic block models | Not implemented |
-| M36 | Network structure metrics | Not implemented |
+| M36 | Network structure metrics | Implemented within I5 scope above; audit-only |
 | M37 | Issue / stance / shift / membership forecasting | Not implemented |
 | M38 | Temporal transformer / sequence model | Not implemented |
 | M39 | Discrete-time / survival adoption hazard | Not implemented |

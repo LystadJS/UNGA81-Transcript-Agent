@@ -1,4 +1,11 @@
-# Daily UN briefing — D1 clustering checkpoint
+# Daily UN briefing — D1 research pipeline
+
+Current source includes the I5 extension: 12 executable adapters, 30 still
+unimplemented, and six new audit-only lexical research methods. See the
+[current implementation and roadmap](../docs/I5.md) and
+[Windows acceptance](validation/i5/README.md). The Shiny interface supports
+editable user topics; the fixed codebook described below is the legacy CLI
+codebook. The following milestone notes preserve the imported I4 baseline.
 
 **Release 2.5.0-d1-i4-checkpoint | R-native | local unsent Outlook drafts | 25 September 2026**
 

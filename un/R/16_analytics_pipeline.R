@@ -16,7 +16,7 @@ prepare_analytics <- function(root,run,cfg) {
     report_packets=packets,inline_images=i2_inline_manifest(packets,run),
     model_artifacts=as.list(accounting$ledger$artifact_ref[nzchar(accounting$ledger$artifact_ref)]),
     released_model_count=sum(vapply(packets,function(p)p$state=="ready",logical(1))),
-    current_scope="foundations + M01 + frozen M02 + PCA M05 / PCoA M06 + audit-only hierarchical M07 + PAM M09",no_method_registration_is_a_fit=TRUE)
+    current_scope="foundations + M01 + frozen M02 + PCA M05 / PCoA M06 + audit-only hierarchical M07 + PAM M09 + I5 lexical research M08/M31/M32/M33/M34/M36",no_method_registration_is_a_fit=TRUE)
   json_write(file.path(run,"audit/analytics/report_packets.json"),packets)
   saveRDS(packets,file.path(run,"audit/analytics/report_packets.rds"),version=3)
   saveRDS(cp,file.path(run,"checkpoint.rds"),version=3)
@@ -49,7 +49,7 @@ append_d1_audit<-function(run,cp) {
   ledger<-read.csv(file.path(run,"audit/analytics/method_ledger.csv"),stringsAsFactors=FALSE,colClasses="character",na.strings=character(),fileEncoding="UTF-8")
   gates<-read.csv(file.path(run,"audit/analytics/gate_ledger.csv"),stringsAsFactors=FALSE,colClasses="character",na.strings=character(),fileEncoding="UTF-8")
   block<-c('<h1>Design D1 — clustering checkpoint</h1>',
-    '<p>42 registrations are accounted for. M01, M02, M05, M06, M07 and M09 are implemented. Hierarchical clustering and PAM remain audit-only even when engineering checks pass. The other 36 adapters remain unimplemented. Historical automatic labels are not training gold.</p>',
+    '<p>42 registrations are accounted for. M01, M02, M05, M06, M07, M08, M09, M31, M32, M33, M34 and M36 have executable adapters. I5 networks are lexical only; stance and temporal comparisons are unavailable. Clustering and network methods remain audit-only. The other 30 adapters remain unimplemented. Historical automatic labels are not training gold.</p>',
     '<p><a href="audit/analytics/method_ledger.csv">Method ledger</a> · <a href="audit/analytics/gate_ledger.csv">Prerequisite ledger</a> · <a href="data/history_observations.csv">As-of observation index</a> · <a href="data/m01_evidence.csv">M01 source evidence</a></p>',
     '<table><tr><th>Method</th><th>Actual state</th><th>Reason</th></tr>')
   for(i in seq_len(nrow(ledger))) {

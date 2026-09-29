@@ -19,3 +19,5 @@ history/
 validation/d1_fixture_*/
 
 models/
+
+/runtime/

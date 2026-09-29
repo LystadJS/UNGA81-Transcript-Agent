@@ -21,7 +21,7 @@ x <- hc_with_seed(199, function() {
 })
 rownames(x) <- sprintf("S%02d", 1:30); colnames(x) <- paste0("term", 1:8)
 n <- hc_compute(x, quick)
-test("Exactly six implemented adapters; M07 and M09 added", stopifnot(identical(names(d1_adapters()), c("M01","M02","M05","M06","M07","M09"))))
+test("Twelve implemented adapters; original hierarchy and PAM retained", stopifnot(identical(names(d1_adapters()), c("M01","M02","M05","M06","M07","M09","M08","M31","M32","M33","M34","M36"))))
 test("Original 42-method registry is unchanged", stopifnot(nrow(read_d1_registry(root)) == 42L))
 test("Frozen policy explicitly prohibits publication", stopifnot(p$publication_mode == "audit_only", p$replicates == 100))
 test("Full feature distances match independent stats dist", near(n$distance, as.matrix(dist(x))))

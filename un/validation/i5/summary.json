@@ -1,0 +1,47 @@
+{
+  "date": "2026-09-29",
+  "runtime": "R 4.5.3 on Windows 11 x64",
+  "suites": {
+    "base": 93,
+    "d1": 94,
+    "i2": 101,
+    "hierarchical": 58,
+    "pam": 33,
+    "adapter": 9,
+    "i5": 71
+  },
+  "total_checks": 459,
+  "failures": 0,
+  "r_files_parsed": 64,
+  "shiny_testServer": "passed generation, duplicate clicks, cancellation, active-worker disconnect",
+  "methods_registered": 42,
+  "executable_adapters": 12,
+  "not_implemented": 30,
+  "new_adapters_audit_only": true,
+  "full_browser_acceptance": false,
+  "native_outlook_acceptance": false,
+  "pdf_acceptance": false,
+  "replay": {
+    "date": "2026-09-23",
+    "countries": 39,
+    "methods": 42,
+    "prerequisites": 133,
+    "packets": [
+      "O1",
+      "O2",
+      "O3",
+      "O4",
+      "O5"
+    ],
+    "validation_passed": true,
+    "new_method_states": {
+      "M08": "withheld_quality",
+      "M31": "executed",
+      "M32": "withheld_quality",
+      "M33": "withheld_quality",
+      "M34": "blocked_data",
+      "M36": "executed"
+    },
+    "no_email_sent": true
+  }
+}

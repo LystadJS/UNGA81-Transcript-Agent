@@ -12,6 +12,8 @@ Rscript --vanilla tests/run_i2_tests.R
 Rscript --vanilla tests/run_hierarchical_tests.R
 Rscript --vanilla tests/run_pam_tests.R
 Rscript --vanilla tests/run_shiny_adapter_tests.R
+Rscript --vanilla tests/run_i5_tests.R
+Rscript --vanilla ui/tests/test_shiny.R
 Rscript --vanilla ui/tests/run_tests.R ui
 ```
 

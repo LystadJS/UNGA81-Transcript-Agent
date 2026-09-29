@@ -22,11 +22,14 @@ The [read-only preview](un/ui/Interface%20Preview.html) is included for local vi
 ## Current capabilities and methods
 
 See the [repository inventory](docs/INVENTORY.md) for the three input workflows,
-all 42 registered methods, the six implemented adapters, and current limitations.
+all 42 registered methods, the 12 executable adapters, and current limitations.
+
+The [I5 extension and remaining roadmap](docs/I5.md) describes the six new
+audit-only methods and the 30 methods still unimplemented.
 
 ## Included
 
-- Native R D1-I4 analytical pipeline, publication gates, and exactly five email outputs.
+- Native R D1-I5 analytical pipeline, publication gates, and exactly five email outputs.
 - Shiny interface with editable topics, source evidence, coverage, and draft exports.
 - USUN seal, navy/red palette, and local outline icons.
 - Replay fixtures, frozen model/reference artifacts, inherited validation and tests.
@@ -34,12 +37,15 @@ all 42 registered methods, the six implemented adapters, and current limitations
 
 ## Validation status
 
-Windows ZIP extraction and checksums passed. All 62 R files parsed, all 9 Shiny
+Current regression and Shiny server checks are recorded in
+[I5 acceptance](un/validation/i5/README.md).
+
+Earlier import validation: Windows ZIP extraction and checksums passed. All 62 R files parsed, all 9 Shiny
 adapter checks passed, and all 2,567 checked saved-data references resolved.
 The backend passed 96/97 checks; PDF creation failed because the local Python
 launcher could not run. Desktop and mobile theme previews passed layout checks,
-and the Shiny UI constructor rendered. Full Shiny startup for the theme update
-remains unverified because the local R installation lacked the `zip` package.
+and the Shiny UI constructor rendered. The later I5 server tests passed after adding `zip` to the QA environment.
+Full browser and native Outlook acceptance remain open.
 
 See [packaging validation](docs/packaging.md) and [theme validation](un/ui/THEME.md).
 Inherited acceptance records describe their original runs, not a new full
@@ -47,8 +53,8 @@ regression run for this repository import. No email is sent automatically.
 
 ## Reproduction and provenance
 
-[REPRODUCE.md](REPRODUCE.md) describes this checkout. The source package is the
-latest short-path, themed `un-ui.zip` build. Package checksums are preserved
+[REPRODUCE.md](REPRODUCE.md) describes this checkout. The imported baseline was the
+short-path, themed `un-ui.zip` build; current source includes the I5 extension. Package checksums are preserved
 in `un/SHA256SUMS.txt`; `.gitattributes` prevents checkout line-ending conversion
 from invalidating them. Keep API keys and local runtime configuration out of Git.
 

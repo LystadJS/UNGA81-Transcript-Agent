@@ -38,6 +38,15 @@ shiny::testServer(env$make_server(root), {
   session$setInputs(cancel = 1L)
   stopifnot(!isTRUE(state$running), is.null(state$result), identical(state$progress$state, "cancelled"))
 })
+# Disconnect during an active job must terminate its worker without a reactive-context error.
+shiny::testServer(env$make_server(root), {
+  session$setInputs(dates = as.Date(c("2026-09-24", "2026-09-24")), source = "demo", topics = "Climate finance")
+  session$setInputs(generate = 1L)
+  worker <- state$process
+  stopifnot(!is.null(worker), isTRUE(state$running))
+  session$close()
+  stopifnot(!worker$is_alive())
+})
 writeLines(c("PASSED: live Shiny testServer acceptance", capture.output(sessionInfo())),
            file.path(root, "validation", "shiny_runtime_status.txt"))
-cat("PASSED: Shiny server generation, duplicate-click protection, and cancellation.\n")
+cat("PASSED: Shiny server generation, duplicate-click protection, cancellation, and disconnect cleanup.\n")

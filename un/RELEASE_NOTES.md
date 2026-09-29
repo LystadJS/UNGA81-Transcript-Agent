@@ -1,4 +1,11 @@
-# Release 2.5.0-d1-i4-checkpoint
+# I5 source extension — 29 September 2026
+
+Added M08, lexical-only M31, M32, M33, M34, and single-snapshot M36 as audit-only
+adapters. Added deterministic, source-bound validation and saved diagnostics.
+Repaired worker disconnect cleanup, strict decoding and adapter paths. See
+[scope and remaining roadmap](../docs/I5.md) and [acceptance](validation/i5/README.md).
+
+## Imported release 2.5.0-d1-i4-checkpoint
 
 - Added M09 PAM / k-medoids on the frozen M02 TF-IDF country space.
 - Added frozen PAM policy and independent policy-hash enforcement.

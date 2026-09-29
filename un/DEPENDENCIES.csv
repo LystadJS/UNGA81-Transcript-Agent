@@ -13,3 +13,4 @@ utils,CSV and archive processing,all profiles,bundled with R and executed
 tools,SHA-256 in R >=4.6,zero-extra-package replay,bundled with R 4.6.1 and executed
 Matrix,Sparse TF-IDF and country matrix operations,M02/M05/M06/M07,Matrix 1.7-5 executed in actual R 4.6.1; freeze actual local installed version
 cluster,Silhouette and PAM/k-medoids diagnostics,M07 and M09,cluster 2.1-8.2 executed for both adapters; freeze actual local installed version
+igraph,Lexical graph communities and metrics,M31/M32/M33/M34/M36,requires >=2.1; validated version recorded in I5 tests

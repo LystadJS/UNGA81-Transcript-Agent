@@ -1,2 +1,4 @@
-Source package: un-ui.zip
+Imported baseline package: un-ui.zip
 SHA256: 083c922a677ebf000eca8c4d24e81f20a205c54e27ada13515c9762735bef18e
+
+Current source includes the I5 extension; see docs/I5.md and un/SHA256SUMS.txt.

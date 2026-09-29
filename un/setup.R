@@ -7,7 +7,7 @@ source("R/00_core.R");assert(getRversion()>="4.3.0","Install R >=4.3; R 4.6.1 is
 lib<-file.path(root,"library",paste0("R-",R.version$major,".",strsplit(R.version$minor,".",fixed=TRUE)[[1]][1]),R.version$platform)
 dir.create(lib,recursive=TRUE,showWarnings=FALSE);.libPaths(c(lib,.libPaths()))
 options(repos=c(CRAN="https://cloud.r-project.org"),timeout=300)
-core<-c("jsonlite","httr2","xml2","digest","base64enc","renv","Matrix","cluster");wanted<-c(core,if(with_browser)"chromote")
+core<-c("jsonlite","httr2","xml2","digest","base64enc","renv","Matrix","cluster","igraph");wanted<-c(core,if(with_browser)"chromote")
 lock<-file.path(root,"renv.lock")
 if(restore) {
   assert(file.exists(lock),"No installed-environment lock exists yet. Run setup.R once to install and freeze dependencies")

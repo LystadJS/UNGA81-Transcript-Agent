@@ -1,0 +1,77 @@
+During startup - Warning messages:
+1: Setting LC_COLLATE=C.UTF-8 failed
+2: Setting LC_CTYPE=C.UTF-8 failed
+3: Setting LC_MONETARY=C.UTF-8 failed
+4: Setting LC_TIME=C.UTF-8 failed
+PASS Six new adapters registered
+PASS Publication allowlist unchanged
+PASS Invalid/zero feature rows rejected
+PASS Unknown country names rejected
+PASS Resource cap enforced
+PASS Missing country feature is not imputed
+PASS Signed stance cannot enter lexical geometry
+PASS Kmeans preserves global RNG
+PASS Kmeans recovers three separated synthetic groups
+PASS All multistart candidate and resampling rows retained
+PASS Kmeans deterministic
+PASS Lexical graph symmetric, diagonal zero, full roster
+PASS Missing stance is explicitly unavailable
+PASS M32 recovers synthetic components
+PASS M32 retains stability evidence
+PASS M32 repeats deterministically
+PASS M33 recovers synthetic components
+PASS M33 retains stability evidence
+PASS M33 repeats deterministically
+PASS M34 recovers synthetic components
+PASS M34 retains stability evidence
+PASS M34 repeats deterministically
+PASS Metrics preserve all nodes and components
+PASS Strength agrees with independent row sums
+PASS Disconnected graph betweenness finite
+PASS Spectral isolated node rejected
+PASS Empty graph community is unavailable
+PASS Signed graph rejected
+PASS Single-snapshot metrics preserve isolated nodes
+PASS M08 source-bound result recomputes
+PASS M08 round-trip and table inspection preserve identity
+PASS M08 synthetic sources never pass source quality
+PASS M08 rehashing cannot promote release
+PASS M08 rehashing cannot alter numerical data
+PASS M31 source-bound result recomputes
+PASS M31 round-trip and table inspection preserve identity
+PASS M31 synthetic sources never pass source quality
+PASS M31 rehashing cannot promote release
+PASS M31 rehashing cannot alter numerical data
+PASS M32 source-bound result recomputes
+PASS M32 round-trip and table inspection preserve identity
+PASS M32 synthetic sources never pass source quality
+PASS M32 rehashing cannot promote release
+PASS M32 rehashing cannot alter numerical data
+PASS M33 source-bound result recomputes
+PASS M33 round-trip and table inspection preserve identity
+PASS M33 synthetic sources never pass source quality
+PASS M33 rehashing cannot promote release
+PASS M33 rehashing cannot alter numerical data
+PASS M34 source-bound result recomputes
+PASS M34 round-trip and table inspection preserve identity
+PASS M34 synthetic sources never pass source quality
+PASS M34 rehashing cannot promote release
+PASS M34 rehashing cannot alter numerical data
+PASS M36 source-bound result recomputes
+PASS M36 round-trip and table inspection preserve identity
+PASS M36 synthetic sources never pass source quality
+PASS M36 rehashing cannot promote release
+PASS M36 rehashing cannot alter numerical data
+PASS M08 proof independently validates
+PASS M08 forged gate rejected
+PASS M31 proof independently validates
+PASS M31 forged gate rejected
+PASS M32 proof independently validates
+PASS M32 forged gate rejected
+PASS M33 proof independently validates
+PASS M33 forged gate rejected
+PASS M34 proof independently validates
+PASS M34 forged gate rejected
+PASS M36 proof independently validates
+PASS M36 forged gate rejected
+71 checks; 0 failures. Report: <workspace>\i5-final.csv

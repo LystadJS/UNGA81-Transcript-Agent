@@ -74,7 +74,7 @@ un_readout_capabilities <- function() {
   html <- sub(pattern, table, html, perl = TRUE)
   html <- sub("1\\. Fixed-topic monitor", "1. Tracked-issue monitor", html, fixed = FALSE)
   note <- '<div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:17px;color:#202B38;margin:0 0 9px 0;"><strong>User-selected topics.</strong> Counts are literal candidate matches with retained source evidence. A non-match is unresolved, not absence. These rows do not bypass the D1 classifier/publication gate.</div>'
-  html <- sub('</table>\\s*<div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:17px;color:#202B38;margin:0 0 9px 0;">39 country texts available\\.', paste0('</table>\n', note, '\n<div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:17px;color:#202B38;margin:0 0 9px 0;">39 country texts available.'), html, perl = TRUE)
+  html <- sub(pattern, paste0(table, "\n", note), html, perl = TRUE)
   plain <- readLines(text_path, warn = FALSE, encoding = "UTF-8")
   start <- grep("^1\\. FIXED-TOPIC MONITOR$", plain)
   stop <- grep("^2\\. EMERGING ISSUES$", plain)
@@ -162,7 +162,7 @@ un_readout_run <- function(request, request_path, request_sha256, pipeline_root,
   validate_packets(packets, reference = FALSE)
   progress("email", 86, "Building the D1 country readout with your tracked-issue rows.")
   email_files <- .d1_patch_email(d1_run, tracked, request, job_dir)
-  pdf <- render_pdf(email_files$html, file.path(job_dir, "readout.pdf"), job_dir, file.path(dirname(request_path), "..", "scripts", "print_pdf.py"))
+  pdf <- render_pdf(email_files$html, file.path(job_dir, "readout.pdf"), job_dir, file.path(pipeline_root, "ui", "scripts", "print_pdf.py"))
   if (pdf$status != "created" && file.exists(file.path(d1_run, "daily_briefing.pdf"))) {
     file.copy(file.path(d1_run, "daily_briefing.pdf"), file.path(job_dir, "readout.pdf"), overwrite = TRUE)
     pdf <- list(status = "created", engine = "d1_existing_pdf", reason = "Copied the D1-generated PDF.")

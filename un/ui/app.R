@@ -222,7 +222,7 @@ make_server <- function(root) {
       shiny::invalidateLater(500, session)
       if (!isTRUE(state$running) || is.null(state$process)) return()
       path <- file.path(state$job_dir, "progress.rds")
-      progress <- tryCatch(readRDS(path), error = function(e) NULL)
+      progress <- if (file.exists(path)) tryCatch(readRDS(path), error = function(e) NULL) else NULL
       if (!is.null(progress)) state$progress <- progress
       if (!state$process$is_alive()) {
         tryCatch({
@@ -254,7 +254,8 @@ make_server <- function(root) {
       }
     })
     session$onSessionEnded(function() {
-      if (!is.null(state$process) && state$process$is_alive()) state$process$kill_tree()
+      process <- shiny::isolate(state$process)
+      if (!is.null(process) && process$is_alive()) process$kill_tree()
     })
 
     output$has_result <- shiny::reactive(!is.null(state$result))

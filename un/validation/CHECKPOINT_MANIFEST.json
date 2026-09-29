@@ -2,13 +2,13 @@
   "schema": "D1-I4-checkpoint-manifest-v1",
   "release": "2.5.0-d1-i4-checkpoint",
   "created_at": "2026-09-25T21:46:17Z",
-  "file_count_excluding_manifest_and_sha": 2288,
-  "total_bytes_excluding_manifest_and_sha": 127035339,
+  "file_count_excluding_manifest_and_sha": 2299,
+  "total_bytes_excluding_manifest_and_sha": 127080910,
   "key_files": [
     {
       "path": "README.md",
-      "sha256": "1045026e2f08cf8daa13e802da9d6db4c48287eb39c7a84f3ab073cb3c51d852",
-      "bytes": 3570
+      "sha256": "cb5a612ac7dd30ec352e4e389cc2c022fe1554c6a5b2cb985d8b0e1895b8766a",
+      "bytes": 3996
     },
     {
       "path": "START_HERE.md",
@@ -17,13 +17,13 @@
     },
     {
       "path": "CHECKPOINT_STATUS.md",
-      "sha256": "f3b00f4ff288b92ee48fbc9831cbd59430c1bfdf9d5297c9b159931627ab0103",
-      "bytes": 1186
+      "sha256": "0d1fde03eabe9d2edfe1bf4193534bb4b3498fa85dd5be9f60b67bc751fe780f",
+      "bytes": 1331
     },
     {
       "path": "RELEASE_NOTES.md",
-      "sha256": "9f4ddde79065e54832fce4b310daf0704683016f428589532b512d136babb0ee",
-      "bytes": 857
+      "sha256": "18e711d02e20f0c623084a7fbbca38c8683f5584c98bb98c0e7f6183ca1d694f",
+      "bytes": 1236
     },
     {
       "path": "config/pam_policy.json",
@@ -79,6 +79,26 @@
       "path": "validation/pam_reference_final/validation.json",
       "sha256": "e034453acb42d9d7f12037fb04f72a35e889a9f873a8628dd75133c645ec0421",
       "bytes": 249
+    },
+    {
+      "path": "R/21_research_methods.R",
+      "bytes": 16456,
+      "sha256": "d7d1ae528e15e96fc38c18cfe259854f8afb93b4bc957aa426a1f502a4480758"
+    },
+    {
+      "path": "tests/run_i5_tests.R",
+      "bytes": 7493,
+      "sha256": "90645393f8c27f3c5229115a19bc62540462c39396a9b22511313b98845c05ee"
+    },
+    {
+      "path": "validation/i5/summary.json",
+      "bytes": 1048,
+      "sha256": "cceb71405e3f72e8cc98fcaa84c7db65eb89fd94aa4ae8349c74303193e9127a"
+    },
+    {
+      "path": "validation/i5/README.md",
+      "bytes": 3095,
+      "sha256": "c8fd9e39bf40f91b1e8315e28314586824637d56aa55e2cb87d70a603647ec10"
     }
   ],
   "validation": {
@@ -96,5 +116,5 @@
     "hierarchical_quality_passed": false
   },
   "no_email_sent": true,
-  "packaging_note": "Short-path UI theme update; inherited validation results are historical."
+  "packaging_note": "Current I5 package inventory. validation and source_reference fields are historical D1-I4 evidence. See validation/i5/README.md for current acceptance."
 }

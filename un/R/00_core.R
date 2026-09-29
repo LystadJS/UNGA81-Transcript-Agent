@@ -31,7 +31,7 @@ atomic_bytes <- function(path, value) {
 }
 write_text <- function(path,x) atomic_bytes(path,paste0(paste(x,collapse="\n"),"\n"))
 sha_file <- function(path) {
-  if(requireNamespace("digest",quietly=TRUE) && !isTRUE(getOption("unbrief.minimal"))) return(digest::digest(file=path,algo="sha256"))
+  if(requireNamespace("digest",quietly=TRUE) && (!isTRUE(getOption("unbrief.minimal")) || !"sha256sum" %in% getNamespaceExports("tools"))) return(digest::digest(file=path,algo="sha256"))
   assert("sha256sum" %in% getNamespaceExports("tools"),"Install digest or use R >=4.6 for SHA-256")
   unname(tools::sha256sum(path))
 }
@@ -145,11 +145,15 @@ b64 <- function(raw) {
   out<-tab[as.vector(idx)+1L];if(pad)out[(length(out)-pad+1L):length(out)]<-"=";paste(out,collapse="")
 }
 unb64 <- function(x) {
-  if(requireNamespace("base64enc",quietly=TRUE)&&!isTRUE(getOption("unbrief.minimal")))return(base64enc::base64decode(x))
+  if(!length(x))return(raw())
+  assert(is.character(x)&&length(x)==1L&&!is.na(x),"Expected one base64 string")
   x<-gsub("[\r\n ]","",x);if(!nzchar(x))return(raw());assert(nchar(x)%%4==0,"Invalid base64 size")
   pad<-nchar(x)-nchar(sub("=+$","",x));assert(pad<=2L,"Invalid base64 padding")
   z<-strsplit(x,"",fixed=TRUE)[[1]];assert(!any(z[seq_len(length(z)-pad)]=="="),"Unexpected base64 padding")
   tab<-strsplit("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/","",fixed=TRUE)[[1]];v<-match(z,tab)-1L;v[z=="="]<-0L;assert(!anyNA(v),"Invalid base64 character")
+  if(pad==2L)assert(bitwAnd(v[length(v)-2L],15L)==0L,"Noncanonical base64 padding bits")
+  if(pad==1L)assert(bitwAnd(v[length(v)-1L],3L)==0L,"Noncanonical base64 padding bits")
+  if(requireNamespace("base64enc",quietly=TRUE)&&!isTRUE(getOption("unbrief.minimal")))return(base64enc::base64decode(x))
   m<-matrix(v,nrow=4);a<-as.vector(rbind(bitwOr(bitwShiftL(m[1,],2),bitwShiftR(m[2,],4)),bitwOr(bitwShiftL(bitwAnd(m[2,],15),4),bitwShiftR(m[3,],2)),bitwOr(bitwShiftL(bitwAnd(m[3,],3),6),m[4,])))
   as.raw(head(a,length(a)-pad))
 }

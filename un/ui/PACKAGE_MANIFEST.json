@@ -9,8 +9,8 @@
     },
     {
       "path": "app.R",
-      "bytes": 26145,
-      "sha256": "f15c2fe33c9baf495ff5b196b4e1aaad5b2fde1974f6157e8baec693b62ba346"
+      "bytes": 26208,
+      "sha256": "4ab7fc07788b6f553c351a39a46985687b670cb3e622eee01dcad0cdb2c815a5"
     },
     {
       "path": "CHANGELOG.md",
@@ -174,8 +174,8 @@
     },
     {
       "path": "tests/test_shiny.R",
-      "bytes": 2189,
-      "sha256": "4f07e543654ceb53ff128f7996728914a07a044d497f2000be14d4b46cb94fd2"
+      "bytes": 2626,
+      "sha256": "683b71436d9f0e06b3ee1889d4a24fb4efcf4e8602028d8eb93bc9da296e96a3"
     },
     {
       "path": "THEME.md",
@@ -438,5 +438,6 @@
       "sha256": "108401852b0e7c0421286941da29c634b8d568892f10a81ba739414e9a740c21"
     }
   ],
-  "integration": "D1-I4 pinned adapter; see ../interfaces/shiny_v1.R and validation/SHINY_CHECK.md"
+  "integration": "D1-I4 pinned adapter; see ../interfaces/shiny_v1.R and validation/SHINY_CHECK.md",
+  "source_revision": "I5 extension; release field records the imported UI baseline"
 }

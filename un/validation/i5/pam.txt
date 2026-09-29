@@ -1,0 +1,39 @@
+During startup - Warning messages:
+1: Setting LC_COLLATE=C.UTF-8 failed
+2: Setting LC_CTYPE=C.UTF-8 failed
+3: Setting LC_MONETARY=C.UTF-8 failed
+4: Setting LC_TIME=C.UTF-8 failed
+PASS M09 is registered
+PASS PAM policy frozen and audit only
+PASS PAM uses same full-feature distance as hierarchical
+PASS Five k candidates retained
+PASS Separated features recover k=3
+PASS Selected medoids are observed countries
+PASS Silhouette independently matches cluster
+PASS Every candidate accounts for repeats
+PASS Roster subsamples deterministic
+PASS Caller RNG unchanged
+PASS Sparse and dense agree
+PASS Row order canonicalized
+PASS Coassignment fractions valid
+PASS Medoid stability is bounded
+PASS Zero vectors excluded
+PASS All zero vectors fail
+PASS Nonfinite input fails
+PASS Unnormalized input fails
+PASS Duplicate IDs fail
+PASS Resource cap enforced
+PASS Failed PAM resamples are fully counted
+PASS Failed PAM resamples remain unevaluable, not zero stability
+PASS Never observed PAM pairs remain NA
+PASS Full production PAM repeats executed
+PASS Frozen feature artifact not mutated
+PASS All PAM quality checks retained
+PASS Synthetic provenance remains audit only
+PASS Source-bound result recomputes
+PASS Forged publication flag rejected
+PASS Modified distance rejected
+PASS No M09 ready producer exists
+PASS M09 cannot populate O3
+PASS Unversioned PAM policy edit rejected
+33 PAM tests, 0 failures.

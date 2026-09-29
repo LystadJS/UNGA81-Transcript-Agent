@@ -1,0 +1,43 @@
+method_id,method,terminal_status,reason,model_release_status
+M01,Fixed-topic rules and lexicons,executed,Source-bound diagnostic transform executed and its evidence validated; not a trained or released classifier.,diagnostic_only
+M02,TF-IDF and cosine similarity,executed,Frozen TF-IDF fitted_frozen_reference and source-bound daily transform executed; cosine is not agreement or a probability.,representation_only
+M03,Sentence and document embeddings,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M04,Fixed-topic semantic relevance,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M05,Principal components analysis,withheld_quality,"Projection fitted/projected and retained in the audit; failed display gates: reference_variance, current_energy, distance_stress, distance_rank_fidelity, neighbor_fidelity, metadata_comparability, observed_source_scope, source_flags",unreleased
+M06,Principal coordinates analysis / classical MDS,withheld_quality,"Projection fitted/projected and retained in the audit; failed display gates: reference_variance, current_energy, distance_stress, distance_rank_fidelity, neighbor_fidelity, metadata_comparability, observed_source_scope, source_flags",challenger_audit_only
+M07,Hierarchical clustering,withheld_quality,"Fitted hierarchy retained; failed checks: observed_source_scope, known_language_genre, source_quality, cluster_size, silhouette, partition_stability, clusterwise_stability, clusterwise_evaluability",audit_only
+M08,K-means,withheld_quality,"M08 lexical research computation retained; quality screens failed; audit-only, not diplomatic alignment",audit_only
+M09,PAM / k-medoids,withheld_quality,"Fitted PAM retained; failed checks: observed_source_scope, known_language_genre, source_quality, silhouette, partition_stability",audit_only
+M10,UMAP,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M11,Unpenalized logistic issue classifier,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M12,Elastic-net multilabel issue classifier,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M13,Random forest classifiers,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M14,Gradient-boosted trees,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M15,Embedding plus regularized classifier,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M16,Fine-tuned text transformer,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M17,Proposition-specific stance models,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M18,Latent Dirichlet allocation,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M19,Structural topic model,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M20,Embedding-topic pipeline with cluster descriptors,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M21,HDBSCAN density clustering,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M22,Within-country historical distance,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M23,Isolation-forest anomaly detection,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M24,Change-point detection,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M25,Longitudinal Procrustes alignment,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M26,driftmapR movement and resampling,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M27,Dynamic cluster correspondence,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M28,Hidden Markov model,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M29,Latent transition analysis,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M30,Dynamic mixture model,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M31,Separate similarity and stance networks,executed,"M31 lexical research computation retained;  audit-only, not diplomatic alignment",audit_only
+M32,Louvain communities,withheld_quality,"M32 lexical research computation retained; quality screens failed; audit-only, not diplomatic alignment",audit_only
+M33,Leiden communities,withheld_quality,"M33 lexical research computation retained; quality screens failed; audit-only, not diplomatic alignment",audit_only
+M34,Spectral clustering,blocked_data,No I5 result: No evaluable M34 partition: Spectral clustering withheld with isolated nodes; no silent node removal,audit_only
+M35,Stochastic block models,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M36,Network structure metrics,executed,"M36 lexical research computation retained;  audit-only, not diplomatic alignment",audit_only
+M37,Issue / stance / shift / membership forecasting,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M38,Temporal transformer / sequence model,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M39,Discrete-time / survival adoption hazard,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M40,Network autocorrelation,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M41,Relational event models,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased
+M42,Bayesian diffusion model,not_implemented,No executable adapter is registered in this D1-I4 checkpoint; all design prerequisites were evaluated separately.,unreleased

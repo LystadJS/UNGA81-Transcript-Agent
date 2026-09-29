@@ -131,7 +131,13 @@ d1_adapters <- function() list(M01=list(version="d1-i1-rules-1",required_package
     M05=list(version="d1-i2-pca-1",required_packages=c("Matrix","stats"),managed=TRUE),
     M06=list(version="d1-i2-pcoa-1",required_packages=c("Matrix","stats"),managed=TRUE),
     M07=list(version="d1-hc-1",required_packages=c("Matrix","stats","cluster"),managed=TRUE),
-    M09=list(version="d1-pam-1",required_packages=c("Matrix","stats","cluster"),managed=TRUE))
+    M09=list(version="d1-pam-1",required_packages=c("Matrix","stats","cluster"),managed=TRUE),
+    M08=list(version="d1-i5-1",required_packages=c("Matrix","stats","cluster"),managed=TRUE),
+    M31=list(version="d1-i5-1",required_packages=c("Matrix","stats","cluster","igraph"),managed=TRUE),
+    M32=list(version="d1-i5-1",required_packages=c("Matrix","stats","cluster","igraph"),managed=TRUE),
+    M33=list(version="d1-i5-1",required_packages=c("Matrix","stats","cluster","igraph"),managed=TRUE),
+    M34=list(version="d1-i5-1",required_packages=c("Matrix","stats","cluster","igraph"),managed=TRUE),
+    M36=list(version="d1-i5-1",required_packages=c("Matrix","stats","cluster","igraph"),managed=TRUE))
 validate_method_ledger <- function(ledger, gates, registry, run, cutoff) {
   assert(nrow(ledger)==42L && !anyDuplicated(ledger$method_id) && identical(ledger$method_id,registry$method_id), "Every D1 method needs exactly one ordered terminal summary row")
   assert(all(ledger$terminal_status%in%D1_TERMINAL_STATES) && all(nzchar(ledger$reason)), "Incomplete or invalid method accounting")
@@ -153,6 +159,12 @@ validate_method_ledger <- function(ledger, gates, registry, run, cutoff) {
           i2_validate_context(proof,run);assign(context_key,TRUE,envir=proof_cache)
         }
         assert(identical(g$state[j],gate_decision(g$gate[j],proof)$state),"Gate state contradicts its archived evidence")
+      }
+      if(identical(proof$schema,"D1-I5-proof-v1")) {
+        check_key<-paste0("validated_",key)
+        if(!exists(check_key,envir=proof_cache,inherits=FALSE))assign(check_key,i5_validate_proof(proof,run),envir=proof_cache)
+        expected<-get(check_key,envir=proof_cache,inherits=FALSE)[[g$gate[j]]]
+        assert(identical(g$state[j],expected$state)&&identical(g$reason[j],expected$reason),"I5 gate contradicts source/numerical proof")
       }
       if(identical(proof$schema,"D1-PAM-method-proof-v1")) {
         check_key<-paste0("validated_",key)
@@ -176,8 +188,8 @@ validate_method_ledger <- function(ledger, gates, registry, run, cutoff) {
     row<-ledger[i,,drop=FALSE]
     if (row$terminal_status%in%c("executed","reused") || (row$terminal_status=="withheld_quality" && nzchar(row$artifact_ref))) {
       if(row$terminal_status=="withheld_quality") {
-        diagnostic_gate<-if(row$method_id%in%c("M07","M09"))"cluster_stability" else "projection_diagnostics"
-        assert(row$method_id%in%c("M05","M06","M07","M09")&&g$state[g$gate==diagnostic_gate]=="fail"&&
+        diagnostic_gate<-if(row$method_id%in%c("M07","M08","M09"))"cluster_stability" else if(row$method_id%in%c("M32","M33","M34"))"network_stability" else "projection_diagnostics"
+        assert(row$method_id%in%c("M05","M06","M07","M08","M09","M32","M33","M34")&&g$state[g$gate==diagnostic_gate]=="fail"&&
           all(g$state[g$gate!=diagnostic_gate]=="pass"),"Withheld fit lacks passed preflight or failed measured diagnostics")
       } else assert(all(g$state=="pass"),"A method ran with an unestablished prerequisite")
       assert(row$method_id%in%names(d1_adapters())&&row$implementation_status=="implemented","Execution claimed without a registered executable adapter")
@@ -217,7 +229,7 @@ run_method_accounting <- function(root,run,cfg,cp,snapshot,adapters=d1_adapters(
     artifact_ref<-artifact_hash<-artifact_time<-error_log<-"";stage<-"eligibility";fit_status<-"not_implemented"
     staged<-NULL
     if(implemented && isTRUE(adapter$managed)) {
-      staged<-if(id=="M07")hc_run_managed(id,cp,root,run,snapshot,context,available,clock) else if(id=="M09")pam_run_managed(id,cp,root,run,snapshot,context,available,clock) else i2_run_managed(id,cp,root,run,snapshot,context,available,clock)
+      staged<-if(id%in%I5_IDS)i5_run_managed(id,cp,root,run,snapshot,context,available,clock) else if(id=="M07")hc_run_managed(id,cp,root,run,snapshot,context,available,clock) else if(id=="M09")pam_run_managed(id,cp,root,run,snapshot,context,available,clock) else i2_run_managed(id,cp,root,run,snapshot,context,available,clock)
       status<-staged$status;reason<-staged$reason;stage<-staged$stage;fit_status<-staged$fit_status
       artifact_ref<-staged$artifact_ref;artifact_hash<-staged$artifact_hash;artifact_time<-staged$artifact_time;error_log<-staged$error_log
       gr<-staged$gr;bad<-Filter(function(g)!identical(g$state,"pass"),gr)

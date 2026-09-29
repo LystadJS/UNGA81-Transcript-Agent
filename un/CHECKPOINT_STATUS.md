@@ -1,3 +1,6 @@
+> Historical D1-I4 milestone. Current I5 implementation and acceptance:
+> [I5 extension](../docs/I5.md), [validation](validation/i5/README.md).
+
 # Checkpoint status — 2.5.0 D1-I4
 
 ## Frozen milestone

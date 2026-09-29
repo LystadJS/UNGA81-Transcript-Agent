@@ -86,9 +86,9 @@ pair_snap<-history_ingest(root,pair_run,cfgpair,pair_cp$observations,pair_cp,clo
 test("Ungrouped statements survive one-country aggregation",stopifnot(length(pair_cp$speeches)==1L,length(pair_cp$observations)==2L,nrow(pair_snap$observations)==2L))
 test("Statement-level source versions are distinct",stopifnot(length(unique(pair_snap$observations$observation_id))==2L))
 test("Every country label binds both contributing statements",{labs<-history_labels(file.path(root,cfgpair$analytics$history_dir),"2026-09-30T00:00:00Z","2026-09-30");stopifnot(all(vapply(labs,function(x)length(x$observation_versions)==2L,logical(1))))})
-# Actual diagnostic execution; other 36 methods remain explicitly unimplemented.
+# Actual diagnostic execution; other 30 methods remain explicitly unimplemented.
 account<-run_method_accounting(root,pair_run,cfg,pair_cp,pair_snap)
-test("Complete daily method ledger",stopifnot(nrow(account$ledger)==42L,sum(account$ledger$terminal_status=="executed")==1L,sum(account$ledger$terminal_status=="not_implemented")==36L))
+test("Complete daily method ledger",stopifnot(nrow(account$ledger)==42L,sum(account$ledger$terminal_status=="executed")==1L,sum(account$ledger$terminal_status=="not_implemented")==30L))
 test("Every method has all prerequisite decisions",stopifnot(nrow(account$gates)==133L))
 test("Rule diagnostic is not a trained classifier",{x<-readRDS(file.path(pair_run,account$ledger$artifact_ref[1]));stopifnot(identical(x$is_fitted_model,FALSE),identical(x$publication_eligible,FALSE))})
 test("Rule candidates keep exact source quotes",validate_m01(readRDS(file.path(pair_run,account$ledger$artifact_ref[1])),pair_cp,root))
