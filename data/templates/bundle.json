@@ -1,0 +1,8 @@
+{
+  "schema": "un.review.v1",
+  "dataset_kind": "unreviewed",
+  "validation_scheme": "time_and_country",
+  "cutoff": "",
+  "human_review_complete": false,
+  "note": "Fill after review. Software checks cannot establish reviewer identity, truthful labels, accuracy or authorization."
+}

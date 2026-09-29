@@ -1,0 +1,384 @@
+{
+  "schema": "un.i6.catalog.v1",
+  "daily_adapters": 12,
+  "backlog_methods": 30,
+  "synthetic_kernels": 18,
+  "remaining_kernels": 12,
+  "methods": [
+    {
+      "id": "M03",
+      "method": "Sentence and document embeddings",
+      "research_kernel": "synthetic_tested",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "source_text",
+        "embedding_version",
+        "embedding_provider_authorized"
+      ]
+    },
+    {
+      "id": "M04",
+      "method": "Fixed-topic semantic relevance",
+      "research_kernel": "synthetic_tested",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "source_text",
+        "embedding_version",
+        "fixed_topic_references"
+      ]
+    },
+    {
+      "id": "M10",
+      "method": "UMAP",
+      "research_kernel": "synthetic_tested",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "numeric_features",
+        "embedding_version",
+        "projection_diagnostics"
+      ]
+    },
+    {
+      "id": "M11",
+      "method": "Unpenalized logistic issue classifier",
+      "research_kernel": "synthetic_tested",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "gold_issue_labels",
+        "temporal_grouped_validation",
+        "full_rank_design"
+      ]
+    },
+    {
+      "id": "M12",
+      "method": "Elastic-net multilabel issue classifier",
+      "research_kernel": "synthetic_tested",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "gold_issue_labels",
+        "temporal_grouped_validation",
+        "calibration"
+      ]
+    },
+    {
+      "id": "M13",
+      "method": "Random forest classifiers",
+      "research_kernel": "synthetic_tested",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "gold_labels",
+        "temporal_grouped_validation",
+        "calibration"
+      ]
+    },
+    {
+      "id": "M14",
+      "method": "Gradient-boosted trees",
+      "research_kernel": "not_implemented",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "gold_labels",
+        "temporal_grouped_validation",
+        "calibration"
+      ]
+    },
+    {
+      "id": "M15",
+      "method": "Embedding plus regularized classifier",
+      "research_kernel": "synthetic_tested",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "gold_labels",
+        "embedding_version",
+        "temporal_grouped_validation",
+        "calibration"
+      ]
+    },
+    {
+      "id": "M16",
+      "method": "Fine-tuned text transformer",
+      "research_kernel": "not_implemented",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "gold_labels",
+        "temporal_grouped_validation",
+        "approved_checkpoint",
+        "tokenizer_verified",
+        "neural_resource_benchmark"
+      ]
+    },
+    {
+      "id": "M17",
+      "method": "Proposition-specific stance models",
+      "research_kernel": "synthetic_tested",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "gold_stance_labels",
+        "proposition_schema",
+        "temporal_grouped_validation",
+        "calibration"
+      ]
+    },
+    {
+      "id": "M18",
+      "method": "Latent Dirichlet allocation",
+      "research_kernel": "not_implemented",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "historical_text_corpus",
+        "frozen_vocabulary",
+        "topic_validation"
+      ]
+    },
+    {
+      "id": "M19",
+      "method": "Structural topic model",
+      "research_kernel": "not_implemented",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "historical_text_corpus",
+        "document_metadata",
+        "topic_validation"
+      ]
+    },
+    {
+      "id": "M20",
+      "method": "Embedding-topic pipeline with cluster descriptors",
+      "research_kernel": "not_implemented",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "historical_passage_corpus",
+        "embedding_version",
+        "topic_validation"
+      ]
+    },
+    {
+      "id": "M21",
+      "method": "HDBSCAN density clustering",
+      "research_kernel": "synthetic_tested",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "numeric_features",
+        "density_support",
+        "cluster_stability"
+      ]
+    },
+    {
+      "id": "M22",
+      "method": "Within-country historical distance",
+      "research_kernel": "synthetic_tested",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "same_country_history",
+        "same_genre_issue",
+        "representation_consistent"
+      ]
+    },
+    {
+      "id": "M23",
+      "method": "Isolation-forest anomaly detection",
+      "research_kernel": "synthetic_tested",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "historical_features",
+        "same_genre_issue",
+        "anomaly_backtest"
+      ]
+    },
+    {
+      "id": "M24",
+      "method": "Change-point detection",
+      "research_kernel": "synthetic_tested",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "longitudinal_series",
+        "time_index_valid",
+        "dependence_specified",
+        "change_backtest"
+      ]
+    },
+    {
+      "id": "M25",
+      "method": "Longitudinal Procrustes alignment",
+      "research_kernel": "synthetic_tested",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "shared_entities",
+        "anchor_full_rank",
+        "representation_consistent",
+        "alignment_diagnostics"
+      ]
+    },
+    {
+      "id": "M26",
+      "method": "driftmapR movement and resampling",
+      "research_kernel": "not_implemented",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "shared_entities",
+        "representation_consistent",
+        "driftmap_supported_regime",
+        "resampling_unit_valid"
+      ]
+    },
+    {
+      "id": "M27",
+      "method": "Dynamic cluster correspondence",
+      "research_kernel": "synthetic_tested",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "shared_entities",
+        "cluster_stability",
+        "cluster_correspondence"
+      ]
+    },
+    {
+      "id": "M28",
+      "method": "Hidden Markov model",
+      "research_kernel": "not_implemented",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "repeated_country_sequences",
+        "measurement_invariance",
+        "temporal_validation"
+      ]
+    },
+    {
+      "id": "M29",
+      "method": "Latent transition analysis",
+      "research_kernel": "not_implemented",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "repeated_country_sequences",
+        "measurement_invariance",
+        "temporal_validation"
+      ]
+    },
+    {
+      "id": "M30",
+      "method": "Dynamic mixture model",
+      "research_kernel": "not_implemented",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "repeated_country_sequences",
+        "measurement_invariance",
+        "temporal_validation",
+        "fit_diagnostics"
+      ]
+    },
+    {
+      "id": "M35",
+      "method": "Stochastic block models",
+      "research_kernel": "not_implemented",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "valid_graph_likelihood",
+        "network_stability",
+        "fit_diagnostics"
+      ]
+    },
+    {
+      "id": "M37",
+      "method": "Issue / stance / shift / membership forecasting",
+      "research_kernel": "synthetic_tested",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "historical_outcomes",
+        "observation_process",
+        "temporal_validation",
+        "forecast_calibration"
+      ]
+    },
+    {
+      "id": "M38",
+      "method": "Temporal transformer / sequence model",
+      "research_kernel": "not_implemented",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "long_country_sequences",
+        "observation_process",
+        "temporal_validation",
+        "neural_resource_benchmark"
+      ]
+    },
+    {
+      "id": "M39",
+      "method": "Discrete-time / survival adoption hazard",
+      "research_kernel": "synthetic_tested",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "adoption_events",
+        "risk_set",
+        "lagged_exposures",
+        "censoring_specified",
+        "temporal_validation"
+      ]
+    },
+    {
+      "id": "M40",
+      "method": "Network autocorrelation",
+      "research_kernel": "synthetic_tested",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "historical_outcomes",
+        "preexisting_network",
+        "network_identification"
+      ]
+    },
+    {
+      "id": "M41",
+      "method": "Relational event models",
+      "research_kernel": "synthetic_tested",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "directed_relational_events",
+        "risk_set",
+        "event_time_precision",
+        "temporal_validation"
+      ]
+    },
+    {
+      "id": "M42",
+      "method": "Bayesian diffusion model",
+      "research_kernel": "not_implemented",
+      "daily_adapter_integrated": false,
+      "publication_eligible": false,
+      "required_gates": [
+        "adoption_events",
+        "risk_set",
+        "lagged_exposures",
+        "network_identification",
+        "fit_diagnostics"
+      ]
+    }
+  ]
+}

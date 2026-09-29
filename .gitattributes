@@ -1,2 +1,3 @@
 # Preserve package checksums on Windows and Unix checkouts.
 un/** -text
+examples/review/** -text

@@ -1,0 +1,19 @@
+{
+  "source": "Included 2026-09-23 public replay; I5 validated run",
+  "countries": 39,
+  "audit_only_charts": true,
+  "files": {
+    "chart1.png": "bbac0e823a7e90d739922b34aa799eb4c50be20c0bd1d1c0033208829f2a144c",
+    "chart2.png": "87da6f076770cb4787bfef91436c044603a6cd0053212acaef49b916a3f562ad",
+    "chart3.png": "de8fdd0b5866c16415a67c68903413d3d43ae7c5ce0ddf9e9d98800f1f5242d7",
+    "chart4.png": "6396968ac3112635666ed228ab2fe009bede7980de17031d5712b3864c1c1d96",
+    "desktop.png": "3a8027fe77e98de789842103a8a1533444e6580393c806314bf96799fbcd2dfc",
+    "index.html": "0a355aa3dbcb754f5d7271c15206ea07eeb3909046491402a2a0a585eddcdd8a",
+    "mobile.png": "1ee46d5f348f7ebc7197a944bbc09ad9883e50c5a62f1f6acd7d9d259b15a37d",
+    "overview.png": "8a65e4b252af4ace8d3835e9dd3eb56b0115c64b6672de73ade64c53934ffb3f",
+    "readout.eml": "1d64f63226f8bd8b35bfb23811aa812adf6474df16fe0c17f048514c84638e12",
+    "readout.html": "f9f0ac80bad9860dcf0d463369f595969c4c763262f6eda4ddf0f2036cc67ab4",
+    "readout.png": "dbd4e07df1c21c6df00f5f8d4403c4202f7707c52eb2da241c903fe708883e30",
+    "seal.png": "16eb8e5f0c7d2556bfddcb651e6c0dc77e268a6beb36e938a96e8c9d012b05c5"
+  }
+}

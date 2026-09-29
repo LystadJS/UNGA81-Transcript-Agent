@@ -21,6 +21,16 @@ The [read-only preview](un/ui/Interface%20Preview.html) is included for local vi
 
 ## Current capabilities and methods
 
+Open the [visual review example](examples/review/index.html) locally for the
+actual unsent readout, four audit charts and appearance controls. See the
+[dataset-building guide](docs/DATA_GUIDE.md) for the reviewed-data workflow.
+
+The [I6 research work](research/README.md) adds 18 tested standalone engineering
+kernels toward the remaining 30 methods; 12 kernels remain unwritten. These
+prototypes are not daily adapters and accept synthetic engineering inputs only.
+Daily D1 implementation remains at 12 adapters. The optional review-workspace
+tools use Python 3.11+; the daily pipeline remains R-native.
+
 See the [repository inventory](docs/INVENTORY.md) for the three input workflows,
 all 42 registered methods, the 12 executable adapters, and current limitations.
 
