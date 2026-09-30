@@ -1,16 +1,24 @@
 [
   {
     "width": 1440,
-    "rows": 47,
     "overflow": false,
-    "title": "Cuba at UNGA81 High-Level Week",
-    "filtered": 1
+    "charts_match_csv": true,
+    "scope_filter": true,
+    "topic_drilldown": true,
+    "search_and_empty_state": true,
+    "pagination": true,
+    "appearance": true,
+    "script_errors": []
   },
   {
     "width": 390,
-    "rows": 47,
     "overflow": false,
-    "title": "Cuba at UNGA81 High-Level Week",
-    "filtered": 1
+    "charts_match_csv": true,
+    "scope_filter": true,
+    "topic_drilldown": true,
+    "search_and_empty_state": true,
+    "pagination": true,
+    "appearance": true,
+    "script_errors": []
   }
 ]

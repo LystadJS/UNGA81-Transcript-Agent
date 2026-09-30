@@ -97,3 +97,22 @@ reviewed, no real-data model was trained and no email was sent.
    submitted written speech before quoting them externally.
 3. Obtain the 56 missing transcripts or repeat collection into a fresh directory.
    Keep background proceedings separate from HLW findings.
+
+## Visual presentation
+
+The USUN-themed report includes responsive coverage bars, daily Cuba-reference
+counts, adjacent-topic bars, an evidence explorer, and saved appearance controls.
+The scope selector changes both interactive charts and the evidence explorer.
+Daily bars count candidate evidence rows. Adjacent-topic bars count distinct
+source segments containing both a Cuba match and the named topic; categories
+overlap and co-occurrence does not establish a shared position. Click a bar to
+inspect its source evidence. Coverage bars always describe the full inventory.
+
+Country maps, clustering, and network graphics from other research replays are
+not reused as results from this collection. Research remained withheld under
+the existing 500-text limit. The presentation adds no stance classifications.
+
+`tools/hlw_presentation.py` and `tools/hlw_assets/` reproduce the presentation
+without rerunning collection or R analysis. Open the extracted `index.html`
+alongside its assets for offline use. `visual-check.json` records desktop/mobile
+chart-count, filtering, pagination, appearance, and overflow checks.

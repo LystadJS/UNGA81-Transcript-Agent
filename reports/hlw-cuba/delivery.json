@@ -1,12 +1,13 @@
 {
-  "file": "hlw-cuba.zip",
-  "bytes": 73799145,
-  "sha256": "4c4a887e765db93ee4d845a9829db5c55ba9623a1d37ed29c3e360a97c65d0ec",
-  "files": 425,
+  "file": "hlw-cuba-v2.zip",
+  "bytes": 74091647,
+  "sha256": "c66959d6880b53c3b6ed22ae98eefe4d36a7ab7d6f16945d62acabd6bae3245f",
+  "files": 431,
   "max_internal_path_chars": 59,
   "zip_integrity": true,
   "all_member_hashes_verified": true,
-  "short_path_extraction_passed": true,
-  "extracted_files_verified": 424,
+  "extraction_verified": true,
+  "extracted_files_verified": 430,
+  "local_html_references_verified": true,
   "max_extracted_path_chars": 105
 }

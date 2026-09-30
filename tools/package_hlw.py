@@ -19,7 +19,7 @@ def package(root,report,output):
             text+=['Statement '+str(s['statement_number']),json.dumps(s.get('speaker'),ensure_ascii=False),' '.join(t['text'] for p in s.get('paragraphs',[]) for t in p.get('sentences',[])),'']
         files['hlw/text/'+item['archive_id']+'.txt']='\n'.join(text).encode('utf-8')
     for p in report.iterdir():
-        if p.is_file():files['hlw/report/'+p.name]=p.read_bytes()
+        if p.is_file() and p.name!='delivery.json':files['hlw/report/'+p.name]=p.read_bytes()
     for filename in json.loads((root/'input-batches.json').read_text()):
         name=Path(filename).stem;run=root/('final-'+name)
         for p in run.rglob('*'):
