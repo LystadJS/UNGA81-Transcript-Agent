@@ -1,0 +1,12 @@
+{
+  "file": "hlw-cuba.zip",
+  "bytes": 73799145,
+  "sha256": "4c4a887e765db93ee4d845a9829db5c55ba9623a1d37ed29c3e360a97c65d0ec",
+  "files": 425,
+  "max_internal_path_chars": 59,
+  "zip_integrity": true,
+  "all_member_hashes_verified": true,
+  "short_path_extraction_passed": true,
+  "extracted_files_verified": 424,
+  "max_extracted_path_chars": 105
+}

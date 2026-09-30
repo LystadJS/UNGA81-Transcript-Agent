@@ -21,6 +21,11 @@ The [read-only preview](un/ui/Interface%20Preview.html) is included for local vi
 
 ## Current capabilities and methods
 
+The [HLW Cuba review](reports/hlw-cuba/README.md) collects the 21–28 September
+2026 public transcript inventory and runs the existing upload workflow with
+Cuba, embargo and adjacent-topic refinements. It includes coverage gaps and
+source-linked candidate evidence; it does not release a stance model.
+
 The [single-reviewer AI pilot](docs/REVIEW_PILOT.md) includes a local review form,
 the selected Google BERT checkpoint, a reviewed-label loader and a post-run
 audit attachment. Saving labels does not publish model predictions.

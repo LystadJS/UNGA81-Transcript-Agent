@@ -1,0 +1,95 @@
+{
+  "inventory_meetings": 226,
+  "downloaded": 170,
+  "unavailable": 56,
+  "collection_errors": [],
+  "source_segments": 11146,
+  "analysis_records": 3728,
+  "record_statuses": {
+    "available": 3726,
+    "duplicate_source": 2
+  },
+  "evidence_rows": 1900,
+  "cuba_evidence_rows": 245,
+  "direct_cuba_segments": 124,
+  "direct_cuba_segments_by_scope": {
+    "other_week_proceedings": 47,
+    "broader_hlw": 28,
+    "general_debate": 49
+  },
+  "general_debate_country_labels_with_direct_mentions": 47,
+  "general_debate_country_labels": 193,
+  "meeting_scope": {
+    "other_week_proceedings": 48,
+    "broader_hlw": 172,
+    "general_debate": 6
+  },
+  "downloaded_meeting_scope": {
+    "other_week_proceedings": 33,
+    "broader_hlw": 131,
+    "general_debate": 6
+  },
+  "transcript_languages": {
+    "en": 163,
+    "floor": 6,
+    "fr": 1
+  },
+  "runs": [
+    {
+      "run": "final-hlw-1",
+      "records": 2000,
+      "engine": "prototype_reference_not_D1",
+      "sent": false
+    },
+    {
+      "run": "final-hlw-2",
+      "records": 561,
+      "engine": "prototype_reference_not_D1",
+      "sent": false
+    },
+    {
+      "run": "final-background-1",
+      "records": 1167,
+      "engine": "prototype_reference_not_D1",
+      "sent": false
+    }
+  ],
+  "all_input_rows_reconciled": true,
+  "all_evidence_offsets_verified": true,
+  "raw_source_hashes_verified": true,
+  "human_review_complete": false,
+  "timestamp_flagged_transcripts": 59,
+  "evidence_by_topic": {
+    "Cuba": 245,
+    "Embargo and blockade": 87,
+    "Unilateral sanctions": 93,
+    "Terrorism-list designation": 10,
+    "Extraterritorial restrictions": 25,
+    "Medical cooperation": 4,
+    "Humanitarian and development impacts": 459,
+    "Sovereignty and non-interference": 977
+  },
+  "cuba_evidence_by_scope": {
+    "broader_hlw": 53,
+    "general_debate": 126,
+    "other_week_proceedings": 66
+  },
+  "run_wrapper_sha256": "90084ade971fe5ba157b8446d6c6bd89ff1de660c5ef8906185c5afc48968aa9",
+  "original_matcher_comparison": {
+    "hlw-1.csv": {
+      "real_records": 15,
+      "evidence_rows": 14,
+      "exact_agreement": true
+    },
+    "hlw-2.csv": {
+      "real_records": 15,
+      "evidence_rows": 26,
+      "exact_agreement": true
+    },
+    "background-1.csv": {
+      "real_records": 14,
+      "evidence_rows": 103,
+      "exact_agreement": true
+    }
+  }
+}

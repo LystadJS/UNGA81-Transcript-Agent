@@ -1,0 +1,127 @@
+{
+  "schema_version": "un.readout.request.v1",
+  "app_version": "0.2.0-d1-i4",
+  "start_date": "2026-09-21",
+  "end_date": "2026-09-28",
+  "timezone": "America/New_York",
+  "fixed_topics": [
+    {
+      "id": "topic_950662956e75",
+      "label": "Cuba",
+      "include": [
+        "Cuban",
+        "Cubans",
+        "Havana",
+        "Havanna"
+      ],
+      "exclude": [],
+      "matching": "literal_phrase_with_boundaries_v1",
+      "semantic_expansion": false
+    },
+    {
+      "id": "topic_8f18d65c9687",
+      "label": "Embargo and blockade",
+      "include": [
+        "embargo",
+        "blockade",
+        "bloqueo",
+        "economic siege"
+      ],
+      "exclude": [],
+      "matching": "literal_phrase_with_boundaries_v1",
+      "semantic_expansion": false
+    },
+    {
+      "id": "topic_8553bac0789e",
+      "label": "Unilateral sanctions",
+      "include": [
+        "unilateral coercive",
+        "unilateral sanctions",
+        "economic sanctions",
+        "financial sanctions",
+        "coercive measures"
+      ],
+      "exclude": [],
+      "matching": "literal_phrase_with_boundaries_v1",
+      "semantic_expansion": false
+    },
+    {
+      "id": "topic_cbe408d14ffe",
+      "label": "Terrorism-list designation",
+      "include": [
+        "state sponsor of terrorism",
+        "state sponsors of terrorism",
+        "sponsors of terrorism",
+        "list of terrorist",
+        "terrorism list"
+      ],
+      "exclude": [],
+      "matching": "literal_phrase_with_boundaries_v1",
+      "semantic_expansion": false
+    },
+    {
+      "id": "topic_f7d469e2d1f6",
+      "label": "Extraterritorial restrictions",
+      "include": [
+        "extraterritorial",
+        "extra-territorial",
+        "Helms-Burton",
+        "Helms Burton",
+        "secondary sanctions"
+      ],
+      "exclude": [],
+      "matching": "literal_phrase_with_boundaries_v1",
+      "semantic_expansion": false
+    },
+    {
+      "id": "topic_da1827e9627e",
+      "label": "Medical cooperation",
+      "include": [
+        "medical cooperation",
+        "medical brigades",
+        "Cuban doctors",
+        "Cuban medical",
+        "health cooperation"
+      ],
+      "exclude": [],
+      "matching": "literal_phrase_with_boundaries_v1",
+      "semantic_expansion": false
+    },
+    {
+      "id": "topic_f8a755e9bc14",
+      "label": "Humanitarian and development impacts",
+      "include": [
+        "humanitarian impact",
+        "humanitarian consequences",
+        "access to medicines",
+        "access to food",
+        "right to development",
+        "economic warfare",
+        "collective punishment"
+      ],
+      "exclude": [],
+      "matching": "literal_phrase_with_boundaries_v1",
+      "semantic_expansion": false
+    },
+    {
+      "id": "topic_d2cb9abaee2d",
+      "label": "Sovereignty and non-interference",
+      "include": [
+        "sovereignty",
+        "non-interference",
+        "noninterference",
+        "regime change",
+        "self-determination"
+      ],
+      "exclude": [],
+      "matching": "literal_phrase_with_boundaries_v1",
+      "semantic_expansion": false
+    }
+  ],
+  "discover_themes": true,
+  "discovery_scope": "all_eligible_source_texts_independent_of_fixed_topics",
+  "source": "upload",
+  "external_processing": false,
+  "email_delivery": "draft_only",
+  "requested_at_utc": "2026-09-30T19:04:13Z"
+}
