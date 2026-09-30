@@ -1,5 +1,10 @@
 # AI pilot: one owner, audit-only import
 
+**Current revision:** the owner subsequently classified the final unresolved
+passage as not relevant. Revision 2 has 12 relevant and 12 not-relevant labels;
+the original packet remains preserved. Later-date recovery found 137 candidates.
+See [recovery results and next steps](EVALUATION_RECOVERY.md).
+
 ## Completed owner pilot — 30 September 2026
 
 The owner saved all 24 reviews at 20:06 UTC. Fresh loader validation passed:

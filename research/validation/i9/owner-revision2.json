@@ -1,0 +1,18 @@
+{
+  "revision": 2,
+  "supersedes_bundle_sha256": "23d3f7c2e436970c8784f2c96cd6231797f9882c7e4523fa47efdf140b575b68",
+  "bundle_sha256": "0ba09bc1113fb50befd7c34977aafa4418582811fa4abbd2603c75017ed528d9",
+  "review_mode": "single_reviewer_pilot",
+  "label_counts": {
+    "relevant": 12,
+    "not_relevant": 12,
+    "insufficient": 0
+  },
+  "matched_passages": 24,
+  "original_review_preserved": true,
+  "daily_products_unchanged": true,
+  "publication_eligible": false,
+  "native_daily_validation_passed": true,
+  "methods_accounted": 42,
+  "prerequisite_checks": 133
+}

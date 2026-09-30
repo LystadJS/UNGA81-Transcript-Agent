@@ -1,0 +1,47 @@
+{
+  "source": "archived UN automatic transcripts",
+  "sources": [
+    {
+      "date": "2026-09-24",
+      "url": "https://transcripts.un.org/en/asset/k18/k18iyhzwip",
+      "sha256": "392d53de3a244267c535411393334d5a3c394ecf8f45c4fde6915b4a9a49c272"
+    },
+    {
+      "date": "2026-09-25",
+      "url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo",
+      "sha256": "dee74a89b8d807a782212847b3eca709cbf96c4b1a508abbc5f7f07f8eb9140e"
+    },
+    {
+      "date": "2026-09-26",
+      "url": "https://transcripts.un.org/en/asset/k16/k16g777u83",
+      "sha256": "522f0181f06756a898a355c6eecfba37240a0790e2a40c31cf246847dfaac426"
+    },
+    {
+      "date": "2026-09-28",
+      "url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc",
+      "sha256": "ce98b0b9adb4842f23d8233e886b11f2274077f6e7d7e87f42f2f4c65a3fbd42"
+    }
+  ],
+  "candidates": 137,
+  "by_date": {
+    "2026-09-24": 38,
+    "2026-09-25": 37,
+    "2026-09-26": 34,
+    "2026-09-28": 28
+  },
+  "overlapping_country_candidates": 1,
+  "exclusions": {
+    "unmapped_affiliation": 6
+  },
+  "all_text_bound_to_raw": true,
+  "human_review_complete": false,
+  "evaluation_ready": false,
+  "available_at_basis": "archive collection time, not event time",
+  "archive_collected_at": "2026-09-30T18:15:47.105451+00:00",
+  "caveat": "Country-grouped ASR records may include multiple interventions, not one verified national address. No model evaluation or labels assigned.",
+  "validation": {
+    "full_recovery_passed": true,
+    "altered_raw_rejected": true,
+    "existing_destination_rejected": true
+  }
+}
