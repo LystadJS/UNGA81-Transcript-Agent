@@ -43,6 +43,10 @@ def complete(root,payload):
     reviewer=payload.get('reviewer','').strip()
     if not reviewer or len(reviewer)>100:raise ValueError('Reviewer identity required')
     rows=payload['rows'];ids=[r['passage_id'] for r in rows]
+    if meta.get('packet_kind')=='later_date_development':
+        if any(r.get('boundary') not in ('national_address','other_intervention','uncertain') or (r['boundary']!='national_address' and r.get('label')!='insufficient') for r in rows):
+            raise ValueError('Check each intervention; other or uncertain interventions require insufficient context')
+        rows=[dict(r,rationale='Intervention: '+r['boundary']+'. '+r.get('rationale','')) for r in rows]
     if len(ids)!=len(set(ids)) or set(ids)!=set(meta['selected_ids']):raise ValueError('Every selected passage needs exactly one review')
     if any(r['label'] not in rd.LABELS['issue'] or not isinstance(r['rationale'],str) or not r['rationale'].strip() or len(r['rationale'])>1000 for r in rows):raise ValueError('Invalid label or rationale')
     when=now();annotations=[];final=[]
