@@ -248,8 +248,9 @@ Start with a no-network baseline, then M39 discrete-time hazard with correctly
 specified durations/censoring. The current engineering kernel supports equal
 interval lengths only. M40 tests a Gaussian network-lag association. M41 currently
 implements ordinal conditional choice over known directed risk sets, not event
-waiting times. M42 still needs a Bayesian model implementation, prior checks,
-posterior predictive checks, convergence, effective-sample-size and sampler diagnostics.
+waiting times. M42 now has a synthetic-only Bayesian hazard kernel with fixed-scale
+Gaussian partial pooling, sampler diagnostics and predictive event counts. Prior
+sensitivity, real-data validation and causal identification still need work.
 
 Use forward event-time evaluation and calibration. Report association unless
 a defensible identification design addresses shared shocks, selection,
@@ -266,5 +267,13 @@ sign-off. Supply a private local path to the bundle when it is ready.
 Then implement the reviewed-bundle loader, fit using only the permitted split,
 run independent prediction/artifact checks, backtest and inspect errors, and
 retain audit-only status until release acceptance is met. See
-[I6 implementation status](../research/README.md) for exactly what is written
+[Current implementation status](../research/README.md) for exactly what is written
 and tested versus still pending. No new model is published by these tools.
+
+## Neural-method handoff
+
+The [I8 guide](../research/I8.md) documents the implemented local BERT fine-tuning
+and GRU sequence paths. Both remain synthetic-only. Recommended next steps are
+to complete the independent label pilot, approve a checkpoint/tokenizer, define
+comparable observation windows, and implement the reviewed-bundle loader before
+real-data fitting. A copied synthetic checkpoint is not an approved language model.

@@ -2,3 +2,5 @@
 /runs/
 *.rds
 *.rds.sha256
+*.safetensors
+/neural-env/

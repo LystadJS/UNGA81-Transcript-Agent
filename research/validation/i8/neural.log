@@ -1,0 +1,54 @@
+Some weights of BertForSequenceClassification were not initialized from the model checkpoint at <synthetic-temp>\checkpoint and are newly initialized: ['bert.pooler.dense.bias', 'bert.pooler.dense.weight', 'classifier.bias', 'classifier.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+test_calendar_horizon (__main__.NeuralTests.test_calendar_horizon) ... ok
+test_checkpoint_asset_tampering (__main__.NeuralTests.test_checkpoint_asset_tampering) ... ok
+test_config_resource_boundaries (__main__.NeuralTests.test_config_resource_boundaries) ... ok
+test_content_leakage (__main__.NeuralTests.test_content_leakage) ... ok
+test_country_leakage (__main__.NeuralTests.test_country_leakage) ... ok
+test_duplicate_ids (__main__.NeuralTests.test_duplicate_ids) ... ok
+test_duplicate_json_keys (__main__.NeuralTests.test_duplicate_json_keys) ... ok
+test_empty_target (__main__.NeuralTests.test_empty_target) ... ok
+test_fitted_model_not_changed_by_evaluation_labels (__main__.NeuralTests.test_fitted_model_not_changed_by_evaluation_labels) ... ok
+test_future_sequence (__main__.NeuralTests.test_future_sequence) ... ok
+test_future_training (__main__.NeuralTests.test_future_training) ... ok
+test_history_leakage (__main__.NeuralTests.test_history_leakage) ... ok
+test_input_hash_binds_consumed_bytes (__main__.NeuralTests.test_input_hash_binds_consumed_bytes) ... ok
+test_invalid_predictions_rejected (__main__.NeuralTests.test_invalid_predictions_rejected) ... ok
+test_long_text_is_not_silently_truncated (__main__.NeuralTests.test_long_text_is_not_silently_truncated) ... Some weights of BertForSequenceClassification were not initialized from the model checkpoint at <synthetic-temp>\checkpoint and are newly initialized: ['bert.pooler.dense.bias', 'bert.pooler.dense.weight', 'classifier.bias', 'classifier.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+ok
+test_manifest_hash_binding (__main__.NeuralTests.test_manifest_hash_binding) ... ok
+test_missing_outcome (__main__.NeuralTests.test_missing_outcome) ... ok
+test_nonfinite_json (__main__.NeuralTests.test_nonfinite_json) ... ok
+test_partition_cap (__main__.NeuralTests.test_partition_cap) ... ok
+test_publication_blocked (__main__.NeuralTests.test_publication_blocked) ... ok
+test_real_data_rejected (__main__.NeuralTests.test_real_data_rejected) ... ok
+test_rng_and_thread_restoration (__main__.NeuralTests.test_rng_and_thread_restoration) ... ok
+test_runner_hashes_and_immutable_output (__main__.NeuralTests.test_runner_hashes_and_immutable_output) ... ok
+test_saved_sequence_roundtrip (__main__.NeuralTests.test_saved_sequence_roundtrip) ... ok
+test_saved_text_roundtrip (__main__.NeuralTests.test_saved_text_roundtrip) ... ok
+test_sequence_baseline_present (__main__.NeuralTests.test_sequence_baseline_present) ... ok
+test_sequence_batch_order (__main__.NeuralTests.test_sequence_batch_order) ... ok
+test_sequence_hash_binding (__main__.NeuralTests.test_sequence_hash_binding) ... ok
+test_sequence_heldout_learning (__main__.NeuralTests.test_sequence_heldout_learning) ... ok
+test_sequence_missing_feature (__main__.NeuralTests.test_sequence_missing_feature) ... ok
+test_sequence_padding_invariance (__main__.NeuralTests.test_sequence_padding_invariance) ... ok
+test_sequence_saved_predictions (__main__.NeuralTests.test_sequence_saved_predictions) ... ok
+test_text_encoder_finetuned (__main__.NeuralTests.test_text_encoder_finetuned) ... ok
+test_text_evaluation_labels_do_not_change_training (__main__.NeuralTests.test_text_evaluation_labels_do_not_change_training) ... Some weights of BertForSequenceClassification were not initialized from the model checkpoint at <synthetic-temp>\checkpoint and are newly initialized: ['bert.pooler.dense.bias', 'bert.pooler.dense.weight', 'classifier.bias', 'classifier.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+ok
+test_text_hash_binding (__main__.NeuralTests.test_text_hash_binding) ... ok
+test_text_heldout_learning (__main__.NeuralTests.test_text_heldout_learning) ... ok
+test_text_saved_predictions (__main__.NeuralTests.test_text_saved_predictions) ... Some weights of BertForSequenceClassification were not initialized from the model checkpoint at <synthetic-temp>\checkpoint and are newly initialized: ['bert.pooler.dense.bias', 'bert.pooler.dense.weight', 'classifier.bias', 'classifier.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+ok
+test_unavailable_sequence (__main__.NeuralTests.test_unavailable_sequence) ... ok
+test_unreviewed_comparability (__main__.NeuralTests.test_unreviewed_comparability) ... ok
+test_unsorted_sequence (__main__.NeuralTests.test_unsorted_sequence) ... ok
+test_untracked_checkpoint_asset (__main__.NeuralTests.test_untracked_checkpoint_asset) ... ok
+
+----------------------------------------------------------------------
+Ran 41 tests in 2.266s
+
+OK

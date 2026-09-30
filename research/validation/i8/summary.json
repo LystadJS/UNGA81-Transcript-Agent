@@ -1,0 +1,32 @@
+{
+  "schema": "un.i8.validation.v1",
+  "date": "2026-09-30",
+  "neural_checks": 41,
+  "inventory_checks": 7,
+  "r_core_checks": 43,
+  "r_extension_checks": 55,
+  "data_checks": 31,
+  "total_checks": 177,
+  "failures": 0,
+  "daily_adapters": 12,
+  "synthetic_research_kernels": 29,
+  "unimplemented": [
+    "M26"
+  ],
+  "publication_change": false,
+  "source_sha256": {
+    "research/neural.py": "da8d2d3982878dbbb27fbf2bb3c17f38d48163b93a61b7c829bf5193713fff58",
+    "research/neural_fixtures.py": "4c73effea99af3e5b7a4df0d455c928965ed8ff577e91d92ba162aeb4d301560",
+    "research/demo_neural.py": "047d9e3c768e1b6c7d5f3c2d5180a94d222a70f8c9cc38d736f530c841b4893f",
+    "research/test_neural.py": "9ff2bc965a0cd7e49e675a977cc9f4e12a2dd6ef07dac486465e9335389d239d",
+    "research/methods.py": "1613899e188aa3d3875adaa3440089dfd301c902299525dfab0b08faa6013b84",
+    "research/test_methods.py": "572e5ae492e3e1fe167e7f2e26aed048244c06b10deffff55ff051bba3a9acd2",
+    "research/engines.R": "c7532fc463f781ef0aea28aac9571a0157e76437d6c6f54435a0b07479aba327",
+    "research/engines_more.R": "178b61b272cfbb013036e0f1372b79f44fe7937c9b4a120452b67af7b802d362",
+    "research/test_engines.R": "5fb69a4bc6f53bacbe3ad160a28f7e994cb70c2d1bf6f2d48ae055e535a11bb3",
+    "research/test_more.R": "029b4282875721eead46e7bc3c0b2f4d19531181ddfb0fde85074de2329f0a2c",
+    "research/catalog.json": "4aa529e741ecbfc04059191113f33a257b9358dc60ce0d0bfd77fa7f44c9e34f",
+    "tools/review_data.py": "96765dae3b7189487f60a318648dea529a1d803a3aeffa711bd35d7ed13fe5bf",
+    "tools/test_review_data.py": "fd209b107cf14d021b99a6e8036d589eda79438bb6e39a29f5c9ec9448c3fc32"
+  }
+}

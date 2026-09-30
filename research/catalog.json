@@ -1,9 +1,9 @@
 {
-  "schema": "un.i7.catalog.v1",
+  "schema": "un.i8.catalog.v1",
   "daily_adapters": 12,
   "backlog_methods": 30,
-  "synthetic_kernels": 27,
-  "remaining_kernels": 3,
+  "synthetic_kernels": 29,
+  "remaining_kernels": 1,
   "methods": [
     {
       "id": "M03",
@@ -15,7 +15,8 @@
         "source_text",
         "embedding_version",
         "embedding_provider_authorized"
-      ]
+      ],
+      "runner": "run.R"
     },
     {
       "id": "M04",
@@ -27,7 +28,8 @@
         "source_text",
         "embedding_version",
         "fixed_topic_references"
-      ]
+      ],
+      "runner": "run.R"
     },
     {
       "id": "M10",
@@ -39,7 +41,8 @@
         "numeric_features",
         "embedding_version",
         "projection_diagnostics"
-      ]
+      ],
+      "runner": "run.R"
     },
     {
       "id": "M11",
@@ -51,7 +54,8 @@
         "gold_issue_labels",
         "temporal_grouped_validation",
         "full_rank_design"
-      ]
+      ],
+      "runner": "run.R"
     },
     {
       "id": "M12",
@@ -63,7 +67,8 @@
         "gold_issue_labels",
         "temporal_grouped_validation",
         "calibration"
-      ]
+      ],
+      "runner": "run.R"
     },
     {
       "id": "M13",
@@ -75,7 +80,8 @@
         "gold_labels",
         "temporal_grouped_validation",
         "calibration"
-      ]
+      ],
+      "runner": "run.R"
     },
     {
       "id": "M14",
@@ -88,7 +94,8 @@
         "temporal_grouped_validation",
         "calibration"
       ],
-      "scope_document": "I7.md"
+      "scope_document": "I7.md",
+      "runner": "run.R"
     },
     {
       "id": "M15",
@@ -101,12 +108,13 @@
         "embedding_version",
         "temporal_grouped_validation",
         "calibration"
-      ]
+      ],
+      "runner": "run.R"
     },
     {
       "id": "M16",
       "method": "Fine-tuned text transformer",
-      "research_kernel": "not_implemented",
+      "research_kernel": "synthetic_tested",
       "daily_adapter_integrated": false,
       "publication_eligible": false,
       "required_gates": [
@@ -115,7 +123,9 @@
         "approved_checkpoint",
         "tokenizer_verified",
         "neural_resource_benchmark"
-      ]
+      ],
+      "runner": "neural.py",
+      "scope_document": "I8.md"
     },
     {
       "id": "M17",
@@ -128,7 +138,8 @@
         "proposition_schema",
         "temporal_grouped_validation",
         "calibration"
-      ]
+      ],
+      "runner": "run.R"
     },
     {
       "id": "M18",
@@ -141,7 +152,8 @@
         "frozen_vocabulary",
         "topic_validation"
       ],
-      "scope_document": "I7.md"
+      "scope_document": "I7.md",
+      "runner": "run.R"
     },
     {
       "id": "M19",
@@ -154,7 +166,8 @@
         "document_metadata",
         "topic_validation"
       ],
-      "scope_document": "I7.md"
+      "scope_document": "I7.md",
+      "runner": "run.R"
     },
     {
       "id": "M20",
@@ -167,7 +180,8 @@
         "embedding_version",
         "topic_validation"
       ],
-      "scope_document": "I7.md"
+      "scope_document": "I7.md",
+      "runner": "run.R"
     },
     {
       "id": "M21",
@@ -179,7 +193,8 @@
         "numeric_features",
         "density_support",
         "cluster_stability"
-      ]
+      ],
+      "runner": "run.R"
     },
     {
       "id": "M22",
@@ -191,7 +206,8 @@
         "same_country_history",
         "same_genre_issue",
         "representation_consistent"
-      ]
+      ],
+      "runner": "run.R"
     },
     {
       "id": "M23",
@@ -203,7 +219,8 @@
         "historical_features",
         "same_genre_issue",
         "anomaly_backtest"
-      ]
+      ],
+      "runner": "run.R"
     },
     {
       "id": "M24",
@@ -216,7 +233,8 @@
         "time_index_valid",
         "dependence_specified",
         "change_backtest"
-      ]
+      ],
+      "runner": "run.R"
     },
     {
       "id": "M25",
@@ -229,7 +247,8 @@
         "anchor_full_rank",
         "representation_consistent",
         "alignment_diagnostics"
-      ]
+      ],
+      "runner": "run.R"
     },
     {
       "id": "M26",
@@ -242,7 +261,10 @@
         "representation_consistent",
         "driftmap_supported_regime",
         "resampling_unit_valid"
-      ]
+      ],
+      "runner": null,
+      "blocker": "Exact driftmapR source/version and supported-regime study not supplied; interface unresolved",
+      "scope_document": "I8.md"
     },
     {
       "id": "M27",
@@ -254,7 +276,8 @@
         "shared_entities",
         "cluster_stability",
         "cluster_correspondence"
-      ]
+      ],
+      "runner": "run.R"
     },
     {
       "id": "M28",
@@ -267,7 +290,8 @@
         "measurement_invariance",
         "temporal_validation"
       ],
-      "scope_document": "I7.md"
+      "scope_document": "I7.md",
+      "runner": "run.R"
     },
     {
       "id": "M29",
@@ -280,7 +304,8 @@
         "measurement_invariance",
         "temporal_validation"
       ],
-      "scope_document": "I7.md"
+      "scope_document": "I7.md",
+      "runner": "run.R"
     },
     {
       "id": "M30",
@@ -294,7 +319,8 @@
         "temporal_validation",
         "fit_diagnostics"
       ],
-      "scope_document": "I7.md"
+      "scope_document": "I7.md",
+      "runner": "run.R"
     },
     {
       "id": "M35",
@@ -307,7 +333,8 @@
         "network_stability",
         "fit_diagnostics"
       ],
-      "scope_document": "I7.md"
+      "scope_document": "I7.md",
+      "runner": "run.R"
     },
     {
       "id": "M37",
@@ -320,12 +347,13 @@
         "observation_process",
         "temporal_validation",
         "forecast_calibration"
-      ]
+      ],
+      "runner": "run.R"
     },
     {
       "id": "M38",
       "method": "Temporal transformer / sequence model",
-      "research_kernel": "not_implemented",
+      "research_kernel": "synthetic_tested",
       "daily_adapter_integrated": false,
       "publication_eligible": false,
       "required_gates": [
@@ -333,7 +361,9 @@
         "observation_process",
         "temporal_validation",
         "neural_resource_benchmark"
-      ]
+      ],
+      "runner": "neural.py",
+      "scope_document": "I8.md"
     },
     {
       "id": "M39",
@@ -347,7 +377,8 @@
         "lagged_exposures",
         "censoring_specified",
         "temporal_validation"
-      ]
+      ],
+      "runner": "run.R"
     },
     {
       "id": "M40",
@@ -359,7 +390,8 @@
         "historical_outcomes",
         "preexisting_network",
         "network_identification"
-      ]
+      ],
+      "runner": "run.R"
     },
     {
       "id": "M41",
@@ -372,7 +404,8 @@
         "risk_set",
         "event_time_precision",
         "temporal_validation"
-      ]
+      ],
+      "runner": "run.R"
     },
     {
       "id": "M42",
@@ -387,7 +420,8 @@
         "network_identification",
         "fit_diagnostics"
       ],
-      "scope_document": "I7.md"
+      "scope_document": "I7.md",
+      "runner": "run.R"
     }
   ]
 }

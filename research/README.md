@@ -1,9 +1,9 @@
 # Research implementations and review-data foundation
 
 **The daily D1 pipeline still has 12 executable adapters.** This directory adds
-27 standalone computational kernels toward the 30-method daily-adapter backlog.
+29 standalone computational kernels toward the 30-method daily-adapter backlog.
 They are tested with explicitly synthetic engineering fixtures and are not
-connected to the daily publication path. Three kernels still need
+connected to the daily publication path. One kernel (M26) still needs an identified package/interface and
 implementation. A kernel is not a completed or released end-to-end method.
 
 No new result can populate O1–O5. All kernel outputs have
@@ -45,13 +45,17 @@ baseline for binary tasks. This does not establish performance on diplomatic tex
 Nine further kernels are now implemented and tested: M14, M18, M19, M20,
 M28, M29, M30, M35 and M42. See [I7 scope and reproduction](I7.md) for their
 contracts, package versions, limitations and primary sources. This brings the
-standalone total to 27. M16, M26 and M38 remain unimplemented for the reasons
-recorded there. No new daily adapter is implied.
+R total to 27. [I8](I8.md) adds two Python paths: M16 local BERT fine-tuning
+and M38 a GRU sequence model. The standalone total is now 29; M26 remains
+unimplemented. No new daily adapter is implied.
 
 `catalog.json` records all 30 backlog IDs and their original prerequisites. It
 does not overwrite the D1 registry or advertise these prototypes as daily adapters.
 
 ## Run the engineering tests
+
+For neural setup, an offline fictional demo and saved-model predictions, see
+[I8](I8.md). Run `python research/methods.py` to check current method accounting.
 
 From the repository root, with R installed:
 
@@ -66,7 +70,7 @@ The tests construct synthetic inputs in memory/temporary folders. No actual
 human labels are fabricated for the project. Numerical fixtures check known
 geometry, simulated changes and associations, deterministic behavior, bounds,
 noise/coverage handling, and leakage/invalid-input rejection. See
-[current I7 acceptance](validation/i7/README.md) and [prior I6 acceptance](validation/README.md) for executed results.
+[current I8 acceptance](validation/i8/README.md), [prior I7 acceptance](validation/i7/README.md) and [prior I6 acceptance](validation/README.md) for executed results.
 
 For a trusted, explicitly synthetic input R list matching a fixture in
 `test_engines.R`, the immutable engineering runner is:

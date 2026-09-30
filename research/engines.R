@@ -150,7 +150,8 @@ i6_relational <- function(d) {
   list(coefficients=setNames(f$par,colnames(x)),standard_errors=sqrt(diag(solve(f$hessian))),loglik=-f$value,scope='ordinal conditional-choice relational events; waiting times not modeled')
 }
 i6_compute <- function(id,d) {
-  i6_assert(id%in%i6_ids,'Method kernel not implemented in I6; see catalog')
+  if(id%in%c('M16','M38'))stop('Use research/neural.py for this synthetic Python kernel; see I8.md',call.=FALSE)
+  i6_assert(id%in%i6_ids,'Method kernel unavailable in the R runner; see catalog')
   i6_assert(identical(d$dataset_kind,'synthetic_engineering'),'I6 kernels currently accept explicitly synthetic engineering fixtures only; reviewed-data deployment requires integration and acceptance')
   value<-i6_seed(function(){
     if(id=='M03')return(i6_embedding(d))

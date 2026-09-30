@@ -25,8 +25,8 @@ Open the [visual review example](examples/review/index.html) locally for the
 actual unsent readout, four audit charts and appearance controls. See the
 [dataset-building guide](docs/DATA_GUIDE.md) for the reviewed-data workflow.
 
-The [Research work](research/README.md) adds 27 tested standalone engineering
-kernels toward the 30-method daily-adapter backlog; three kernels remain unwritten. These
+The [Research work](research/README.md) adds 29 tested standalone engineering
+kernels toward the 30-method daily-adapter backlog; driftmapR (M26) remains unresolved. These
 prototypes are not daily adapters and accept synthetic engineering inputs only.
 Daily D1 implementation remains at 12 adapters. The optional review-workspace
 tools use Python 3.11+; the daily pipeline remains R-native.
@@ -35,7 +35,7 @@ See the [repository inventory](docs/INVENTORY.md) for the three input workflows,
 all 42 registered methods, the 12 executable adapters, and current limitations.
 
 The historical [I5 extension and remaining roadmap](docs/I5.md) describes the six new
-audit-only methods and its original 30-method backlog. See [I7](research/I7.md) for current progress.
+audit-only methods and its original 30-method backlog. See [I8](research/I8.md) for current progress and recommended next steps.
 
 ## Included
 

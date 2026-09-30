@@ -1,0 +1,21 @@
+{
+  "dataset_kind": "synthetic_engineering",
+  "publication_eligible": false,
+  "results": {
+    "M16": {
+      "logloss": 7.29581663618912e-07,
+      "prevalence_logloss": 0.6931471805599453,
+      "parameters": 3794,
+      "elapsed_seconds": 0.17609719999018125,
+      "saved_predictions_match": true
+    },
+    "M38": {
+      "logloss": 0.2755818406332496,
+      "prevalence_logloss": 0.7142424573062355,
+      "parameters": 977,
+      "elapsed_seconds": 0.25647910000407137,
+      "saved_predictions_match": true,
+      "last_observation_logloss": 0.6436293580327067
+    }
+  }
+}

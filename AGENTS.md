@@ -15,3 +15,4 @@ source of truth for all subsequent work on this project.
   packaged files under un/, update affected current manifests/checksums without
   rewriting historical original checksum records. Never commit credentials or new
   private transcript inputs merely because this repository contains public fixtures.
+- Include concrete recommended next steps in responses, as requested by the user.

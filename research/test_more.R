@@ -57,5 +57,5 @@ test('M14 random state is restored',{old<-.Random.seed;invisible(i6_compute('M14
 test('M35 node identity order rejected',{z<-bd;colnames(z$adj)<-rev(colnames(z$adj));reject(i6_compute('M35',z))})
 test('M20 zero embedding rejected',{z<-ed;z$x[1,]<-0;reject(i6_compute('M20',z))})
 test('M42 unequal interval durations rejected',{z<-hd;z$stop[1]<-3;reject(i6_compute('M42',z))})
-test('Unimplemented methods fail explicitly',{for(id in c('M16','M26','M38'))reject(i6_compute(id,kind(list())))})
+test('Unavailable R methods fail explicitly',{for(id in c('M16','M26','M38'))reject(i6_compute(id,kind(list())))})
 result<-do.call(rbind,records);out<-Sys.getenv('I7_TEST_REPORT',tempfile(fileext='.csv'));write.csv(result,out,row.names=FALSE);cat(nrow(result),'checks;',sum(!result$passed),'failures\n');if(any(!result$passed))quit(status=1)
