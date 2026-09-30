@@ -1,5 +1,27 @@
 # AI pilot: one owner, audit-only import
 
+## Completed owner pilot — 30 September 2026
+
+The owner saved all 24 reviews at 20:06 UTC. Fresh loader validation passed:
+12 relevant, 11 not relevant and one insufficient-context label, covering 21
+source speeches. All 24 records matched the daily corpus and were attached to
+its private audit copy. Native daily validation passed, and a subsequent hash
+check confirmed all 158 pre-existing files and the audit sidecar checksums.
+See the [completion record](../research/validation/i9/owner-completion.json).
+Individual labels, reviewer identity and source passages remain in the private
+local workspace; the repository contains only aggregate completion evidence.
+
+The unresolved passage remains unresolved. Its surrounding text is available
+locally in `review-work/ai-pilot/unresolved-context.html`; any changed label needs
+a new review revision. The completed packet is preserved. The instructions below
+describe the original workflow and how to reproduce it with a new packet.
+
+Next: resolve that passage if the added context permits, then collect later-date
+speeches for a separate evaluation set. The 23 binary labels can inform the next
+development step, but this enriched, single-date pilot does not establish model
+accuracy. BERT training and the real-data training adapter remain future work;
+the completed deliverable here is human-label collection and audit integration.
+
 The owner selected Artificial Intelligence as the first issue and explicitly
 chose to be the sole reviewer and finalizer. The operational review mode is
 `single_reviewer_pilot`. It does not claim inter-reviewer agreement or independent

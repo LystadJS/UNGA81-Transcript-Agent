@@ -1,5 +1,13 @@
 # I9: single-owner AI review and audit-only loading
 
+**Follow-up:** the owner completed the real pilot on 30 September 2026 at
+20:06 UTC. [Completion evidence](owner-completion.json) records 24 reviewed and
+matched passages (12 relevant, 11 not relevant, one insufficient), successful
+native daily validation and fresh verification of all 158 unchanged original
+files plus audit checksums. This supersedes the pending status in the original
+engineering evidence below. It does not establish classifier accuracy or a
+forward-time split.
+
 Validation performed on Windows on 30 September 2026. These are fresh I9 checks,
 not totals inherited from prior releases.
 

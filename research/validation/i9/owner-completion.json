@@ -1,0 +1,25 @@
+{
+  "schema": "un.pilot.completion.v1",
+  "completed_at": "2026-09-30T20:06:54.269852Z",
+  "review_mode": "single_reviewer_pilot",
+  "human_review_complete": true,
+  "bundle_sha256": "23d3f7c2e436970c8784f2c96cd6231797f9882c7e4523fa47efdf140b575b68",
+  "reviewed_passages": 24,
+  "source_count": 21,
+  "label_counts": {
+    "relevant": 12,
+    "not_relevant": 11,
+    "insufficient": 1
+  },
+  "event_dates": [
+    "2026-09-23"
+  ],
+  "matched_passages": 24,
+  "existing_daily_files_verified_unchanged": 158,
+  "audit_checksums_verified": true,
+  "native_daily_validation_passed": true,
+  "independent_review_established": false,
+  "training_split_validated": false,
+  "model_fit_authorized": false,
+  "publication_eligible": false
+}
