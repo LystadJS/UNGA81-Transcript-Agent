@@ -1,0 +1,70 @@
+{
+  "upload_zip_sha256": "5d16e19f882e8ce47b0addd0e3b8faf03ea8bf79e1b61bf41d80d66290bc50ab",
+  "days": [
+    {
+      "date": "2026-09-22",
+      "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob",
+      "upload_sha256": "6e2e1921a8f3bd7c631a3e7fc2f55418cc1d9fc6e045872249d4827c3367ce49",
+      "archive_sha256": "ac47b1a789d2bfb7892dbf11714cbe94c1288ffa90f8d9558b56b44eaa2dd638",
+      "upload_turns": 71,
+      "archive_turns": 71,
+      "ordered_text_equal_after_whitespace_normalization": true,
+      "timestamps_match_to_one_second": true
+    },
+    {
+      "date": "2026-09-23",
+      "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58",
+      "upload_sha256": "86a92428f541b438c0ab4b6c454d26712d2d15974965eac64b2918fcb8963ff6",
+      "archive_sha256": "d754b79eab3f3a32ee464b7f296da3a0c37a1d20854420fea01969644612b060",
+      "upload_turns": 78,
+      "archive_turns": 78,
+      "ordered_text_equal_after_whitespace_normalization": true,
+      "timestamps_match_to_one_second": true
+    },
+    {
+      "date": "2026-09-24",
+      "source_url": "https://transcripts.un.org/en/asset/k18/k18iyhzwip",
+      "upload_sha256": "e92b55dd85e0292289284c22fea5d56cce65dffbef7a4d36bf971b02bf40d6ba",
+      "archive_sha256": "392d53de3a244267c535411393334d5a3c394ecf8f45c4fde6915b4a9a49c272",
+      "upload_turns": 85,
+      "archive_turns": 85,
+      "ordered_text_equal_after_whitespace_normalization": true,
+      "timestamps_match_to_one_second": true
+    },
+    {
+      "date": "2026-09-25",
+      "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo",
+      "upload_sha256": "9fb36d82f535a963dd2ed43c100acfb0d34efd02c553517cc470b3048d0f4a0f",
+      "archive_sha256": "dee74a89b8d807a782212847b3eca709cbf96c4b1a508abbc5f7f07f8eb9140e",
+      "upload_turns": 78,
+      "archive_turns": 78,
+      "ordered_text_equal_after_whitespace_normalization": true,
+      "timestamps_match_to_one_second": true
+    },
+    {
+      "date": "2026-09-26",
+      "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83",
+      "upload_sha256": "2b7db440f5ee4d044970bb06fb5ccb3bcc59f346ef9600072645ffcd957b731e",
+      "archive_sha256": "522f0181f06756a898a355c6eecfba37240a0790e2a40c31cf246847dfaac426",
+      "upload_turns": 71,
+      "archive_turns": 71,
+      "ordered_text_equal_after_whitespace_normalization": true,
+      "timestamps_match_to_one_second": true
+    },
+    {
+      "date": "2026-09-28",
+      "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc",
+      "upload_sha256": "ab314c045a28ae4678a005549ad7171a3db4494aa46b6afd2519388f673f3a52",
+      "archive_sha256": "ce98b0b9adb4842f23d8233e886b11f2274077f6e7d7e87f42f2f4c65a3fbd42",
+      "upload_turns": 77,
+      "archive_turns": 77,
+      "ordered_text_equal_after_whitespace_normalization": true,
+      "timestamps_match_to_one_second": true
+    }
+  ],
+  "total_turns": 460,
+  "all_ordered_text_equal": true,
+  "scope": "Six General Debate daily sessions, not all high-level-week events",
+  "normalization": "Whitespace only; case, punctuation and wording retained",
+  "source_files_modified": false
+}
