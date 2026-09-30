@@ -6,7 +6,7 @@ kind<-function(d){d$dataset_kind<-'synthetic_engineering';d}
 set.seed(901);mat<-function(n,p=2,prefix='r'){x<-matrix(rnorm(n*p),n,p);rownames(x)<-paste0(prefix,seq_len(n));colnames(x)<-paste0('x',seq_len(p));x}
 part<-function(prefix,n=300,offset=0){x<-mat(n,prefix=prefix);list(x=x,y=rbinom(n,1,plogis(.3+1.2*x[,1]-.6*x[,2])),time=seq_len(n)+offset,country=paste0(prefix,'country',seq_len(n)),text_hash=paste0(prefix,'hash',seq_len(n)))}
 d<-kind(list(train=part('train'),calibration=part('cal',offset=1000),test=part('test',offset=2000),representation_id='synthetic-v1'))
-test('All 18 research kernels have explicit IDs',stopifnot(length(i6_ids)==18,!anyDuplicated(i6_ids)))
+test('All 27 research kernels have explicit IDs',stopifnot(length(i6_ids)==27,!anyDuplicated(i6_ids)))
 test('Real or unreviewed data cannot enter experimental path',{z<-d;z$dataset_kind<-'real';reject(i6_compute('M11',z))})
 for(id in c('M11','M12','M13','M15','M37'))test(paste(id,'held-out predictions and bounds'),{v<-i6_compute(id,d);stopifnot(!v$publication_eligible,!v$daily_adapter_integrated,length(v$value$scores)==300,all(v$value$scores>0&v$value$scores<1),v$value$test_logloss<v$value$baseline_logloss)})
 test('Training and test country overlap rejected',{z<-d;z$test$country[1]<-z$train$country[1];reject(i6_compute('M11',z))})

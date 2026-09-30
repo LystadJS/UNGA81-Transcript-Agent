@@ -1,9 +1,9 @@
-# I6: research implementations and review-data foundation
+# Research implementations and review-data foundation
 
 **The daily D1 pipeline still has 12 executable adapters.** This directory adds
-18 standalone computational kernels toward the remaining 30-method backlog.
+27 standalone computational kernels toward the 30-method daily-adapter backlog.
 They are tested with explicitly synthetic engineering fixtures and are not
-connected to the daily publication path. The other 12 kernels still need
+connected to the daily publication path. Three kernels still need
 implementation. A kernel is not a completed or released end-to-end method.
 
 No new result can populate O1–O5. All kernel outputs have
@@ -40,22 +40,13 @@ hyperparameters are engineering policies, not optimized claims. Numerical test
 scores are computed on untouched test rows and returned with a prevalence
 baseline for binary tasks. This does not establish performance on diplomatic text.
 
-## Remaining twelve kernels
+## I7 additions and outstanding work
 
-| ID | Work still required |
-|---|---|
-| M14 | Versioned boosted-tree backend, bounded tuning and matched evaluation |
-| M16 | Approved text-transformer checkpoint/tokenizer, fine-tuning implementation and measured resource/learning-curve acceptance |
-| M18 | LDA fit/inference, count vocabulary, held-out topic quality/stability |
-| M19 | Structural-topic metadata specification and fit/inference validation |
-| M20 | Passage-embedding clustering plus class-level TF-IDF descriptors and exemplars |
-| M26 | Exact pinned driftmapR interface and supported-regime/resampling evidence |
-| M28 | Hidden-state fit and cutoff-respecting filtering for repeated sequences |
-| M29 | Latent-transition measurement/invariance specification and estimation |
-| M30 | Time-dependent mixture estimation, not repeated independent clustering |
-| M35 | Appropriate graph likelihood, stochastic-block estimation and stability |
-| M38 | Temporal neural architecture, approved sequence inputs and benchmark/resource acceptance |
-| M42 | Bayesian hazard/exposure specification, priors, sampler/convergence and predictive validation |
+Nine further kernels are now implemented and tested: M14, M18, M19, M20,
+M28, M29, M30, M35 and M42. See [I7 scope and reproduction](I7.md) for their
+contracts, package versions, limitations and primary sources. This brings the
+standalone total to 27. M16, M26 and M38 remain unimplemented for the reasons
+recorded there. No new daily adapter is implied.
 
 `catalog.json` records all 30 backlog IDs and their original prerequisites. It
 does not overwrite the D1 registry or advertise these prototypes as daily adapters.
@@ -67,6 +58,7 @@ From the repository root, with R installed:
 ```powershell
 Rscript research/setup.R
 Rscript research/test_engines.R research/library
+Rscript research/test_more.R research/library
 python tools/test_review_data.py
 ```
 
@@ -74,7 +66,7 @@ The tests construct synthetic inputs in memory/temporary folders. No actual
 human labels are fabricated for the project. Numerical fixtures check known
 geometry, simulated changes and associations, deterministic behavior, bounds,
 noise/coverage handling, and leakage/invalid-input rejection. See
-[acceptance](validation/README.md) for executed results.
+[current I7 acceptance](validation/i7/README.md) and [prior I6 acceptance](validation/README.md) for executed results.
 
 For a trusted, explicitly synthetic input R list matching a fixture in
 `test_engines.R`, the immutable engineering runner is:

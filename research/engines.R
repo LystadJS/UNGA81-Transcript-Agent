@@ -59,6 +59,9 @@ i6_classifier <- function(id,d) {
   }
   if(id%in%c('M11','M37')) {
     f<-i6_glm(tr$x,tr$y);raw<-function(x)plogis(cbind(1,x)%*%f$beta)
+  } else if(id=='M14') {
+    i7_backend('gbm');f<-gbm::gbm.fit(x=as.data.frame(tr$x),y=tr$y,distribution='bernoulli',n.trees=150,interaction.depth=2,n.minobsinnode=10,shrinkage=.03,bag.fraction=1,verbose=FALSE)
+    raw<-function(x)as.numeric(predict(f,newdata=as.data.frame(x),n.trees=150,type='response'))
   } else if(id=='M13') {
     i6_need('ranger');f<-ranger::ranger(x=as.data.frame(tr$x),y=factor(tr$y,levels=0:1),probability=TRUE,num.trees=200,min.node.size=5,num.threads=1,seed=30092026)
     raw<-function(x)predict(f,data=as.data.frame(x),num.threads=1)$predictions[,'1']
@@ -69,7 +72,7 @@ i6_classifier <- function(id,d) {
   pc<-as.numeric(raw(ca$x));pt<-as.numeric(raw(te$x));cal<-i6_glm(matrix(qlogis(pmin(1-1e-6,pmax(1e-6,pc))),ncol=1),ca$y)
   p<-plogis(cbind(1,qlogis(pmin(1-1e-6,pmax(1e-6,pt))))%*%cal$beta);p<-as.numeric(p)
   choice<-ifelse(p>=.7,'positive',ifelse(p<=.3,'negative','abstain'))
-  list(scores=p,predicted=choice,coverage=mean(choice!='abstain'),test_brier=mean((p-te$y)^2),test_logloss=i6_logloss(p,te$y),baseline_logloss=i6_logloss(rep(mean(tr$y),length(te$y)),te$y),model=f,calibration=cal$beta,target=if(id=='M37')'conditional_on_next_comparable_observation' else 'one_issue_binary_head',policy=list(alpha=.5,lambda=.05,positive=.7,negative=.3))
+  list(scores=p,predicted=choice,coverage=mean(choice!='abstain'),test_brier=mean((p-te$y)^2),test_logloss=i6_logloss(p,te$y),baseline_logloss=i6_logloss(rep(mean(tr$y),length(te$y)),te$y),model=f,calibration=cal$beta,target=if(id=='M37')'conditional_on_next_comparable_observation' else 'one_issue_binary_head',policy=if(id=='M14')list(trees=150,depth=2,shrinkage=.03,min_node=10,bag_fraction=1,tuning='fixed policy; no test-based selection',positive=.7,negative=.3)else list(alpha=.5,lambda=.05,positive=.7,negative=.3))
 }
 i6_embedding <- function(d) {
   x<-i6_unit(d$passages);i6_assert(length(d$statement_id)==nrow(x)&&length(d$country)==nrow(x),'Passage metadata mismatch')
@@ -152,7 +155,7 @@ i6_compute <- function(id,d) {
   value<-i6_seed(function(){
     if(id=='M03')return(i6_embedding(d))
     if(id=='M04'){x<-i6_unit(d$x);r<-i6_unit(d$references);i6_assert(ncol(x)==ncol(r)&&identical(colnames(x),colnames(r))&&nzchar(d$representation_id)&&identical(d$representation_id,d$reference_representation_id),'Same pinned embedding basis required');return(list(cosine=x%*%t(r),interpretation='prototype relevance scores, not probabilities'))}
-    if(id%in%c('M11','M12','M13','M15','M17','M37'))return(i6_classifier(id,d))
+    if(id%in%c('M11','M12','M13','M14','M15','M17','M37'))return(i6_classifier(id,d))
     if(id=='M10')return(i6_umap(d))
     if(id=='M21'){i6_need('dbscan');x<-i6_matrix(d$x,10);f<-dbscan::hdbscan(x,minPts=5);return(list(cluster=f$cluster,membership=f$membership_prob,outlier=f$outlier_scores,noise=which(f$cluster==0),stability=f$cluster_scores,scope='noise retained; membership is not political confidence'))}
     if(id=='M22')return(i6_history(d))
@@ -163,7 +166,11 @@ i6_compute <- function(id,d) {
     if(id=='M39')return(i6_hazard(d))
     if(id=='M40')return(i6_sar(d))
     if(id=='M41')return(i6_relational(d))
+    if(id%in%i7_ids)return(i7_compute(id,d))
     stop('No numerical implementation')
   })
   list(schema='un.i6.engineering.v1',method_id=id,publication_eligible=FALSE,daily_adapter_integrated=FALSE,dataset_kind=d$dataset_kind,value=value,R=as.character(getRversion()),RNGkind=RNGkind(),seed=30092026L)
 }
+
+source(file.path(dirname(normalizePath(sys.frame(1)$ofile)), 'engines_more.R'))
+i6_ids <- sort(c(i6_ids,i7_ids))

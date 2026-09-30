@@ -25,8 +25,8 @@ Open the [visual review example](examples/review/index.html) locally for the
 actual unsent readout, four audit charts and appearance controls. See the
 [dataset-building guide](docs/DATA_GUIDE.md) for the reviewed-data workflow.
 
-The [I6 research work](research/README.md) adds 18 tested standalone engineering
-kernels toward the remaining 30 methods; 12 kernels remain unwritten. These
+The [Research work](research/README.md) adds 27 tested standalone engineering
+kernels toward the 30-method daily-adapter backlog; three kernels remain unwritten. These
 prototypes are not daily adapters and accept synthetic engineering inputs only.
 Daily D1 implementation remains at 12 adapters. The optional review-workspace
 tools use Python 3.11+; the daily pipeline remains R-native.
@@ -34,8 +34,8 @@ tools use Python 3.11+; the daily pipeline remains R-native.
 See the [repository inventory](docs/INVENTORY.md) for the three input workflows,
 all 42 registered methods, the 12 executable adapters, and current limitations.
 
-The [I5 extension and remaining roadmap](docs/I5.md) describes the six new
-audit-only methods and the 30 methods still unimplemented.
+The historical [I5 extension and remaining roadmap](docs/I5.md) describes the six new
+audit-only methods and its original 30-method backlog. See [I7](research/I7.md) for current progress.
 
 ## Included
 

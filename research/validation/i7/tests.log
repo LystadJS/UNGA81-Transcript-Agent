@@ -1,0 +1,90 @@
+During startup - Warning messages:
+1: Setting LC_COLLATE=C.UTF-8 failed
+2: Setting LC_CTYPE=C.UTF-8 failed
+3: Setting LC_MONETARY=C.UTF-8 failed
+4: Setting LC_TIME=C.UTF-8 failed
+PASS M14 heldout calibrated boosting beats prevalence
+PASS M14 temporal leakage rejected
+PASS M14 country leakage rejected
+PASS M18 document completion beats unigram
+PASS M18 fractional counts rejected
+PASS M18 evaluation identity overlap rejected
+PASS M18 vocabulary reorder rejected
+PASS M19 document completion beats unigram
+PASS M19 fractional counts rejected
+PASS M19 evaluation identity overlap rejected
+PASS M19 vocabulary reorder rejected
+Warning message:
+In stm::stm(docs(x), colnames(x), K = d$k, prevalence = form, data = meta,  :
+  K=2 is equivalent to a unidimensional scaling model which you may prefer.
+PASS M19 metadata identity mismatch rejected
+PASS M19 unidentified prevalence rejected
+PASS M20 cluster descriptors and evidence IDs
+PASS M20 passage alignment rejected
+PASS M20 no encoder identity rejected
+converged at iteration 78 with logLik: -480.2931
+PASS M28 normalized filtered states
+converged at iteration 78 with logLik: -480.2931
+converged at iteration 78 with logLik: -480.2931
+PASS M28 future observations cannot alter earlier filtering
+PASS M28 future training rejected
+PASS M28 duplicate observation time rejected
+converged at iteration 31 with logLik: -239.4592
+PASS M29 normalized filtered states
+converged at iteration 31 with logLik: -239.4592
+converged at iteration 31 with logLik: -239.4592
+PASS M29 future observations cannot alter earlier filtering
+PASS M29 future training rejected
+PASS M29 duplicate observation time rejected
+converged at iteration 68 with logLik: -480.1878
+PASS M30 normalized filtered states
+converged at iteration 68 with logLik: -480.1878
+converged at iteration 68 with logLik: -480.1878
+PASS M30 future observations cannot alter earlier filtering
+PASS M30 future training rejected
+PASS M30 duplicate observation time rejected
+PASS M30 contemporaneous transition covariates rejected
+PASS M29 measurement drift contract rejected
+
+
+
+
+
+PASS M35 recovers planted block membership
+PASS M35 cosine network rejected
+PASS M35 unknown edges rejected
+PASS M35 inconsistent directed edges rejected
+   variable       mean         sd     rhat ess_bulk ess_tail
+1 intercept -0.8488827 0.57208597 1.006087 639.8819 1116.676
+2        x1  0.5445574 0.09139254 1.006289 690.7801 1103.377
+3   group:A -0.5820495 0.58223835 1.005337 662.4710 1174.943
+4   group:B -0.2172677 0.58104574 1.003809 644.3137 1275.351
+5   group:C  0.5324130 0.58147142 1.008349 641.5851 1191.499
+PASS M42 partial pooling sampler diagnostics and simulated effect
+PASS M42 exposure from future rejected
+PASS M42 insufficient pooling groups rejected
+PASS M42 continued risk after adoption rejected
+PASS M14 real data remain blocked
+PASS M18 real data remain blocked
+PASS M19 real data remain blocked
+PASS M20 real data remain blocked
+PASS M28 real data remain blocked
+PASS M29 real data remain blocked
+PASS M30 real data remain blocked
+PASS M35 real data remain blocked
+PASS M42 real data remain blocked
+PASS M18 heldout values cannot alter fitted topics or inferred proportions
+Warning messages:
+PASS M19 heldout values cannot alter fitted topics or inferred proportions
+1: In stm::stm(docs(x), colnames(x), K = d$k, prevalence = form, data = meta,  :
+  K=2 is equivalent to a unidimensional scaling model which you may prefer.
+2: In stm::stm(docs(x), colnames(x), K = d$k, prevalence = form, data = meta,  :
+  K=2 is equivalent to a unidimensional scaling model which you may prefer.
+converged at iteration 78 with logLik: -480.2931
+PASS M28 serialized fitted model retains parameters
+PASS M14 random state is restored
+PASS M35 node identity order rejected
+PASS M20 zero embedding rejected
+PASS M42 unequal interval durations rejected
+PASS Unimplemented methods fail explicitly
+55 checks; 0 failures

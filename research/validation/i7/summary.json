@@ -1,0 +1,29 @@
+{
+  "schema": "un.i7.validation.v1",
+  "date": "2026-09-29",
+  "new_kernel_checks": 55,
+  "existing_kernel_checks": 43,
+  "review_data_checks": 31,
+  "total_checks": 129,
+  "failures": 0,
+  "synthetic_kernels": 27,
+  "daily_adapters": 12,
+  "publication_change": false,
+  "cli_output_hash_verified": true,
+  "immutable_output_refusal_verified": true,
+  "remaining_kernels": [
+    "M16",
+    "M26",
+    "M38"
+  ],
+  "source_sha256": {
+    "research/engines.R": "7d784cae574758f9030bb0fde1b81128a7037319ace8775d18f7731f04d69c28",
+    "research/engines_more.R": "178b61b272cfbb013036e0f1372b79f44fe7937c9b4a120452b67af7b802d362",
+    "research/test_engines.R": "ffe6ca1fe91c3ce2deda3abcdc74dbf4670bb1ef128c193591a69015e8c99685",
+    "research/test_more.R": "ae2a21ddfbcc2d43c3e4941c0915d5b7363c519eb5566380bf8cb5c1248a22a1",
+    "research/run.R": "519095badb0fdbef4a56e27f20b4c770fc195f3cccbfb5b11cd7a846a7a7f4cb",
+    "research/setup.R": "21516c1e268e2b917b394b8f619f29b9a81fa7fd8c6340276339e5b90cddaae0",
+    "tools/review_data.py": "96765dae3b7189487f60a318648dea529a1d803a3aeffa711bd35d7ed13fe5bf",
+    "tools/test_review_data.py": "fd209b107cf14d021b99a6e8036d589eda79438bb6e39a29f5c9ec9448c3fc32"
+  }
+}

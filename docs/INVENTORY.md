@@ -124,9 +124,9 @@ Source: [publication contract implementation](../un/R/15_publish_packets.R).
 
 - Literal matching is not semantic relevance, stance, support, importance, or
   policy alignment. Non-match is unresolved. Accuracy/recall is not established.
-- Thirty registry methods remain unimplemented: embeddings, supervised issue
+- Thirty registry methods still lack daily adapters. Twenty-seven now have standalone synthetic research kernels ([scope](../research/README.md)); M16, M26 and M38 remain unwritten. Daily integration of embeddings, supervised issue
   and stance models, advanced topic models, longitudinal change, further network models,
-  forecasting and diffusion are roadmap items. No implemented human-gold-label
+  forecasting and diffusion remains outstanding. No implemented human-gold-label
   import adapter is declared by the current readiness context.
 - The UI discovery branch is English-only based on declared metadata; no language
   detection or translation. File-upload mode does not perform authoritative
@@ -174,7 +174,7 @@ inventory of the user's machine. See [integration acceptance](../un/validation/S
 ## Complete registered-method inventory
 
 The following implementation classification uses the current executable adapter
-list. Registry intent and package candidates are not promises of operational support.
+list; it does not count the separate [27 research kernels](../research/README.md). Registry intent and package candidates are not promises of operational support.
 
 | ID | Registered method | Current D1 implementation |
 |---|---|---|
