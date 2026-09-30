@@ -1,0 +1,16 @@
+[
+  {
+    "width": 1440,
+    "cards": 24,
+    "blankLabels": true,
+    "overflow": false,
+    "confirmed": false
+  },
+  {
+    "width": 390,
+    "cards": 24,
+    "blankLabels": true,
+    "overflow": false,
+    "confirmed": false
+  }
+]

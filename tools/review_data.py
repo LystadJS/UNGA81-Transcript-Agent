@@ -76,6 +76,9 @@ def validate(root,capability='labels'):
     check(policy.get('schema')=='un.review.v1','Unknown schema')
     check(policy.get('dataset_kind')=='real','Only explicitly real data can pass review validation')
     check(policy.get('human_review_complete') is True,'Human review is incomplete')
+    single=policy.get('review_mode')=='single_reviewer_pilot'
+    if single:warnings.append('Single-reviewer operational pilot: no independent agreement or adjudication is established')
+    check(policy.get('review_mode','independent') in ('independent','single_reviewer_pilot'),'Unknown review mode')
     cutoff=instant(policy.get('cutoff'),'bundle cutoff')
     for name,cols in SCHEMAS.items():
         try:
@@ -120,8 +123,12 @@ def validate(root,capability='labels'):
     for a in tables['adjudications']:
         key=(a.get('passage_id'),a.get('task'),a.get('proposition_id'));check(key not in final_keys,f'{key}: duplicate adjudication');final_keys.add(key)
         reviews=groups.get(key,[]);reviewers=[r.get('reviewer_id') for r in reviews]
-        check(len(set(reviewers))>=2 and len(reviewers)==len(set(reviewers)),f'{key}: two independent reviews required; one row per reviewer')
-        check(bool(a.get('adjudicator_id')) and a.get('adjudicator_id') not in reviewers,f'{key}: separate adjudicator required')
+        if single:
+            check(len(reviewers)==1 and bool(reviewers[0]),f'{key}: exactly one identified pilot reviewer required')
+            check(bool(a.get('adjudicator_id')) and a.get('adjudicator_id') in reviewers,f'{key}: pilot finalization must be by the same reviewer')
+        else:
+            check(len(set(reviewers))>=2 and len(reviewers)==len(set(reviewers)),f'{key}: two independent reviews required; one row per reviewer')
+            check(bool(a.get('adjudicator_id')) and a.get('adjudicator_id') not in reviewers,f'{key}: separate adjudicator required')
         check(a.get('final_label') in LABELS.get(a.get('task'),set()),f'{key}: invalid final label')
         check(bool(a.get('rationale')),f'{key}: adjudication rationale required')
         t=instant(a.get('adjudicated_at'),str(key))
@@ -129,6 +136,10 @@ def validate(root,capability='labels'):
         for r in reviews:
             rt=instant(r.get('reviewed_at'),str(key))
             if t and rt:check(t>=rt,f'{key}: adjudication precedes review')
+    if capability=='pilot':
+        check(bool(final_keys),'No finalized pilot labels')
+        check(set(groups)==final_keys,'Every pilot annotation needs finalization')
+        check({p['passage_id'] for p in tables['passages']}=={k[0] for k in final_keys},'Every selected pilot passage requires a label')
     if capability in ('labels','stance'):
         check(bool(final_keys),'No adjudicated labels')
         check(set(groups)==final_keys,'Every annotation task needs final adjudication')
@@ -215,7 +226,7 @@ def validate(root,capability='labels'):
 def main():
     p=argparse.ArgumentParser();sub=p.add_subparsers(dest='command',required=True)
     i=sub.add_parser('init');i.add_argument('directory',type=Path);i.add_argument('--replay',type=Path)
-    v=sub.add_parser('validate');v.add_argument('directory',type=Path);v.add_argument('--capability',choices=['labels','stance','history','diffusion','events'],default='labels');v.add_argument('--out',type=Path)
+    v=sub.add_parser('validate');v.add_argument('directory',type=Path);v.add_argument('--capability',choices=['pilot','labels','stance','history','diffusion','events'],default='labels');v.add_argument('--out',type=Path)
     a=p.parse_args()
     if a.command=='init':initialize(a.directory,a.replay);print('Created unreviewed workspace; no labels assigned.');return
     result=validate(a.directory,a.capability);payload=json.dumps(result,indent=2)

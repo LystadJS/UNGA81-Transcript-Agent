@@ -1,0 +1,28 @@
+test_attach_leaves_every_existing_file_unchanged (__main__.LoaderTests.test_attach_leaves_every_existing_file_unchanged) ... ok
+test_attach_rejects_duplicate (__main__.LoaderTests.test_attach_rejects_duplicate) ... ok
+test_attach_rejects_failed_daily_run (__main__.LoaderTests.test_attach_rejects_failed_daily_run) ... ok
+test_attach_rejects_unrelated_corpus (__main__.LoaderTests.test_attach_rejects_unrelated_corpus) ... ok
+test_completion_needs_confirmation (__main__.LoaderTests.test_completion_needs_confirmation) ... ok
+test_completion_requires_all_passages (__main__.LoaderTests.test_completion_requires_all_passages) ... ok
+test_empty_target_rejected (__main__.LoaderTests.test_empty_target_rejected) ... ok
+test_engineering_fixture_cannot_claim_human_completion (__main__.LoaderTests.test_engineering_fixture_cannot_claim_human_completion) ... ok
+test_evidence_bound (__main__.LoaderTests.test_evidence_bound) ... ok
+test_export_immutable (__main__.LoaderTests.test_export_immutable) ... ok
+test_fake_independent_mode_rejected (__main__.LoaderTests.test_fake_independent_mode_rejected) ... ok
+test_insufficient_not_negative (__main__.LoaderTests.test_insufficient_not_negative) ... ok
+test_no_preassigned_labels (__main__.LoaderTests.test_no_preassigned_labels) ... ok
+test_no_second_finalization (__main__.LoaderTests.test_no_second_finalization) ... ok
+test_path_escape (__main__.LoaderTests.test_path_escape) ... ok
+test_pilot_not_training_split (__main__.LoaderTests.test_pilot_not_training_split) ... ok
+test_review_cannot_predate_evidence (__main__.LoaderTests.test_review_cannot_predate_evidence) ... ok
+test_save_workflow_attaches_review (__main__.LoaderTests.test_save_workflow_attaches_review) ... ok
+test_single_review_is_explicit (__main__.LoaderTests.test_single_review_is_explicit) ... ok
+test_snapshot_identity_changes_with_labels (__main__.LoaderTests.test_snapshot_identity_changes_with_labels) ... ok
+test_source_tampering_rejected (__main__.LoaderTests.test_source_tampering_rejected) ... ok
+test_unknown_mode_rejected (__main__.LoaderTests.test_unknown_mode_rejected) ... ok
+test_unreviewed_rejected (__main__.LoaderTests.test_unreviewed_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 1.922s
+
+OK

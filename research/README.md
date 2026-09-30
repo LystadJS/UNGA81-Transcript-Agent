@@ -8,8 +8,10 @@ implementation. A kernel is not a completed or released end-to-end method.
 
 No new result can populate O1–O5. All kernel outputs have
 `publication_eligible=false` and `daily_adapter_integrated=false`. Real and
-unreviewed datasets are deliberately rejected until a reviewed-bundle loader,
-source binding, method-specific acceptance and daily integration are implemented.
+unreviewed datasets are deliberately rejected until reviewed training-data ingestion,
+method-specific acceptance and fitted-model daily integration are implemented.
+The [reviewed-label loader and daily audit attachment](../docs/REVIEW_PILOT.md)
+now support the owner-approved single-reviewer pilot; this does not unlock fitting.
 Passing the data checker alone does not remove that restriction.
 
 ## Implemented computational scope

@@ -16,3 +16,9 @@ source of truth for all subsequent work on this project.
   rewriting historical original checksum records. Never commit credentials or new
   private transcript inputs merely because this repository contains public fixtures.
 - Include concrete recommended next steps in responses, as requested by the user.
+- The owner explicitly selected a single-reviewer operational AI pilot and acts
+  as both reviewer and finalizer. Preserve that declared mode; do not require
+  independent reviewers for this pilot or claim independent agreement. Human
+  review still requires the owner's actual label choices/confirmation.
+- The selected text checkpoint is google/bert_uncased_L-2_H-128_A-2 at revision
+  30b0a37ccaaa32f332884b96992754e246e48c5f, for local audit-only pilot evaluation.

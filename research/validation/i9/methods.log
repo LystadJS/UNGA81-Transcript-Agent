@@ -1,0 +1,12 @@
+test_actual_inventory (__main__.InventoryTests.test_actual_inventory) ... ok
+test_duplicate_id (__main__.InventoryTests.test_duplicate_id) ... ok
+test_false_completion (__main__.InventoryTests.test_false_completion) ... ok
+test_gate_removed (__main__.InventoryTests.test_gate_removed) ... ok
+test_publication_promoted (__main__.InventoryTests.test_publication_promoted) ... ok
+test_wrong_count (__main__.InventoryTests.test_wrong_count) ... ok
+test_wrong_runner (__main__.InventoryTests.test_wrong_runner) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.040s
+
+OK

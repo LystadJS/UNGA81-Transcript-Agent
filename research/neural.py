@@ -113,7 +113,7 @@ def checkpoint(path, expected):
     path = Path(path).resolve()
     require(sha(path) == expected, 'Checkpoint manifest hash mismatch')
     m = read_json(path)
-    require(m.get('purpose') == 'synthetic_engineering', 'Only synthetic checkpoint experiments enabled')
+    require(m.get('purpose') in ('synthetic_engineering', 'selected_candidate'), 'Checkpoint purpose must identify a synthetic fixture or selected local candidate')
     assets = m['assets']; root = path.parent
     required = {'config.json', 'model.safetensors', 'tokenizer.json', 'tokenizer_config.json'}
     require(required <= set(assets) and len(assets) <= 12, 'Incomplete checkpoint/tokenizer bundle')

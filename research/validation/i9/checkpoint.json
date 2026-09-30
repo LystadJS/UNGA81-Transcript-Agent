@@ -1,0 +1,38 @@
+{
+  "purpose": "selected_candidate",
+  "model_id": "google/bert_uncased_L-2_H-128_A-2",
+  "revision": "30b0a37ccaaa32f332884b96992754e246e48c5f",
+  "selection": "User selected for local audit-only pilot; not a validated classifier",
+  "license": "Apache-2.0 (publisher model card)",
+  "model_card": "https://huggingface.co/google/bert_uncased_L-2_H-128_A-2",
+  "assets": {
+    "config.json": "508e1f01aae55d73355cbdd82609be2f43ba5a0d3428837adbe56cf8391f8b39",
+    "model.safetensors": "7fb69ad9f6866d8983183c930e33828f326470bf6ad8bbb2ad4ed957a92e9414",
+    "special_tokens_map.json": "3c3507f36dff57bce437223db3b3081d1e2b52ec3e56ee55438193ecb2c94dd6",
+    "tokenizer.json": "d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66",
+    "tokenizer_config.json": "584049ddfff5d6aa7c6c839da38fdd25ae3af017385120c99db5140d77315d2f",
+    "vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+  },
+  "parameters": 4386178,
+  "encoder_loaded": true,
+  "loading_info": {
+    "missing_keys": [
+      "classifier.bias",
+      "classifier.weight"
+    ],
+    "unexpected_keys": [
+      "cls.predictions.bias",
+      "cls.predictions.transform.LayerNorm.bias",
+      "cls.predictions.transform.LayerNorm.weight",
+      "cls.predictions.transform.dense.bias",
+      "cls.predictions.transform.dense.weight",
+      "cls.seq_relationship.bias",
+      "cls.seq_relationship.weight"
+    ],
+    "mismatched_keys": [],
+    "error_msgs": []
+  },
+  "tokenizer_size": 30522,
+  "publication_eligible": false,
+  "training_started": false
+}

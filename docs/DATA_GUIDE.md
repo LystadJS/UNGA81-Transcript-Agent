@@ -1,3 +1,8 @@
+> For the owner-approved quick AI pilot, use the [single-reviewer workflow](REVIEW_PILOT.md).
+> The owner is the sole reviewer and finalizer; that mode preserves its limits
+> explicitly and is sufficient for the audit-only import. The independent-review
+> guidance below is an alternative protocol, not a new requirement for this pilot.
+
 # Build the reviewed datasets
 
 Start with **one or two issues, explicitly named propositions, and a small
@@ -264,7 +269,8 @@ passage offsets, codebook/propositions, both reviews, adjudications, split polic
 comparison/risk/exposure tables, validator output, limitations, and reviewer
 sign-off. Supply a private local path to the bundle when it is ready.
 
-Then implement the reviewed-bundle loader, fit using only the permitted split,
+Use the reviewed-bundle loader described in [the pilot guide](REVIEW_PILOT.md)
+for audit import. A training adapter still needs to fit only the permitted split,
 run independent prediction/artifact checks, backtest and inspect errors, and
 retain audit-only status until release acceptance is met. See
 [Current implementation status](../research/README.md) for exactly what is written

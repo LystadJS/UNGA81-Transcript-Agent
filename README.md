@@ -21,6 +21,10 @@ The [read-only preview](un/ui/Interface%20Preview.html) is included for local vi
 
 ## Current capabilities and methods
 
+The [single-reviewer AI pilot](docs/REVIEW_PILOT.md) includes a local review form,
+the selected Google BERT checkpoint, a reviewed-label loader and a post-run
+audit attachment. Saving labels does not publish model predictions.
+
 Open the [visual review example](examples/review/index.html) locally for the
 actual unsent readout, four audit charts and appearance controls. See the
 [dataset-building guide](docs/DATA_GUIDE.md) for the reviewed-data workflow.
