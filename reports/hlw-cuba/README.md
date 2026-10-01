@@ -6,6 +6,12 @@ sanctions, embargo or sovereignty wording is not automatically Cuba-specific.
 `countries.csv` links General Debate country/observer attributions with direct
 Cuba wording. These are mention counts, not a stance classifier or vote forecast.
 
+The **Language patterns** section adds a separate embargo-candidate lexical
+experiment: PCA source navigation, hierarchical cluster exploration, silhouette
+comparison and a restriction-issue Jaccard heatmap. See `EXPLORER.md` for exact
+scope, limitations and reproduction, and `explorer-check.json` for executed checks.
+Its fixed selected corpus is independent of the overview's display filters.
+
 ## Collection
 
 The official public service at https://transcripts.un.org was queried with

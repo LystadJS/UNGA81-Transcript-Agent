@@ -1,0 +1,9 @@
+{
+  "analysis_status": "audit_only",
+  "human_review_complete": false,
+  "numeric_tests_passed": 5,
+  "independent_checks": ["source membership and unique offsets", "Jaccard numerators and denominators", "manual cosine silhouette", "PCA variance from Gram-matrix eigenvalues", "repeatability and saved payload agreement"],
+  "browser_checks": ["65 initial scatter points", "k=3 group filter displays 17 matching points", "keyboard source inspection", "k=6 singleton disclosure", "return to k=5 and 65 points", "desktop scatter, cluster cards, silhouette and heatmap visually inspected", "no browser error logs"],
+  "report_checks": ["original quotation offsets and raw source hashes verified on rebuild", "recovery source hashes and local report links passed"],
+  "limitations": ["desktop rendered check only", "no human relevance review", "no full-corpus D1 research execution", "no cluster stability or out-of-sample validation"]
+}

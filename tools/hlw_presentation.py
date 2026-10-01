@@ -4,6 +4,8 @@ from pathlib import Path
 
 def render(out,stats,findings,country_index):
     out=Path(out);assets=Path(__file__).with_name('hlw_assets');h=html.escape
+    from analyze_hlw_explorer import build
+    build(out)
     for p in assets.iterdir():
         if p.name!='page.html':shutil.copyfile(p,out/p.name)
     rows=lambda name:list(csv.DictReader((out/name).open(encoding='utf-8-sig',newline='')))
@@ -13,6 +15,7 @@ def render(out,stats,findings,country_index):
     cards=''.join('<article class="finding"><span class="number">'+f'{i:02d}'+'</span><div><h3>'+h(title)+'</h3><p>'+h(body)+'</p><div class="source-links">'+' '.join(f'<a href="{h(url)}">{h(label)} ↗</a>' for label,url in links)+'</div></div></article>' for i,(title,body,links) in enumerate(findings,1))
     table=''.join('<tr><td>'+h(x['country'])+'</td><td>'+h(x['date'])+'</td><td><a href="'+h(x['source_url'])+'">Source statement ↗</a></td></tr>' for x in sorted(country_index.values(),key=lambda x:x['country']))
     page=(assets/'page.html').read_text(encoding='utf-8').replace('@@FINDINGS@@',cards).replace('@@COUNTRIES@@',table)
+    page=page.replace('@@EXPLORER@@',Path(__file__).with_name('hlw_explorer_section.html').read_text(encoding='utf-8'))
     # Inline the established local outline icons; no external image dependencies.
     icons=Path(__file__).resolve().parents[1]/'un/ui/www'
     for name in ('coverage','themes','search','settings','download','document'):

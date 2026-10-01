@@ -1,0 +1,2289 @@
+{
+  "schema": "hlw.lexical-explorer.v1",
+  "audit_only": true,
+  "human_review_complete": false,
+  "source": {
+    "file": "evidence.csv",
+    "sha256": "d3e0219b468366dafce718face49d91fc7cdc245eb080db6896bf751620960e4"
+  },
+  "methods": {
+    "selection": "HLW restriction-topic rows whose source segment also has a Cuba-topic match",
+    "unit": "Unique statement_id/start_char/end_char passage; repeated topic hits collapsed",
+    "representation": "English stop words; lowercase unigram TF-IDF; sublinear TF; smooth IDF; L2 norm; min_df=1; no truncation",
+    "projection": "Centered PCA, full SVD, two dimensions",
+    "clustering": "Average-linkage agglomerative clustering on full TF-IDF cosine distances, k=2..6",
+    "default_k": "Highest observed cosine silhouette among tested k; descriptive selection, not validation",
+    "overlap": "Jaccard = shared source segments / union of source segments; four restriction topics",
+    "versions": {
+      "numpy": "2.3.5",
+      "scipy": "1.18.1",
+      "sklearn": "1.7.2"
+    }
+  },
+  "counts": {
+    "topic_rows": 71,
+    "passages": 65,
+    "source_segments": 40,
+    "affiliation_labels": 33,
+    "vocabulary": 448,
+    "median_words": 23.0,
+    "q1_words": 17.0,
+    "q3_words": 34.0,
+    "min_words": 5,
+    "max_words": 101
+  },
+  "variance_ratio": [
+    0.043818967451652674,
+    0.04206031416647132
+  ],
+  "default_k": 5,
+  "points": [
+    {
+      "country": "Brazil",
+      "date": "2026-09-22",
+      "scope": "general_debate",
+      "quote": "In Cuba, the world watches in horror as collective punishment is imposed on 10 million people by an illegal economic and energy embargo.",
+      "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=1:20:41",
+      "raw_file": "raw/87a65ad0cf95.json",
+      "raw_sha256": "ac47b1a789d2bfb7892dbf11714cbe94c1288ffa90f8d9558b56b44eaa2dd638",
+      "json_pointer": "/transcript/data/6",
+      "statement_id": "87a65ad0cf95-004",
+      "start_char": "5237",
+      "end_char": "5372",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "69e20c1b586d",
+      "x": 0.1185573153648928,
+      "y": -0.03642524236118581,
+      "words": 23
+    },
+    {
+      "country": "Angola",
+      "date": "2026-09-22",
+      "scope": "general_debate",
+      "quote": "over decades, as a victim of an embargo that continues and worsens the living conditions of the Cuban people.",
+      "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=6:12:22",
+      "raw_file": "raw/87a65ad0cf95.json",
+      "raw_sha256": "ac47b1a789d2bfb7892dbf11714cbe94c1288ffa90f8d9558b56b44eaa2dd638",
+      "json_pointer": "/transcript/data/32",
+      "statement_id": "87a65ad0cf95-016",
+      "start_char": "9076",
+      "end_char": "9184",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "754747ccae34",
+      "x": 0.12450499950398858,
+      "y": 0.02785851459206144,
+      "words": 19
+    },
+    {
+      "country": "Angola",
+      "date": "2026-09-22",
+      "scope": "general_debate",
+      "quote": "As the embargo is chiefly responsible for the calamitous situation in which Cuba and the Cuban people find themselves, And since it is inhumane, unfair and violates all the principles and norms of international law, we once again call for the end to the embargo against Cuba.",
+      "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=6:12:22",
+      "raw_file": "raw/87a65ad0cf95.json",
+      "raw_sha256": "ac47b1a789d2bfb7892dbf11714cbe94c1288ffa90f8d9558b56b44eaa2dd638",
+      "json_pointer": "/transcript/data/32",
+      "statement_id": "87a65ad0cf95-016",
+      "start_char": "9724",
+      "end_char": "9998",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "46455eb4fe26",
+      "x": 0.13200075917080542,
+      "y": -0.026599151948283706,
+      "words": 47
+    },
+    {
+      "country": "Suriname",
+      "date": "2026-09-22",
+      "scope": "general_debate",
+      "quote": "Suriname calls on the parties involved to remain committed to dialogue and negotiation to end the economic, commercial, and financial embargo.",
+      "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=7:20:20",
+      "raw_file": "raw/87a65ad0cf95.json",
+      "raw_sha256": "ac47b1a789d2bfb7892dbf11714cbe94c1288ffa90f8d9558b56b44eaa2dd638",
+      "json_pointer": "/transcript/data/38",
+      "statement_id": "87a65ad0cf95-019",
+      "start_char": "2936",
+      "end_char": "3077",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "f0c6938c2353",
+      "x": 0.3489296702644072,
+      "y": -0.07203017735718784,
+      "words": 21
+    },
+    {
+      "country": "Nauru",
+      "date": "2026-09-22",
+      "scope": "general_debate",
+      "quote": "For 33 consecutive years, This Assembly has called for an end to the embargo against Cuba.",
+      "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=9:10:10",
+      "raw_file": "raw/87a65ad0cf95.json",
+      "raw_sha256": "ac47b1a789d2bfb7892dbf11714cbe94c1288ffa90f8d9558b56b44eaa2dd638",
+      "json_pointer": "/transcript/data/50",
+      "statement_id": "87a65ad0cf95-025",
+      "start_char": "10968",
+      "end_char": "11057",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "5b073273c1be",
+      "x": 0.1337007354106708,
+      "y": -0.03843719358883253,
+      "words": 16
+    },
+    {
+      "country": "Viet Nam",
+      "date": "2026-09-22",
+      "scope": "general_debate",
+      "quote": "We call upon the US to end the unilateral embargo and sanctions and the energy blockade against Cuba and remove Cuba from the list of state sponsors of terrorism.",
+      "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=9:27:41",
+      "raw_file": "raw/87a65ad0cf95.json",
+      "raw_sha256": "ac47b1a789d2bfb7892dbf11714cbe94c1288ffa90f8d9558b56b44eaa2dd638",
+      "json_pointer": "/transcript/data/52",
+      "statement_id": "87a65ad0cf95-026",
+      "start_char": "4892",
+      "end_char": "5053",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade",
+        "Terrorism-list designation"
+      ],
+      "id": "52d7b7c3009d",
+      "x": -0.1956094594169962,
+      "y": -0.31502177248113034,
+      "words": 29
+    },
+    {
+      "country": "Tanzania, United Republic of",
+      "date": "2026-09-22",
+      "scope": "general_debate",
+      "quote": "Tanzania stands against the proliferating trend of some states to assume the responsibility of policing and imposing unilateral sanctions on others, thus undermining the principles of sovereignty and peaceful coexistence.",
+      "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=9:41:02",
+      "raw_file": "raw/87a65ad0cf95.json",
+      "raw_sha256": "ac47b1a789d2bfb7892dbf11714cbe94c1288ffa90f8d9558b56b44eaa2dd638",
+      "json_pointer": "/transcript/data/54",
+      "statement_id": "87a65ad0cf95-027",
+      "start_char": "7101",
+      "end_char": "7321",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Unilateral sanctions"
+      ],
+      "id": "1dedf04ee6e9",
+      "x": -0.06852175704322376,
+      "y": 0.13392191448943266,
+      "words": 30
+    },
+    {
+      "country": "Tanzania, United Republic of",
+      "date": "2026-09-22",
+      "scope": "general_debate",
+      "quote": "As stated previously, Tanzania reaffirms its position to oppose the use of such coercive measures against any Member State and reaffirms its unwavering solidarity with Cuba, Zimbabwe and all other States that are subjected to such unjustifiable constraints.",
+      "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=9:41:02",
+      "raw_file": "raw/87a65ad0cf95.json",
+      "raw_sha256": "ac47b1a789d2bfb7892dbf11714cbe94c1288ffa90f8d9558b56b44eaa2dd638",
+      "json_pointer": "/transcript/data/54",
+      "statement_id": "87a65ad0cf95-027",
+      "start_char": "7323",
+      "end_char": "7579",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Unilateral sanctions"
+      ],
+      "id": "1472f91ecc7b",
+      "x": -0.0731995431344238,
+      "y": 0.22050177226964607,
+      "words": 38
+    },
+    {
+      "country": "Cuba",
+      "date": "2026-09-23",
+      "scope": "broader_hlw",
+      "quote": "The current economic world is unjust by design, perpetuates dependence and exploitation of developing countries through a financial architecture that includes unilateral coercive measures.",
+      "source_url": "https://transcripts.un.org/en/asset/k1f/k1fw82mri0?t=1:19:20",
+      "raw_file": "raw/1172992b84d7.json",
+      "raw_sha256": "330313f66ea3082cb25113726fb5b9cf6a7d9aa4b33ad2da5ca767c106a5d22e",
+      "json_pointer": "/transcript/data/23",
+      "statement_id": "1172992b84d7-013",
+      "start_char": "144",
+      "end_char": "331",
+      "timestamps_flagged": "True",
+      "topics": [
+        "Unilateral sanctions"
+      ],
+      "id": "70364686d405",
+      "x": 0.11193073282284627,
+      "y": 0.36947481492163653,
+      "words": 24
+    },
+    {
+      "country": "Cuba",
+      "date": "2026-09-23",
+      "scope": "broader_hlw",
+      "quote": "The economic blockade by the United States against Cuba remains in force and has been strengthened and exacerbated in an unprecedented way.",
+      "source_url": "https://transcripts.un.org/en/asset/k1f/k1fw82mri0?t=1:19:20",
+      "raw_file": "raw/1172992b84d7.json",
+      "raw_sha256": "330313f66ea3082cb25113726fb5b9cf6a7d9aa4b33ad2da5ca767c106a5d22e",
+      "json_pointer": "/transcript/data/23",
+      "statement_id": "1172992b84d7-013",
+      "start_char": "333",
+      "end_char": "471",
+      "timestamps_flagged": "True",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "c4ac4dae83e8",
+      "x": -0.10577062873094498,
+      "y": -0.10598259265337642,
+      "words": 22
+    },
+    {
+      "country": "Cuba",
+      "date": "2026-09-23",
+      "scope": "broader_hlw",
+      "quote": "The United States imposes against Cuba a criminal energy blockade which aims to create massive humanitarian damage.",
+      "source_url": "https://transcripts.un.org/en/asset/k1f/k1fw82mri0?t=1:19:20",
+      "raw_file": "raw/1172992b84d7.json",
+      "raw_sha256": "330313f66ea3082cb25113726fb5b9cf6a7d9aa4b33ad2da5ca767c106a5d22e",
+      "json_pointer": "/transcript/data/23",
+      "statement_id": "1172992b84d7-013",
+      "start_char": "473",
+      "end_char": "587",
+      "timestamps_flagged": "True",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "2e3ea6c23f13",
+      "x": -0.20879873682591968,
+      "y": -0.0923132227228512,
+      "words": 17
+    },
+    {
+      "country": "Cuba",
+      "date": "2026-09-23",
+      "scope": "broader_hlw",
+      "quote": "It prevents any commercial relations of any country with ours through intimidation, including secondary sanctions and pressure on international governments and actors.",
+      "source_url": "https://transcripts.un.org/en/asset/k1f/k1fw82mri0?t=1:19:20",
+      "raw_file": "raw/1172992b84d7.json",
+      "raw_sha256": "330313f66ea3082cb25113726fb5b9cf6a7d9aa4b33ad2da5ca767c106a5d22e",
+      "json_pointer": "/transcript/data/23",
+      "statement_id": "1172992b84d7-013",
+      "start_char": "589",
+      "end_char": "755",
+      "timestamps_flagged": "True",
+      "topics": [
+        "Extraterritorial restrictions"
+      ],
+      "id": "21fa73cb524b",
+      "x": 0.01840177797449645,
+      "y": 0.04988101860953054,
+      "words": 22
+    },
+    {
+      "country": "Namibia",
+      "date": "2026-09-23",
+      "scope": "general_debate",
+      "quote": "We call for the lifting of the unjustified economic embargo against Cuba, which had far-reaching consequences for the Cuban economy and the well-being of its people, including access to essential goods and services.",
+      "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=7:10:21",
+      "raw_file": "raw/3eca2758bf11.json",
+      "raw_sha256": "d754b79eab3f3a32ee464b7f296da3a0c37a1d20854420fea01969644612b060",
+      "json_pointer": "/transcript/data/44",
+      "statement_id": "3eca2758bf11-024",
+      "start_char": "10194",
+      "end_char": "10408",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "19ae4728ea6f",
+      "x": 0.16009204961434254,
+      "y": -0.04718278217687865,
+      "words": 35
+    },
+    {
+      "country": "Mozambique",
+      "date": "2026-09-23",
+      "scope": "general_debate",
+      "quote": "For this reason, we oppose to imposition of unilateral coercive measures, which continues to penalize entire people in clear violation of the formation charter of the UN.",
+      "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=8:41:24",
+      "raw_file": "raw/3eca2758bf11.json",
+      "raw_sha256": "d754b79eab3f3a32ee464b7f296da3a0c37a1d20854420fea01969644612b060",
+      "json_pointer": "/transcript/data/52",
+      "statement_id": "3eca2758bf11-028",
+      "start_char": "5200",
+      "end_char": "5369",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Unilateral sanctions"
+      ],
+      "id": "e710c6f6741e",
+      "x": -0.0481570590866548,
+      "y": 0.36963109711257297,
+      "words": 27
+    },
+    {
+      "country": "Mozambique",
+      "date": "2026-09-23",
+      "scope": "general_debate",
+      "quote": "We thus reiterate our position in the support of ending of economic, commercial, and financial blockade imposed against Cuba.",
+      "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=8:41:24",
+      "raw_file": "raw/3eca2758bf11.json",
+      "raw_sha256": "d754b79eab3f3a32ee464b7f296da3a0c37a1d20854420fea01969644612b060",
+      "json_pointer": "/transcript/data/52",
+      "statement_id": "3eca2758bf11-028",
+      "start_char": "5371",
+      "end_char": "5495",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "6e643db2ddd8",
+      "x": 0.4546522089235347,
+      "y": -0.20695078572284423,
+      "words": 19
+    },
+    {
+      "country": "Ghana",
+      "date": "2026-09-24",
+      "scope": "general_debate",
+      "quote": "In that spirit of international legality-- in that same spirit, international legality and human solidarity, Ghana reiterates its call for the immediate lifting of the decades-long economic, commercial, and financial embargo that has been imposed on Cuba.",
+      "source_url": "https://transcripts.un.org/en/asset/k18/k18iyhzwip?t=1:00:36",
+      "raw_file": "raw/223b59cb43db.json",
+      "raw_sha256": "392d53de3a244267c535411393334d5a3c394ecf8f45c4fde6915b4a9a49c272",
+      "json_pointer": "/transcript/data/5",
+      "statement_id": "223b59cb43db-004",
+      "start_char": "10744",
+      "end_char": "10998",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "9c3de9f66525",
+      "x": 0.3161036597078751,
+      "y": -0.05725261024138775,
+      "words": 38
+    },
+    {
+      "country": "Uruguay",
+      "date": "2026-09-24",
+      "scope": "general_debate",
+      "quote": "Nor can we stand indifferent to the pain caused by a state of endless war, the fear and pain generated by organized crime or the constant threat of terrorism, the repression born out of tyranny or the suffering triggered by a rigid economic blockade such as that endured by the Cuban people.",
+      "source_url": "https://transcripts.un.org/en/asset/k18/k18iyhzwip?t=3:47:29",
+      "raw_file": "raw/223b59cb43db.json",
+      "raw_sha256": "392d53de3a244267c535411393334d5a3c394ecf8f45c4fde6915b4a9a49c272",
+      "json_pointer": "/transcript/data/22",
+      "statement_id": "223b59cb43db-012",
+      "start_char": "2761",
+      "end_char": "3051",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "cf0815420ee0",
+      "x": -0.08690484447355493,
+      "y": -0.09896241625244784,
+      "words": 52
+    },
+    {
+      "country": "Equatorial Guinea",
+      "date": "2026-09-24",
+      "scope": "general_debate",
+      "quote": "Based on that position, we encourage the United States of America and the Republic of Cuba to continue to pursue paths of dialogue which will make it possible to end the blockade and build a relationship of mutual benefit.",
+      "source_url": "https://transcripts.un.org/en/asset/k18/k18iyhzwip?t=4:18:59",
+      "raw_file": "raw/223b59cb43db.json",
+      "raw_sha256": "392d53de3a244267c535411393334d5a3c394ecf8f45c4fde6915b4a9a49c272",
+      "json_pointer": "/transcript/data/26",
+      "statement_id": "223b59cb43db-014",
+      "start_char": "4704",
+      "end_char": "4925",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "f01ec9dee279",
+      "x": -0.008805076661586088,
+      "y": -0.05131024535323209,
+      "words": 39
+    },
+    {
+      "country": "Gambia",
+      "date": "2026-09-24",
+      "scope": "general_debate",
+      "quote": "On Cuba, we reiterate our longstanding call for an end to the economic, commercial, and financial sanctions.",
+      "source_url": "https://transcripts.un.org/en/asset/k18/k18iyhzwip?t=4:29:52",
+      "raw_file": "raw/223b59cb43db.json",
+      "raw_sha256": "392d53de3a244267c535411393334d5a3c394ecf8f45c4fde6915b4a9a49c272",
+      "json_pointer": "/transcript/data/28",
+      "statement_id": "223b59cb43db-015",
+      "start_char": "18918",
+      "end_char": "19025",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Unilateral sanctions"
+      ],
+      "id": "1584be65a610",
+      "x": 0.5414336815384638,
+      "y": -0.19759595474988084,
+      "words": 17
+    },
+    {
+      "country": "Barbados",
+      "date": "2026-09-24",
+      "scope": "general_debate",
+      "quote": "Barbados has each year opposed the use of the embargo and other unilateral coercive measures against Cuba.",
+      "source_url": "https://transcripts.un.org/en/asset/k18/k18iyhzwip?t=8:10:12",
+      "raw_file": "raw/223b59cb43db.json",
+      "raw_sha256": "392d53de3a244267c535411393334d5a3c394ecf8f45c4fde6915b4a9a49c272",
+      "json_pointer": "/transcript/data/53",
+      "statement_id": "223b59cb43db-026",
+      "start_char": "18969",
+      "end_char": "19074",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade",
+        "Unilateral sanctions"
+      ],
+      "id": "2a516c286b79",
+      "x": 0.028047728070261412,
+      "y": 0.38139308592319004,
+      "words": 17
+    },
+    {
+      "country": "South Africa",
+      "date": "2026-09-24",
+      "scope": "general_debate",
+      "quote": "We reiterate our call for an end to the blockade on the Cuban people.",
+      "source_url": "https://transcripts.un.org/en/asset/k18/k18iyhzwip?t=11:56:45",
+      "raw_file": "raw/223b59cb43db.json",
+      "raw_sha256": "392d53de3a244267c535411393334d5a3c394ecf8f45c4fde6915b4a9a49c272",
+      "json_pointer": "/transcript/data/77",
+      "statement_id": "223b59cb43db-038",
+      "start_char": "11162",
+      "end_char": "11230",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "cf2eb050f584",
+      "x": 0.19973376257599676,
+      "y": -0.2483569160201049,
+      "words": 14
+    },
+    {
+      "country": "South Africa",
+      "date": "2026-09-24",
+      "scope": "general_debate",
+      "quote": "The designation of Cuba as a state sponsor of terrorism is similarly unfounded and should be removed from that list.",
+      "source_url": "https://transcripts.un.org/en/asset/k18/k18iyhzwip?t=11:56:45",
+      "raw_file": "raw/223b59cb43db.json",
+      "raw_sha256": "392d53de3a244267c535411393334d5a3c394ecf8f45c4fde6915b4a9a49c272",
+      "json_pointer": "/transcript/data/77",
+      "statement_id": "223b59cb43db-038",
+      "start_char": "11232",
+      "end_char": "11347",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Terrorism-list designation"
+      ],
+      "id": "415ba414fa31",
+      "x": -0.17442321121723192,
+      "y": -0.18163728564948511,
+      "words": 20
+    },
+    {
+      "country": "South Africa",
+      "date": "2026-09-24",
+      "scope": "general_debate",
+      "quote": "Unilateral coercive measures have negative spillover effects that seriously undermine third countries.",
+      "source_url": "https://transcripts.un.org/en/asset/k18/k18iyhzwip?t=11:56:45",
+      "raw_file": "raw/223b59cb43db.json",
+      "raw_sha256": "392d53de3a244267c535411393334d5a3c394ecf8f45c4fde6915b4a9a49c272",
+      "json_pointer": "/transcript/data/77",
+      "statement_id": "223b59cb43db-038",
+      "start_char": "11349",
+      "end_char": "11450",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Unilateral sanctions"
+      ],
+      "id": "7442ae9824f8",
+      "x": -0.06362615693479337,
+      "y": 0.43802428257497533,
+      "words": 12
+    },
+    {
+      "country": "Cuba",
+      "date": "2026-09-24",
+      "scope": "broader_hlw",
+      "quote": "Our response capacity is continually limited by the unprecedented tightening of the blockade imposed by the United States against my country, including a criminal energy siege, which is an act of genocide and collective punishment.",
+      "source_url": "https://transcripts.un.org/en/asset/k1e/k1ej2317oq?t=2:37:30",
+      "raw_file": "raw/ffe56418f12c.json",
+      "raw_sha256": "b03a445e9b87057df542863e2754d923f92523cb6f835d0d592dcb62bb3a07ef",
+      "json_pointer": "/transcript/data/74",
+      "statement_id": "ffe56418f12c-036",
+      "start_char": "634",
+      "end_char": "864",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "1b2683d1c69c",
+      "x": -0.18519377658507566,
+      "y": -0.06264129761079804,
+      "words": 35
+    },
+    {
+      "country": "Cuba",
+      "date": "2026-09-25",
+      "scope": "broader_hlw",
+      "quote": "We must put an end to unilateral coercive measures and the cruel blockade affecting health services, making the sick the greatest victims.",
+      "source_url": "https://transcripts.un.org/en/asset/k13/k13wyul0eu?t=2:54:06",
+      "raw_file": "raw/86247b4645ab.json",
+      "raw_sha256": "3e0a59aa70c60879611a823be36f2e84e04846ff349eb2f8602b9a308e8e45fa",
+      "json_pointer": "/transcript/data/91",
+      "statement_id": "86247b4645ab-047",
+      "start_char": "560",
+      "end_char": "697",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade",
+        "Unilateral sanctions"
+      ],
+      "id": "e26cab64330b",
+      "x": -0.08403431037201392,
+      "y": 0.2382903410925956,
+      "words": 22
+    },
+    {
+      "country": "Cuba",
+      "date": "2026-09-25",
+      "scope": "broader_hlw",
+      "quote": "Well, with silence, silent bombs, as we heard, as we learned from Fidel Castro during the Cuban Revolution in 2026, we know that the year was particularly difficult for the Cuban healthcare system as a result of the unprecedented strengthening of the blockade imposed by the United States and the energy blockade that is holding hostage the entire nation.",
+      "source_url": "https://transcripts.un.org/en/asset/k13/k13wyul0eu?t=2:54:06",
+      "raw_file": "raw/86247b4645ab.json",
+      "raw_sha256": "3e0a59aa70c60879611a823be36f2e84e04846ff349eb2f8602b9a308e8e45fa",
+      "json_pointer": "/transcript/data/91",
+      "statement_id": "86247b4645ab-047",
+      "start_char": "699",
+      "end_char": "1053",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "76460b9f9dd9",
+      "x": -0.12349649637935285,
+      "y": -0.05367330041020741,
+      "words": 59
+    },
+    {
+      "country": "Tuvalu",
+      "date": "2026-09-25",
+      "scope": "general_debate",
+      "quote": "The continuation of those economic sanctions deprive Cuba of essential development partnership and support needed for recovery and future progress.",
+      "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=3:07:14",
+      "raw_file": "raw/c55e5f876d10.json",
+      "raw_sha256": "dee74a89b8d807a782212847b3eca709cbf96c4b1a508abbc5f7f07f8eb9140e",
+      "json_pointer": "/transcript/data/17",
+      "statement_id": "c55e5f876d10-010",
+      "start_char": "13417",
+      "end_char": "13563",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Unilateral sanctions"
+      ],
+      "id": "56c390901527",
+      "x": 0.07094894166771598,
+      "y": 0.008795904005993772,
+      "words": 20
+    },
+    {
+      "country": "Bahamas",
+      "date": "2026-09-25",
+      "scope": "general_debate",
+      "quote": "President, in our own hemisphere, the Bahamas again calls for the lifting of the strengthened blockade against Cuba and an end to the fuel blockade and Cuba's removal from the unilateral list of alleged state sponsors of terrorism.",
+      "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=6:25:12",
+      "raw_file": "raw/c55e5f876d10.json",
+      "raw_sha256": "dee74a89b8d807a782212847b3eca709cbf96c4b1a508abbc5f7f07f8eb9140e",
+      "json_pointer": "/transcript/data/33",
+      "statement_id": "c55e5f876d10-018",
+      "start_char": "10528",
+      "end_char": "10758",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade",
+        "Terrorism-list designation"
+      ],
+      "id": "aaa6f1b77a76",
+      "x": -0.22891241564295378,
+      "y": -0.3416295402069843,
+      "words": 39
+    },
+    {
+      "country": "Guinea-Bissau",
+      "date": "2026-09-25",
+      "scope": "general_debate",
+      "quote": "We therefore reiterate our call for the lifting of the economic, commercial and financial embargo.",
+      "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=7:30:15",
+      "raw_file": "raw/c55e5f876d10.json",
+      "raw_sha256": "dee74a89b8d807a782212847b3eca709cbf96c4b1a508abbc5f7f07f8eb9140e",
+      "json_pointer": "/transcript/data/39",
+      "statement_id": "c55e5f876d10-021",
+      "start_char": "5832",
+      "end_char": "5929",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "398405c3d68a",
+      "x": 0.6582260854071517,
+      "y": -0.21419447063815905,
+      "words": 15
+    },
+    {
+      "country": "Saint Vincent and the Grenadines",
+      "date": "2026-09-25",
+      "scope": "general_debate",
+      "quote": "For more than three decades, this Assembly has said that the economic embargo imposed on Cuba must end.",
+      "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=8:01:19",
+      "raw_file": "raw/c55e5f876d10.json",
+      "raw_sha256": "dee74a89b8d807a782212847b3eca709cbf96c4b1a508abbc5f7f07f8eb9140e",
+      "json_pointer": "/transcript/data/44",
+      "statement_id": "c55e5f876d10-023",
+      "start_char": "10247",
+      "end_char": "10349",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "37c6fa719aa7",
+      "x": 0.32314265401671277,
+      "y": -0.08097176914156841,
+      "words": 18
+    },
+    {
+      "country": "Saint Vincent and the Grenadines",
+      "date": "2026-09-25",
+      "scope": "general_debate",
+      "quote": "My Government adds its voice to call a call renewed year after year in this hall for the embargo to end.",
+      "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=8:01:19",
+      "raw_file": "raw/c55e5f876d10.json",
+      "raw_sha256": "dee74a89b8d807a782212847b3eca709cbf96c4b1a508abbc5f7f07f8eb9140e",
+      "json_pointer": "/transcript/data/44",
+      "statement_id": "c55e5f876d10-023",
+      "start_char": "10562",
+      "end_char": "10665",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "a6da85c6225f",
+      "x": 0.09807718285036163,
+      "y": 0.04709438327827442,
+      "words": 21
+    },
+    {
+      "country": "Saint Vincent and the Grenadines",
+      "date": "2026-09-25",
+      "scope": "general_debate",
+      "quote": "It is restored when an embargo denounced in this chamber is finally lifted, when peace in a conflict is secured, and when a historical wrong is made right.",
+      "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=8:01:19",
+      "raw_file": "raw/c55e5f876d10.json",
+      "raw_sha256": "dee74a89b8d807a782212847b3eca709cbf96c4b1a508abbc5f7f07f8eb9140e",
+      "json_pointer": "/transcript/data/44",
+      "statement_id": "c55e5f876d10-023",
+      "start_char": "13346",
+      "end_char": "13500",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "d6eb99ec6bd1",
+      "x": 0.018579427974665903,
+      "y": 0.06422395842436751,
+      "words": 28
+    },
+    {
+      "country": "Mexico",
+      "date": "2026-09-25",
+      "scope": "general_debate",
+      "quote": "Our regional vocation also explains Mexico's position, the position that we have had for more than six decades, and that solidarity with the people of Cuba, rejecting the embargo and any unilateral measure that is against the UN Charter.",
+      "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=10:51:44",
+      "raw_file": "raw/c55e5f876d10.json",
+      "raw_sha256": "dee74a89b8d807a782212847b3eca709cbf96c4b1a508abbc5f7f07f8eb9140e",
+      "json_pointer": "/transcript/data/60",
+      "statement_id": "c55e5f876d10-031",
+      "start_char": "8820",
+      "end_char": "9056",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "19f185c8957c",
+      "x": 0.11201155404080766,
+      "y": 0.11820827832963217,
+      "words": 40
+    },
+    {
+      "country": "Chad",
+      "date": "2026-09-25",
+      "scope": "general_debate",
+      "quote": "As we do each year on this same occasion, we call once again for the lifting of the economic and trade embargo imposed on Cuba and on its people.",
+      "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=11:25:15",
+      "raw_file": "raw/c55e5f876d10.json",
+      "raw_sha256": "dee74a89b8d807a782212847b3eca709cbf96c4b1a508abbc5f7f07f8eb9140e",
+      "json_pointer": "/transcript/data/64",
+      "statement_id": "c55e5f876d10-033",
+      "start_char": "8996",
+      "end_char": "9140",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "ddc96bf40014",
+      "x": 0.29407998465207125,
+      "y": -0.08330304082142614,
+      "words": 29
+    },
+    {
+      "country": "Cuba",
+      "date": "2026-09-25",
+      "scope": "broader_hlw",
+      "quote": "We will continue to do so despite the United States blockade, which is the main obstacle to the country's economic and social development and a flagrant violation of the human rights of our people.",
+      "source_url": "https://transcripts.un.org/en/asset/k1y/k1y6g76ey6?t=1:47:09",
+      "raw_file": "raw/d108c04955b7.json",
+      "raw_sha256": "6e2b00ced6ed7dc7c8211cc2f8724f4f33e8d4a0c999c58dbd6e44c36177a448",
+      "json_pointer": "/transcript/data/29",
+      "statement_id": "d108c04955b7-015",
+      "start_char": "1027",
+      "end_char": "1223",
+      "timestamps_flagged": "True",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "d500bed3e14e",
+      "x": -0.012115621336058837,
+      "y": -0.03009011130736198,
+      "words": 35
+    },
+    {
+      "country": "Cuba",
+      "date": "2026-09-25",
+      "scope": "broader_hlw",
+      "quote": "The United States blockade has been reinforced to unprecedented levels with the imposition of an energy blockade that is inflicting collective punishment with an undeniable humanitarian impact.",
+      "source_url": "https://transcripts.un.org/en/asset/k1y/k1y6g76ey6?t=1:47:09",
+      "raw_file": "raw/d108c04955b7.json",
+      "raw_sha256": "6e2b00ced6ed7dc7c8211cc2f8724f4f33e8d4a0c999c58dbd6e44c36177a448",
+      "json_pointer": "/transcript/data/29",
+      "statement_id": "d108c04955b7-015",
+      "start_char": "1225",
+      "end_char": "1417",
+      "timestamps_flagged": "True",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "21553b274c34",
+      "x": -0.24843809848492515,
+      "y": -0.06721900036723566,
+      "words": 27
+    },
+    {
+      "country": "Cuba",
+      "date": "2026-09-25",
+      "scope": "broader_hlw",
+      "quote": "Chair, colleagues, with the executive orders of 29 January and May 1st of 2026, the government of the United States has established an energy barrier against Cuba, which is equivalent to a blockade that, according to international law, is an act of war.",
+      "source_url": "https://transcripts.un.org/en/asset/k1q/k1qk4rkagp?t=2:29:28",
+      "raw_file": "raw/dec8968e7412.json",
+      "raw_sha256": "c2fc08ad5a07c79cb1fd14aa5df76dcb9ed9c03d4563a8364e2a727c04789d99",
+      "json_pointer": "/transcript/data/27",
+      "statement_id": "dec8968e7412-014",
+      "start_char": "1084",
+      "end_char": "1336",
+      "timestamps_flagged": "True",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "72d8ca402a2a",
+      "x": -0.1653076832778664,
+      "y": -0.054179013124645015,
+      "words": 43
+    },
+    {
+      "country": "Cuba",
+      "date": "2026-09-25",
+      "scope": "broader_hlw",
+      "quote": "They also threat to use secondary sanctions against the entire planet.",
+      "source_url": "https://transcripts.un.org/en/asset/k1q/k1qk4rkagp?t=2:29:28",
+      "raw_file": "raw/dec8968e7412.json",
+      "raw_sha256": "c2fc08ad5a07c79cb1fd14aa5df76dcb9ed9c03d4563a8364e2a727c04789d99",
+      "json_pointer": "/transcript/data/27",
+      "statement_id": "dec8968e7412-014",
+      "start_char": "1338",
+      "end_char": "1407",
+      "timestamps_flagged": "True",
+      "topics": [
+        "Extraterritorial restrictions"
+      ],
+      "id": "378d2c85e2d8",
+      "x": -0.1366300041700828,
+      "y": 0.1208995610320219,
+      "words": 11
+    },
+    {
+      "country": "Cuba",
+      "date": "2026-09-25",
+      "scope": "broader_hlw",
+      "quote": "Cuba isn't a threat, the blockade is.",
+      "source_url": "https://transcripts.un.org/en/asset/k1q/k1qk4rkagp?t=2:29:28",
+      "raw_file": "raw/dec8968e7412.json",
+      "raw_sha256": "c2fc08ad5a07c79cb1fd14aa5df76dcb9ed9c03d4563a8364e2a727c04789d99",
+      "json_pointer": "/transcript/data/27",
+      "statement_id": "dec8968e7412-014",
+      "start_char": "2847",
+      "end_char": "2883",
+      "timestamps_flagged": "True",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "2c210f902dca",
+      "x": -0.22057002212229374,
+      "y": -0.15668608169757883,
+      "words": 8
+    },
+    {
+      "country": "Cuba",
+      "date": "2026-09-25",
+      "scope": "broader_hlw",
+      "quote": "We thank the member states of the Hague group for their statements in favor of lifting the blockade and the energy barrier against Cuba and the numerous expressions of support and solidarity towards our country from the peoples of the world.",
+      "source_url": "https://transcripts.un.org/en/asset/k1q/k1qk4rkagp?t=2:29:28",
+      "raw_file": "raw/dec8968e7412.json",
+      "raw_sha256": "c2fc08ad5a07c79cb1fd14aa5df76dcb9ed9c03d4563a8364e2a727c04789d99",
+      "json_pointer": "/transcript/data/27",
+      "statement_id": "dec8968e7412-014",
+      "start_char": "3381",
+      "end_char": "3621",
+      "timestamps_flagged": "True",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "88001bda1381",
+      "x": -0.07566286007024277,
+      "y": -0.06663250030413116,
+      "words": 41
+    },
+    {
+      "country": "",
+      "date": "2026-09-25",
+      "scope": "broader_hlw",
+      "quote": "This includes The continuation of efforts aimed at obtaining a United Nations Security Council arms embargo as put forth by Maldives, Turkey, Indonesia, to target settlement products as proposed by the delegate from Indonesia.",
+      "source_url": "https://transcripts.un.org/en/asset/k1q/k1qk4rkagp?t=2:47:02",
+      "raw_file": "raw/dec8968e7412.json",
+      "raw_sha256": "c2fc08ad5a07c79cb1fd14aa5df76dcb9ed9c03d4563a8364e2a727c04789d99",
+      "json_pointer": "/transcript/data/35",
+      "statement_id": "dec8968e7412-018",
+      "start_char": "1855",
+      "end_char": "2080",
+      "timestamps_flagged": "True",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "4e434d77df20",
+      "x": -0.012506837369067783,
+      "y": 0.07359959273570371,
+      "words": 34
+    },
+    {
+      "country": "China",
+      "date": "2026-09-26",
+      "scope": "general_debate",
+      "quote": "China urges the relevant country to immediately stop using threat of force against Cuba and immediately and completely lift the blockade and sanctions against Cuba.",
+      "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=20:41",
+      "raw_file": "raw/ba152bf94143.json",
+      "raw_sha256": "522f0181f06756a898a355c6eecfba37240a0790e2a40c31cf246847dfaac426",
+      "json_pointer": "/transcript/data/1",
+      "statement_id": "ba152bf94143-002",
+      "start_char": "2504",
+      "end_char": "2667",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "06fdcc243af3",
+      "x": -0.15005166029448774,
+      "y": -0.07237883329662868,
+      "words": 25
+    },
+    {
+      "country": "Belize",
+      "date": "2026-09-26",
+      "scope": "general_debate",
+      "quote": "The economic blockade against our sister nation compounded by restrictions on fuel has severely damaged the Cuban economy.",
+      "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=54:10",
+      "raw_file": "raw/ba152bf94143.json",
+      "raw_sha256": "522f0181f06756a898a355c6eecfba37240a0790e2a40c31cf246847dfaac426",
+      "json_pointer": "/transcript/data/5",
+      "statement_id": "ba152bf94143-004",
+      "start_char": "8205",
+      "end_char": "8326",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "48faba8ac04d",
+      "x": -0.03504722167162236,
+      "y": -0.08193569326824744,
+      "words": 18
+    },
+    {
+      "country": "Belize",
+      "date": "2026-09-26",
+      "scope": "general_debate",
+      "quote": "Belize renews its call for the lifting of the blockade and for Cuba's removal from the list of state sponsors of terrorism.",
+      "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=54:10",
+      "raw_file": "raw/ba152bf94143.json",
+      "raw_sha256": "522f0181f06756a898a355c6eecfba37240a0790e2a40c31cf246847dfaac426",
+      "json_pointer": "/transcript/data/5",
+      "statement_id": "ba152bf94143-004",
+      "start_char": "8372",
+      "end_char": "8494",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade",
+        "Terrorism-list designation"
+      ],
+      "id": "f7f3b4756922",
+      "x": -0.2615465739901178,
+      "y": -0.4061426198798459,
+      "words": 23
+    },
+    {
+      "country": "Lao People's Democratic Republic",
+      "date": "2026-09-26",
+      "scope": "general_debate",
+      "quote": "In the same vein, the Lao PDR reiterates its principle position against unilateral, coercive measures.",
+      "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=2:02:44",
+      "raw_file": "raw/ba152bf94143.json",
+      "raw_sha256": "522f0181f06756a898a355c6eecfba37240a0790e2a40c31cf246847dfaac426",
+      "json_pointer": "/transcript/data/15",
+      "statement_id": "ba152bf94143-008",
+      "start_char": "2370",
+      "end_char": "2471",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Unilateral sanctions"
+      ],
+      "id": "8e67c0478999",
+      "x": -0.02575427702258432,
+      "y": 0.40019390755362,
+      "words": 15
+    },
+    {
+      "country": "Lao People's Democratic Republic",
+      "date": "2026-09-26",
+      "scope": "general_debate",
+      "quote": "The prolonged economic, commercial and financial embargo against the Republic of Cuba continue to inflict hardship on its people.",
+      "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=2:02:44",
+      "raw_file": "raw/ba152bf94143.json",
+      "raw_sha256": "522f0181f06756a898a355c6eecfba37240a0790e2a40c31cf246847dfaac426",
+      "json_pointer": "/transcript/data/15",
+      "statement_id": "ba152bf94143-008",
+      "start_char": "2473",
+      "end_char": "2601",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "1bd5131b803f",
+      "x": 0.43496743585185293,
+      "y": -0.09405676519787587,
+      "words": 19
+    },
+    {
+      "country": "Lao People's Democratic Republic",
+      "date": "2026-09-26",
+      "scope": "general_debate",
+      "quote": "We call for the immediate and unconditional lifting of these sanctions, including logistic and energy blockades and removal of Cuba from the list of state sponsors of terrorism.",
+      "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=2:02:44",
+      "raw_file": "raw/ba152bf94143.json",
+      "raw_sha256": "522f0181f06756a898a355c6eecfba37240a0790e2a40c31cf246847dfaac426",
+      "json_pointer": "/transcript/data/15",
+      "statement_id": "ba152bf94143-008",
+      "start_char": "2603",
+      "end_char": "2779",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Terrorism-list designation"
+      ],
+      "id": "002430d903f4",
+      "x": -0.19923070756552527,
+      "y": -0.29456988651194344,
+      "words": 28
+    },
+    {
+      "country": "Cuba",
+      "date": "2026-09-26",
+      "scope": "general_debate",
+      "quote": "Since January 2026, this aggression has strengthened and become more cruel and more dangerous, with the imposition of an energy blockade that, by resorting to intimidation and coercion, prevents any country from exporting fuel to Cuba, an equivalent to a naval blockade, which is classified under international law as an act of war.",
+      "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=2:51:21",
+      "raw_file": "raw/ba152bf94143.json",
+      "raw_sha256": "522f0181f06756a898a355c6eecfba37240a0790e2a40c31cf246847dfaac426",
+      "json_pointer": "/transcript/data/21",
+      "statement_id": "ba152bf94143-011",
+      "start_char": "1729",
+      "end_char": "2060",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "4e2240304495",
+      "x": -0.205407881325663,
+      "y": -0.062209372187225734,
+      "words": 53
+    },
+    {
+      "country": "Cuba",
+      "date": "2026-09-26",
+      "scope": "general_debate",
+      "quote": "Well, if that were the case, why did they have to impose a fuel blockade?",
+      "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=2:51:21",
+      "raw_file": "raw/ba152bf94143.json",
+      "raw_sha256": "522f0181f06756a898a355c6eecfba37240a0790e2a40c31cf246847dfaac426",
+      "json_pointer": "/transcript/data/21",
+      "statement_id": "ba152bf94143-011",
+      "start_char": "5520",
+      "end_char": "5592",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "f0215ad1e12b",
+      "x": -0.20776056578576887,
+      "y": -0.04508920315047034,
+      "words": 15
+    },
+    {
+      "country": "Cuba",
+      "date": "2026-09-26",
+      "scope": "general_debate",
+      "quote": "Why did they impose secondary sanctions?",
+      "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=2:51:21",
+      "raw_file": "raw/ba152bf94143.json",
+      "raw_sha256": "522f0181f06756a898a355c6eecfba37240a0790e2a40c31cf246847dfaac426",
+      "json_pointer": "/transcript/data/21",
+      "statement_id": "ba152bf94143-011",
+      "start_char": "5594",
+      "end_char": "5633",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Extraterritorial restrictions"
+      ],
+      "id": "045e769d75a7",
+      "x": -0.1226161813638469,
+      "y": 0.07287239008898712,
+      "words": 6
+    },
+    {
+      "country": "Cuba",
+      "date": "2026-09-26",
+      "scope": "general_debate",
+      "quote": "What is, is the blockade.",
+      "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=2:51:21",
+      "raw_file": "raw/ba152bf94143.json",
+      "raw_sha256": "522f0181f06756a898a355c6eecfba37240a0790e2a40c31cf246847dfaac426",
+      "json_pointer": "/transcript/data/21",
+      "statement_id": "ba152bf94143-011",
+      "start_char": "8543",
+      "end_char": "8567",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "84f3aa665c42",
+      "x": -0.3223998586234202,
+      "y": -0.2650199795698156,
+      "words": 5
+    },
+    {
+      "country": "Cuba",
+      "date": "2026-09-26",
+      "scope": "general_debate",
+      "quote": "The blockade, yes, is a threat.",
+      "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=2:51:21",
+      "raw_file": "raw/ba152bf94143.json",
+      "raw_sha256": "522f0181f06756a898a355c6eecfba37240a0790e2a40c31cf246847dfaac426",
+      "json_pointer": "/transcript/data/21",
+      "statement_id": "ba152bf94143-011",
+      "start_char": "8591",
+      "end_char": "8621",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "ce8aa889c94b",
+      "x": -0.25122137320006493,
+      "y": -0.10576175538241668,
+      "words": 6
+    },
+    {
+      "country": "Cuba",
+      "date": "2026-09-26",
+      "scope": "general_debate",
+      "quote": "We reject the implementation of unilateral coercive measures.",
+      "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=2:51:21",
+      "raw_file": "raw/ba152bf94143.json",
+      "raw_sha256": "522f0181f06756a898a355c6eecfba37240a0790e2a40c31cf246847dfaac426",
+      "json_pointer": "/transcript/data/21",
+      "statement_id": "ba152bf94143-011",
+      "start_char": "12687",
+      "end_char": "12747",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Unilateral sanctions"
+      ],
+      "id": "6590aad0a70e",
+      "x": -0.0774850108461321,
+      "y": 0.496724471051428,
+      "words": 8
+    },
+    {
+      "country": "Russian Federation",
+      "date": "2026-09-26",
+      "scope": "general_debate",
+      "quote": "lift its siege on the island of freedom and lift all restrictions on trade with Cuba, striking it off the list of that vile list, list of state sponsors of terrorism.",
+      "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=3:12:06",
+      "raw_file": "raw/ba152bf94143.json",
+      "raw_sha256": "522f0181f06756a898a355c6eecfba37240a0790e2a40c31cf246847dfaac426",
+      "json_pointer": "/transcript/data/23",
+      "statement_id": "ba152bf94143-012",
+      "start_char": "4320",
+      "end_char": "4485",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Terrorism-list designation"
+      ],
+      "id": "34d0a68ff62d",
+      "x": -0.21283485299165386,
+      "y": -0.232461868885411,
+      "words": 31
+    },
+    {
+      "country": "Belarus",
+      "date": "2026-09-26",
+      "scope": "general_debate",
+      "quote": "Now let's add to that unfair global trade, where the rules are written to serve the interests of transnational corporations, and also illegal unilateral sanctions that are suffocating entire nations.",
+      "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=5:14:02",
+      "raw_file": "raw/ba152bf94143.json",
+      "raw_sha256": "522f0181f06756a898a355c6eecfba37240a0790e2a40c31cf246847dfaac426",
+      "json_pointer": "/transcript/data/39",
+      "statement_id": "ba152bf94143-020",
+      "start_char": "3712",
+      "end_char": "3910",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Unilateral sanctions"
+      ],
+      "id": "78edd399b179",
+      "x": -0.04516430255204204,
+      "y": 0.15769175194672236,
+      "words": 31
+    },
+    {
+      "country": "San Marino",
+      "date": "2026-09-26",
+      "scope": "general_debate",
+      "quote": "Recent political pressure and coercive measures against the Court, its officials and those who cooperate with it are deeply concerning.",
+      "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=6:24:08",
+      "raw_file": "raw/ba152bf94143.json",
+      "raw_sha256": "522f0181f06756a898a355c6eecfba37240a0790e2a40c31cf246847dfaac426",
+      "json_pointer": "/transcript/data/45",
+      "statement_id": "ba152bf94143-023",
+      "start_char": "10262",
+      "end_char": "10396",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Unilateral sanctions"
+      ],
+      "id": "f80e258a48e8",
+      "x": -0.06123311106104581,
+      "y": 0.295297726624925,
+      "words": 20
+    },
+    {
+      "country": "Gabon",
+      "date": "2026-09-26",
+      "scope": "general_debate",
+      "quote": "Gabon joins the repeated calls by numerous States for the lifting of the embargo.",
+      "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=7:25:59",
+      "raw_file": "raw/ba152bf94143.json",
+      "raw_sha256": "522f0181f06756a898a355c6eecfba37240a0790e2a40c31cf246847dfaac426",
+      "json_pointer": "/transcript/data/53",
+      "statement_id": "ba152bf94143-027",
+      "start_char": "7540",
+      "end_char": "7620",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "d23921538952",
+      "x": 0.05378477191306502,
+      "y": -0.037375159544167605,
+      "words": 14
+    },
+    {
+      "country": "Jamaica",
+      "date": "2026-09-26",
+      "scope": "general_debate",
+      "quote": "supported by policies that create pathways for progress and eliminating the dire humanitarian crisis, rather than perpetuating isolation under the blockade.",
+      "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=7:56:41",
+      "raw_file": "raw/ba152bf94143.json",
+      "raw_sha256": "522f0181f06756a898a355c6eecfba37240a0790e2a40c31cf246847dfaac426",
+      "json_pointer": "/transcript/data/57",
+      "statement_id": "ba152bf94143-029",
+      "start_char": "11299",
+      "end_char": "11454",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "b48cfdadee67",
+      "x": -0.12917767781994083,
+      "y": -0.0027943957468661647,
+      "words": 21
+    },
+    {
+      "country": "Cuba",
+      "date": "2026-09-28",
+      "scope": "broader_hlw",
+      "quote": "This is what our people have seen with the energy siege, the policy of maximum pressure with the tightened blockade, and continued threats of military aggression by the United States.",
+      "source_url": "https://transcripts.un.org/en/asset/k17/k17kzvb8g4?t=1:20:25",
+      "raw_file": "raw/221cad7c6b88.json",
+      "raw_sha256": "0aa3c327d4efaf7591f2ef772ddba8e037cb0468ed40b0c151aad0564e0df3f1",
+      "json_pointer": "/transcript/data/24",
+      "statement_id": "221cad7c6b88-012",
+      "start_char": "1294",
+      "end_char": "1476",
+      "timestamps_flagged": "True",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "7c1b610509ff",
+      "x": -0.15683208883012945,
+      "y": -0.04486333897732933,
+      "words": 30
+    },
+    {
+      "country": "Burkina Faso",
+      "date": "2026-09-28",
+      "scope": "general_debate",
+      "quote": "It is necessary to strengthen transparency, accountability, put an end to double standards, to adapt this body to geopolitical reality the Confederation reaffirms its support for the Essel we need consensus and the sets declaration the credibility of the organization will the credibility of the UN will depend on its ability to ensure that the Charter international law and the sovereign equality of states are fully respected with the same rigor without distinction in this regards the Confederation reiterates our appeal to lift all unilateral coercive actions that are against international law, including the embargo imposed against the Republic of Cuba.",
+      "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=51:22",
+      "raw_file": "raw/61a6c2f7bf54.json",
+      "raw_sha256": "ce98b0b9adb4842f23d8233e886b11f2274077f6e7d7e87f42f2f4c65a3fbd42",
+      "json_pointer": "/transcript/data/5",
+      "statement_id": "61a6c2f7bf54-004",
+      "start_char": "14804",
+      "end_char": "15462",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade",
+        "Unilateral sanctions"
+      ],
+      "id": "8e91691a4c16",
+      "x": 0.03286815020189652,
+      "y": 0.11576400891515347,
+      "words": 101
+    },
+    {
+      "country": "Burkina Faso",
+      "date": "2026-09-28",
+      "scope": "general_debate",
+      "quote": "Burkina Faso also remains concerned by the consequence of unilateral coercive measures imposed against certain states like Cuba and Nicaragua, and the repercussions of these have a terrible effect on the populations.",
+      "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=51:22",
+      "raw_file": "raw/61a6c2f7bf54.json",
+      "raw_sha256": "ce98b0b9adb4842f23d8233e886b11f2274077f6e7d7e87f42f2f4c65a3fbd42",
+      "json_pointer": "/transcript/data/5",
+      "statement_id": "61a6c2f7bf54-004",
+      "start_char": "20137",
+      "end_char": "20352",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Unilateral sanctions"
+      ],
+      "id": "296de81553a8",
+      "x": -0.04044279366078521,
+      "y": 0.25162844358842296,
+      "words": 32
+    },
+    {
+      "country": "Congo",
+      "date": "2026-09-28",
+      "scope": "general_debate",
+      "quote": "We call for the stabilization of Eastern Democratic Republic of the Congo, return of the lasting peace in Sudan, continued reconciliation in Libya, lifting of the embargo against Cuba, restoring of peace and stability in the Sahel.",
+      "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=2:52:25",
+      "raw_file": "raw/61a6c2f7bf54.json",
+      "raw_sha256": "ce98b0b9adb4842f23d8233e886b11f2274077f6e7d7e87f42f2f4c65a3fbd42",
+      "json_pointer": "/transcript/data/15",
+      "statement_id": "61a6c2f7bf54-009",
+      "start_char": "11699",
+      "end_char": "11929",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "239a07b94079",
+      "x": 0.05620470034678261,
+      "y": 0.0015619487143328917,
+      "words": 37
+    },
+    {
+      "country": "Grenada",
+      "date": "2026-09-28",
+      "scope": "general_debate",
+      "quote": "This requires Cuba and the United States of America to address the very difficult but not insurmountable challenges of ending of sanctions, the removal of the embargo and blockade against the Cuban people.",
+      "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=5:06:24",
+      "raw_file": "raw/61a6c2f7bf54.json",
+      "raw_sha256": "ce98b0b9adb4842f23d8233e886b11f2274077f6e7d7e87f42f2f4c65a3fbd42",
+      "json_pointer": "/transcript/data/29",
+      "statement_id": "61a6c2f7bf54-016",
+      "start_char": "2786",
+      "end_char": "2990",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "ea521ff7d92c",
+      "x": -0.032434212795343864,
+      "y": -0.1537560118302854,
+      "words": 33
+    },
+    {
+      "country": "Vanuatu",
+      "date": "2026-09-28",
+      "scope": "general_debate",
+      "quote": "The imposition of coercive economic measures, including unilateral sanctions against developing countries, is unfair and unjust.",
+      "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=6:11:56",
+      "raw_file": "raw/61a6c2f7bf54.json",
+      "raw_sha256": "ce98b0b9adb4842f23d8233e886b11f2274077f6e7d7e87f42f2f4c65a3fbd42",
+      "json_pointer": "/transcript/data/37",
+      "statement_id": "61a6c2f7bf54-020",
+      "start_char": "16485",
+      "end_char": "16612",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Unilateral sanctions"
+      ],
+      "id": "f6c15e2ed523",
+      "x": 0.013024298375013016,
+      "y": 0.45572016147356254,
+      "words": 16
+    },
+    {
+      "country": "Vanuatu",
+      "date": "2026-09-28",
+      "scope": "general_debate",
+      "quote": "In this respect, we consistently call for the uplift of the economic embargo on the Republic of Cuba.",
+      "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=6:11:56",
+      "raw_file": "raw/61a6c2f7bf54.json",
+      "raw_sha256": "ce98b0b9adb4842f23d8233e886b11f2274077f6e7d7e87f42f2f4c65a3fbd42",
+      "json_pointer": "/transcript/data/37",
+      "statement_id": "61a6c2f7bf54-020",
+      "start_char": "16793",
+      "end_char": "16893",
+      "timestamps_flagged": "False",
+      "topics": [
+        "Embargo and blockade"
+      ],
+      "id": "0242c118153b",
+      "x": 0.20932068249475771,
+      "y": -0.023559971011055926,
+      "words": 18
+    }
+  ],
+  "partitions": [
+    {
+      "k": 2,
+      "silhouette": 0.03472843216445597,
+      "labels": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1
+      ],
+      "clusters": [
+        {
+          "id": 1,
+          "n": 63,
+          "terms": [
+            "blockade",
+            "cuba",
+            "embargo",
+            "economic",
+            "unilateral",
+            "end"
+          ],
+          "weights": [
+            0.08370576373774867,
+            0.07352546488973839,
+            0.05655992507354633,
+            0.055930608718534315,
+            0.044339079321637345,
+            0.043225110120539555
+          ]
+        },
+        {
+          "id": 2,
+          "n": 2,
+          "terms": [
+            "peace",
+            "chamber",
+            "conflict",
+            "denounced",
+            "finally",
+            "historical"
+          ],
+          "weights": [
+            0.3265368375648522,
+            0.15050629524727185,
+            0.15050629524727185,
+            0.15050629524727185,
+            0.15050629524727185,
+            0.15050629524727185
+          ]
+        }
+      ],
+      "smallest_cluster": 2
+    },
+    {
+      "k": 3,
+      "silhouette": 0.04295570785487955,
+      "labels": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        1,
+        1,
+        2,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        2,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        3,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        2,
+        2,
+        1,
+        1,
+        2,
+        1,
+        2,
+        2,
+        1,
+        1,
+        1,
+        1,
+        2,
+        3,
+        1,
+        2,
+        1
+      ],
+      "clusters": [
+        {
+          "id": 1,
+          "n": 46,
+          "terms": [
+            "blockade",
+            "cuba",
+            "embargo",
+            "economic",
+            "end",
+            "people"
+          ],
+          "weights": [
+            0.106698770084389,
+            0.09275262166487178,
+            0.07287498177152658,
+            0.06891955977508753,
+            0.055008039948653754,
+            0.054316432047238836
+          ]
+        },
+        {
+          "id": 2,
+          "n": 17,
+          "terms": [
+            "measures",
+            "coercive",
+            "unilateral",
+            "sanctions",
+            "secondary",
+            "did"
+          ],
+          "weights": [
+            0.14343837769278042,
+            0.139193547585394,
+            0.126142752840899,
+            0.08248882035551656,
+            0.07226487026223313,
+            0.06124342314978575
+          ]
+        },
+        {
+          "id": 3,
+          "n": 2,
+          "terms": [
+            "peace",
+            "chamber",
+            "conflict",
+            "denounced",
+            "finally",
+            "historical"
+          ],
+          "weights": [
+            0.3265368375648522,
+            0.15050629524727185,
+            0.15050629524727185,
+            0.15050629524727185,
+            0.15050629524727185,
+            0.15050629524727185
+          ]
+        }
+      ],
+      "smallest_cluster": 2
+    },
+    {
+      "k": 4,
+      "silhouette": 0.04846820930131267,
+      "labels": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        1,
+        1,
+        3,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        2,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        4,
+        1,
+        1,
+        1,
+        1,
+        1,
+        3,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        3,
+        3,
+        1,
+        1,
+        2,
+        1,
+        3,
+        2,
+        1,
+        1,
+        1,
+        1,
+        2,
+        4,
+        1,
+        2,
+        1
+      ],
+      "clusters": [
+        {
+          "id": 1,
+          "n": 46,
+          "terms": [
+            "blockade",
+            "cuba",
+            "embargo",
+            "economic",
+            "end",
+            "people"
+          ],
+          "weights": [
+            0.106698770084389,
+            0.09275262166487178,
+            0.07287498177152658,
+            0.06891955977508753,
+            0.055008039948653754,
+            0.054316432047238836
+          ]
+        },
+        {
+          "id": 2,
+          "n": 12,
+          "terms": [
+            "measures",
+            "coercive",
+            "unilateral",
+            "countries",
+            "developing",
+            "unjust"
+          ],
+          "weights": [
+            0.2032043683981056,
+            0.1971908590793082,
+            0.16687715792831503,
+            0.07709522923855867,
+            0.05365045997345297,
+            0.05365045997345297
+          ]
+        },
+        {
+          "id": 3,
+          "n": 5,
+          "terms": [
+            "secondary",
+            "did",
+            "impose",
+            "sanctions",
+            "entire",
+            "case"
+          ],
+          "weights": [
+            0.24570055889159265,
+            0.20822763870927155,
+            0.20822763870927155,
+            0.20037656362352832,
+            0.12189290759134008,
+            0.10741320270888628
+          ]
+        },
+        {
+          "id": 4,
+          "n": 2,
+          "terms": [
+            "peace",
+            "chamber",
+            "conflict",
+            "denounced",
+            "finally",
+            "historical"
+          ],
+          "weights": [
+            0.3265368375648522,
+            0.15050629524727185,
+            0.15050629524727185,
+            0.15050629524727185,
+            0.15050629524727185,
+            0.15050629524727185
+          ]
+        }
+      ],
+      "smallest_cluster": 2
+    },
+    {
+      "k": 5,
+      "silhouette": 0.04863449650996111,
+      "labels": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        1,
+        1,
+        3,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        2,
+        1,
+        2,
+        1,
+        4,
+        1,
+        1,
+        1,
+        1,
+        5,
+        1,
+        1,
+        1,
+        1,
+        1,
+        3,
+        1,
+        1,
+        4,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        3,
+        3,
+        1,
+        1,
+        2,
+        1,
+        3,
+        2,
+        1,
+        4,
+        1,
+        1,
+        2,
+        5,
+        1,
+        2,
+        1
+      ],
+      "clusters": [
+        {
+          "id": 1,
+          "n": 43,
+          "terms": [
+            "blockade",
+            "cuba",
+            "embargo",
+            "economic",
+            "end",
+            "people"
+          ],
+          "weights": [
+            0.11112708235673993,
+            0.09645763857532579,
+            0.07557894231898563,
+            0.06999405612009513,
+            0.0588458101776296,
+            0.05810595056216248
+          ]
+        },
+        {
+          "id": 2,
+          "n": 12,
+          "terms": [
+            "measures",
+            "coercive",
+            "unilateral",
+            "countries",
+            "developing",
+            "unjust"
+          ],
+          "weights": [
+            0.2032043683981056,
+            0.1971908590793082,
+            0.16687715792831503,
+            0.07709522923855867,
+            0.05365045997345297,
+            0.05365045997345297
+          ]
+        },
+        {
+          "id": 3,
+          "n": 5,
+          "terms": [
+            "secondary",
+            "did",
+            "impose",
+            "sanctions",
+            "entire",
+            "case"
+          ],
+          "weights": [
+            0.24570055889159265,
+            0.20822763870927155,
+            0.20822763870927155,
+            0.20037656362352832,
+            0.12189290759134008,
+            0.10741320270888628
+          ]
+        },
+        {
+          "id": 4,
+          "n": 3,
+          "terms": [
+            "progress",
+            "continuation",
+            "indonesia",
+            "deprive",
+            "future",
+            "needed"
+          ],
+          "weights": [
+            0.19089461982160638,
+            0.1654662313725741,
+            0.12645090690689204,
+            0.10718172339350544,
+            0.10718172339350544,
+            0.10718172339350544
+          ]
+        },
+        {
+          "id": 5,
+          "n": 2,
+          "terms": [
+            "peace",
+            "chamber",
+            "conflict",
+            "denounced",
+            "finally",
+            "historical"
+          ],
+          "weights": [
+            0.3265368375648522,
+            0.15050629524727185,
+            0.15050629524727185,
+            0.15050629524727185,
+            0.15050629524727185,
+            0.15050629524727185
+          ]
+        }
+      ],
+      "smallest_cluster": 2
+    },
+    {
+      "k": 6,
+      "silhouette": 0.04600496895410972,
+      "labels": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        1,
+        1,
+        3,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        2,
+        1,
+        2,
+        1,
+        4,
+        1,
+        1,
+        1,
+        1,
+        5,
+        1,
+        1,
+        1,
+        1,
+        1,
+        3,
+        1,
+        1,
+        6,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        3,
+        3,
+        1,
+        1,
+        2,
+        1,
+        3,
+        2,
+        1,
+        4,
+        1,
+        1,
+        2,
+        5,
+        1,
+        2,
+        1
+      ],
+      "clusters": [
+        {
+          "id": 1,
+          "n": 43,
+          "terms": [
+            "blockade",
+            "cuba",
+            "embargo",
+            "economic",
+            "end",
+            "people"
+          ],
+          "weights": [
+            0.11112708235673993,
+            0.09645763857532579,
+            0.07557894231898563,
+            0.06999405612009513,
+            0.0588458101776296,
+            0.05810595056216248
+          ]
+        },
+        {
+          "id": 2,
+          "n": 12,
+          "terms": [
+            "measures",
+            "coercive",
+            "unilateral",
+            "countries",
+            "developing",
+            "unjust"
+          ],
+          "weights": [
+            0.2032043683981056,
+            0.1971908590793082,
+            0.16687715792831503,
+            0.07709522923855867,
+            0.05365045997345297,
+            0.05365045997345297
+          ]
+        },
+        {
+          "id": 3,
+          "n": 5,
+          "terms": [
+            "secondary",
+            "did",
+            "impose",
+            "sanctions",
+            "entire",
+            "case"
+          ],
+          "weights": [
+            0.24570055889159265,
+            0.20822763870927155,
+            0.20822763870927155,
+            0.20037656362352832,
+            0.12189290759134008,
+            0.10741320270888628
+          ]
+        },
+        {
+          "id": 4,
+          "n": 2,
+          "terms": [
+            "progress",
+            "deprive",
+            "future",
+            "needed",
+            "partnership",
+            "recovery"
+          ],
+          "weights": [
+            0.2863419297324096,
+            0.16077258509025816,
+            0.16077258509025816,
+            0.16077258509025816,
+            0.16077258509025816,
+            0.16077258509025816
+          ]
+        },
+        {
+          "id": 5,
+          "n": 2,
+          "terms": [
+            "peace",
+            "chamber",
+            "conflict",
+            "denounced",
+            "finally",
+            "historical"
+          ],
+          "weights": [
+            0.3265368375648522,
+            0.15050629524727185,
+            0.15050629524727185,
+            0.15050629524727185,
+            0.15050629524727185,
+            0.15050629524727185
+          ]
+        },
+        {
+          "id": 6,
+          "n": 1,
+          "terms": [
+            "indonesia",
+            "aimed",
+            "arms",
+            "council",
+            "delegate",
+            "efforts"
+          ],
+          "weights": [
+            0.3793527207206761,
+            0.2240518279073762,
+            0.2240518279073762,
+            0.2240518279073762,
+            0.2240518279073762,
+            0.2240518279073762
+          ]
+        }
+      ],
+      "smallest_cluster": 1
+    }
+  ],
+  "topics": [
+    "Embargo and blockade",
+    "Unilateral sanctions",
+    "Terrorism-list designation",
+    "Extraterritorial restrictions"
+  ],
+  "overlap": [
+    [
+      {
+        "intersection": 34,
+        "union": 34,
+        "jaccard": 1.0
+      },
+      {
+        "intersection": 9,
+        "union": 39,
+        "jaccard": 0.23076923076923078
+      },
+      {
+        "intersection": 5,
+        "union": 35,
+        "jaccard": 0.14285714285714285
+      },
+      {
+        "intersection": 3,
+        "union": 34,
+        "jaccard": 0.08823529411764706
+      }
+    ],
+    [
+      {
+        "intersection": 9,
+        "union": 39,
+        "jaccard": 0.23076923076923078
+      },
+      {
+        "intersection": 14,
+        "union": 14,
+        "jaccard": 1.0
+      },
+      {
+        "intersection": 2,
+        "union": 18,
+        "jaccard": 0.1111111111111111
+      },
+      {
+        "intersection": 2,
+        "union": 15,
+        "jaccard": 0.13333333333333333
+      }
+    ],
+    [
+      {
+        "intersection": 5,
+        "union": 35,
+        "jaccard": 0.14285714285714285
+      },
+      {
+        "intersection": 2,
+        "union": 18,
+        "jaccard": 0.1111111111111111
+      },
+      {
+        "intersection": 6,
+        "union": 6,
+        "jaccard": 1.0
+      },
+      {
+        "intersection": 0,
+        "union": 9,
+        "jaccard": 0.0
+      }
+    ],
+    [
+      {
+        "intersection": 3,
+        "union": 34,
+        "jaccard": 0.08823529411764706
+      },
+      {
+        "intersection": 2,
+        "union": 15,
+        "jaccard": 0.13333333333333333
+      },
+      {
+        "intersection": 0,
+        "union": 9,
+        "jaccard": 0.0
+      },
+      {
+        "intersection": 3,
+        "union": 3,
+        "jaccard": 1.0
+      }
+    ]
+  ],
+  "limitations": [
+    "Candidate selection is not a reviewed Cuba-embargo label.",
+    "Same-speaker passages and formulaic diplomatic wording are dependent observations.",
+    "Lexical clusters are not stance, alliance, sentiment, causality, or legal-status judgments.",
+    "Projection loses information; clustering uses full vectors, not plot coordinates.",
+    "No population inference, p-values, or confidence intervals from this selected corpus.",
+    "Recovered captions/ASR drafts are not yet merged; original D1 research gates remain unchanged."
+  ]
+}
