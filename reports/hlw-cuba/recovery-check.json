@@ -1,0 +1,10 @@
+{
+  "events_verified": 41,
+  "transcript_hashes_verified": 41,
+  "written_statement_hashes_verified": 6,
+  "outcome_document_hashes_verified": 1,
+  "organizer_transcripts_verified": 1,
+  "local_links_valid": true,
+  "source_types_labeled": true,
+  "human_review_complete": false
+}

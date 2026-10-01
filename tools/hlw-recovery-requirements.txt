@@ -1,0 +1,8 @@
+yt-dlp==2026.8.19
+beautifulsoup4==4.15.0
+faster-whisper==1.2.1
+ctranslate2==4.8.2
+huggingface_hub==1.33.0
+av==16.1.0
+imageio-ffmpeg==0.6.0
+pypdf>=5,<7

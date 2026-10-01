@@ -1,3 +1,6 @@
 # Preserve package checksums on Windows and Unix checkouts.
 un/** -text
 examples/review/** -text
+# Recovered texts have byte hashes recorded in recovery.json.
+reports/hlw-cuba/r_*.txt -text
+reports/hlw-cuba/w_* -text

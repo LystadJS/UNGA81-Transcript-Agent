@@ -1,0 +1,15 @@
+{
+  "file": "hlw-recovery.zip",
+  "bytes": 3076796,
+  "sha256": "549c3113875bdbcc4955ca372906a53618dd5c2e461d22a270f04cb39e1b077d",
+  "files": 126,
+  "max_internal_path_chars": 37,
+  "max_test_extraction_path_chars": 82,
+  "zip_integrity": true,
+  "extracted_hashes_verified": true,
+  "extracted_recovery_links_valid": true,
+  "local_audio_hashes_verified": true,
+  "events": 41,
+  "human_review_complete": false,
+  "all_report_local_links_valid": true
+}

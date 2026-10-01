@@ -1,0 +1,415 @@
+UNREVIEWED PUBLISHER CAPTIONS. Publisher-provided auto-generated captions.
+https://webtv.un.org/en/asset/k1s/k1sxjijxm1
+
+[0.21-0.71] [Auto-generated transcript: may contain errors] On.
+[0.79-3.33] We're live from the UN headquarters in New York during
+[3.41-5.49] the 81st UN General Assembly,
+[5.68-8.67] and I'm pleased to pass it to Aisha Becker-Burrowes,
+[8.93-11.43] Co-Founder and Executive Director at FEMINIST,
+[11.57-13.23] to start our next panel discussion.
+[14.51-15.31] Thank you.
+[17.52-18.39] Hello everybody.
+[19.20-20.49] Um, I know it's a busy week,
+[20.63-22.29] so we're grateful that you are here.
+[23.22-24.99] I'm Aisha Becker-Burrowes, as she said,
+[25.19-27.57] Co-Founder and Co-Executive Director of FEMINIST.
+[28.00-29.37] And for those of you who may not know,
+[30.18-33.39] FEMINIST is actually the largest social-first platform really
+[33.47-36.33] dedicated to amplifying the issues around women, girls,
+[36.41-39.51] and gender-expansive people around the world.
+[39.83-42.51] And so, because of that, and as you can imagine,
+[42.71-46.17] we might know a thing or two about the unique intersections
+[46.31-51.33] of technology, gender-based violence, and information, right,
+[51.88-53.25] and the attacks that we're seeing,
+[54.05-57.57] or, for what some folks might call, technopatriarchy.
+[58.66-62.97] And with the advent of AI and the emergence and continued use
+[63.16-66.57] that we— the rapid use and development of AI—
+[66.65-69.45] we know that women and girls are bound to really bear the brunt
+[69.89-71.79] of its harms and its advances.
+[72.29-76.47] We often hear AI discussed as a future risk,
+[76.66-79.83] but for women and girls, many of those harms are already here.
+[80.81-81.42] So today,
+[81.50-87.27] we will really move beyond a more typical framing of, you know,
+[87.35-89.13] whether AI is good or bad,
+[89.86-93.75] and move towards questions of who is it built for,
+[93.83-97.89] who bears its risks, and what are some possibility frameworks,
+[98.50-100.17] since AI is already here.
+[100.91-105.03] So I have the honor of being joined by Kalliopi Mingeirou,
+[105.90-109.29] UN Women's Chief of Ending Violence Against Women and Girls,
+[109.78-114.03] and Jayathma Wickramanayake UN Women—
+[114.11-116.55] I knew I was going to mess that up, ugh, sorry—
+[117.36-120.27] UN Women Senior Advisor for Digital Cooperation.
+[121.31-122.79] So I want to start, uh,
+[122.87-125.19] maybe by grounding us in the present reality.
+[125.39-126.19] Is that okay?
+[126.95-127.45] Yeah?
+[127.53-128.22] Great.
+[129.18-130.83] So, Kalliopi, I'm going to start with you.
+[131.03-132.09] My first question is:
+[132.17-136.05] what does AI-enabled violence against women and girls look like
+[136.19-139.05] today, and how serious is the problem?
+[140.21-143.43] Thank you so much, Aisha, and welcome to all of you here.
+[143.57-147.15] We know how busy you are, and you know the Security Council,
+[147.47-148.71] maybe in half an hour,
+[148.85-154.05] we're going to have a very special briefing about AI as a threat
+[154.13-155.19] to humanity.
+[155.69-159.15] And that's why I find our discussion just right here very
+[159.52-160.02] important,
+[160.10-164.25] because we cannot talk just about AI as a threat to humanity
+[164.74-167.91] when we have so much violence against women and girls,
+[168.10-170.91] and we're not talking about a new problem.
+[171.28-174.21] Just to give you the results from a global study,
+[175.20-180.75] 85% of women in this global study have witnessed some form
+[181.01-182.67] of online violence,
+[182.75-186.21] that either to them or to one of their friends, to colleagues,
+[186.35-188.97] etc. So the issue is not new.
+[189.23-195.39] What AI has enabled is to do this harm and this abuse using new
+[195.71-200.55] tools, and to have it with new speed, the anonymity,
+[200.93-205.47] and the fact to make it really intense, even more than before.
+[205.91-209.67] And maybe I can give you a little bit some of the tools that—
+[209.75-213.03] they're very, very common— that AI enabled: the deepfakes,
+[213.87-214.67] right?
+[214.75-215.53] Sextortion.
+[215.63-220.05] These are tools that AI enabled for the harm to be even more
+[220.60-221.73] intensified.
+[221.81-223.23] And we know, for example,
+[223.31-231.33] that 98% of deepfakes are sexualized images and pornography,
+[231.82-237.69] and 99% of this content, they're targeting women.
+[238.07-242.43] So you can imagine, it's really, really a very big problem.
+[242.51-245.79] And I would like to finish by saying that we see a particular
+[247.26-250.71] risk, an increased risk, for a particular group of women:
+[250.90-255.03] women who are in public life, women human rights defenders,
+[255.16-257.37] women who are entering the political life.
+[257.75-258.36] And there,
+[258.44-262.71] what we see from a UN Women supported by the European Union
+[263.20-264.75] tipping point research,
+[264.83-268.47] that 70% of women human rights defenders,
+[268.60-271.77] they have faced some form of digital violence,
+[272.20-276.51] and it has a huge impact for their mental health.
+[276.59-277.38] But also,
+[277.49-282.75] sometimes we really disassociate online violence from offline
+[283.06-284.43] harm and violence.
+[284.56-286.71] But in that research of tipping point,
+[286.79-291.81] we found that 40% of these women have experienced offline
+[292.06-293.07] violence as well.
+[293.20-296.91] And we can talk a little bit later about the other— Yes,
+[297.11-298.59] we definitely will get into it.
+[299.62-302.43] And it makes me think about the technology, right,
+[302.51-306.03] the technology itself, and the systems themselves.
+[306.23-307.29] And so, Jayathma,
+[307.74-310.77] AI is being built on a world that is already unequal.
+[310.91-311.97] We know that.
+[312.11-315.81] How do we stop it from simply automating and amplifying the same
+[316.14-319.53] gender biases that we've been seeing for decades and have been
+[319.61-320.85] trying to dismantle?
+[321.96-322.83] No, thanks, Aisha.
+[323.81-326.07] As Kalliopi mentioned, in half an hour,
+[326.22-328.35] CEOs of the biggest tech companies,
+[328.43-329.85] or biggest AI companies in the world,
+[329.93-332.13] will be briefing the UN Security Council to have
+[332.38-335.67] this conversation on the sidelines of that feels surreal,
+[335.86-337.29] also maybe a little bit ironic,
+[337.73-340.17] talking about a feminist approach to technology when the whole
+[340.25-344.01] world is racing to see who wins this AI race,
+[344.56-347.19] but nobody knows what the ultimate outcome is.
+[348.53-352.59] So if we zoom out of that kind of doom-and-gloom narrative about
+[352.98-356.37] AI and zoom into our day-to-day lives, AI,
+[356.45-358.95] whether we like it or not, whether by choice or not,
+[359.09-360.15] is a part of our lives.
+[360.65-364.23] We use it in our work, in hospitals, in post offices,
+[364.90-366.39] basically in everything we do.
+[366.47-368.07] In the news that we consume,
+[368.22-370.59] AI is integrated one way or the other.
+[370.92-373.47] I think there is a narrative that AI companies have been really
+[373.72-377.37] successful in promoting, which is that AI is a neutral tool,
+[377.80-380.85] that it's here to help us achieve productivity,
+[380.99-382.05] help us be better.
+[382.19-385.17] It's this silver bullet that is going to help us solve all
+[385.25-387.27] the problems that we couldn't solve before.
+[387.82-392.07] But what we fail to recognize is that AI is not magic, right?
+[392.22-395.31] AI is built by people for people.
+[395.63-399.33] So it has inherently, it has inherited all of the biases,
+[399.46-403.47] all of the discriminations that already existed in our world.
+[404.38-408.87] Generative AI particularly also depends on a massive amount
+[409.01-413.43] of supply chain, a massive supply chain of human labor,
+[413.51-415.53] of natural resources,
+[415.61-421.77] and scraped data that is unattributed and often used without
+[422.14-422.70] consent.
+[422.78-427.59] So on top of that existing bias, this is a tool,
+[427.96-432.21] this is a technology that is being built on a very exploitative
+[432.35-434.79] and very extractive economic model.
+[435.59-438.75] So put those two levels of biases together,
+[438.83-442.11] I think it's very hard to see how this technology at face value
+[442.37-443.37] can be neutral.
+[444.60-450.03] A recent study by Stanford actually examined 133 AI systems
+[450.11-452.79] that are being used in our world across spectrums of different
+[453.11-458.31] sectors and found 44% of them displayed gender biases,
+[458.58-462.87] 25% of them displayed gender and racial biases.
+[463.42-464.22] Just yesterday,
+[464.32-469.47] John Hopkins released research that looked at how large language
+[469.78-473.37] models actually produce differentiated outputs for men and women
+[473.57-474.36] at work.
+[474.44-477.87] So at the office, you will be asking ChatGPT to draft an email.
+[477.96-480.51] If you are a woman, it will give you a different output.
+[480.59-482.61] If you are a man, it will give you a different output.
+[483.11-485.43] And even when corrected for biases,
+[485.63-488.79] it still displays biases in its response,
+[489.52-493.65] which shows how deeply these biases are incriminated,
+[495.82-498.57] entrenched in these data and AI systems.
+[498.71-503.55] So safety and equality, therefore, cannot be an afterthought.
+[503.63-506.61] It has to be baked into the life cycle of AI,
+[506.69-508.95] from the development, deployment, procurement,
+[509.03-514.05] to constant audits that will oversee the use of AI in its life
+[514.19-514.74] cycle.
+[514.82-515.32] Thank you.
+[515.40-516.81] Thank you for uplifting that research too.
+[516.89-518.01] It's really, really interesting.
+[518.68-522.21] And it's making me think about the consequences, right?
+[522.52-524.91] You started to talk about this a little bit as well.
+[524.99-527.55] You know, they shape who is heard, who is believed,
+[527.99-530.49] and who feels safe enough to speak, lead,
+[530.57-532.17] and participate in public life.
+[532.25-535.89] And so I want to ask you a little bit more about this, Kalliopi.
+[536.62-538.89] How has technology facilitated violence against women
+[539.26-542.01] contributing to the shrinking civic space,
+[542.09-543.39] democratic backsliding,
+[543.64-546.63] and wider threats to peace and public safety?
+[546.76-551.13] And what does that mean for civic participation and democracy?
+[552.78-556.83] I will refer again to the same research that we conducted
+[556.97-558.51] the tipping point,
+[558.59-563.13] because I started saying that 70% of women in public life,
+[563.32-566.55] women human rights defenders, women journalists,
+[566.80-568.77] they face some form of online violence.
+[568.85-571.35] But what I would like to add there,
+[571.55-576.51] it's more than 41% of them withdrew from public life
+[576.95-580.83] and self-censored themselves just because of this violence.
+[581.02-584.55] And also, we know that other women,
+[584.92-588.69] since the extent of harm and violence happening against other
+[588.88-590.07] women in public life,
+[590.26-593.91] they also don't want to enter this space because it's very
+[594.04-595.17] difficult.
+[595.42-599.79] And this is not just harm for an individual woman.
+[600.11-603.51] It goes, as you said, Aisha, before, it goes beyond.
+[603.71-606.21] It's shrinking the civic space,
+[606.35-609.93] it's shrinking participation of women in political life,
+[610.07-613.53] and it's shrinking the democratic space more broadly.
+[614.14-622.41] And the research that increasingly shows as well is that online
+[622.78-626.25] violence, enabled by AI,
+[626.39-630.15] it's very much linked as well with extreme radicalization.
+[630.76-633.09] They go hand in hand with homophobia,
+[633.22-637.11] with racial discrimination, and very— we've seen,
+[637.49-641.37] we've seen incidents that they do threaten the very public
+[641.93-646.11] safety and security of a country.
+[646.19-648.99] And also, sometimes they're linked to mass shootings.
+[649.12-651.15] And then we check the internet,
+[651.23-656.55] and there is some serious history there of online violence
+[656.80-658.23] and harm against women.
+[659.51-660.31] Thank you.
+[661.19-663.75] So if these technologies are influencing who can safely
+[663.83-665.97] participate in public life, right,
+[666.40-669.63] then also who has the power to design them, right,
+[669.83-671.73] and govern them ultimately?
+[672.23-674.73] And so my question is for you, Jayathma, which is:
+[674.81-677.01] who gets to build AI matters,
+[677.09-678.81] and who gets to govern it matters too.
+[679.13-680.13] So where are women,
+[680.21-683.61] particularly women from the Global South and feminist movements,
+[683.81-685.35] in AI decision-making?
+[686.33-688.41] So I want to break this down to two.
+[688.72-690.39] When we talk about the AI economy,
+[690.53-693.69] or the economy influenced by AI, there are two clear divisions.
+[693.88-696.33] One is the seen labor, one is the unseen labor.
+[697.19-701.13] In seen labor, women make up about 22% of all AI jobs.
+[701.26-704.79] When you look at AI leadership, it's less than 14%.
+[704.98-707.73] Women are less represented as leaders and engineers,
+[707.92-711.15] more represented in the areas that could be easily replaced also
+[711.35-712.29] by generative AI.
+[712.67-715.95] So within the AI workforce, the formal AI workforce,
+[716.10-717.51] AI companies, tech firms,
+[717.76-720.99] there is a disproportionate lack of women building
+[721.24-722.04] this technology.
+[722.45-726.27] Now, the part of the unseen labor in AI is that, again,
+[726.52-729.51] there's been a very good marketing campaign for us to understand
+[730.12-732.75] these tools as free tools, right?
+[733.31-735.57] ChatGPT is free, Gemini is free.
+[736.07-741.63] But there is a group of people who bear the unseen labor behind
+[742.18-743.19] these free tools.
+[743.50-746.07] And those are the women in the global majority.
+[746.39-749.85] Those are women in Kenya, India, Sri Lanka, Bangladesh,
+[749.93-754.05] working in exploitative conditions, labeling data,
+[754.37-758.01] filtering content that is graphic, violent, abusive.
+[758.57-761.55] These are the women whose communities' resources are being
+[761.75-765.03] pulled into building infrastructure, building hardware,
+[765.11-767.37] the critical minerals, natural resources,
+[767.56-770.37] water being pulled out of indigenous communities,
+[770.45-774.99] communities of women who are on the front lines of advocating
+[775.30-777.03] against the abuse that they see,
+[777.16-778.89] the environmental and human abuse they see through
+[779.08-779.88] these technologies.
+[779.96-782.67] So when we talk about AI and the workforce and women
+[782.87-783.61] in this workforce,
+[783.69-786.57] I think it's imperative that we talk about this unseen labor
+[786.89-789.39] of women, particularly from the global majority,
+[789.47-791.49] that goes into building these systems.
+[791.62-793.59] Now, beyond the AI economy,
+[793.67-796.47] and I want to put the responsibility also not just on technology
+[796.72-799.23] companies, because ultimately, member states,
+[799.42-801.81] governments have the responsibility towards their citizens,
+[801.99-802.49] right?
+[802.57-805.89] So we look at how governments are trying to regulate AI,
+[806.02-807.33] regulate these tech companies.
+[808.01-811.65] We see only about 20% of all digital technology,
+[811.74-813.33] ICT ministers are women.
+[813.77-817.29] Only about 23% of ICT regulators are women.
+[817.49-821.01] So there's also a blatant lack of women in the regulatory space
+[821.15-823.17] of AI and digital technologies.
+[823.78-826.83] And when you look at what then these unbalanced governments
+[827.02-830.73] produce, out of 138 national AI strategies,
+[830.92-833.19] only 24 even mention women.
+[833.39-836.43] Only 18 actually there's something meaningful about it.
+[836.69-837.63] So it's very clear,
+[837.76-840.27] when you don't have women building the technology,
+[840.35-842.97] when the labor practices around women's involvement
+[843.11-846.57] in the economy is unfair, the technology,
+[846.65-847.77] the product it develops,
+[847.90-850.89] and the laws that govern it inherently becomes biased,
+[850.97-854.37] and it works against women, minorities, people of color,
+[854.45-857.07] and people who are most often left behind.
+[857.15-859.11] So I think when you ask what can be done,
+[859.49-861.45] we definitely need to get more women into STEM,
+[861.53-864.39] more women into tech, more women into AI, and to leadership.
+[864.53-867.09] We need more women to run for political office,
+[867.17-870.69] become ministers of ICT, ministers of digital technologies,
+[870.95-872.07] become regulators.
+[872.57-875.97] We need to invest in creating these pathways for women,
+[876.10-878.55] both in technology and public policymaking,
+[878.99-882.33] in order to make sure that the life cycle of AI,
+[882.41-885.51] but also the ecosystem around it, does not get gender-blind.
+[886.80-889.35] I'm going to ask a question for both of you, actually,
+[889.48-892.17] with this in mind, which is:
+[893.45-896.37] what would a genuinely survivor-centered approach to AI look
+[896.62-897.42] like,
+[897.83-900.57] one that puts the safety and rights of women and girls
+[901.24-903.27] into the technology from the beginning,
+[903.66-906.27] rather than responding once the harm is already done?
+[906.71-909.69] And there's work that you mentioned as well about the feminist
+[909.88-913.35] principles for AI being developed by the Gender and Digital
+[913.61-914.22] Coalition.
+[914.29-915.81] And so I'd love to hear about that as well.
+[917.75-922.05] So maybe I can start about the survivor-centered approach.
+[922.13-925.65] I think it's very, very important to have in place,
+[925.78-926.58] first of all,
+[926.75-932.19] safety-by-design in the tech platforms and when they design all
+[932.44-934.11] these tools and all these,
+[934.19-939.63] to have the adequate safeguards to make sure that they catch
+[940.18-942.03] the harm before it even happens.
+[943.07-946.53] So there are some tools, and we have some good practices.
+[946.97-950.73] And it shouldn't be just content moderation, for example.
+[951.47-957.03] It should be also some tools that they can really detect some
+[957.11-961.59] of the harm beforehand and have the right processes in place
+[961.73-962.55] to do so.
+[962.81-964.83] So to have that, it's very,
+[965.02-969.27] very important to go as well hand in hand with some regulation,
+[969.40-971.49] which is necessary,
+[971.57-977.85] but being really responsible by really addressing the needs
+[977.99-979.11] of survivors.
+[979.49-982.29] So what the survivors need, it's not just the removal,
+[982.85-988.17] the immediate removal of the content, of the abusive content,
+[988.30-993.15] but that needs to be accompanied as well with some referrals
+[993.29-995.91] to the police and justice sectors.
+[996.05-999.99] We may have to consider compensation for all the harm they have
+[1000.48-1001.43] experienced.
+[1001.68-1008.27] And in order to be able to continue being free in online spaces,
+[1008.36-1009.89] I think that would be very important.
+[1011.11-1011.61] Yeah.
+[1011.69-1014.45] And I think, you know, AI can automate decisions,
+[1014.59-1016.85] but it cannot automate equality, right?
+[1017.29-1020.27] We have to make sure that there is a conscious effort
+[1020.47-1023.09] to proactively make sure that these technologies work
+[1023.23-1025.67] for everyone, not for a select few.
+[1025.93-1026.75] So as you mentioned,
+[1026.83-1029.33] UN Women had worked with the Gender and Digital Coalition,
+[1029.41-1032.93] which is a large network of feminist civil society organizations
+[1033.12-1035.69] who are trying to work in this space to make sure
+[1035.77-1038.03] that technology works for all women and girls,
+[1038.52-1039.89] developed seven principles.
+[1040.27-1042.59] These are feminist principles for AI governance.
+[1042.80-1044.39] Please approach after the session.
+[1044.53-1045.89] We'd be happy to share them with you.
+[1046.03-1047.21] And if you're watching us online,
+[1047.29-1051.17] maybe write an email to techinnovation@unwomen.org.
+[1051.25-1053.45] We are happy to share the feminist principles with you.
+[1053.83-1054.89] These are seven principles.
+[1055.04-1057.23] I'm not going to go into detail to all of them,
+[1057.31-1058.91] but I want to mention two principles.
+[1058.99-1060.29] The first one is on equality,
+[1060.90-1064.37] which is making sure that when we think about AI governance,
+[1064.45-1068.09] we do not only look at it in the sense of what technology exists
+[1068.17-1070.91] today and how is it going to influence equality,
+[1070.99-1073.73] or is it biased, is it not, is it discriminatory, is it not.
+[1074.84-1077.99] More about proactively looking at how can this tool be used
+[1078.42-1081.83] proactively to bridge inequalities in the world today, right?
+[1082.33-1084.17] Can this be a technology that brings more women
+[1084.36-1085.31] into the workforce?
+[1085.39-1089.03] Can this be a technology that helps us solve community issues
+[1089.11-1090.89] that exist in rural communities?
+[1090.97-1093.83] So we want to flip the script to say, this is a technology,
+[1093.91-1095.81] now make it equal and use it to no,
+[1095.94-1098.33] can we actually build technology that is equal,
+[1098.46-1100.79] that can be used with the right safeguards?
+[1101.22-1103.49] The second is the power of participation.
+[1104.41-1108.41] We need to make sure that these decisions about who gets
+[1108.49-1112.85] to build technology, who gets to use it, who gets to govern it,
+[1112.99-1114.35] is done in a democratic way.
+[1114.74-1118.49] Right now, none of the discussions around development of AI,
+[1118.57-1121.25] the data that is behind it, who is governing it,
+[1121.33-1123.41] who is controlling, is public.
+[1123.49-1124.79] It is not transparent.
+[1125.35-1130.31] And these are not how democratic, long-lasting, sustainable,
+[1130.50-1132.41] just, accountable systems are built.
+[1132.73-1135.47] So we need to make sure that we create a seat at the table
+[1135.96-1138.23] for feminist civil society organizations,
+[1138.48-1141.83] women's rights organizations, young people, advocates,
+[1141.91-1144.59] human rights organizations, to come to the table,
+[1144.67-1147.23] influence the agenda, not just be consulted,
+[1147.31-1150.89] but really shape and set the agenda for these discussions going
+[1150.97-1151.47] forward.
+[1151.55-1152.87] Because ultimately,
+[1152.95-1154.13] if we do not do that,
+[1154.21-1156.65] and if we move in the phase that we are moving now,
+[1156.91-1161.81] what we will do is we will use a 21st-century technology
+[1162.61-1165.53] to automate the inequalities of the 20th century.
+[1165.66-1168.29] And I'm pretty sure that's not what everyone around the world
+[1168.68-1169.48] wants.
+[1170.59-1171.77] Can I add something?
+[1171.85-1174.89] I think also it would be important to add to all these elements
+[1175.33-1179.21] how important prevention is by changing the narrative.
+[1180.24-1185.51] And UN Women has carried out a study with Equimundo examining
+[1185.83-1187.67] masculinities in six countries,
+[1187.80-1191.93] where we examined the pathways of perpetration of online
+[1192.24-1193.04] violence.
+[1193.12-1197.21] And there we hear narratives such as normalization of violence,
+[1197.29-1202.19] violence that it's considered online violence be funny or being
+[1202.68-1203.48] normalized.
+[1203.83-1205.73] And that's why it's so important,
+[1205.81-1209.81] apart from having the safety-by-design and all the right tools
+[1210.01-1213.05] in place to detect such harm and violence,
+[1213.48-1216.89] also to work with technology platforms and to work with civil
+[1217.08-1219.95] society organizations in order to change the narrative
+[1220.44-1224.87] and to make sure that men's narratives around online violence
+[1225.01-1229.19] can change as well and addressing the normalization of violence
+[1229.40-1232.07] happening both in online and offline spaces.
+[1233.35-1234.15] Thank you.
+[1234.23-1236.75] I could sit here for hours, honestly.
+[1238.16-1240.29] I think it's really important work that you all are doing,
+[1240.48-1242.27] and it's really important that we, you know,
+[1242.35-1244.07] when we have conversations about AI,
+[1244.21-1248.33] we also really have conversations about gender and equity
+[1249.37-1250.19] as well.
+[1250.33-1253.43] And so just grateful to be on this stage with you all
+[1253.68-1257.27] and to have this platform during UNGA to be able to really share
+[1257.41-1259.31] in that conversation with you all.
+[1259.39-1260.19] So thank you.
+[1260.59-1261.65] Thank you for your time.
+[1261.91-1263.39] Thank you so much, Aisha.
+[1263.88-1265.07] And thank you to our audience.

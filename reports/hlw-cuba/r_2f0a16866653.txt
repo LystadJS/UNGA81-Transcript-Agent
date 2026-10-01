@@ -1,0 +1,474 @@
+UNREVIEWED PUBLISHER CAPTIONS. Publisher-provided auto-generated captions.
+https://webtv.un.org/en/asset/k1b/k1bfip4ozq
+
+[0.00-0.30] [Auto-generated transcript: may contain errors]
+[3.57-6.03] Hello, we are live from the SDG Media Zone,
+[6.11-10.23] moving to our next session: AI, Follow the Money, AI,
+[10.31-12.75] Advertising, and the Global Information Crisis.
+[13.37-14.17] Thank you.
+[14.51-15.17] Thank you.
+[15.25-16.41] Good afternoon, everybody.
+[16.50-17.55] I'm Liz Kneebone,
+[17.70-20.91] I'm Vice President of Community Programs with ADWEEK.
+[21.00-24.21] I'm so honored to be here with this incredible group of leaders
+[24.34-25.47] and with you all.
+[25.68-27.21] I'm joined by Charlotte Scaddan,
+[27.29-30.03] who's the Senior Adviser on Information Integrity
+[30.11-32.37] at the United Nations; Jake Dubbins,
+[32.51-35.91] who is the Co-Founder of the Conscious Advertising Network;
+[35.99-39.33] and Rupen Desai, who's the Chief Marketing Officer of Una Terra.
+[39.52-43.23] And we're going to talk today not only about, you know,
+[43.31-47.19] the Information Integrity crisis that is a kind of global
+[47.33-50.55] phenomenon at this point, but also how it gets financed,
+[50.64-53.97] kind of how we end up with the information that we see,
+[54.05-57.21] that we engage with on a daily basis at this point.
+[57.83-59.19] And to start, I want to talk about,
+[59.27-61.95] just for folks who might not be familiar with the term
+[62.73-65.97] Information Integrity and are hearing it for the first time,
+[66.05-69.69] what's actually happening in our information environment,
+[69.77-72.45] and what does advertising have to do with it?
+[72.70-73.20] Charlotte,
+[73.28-75.03] I'd love to start with you and then have folks chime in.
+[75.29-76.47] Yeah, thank you so much.
+[76.61-79.41] So Information Integrity is this concept that's really grown
+[79.54-80.97] over the past couple of years.
+[81.89-82.69] Two years ago,
+[83.33-85.35] the Secretary-General of the UN launched the UN Global
+[85.61-87.03] Principles for Information Integrity,
+[87.58-91.59] which outlines kind of five broad principles for how we can get
+[91.73-96.03] to a healthier, safer, and more humane information ecosystem.
+[96.47-99.09] And it contained a series of recommendations for many different
+[99.40-103.65] groups, including governments, of course, civil society,
+[103.84-108.81] tech companies, media, others, and including advertisers.
+[109.84-111.33] You know, by Information Integrity,
+[111.41-113.67] we're really talking about the integrity of our global
+[113.80-115.41] information ecosystem, right,
+[115.84-120.99] which we see as being undermined and threatened by what we term
+[121.18-122.19] information risks.
+[122.63-125.07] So that could be, you know, mis- and disinformation,
+[125.46-126.27] hate speech.
+[126.35-129.39] It could be risks around emerging tech, including AI,
+[129.52-133.23] many of which, frankly, we're not even sure what they are yet.
+[134.45-138.75] It could be lack of media freedom and the lack of viability
+[138.83-140.19] of independent media, right,
+[140.27-143.25] which we see as struggling around the world.
+[143.39-146.61] It could also be censorship and lack of freedom of expression.
+[147.18-148.17] So, you know, for us,
+[148.25-151.29] all of our solutions are really firmly based in human rights
+[151.96-153.81] around freedom of expression, but also, you know,
+[154.01-154.83] access to information,
+[154.91-158.07] which is an important part of an individual's right to free
+[158.15-158.95] expression.
+[159.17-160.53] So with that in mind, you know,
+[160.67-163.53] we have set out trying to bring these principles to life.
+[163.61-165.15] And we looked around,
+[165.23-167.61] and a few years ago I was looking around the information
+[167.82-171.15] ecosystem for which groups can actually make change.
+[172.12-174.27] And obviously we have a lot of recommendations to tech
+[174.46-177.09] companies, but do they follow them?
+[177.17-181.47] You know, it's really hard to get tech to regulate itself,
+[181.55-184.29] and I think we've seen that that's not going to get us where we
+[184.37-185.55] want to go.
+[185.69-187.11] But what I realized is,
+[187.49-190.71] and I've learned from my expert friends here, that, you know,
+[190.97-194.97] advertisers hold immense power in this digital ecosystem.
+[195.06-197.79] Because actually, we, you know, as Rupen always says,
+[197.93-199.71] we call these social media platforms,
+[199.85-201.21] we call them tech companies,
+[201.29-202.83] but really they're advertising platforms.
+[203.33-206.01] So what we've been trying to do over the past couple of years is
+[206.26-211.77] engage advertisers to really raise awareness about what their ad
+[211.91-213.51] dollars are fueling and funding,
+[213.76-216.93] the role that advertisers are playing in creating some
+[217.01-218.37] of these harms that we see.
+[219.65-220.53] And those harms,
+[220.61-221.79] and where the UN comes in,
+[221.87-226.71] could be undermining climate action through disinformation.
+[226.79-232.11] It could be child safety online, undermining elections.
+[232.25-234.63] And frankly, you know, in some cases,
+[234.95-238.05] we're talking really serious peace and security issues
+[238.19-242.55] and crises that are being exacerbated or fueled by, you know,
+[242.68-243.69] information threats.
+[244.13-246.75] So that's kind of where we got to where we are.
+[246.83-247.33] And, you know,
+[247.41-249.21] I'll let Jake and Rupen talk a bit about how we've been
+[249.51-252.21] particularly engaging the advertising community, but for us,
+[252.29-255.39] it's a really important aspect of what we're trying to achieve.
+[256.80-259.11] Before we get into how we address it,
+[259.20-260.61] I'd love to talk a little bit about, like,
+[260.69-264.69] how we got to this place where growth and reach are valued over
+[265.19-266.43] trusted information.
+[266.75-270.21] Can you elaborate on the ecosystem that's kind of enabled
+[270.46-271.25] this environment?
+[271.33-272.49] And if you'd like to,
+[272.57-275.97] also how AI has changed or accelerated that?
+[276.89-277.83] Yeah, I can speak to that.
+[278.45-282.39] So the entire Internet, the model of the Internet,
+[282.47-284.19] is based on three principles.
+[284.33-287.85] It's not based on surfacing accurate and reliable information
+[287.93-289.11] for the most part.
+[289.25-291.09] It's based on the attention economy.
+[291.47-295.35] So the more of us on these platforms for longer means that there
+[295.49-299.13] is more advertising inventory that can be monetized.
+[299.27-301.41] So attention, or even addiction,
+[301.78-305.10] that has been coming out of some court cases in the U.S.,
+[305.18-306.45] so the addiction economy.
+[307.12-308.31] Secondly, it's scale.
+[308.63-311.79] So this is a $1.2 trillion industry.
+[312.70-315.45] You talked about AI, you know, ChatGPT,
+[315.58-319.05] OpenAI's product is now being monetized by advertising.
+[319.37-324.57] The targets for ChatGPT's monetization program are $100 billion
+[324.78-325.83] a year.
+[325.91-329.25] So the scale of this industry is absolutely gargantuan.
+[329.38-331.17] And the third principle is opacity.
+[331.96-335.61] Nobody can see where these ads are appearing, including,
+[335.69-340.41] by the way, the very big brands that fund our entire ecosystem.
+[340.55-343.95] So what that means in practice is that information that is
+[344.22-345.21] credible, accurate,
+[345.29-348.27] and reliable does not necessarily get rewarded because it
+[348.35-350.43] doesn't keep people on platforms for longer.
+[350.63-352.77] It is often polarizing content.
+[352.91-353.91] It is often anger.
+[353.99-356.73] It is often things like suicide and self-harm content.
+[357.11-359.01] It is climate disinformation.
+[359.57-363.63] It's basically predicated on keeping people there for longer.
+[363.77-368.01] So we have lots of evidence of big brands next to abuse,
+[368.87-371.73] abuse against migrants, violence against migrants, you know,
+[371.81-373.77] all of those harms online.
+[373.85-375.51] So that's the central problem.
+[375.59-377.79] It's the business model of the attention economy.
+[378.48-381.15] Rupen, you spent a lot of time on the brand side,
+[381.23-383.01] the advertiser side of this equation,
+[383.38-385.71] and have kind of moved into working with brands in a lot
+[385.79-386.53] of capacities.
+[386.64-388.71] I'm curious for your take on how we got here.
+[389.69-393.57] Look, in 1988, there was this movie, right, The Truman Show.
+[394.06-398.61] And I can't use a better example than The Truman Show to define
+[399.40-404.19] how marketeers and advertisers are lost right now.
+[404.27-407.25] It almost feels, you know, it almost feels.
+[407.38-408.81] And somewhere in that movie,
+[409.78-416.25] that God complex creator says a line which is, you know,
+[416.33-418.77] people accept the reality they're given with.
+[419.99-421.65] So somewhere along the line,
+[421.79-425.37] the advertisers have forgotten that they hold the real power.
+[427.06-431.67] Seventy-odd percent of the $1.26 trillion that Jake spoke about
+[432.29-433.95] goes to three large platforms,
+[434.98-438.33] each of which have shown that they have zero interest
+[438.71-439.65] whatsoever.
+[439.74-440.27] I mean, yes,
+[440.35-445.41] there is an $18 billion contribution that Meta just did,
+[445.55-447.87] and I'm calling it a charitable contribution because they
+[448.07-449.49] accepted no blame.
+[450.35-455.43] So none of these three companies have shown any signs
+[455.63-457.17] whatsoever.
+[457.37-458.25] Somehow, magically,
+[458.33-462.09] if you look at all the conversations happening about AI,
+[462.40-465.87] they seem to originate from some of the same companies that we
+[466.06-470.19] have given a lot of power but zero governance over the last two
+[470.32-471.12] decades.
+[471.35-474.15] So going back to the theme of this session,
+[474.23-478.77] which is Follow the Money, they want the advertiser's money.
+[478.90-483.39] They're not ready to take any responsibility of where the ads
+[483.52-484.35] show up.
+[484.43-485.97] Every piece of misinformation,
+[486.29-488.97] disinformation is added inventory for them.
+[489.11-490.95] It's more sales for them.
+[491.08-495.15] And somehow, truth, as we've known it, okay,
+[495.23-498.15] because these three platforms are shaping how we feel,
+[498.89-501.69] what we believe, who we trust.
+[501.82-505.53] And without any separation of what is genuine,
+[505.61-509.01] what is authentic, what is true versus what is fake,
+[509.09-510.15] what is synthetic,
+[511.19-516.69] the future for our children looks quite confused and scary.
+[518.52-519.12] I mean,
+[519.20-521.85] it's interesting you talk so much about who's claiming
+[522.10-523.59] responsibility for the power.
+[523.73-526.05] And I think there's a lot of, well, it's you, it's you,
+[526.31-526.98] it's you.
+[527.05-530.37] And it's not a new conversation whatsoever, right?
+[530.52-532.59] Like, not even here in the media zone.
+[532.67-535.29] I know this has been a conversation on information integrity
+[535.37-535.98] for some time.
+[536.05-538.71] But there are tools that exist in the ecosystem.
+[538.84-539.34] Charlotte,
+[539.42-541.95] you were starting to talk a little bit about them earlier.
+[542.56-545.55] There are principles, there are different efforts underway,
+[545.63-547.83] and a lot of global calls, especially recently,
+[547.91-550.11] to make AI more responsible.
+[550.37-553.29] What is working, if anything?
+[553.49-555.93] And then you've started to talk about this a little bit,
+[556.01-558.21] but I'd love to hear more about where the biggest gaps are
+[558.34-560.85] between where people are, in many cases,
+[560.93-564.39] making commitments versus where the advertising dollars are
+[564.47-565.23] still being spent.
+[566.21-570.81] Yeah, so, I mean, when it comes to the advertising piece,
+[570.89-571.89] we have a long way to go.
+[572.62-574.17] You're right, this is not the first time.
+[574.26-577.23] I mean, we've sat here in this very zone, in fact, a year ago,
+[577.48-579.45] discussing this issue.
+[579.59-582.57] But what's been fascinating to me has been to see even
+[582.71-584.37] the evolution in the past year,
+[584.45-586.29] since we last had a similar discussion,
+[588.05-591.87] in terms of the receptiveness of many in the advertising
+[592.00-593.49] community to our message.
+[594.30-597.03] I would say, you know, we have these broad normative frameworks,
+[597.11-598.83] you know, that the UN can put out.
+[599.26-601.89] But the case we're making to advertisers, you know,
+[602.33-605.25] the three of us have traveled extensively to many gatherings,
+[605.33-609.27] right, where we try to speak to the community, is, you know,
+[609.41-612.69] look, this isn't a blame game when it comes to advertisers.
+[613.55-614.73] We want to work with you.
+[615.11-615.84] So we're here.
+[615.92-616.95] We have civil society.
+[617.03-618.87] We have others in the industry.
+[619.31-622.17] We have organizations like the UN to help, right,
+[622.25-625.71] to give you some of the tools and guidance you need to be able
+[625.79-628.23] to do, you know, human rights responsible advertising.
+[628.55-631.23] We don't expect everyone to be an expert on this, right?
+[632.09-633.75] And that's why we're here.
+[633.88-635.79] And, you know, we kind of want them to use us.
+[635.94-636.74] So, I mean,
+[636.88-639.63] one particular initiative that we've been working on recently
+[639.77-642.15] as part of our global initiative for information integrity
+[642.23-644.31] on climate change is a charter, right?
+[644.62-646.59] And Jake's been leading on this,
+[647.14-649.71] Charter for Accountable Advertising.
+[650.39-651.75] In this case, specific to climate,
+[651.83-654.45] but this is something work we're hoping to do more broadly,
+[654.63-655.13] right?
+[655.21-657.63] So we're literally saying to advertisers,
+[658.02-659.85] here are some of the steps you can take, right?
+[660.11-662.67] Demanding transparency in the ad tech supply chain.
+[663.76-666.15] Taking back control of your ad dollars, right?
+[666.83-668.61] Making sure your brand is safe.
+[668.75-672.63] Now, we can make the moral case, of course, and we do.
+[672.71-675.45] And I always go to these things and I speak to advertisers and I
+[675.53-679.35] talk about, you know, the UN's goals and the global issues,
+[679.74-680.24] you know,
+[680.32-683.43] the SDGs and the really critical issues we're working on.
+[683.51-684.81] But, you know, we're not naive.
+[685.01-686.67] We know that we have to make the business case.
+[686.99-689.67] So that's what we've been focused on doing.
+[690.64-691.59] And that's where, you know,
+[692.02-695.31] people like Rupen have really been very, and Jake, of course,
+[695.39-697.47] have been so useful.
+[697.68-700.23] Because what we're saying to advertisers is this isn't just
+[700.42-701.73] the right thing to do, it is.
+[702.11-704.91] But it's also, it really makes good business sense, right?
+[704.99-706.53] You don't know where your ad dollars are going.
+[706.73-708.87] So it's not brand safe if you don't know where your ads are
+[708.95-709.75] ending up.
+[710.09-711.99] Jake, you know, at an event we had this morning,
+[712.14-713.97] a high-level event on information integrity,
+[714.30-716.67] Jake showed many examples of, you know,
+[717.35-719.85] big brands next to content that was, you know,
+[720.11-721.95] it was hard to even look at, frankly.
+[723.05-723.77] So there's that.
+[723.86-725.85] And then there's also just the effectiveness of their ad
+[725.98-726.78] campaigns, right?
+[727.12-730.77] And that's something we need more evidence about.
+[730.91-732.87] We need more insights into.
+[733.00-734.61] But we know from what we've seen,
+[734.74-736.83] from those in the industry that have shared their experiences
+[736.91-739.83] with us, that actually they can improve their profit,
+[739.91-742.83] increase their profits when they control where their ads are
+[742.91-743.41] going.
+[743.49-743.99] Because, in fact,
+[744.52-746.43] their ad dollars are going into a bit of a black hole.
+[746.57-749.31] And that's not really an effective kind of sales approach
+[749.39-749.89] for them.
+[749.97-752.19] So that's the kind of case we're making.
+[752.39-753.57] We do have a ways to go.
+[753.65-754.15] But, you know,
+[754.23-756.75] we're not asking anyone to do this without support.
+[757.44-759.45] If you're looking for attribution,
+[759.54-763.59] you do need transparency to speak in the traditional marketing
+[763.79-764.34] phrase.
+[764.41-765.75] And like Charlotte is saying, look,
+[766.44-769.83] you cannot talk to businesses and stop at the moral case.
+[770.45-773.37] But when you start going into, you know,
+[773.50-779.13] better ad spend means stronger brands, more trusted brands,
+[779.27-783.39] brands that aren't supporting or aren't next to a beheading
+[783.64-785.97] video or a hate crime video.
+[786.11-791.07] So better trust, more authentic connection with audiences.
+[792.11-798.93] Not 15% going into some opaque space called ad tech that can't
+[799.01-799.81] be tracked.
+[800.08-804.93] There's a genuine case for it is far more effective spend
+[805.01-813.39] of your dollars when you demand transparency on what they are,
+[813.52-817.77] where they are, and what is being shown when you spend them.
+[817.91-822.09] So the entire case of following the money, four marketeers,
+[822.34-824.31] four businesses, four advertisers.
+[824.88-826.41] I mean, I sit next to the UN,
+[826.49-827.85] so obviously there is a moral case.
+[828.11-832.41] We want a world where well-being for all is their ultimate
+[832.61-833.40] purpose.
+[833.57-837.09] And yet we must accept that a lot of the companies have
+[837.23-842.01] to report short-term returns on financial capital.
+[842.09-843.63] And it goes hand in glove,
+[843.71-846.27] the moral case and the business effectiveness case.
+[846.72-847.38] I mean,
+[847.46-851.19] it's the Peter Parker principle in business all over again,
+[851.37-851.87] right?
+[851.95-854.55] With great power of advertising dollars.
+[855.47-855.99] And usually,
+[856.07-859.59] I swear when I say this, but I shouldn't in a stage in the UN.
+[860.38-864.69] With great power comes great freaking responsibility.
+[866.45-867.75] And just to pick up on that,
+[868.13-870.57] advertisers right at the top of the C-suite,
+[870.65-872.91] so the Chief Marketing Officer, the Chief Financial Officer,
+[873.16-875.07] should be asking really quick,
+[875.15-878.91] clear questions of their supply chain and demanding transparency
+[879.05-880.83] on the basis of effectiveness.
+[881.02-884.19] But I would also say that self-regulation within the advertising
+[884.27-886.41] community has utterly failed.
+[887.03-889.89] So I think it's really important to say that, you know,
+[890.02-891.93] there's been a lot of efforts at self-regulation.
+[892.02-894.27] A lot of trade bodies have tried that,
+[894.35-895.47] but it has utterly failed.
+[895.55-899.25] So I think it is now beholden on governments with clear human
+[899.38-902.19] rights principles and respecting freedom of expression
+[902.33-905.85] to mandate transparency through the advertising supply chain.
+[905.99-909.81] So that would mean that people can know exactly what their ads
+[909.89-912.75] are funding, exactly what harms their ads are funding,
+[912.95-917.25] but also it can mandate transparency to verify advertisers.
+[917.44-920.01] There are an awful lot of advertisers on the platforms that are
+[920.09-923.85] not verified and defrauding people all over the world.
+[923.93-927.99] And also transparent advertising libraries so we can see what
+[928.07-929.91] the advertising contains.
+[930.00-930.99] So, for example,
+[931.42-934.59] the fossil fuel community or the fossil fuel industry spend
+[934.96-936.57] billions on advertising.
+[936.76-937.32] And again,
+[937.40-940.89] it's unseen on digital platforms in most parts of the world.
+[940.97-945.63] So mandating transparent advertising libraries should also be
+[945.82-947.25] critical within this argument.
+[947.45-948.19] Yeah.
+[948.27-951.33] I'm guessing everyone in this room has already at least one
+[951.77-954.09] thing on their checklist that they can walk out
+[954.23-956.37] of this conversation with as a next step.
+[956.45-959.79] But I'd love to hear just making sure that this is as actionable
+[960.06-961.41] a conversation as possible.
+[961.50-963.57] If you're a brand, if you're an agency,
+[963.65-965.31] if you're part of a platform,
+[965.39-967.95] what are two or three things that you can walk away
+[968.03-971.61] from this conversation with and do tomorrow, next week,
+[971.75-973.65] in the next year to, you know,
+[973.80-975.87] drive greater information transparency?
+[975.95-978.87] And really, at the end of the day, where should the money go?
+[980.58-981.38] Well,
+[981.54-988.47] I'm glad you asked because the money can go to supporting public
+[988.66-989.91] interest journalism, right?
+[990.27-993.63] Information integrity is not possible without a free,
+[993.88-995.43] independent, and pluralistic media.
+[995.80-999.39] And we see the business model of independent media suffering,
+[999.57-1000.47] right, around the world.
+[1000.56-1001.91] I mean, they're really struggling.
+[1002.76-1005.93] And what we have heard from some in the ad industry is when they
+[1006.01-1008.45] have taken back control of their ad dollars,
+[1008.94-1011.39] when they have determined where their ad dollars are going,
+[1011.64-1015.41] they can then put those ads to support independent media
+[1015.66-1016.46] outlets, right?
+[1016.76-1019.37] So, you know, to my mind, it's a win-win there.
+[1019.62-1021.29] That's one thing they can do.
+[1021.37-1024.29] They can demand the transparency that Jake was just talking
+[1024.37-1024.97] about.
+[1025.06-1027.53] And, you know, I'm sure Jake will get to it, but, you know,
+[1027.85-1032.45] if they can adopt and follow the charter that we are going to be
+[1032.53-1034.85] launching in the next couple of months, that charter,
+[1034.93-1037.01] by the way, to Jake's point about self-regulation,
+[1037.09-1038.69] is absolutely aimed at advertisers.
+[1038.88-1041.45] But also there are recommendations for governments there, right?
+[1041.71-1044.51] So those are some things that they can do in the very short
+[1044.94-1045.74] term.
+[1047.23-1049.97] Yeah, I think if I was a brand,
+[1050.18-1053.39] I think I would get together some critical C-suite actors.
+[1053.48-1055.91] I think this is a reputation issue for the CEO.
+[1056.53-1060.35] It is a brand effectiveness issue for the CMO.
+[1061.03-1063.23] In climate, obviously, it is a CSO,
+[1063.61-1067.07] Chief Sustainability Officer responsibility as well
+[1067.27-1070.91] to understand what is their influence within their media supply
+[1071.11-1073.19] chain on carbon, for example, as well.
+[1073.45-1075.23] So I would get together with them,
+[1075.31-1077.39] look at the global principles for information integrity.
+[1077.47-1079.01] There's loads of guidance there.
+[1079.09-1081.29] We also have further guides at the Conscious Advertising
+[1081.54-1082.73] Network, which allow, you know,
+[1082.99-1084.77] guides people on better questions.
+[1084.85-1088.01] And really to take responsibility of what I think is probably
+[1088.09-1091.37] the most opaque trillion-dollar supply chain possibly
+[1091.45-1092.33] in the world.
+[1092.59-1095.03] You wouldn't be like, you know, these clothes, for example,
+[1095.82-1098.81] there'll be a transparent supply chain to, you know,
+[1099.79-1101.03] to the clothes that we're wearing.
+[1101.40-1103.61] Online in advertising, that does not exist.
+[1103.69-1106.79] And in AI, it also does not exist at all.
+[1106.87-1108.29] We need to change that immediately.
+[1109.58-1112.37] I think, look, each one of us has a superpower.
+[1112.81-1114.89] So if you're a content creator,
+[1115.02-1116.69] there's a certain superpower you have.
+[1116.83-1120.47] You're a media person, you work for the UN, I'm a marketeer.
+[1121.03-1126.53] We need to use that superpower to move away from fear of finding
+[1126.66-1129.95] out, forefold the ostrich phenomena,
+[1130.33-1135.77] and demand that whoever business is giving us some version
+[1136.09-1141.95] of truth is authentic, is held accountable,
+[1142.20-1145.13] and we're not part of the system that perpetuates.
+[1146.23-1151.85] We're not caught up in this phenomena where we are the content
+[1151.93-1153.11] that we hate,
+[1153.61-1157.43] and it becomes a cycle of we don't even know what we read is
+[1157.57-1158.30] true or not.
+[1158.38-1159.71] So use your superpower.
+[1160.57-1163.61] And using your superpower, demand transparency.
+[1163.82-1165.35] I mean, we used to do this.
+[1165.48-1166.79] When we read a newspaper,
+[1167.59-1170.87] we had a certain belief that whatever is printed in would be
+[1171.61-1172.29] real.
+[1172.37-1175.13] I could go somebody, I could hold somebody accountable.
+[1175.44-1178.01] But somehow we've all accepted a world.
+[1178.09-1179.57] It's a real Truman Show.
+[1179.88-1182.09] When we say, yeah, it could be true, it couldn't be true,
+[1182.17-1183.77] but I'll still keep doomscrolling.
+[1185.29-1188.33] So no matter what your superpower is,
+[1188.47-1194.33] at least hold whoever is supplying you information accountable,
+[1195.07-1195.87] to task,
+[1197.11-1201.23] and not being able to get away with $18 million charitable
+[1201.48-1205.49] contributions without taking any blame for the addiction economy
+[1205.62-1206.42] they're building.
+[1207.24-1209.51] And can I just add one thing, and that's about timing?
+[1209.60-1212.33] Because, you know, I think as Rupen says, you know,
+[1212.41-1215.39] we don't actually have to accept the situation as it is.
+[1215.59-1217.97] We've kind of got to this place where it's almost as though,
+[1218.12-1220.85] well, this is just how the information ecosystem works.
+[1221.05-1222.95] So what can I possibly do about it?
+[1223.38-1224.99] When it comes to advertisers,
+[1225.13-1227.93] we've had a lot of conversations with individuals in the ad
+[1228.07-1230.51] industry who work for brands who are deeply concerned.
+[1231.00-1233.45] They're concerned for their kids, quite honestly.
+[1233.58-1237.41] They're concerned about what the young people of today are
+[1237.49-1238.15] seeing.
+[1238.23-1240.89] They're concerned about AI and what's going to happen, right,
+[1241.21-1242.57] in the near future.
+[1242.84-1243.49] I mean,
+[1243.57-1246.35] there's a reason we have AI in the title of this discussion
+[1246.43-1247.22] today.
+[1247.32-1251.09] Partly because we don't want to make the same mistakes with AI
+[1251.22-1253.91] technologies that we made when, you know,
+[1254.28-1257.33] social was kind of, you know, became mainstream.
+[1258.07-1262.85] And now is the moment because we don't have a very big window.
+[1262.99-1265.07] We don't have a big window when it comes to AI,
+[1265.15-1267.17] and we don't have a big window when it comes to the climate
+[1267.26-1268.06] crisis either.
+[1268.34-1270.29] So, you know, we've seen a lot of hand-wringing.
+[1270.37-1271.61] We hear a lot of concern,
+[1271.69-1274.49] but we need to move from hand-wringing to actual action.
+[1274.87-1277.49] And there's a true urgency there.
+[1277.93-1278.43] Yeah,
+[1278.51-1282.23] I like that as a kind of closing note for us all of it's big,
+[1282.31-1283.13] scary problems,
+[1283.27-1287.03] but there is opportunity for all of us to participate in finding
+[1287.18-1287.71] a solution.
+[1287.80-1290.81] And it's all of the little choices along the way that really get
+[1290.95-1292.37] us to the bigger change.
+[1292.51-1293.87] So thank you all for sharing.
+[1293.96-1296.93] Hope you all find these folks and get involved with this work.
+[1297.01-1298.37] And thank you all for listening in.
+[1299.23-1300.03] Thanks, Liz.

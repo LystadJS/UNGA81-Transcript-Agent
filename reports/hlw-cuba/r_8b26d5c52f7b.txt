@@ -1,0 +1,386 @@
+UNREVIEWED PUBLISHER CAPTIONS. Publisher-provided auto-generated captions.
+https://webtv.un.org/en/asset/k12/k1264ln7b8
+
+[0.00-0.30] [Auto-generated transcript: may contain errors]
+[4.89-8.97] Hello everyone, welcome back with us in the SDG Media Zone.
+[9.24-12.81] I'm pleased to pass it to our moderator to kick off our next
+[13.06-13.87] panel discussion.
+[15.95-16.75] Thank you.
+[16.84-18.21] How's everyone doing today?
+[19.66-20.91] Having a good climate week?
+[22.55-23.34] All right,
+[23.42-28.65] so in this session we get the opportunity to dig into El Niño.
+[29.15-30.27] As many of you already know,
+[30.76-34.95] this is already showing up in our weather around the world,
+[35.03-36.15] and it's only getting stronger.
+[36.23-39.75] So we have an amazing panel with us to get into this subject.
+[40.61-41.11] To start,
+[41.19-43.71] we have the Secretary-General of the World Meteorological
+[44.02-46.83] Organization, Celeste Saulo,
+[47.45-52.83] and she is the UN system's authoritative voice on weather,
+[52.92-54.03] climate, and water.
+[54.34-57.51] She is the first woman and South American to lead
+[57.70-60.27] the organization, so huge kudos there.
+[61.66-65.25] And as a meteorologist and an atmospheric scientist,
+[65.44-69.27] she previously served as the Director of Argentina's National
+[69.54-73.11] Meteorological Service and first Vice President of the WMO.
+[74.56-78.21] After that, we have got Tim—well, excuse me,
+[78.41-83.55] Terry Thompson first, and Terry is joining us from S&P Global,
+[83.86-87.75] where he oversees science and the climate direction
+[87.83-89.07] of the organization.
+[90.11-93.09] And we also have Tim Carroll joining us from NVIDIA,
+[93.40-96.51] where he's a technology and weather forecasting expert working
+[96.59-97.17] at NVIDIA,
+[97.25-100.23] where he focuses on the application of artificial intelligence
+[100.72-103.11] and advanced computing for weather prediction.
+[103.43-105.45] So we've got a great crew with us here today,
+[105.77-107.43] and I'd like to start out with you.
+[109.31-112.11] It's official, El Niño is underway,
+[112.25-116.55] and can you help us understand, from the WMO's perspective,
+[116.63-118.29] how that's showing up,
+[118.37-121.17] how you're working with different national MET services,
+[121.36-122.97] and how you're focusing your attention?
+[123.53-124.33] Okay.
+[124.41-127.53] Well, first of all, thank you very much for this opportunity.
+[127.79-130.41] It's a pleasure to be here with you and sharing this panel
+[130.49-131.79] with all of these colleagues.
+[132.41-135.63] But let's start our story about El Niño.
+[135.82-142.47] And El Niño starts to show up as a warming pool in the Pacific
+[142.86-147.03] Ocean, near the equatorial zone of the Pacific Ocean.
+[147.65-152.13] And we are monitoring that area thanks to the ocean observing
+[152.32-159.15] system, and it has been becoming warming since, I would say,
+[159.47-160.53] May.
+[160.97-164.49] And now that warming is increasing and increasing.
+[165.28-168.75] And it's not only about that warming area,
+[168.83-171.03] but also near the coast of Peru,
+[172.07-175.83] we can also see that the subsurface of the ocean is getting
+[176.15-176.93] warmer.
+[177.01-182.97] That means that there is a warm pool of ocean that brings a lot
+[183.05-185.07] of energy to the atmosphere,
+[185.50-188.91] and that energy drives atmospheric circulation.
+[189.34-194.55] And as a result, we have patterns of enhanced precipitation,
+[195.11-199.41] or below-normal precipitation, spread all across the world.
+[199.55-203.85] So that is a very global phenomenon that starts in the Pacific
+[204.22-207.99] but really drives the weather and the climate across the whole
+[208.12-208.92] world.
+[209.44-212.31] And so sometimes people ask me questions,
+[212.39-213.63] so I'm sure you get these too,
+[213.71-216.39] of how does that mean it gets wetter somewhere,
+[216.47-219.03] and how does that mean that gets drier somewhere.
+[219.23-223.29] So maybe helping people understand how it's shifting weather
+[223.43-225.87] patterns and making them more intense.
+[226.92-227.72] Well,
+[229.19-233.79] El Niño creates some preference for cyclones and anticyclones
+[234.05-236.79] to happen in one part of the world and in other parts
+[236.87-237.67] of the world.
+[239.20-243.39] That's according to that we can experiment different kind
+[243.47-245.85] of precipitation patterns.
+[246.41-249.87] So it's difficult to understand how something happening
+[250.07-253.05] in the Pacific will drive the weather, let's say,
+[253.42-255.45] over India or Indonesia.
+[255.89-260.07] So that is because there are teleconnections from the Pacific
+[260.34-263.67] Ocean into the Indic Ocean.
+[264.52-271.95] And so when these waves move across the atmosphere,
+[272.09-274.47] we have more cyclones in some areas.
+[274.67-276.09] Where you have more cyclones,
+[276.17-278.43] you will have likely more precipitation.
+[278.93-281.61] And where you have more anticyclones,
+[281.70-283.89] you will have less precipitation.
+[284.02-288.09] And that is how the atmosphere responds to this warming pool
+[288.17-288.97] in the Pacific.
+[290.03-291.63] Still, as you mentioned at the beginning,
+[292.06-295.95] and I don't want to lose that idea, from a global signal,
+[296.28-298.89] like the one that is happening in the Pacific,
+[298.97-302.49] we need to translate that into what happens at the continental
+[302.75-305.01] scale and at the local and national scale.
+[305.26-309.39] And that's where the national MET services play a huge role
+[309.58-310.08] here,
+[310.16-315.21] because translating this understanding into what will happen
+[315.41-317.91] to me over my head,
+[318.23-320.85] it's something that is on top of the MET services.
+[321.05-324.93] And that is what the WMO help MET services and connects them all
+[325.07-327.93] across the world to make sure that the global information
+[328.24-332.13] translates into local information and, of course, local action.
+[333.17-334.83] And so one more for you here too,
+[335.44-339.33] because this gets into a really critical role that the WMO
+[339.58-344.49] plays, is we can forecast this risk months ahead of time.
+[344.63-346.77] What makes that possible?
+[347.02-350.79] And help us understand how global observations are so critical
+[351.11-352.05] in that forecast.
+[352.86-353.66] Well,
+[354.52-357.81] that question is crucial because El Niño is one of the few
+[357.89-361.65] phenomena that we can anticipate so many months in advance.
+[362.32-365.91] And the reason why we can anticipate it is because it's starting
+[365.99-366.73] in the ocean.
+[366.88-371.73] The ocean is a slow system, much more slow than the atmosphere.
+[372.17-376.35] So as soon as we get this signal over the ocean,
+[376.49-381.33] we know that the atmosphere will unfold in a certain way.
+[381.94-384.57] And that comes months afterwards.
+[385.19-387.51] And then, as you said,
+[389.03-394.35] we need to have this ocean observing system active to make sure
+[394.48-396.99] that we understand what is happening over the ocean.
+[397.07-401.07] But then, of course, we need satellites to have full coverage.
+[401.69-406.95] And then we also need the land observing system because we need
+[407.03-410.55] to monitor what is happening everywhere in the world.
+[410.69-414.75] So the connection between all those observing systems is part
+[414.83-417.93] of the responsibility of the WMO and part of the importance
+[418.01-418.83] of the WMO.
+[419.03-422.43] So I would say that it's a huge responsibility,
+[422.62-425.31] but also in particular with El Niño,
+[425.69-429.93] it's a huge opportunity to showcase that if we connect all
+[430.06-431.19] the observing systems,
+[431.27-434.91] we can have concrete answers to concrete problems that we will
+[435.23-439.77] see that will unfold in the upcoming month or couple of months.
+[440.45-441.25] Absolutely.
+[441.35-442.95] And so we're going to bring in the business side
+[443.03-445.17] of this with Terry also.
+[445.55-450.33] And so people are running businesses and making decisions around
+[450.83-454.17] this, and they're trying to think, what does that mean for me?
+[454.25-455.55] How do I process this?
+[455.63-458.19] How do I calculate this into my risk?
+[458.33-460.65] So from your role where you are,
+[460.78-463.53] how are you helping businesses make decisions around this?
+[467.57-468.37] Where to start?
+[468.76-473.97] Let me just echo and explain a bit more something that Celeste
+[474.23-474.73] said,
+[474.81-478.89] because I want the public to understand that ocean observing
+[479.20-482.43] systems are not simply satellites in the sky.
+[482.98-488.25] There's an enormously important and complex and highly
+[488.61-492.87] professional cadre of people who interpret that data.
+[493.49-496.41] And it's not only the availability of the satellites,
+[496.49-500.01] but it's the availability of the professionals who interpret
+[500.14-503.67] that information and turn it into what someone in business can
+[503.87-504.37] use.
+[504.45-505.41] It's quite a long chain,
+[505.61-508.65] and I think we should all value that chain immensely.
+[509.38-511.71] Now, to come back to business sectors,
+[512.56-517.53] most business sectors have interest in what El Niño will do
+[517.85-520.11] to their business.
+[520.37-523.29] It's rather apparent that, for instance,
+[523.54-528.15] agriculture facing drought in one region or excessive rain
+[528.29-532.59] in another region is going to have impact on productivity.
+[533.75-537.81] We are going into what is called a super El Niño phase,
+[538.25-540.21] one of the most severe ever seen,
+[540.76-543.99] and some of the indicators indicate that it may be the most
+[544.37-545.67] severe ever seen.
+[546.35-549.15] And there's a correlation between, in particular,
+[549.40-550.47] the super El Niños,
+[550.84-554.49] which is just a very high level of El Niño characteristics
+[554.92-557.01] that we've seen over the past decades.
+[557.20-560.07] There have been approximately 10 super El Niños,
+[560.38-566.37] and we at my institution have correlated the effects
+[566.63-570.09] or the occurrence of the super El Niños with impacts
+[570.17-572.49] on agricultural production, for example.
+[573.59-576.75] But I don't want to limit this to agriculture at all.
+[576.95-579.99] Supply chains can be interrupted due to transportation
+[580.18-581.37] difficulties.
+[581.46-585.45] A super El Niño may have an effect on, let us say,
+[585.89-587.97] river transport in Europe.
+[588.11-596.25] The Danube or the Rhine can end up being unable at certain times
+[596.39-599.73] of the year to transport all sorts of goods,
+[599.92-602.91] including those related to energy production,
+[602.99-606.45] those related to food distribution, and so on and so forth.
+[607.92-611.61] Other organizations certainly have an impact as well.
+[611.75-614.61] You might well think of this as any organization that is
+[614.80-618.69] impacted by weather will be impacted by El Niño.
+[619.01-622.59] It's a weather pattern of a particular characteristic,
+[622.67-626.67] of a particular strength, and as Celeste explained,
+[627.23-629.73] it is different in different parts of the world.
+[632.21-633.99] And just to keep people up to date, I mean,
+[634.12-636.51] this El Niño is already pushing records.
+[636.72-637.95] Data came in this week,
+[638.09-641.01] and there's different ways to calculate certain ocean
+[641.26-641.76] observations,
+[641.84-644.07] but we're pushing records on many different ways you
+[644.15-645.03] calculate it.
+[645.35-649.29] So again, applying that to a business way,
+[649.73-653.31] how do you put a dollar value on these forecasts?
+[654.18-654.68] Well,
+[654.76-658.53] I think a simple example is to look at agricultural commodity
+[658.67-663.09] prices in this correlation with past super El Niños.
+[663.54-665.61] Our agricultural team has actually done that,
+[665.69-669.69] so you can see the relationship between super El Niño conditions
+[670.07-672.57] and commodity prices of different types.
+[672.71-675.63] Excuse me, I'm speaking here of agricultural commodities.
+[676.42-679.89] You can see a relationship, a rough relationship,
+[679.97-685.71] between the prices of those commodities during super El Niño
+[686.08-686.88] events.
+[687.29-691.17] So that's what we use to predict the financial impact,
+[691.25-694.59] the monetary impact of the upcoming El Niño.
+[694.79-696.33] It's not a perfect art.
+[696.41-697.65] It's an approximation,
+[697.85-701.25] but we do have some ways of quantifying that impact.
+[702.47-705.09] So now we're bringing you in also.
+[705.47-709.65] And let's get into the forecasting aspect of this and how
+[709.78-713.43] technology is advancing our ability to understand what's
+[713.51-714.01] going on.
+[714.09-717.21] So how are AI and new computing technologies changing
+[717.29-719.19] that in weather and climate forecasting?
+[720.23-723.99] So as tempting as it is to dive right into the technology,
+[724.08-726.33] I think it's important to take a step back for just a second.
+[726.41-727.59] And when you ask,
+[728.14-730.23] can we put a dollar value on this,
+[730.31-734.07] think about GPS that everybody has on their phones here.
+[734.80-738.93] Are we able to calculate how many lives have been saved because
+[739.07-741.69] somebody had GPS on their phone and was able to get from point
+[741.90-742.70] A to point B?
+[742.98-745.59] Have we been able to calculate how much money was made because
+[745.78-748.59] location services were embedded into an app?
+[748.67-750.09] We really can't.
+[750.23-754.47] And weather is so important to the 8.3 billion people
+[754.67-755.73] on this planet.
+[755.81-758.49] It's the one thing that affects every single person every single
+[758.87-759.65] day.
+[759.74-762.63] And so when we talk about the forecast and where the technology
+[762.71-765.03] can really help the forecast, yes,
+[766.07-768.75] we can bring technology to bear to make that forecast a little
+[768.83-770.01] bit more accurate.
+[770.09-772.89] But what's more important, when we talk about El Niño here,
+[772.97-774.33] what people are really wondering is,
+[774.47-776.67] how's El Niño going to affect me,
+[776.86-779.79] where I am at this moment or in three days,
+[780.28-783.39] and whether I'm here in New York or I'm a sustenance farmer
+[783.65-784.83] in Central America?
+[785.93-788.49] What we need to do with the technology is not just figure out
+[788.68-789.63] better forecasts,
+[789.88-792.15] but we need to use the technology to be able to get
+[792.23-795.51] the forecasts rather than a passive, hey,
+[795.60-797.67] here's what the forecast is, come and get it.
+[797.81-800.13] We need to be able to push that to the people who need it
+[800.75-803.49] in the context that they need that information if they are
+[803.70-806.91] a farmer or an ambulance driver or somebody trying to get
+[807.04-807.99] their kids to school.
+[808.49-810.87] And to do that,
+[810.95-813.45] we need to bridge the gap not only with technology
+[813.95-818.19] but with the local MET services that the WMO represents.
+[818.68-821.55] And so there's a great opportunity here to use the technology
+[822.05-826.89] to do better for all 8.3 billion people on the planet.
+[826.97-827.97] But in order to do it,
+[828.05-830.79] we're going to need the people involved in that process and not
+[830.92-832.11] just the technology.
+[832.43-835.05] So sorry I'm the tech guy, but that was a people answer.
+[835.98-836.97] Oh, I'm here for it.
+[838.43-841.77] We can't cut people out of this whole chain that we're dealing
+[841.85-842.97] with to keep them safe.
+[843.29-844.17] So ultimately,
+[844.90-849.21] when you're making these forecasts and you're factoring in new
+[849.29-852.69] technology, since our climate is changing,
+[853.18-858.45] how are we processing what's happened in the past from an AI
+[858.58-861.33] perspective and incorporating that into future forecasts?
+[861.88-866.91] This is an area where AI is incredibly helpful because if you
+[866.99-870.27] think about the amount of weather data that has been collected
+[870.58-872.49] over the last 100 years,
+[872.62-875.19] and even if it was somebody in a lighthouse writing down
+[875.27-877.95] on a piece of paper what the conditions were that day,
+[878.03-882.39] that's all incredibly valuable data for us to be able to ingest
+[883.18-886.11] and to be able to process and then put it in context with other
+[886.42-888.51] events that were occurring around it.
+[888.59-890.97] So even though the climate is changing,
+[891.88-893.37] all of this historical data,
+[893.45-896.73] even though it was recorded in a time that the climate wasn't
+[896.81-900.27] the same 50 years ago as it will be 50 years from now,
+[900.35-903.99] it's still incredibly valuable to help us make better forecasts
+[904.30-907.11] that we then are able to push to the individuals that are there.
+[907.25-908.49] So it's the old,
+[908.57-911.31] those who don't learn from the past are doomed to repeat it.
+[911.39-915.87] If we don't learn from all of the 100 years of weather data
+[916.00-918.03] that we've collected, it will be to our detriment.
+[918.95-920.67] And it really is important, again,
+[920.75-923.61] to bring in the people piece on that also so that we can take
+[923.74-925.53] this information and apply it.
+[925.79-928.59] So I know we don't have forever.
+[928.68-930.75] I could talk to all of you forever on this subject.
+[930.96-933.75] I want to go down the line and ask each of you,
+[933.94-936.75] with so many people following along here and all of us being
+[937.25-938.25] affected by El Niño,
+[938.33-942.63] if you have any advice for them on how to follow along what's
+[942.71-944.25] happening, how to stay informed,
+[944.38-947.31] and how to keep them safe and prepared as we move forward.
+[948.35-948.96] Okay.
+[949.04-954.09] My first recommendation would be make sure that they connect
+[954.17-958.89] with official channels of information because El Niño is being
+[959.63-964.65] so public, and then you don't need to be scared about it.
+[964.73-965.67] It's information.
+[965.92-967.53] And when you have information,
+[967.80-970.53] you have tools to react in advance.
+[970.97-973.17] And on top of what has been mentioned before,
+[973.25-978.03] and I think the comments that we are sharing now,
+[978.23-980.73] it's important to be people-centered.
+[981.05-984.15] So the real challenge we face is how to translate
+[984.34-987.21] this information into information that people can really
+[987.34-988.14] understand.
+[988.31-992.91] So let's keep it official and let's not think that El Niño will
+[993.83-996.57] stay until February, but it's already here.
+[997.13-1002.57] So follow up the official information and make sure that we are
+[1002.71-1006.23] prepared and we follow the recommendations that are provided
+[1006.31-1007.11] to us.
+[1007.22-1007.72] Otherwise,
+[1007.80-1010.73] we will be losing the opportunity and the richness
+[1010.81-1011.69] of this information.
+[1012.78-1015.65] And national MET services are a great way to do that too.
+[1016.09-1016.59] Of course,
+[1016.67-1020.75] that's the official source of information for weather
+[1020.95-1022.73] and climate and water.
+[1022.92-1025.25] But then it comes emergency managers.
+[1025.33-1027.77] So it's about coordinating that response,
+[1027.85-1031.91] and that is where the AI also brings a lot of value because it
+[1032.11-1036.59] can connect MET services with emergency response,
+[1036.78-1039.11] with communication, with cell phones,
+[1039.24-1042.59] and make sure that everyone is reached by an early warning
+[1042.72-1043.55] system in the end.
+[1043.99-1044.79] Absolutely.
+[1045.61-1046.79] Terry, any advice?
+[1047.88-1048.38] First,
+[1048.46-1051.59] I'd just like to follow up to say that we're teamed with NVIDIA
+[1051.67-1056.75] to also train AI models on climate model information.
+[1056.88-1060.23] The climate model information augments the historical data
+[1060.79-1062.87] and looks into the future.
+[1062.95-1067.49] So we train NVIDIA-based models that look into the future
+[1067.87-1068.65] as well.
+[1068.73-1070.55] This is a new technology,
+[1070.63-1073.25] particularly this latter part that I'm talking about.
+[1073.39-1076.67] So we're beginning to use it, and it looks quite powerful,
+[1076.75-1078.05] but it needs further work.
+[1078.96-1080.51] Coming back to the main question,
+[1080.60-1085.79] I would say there have been 10 or so super El Niños in the past.
+[1085.99-1088.13] So this is not a disaster.
+[1088.21-1091.91] This is an oscillation of our climate or an oscillation
+[1091.99-1094.31] of our weather that's occurred in the past.
+[1094.45-1097.67] It may be somewhat more severe this year.
+[1097.88-1101.75] Climate change effects are contributing, but just contributing,
+[1101.83-1103.01] to the situation.
+[1103.44-1107.75] And the second takeaway is augmenting the idea of staying
+[1107.83-1110.75] in touch with the official meteorological organizations.
+[1111.01-1112.19] Trust that information.
+[1113.12-1117.65] Hundreds of trained meteorologists working on this data,
+[1117.96-1119.63] and I think you can trust their projections
+[1119.83-1122.33] and their interpretations very much.
+[1123.01-1123.81] And again,
+[1123.96-1129.95] this is not uniformly drier or wetter around the planet.
+[1130.21-1132.17] It varies by region.
+[1132.37-1133.97] So that's very important as well.
+[1134.77-1137.69] And it also, to help understand, it sets up a pattern.
+[1137.77-1139.31] So if it's a wetter pattern,
+[1139.46-1142.13] you still have to track the individual storms as they come
+[1142.26-1142.76] along,
+[1142.84-1144.83] and those are the moments with the early warnings to make sure
+[1144.91-1146.03] that we're on top of those.
+[1146.65-1148.49] So your words of advice.
+[1150.78-1153.11] There's nothing that I can add to what's been already said other
+[1153.30-1158.09] than people that are in meteorology and in the weather
+[1158.46-1160.61] forecasting, it's not even an industry.
+[1160.75-1161.55] It's a community.
+[1161.65-1165.59] These are service-oriented people who are passionate.
+[1165.67-1166.85] So when they send out a warning,
+[1166.99-1169.55] it's because they want to save lives and property.
+[1169.92-1171.17] You can trust it.
+[1171.92-1174.53] I can tell you as a meteorologist, this is very true.
+[1175.63-1177.89] So thank you, everybody, for joining us today.
+[1178.20-1179.39] Now, we have El Niño.
+[1179.59-1180.47] It is here.
+[1180.85-1182.81] As you said, this is a way to be prepared,
+[1183.24-1184.61] not necessarily scared.
+[1184.98-1187.01] And the real goal is to keep people safe and prepared.
+[1187.14-1189.89] And there's a lot of data and a lot of outlets on how to follow
+[1190.14-1192.53] along and learn more to keep yourselves safe and prepared.
+[1192.61-1194.51] So thank you so much, and hope you have a great week.

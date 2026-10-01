@@ -1,0 +1,2060 @@
+UNREVIEWED PUBLISHER CAPTIONS. Publisher-provided auto-generated captions.
+https://webtv.un.org/en/asset/k1e/k1ejqkrj8n
+
+[0.00-0.30] [Auto-generated transcript: may contain errors]
+[1.80-5.80] Good morning, everyone. Welcome to
+[5.80-7.60] the SDG Media Zone
+[7.60-9.88] and thank you for joining us this morning.
+[9.88-12.40] I'm Kerri Bannigan President
+[12.40-13.92] of the Board of Public Foundation,
+[13.92-15.96] and it is a pleasure to welcome you to
+[15.96-19.56] mobilizing Data Technology and Partnerships for Impact,
+[19.56-21.84] hosted by the SDG Data Alliance.
+[21.84-23.28] It is wonderful to see
+[23.28-25.00] so many of our partners and friends
+[25.00-26.16] from across the world and
+[26.16-28.68] sectors gathered with us this morning.
+[28.68-30.72] Where you are today is
+[30.72-32.44] a special milestone for us in
+[32.44-34.48] general as the SDG Media Zone.
+[34.48-38.40] It's actually celebrating ten years of impact and is also
+[38.40-43.00] a very important portfolio and flagship initiative of
+[43.00-45.52] the public Foundation organized in
+[45.52-47.20] partnership with the United Nations
+[47.20-49.20] Department of Global Communications.
+[49.20-52.24] It has become one of the signature convening platforms
+[52.24-54.28] of the UN General Assembly,
+[54.28-57.24] bringing conversations on sustainable development
+[57.24-60.66] beyond policy and into public discourse.
+[60.66-62.41] Today, what you're going to see with
+[62.41-65.73] the SDG Data Alliance is how this truly reflects
+[65.73-68.41] public foundations belief that advancing
+[68.41-72.29] sustainable development requires better access to data,
+[72.29-74.77] stronger national data systems,
+[74.77-76.25] and partnerships that make
+[76.25-79.21] information more useful for decision making.
+[79.21-82.29] We believe data is a human right and that
+[82.29-83.77] better data leads to
+[83.77-86.73] better outcomes for people and communities.
+[86.73-90.89] Today, the SDG Data Alliance brings together governments,
+[90.89-94.45] United Nations organizations, technology leaders,
+[94.45-96.88] foundations, and the private sector.
+[96.88-100.40] Particular focus on the small island developing states
+[100.40-102.36] and other developing nations.
+[102.36-105.32] Data does not create impact on its own.
+[105.32-106.96] It's what we choose to do with
+[106.96-109.04] it and who we choose to work with,
+[109.04-112.68] and that is what transforms information into progress.
+[112.68-115.20] Now it is my pleasure to welcome
+[115.20-118.00] our Executive Chairman of public Foundation,
+[118.00-120.28] Sergio Fernandez de Cordova,
+[120.28-121.92] to deliver our opening remarks.
+[121.92-125.44] Please join me and welcome Sergio. Thank you.
+[127.30-132.78] Thank you, Kerry. Excellencies, distinguished delegates,
+[132.78-136.50] colleagues and friends. Good morning.
+[136.50-139.02] On behalf of Public Foundation,
+[139.02-140.94] it is my pleasure to welcome you to
+[140.94-142.98] the SDG Data Alliance breakfast
+[142.98-146.14] during the 81st session of the General Assembly.
+[146.14-150.18] Our theme this morning is mobilizing data,
+[150.18-153.94] technology, and partnerships for impact.
+[153.94-157.68] This speaks directly to why we are here.
+[157.68-160.58] We are living through an extraordinary period
+[160.58-162.74] of technological advancement.
+[162.74-166.18] We have more data, more computing power,
+[166.18-169.34] more earth observation capabilities,
+[169.34-171.58] and more artificial intelligence
+[171.58-174.34] at any point in human history.
+[174.34-179.34] And yet, many of the countries that could benefit most
+[179.34-184.38] from these capabilities still cannot fully access,
+[184.38-189.94] integrate, govern, or operationalize them.
+[189.94-194.17] This is a paradox we need to solve.
+[194.17-199.32] The challenge is not simply where the data exists,
+[199.32-202.24] much of it already does.
+[202.24-207.84] The challenge is access, interoperability,
+[207.84-212.16] governance, and sovereign capacity
+[212.16-215.88] to turn data into decisions.
+[216.09-221.57] Because data is no longer simply a development tool.
+[221.57-224.53] Data is infrastructure.
+[224.53-228.25] It informs how governments plan infrastructure,
+[228.25-232.33] manage natural resources, protect ecosystems,
+[232.33-234.81] prepare for natural hazards,
+[234.81-238.85] attract investments, understand their economies,
+[238.85-242.21] and make decisions about their future.
+[242.21-245.61] This is particularly important for the SIDs,
+[245.61-248.65] the small island development states.
+[248.65-253.85] Cs face a very structural constraint from
+[253.85-256.01] geographic remoteness and
+[256.01-258.53] limited institutional capability
+[258.53-261.73] and environmental and economic shocks.
+[261.73-267.01] But they also possess extraordinary natural assets,
+[267.01-271.53] ocean economies, strategic geography,
+[271.53-274.73] and enormous development potential.
+[275.51-278.99] The question is whether we can
+[278.99-280.31] build the systems that allow
+[280.31-282.59] countries to understand these assets,
+[282.59-285.91] govern them, and translate
+[285.91-289.27] them into long term prosperity.
+[289.27-294.31] This is why the SDG data alliance exists.
+[294.31-297.31] What began in 2017
+[297.31-300.63] and was expanded into a global partnership in
+[300.63-303.63] 2021 has evolved from
+[303.63-307.47] capacity building initiative into something much larger.
+[307.47-309.83] An architecture connecting
+[309.83-313.03] global technology and data capabilities
+[313.03-316.67] directly with national priorities.
+[316.67-319.99] In 2023, together with
+[319.99-322.07] the Alliance of Small Island states
+[322.07-324.91] and the government of Antigua and Barbuda,
+[324.91-327.71] we, the collective, began
+[327.71-331.19] developing the CID global Data Hub.
+[331.19-333.63] Then at CIDs four,
+[333.63-337.79] in 2024, governments adopted
+[337.79-340.79] Antiga Barbuda Agenda for CIDS,
+[340.79-343.39] also known as the Abs,
+[343.39-346.07] establishing a clear mandate
+[346.07-348.47] to strengthen data collection,
+[348.47-351.55] analysis, accessibility,
+[351.55-356.53] and the use of shared information across all of the CIDs.
+[356.53-359.64] It is now our responsibility to move
+[359.64-363.32] from mandate to implementation.
+[363.88-368.36] Today, the SITS Global Data Hub is being developed as
+[368.36-370.28] a foundational component of
+[370.28-374.00] the CIT Center of Excellence in Antigua and Barbuda,
+[374.00-377.00] connecting countries with geospatial intelligence,
+[377.00-378.56] Earth observation,
+[378.56-384.66] technology expertise, training, and new sources of data.
+[384.66-387.20] But the objective is not
+[387.20-389.96] simply to provide governments with more tools.
+[389.96-391.56] It is to strengthen
+[391.56-395.16] national capacity and national ownership,
+[395.16-398.04] while connecting global capabilities and
+[398.04-399.84] the decision governments need to
+[399.84-403.44] make every day real time.
+[403.44-409.36] That brings us to why this room matters today.
+[409.36-412.20] Many of the capabilities required to
+[412.20-415.76] build these systems are represented here today.
+[415.89-421.13] Governments bring the mandate and national priorities.
+[421.13-423.21] The United Nations brings
+[423.21-426.37] global coordination and institutional reach.
+[426.37-432.01] Technology and data partners bring the capabilities,
+[432.01-436.85] and capital brings the ability to scale.
+[436.85-439.85] Our responsibility is to connect
+[439.85-441.77] those pieces into infrastructure
+[441.77-444.05] that governments can actually use.
+[444.05-446.53] So this morning should not
+[446.53-449.49] simply be a conversation about what is possible.
+[449.89-452.33] It should be a conversation about
+[452.33-454.53] what we could build together.
+[454.77-457.85] Because ultimately, the measure
+[457.85-461.01] of success is not how much data we generate.
+[461.01-463.13] It is whether countries have
+[463.13-466.89] the capacity to turn that data into better decisions,
+[466.89-469.25] stronger institutions,
+[469.25-473.41] and more resilient and prosperous futures.
+[473.73-476.57] Thank you for being here and
+[476.57-478.77] thank you everyone for your partnership,
+[478.77-480.61] because every single person
+[480.61-483.01] here means something to that future.
+[483.01-484.97] And we look forward to what
+[484.97-487.57] we can advance together this morning.
+[488.24-491.64] So as we are
+[491.64-494.76] putting that principle into practice, this morning,
+[494.76-499.24] I am pleased to welcome Francisco Vilna de Cuna,
+[499.24-502.76] the CEO of GeoSAT as we
+[502.76-507.44] formalize a new partnership with the SDG Data Alliance.
+[507.78-510.34] Together, we will connect
+[510.34-513.66] GeoSTs Earth observation capabilities
+[513.66-516.66] with the CIDs global Data Hub,
+[516.66-519.22] helping governments better understand
+[519.22-522.82] their territories and natural assets,
+[522.82-526.74] strengthening infrastructure planning and turn
+[526.74-531.86] satellite intelligence into practical decisions.
+[532.26-535.34] This is exactly what we mean by
+[535.34-538.22] moving from partnerships to implementation
+[538.22-541.30] and ensuring that these capabilities
+[541.30-546.78] ultimately take root within the countries themselves.
+[546.78-551.34] Francisco, Please join me
+[551.34-552.98] as we sign this partnership and
+[552.98-555.62] begin the next chapter of working together.
+[555.62-557.54] Thank you.
+[626.76-629.88] Thank you very much, Sergio.
+[629.88-632.76] Thank you very much, Greg, for making this happen.
+[632.76-634.60] Just to tell you that we are
+[634.60-637.32] extremely happy to become part of this network.
+[637.32-640.44] I believe actually that we are probably the first
+[640.44-642.68] or one of the first European entities
+[642.68-643.92] to join the alliance.
+[643.92-649.44] I hope this is the start of a new partnership as well,
+[649.44-654.52] extending the alliance to our continent.
+[654.52-656.04] Thing very important that I would
+[656.04-657.60] like also to share with you is that this is
+[657.60-659.72] important because we understand that getting data
+[659.72-662.44] down to people is many times about
+[662.44-664.84] partnering with the right organizations and
+[664.84-666.64] the right people that can have
+[666.64-669.60] common goals and can make things happen.
+[669.60-671.32] Satellites, what they do
+[671.32-673.08] is that they provide perspective.
+[673.08-675.73] With satellites, we see the world all
+[675.73-678.89] the world every day in the same way.
+[678.89-682.61] We do not see many times we don't see policies,
+[682.61-684.85] we don't see intentions, we see results.
+[684.85-688.29] By coming into the SDG data Alliance,
+[688.29-691.49] what we intend to do is also to share this information,
+[691.49-693.21] to be able to become part of
+[693.21-696.13] this network so that we are able to provide
+[696.13-698.25] data directly to populations
+[698.25-701.05] so that in different regions of the world,
+[701.05-703.25] in the seas and other developing nations,
+[703.25-708.33] everyone is able to have this human rights as Sag saying.
+[708.33-711.98] In space, we know very well that if we want to go far,
+[711.98-715.26] We need to go together, but if we want to move fast,
+[715.26-717.54] we also need to move together because otherwise,
+[717.54-719.30] we'll be reinventing the wheel
+[719.30-721.06] and we will be taking more time
+[721.06-722.82] than we should to take
+[722.82-724.98] all these new capabilities to the people.
+[724.98-726.26] Once again, thank you,
+[726.26-727.58] public. Thank you, Greg.
+[727.58-729.82] Thank you, Serge. Be pleased
+[729.82-732.34] for these discussions throughout the day.
+[735.52-739.08] Thank you, Francisco and thank you
+[739.08-742.44] to the entire GST team.
+[742.44-745.36] This partnership is exactly what today is about,
+[745.36-747.44] as I mentioned earlier, bringing
+[747.44-748.84] together the capabilities,
+[748.84-751.16] the technology, and the commitment.
+[751.16-753.32] Very important, the commitment.
+[753.32-757.44] No more talking, taking action that is needed
+[757.44-759.48] to move from ambition
+[759.48-762.80] to implementation. Thank you, everybody.
+[771.27-775.71] Thank you, Sergio. Thank you, Kerri.
+[775.71-777.75] Thank you, Francisco.
+[777.75-780.19] Good morning, everyone.
+[780.19-782.35] My name is Greg Scott.
+[782.35-784.47] I'm the Executive Director of
+[784.47-788.35] the SDG Data Alliance and Public Foundation.
+[788.35-792.39] I'm really excited to see you with us today,
+[792.39-795.15] to have you here and to have
+[795.15-799.07] hopefully what will be a really productive discussion.
+[799.07-803.27] I'm going to spend a few minutes to set
+[803.27-805.19] some more context on what
+[805.19-807.71] Sergio has just spoken about this morning.
+[807.71-810.43] I'm going to do that in two parts.
+[810.43-813.11] I'm just going to give contextual
+[813.11-814.75] overview of the work we're
+[814.75-819.47] doing in the SIDS Global Data Hub with a few slides,
+[819.47-821.51] and then I'm going to do something that probably
+[821.51-823.75] hasn't been done in a media zone before.
+[823.75-825.51] I'm going to go into the content
+[825.51-828.03] live on the web for you to look at.
+[828.03-830.31] So you get a bit of an idea of some of
+[830.31-835.51] the architecture and structure that we're talking about.
+[835.51-841.98] Let me start It really comes back to this data,
+[841.98-844.14] and I want to just give a bit of
+[844.14-847.14] context here around geospatial information.
+[847.14-850.45] What is geospatial information?
+[850.45-854.08] And really what it's about is
+[854.08-857.68] location based data that
+[857.68-859.68] tells us where we are in the world.
+[859.68-862.20] You use it every single day.
+[862.20-864.28] You use it on your phones,
+[864.28-865.92] you use it in your navigation.
+[865.92-870.20] You use it in a lot of your daily business.
+[870.20-872.64] But it's also foundational data.
+[872.64-875.12] It's things like buildings
+[875.12-877.28] and infrastructure and settlements and
+[877.28-881.00] coastlines and forests and rivers
+[881.00-883.96] and lots of other more invisible data,
+[883.96-886.62] population and demographics.
+[886.62-888.69] Sea surface temperature,
+[888.69-891.09] sea floor temperature, climate data.
+[891.09-893.09] This is all geospatial information
+[893.09-895.25] because it's got a location to it.
+[895.25-897.81] We know where we are in the world.
+[897.81-901.25] And with a lot of that data or that information,
+[901.25-903.77] we can model and analyze,
+[903.77-905.53] integrate it through
+[905.53-909.89] geographic information systems or GIS systems.
+[909.89-911.97] And those technologies are now very,
+[911.97-913.61] very advanced and have been used
+[913.61-916.05] now for some 40 odd years.
+[916.05-920.86] And what's really important about this, as Sergio said,
+[920.86-922.78] particularly in our modern world
+[922.78-925.94] today and in our developed world in particular,
+[925.94-928.82] we have lots and lots
+[928.82-931.78] and lots of data out there in the world.
+[931.78-933.86] Our big challenge is
+[933.86-936.90] we don't necessarily know where it is.
+[936.90-939.78] We don't know how to integrate it.
+[939.78-943.02] We don't necessarily know how to use it.
+[943.02-946.42] We don't necessarily know the value of it,
+[946.42-948.54] and we don't necessarily know
+[948.54-950.90] how to use it to make decisions.
+[950.90-953.79] If we bring that down and say,
+[953.79-956.47] if we're looking at small island developing
+[956.47-959.23] states who are very,
+[959.23-961.67] very tiny land masses,
+[961.67-965.11] but massive ocean areas,
+[965.27-969.07] that resolution of data or that understanding
+[969.07-972.27] of data at very local levels is highly critical,
+[972.27-974.51] and that's part of the challenge we have.
+[974.51-978.31] So if I use this as an example here,
+[978.31-981.52] um, and it's a two part slide here.
+[981.52-984.88] There's lots of data out there. It's everywhere.
+[984.88-986.52] The question is, what
+[986.52-988.52] do we do with it and what does it mean?
+[988.52-993.36] And so really, the transition that we're talking about is
+[993.36-995.80] going just from data
+[995.80-999.16] to impact solutions, decision making.
+[999.16-1000.92] So I've been able to say,
+[1000.92-1003.84] can I ask a question of data?
+[1003.84-1005.64] Can I get an answer?
+[1005.64-1007.80] Is that answer reliable?
+[1007.80-1009.28] Is it informative?
+[1009.28-1010.72] Is it authoritative?
+[1010.72-1013.96] And what's the means and the mechanisms that I do that?
+[1013.96-1018.92] It's very much this moving of bucket loads of stuff.
+[1018.92-1022.73] Into answers and how we go about doing that.
+[1022.73-1024.93] And this is really the journey we're
+[1024.93-1027.97] on that we want to talk about a bit today.
+[1028.13-1031.41] A little bit about the data Alliance,
+[1031.41-1034.21] and already Kerry has mentioned that.
+[1034.21-1036.13] But you can sort of see there
+[1036.13-1039.17] we have our purpose, which has already been mentioned,
+[1039.17-1040.93] our vision and mission,
+[1040.93-1043.57] but also our focus at the moment on,
+[1043.57-1045.37] I guess, a few key things.
+[1045.37-1048.85] Firstly, small island developing states.
+[1048.85-1052.69] I, obviously, the implementation of
+[1052.69-1054.65] the Antiga Bar Budda Agenda for
+[1054.65-1059.93] SIDS the establishment of the SID Center of Excellence,
+[1059.93-1062.53] and then the development and
+[1062.53-1065.93] deployment of the SIDS Global Data Hub.
+[1065.93-1068.13] And what I'll focus on now
+[1068.13-1071.01] is the SIDS Global Data Hub and the work that
+[1071.01-1073.05] we've been doing in developing
+[1073.05-1076.45] that architecture over the last year or so,
+[1076.45-1078.17] working with countries and working
+[1078.17-1080.09] with partners and working with
+[1080.09-1082.69] the UN and other organizations
+[1082.69-1085.29] within countries and regions.
+[1086.10-1088.50] To the CID COE,
+[1088.50-1090.22] I'll just be really brief on this.
+[1090.22-1093.78] It really has four key components to it.
+[1093.78-1097.98] It is now established in Antigua in St. John's.
+[1097.98-1100.62] It is a physical presence with staff,
+[1100.62-1103.18] and it has four key components.
+[1103.18-1106.70] The data backbone of that is the global data hub,
+[1106.70-1113.67] but it also has an ITM innovation technology mechanism.
+[1113.67-1116.25] An Island investment forum,
+[1116.25-1120.29] and that Island investment forum was launched in Mali and
+[1120.29-1122.53] the Maldives just a few weeks ago
+[1122.53-1125.45] and a debt Sustainability Support Service.
+[1125.45-1127.17] Now, all that information is on
+[1127.17-1130.10] the CD COE website for more detail.
+[1130.10-1134.16] But in essence, it's really about what does this
+[1134.16-1138.40] mean for SIDS and why this information matters.
+[1138.40-1141.72] So just focusing on the global data hub,
+[1141.72-1145.80] and I don't expect you to consume or absorb all of this,
+[1145.80-1149.48] but this is really our foundational architecture
+[1149.48-1153.08] to how we're developing this capability.
+[1153.08-1154.68] So I think what's important,
+[1154.68-1157.32] just look at the big bold text around
+[1157.32-1160.69] the structure or the architecture of it.
+[1160.69-1164.34] What we're doing in terms of integrating data,
+[1164.34-1166.86] moving from left to right
+[1166.86-1170.18] to the impact as Sergio was mentioning,
+[1170.18-1172.82] but using tools and capabilities,
+[1172.82-1176.58] maps, apps, dashboards, stories,
+[1176.58-1180.26] visualizations, capabilities that users
+[1180.26-1184.42] and consumers can grab and use as reference point.
+[1184.42-1186.78] Then importantly, it's about
+[1186.78-1192.10] implementation of both the ABS and also the SDGs.
+[1192.10-1194.98] That's really our architectural
+[1194.98-1197.02] structure that we're working to,
+[1197.02-1199.72] particularly over the next few years.
+[1199.72-1201.98] So what I'm going to do now,
+[1201.98-1205.18] I'm going to go to a bit of a demonstration.
+[1205.18-1215.74] And so I'm going to grab here my iPad and hopefully,
+[1215.74-1219.02] look at this. Thank you.
+[1221.58-1223.66] Thank
+[1226.05-1228.97] And here we are. We're online.
+[1228.97-1231.41] One caveat I want to say,
+[1231.41-1233.61] you can go and look at this right now,
+[1233.61-1236.69] but I just want to mention is that the web link at
+[1236.69-1241.81] the moment is an interim one because we're revamping.
+[1241.81-1246.97] We're doing another version of what is sids.stdg.org.
+[1246.97-1249.49] You'll see that website is slightly different,
+[1249.49-1252.89] but it will go up live into the dg
+[1252.89-1257.93] sids.stdg.org domain in the next week or so.
+[1257.93-1260.81] This is kind of the global data hub,
+[1260.81-1263.09] and I won't spend a lot of time in there.
+[1263.09-1266.29] But some of the things we're building into this now,
+[1266.29-1269.29] apart from just maps and visualizations is
+[1269.29-1270.69] some key indicators around
+[1270.69-1272.73] statistical and other sorts of data,
+[1272.73-1275.98] and I'll dive into that in a little bit of a moment.
+[1275.98-1279.03] But then what we also can do is go and
+[1279.03-1280.99] explore data that's relevant to
+[1280.99-1283.11] a country that we've pre prepared.
+[1283.11-1285.87] So I want you to think about the architecture here.
+[1285.87-1289.19] And the idea is that by the end of this year,
+[1289.19-1292.71] all of those grayed out countries will be colored.
+[1292.71-1294.79] So the colored countries are the ones that
+[1294.79-1297.39] we've already developed virtual hubs for,
+[1297.39-1299.71] and I'm going to show you some examples of that.
+[1299.71-1301.35] So for the Pacific,
+[1301.35-1304.39] for the AIS region, et cetera.
+[1304.39-1307.47] If we go into some of these countries,
+[1307.47-1309.43] so if I just go into St.
+[1309.43-1311.99] Vincent and the Grenadines by way of example,
+[1311.99-1316.14] what we do is we have a number of tabs along the top.
+[1316.14-1319.86] It gives us an overview of the country about the country.
+[1319.86-1321.90] It's got some mapping data in there,
+[1321.90-1324.26] but it also looks at things like what are
+[1324.26-1325.98] my national priorities and what
+[1325.98-1328.02] are those priorities adhere to.
+[1328.02-1330.90] Then we have what we term as map portfolios.
+[1330.90-1333.86] This is where the real data is stories,
+[1333.86-1336.82] visualizations, and key statistics.
+[1336.82-1339.26] If I click on national priorities,
+[1339.26-1341.14] for St. Vincent and
+[1341.14-1344.98] the Grenadines links to the formal actual documents,
+[1344.98-1348.62] and we group those priorities in nice easy to read
+[1348.62-1352.94] ways for the users to read.
+[1352.94-1358.82] Then if we actually then go back out to the global hub,
+[1358.82-1363.94] I know that my colleagues from Palau here today,
+[1363.94-1366.94] so I'm just going to click on Palau as an example,
+[1366.94-1368.94] and you can see that the look and
+[1368.94-1370.98] feel is exactly the same.
+[1370.98-1373.58] Again, it has a consistent
+[1373.58-1377.88] repeating pattern to the process.
+[1377.88-1380.06] I know I don't have a lot of time,
+[1380.06-1382.50] so I'm now just going to finish off and
+[1382.50-1385.66] go back and just focus a little bit on
+[1385.66-1388.98] my colleagues from Tonga who have been a great supporter
+[1388.98-1390.30] in some of this process along
+[1390.30-1392.62] the way and just go into it a little bit more.
+[1392.62-1395.30] Again, the country of Tonga.
+[1395.30-1397.62] This is an interactive map.
+[1397.62-1399.42] You can go into it and look at it in
+[1399.42-1401.58] lots and lots of detail. This is all online.
+[1401.58-1403.22] So it's just consuming
+[1403.22-1407.02] publicly available data that's out there.
+[1407.02-1409.58] We can look at the national priorities,
+[1409.58-1412.10] what strategies they align to,
+[1412.10-1415.54] what those priorities are, et cetera.
+[1415.54-1418.61] And then we can go in and start diving into the data
+[1418.61-1422.25] itself with what we term as the MAP portfolios.
+[1422.25-1426.45] The way that we've brought the MAP portfolios together is
+[1426.45-1431.53] nine thematic areas that align to the above,
+[1431.53-1435.17] cities and communities, physical infrastructure,
+[1435.17-1437.69] population and demographics, oceans,
+[1437.69-1439.45] land management, et cetera.
+[1439.45-1441.81] As we go into each one of those,
+[1441.81-1446.29] what we do is get a breakdown of not only some of
+[1446.29-1447.89] the story and narrative
+[1447.89-1450.73] around the importance of this population,
+[1450.73-1453.37] the demographic data, and
+[1453.37-1456.33] I'm hoping this is going to come up.
+[1456.97-1459.73] Now we're getting into heavier data,
+[1459.73-1462.77] so it's a bit slower in this instance here.
+[1462.77-1465.21] What we can do then.
+[1471.13-1474.57] Come on, baby, come back.
+[1474.89-1478.25] I'm going too fast for it.
+[1485.20-1487.88] Then we can go in and start
+[1487.88-1490.16] looking at some of the data in more detail.
+[1490.16-1491.92] And in this instance here,
+[1491.92-1495.68] this is just a breakdown deseggregated data
+[1495.68-1499.76] from the National Statistics Office around population.
+[1499.76-1502.32] We can also look at gender breakdown
+[1502.32-1504.84] by different ways as well.
+[1504.84-1507.16] In this case by just using
+[1507.16-1511.52] different population density metrics, et cetera.
+[1511.52-1515.52] We can use all of those sorts of mechanisms if we wish.
+[1518.02-1521.34] Now, what I'm noticing here on the iPad,
+[1521.34-1523.14] which is why this is a bit slower,
+[1523.14-1525.18] is that when we do go into some of
+[1525.18-1527.82] these applications like the map portfolios,
+[1527.82-1529.50] it calls out another screen.
+[1529.50-1532.82] And so that screen is overtaking my original one,
+[1532.82-1534.26] so I won't get a lot
+[1534.26-1536.22] of ability to go into too much detail,
+[1536.22-1539.10] but you get the structure that we're talking about there.
+[1539.10-1542.83] We also have a tab in there that can take us
+[1542.83-1546.55] to different stories for each of those countries.
+[1546.55-1548.51] Look at, for example, mapping
+[1548.51-1551.07] climate resilience in Tonga.
+[1551.07-1555.43] This is just a recent example where you can bring
+[1555.43-1557.75] information and knowledge together on
+[1557.75-1561.51] what's happening in small island developing states.
+[1561.51-1564.11] Things around, for example,
+[1564.11-1567.99] the volcanic eruption in 2022.
+[1567.99-1570.23] But then you can also bring in
+[1570.23-1574.27] other applications or dashboards or visualizations.
+[1574.27-1575.91] And so this is an example of
+[1575.91-1577.91] that looking at that population data,
+[1577.91-1582.71] but breaking it down into other areas such as education.
+[1582.71-1586.03] Again, this is all live, shared,
+[1586.03-1590.27] publicly available and usable
+[1590.27-1592.79] by all of us out there in the community.
+[1592.79-1595.91] Another example is looking at,
+[1595.91-1599.51] and this one's a bit heavier is Tong's Marine Atlas.
+[1599.51-1601.35] So this is a live dashboard,
+[1601.35-1604.47] and you can see data that's loading up as we go.
+[1604.47-1606.75] I'm hoping is going to load up for me.
+[1606.75-1610.47] No, it won't. It doesn't
+[1610.47-1613.95] look like it wants to. If not, that's okay.
+[1614.59-1617.39] I'll give it another couple of seconds and
+[1617.39-1620.35] then I'll move on. Here we go.
+[1625.79-1629.71] This is the sort of data that we can use and consume.
+[1629.71-1632.03] And as we build out this structure,
+[1632.03-1633.51] what we're able to do
+[1633.51-1635.95] is make this available for countries.
+[1635.95-1638.67] I just want to finish off now with taking
+[1638.67-1640.31] statistical data out of
+[1640.31-1641.83] the National Statistics Office
+[1641.83-1643.71] because it's not all about geospatial data,
+[1643.71-1645.87] but it's also understanding
+[1645.87-1649.63] the state of our nation in terms of our social,
+[1649.63-1654.75] economic, and our environmental, I guess, progress.
+[1654.75-1656.60] And so here straight from
+[1656.60-1660.28] the statistical organization are some social statistics,
+[1660.28-1664.20] some economic statistics, and environmental statistics.
+[1664.20-1666.40] The idea with the global hub as
+[1666.40-1668.68] we'll build those out for all SIDS,
+[1668.68-1670.88] we'll aggregate into the regions and then
+[1670.88-1673.56] aggregate for SIDs in total so that we
+[1673.56-1675.76] get an idea of what that means in
+[1675.76-1679.96] terms of development and progress.
+[1679.96-1682.20] Finally, as I finish,
+[1682.20-1684.72] I just want to mention that this is all
+[1684.72-1688.14] embedded inside the SIDS global data hub.
+[1688.14-1690.08] But there's something else that's really
+[1690.08-1693.08] important is deploying this into the countries.
+[1693.08-1695.16] So if I was to click on here,
+[1695.16-1696.88] this is an example of
+[1696.88-1699.12] the hub that would be delivered into
+[1699.12-1704.12] Tonga itself or to Fiji or to Palau, or to Mauritius.
+[1704.12-1706.56] And so we've set the architecture
+[1706.56-1708.92] for each of the countries and as you can see,
+[1708.92-1711.32] it has the same look and feel,
+[1711.32-1713.08] has the same kind of data,
+[1713.08-1714.76] but it's all integrated,
+[1714.76-1717.88] it's all interoperable, and it all works together.
+[1717.88-1719.80] So with that, I'll stop
+[1719.80-1722.48] and I'll conclude my presentation.
+[1722.48-1725.51] We can go back to the slides.
+[1725.51-1729.57] And that also finishes me for the moment.
+[1729.57-1731.49] What we're going to do now
+[1731.49-1735.45] is move into our panel discussions.
+[1735.45-1737.33] What we're going to do is
+[1737.33-1739.93] have three discussions that are going
+[1739.93-1741.73] to explore more around
+[1741.73-1744.81] our topic today, around our subject.
+[1744.81-1746.96] It's going to be moderated by
+[1746.96-1749.64] three of the team in public foundation.
+[1749.64-1751.80] And as we set up the chairs,
+[1751.80-1753.28] I'm going to first off,
+[1753.28-1757.44] invite up Asarkey Goodwin,
+[1757.44-1760.56] our Director of Government Affairs and public Foundation,
+[1760.56-1763.56] and A Sharkey is going to take over the reins and
+[1763.56-1765.96] moderate our first panel session
+[1765.96-1768.72] this morning. So thank you all.
+[1775.30-1779.26] Thank you, Greg. Good morning,
+[1779.26-1783.94] all Excellencies, colleagues and distinguished guests.
+[1783.94-1787.86] Welcome. The Antigu and Barbua Agenda for SIDS
+[1787.86-1792.62] outlines a bold vision for resilient prosperity.
+[1792.62-1798.18] But our success hinges on a single foundation data.
+[1798.18-1801.46] For small island developing states,
+[1801.46-1803.98] vast ocean spaces and
+[1803.98-1806.46] geographic remoteness create
+[1806.46-1809.78] unique data capacity vulnerabilities,
+[1809.78-1812.86] and I know I'm speaking to the converted here.
+[1812.86-1815.42] Today, as we have seen,
+[1815.42-1819.70] we're exploring how the SDS global data hub can unlock
+[1819.70-1823.90] the timely geospatial interoperable data
+[1823.90-1826.90] needed to drive our blue economies,
+[1826.90-1829.22] survive the climate crisis,
+[1829.22-1832.47] and lead us towards resilient prosperity.
+[1832.47-1835.09] To map out this digital future,
+[1835.09-1836.73] we're joined by four of
+[1836.73-1841.61] our distinguished leaders across our Sid space.
+[1841.61-1845.33] We have Her Excellency Svai Lavmu,
+[1845.33-1847.93] Minister of Finance from the Kingdom of Tongo,
+[1847.93-1849.89] if you can join us on the stage.
+[1849.89-1852.57] We have His Excellency Steven Victor,
+[1852.57-1854.21] Minister of Agriculture,
+[1854.21-1856.57] Fisheries and Environmental Palau,
+[1856.57-1860.01] His Excellency Kevin Hope, Ambassador for Finance,
+[1860.01-1862.37] Climate and Investment, St. Vincent
+[1862.37-1864.97] and the Grenadines, and His Excellency,
+[1864.97-1867.69] doctor Tapingu Falifu, ambassador and
+[1867.69-1872.45] permanent representative of Tuvalu to the United Nations.
+[1872.74-1875.90] Now, as you can see, our time is short,
+[1875.90-1880.26] so we're going to dive right into the discussions.
+[1880.26-1881.98] I'm going to start with
+[1881.98-1884.78] the honorable Minister from Tongo.
+[1884.78-1887.14] The Kingdom of Tonga faces
+[1887.14-1891.26] intense climate and multi hazard vulnerabilities,
+[1891.26-1896.10] alongside a very common institutional hurdle, Minister.
+[1896.10-1898.58] Existing information is often
+[1898.58-1901.10] fragmented and siloed across
+[1901.10-1904.06] ministries and agencies and
+[1904.06-1906.90] cannot easily be accessed and shared.
+[1906.90-1909.54] Minister, as a Pacific Cid,
+[1909.54-1912.14] looking at your country's landscape,
+[1912.14-1916.18] some of its unique climate related vulnerabilities,
+[1916.18-1919.66] what is the single biggest policy or
+[1919.66-1924.66] legislative hurdle to breaking down these internal walls?
+[1924.66-1926.86] How can we incentivize
+[1926.86-1932.22] government data sharing with modern tools and processes?
+[1932.22-1936.58] Thank you, Ashaki and Malo Lily,
+[1936.58-1938.50] everyone, I bring warm greetings
+[1938.50-1940.78] from the Kingdom of Tonga.
+[1940.78-1942.70] This is my first time in
+[1942.70-1944.38] my newly appointed role as
+[1944.38-1946.46] Minister of Finance at the UNGA.
+[1946.46-1949.62] So it is an honor to be here.
+[1949.62-1952.50] But before being a politician,
+[1952.50-1955.26] I had 15 years in the civil service.
+[1955.26-1958.02] So being here and sharing
+[1958.02-1959.62] all these experiences and
+[1959.62-1961.78] data for evidence policy decisions,
+[1961.78-1965.06] it's something I'm a strong advocate for in making sure
+[1965.06-1967.46] that alignment with administration
+[1967.46-1970.97] and the political level is interlinked.
+[1970.97-1973.80] I'd like to also acknowledge
+[1973.80-1976.68] the support from the public Foundation
+[1976.68-1978.68] and also the SDG Data Alliance and
+[1978.68-1980.00] all the partners that are here
+[1980.00-1982.08] together in this very important meeting.
+[1982.08-1984.52] But before I respond to the question,
+[1984.52-1989.60] Shaq I'd also like to share that we're proud of being
+[1989.60-1991.64] the initial cohort for
+[1991.64-1996.36] ten SITS global data pilot countries for 2026.
+[1996.36-1999.80] It has been a great opportunity for Tonga to share on
+[1999.80-2002.20] its experiences and strengthening
+[2002.20-2003.72] its national data systems,
+[2003.72-2006.20] but also generating lessons
+[2006.20-2008.38] learned from the Pacific region.
+[2008.38-2010.89] I think it's important challenge
+[2010.89-2013.05] to put forth there as Sharkey,
+[2013.05-2015.37] and I think the response to that is
+[2015.37-2019.09] Tonga has a data exchange policy framework.
+[2019.09-2021.89] The issue is it's not implementing it.
+[2021.89-2023.33] I think there's a lot of
+[2023.33-2025.81] our experiences in the Pacific
+[2025.81-2027.93] and I think probably other countries.
+[2027.93-2030.41] We have a lot of policies,
+[2030.41-2033.58] but there's a lack of implementation.
+[2033.58-2037.30] And three things that I would like to point
+[2037.30-2038.94] out on why this is the case
+[2038.94-2041.38] for a small island developing country.
+[2041.38-2043.90] I'll give the demonstration of an example of
+[2043.90-2048.58] the most recent climate disaster that happened in Tonga,
+[2048.58-2052.50] particularly the volcanic eruption that happened in 2022.
+[2052.50-2055.86] There was a loss of life. There was a tsunami generated.
+[2055.86-2060.66] It caused more than 30% of our GDP loss for the country.
+[2060.66-2065.34] Three things that I'd like to put forth is one,
+[2065.42-2068.06] there's a lack of knowledge of
+[2068.06-2070.76] who actually owns the data.
+[2070.76-2075.43] In other words, data custodianship as a challenge.
+[2075.43-2079.51] In the Haa volcanic eruption,
+[2079.51-2081.99] um, You know, when making decisions,
+[2081.99-2083.23] particularly for a Minister of
+[2083.23-2084.95] Finance role and how do you
+[2084.95-2088.83] have timely assistance after disaster hits,
+[2088.83-2091.35] you actually have to know the different agencies
+[2091.35-2093.75] and government that holds this downtown.
+[2093.75-2095.71] It's quite fragmented.
+[2095.71-2097.99] The disaster management office
+[2097.99-2101.31] would have data on the affected households.
+[2101.31-2104.03] The Ministry of Health would have data on
+[2104.03-2107.07] what are the health impacts after the disasters.
+[2107.07-2109.07] Ministry of Infrastructure would
+[2109.07-2109.91] have data on what kind of
+[2109.91-2113.68] infrastructures was affected when the tsunami hit.
+[2113.68-2116.38] It's about identifying clearly
+[2116.38-2118.66] under the policy and framework that we have,
+[2118.66-2120.34] what are their responsibilities?
+[2120.34-2122.22] What data do they collect?
+[2122.22-2123.66] And since this is
+[2123.66-2126.98] some practice where things are more reactive when we
+[2126.98-2128.38] collect these datas and
+[2128.38-2130.10] when we know who collects these data
+[2130.10-2131.82] rather than it's a daily practice
+[2131.82-2133.98] for government to have this data anyways.
+[2133.98-2136.90] It's basic information. The second issue
+[2136.90-2139.02] is trying to ensure
+[2139.02-2141.26] that there's a common standards that we
+[2141.26-2144.94] adopt from these different agencies on the data.
+[2144.94-2147.52] So, for example,
+[2147.52-2150.47] Our disaster management office would have
+[2150.47-2153.03] their interpretation of what affected household
+[2153.03-2154.35] is that's different from what
+[2154.35-2155.63] the statistics department would
+[2155.63-2157.35] interpret as an affected household and
+[2157.35-2158.87] what the Ministry of Health would say as
+[2158.87-2160.23] an affected household and
+[2160.23-2162.46] what finance would say as a beneficiary.
+[2162.46-2166.10] So these are different terms that holds
+[2166.10-2167.94] data behind them that
+[2167.94-2169.66] actually have different meanings and different data.
+[2169.66-2172.74] So if you don't have that common standards set out
+[2172.74-2174.62] and agreeing that this is what you
+[2174.62-2177.22] define as a beneficiary when a disaster hits,
+[2177.22-2179.98] then having tailored policies and
+[2179.98-2181.54] financial assistance to it
+[2181.54-2183.98] becomes a problem and it becomes fragmented.
+[2183.98-2187.58] The third issue is there's a difficulty in
+[2187.58-2189.66] agencies to know that they
+[2189.66-2192.78] don't have these data and they operate in silos.
+[2192.78-2195.30] They have to have this understanding that it's
+[2195.30-2197.14] a shared data across
+[2197.14-2199.67] for the development of the country as a whole.
+[2199.67-2201.53] There's also a fear of,
+[2201.53-2203.61] it's my data, I collected it.
+[2203.61-2205.57] I invested so much time in it.
+[2205.57-2207.65] Why would I share it with the other party?
+[2207.65-2208.93] They'll take credit for it
+[2208.93-2210.57] and all the decisions that we make.
+[2210.57-2213.61] So with such a small country, 100,000 people,
+[2213.61-2217.25] it's probably 1% of New York's population alone,
+[2217.25-2218.97] you think that it'll
+[2218.97-2220.85] be really easy to get these things around.
+[2220.85-2223.81] I tell you, it's a small country with big issues
+[2223.81-2227.89] of trying to coordinate and hold things in line.
+[2227.89-2231.41] I think there's also saying that I always saying
+[2231.41-2235.45] is people like to say the word coordinate,
+[2235.45-2238.10] but they don't like to be coordinated.
+[2238.10-2241.75] You know, because of this fear of loss of power,
+[2241.75-2243.11] because you might share
+[2243.11-2244.91] the data and you might lose a bit of power.
+[2244.91-2247.87] But it's actually collectively
+[2247.87-2249.43] having this information for
+[2249.43-2251.31] Minister of Finance, for example,
+[2251.31-2253.87] I wouldn't be able to give financial assistance
+[2253.87-2256.35] to know who the affected household is if I
+[2256.35-2258.67] don't know all these data in place and
+[2258.67-2261.43] it helps me with fiscal planning and such.
+[2261.43-2263.35] So I think Jackie,
+[2263.35-2267.18] just to wrap things up on that question is is how
+[2267.18-2268.78] do we facilitate
+[2268.78-2271.34] all these different datas and all the issues
+[2271.34-2273.58] I've highlighted for effective policy decision
+[2273.58-2276.58] is knowing that these link and knowing that
+[2276.58-2279.10] these should coexist and
+[2279.10-2280.98] everyone should know that ownership of
+[2280.98-2283.70] their data actually links and contributes to
+[2283.70-2285.02] a development outcome that
+[2285.02-2286.62] we all want to achieve. Thank you.
+[2286.62-2288.06] Thank you, Minister.
+[2288.06-2291.42] You've identified a universal truth.
+[2291.42-2293.98] Data locked in a silo
+[2293.98-2297.86] is a missed opportunity for resilience.
+[2297.88-2302.36] We now go to Minister Victor of Palau.
+[2302.36-2305.24] Minister, Palau has been
+[2305.24-2308.52] a global leader in marine conservation.
+[2308.52-2312.92] But the Antigon Bar Buda Agenda for SDs highlights that
+[2312.92-2316.44] critical environmental and climate data
+[2316.44-2319.48] remains scarce to access,
+[2319.48-2321.96] scarce and hard to access,
+[2321.96-2323.96] given the breadth and
+[2323.96-2328.59] often scientific depth of these topics,
+[2328.59-2332.35] they are often unnecessary and unknown data gaps.
+[2332.35-2335.51] Your portfolio spans agriculture,
+[2335.51-2338.51] fisheries, and the environment sectors.
+[2338.51-2342.55] We have accurate and real time data
+[2342.55-2344.83] is absolutely necessary.
+[2344.83-2348.07] When we talk about data gaps, Minister,
+[2348.07-2352.11] what specific blind spots in your fisheries or
+[2352.11-2356.35] your environmental monitoring keeps you up late at night?
+[2356.35-2359.83] And how can a regional global ecosystem like
+[2359.83-2362.47] the SDS Global Data Hub help
+[2362.47-2367.27] allow mobilized data and close those gaps?
+[2367.83-2370.75] Thank you, Madam Moderator,
+[2370.75-2374.11] and good morning to everyone.
+[2374.11-2378.43] Let me begin by thanking the Public Foundation and
+[2378.43-2381.63] SDG Data Data Alliance
+[2381.63-2384.91] for bringing us together this morning and importantly,
+[2384.91-2387.79] for placing Slang developing state
+[2387.79-2390.71] at the center of this conversation.
+[2390.71-2394.19] There are many things that gives me at night and data is
+[2394.19-2397.15] not one of them. I was just kidding.
+[2397.15-2402.31] I For Palau and
+[2402.31-2406.31] I think for many small island developing states,
+[2406.31-2410.03] we've been living in the front line of
+[2410.03-2412.31] climate change and now we're
+[2412.31-2416.07] living the realities of climate change.
+[2416.07-2422.71] We talk about it, but we don't really have that dataset.
+[2422.71-2426.20] To have a good demonstration of how
+[2426.20-2430.56] much it is really costing us yesterday,
+[2430.56-2433.80] today, tomorrow, and many years to come.
+[2433.80-2439.64] So often when we're trying to access climate finance,
+[2439.64-2442.76] those are the very questions that they're asking us.
+[2442.76-2446.92] How is this going to impact how many people?
+[2446.92-2451.20] But recognizing that many of our island communities,
+[2451.20-2453.80] we're talking about populations of a
+[2453.80-2456.56] little over 10,000 when we talk about the Pacific,
+[2456.56-2459.64] a little over 10,000 to over
+[2459.64-2463.91] 15 million for places like Papua Guinea.
+[2463.91-2468.99] So when we talk about return on investment,
+[2468.99-2471.23] it almost seems that
+[2471.87-2476.75] building an infrastructure that will lift over
+[2476.75-2481.43] 10,000 people out of vulnerabilities doesn't
+[2481.43-2486.63] seem like an investable project.
+[2486.63-2490.67] But it really is a culture and people
+[2490.67-2495.67] worth losing simply because there's no financial return.
+[2495.67-2498.51] I think that's a very hard question
+[2498.51-2501.55] that we need to ask ourselves.
+[2501.56-2509.52] Is it morally right for a culture of people to
+[2509.52-2512.84] disappear from the face of
+[2512.84-2516.32] this planet for a threat
+[2516.32-2519.44] that we contribute very little to?
+[2519.44-2523.52] So I think this is really where data
+[2523.52-2525.92] becomes important when we
+[2525.92-2529.48] talk about return on investment.
+[2529.48-2534.44] We need to see data as assets, national assets.
+[2535.00-2539.78] We have a lot of research coming to Palau.
+[2539.78-2544.29] So they understand many
+[2544.29-2548.61] of what's happening within our marine resource,
+[2548.61-2551.25] what we could potentially lose.
+[2551.25-2554.37] But there's no real process
+[2554.37-2556.81] to put that data into perspective.
+[2556.81-2563.09] So this data hub is seen as something that will help us.
+[2563.09-2567.77] We have colleagues from the Secretariat of Pacific
+[2567.77-2569.97] community in the room who are
+[2569.97-2572.93] providing a lot of that support to countries,
+[2572.93-2575.49] but they've had to serve 19 countries.
+[2575.49-2582.04] So there's very limited capacity to provide this data
+[2582.04-2585.48] at a resolution that
+[2585.48-2589.20] really demonstrate the vulnerability.
+[2589.20-2592.36] When we talk about fisheries,
+[2592.36-2597.60] it is projected that its Palawan will potentially
+[2597.60-2603.36] lose 29 kilogram of fish protein by 2030.
+[2603.36-2606.08] Yet we don't really know what we're losing within
+[2606.08-2610.96] our reefs because it's a multi species fishery.
+[2611.52-2617.56] It cost millions to just assess our coastal fisheries.
+[2617.56-2621.56] We don't have millions to assess our coastal fisheries.
+[2621.56-2623.92] Yet, it is something that we need to do.
+[2623.92-2626.88] When we talk about our tuna fisheries,
+[2626.88-2629.96] we have the original data
+[2629.96-2633.36] that informs the health of the stocks.
+[2633.36-2636.72] They collect some information within our waters.
+[2636.72-2640.04] But do we really use that data to then
+[2640.04-2645.95] inform robust and more innovative policies.
+[2645.95-2648.23] So to me, the blind spot is
+[2648.23-2651.83] really how do we use data to inform policy?
+[2651.83-2655.39] It's not necessarily that the data is not there,
+[2655.39-2660.39] but how do you actually use the data to inform
+[2660.39-2665.75] a more robust policy so that you're not driven
+[2665.75-2668.15] to make decisions simply
+[2668.15-2671.19] because it attracts global attention.
+[2671.19-2672.95] And I used an example of
+[2672.95-2675.39] our Palau National Marine Sanctuary.
+[2675.39-2679.03] Back in 2015, Palau moved to close 80%
+[2679.03-2684.07] of its exclusive economic zone from commercial fishing.
+[2684.71-2687.11] With the view that it will
+[2687.11-2690.23] help improve the stocks of tuna.
+[2691.11-2694.43] But the data doesn't really support that.
+[2694.43-2697.71] The fisheries science doesn't really support that.
+[2697.71-2704.40] But it is a global momentum to have this large MPA.
+[2704.40-2707.08] Yes, we do need to have these large MPAs.
+[2707.08-2711.56] But there is a real need to use data to inform what
+[2711.56-2713.80] these large marine protected areas
+[2713.80-2716.20] will achieve for people and nature,
+[2716.20-2719.68] not simply achieve policies on paper.
+[2719.68-2722.60] To me, that is the biggest blind spot
+[2722.60-2724.96] that I actually lose sleep over,
+[2724.96-2727.40] not lack of data, but really,
+[2727.40-2730.08] how do we ensure that
+[2730.08-2733.44] the science that we see
+[2733.44-2737.84] is really the science that you use to inform policy?
+[2737.86-2741.18] We now live the reality of
+[2741.18-2744.50] the climate science under attack.
+[2744.50-2747.26] So that's another data that is very
+[2747.26-2751.18] much something that we
+[2751.18-2753.46] should be losing sleep over
+[2753.46-2756.42] because if that science
+[2756.42-2758.58] continued to be under attack then,
+[2758.58-2762.98] how do we ensure that what we say is
+[2762.98-2765.62] our vulnerabilities is actually
+[2765.62-2769.30] supported by the science that we bring forward.
+[2769.30-2775.39] So yes, I lose sleep over data not simply for lack of it,
+[2775.39-2777.11] but how you're using it to
+[2777.11-2780.55] inform more robust policies. Thank you.
+[2780.55-2782.79] Minister, thank you so much.
+[2782.79-2785.43] You have underscored that
+[2785.43-2789.27] data isn't just an environmental asset,
+[2789.27-2791.87] but it is an economic foundation.
+[2791.87-2793.87] So thank you so much for bringing that to
+[2793.87-2796.55] the fore and for bringing the example of Palau.
+[2796.55-2799.67] I now go over to Ambassador Hope.
+[2799.67-2804.23] And we now shift from the Pacific to the Caribbean.
+[2804.23-2807.51] Ambassador, as an economist,
+[2807.51-2812.47] you know that data is currency for climate finance.
+[2812.47-2814.95] From a Caribbean perspective,
+[2814.95-2818.51] how can bodies like the Sid Center of Excellence and
+[2818.51-2822.23] the Global Data Hub help St. Vincent and the Grenadines
+[2822.23-2825.03] to leverage geospatial data for
+[2825.03-2829.47] a more interoperable global data ecosystem,
+[2829.47-2833.23] de risk sustainable infrastructure projects,
+[2833.23-2836.19] reduce reactive disaster response,
+[2836.19-2839.31] and lean into proactive data
+[2839.31-2843.87] driven by macro fiscal resilience?
+[2844.08-2846.56] Thank you, Ashaki.
+[2846.56-2848.80] And permit me to
+[2848.80-2852.36] repeat a little bit of what Svoi shared earlier,
+[2852.36-2856.00] also being one of my colleague in a recent program.
+[2856.00-2859.44] Congratulations on your ascension, Sivi.
+[2859.44-2862.24] Doctor Scott earlier shared with
+[2862.24-2866.08] us that data in its raw sense,
+[2866.08-2869.19] while its currency, it's not usable.
+[2869.19-2871.78] Whereas if we had utilizing
+[2871.78-2875.02] the data to actually inform decision making.
+[2875.02-2877.90] So I believe the City Center of Excellence
+[2877.90-2880.10] and also the global data hub,
+[2880.10-2882.86] utilizing geospatial data can
+[2882.86-2885.30] enable us to connect local information into
+[2885.30-2888.34] databases that would inform decisions that could
+[2888.34-2891.94] help us to at least realize bankable projects,
+[2891.94-2895.74] reducing the risk in a number of small island states.
+[2895.74-2899.39] And I'll give an example. In St.
+[2899.39-2901.75] Vincent and Grenadines, over the last five years,
+[2901.75-2905.47] we've suffered at least three major shocks, the pandemic,
+[2905.47-2910.79] 2020, 2021, we had a volcanic eruption of the Lasso fre.
+[2910.79-2915.47] And in 2024, we equally had Hurricane Burl at that time,
+[2915.47-2919.45] a category four hurricane on the 1st of July.
+[2919.45-2923.35] The data that was generated as a consequence in terms of
+[2923.35-2925.99] the reconstruction or rebuilding
+[2925.99-2927.83] from these natural hazards,
+[2927.83-2930.27] in addition to the pandemic sits
+[2930.27-2932.91] on some desk and is not actively
+[2932.91-2935.99] utilized in terms of where we are now
+[2935.99-2937.51] present in terms of building
+[2937.51-2939.67] out our national development plan.
+[2939.67-2943.30] So similar to Sivke Sometimes
+[2943.30-2945.98] the issue is not so much with respect to the technology,
+[2945.98-2948.42] where the technology exists, right?
+[2948.42-2949.62] It's really and truly,
+[2949.62-2954.06] how do we move these data outside of the ministry,
+[2954.06-2955.86] departments and agencies with which they
+[2955.86-2959.02] remain and actually make it available to
+[2959.02-2961.78] the policymakers to agencies like
+[2961.78-2964.70] the Center of Excellence and Global Data Hub
+[2964.70-2966.18] to really enable us to
+[2966.18-2971.14] make action actionable projects and decisions.
+[2971.14-2975.83] So I'll give another example.
+[2975.83-2978.79] So a lot of times we
+[2978.79-2981.79] would usually rely upon just a satellite data that
+[2981.79-2983.83] would have our islands in terms of looking
+[2983.83-2987.63] at narrow land masses in an open ocean.
+[2987.63-2989.51] This is where we can take
+[2989.51-2991.79] all of these different climate maps,
+[2991.79-2993.51] the data generated from
+[2993.51-2998.07] these projects to overlay and actually be able to create,
+[2998.07-3002.79] spatial clarity that would reduce policy uncertainty,
+[3002.79-3004.87] reduce our borrowing costs,
+[3004.87-3007.99] and actually make our infrastructure
+[3007.99-3011.07] more attractive for investment.
+[3011.08-3014.64] So our hope presently with
+[3014.64-3017.64] our new government in office is really one where
+[3017.64-3019.52] we intend to our parliament to
+[3019.52-3022.36] prioritize the passage of different legislation that
+[3022.36-3024.28] would enable the sharing of data
+[3024.28-3027.60] with across ministries and departments,
+[3027.60-3034.04] equally to work on accelerating our single window.
+[3034.04-3037.40] We do have a lot of data from our GIS system,
+[3037.40-3039.32] our land registry and property,
+[3039.32-3041.04] for which we can actually create
+[3041.04-3043.00] a platform to actually start
+[3043.00-3048.00] informing our national development planning process.
+[3048.00-3052.33] Thank you. Ambassador, thank you so much.
+[3052.33-3056.53] And we all know that when
+[3056.53-3060.81] we talk about shocks, we can't them.
+[3060.81-3063.53] We can't speak to the frequency of them.
+[3063.53-3065.25] We see, in the case of St.
+[3065.25-3067.73] Vincent and the Grenadines, as you rightfully mentioned,
+[3067.73-3069.93] you had three shocks back to
+[3069.93-3072.69] back in a short space of time,
+[3072.69-3075.29] and I think you have framed it perfectly.
+[3075.29-3078.89] Data as the structural foundation need
+[3078.89-3083.65] to be absorbed when we talk about economic shocks.
+[3083.65-3089.87] I now go to Ambassador Falfu as our final panelists.
+[3089.87-3094.78] And Tuvalu is one of the smallest countries in the world,
+[3094.78-3097.18] but it's actively shifting
+[3097.18-3100.82] the global narrative for seeds from a narrative of
+[3100.82-3102.78] vulnerability toward
+[3102.78-3106.66] aggressive long term sustained investment
+[3106.66-3109.10] and self determination.
+[3109.10-3112.86] Ambassador, from a Tuvalon perspective,
+[3112.86-3115.94] climate change is not an agenda item for you.
+[3115.94-3119.82] It is an extential daily reality where
+[3119.82-3122.22] moving inland means stepping
+[3122.22-3124.86] into the ocean on the other side.
+[3124.86-3128.35] How do we design our partnerships with
+[3128.35-3131.39] institutions like the Sid Center of Excellence
+[3131.39-3132.95] and the Global Data Hub
+[3132.95-3135.51] so that data we collect is
+[3135.51-3138.83] packaged and leveraged to mobilize
+[3138.83-3143.55] private investment and international climate finance for
+[3143.55-3145.15] the next generation of
+[3145.15-3149.15] sustainable infrastructure and blue economy projects?
+[3149.15-3150.95] Ambasto?
+[3152.69-3156.57] Thank you, Shaka.
+[3156.57-3160.61] Goodwill. Honorable Ministers,
+[3160.61-3164.17] Excellencys distinguished guests.
+[3164.17-3170.37] Let me also join our panelists here in thanking
+[3170.37-3172.97] the Public Foundation and
+[3172.97-3178.89] the SDD data Alliance for convening this side event.
+[3178.89-3182.69] And thank you for the opportunity to participate.
+[3182.69-3185.74] The question that you have asked,
+[3185.74-3187.54] I suppose is one of
+[3187.54-3193.02] the very important question for us who are
+[3193.02-3200.82] gathered here on how we can best design the partnership.
+[3200.82-3205.18] From our national level with
+[3205.18-3209.74] our regional and international partners in order
+[3209.74-3217.62] to be able to pursue the various priorities that we have.
+[3217.62-3221.26] We have listened to our honorable ministers
+[3221.26-3225.42] sharing with us their practical experience in Tonga,
+[3225.42-3228.06] as well as in Palau.
+[3228.06-3232.82] That clearly gave us a perspective of how
+[3232.82-3235.70] small island developing states
+[3235.70-3241.26] live their lives with the information that they have.
+[3241.26-3247.02] For Tuvalu, I would like to say a few points,
+[3247.02-3253.14] I hope that can help us digest and look into how best we
+[3253.14-3255.62] can design these partnerships between
+[3255.62-3257.50] small island developing states and
+[3257.50-3260.52] our partners who are here with us this morning.
+[3260.52-3267.39] But I think the question that we have to ask first is,
+[3267.39-3269.99] how can we convince
+[3269.99-3274.31] our partners to be able to see what we see?
+[3274.31-3277.35] Often the case that
+[3277.35-3282.23] our developing partners look at
+[3282.23-3284.31] small island developing state as
+[3284.31-3288.11] countries trying to bring their needs.
+[3288.57-3294.89] Look at small island countries as vulnerable partners.
+[3294.89-3298.57] But I guess there is a question that they often
+[3298.57-3302.61] miss that small island developing states
+[3302.61-3304.89] also have opportunities.
+[3306.01-3309.09] A few examples that they can
+[3309.09-3312.53] relate in the case of Tuvalu,
+[3312.53-3315.05] especially on how they are
+[3315.05-3320.33] so central to decision makers in making decisions.
+[3320.53-3326.29] The COVID 19 pandemic,
+[3326.29-3329.57] I was privileged to be the co chair of
+[3329.57-3331.45] the national task force together with
+[3331.45-3334.97] the prime minister in trying to
+[3334.97-3341.21] make sure that how we address the pandemic is one that
+[3341.21-3343.93] can save Tuvalu given
+[3343.93-3348.57] the limited medical support that we have.
+[3348.57-3350.37] But let me put in
+[3350.37-3354.65] front upfront by saying that Tuvalu, I guess,
+[3354.65-3357.95] is the only country as
+[3357.95-3360.91] far as I recall after the pandemic,
+[3360.91-3365.95] that we have never had a casualty from the pandemic.
+[3365.95-3368.39] And that is because of
+[3369.19-3373.67] the way we tried to address the issue.
+[3373.67-3378.28] But one of the The concern or
+[3378.28-3381.16] the challenges that we face
+[3381.16-3385.04] was what was about the information that we have.
+[3385.04-3390.12] As alluded to by the Minister of Finance of Tonga,
+[3390.12-3393.20] there's always this pool of
+[3393.20-3394.96] authority over the information
+[3394.96-3397.52] or data that departments have.
+[3397.52-3400.66] And that's the issue that we have.
+[3400.66-3403.16] In trying to look into
+[3403.16-3405.92] the number of people we have in Pfudi at the time,
+[3405.92-3410.88] the capital, the only point of entry during the COVID.
+[3410.88-3413.44] Even a small country like that,
+[3413.44-3415.96] we found it very hard to
+[3415.96-3419.88] understand the number of people that we have,
+[3419.88-3422.60] where they live, even the household.
+[3422.60-3427.52] So the lack of these important datas provide
+[3427.52-3431.32] a major challenge to leaders in trying
+[3431.32-3436.60] to assess the situation and to make informed decisions.
+[3436.60-3439.08] And today we listen
+[3439.08-3442.40] to the presentation that have been made about
+[3442.40-3448.84] the importance of the STS Center for Excellence and
+[3448.84-3456.82] the SCD data hub the global data hub.
+[3456.82-3461.41] In providing those very critical data
+[3461.41-3464.49] for leaders to be able to make decisions.
+[3464.49-3468.85] Tovaro recently was able to have
+[3468.93-3475.37] a lighter survey undertaken by the SPC,
+[3475.37-3478.64] the Secretariat for the Pacific Community.
+[3478.64-3481.36] Which provide us with
+[3481.36-3484.52] extraordinary information that we never expect.
+[3484.52-3487.44] And those very information are
+[3487.44-3490.48] the ones that we are now using in our advocacy
+[3490.48-3494.20] of the real impacts what the potential impacts that
+[3494.20-3499.21] Tuvalu would face in the next 20, 30 years.
+[3499.21-3501.74] Of course, we have received
+[3501.74-3503.54] a lot of datas and information
+[3503.54-3508.70] from IPCC assessment reports
+[3508.70-3511.38] and other reliable information.
+[3511.38-3516.06] But the LDA survey report that was provided to
+[3516.06-3523.44] Valu gave us a clear perspective of the indentation.
+[3523.44-3526.42] That Tuvalu will have to face.
+[3526.42-3529.86] And the various part of Puna Fu,
+[3529.86-3531.54] I'm so thankful and I want
+[3531.54-3535.30] to acknowledge that I can see that there are
+[3535.30-3538.62] some SPC staff here
+[3538.62-3541.82] for the good work that they have extended to Tuvalu.
+[3541.82-3543.62] I think only Tuvalu or
+[3543.62-3546.34] one other Pacific island country that have had
+[3546.34-3552.22] the LDA survey prepared by the SPC.
+[3552.22-3554.90] Now we can really see which part of
+[3554.90-3557.34] the island will come
+[3557.34-3560.34] underwater in the next ten, 20 years.
+[3560.34-3566.34] So that very data Now provide us with
+[3566.34-3569.74] more informed decision making of
+[3569.74-3573.74] where the adaptation should be addressed,
+[3573.74-3578.18] where the coastal protection should start.
+[3578.36-3584.12] But prior to that, we for that to protect our coast,
+[3584.12-3588.08] which is have to build
+[3588.08-3590.32] or reclaim land and elevate land to
+[3590.32-3595.32] the coastal sites where most of the people
+[3595.32-3598.12] live or the main settlement on
+[3598.12-3601.24] the idea that this will be good for the people,
+[3601.24-3603.64] but then after having to light the test,
+[3603.64-3605.40] we are now able to see
+[3605.40-3607.72] which part of the island that we should
+[3607.72-3610.16] provide that kind of
+[3610.16-3613.74] coastal protection adaptation project.
+[3613.74-3619.81] So coming back to how we design our partnership
+[3619.81-3622.37] with our colleagues who are here who can
+[3622.37-3626.25] help us with the use of information.
+[3626.81-3630.61] For Tobaro we have a very
+[3630.61-3635.13] small what we call the statistic department.
+[3635.13-3636.97] I think only about three of them.
+[3636.97-3641.53] And that is the only department that we mostly
+[3641.53-3647.74] use when we decide on major projects that we pursue.
+[3647.74-3652.52] But now with the data
+[3652.52-3656.68] of Excellence and the global data hub,
+[3656.68-3660.72] I am sure Tuvalu will be able to design
+[3660.72-3666.40] a better way of making projects
+[3666.40-3670.84] or making decisions that are really directly relevant to
+[3670.84-3672.84] our context rather than
+[3672.84-3676.72] just based on other information that we received.
+[3676.72-3681.28] So today, I think the message that
+[3681.28-3686.02] I I want to leave with our colleagues who are here,
+[3686.02-3691.70] especially our potential partners that are here is that
+[3691.70-3694.66] we would like you also to make use
+[3694.66-3698.84] of this Center for Excellence to
+[3698.84-3700.86] Have a look at it and see
+[3700.86-3703.66] the information that are relevant to us,
+[3703.66-3706.50] small island countries and we are part
+[3706.50-3709.10] of those information that can be useful in
+[3709.10-3711.58] your decision making to support
+[3711.58-3716.38] small island states in their development aspiration.
+[3716.38-3718.18] I think I will leave it there,
+[3718.18-3720.02] Moderator, but thank you so much.
+[3720.02-3721.62] Thank you, Ambassador.
+[3721.62-3725.50] Today's discussion brings us to one point.
+[3725.50-3728.54] Data is not an intellectual exercise,
+[3728.54-3731.02] and I want you to join me in thanking
+[3731.02-3733.62] our extraordinary panelists for
+[3733.62-3737.30] their valuable insights from their unique experiences.
+[3737.30-3739.90] Thank you all for joining us.
+[3740.06-3744.30] I now hand over to my colleague, Greg Scott,
+[3744.30-3747.34] who will lead the next panel on
+[3747.34-3750.06] data technology and solutions
+[3750.06-3753.02] deliver and I. Thank you so much.
+[3764.50-3768.34] Okay, we're rolling along.
+[3768.34-3770.74] We've got a clock in front of us.
+[3770.74-3775.02] I'm now going to moderate the second panel.
+[3775.02-3777.38] And if I may, can I please call
+[3777.38-3780.46] up our four panelists for this panel, please?
+[3780.46-3782.10] And if you can sit under
+[3782.10-3784.74] your names that are behind you as well.
+[3784.74-3788.66] Doctor Alex Cantav from Kellogg Foundation,
+[3788.66-3790.82] Kamal Tub from Ezra,
+[3790.82-3794.86] Monika Kupta from Privacy evolved,
+[3794.86-3800.74] and Francisco again up to up to the stage from GoSat.
+[3800.90-3804.46] So welcome, team.
+[3804.46-3809.06] This is a short sharp panel session on data,
+[3809.06-3812.26] technology and solutions delivering impact.
+[3812.26-3814.83] Team, I know you're really,
+[3814.83-3816.19] really good at what you do.
+[3816.19-3817.87] We're now going to move you down to
+[3817.87-3821.67] a 15 minute session instead of a 20 minute session.
+[3821.67-3823.95] We're going to hit this running.
+[3823.95-3826.15] So I'm going to start really,
+[3826.15-3829.23] really quickly with you, Alex.
+[3829.23-3831.95] Alex Canta from Kellogg Foundation,
+[3831.95-3835.11] as we look at how we're designing
+[3835.11-3836.91] this global Data Hub and
+[3836.91-3839.95] the country hubs and the work that we do,
+[3839.95-3844.71] but also the work that you do it's really
+[3844.71-3850.76] about about equity in children and health and prosperity,
+[3850.76-3852.44] particularly for those that are
+[3852.44-3855.40] disadvantaged and you've got a lot of
+[3855.40-3857.04] experience in how you bring
+[3857.04-3858.36] the messaging and the data
+[3858.36-3860.32] and the communication to the table.
+[3860.32-3863.24] From your experience in this field,
+[3863.24-3867.12] how can platforms like the Global Data Hub
+[3867.12-3870.24] better frame data solutions to show
+[3870.24-3872.16] a direct and measurable line
+[3872.16-3875.01] to vulnerable populations family,
+[3875.01-3877.81] economic security, and community resilience,
+[3877.81-3879.65] particularly in island settings.
+[3879.65-3881.45] I know you have a lot of
+[3881.45-3884.25] experience from Haiti in such a setting as well.
+[3884.25-3885.81] But some of your experiences,
+[3885.81-3890.65] how can we make this really tangible for countries?
+[3890.65-3892.89] Thank you. Good morning, everyone,
+[3892.89-3895.49] and thank you again for inviting me.
+[3895.49-3897.53] Thank you so much, Greg, for that.
+[3897.53-3899.69] I remember when we started this partnership,
+[3899.69-3901.56] I don't know how many years ago,
+[3901.56-3905.27] particularly looking at the use
+[3905.27-3909.15] of data in a place like Haiti
+[3909.15-3912.51] before the growth of
+[3912.51-3917.53] the data Alliance to include the seeds and others,
+[3917.53-3921.35] I would say for us at the Kellogg Foundation,
+[3921.35-3925.75] we believe deeply that
+[3925.75-3929.63] data have to be made available to populations.
+[3929.63-3933.67] So the question for us is who has access to the data,
+[3933.67-3936.99] who's using the data, and for what purpose?
+[3936.99-3940.23] The work that we're doing with you,
+[3940.23-3942.35] both in terms of the seeds,
+[3942.35-3945.71] but also in terms of what's happening in Mexico in
+[3945.71-3949.99] places like Haiti is the issue of the access.
+[3949.99-3952.43] And for us at the Kellogg Foundation,
+[3952.43-3953.75] that's the equity point.
+[3953.75-3960.11] And I think we can summarize that you know,
+[3960.11-3964.07] three levels of access to the data.
+[3964.07-3968.07] One is at the national level
+[3968.07-3970.87] in a country and that's the ministers,
+[3970.87-3972.79] like the previous panel,
+[3972.79-3974.95] then you have institutions,
+[3974.95-3977.35] then you have people.
+[3977.68-3980.16] Mostly affected by that.
+[3980.16-3982.64] And what we've seen is that
+[3982.64-3986.88] communities rarely have access to the data.
+[3986.88-3988.56] And that's where we come with
+[3988.56-3991.00] a partnership with the data Alliance,
+[3991.00-3992.72] with public foundation and saying,
+[3992.72-3995.36] how do we make data
+[3995.36-3999.08] available to communities for several reasons.
+[3999.08-4001.44] One, so that they are informed,
+[4001.44-4003.84] because they're the ones most impacted.
+[4003.84-4006.79] Yeah, whether it's climate change,
+[4006.79-4008.83] whether it's just policy,
+[4008.83-4010.63] whether it's whatever the issues
+[4010.63-4012.31] are, whether it's economic,
+[4012.31-4017.19] social, political, they're the ones most affected.
+[4017.19-4019.99] Most of the time, communities
+[4019.99-4023.28] are the one with the least access to the data.
+[4023.28-4025.62] So the challenge is really,
+[4025.62-4027.22] how do you make data
+[4027.22-4031.06] accessible and usable at the community level?
+[4031.06-4033.18] How do we then organize
+[4033.18-4036.30] communities to be able to access the data?
+[4036.30-4039.22] So the equity issue for us is really,
+[4039.22-4042.46] how do we provide build
+[4042.46-4047.50] the capacity of local organizations to access,
+[4047.50-4052.10] use, and advocate for better policy,
+[4052.10-4056.46] better services for their communities.
+[4056.46-4058.18] So for us, and that's where we see
+[4058.18-4060.32] the huge just the big gap.
+[4060.32-4064.13] Communities just don't have the capacity,
+[4064.13-4069.41] both in terms of infrastructure as well as
+[4069.41-4072.81] financing and skill to
+[4072.81-4075.53] be able to use data for their own benefit.
+[4075.53-4077.81] And I think we have quite a ways to go.
+[4077.81-4079.85] And I think the other thing I want to talk about,
+[4079.85-4081.45] and I'm not going to say too much on
+[4081.45-4084.08] it is around the partnerships.
+[4084.08-4086.35] The partnership has to be done
+[4086.35-4088.95] not just at the governmental level,
+[4088.95-4092.03] but it has to happen at the community levels as well.
+[4092.03-4094.23] Because what we are seeing, and again,
+[4094.23-4098.15] in places like Haiti is the data infrastructure,
+[4098.15-4101.91] even though as you were saying earlier in our Sergio say,
+[4101.91-4107.83] the data exist, it's not organized, it's not accessible.
+[4107.83-4109.51] And I don't think we can actually
+[4109.51-4112.84] invest and making data available.
+[4112.84-4114.80] We have countries that haven't have
+[4114.80-4118.52] a census for over 20 years, right?
+[4118.52-4120.16] Yes, the data that is being
+[4120.16-4122.36] collected by institutions like
+[4122.36-4127.28] Sad or Ezra and others is available.
+[4127.30-4134.62] But the socioeconomic data, there's a gap there.
+[4134.62-4138.34] Of course, we know in terms of partnerships,
+[4138.34-4143.38] we're not financing the creation,
+[4143.38-4149.18] stability and longevity of data infrastructure,
+[4149.18-4151.42] particularly in
+[4151.42-4154.66] resource limited countries and environment.
+[4154.66-4157.82] So I think we have a ways to go to make data more
+[4157.82-4159.78] equitable and to go back to
+[4159.78-4162.98] the original point as data as a human rights.
+[4162.98-4164.70] So if it is a human right,
+[4164.70-4166.06] then who's human enough
+[4166.06-4168.30] to have access to that information?
+[4168.30-4171.47] Thank you. Thank you, Alex. Really good point.
+[4171.47-4176.35] Data access, you could say is also data equity,
+[4176.35-4177.63] but it's actually more than that.
+[4177.63-4180.43] It's also socioeconomic equity as well.
+[4180.43-4182.43] It means more for
+[4182.43-4186.31] that access for these vulnerable communities.
+[4186.31-4190.67] On that note, I'm going to move to you, Carmel.
+[4190.91-4194.79] E has also been a founding partner of the work on
+[4194.79-4199.19] the SDG Data Alliance for the policymakers
+[4199.19-4200.91] in this room who operate under
+[4200.91-4204.20] very tight resource constraints as we've already heard,
+[4204.20-4207.05] How does this concept about
+[4207.05-4211.65] an open system feederated infrastructure
+[4211.65-4213.53] ensure that small island countries,
+[4213.53-4217.01] developing countries can maintain full ownership of
+[4217.01-4219.37] its national data while still
+[4219.37-4223.17] gaining access to these capabilities at a global level,
+[4223.17-4225.01] these technologies, these systems,
+[4225.01-4227.81] these services, these innovations?
+[4227.81-4230.13] How do we bridge some of
+[4230.13-4232.75] that understanding from your perspective?
+[4232.75-4235.33] Well, thank you very much, Greg, for the question.
+[4235.33-4237.81] The SIDS global Data Hub today,
+[4237.81-4239.81] as it stands, is a tool for all of
+[4239.81-4242.01] the SIDS countries. It exists.
+[4242.01-4244.17] We hope that as we change
+[4244.17-4246.73] those gray icons into colorful ones,
+[4246.73-4248.41] we'll be bringing more and more data
+[4248.41-4249.77] online that is available
+[4249.77-4251.69] today and organizing it and
+[4251.69-4254.61] pulling it together for the other countries.
+[4254.61-4256.34] So it is your tool.
+[4256.34-4259.62] Please utilize it right from the get go.
+[4259.62-4262.46] But it's our partnership that will also provide you
+[4262.46-4265.58] access to the RGS technology
+[4265.58-4267.38] that was used to build the hub,
+[4267.38-4272.54] and the SIDS global Data Hub can actually have many nodes
+[4272.54-4275.54] pulled together in a feederated way so that
+[4275.54-4279.02] each country can have access to the technology as well.
+[4279.02-4281.51] Through the partnership, we will be providing
+[4281.51-4284.43] that capability to all of the countries.
+[4284.43-4288.19] We would like to make sure that you are aware of that.
+[4288.19-4290.71] Working with the states in your region
+[4290.71-4294.31] or if you are from a member state, please reach out.
+[4294.31-4296.55] We want to actively engage with you in
+[4296.55-4298.91] that process and make sure that you have
+[4298.91-4300.15] your own country node
+[4300.15-4302.47] established and that can also be linked
+[4302.47-4306.83] into the global hub as a federated system of systems.
+[4306.83-4309.11] So I really want to echo
+[4309.11-4312.23] what doctor Kantav said about we need to get
+[4312.23-4315.87] the data and the information and the applications and
+[4315.87-4317.99] the content and all of that as close
+[4317.99-4320.87] as possible to the problems that are trying to be solved.
+[4320.87-4322.31] We know what the problems are,
+[4322.31-4324.59] perhaps at national and international levels,
+[4324.59-4327.99] but having that information when a crisis happens
+[4327.99-4331.83] or for planning socioeconomic opportunities for everyone,
+[4331.83-4333.75] we need to have that data right down at
+[4333.75-4336.70] the local level for local decision making as well.
+[4336.70-4340.22] So please note that as part of the platform,
+[4340.22-4341.54] you get a lot of content.
+[4341.54-4343.38] There's a lot of satellite imagery,
+[4343.38-4345.34] there's deep learning models.
+[4345.34-4347.58] There's all kinds of data and information,
+[4347.58-4350.42] a lot of socioeconomic data as well,
+[4350.42-4352.02] that has been gathered up,
+[4352.02-4353.82] organized, and is available.
+[4353.82-4356.10] We have data available for
+[4356.10-4358.46] scientists and developers to utilize,
+[4358.46-4360.70] but we also have some very simple to use
+[4360.70-4362.26] applications that are also
+[4362.26-4364.82] geared towards the public to tell the story,
+[4364.82-4366.42] to provide information, to
+[4366.42-4368.40] let them ask questions of the data.
+[4368.40-4370.15] And so I just wanted to
+[4370.15-4371.67] point out that those dashboards and
+[4371.67-4373.03] story maps and things like
+[4373.03-4375.79] those applications are really geared towards the public,
+[4375.79-4377.55] but there's also a lot of
+[4377.55-4380.19] rich content for the developers and to
+[4380.19-4383.19] develop an active data ecosystem
+[4383.19-4385.23] within the countries as well.
+[4385.23-4389.63] That also includes both geospatial AI tools
+[4389.63-4392.15] to analyze that satellite imagery,
+[4392.15-4394.83] as well as agentic tools to be able to
+[4394.83-4398.08] help people better understand the data and analyze it.
+[4398.08-4401.22] So please take ownership
+[4401.22-4404.02] of the opportunity through this partnership to have
+[4404.02-4407.54] access to that technology at no cost and
+[4407.54-4409.14] be able to start
+[4409.14-4411.62] building out your country nodes. Thank you.
+[4411.62-4413.42] Yeah. Thank you so much.
+[4413.42-4417.06] K Allen Certainly we're even learning
+[4417.06-4420.82] every day too is that gosh, it's so easy to say.
+[4420.82-4422.94] We don't really always know what's out there on the web
+[4422.94-4424.38] and there's lots of
+[4424.38-4426.34] good stuff and there's lots of not so good stuff.
+[4426.34-4428.70] But when it comes to data
+[4428.70-4431.58] and geospatial data, Earth observations data,
+[4431.58-4435.56] a lot of in situ kinds of information,
+[4435.56-4437.51] You're just discovering so
+[4437.51-4439.43] much every day and it's really about
+[4439.43-4442.27] it's like there's just a fire hose
+[4442.27-4444.31] of content out there in the world.
+[4444.31-4446.27] What we're trying to do is just
+[4446.27-4448.15] bring that down into what's
+[4448.15-4449.79] relevant for developing countries
+[4449.79-4452.03] and small island developing states.
+[4452.03-4454.03] It's a big beast.
+[4454.03-4457.47] But it's achievable with the technologies
+[4457.47-4459.63] and if we can get the human interoperability
+[4459.63-4461.43] working as well,
+[4461.43-4464.79] it's going to be a lot easier.
+[4464.79-4467.67] Um, Monica, coming from
+[4467.67-4471.39] a boutique organization, privacy evolved,
+[4471.39-4473.63] I was going to ask you
+[4473.63-4476.39] a more general question
+[4476.55-4479.71] around privacy laws with
+[4479.71-4482.07] data and sovereignty and these sorts of things.
+[4482.07-4485.95] But as we spoke about before the start,
+[4485.95-4487.23] I wanted to maybe get
+[4487.23-4491.51] your insights because you deal with this every day.
+[4491.51-4494.63] And looking at it through the lens of,
+[4494.63-4496.91] for example, our ministers
+[4496.91-4499.07] and ambassadors in the first panel,
+[4499.07-4501.75] how do you explain to them
+[4501.75-4505.35] all of these challenges or issues on what to
+[4505.35-4507.99] do or not to do when we think about
+[4507.99-4512.19] sovereignty of data around privacy of sharing of AI,
+[4512.19-4514.75] just a few minutes of what
+[4514.75-4516.55] your experiences and views
+[4516.55-4517.91] on some of this a lot would be,
+[4517.91-4519.47] I think really valuable. Thank you.
+[4519.47-4521.59] Absolutely. Good morning, everybody.
+[4521.59-4525.67] When I think about how complex the privacy landscape has
+[4525.67-4526.95] gotten and now with
+[4526.95-4530.52] AI regulation being privacy regulation,
+[4530.52-4533.62] I just think the retroactive fitting
+[4533.62-4536.02] of data to compliance has to stop.
+[4536.02-4539.38] There is a position where you can empower yourself with
+[4539.38-4541.82] your data use by designing
+[4541.82-4545.38] privacy and AI compliance into what you're doing.
+[4545.38-4547.98] When you have an ingestion point for your data,
+[4547.98-4549.50] your human level data,
+[4549.50-4553.18] do you have a format for your map of whose data it is,
+[4553.18-4554.54] who's the data subject?
+[4554.54-4556.10] What are the data elements?
+[4556.10-4557.66] Where are they located?
+[4557.66-4560.98] Where are your third party recipients located?
+[4560.98-4563.94] What was the purpose for your data collection?
+[4563.94-4567.21] What is your permitted use for that data transfer?
+[4567.21-4568.81] And with that map,
+[4568.81-4570.33] you can very easily create
+[4570.33-4572.25] machine readable code that
+[4572.25-4574.93] will basically map this in an automated fashion.
+[4574.93-4576.93] At every point of your data collection,
+[4576.93-4579.41] you already have a very good heat map
+[4579.41-4581.01] of what is the data coming in,
+[4581.01-4583.77] whose data it is, how can it be transferred,
+[4583.77-4585.97] and what is the governance around that?
+[4585.97-4589.17] And then, Greg, you mentioned localization, right?
+[4589.17-4591.17] I think that is a massive piece of
+[4591.17-4593.17] the puzzle around data sovereignty,
+[4593.17-4594.49] but it is only one piece.
+[4594.49-4597.25] That's your storage of your data.
+[4597.25-4599.57] But for sovereignty of it,
+[4599.57-4603.13] you have to regulate how this is actually transferred.
+[4603.13-4606.85] So as soon as somebody has access to your datasets,
+[4606.85-4609.64] you no longer have the ownership of
+[4609.64-4611.40] that data and when it
+[4611.40-4613.80] comes to that third party recipient,
+[4613.80-4616.24] are they creating derivatives of
+[4616.24-4618.56] your information and do you have
+[4618.56-4621.36] governance over who owns that derivative?
+[4621.36-4623.28] If they are deploying
+[4623.28-4625.32] AI that they may have even just licensed,
+[4625.32-4628.96] not developed, how are you quantifying that data?
+[4628.96-4631.64] Is that derivative? Is that tertiary data?
+[4631.64-4633.71] What are your controls over that?
+[4633.71-4636.27] If you can create some governance rules
+[4636.27-4639.03] around basically that initial heat map,
+[4639.03-4641.07] the permutation matrix, and create
+[4641.07-4644.39] a secondary permutation matrix around the transfer,
+[4644.39-4647.19] you don't have to do this in a continuous basis.
+[4647.19-4649.03] This can be a quarterly review,
+[4649.03-4652.03] semi annual review, and you
+[4652.03-4653.39] basically have an end to end
+[4653.39-4655.79] data lineage of how your data can flow.
+[4655.79-4660.00] I think with that, we all know that this AI race is here,
+[4660.00-4661.36] it's not going anywhere.
+[4661.36-4662.88] But if you are ahead of it from
+[4662.88-4665.00] your design principle itself,
+[4665.00-4666.44] you have a position of power
+[4666.44-4668.04] where you don't have to slow down
+[4668.04-4669.32] at a later point like
+[4669.32-4671.64] many countries that are trying to avoid this.
+[4671.64-4673.64] It is a little bit of a slowdown in
+[4673.64-4675.68] the beginning in order to be fast,
+[4675.68-4677.64] I think, in longevity.
+[4677.64-4680.72] Okay. And just quickly
+[4680.72-4683.64] a yes or no with maybe an explanation.
+[4683.64-4686.66] Do those sort of capabilities,
+[4686.66-4688.70] methodologies, pro formas already
+[4688.70-4691.22] exist to do that? Yes, of course.
+[4691.22-4692.98] This is just a little
+[4692.98-4694.86] bit more of an automation from an Excel.
+[4694.86-4696.54] This is not sophisticated technology.
+[4696.54-4698.42] Thank you. Because that's good for people to know too
+[4698.42-4700.62] because sometimes we just don't know what we don't know.
+[4700.62-4703.02] Thank you so much. Really appreciate that.
+[4703.02-4706.44] Francisco, Welcome to the team.
+[4706.44-4708.84] Thank you. Do SAT.
+[4708.84-4714.36] Yes, European working and supporting with,
+[4714.36-4717.84] I'm going to say higher resolution imagery,
+[4717.84-4720.48] Island states have a real challenge
+[4720.48-4722.68] with very small land masses,
+[4722.68-4725.32] and they need high resolution imagery
+[4725.32-4728.55] as we know and we've spoken about many times.
+[4728.55-4733.90] Global technology leaders are really trying to make
+[4733.90-4736.18] this data much more affordable and
+[4736.18-4739.34] accessible, particularly into governments.
+[4739.34-4741.74] How do you see that working out?
+[4741.74-4746.30] Secondly, how do you also see this imagery
+[4746.30-4748.42] that's now becoming more available
+[4748.42-4751.50] to higher resolution, greater refresh rates?
+[4751.50-4754.90] But going just from data or data products
+[4754.90-4759.26] to services and solutions as well so that it takes out,
+[4759.26-4761.50] what do I do with the raw data question?
+[4761.50-4764.00] Your thoughts would be really good. Thank you.
+[4764.00-4766.06] Thank you. Thank you, Greg, very much.
+[4766.06-4768.14] Once again, it's a real pleasure to be here,
+[4768.14-4771.26] and I hope this is the start of a long road together.
+[4771.26-4773.02] When we are talking about
+[4773.02-4775.54] affordability and we hear that a lot,
+[4775.54-4779.78] that VHR imagery VI resolution is very expensive.
+[4779.78-4781.86] We like to turn the question around.
+[4781.86-4786.18] What is the price at which it is not expensive for you?
+[4786.18-4789.10] Because when we talk about affordability many times,
+[4789.10-4791.50] I think we are talking about perception of
+[4791.50-4794.54] value because $5 might be expensive,
+[4794.54-4796.10] it might be cheap depending on
+[4796.10-4798.66] what are you buying with those $5.
+[4798.66-4800.42] What we understand is that we
+[4800.42-4802.64] have year cycle that we need to break.
+[4802.64-4805.62] Images are not being acquired as
+[4805.62-4807.02] frequently as they could
+[4807.02-4808.98] because they are considered expensive.
+[4808.98-4811.74] Value is not being perceived because images
+[4811.74-4814.82] are not there and so users do not take the value.
+[4814.82-4817.78] This is a little bit like an egg and chicken problem
+[4817.78-4819.06] that we need to tackle and
+[4819.06-4821.22] I think we have solution for that.
+[4821.22-4823.42] On the other hand, what we also
+[4823.42-4825.31] see is that there is a between
+[4825.31-4828.67] the earth observation industry because our market
+[4828.67-4830.35] where we make money is
+[4830.35-4832.51] not sustainability, as you can imagine.
+[4832.51-4834.63] But we also understand that we
+[4834.63-4837.03] have an asset that is a global asset,
+[4837.03-4839.35] is an asset for mankind.
+[4839.35-4841.23] This is not for
+[4841.23-4843.39] specific company because we
+[4843.39-4845.07] don't use the asset all the time,
+[4845.07-4847.07] so we need to make sure that is well
+[4847.07-4850.31] used for the entire world to benefit from that.
+[4850.31-4853.05] But there is this. And we know that
+[4853.05-4856.93] if I would send the satellite image to most of you,
+[4856.93-4858.41] you would not be able to open
+[4858.41-4859.97] it because it's not a picture.
+[4859.97-4863.53] It's not something and when you open it, you'll say,
+[4863.53-4867.29] it is really ugly because that's what I said when I saw
+[4867.29-4869.45] my first satellite image because it's not
+[4869.45-4872.89] the standard photo from our mobile that we have.
+[4872.89-4875.85] It's understood by experts,
+[4875.85-4877.97] but non experts do not understand.
+[4877.97-4881.05] We need to bridge that gap and that set,
+[4881.05-4882.97] we understand that bridging the gap is
+[4882.97-4885.41] responsibility of the industry.
+[4885.41-4887.77] This connects to the second question
+[4887.77-4889.41] that you pose and I think
+[4889.41-4892.51] Ambassador from Tongo also
+[4892.51-4894.07] mentioned that we need to
+[4894.07-4896.27] start seeing the world in the same way.
+[4896.27-4898.15] We see the world from above,
+[4898.15-4900.47] but we need to engage local communities,
+[4900.47-4904.47] meet global communities where they are because we can
+[4904.47-4906.83] provide very high resolution imagery and
+[4906.83-4909.59] then it stays there in the computer, no one will use it.
+[4909.59-4911.71] We need to engage local users.
+[4911.71-4913.47] We need to understand the problems
+[4913.47-4915.60] from the community's point of view.
+[4915.60-4917.45] Because then we can say we have
+[4917.45-4919.33] great platforms like ASRS,
+[4919.33-4921.69] we have our imagery, and we can say, look,
+[4921.69-4925.05] maybe what we need here is this type of image.
+[4925.05-4926.97] What we have established and
+[4926.97-4929.01] I'm looking forward to start providing
+[4929.01-4931.37] it through our participation in
+[4931.37-4934.21] the alliance is the EO starter kit is one.
+[4934.21-4936.13] Of course, we can provide imagery.
+[4936.13-4938.61] But then training to people on
+[4938.61-4940.34] the ground to use
+[4940.34-4943.10] that image for what they need to use it.
+[4943.10-4944.98] Then on one support
+[4944.98-4947.06] because no one wants to fire and forget,
+[4947.06-4949.18] get the training and we never talk again.
+[4949.18-4951.90] So that's what we are looking to do.
+[4951.90-4954.78] We were missing a piece in our strategy,
+[4954.78-4956.26] which was who are,
+[4956.26-4959.02] which are the reliable organizations we can
+[4959.02-4961.98] partner with to take this capability forward.
+[4961.98-4963.56] So I think now we did it.
+[4963.56-4964.18] Thank you.
+[4964.18-4964.82] Thank you.
+[4964.82-4967.14] Thank you so much. We're going
+[4967.14-4968.74] to speed date into the next one.
+[4968.74-4971.22] Now next panel. We have 5 minutes left,
+[4971.22-4974.18] but we're going to go out another 10 minutes.
+[4974.18-4977.30] Thank you all for your great contributions.
+[4977.30-4979.78] I know there's a lot more that we can talk about,
+[4979.78-4983.18] but the great thing is our panelists are going to be
+[4983.18-4985.22] here for the day and please
+[4985.22-4986.82] do speak with them if you need to.
+[4986.82-4989.82] Thank you very much. Please join me. Thank you.
+[4991.10-4993.18] With that, I'm going to call
+[4993.18-4995.06] president of Public Foundation,
+[4995.06-4999.18] Steven Keppel up to moderate our final panel session.
+[4999.18-5001.34] Thank you. Thank you, team.
+[5002.95-5005.11] Thank you.
+[5005.11-5008.11] Thank you, Greg. I'll say,
+[5008.11-5008.99] too, if some people are
+[5008.99-5010.39] standing in the back, please come up.
+[5010.39-5011.63] This is our last panel. If you
+[5011.63-5013.19] want to take a seat, rest your legs.
+[5013.19-5015.47] I know there's a lot of walking going on.
+[5015.47-5017.51] But yeah, let's get started here.
+[5017.51-5019.79] I'll ask the panelists to come up.
+[5019.79-5027.35] Can we add this is the impact of Partnerships panel.
+[5027.35-5029.95] Our last panel of the day.
+[5029.95-5037.20] I Yes, we switch out for the last panel,
+[5037.20-5038.68] the impact of partnerships.
+[5038.68-5042.48] So production team. Can we switch this final slide,
+[5042.48-5047.08] please so everybody knows where to sit. Great.
+[5049.48-5052.92] Well, that's.
+[5052.92-5056.00] Oh, there we go. There we go.
+[5056.00-5062.24] So, it helps if you sit by your panel. Thank you so much.
+[5062.24-5064.32] So yes, now we're going to talk about
+[5064.32-5067.44] the impact of partnerships here.
+[5067.44-5071.40] Thank you to our amazing panelists.
+[5071.46-5073.94] We are, as things often
+[5073.94-5076.22] happen during Unga a little bit behind,
+[5076.22-5078.50] so I'm going to get right to it.
+[5080.10-5083.14] None of this work is possible without partnerships.
+[5083.14-5085.78] You just saw from some of our corporate partners,
+[5085.78-5087.62] but there's so much that happens
+[5087.62-5090.74] regionally with the UN system
+[5090.74-5091.98] that is extremely important and
+[5091.98-5093.54] we want to talk about that here.
+[5093.54-5095.46] I'm going to start with
+[5095.46-5097.94] a question for doctor Valerie Grant,
+[5097.94-5100.14] who's a strategic advisor on
+[5100.14-5101.78] geospacial matters for the organization
+[5101.78-5103.74] of Eastern Caribbean states.
+[5103.74-5105.46] She's been a great partner to
+[5105.46-5107.82] us in the Da Alliance over the years.
+[5107.82-5110.51] Um I know you're pressed for time,
+[5110.51-5112.35] Valor. We'll begin with you.
+[5112.35-5114.59] In your role for the OECS,
+[5114.59-5117.43] how do you see regional organizations
+[5117.43-5118.91] partnering effectively,
+[5118.91-5120.39] bridging the gap between
+[5120.39-5122.75] national capacity constraints on
+[5122.75-5126.27] the ground and this new global data architecture.
+[5126.27-5128.31] Particularly when we think about island states.
+[5128.31-5130.39] Obviously, you focus on the Caribbean,
+[5130.39-5135.19] but with SIDS, we need to connect across regions as well.
+[5135.19-5137.11] Maybe talk a little bit about your work and
+[5137.11-5139.76] how we can close some of those gaps.
+[5139.76-5144.50] Thanks, Steven. So the OECS the central issue
+[5144.50-5146.82] is not simply how the member states connect
+[5146.82-5150.18] to the global platform.
+[5150.18-5153.46] It is how we ensure that we help shape it.
+[5153.46-5155.38] That's always important to us.
+[5155.38-5156.94] It is how we govern it
+[5156.94-5159.26] and derive practical value from it.
+[5159.26-5161.06] And we often say that
+[5161.06-5163.02] the size of the country shouldn't determine
+[5163.02-5164.86] whether participation is really
+[5164.86-5167.10] meaningful in this data economy.
+[5167.10-5170.45] So our institutional works
+[5170.45-5173.29] are really under constraints at the national level.
+[5173.29-5174.65] And so small teams are
+[5174.65-5176.65] responsible for things like sensors,
+[5176.65-5179.29] for things like a spatial data infrastructure,
+[5179.29-5181.61] host survey, you name it.
+[5181.61-5184.19] And If global platform
+[5184.19-5187.31] engages each country only as a source of data,
+[5187.31-5190.67] then we have not really created a partnership.
+[5190.67-5192.11] That's how we feel about it.
+[5192.11-5193.79] And so what we have created
+[5193.79-5195.99] is another reporting obligation.
+[5195.99-5200.23] And so that is something that we really try to avoid.
+[5200.23-5203.75] So regional organizations like the OSS,
+[5203.75-5207.15] we are that bridge because we provide four things.
+[5207.15-5208.94] I think we provide scale.
+[5208.94-5212.33] We also provide a trusted governance space,
+[5212.33-5215.69] and we provide interoperability and continuity.
+[5215.69-5218.49] And we can develop these shared capabilities
+[5218.49-5221.25] once for several of the different member states,
+[5221.25-5222.37] and we bring things like
+[5222.37-5225.49] the statistical offices together with the mapping,
+[5225.49-5228.45] the national mapping agencies, the land surveys,
+[5228.45-5230.77] department or planning and disaster and
+[5230.77-5233.73] environmental and marine authorities.
+[5233.73-5237.29] And so the OES has practical assets on which
+[5237.29-5238.73] we build things like
+[5238.73-5241.61] the Regional Data Governance Council,
+[5241.61-5243.14] through a data for
+[5243.14-5246.06] decision making project and the project lead.
+[5246.06-5248.06] SHRma is in the room today.
+[5248.06-5250.10] And so things like
+[5250.10-5254.10] original micro data catalog, GIS training,
+[5254.10-5256.46] and the common work that
+[5256.46-5259.26] we're doing to prepare for the 2020,
+[5259.26-5261.82] 2030 round of census.
+[5261.82-5263.66] And this really can provide
+[5263.66-5268.02] institutional interface and regional mode
+[5268.02-5270.26] for the SIDS global Data Hub.
+[5270.26-5273.87] We also recognize that the spatial data infrastructure
+[5273.87-5277.67] is at different levels of maturity across the region.
+[5277.67-5279.87] And so some countries are improving
+[5279.87-5284.03] their established geo portals or their data services.
+[5284.03-5285.27] Others are still putting
+[5285.27-5287.11] together governance and standards.
+[5287.11-5289.87] They're working on their UN IGIF,
+[5289.87-5292.23] their action plans and things like those.
+[5292.23-5293.71] And so the partnership must
+[5293.71-5295.84] meet the member states where they're at.
+[5295.84-5297.94] And provide a pathway for
+[5297.94-5299.98] common regional standards rather
+[5299.98-5302.02] than impose a single model.
+[5302.02-5304.70] And that is something that we're working with Greg,
+[5304.70-5307.74] we always discuss and figure out how can we do that?
+[5307.74-5310.30] So co authorship must be built around governance,
+[5310.30-5313.82] and the member states needs a seat at that design table,
+[5313.82-5317.10] which is why we are happy to be part of this partnership.
+[5317.10-5318.94] We have to remember that they are
+[5318.94-5320.78] still the custodians of the data.
+[5320.78-5324.62] And so the tools first needs to be there for
+[5324.62-5327.46] them to serve as national
+[5327.46-5329.10] decision making tools in
+[5329.10-5330.78] things like disaster preparedness,
+[5330.78-5332.22] climate resilience, some of
+[5332.22-5333.82] the things that we've heard about this morning.
+[5333.82-5336.26] And so the test is really simple.
+[5336.26-5338.50] Does the partnership reduce
+[5338.50-5341.06] the reporting burden for these countries,
+[5341.06-5344.22] deep regional capability and allow for
+[5344.22-5345.46] more data to serve
+[5345.46-5348.22] the systems that are owned by these countries?
+[5348.22-5350.34] If yes, then we are coorters.
+[5350.34-5353.30] If not, then we're simply just consumers,
+[5353.30-5355.54] and we don't want to be just consumers.
+[5355.54-5359.45] Thank you for that, Valerie, you mentioned two things.
+[5359.45-5362.49] That I think are extremely important interoperability
+[5362.49-5365.45] and continuity as we build out this work. So thank you.
+[5365.45-5369.21] Next, we're going to go to Mr. Daniel Cole. Yes, please.
+[5369.21-5370.85] He's the Director of
+[5370.85-5373.65] Development Partnerships and Program delivery
+[5373.65-5376.97] at the World Meteorological Organization.
+[5376.97-5379.41] Daniel, thanks for joining us this morning.
+[5379.41-5382.71] I To get started,
+[5382.71-5385.75] as we think about small island states and as they build
+[5385.75-5389.63] out projects like the SIDS global Data Hub,
+[5389.63-5392.67] what concrete cooperation mechanisms
+[5392.67-5396.03] can the WMO provide to ensure that
+[5396.03-5400.23] macro global climate models and satellite intelligence
+[5400.23-5405.27] can seamlessly integrate for the data that's needed,
+[5405.27-5407.95] whether it's island coastal management
+[5407.95-5410.92] and sustainable infrastructure delivery?
+[5410.92-5413.97] Thank you very much also for having us here.
+[5413.97-5416.45] I think the main response
+[5416.45-5420.13] to that question is really the reason that WO exists,
+[5420.13-5421.89] and that is we facilitate
+[5421.89-5423.89] and standardize and make sure there's
+[5423.89-5427.53] interoperability across the global sphere
+[5427.53-5429.49] of public weather services.
+[5429.49-5432.13] The 193 public weather services
+[5432.13-5433.45] of the world share data in
+[5433.45-5434.65] real time and do
+[5434.65-5438.33] joint global forecasting for the benefit of all humanity.
+[5438.33-5439.89] Of course, they take that and they
+[5439.89-5441.81] benefit their own countries by then
+[5441.81-5443.45] downscaling and nesting
+[5443.45-5446.02] their own local forecasts in this global system.
+[5446.02-5447.78] So our real reason for
+[5447.78-5449.86] existence is to ensure exactly that,
+[5449.86-5451.78] that all of this data that's out there,
+[5451.78-5454.26] satellite data, ground observations,
+[5454.26-5455.62] ship based observations,
+[5455.62-5458.82] aviation observations, weather balloons, weather radars,
+[5458.82-5461.06] all that is made available globally for
+[5461.06-5463.62] the global public good and that everyone has access
+[5463.62-5465.82] to it to improve the forecasting and
+[5465.82-5468.94] the longer term climate projections in their countries.
+[5468.94-5470.74] Where the struggle is and this
+[5470.74-5472.66] has come up a few times this morning is,
+[5472.66-5475.22] this is a very good functioning system,
+[5475.22-5478.18] but you need national capacity to pull that data
+[5478.18-5482.22] and to turn it into local products to help interpret it,
+[5482.22-5485.18] we want to talk about not what the weather will be,
+[5485.18-5486.70] but what the weather will do.
+[5486.70-5488.43] Meaning, we can tell you
+[5488.43-5490.15] what the pressure is going to be tomorrow.
+[5490.15-5492.39] Who cares about barometric pressure?
+[5492.39-5494.67] What does that mean for me? Is the wind
+[5494.67-5496.75] going to be strong enough to blow over a truck?
+[5496.75-5499.51] Is there going to be flooding in this specific location?
+[5499.51-5502.55] I think that's where this partnership is so critical,
+[5502.55-5503.99] is to take advantage of
+[5503.99-5505.63] this global interoperable system
+[5505.63-5507.43] that has been going for decades and
+[5507.43-5510.39] will continue to strengthen and translate that into
+[5510.39-5511.95] local products that the people
+[5511.95-5514.11] who need to make decisions can understand.
+[5514.11-5517.19] Without partnership, that's just not possible.
+[5517.19-5519.23] Again, we're a bunch of meteorologists,
+[5519.23-5521.23] climatologists, hydrologists,
+[5521.23-5523.91] We might be socially inept at talking to normal people,
+[5523.91-5525.23] help us translate
+[5525.23-5527.19] that information into usable information.
+[5527.19-5530.47] Thank you, Daniel. That was very clear and feasible.
+[5530.47-5531.75] I like that you said here,
+[5531.75-5533.47] it's not what the weather will be,
+[5533.47-5534.71] but what it will do.
+[5534.71-5536.39] I think that's going to be even
+[5536.39-5537.71] more important going into the future,
+[5537.71-5539.43] but particularly for island nations.
+[5539.43-5542.95] Thank you. Next, we'll go to miss Pamela Coke Hamilton.
+[5542.95-5545.15] She's the Executive Director of the ITC,
+[5545.15-5548.35] who's been another big partner of this process around
+[5548.35-5552.10] data across the UN system and with the data Alliance.
+[5552.10-5555.00] Pamela, the ITC recently
+[5555.00-5558.00] introduced the CIDS trade tracker to help
+[5558.00-5560.32] small island states spot trends and build
+[5560.32-5562.28] economic partnerships
+[5562.28-5565.20] and build resilience against shocks.
+[5565.20-5568.52] As the CIDs global Data Hub is built out,
+[5568.52-5573.00] how can partnerships and
+[5573.00-5576.40] projects like the SIDS trade Tracker,
+[5576.40-5578.36] ensure that economic intelligence
+[5578.36-5580.44] translates first that it gets to
+[5580.44-5582.52] the islands that need it and that it translates
+[5582.52-5585.14] rates into real positive outcomes.
+[5585.14-5587.88] Thanks so much. I really appreciate being here.
+[5587.88-5589.52] I think one of the key elements
+[5589.52-5591.24] of any partnership is to ensure
+[5591.24-5592.60] that all partners are
+[5592.60-5594.96] working together towards the same objective.
+[5594.96-5596.60] I think the objective is,
+[5596.60-5600.32] how do we create resilient economies,
+[5600.32-5603.04] resilient countries, and the ability
+[5603.04-5605.96] to maintain our livelihood.
+[5605.96-5609.36] I'm from Jamaica, in a way
+[5609.36-5614.20] that uses this data to be meaningful for countries.
+[5615.00-5619.32] ITC has developed not just a SIDS trade tracker,
+[5619.32-5621.40] but also are in the process of
+[5621.40-5624.40] launching a SIDS export potential map.
+[5624.40-5628.07] Those two together tell us where trade is,
+[5628.07-5630.51] what is a trend for these countries?
+[5630.51-5632.51] The second is, what are
+[5632.51-5635.03] the export potential possibilities?
+[5635.03-5638.99] One of the ideas that I really wanted to posit today is,
+[5638.99-5641.51] how do we bring all of our data
+[5641.51-5645.79] together to make it functional for the countries?
+[5645.79-5647.47] Because other than that,
+[5647.47-5648.99] we're just collecting data,
+[5648.99-5652.03] which is great for people who like to collect data.
+[5652.03-5655.39] There are a lot of us. But the point is,
+[5655.39-5657.23] it has to be usable.
+[5657.23-5661.31] It has to enable their transformation.
+[5661.31-5664.75] Take, for example, our work in the Sargassum value chain.
+[5664.75-5666.83] One of the things that we'd like to do is,
+[5666.83-5669.43] how do we use geospatial data to
+[5669.43-5673.51] identify where are those main sources of sargassum?
+[5673.51-5677.39] How can it be utilized in a way that then takes
+[5677.39-5682.03] our SIDS trade data and our SIDS export potential map and
+[5682.03-5685.95] turn that into the kind of value chain that then
+[5685.95-5687.95] enables countries to take
+[5687.95-5691.39] advantage of what is a growing potential resource?
+[5691.39-5693.43] So that is, for me, the key element.
+[5693.43-5696.75] How do we bring all of this together as part of
+[5696.75-5701.31] an SDG data hub process? Thanks.
+[5701.31-5703.73] Thank you for that. No, extremely
+[5703.73-5706.80] important sentiment there, and I'll just repeat it.
+[5706.80-5708.28] How do we bring all the data together,
+[5708.28-5710.40] for one, but to make it usable?
+[5710.40-5713.40] We talked about interoperability, but also usability.
+[5713.40-5714.52] You're right. There's tons
+[5714.52-5715.92] of statistics and data that are out there.
+[5715.92-5717.96] I think that's been a main message this morning.
+[5717.96-5719.56] How do we now get it
+[5719.56-5721.44] to those that need it and make it usable?
+[5721.44-5725.16] Thank you for that. Next to miss Lisa Kingsbury.
+[5725.16-5727.92] She's the Director of Strategic Communication for
+[5727.92-5731.60] the Pacific community, SPC, Lisa,
+[5731.60-5734.36] the Pacific community already operates
+[5734.36-5737.16] a comprehensive Pacific data hub
+[5737.16-5740.24] that's servicing its member territories.
+[5740.24-5743.08] As we roll out the SIDS global Data Hub
+[5743.08-5744.92] under the ABAS mandate,
+[5744.92-5748.12] what type of partnership frameworks are needed
+[5748.12-5750.68] to ensure that these two data systems,
+[5750.68-5751.72] and I think in general,
+[5751.72-5753.24] other data systems that have been
+[5753.24-5754.60] created in the different regions of the
+[5754.60-5757.84] Caribbean and also AIS,
+[5757.84-5760.20] what is needed to make sure that they interoperate
+[5760.20-5761.52] smoothly rather than
+[5761.52-5763.68] creating duplicate reporting burdens?
+[5763.68-5765.08] How do we make this easy and
+[5765.08-5767.02] again, usable for the countries?
+[5767.02-5770.36] Thank you. SBC, for
+[5770.36-5772.24] those of you that don't know who we are,
+[5772.24-5773.84] we're an extension of government.
+[5773.84-5775.08] It's very different to
+[5775.08-5776.80] other regional organizations around
+[5776.80-5779.64] the world that are regional.
+[5779.64-5784.16] In the Pacific, some statistics offices
+[5784.16-5786.84] could have three people working in them.
+[5786.84-5791.02] Recognizing that They need extra technical support.
+[5791.02-5793.02] They created the organization that
+[5793.02-5794.54] I'm privileged to work for.
+[5794.54-5796.18] And this is less of
+[5796.18-5798.14] a separate organization and
+[5798.14-5800.30] more of an extension of government.
+[5800.30-5802.86] The work that we do, we see ourselves
+[5802.86-5806.18] as we develop regional public goods.
+[5806.18-5808.10] You heard earlier from
+[5808.10-5811.98] Minister Victor and from the ambassador of Tvalu.
+[5811.98-5814.06] We don't just create the systems,
+[5814.06-5815.66] we actually do the science and the data,
+[5815.66-5817.02] but science sitting on
+[5817.02-5819.83] a shelf that nobody understands or can't
+[5819.83-5821.43] access to be able to use
+[5821.43-5824.55] is a useless investment of resources.
+[5824.55-5827.11] So we've been working very closely with countries to
+[5827.11-5828.31] try and unlock access
+[5828.31-5830.35] to information in ways that make sense.
+[5830.35-5832.87] Most recently, a lot of the work that
+[5832.87-5835.91] we're doing is helping understand sea level rise.
+[5835.91-5839.63] Freely available information that is globally available
+[5839.63-5841.87] is not as usable for the Pacific
+[5841.87-5844.19] as it is for most other parts of the world.
+[5844.19-5845.55] I think this is an issue that
+[5845.55-5848.17] most small island developing states face.
+[5848.17-5852.70] We have geospatial data that suggests
+[5852.70-5857.34] that places like Tvalu have an elevation of 9.5 meters.
+[5857.34-5861.70] Their average elevation above sea level is 1.5 meters.
+[5861.70-5863.34] If we're using freely
+[5863.34-5865.22] available data without actually ground
+[5865.22-5866.86] truthing this data with people that
+[5866.86-5869.06] understand the region are from the region,
+[5869.06-5872.50] are actually working with an extension of government,
+[5872.50-5874.58] it's not data that is worth
+[5874.58-5877.19] the time because the decision making is flawed.
+[5877.19-5880.47] And so when we've been doing large scale adaptation work,
+[5880.47-5882.91] this type of high resolution data sets
+[5882.91-5885.03] that are accessible are critical to
+[5885.03-5887.35] making the decision between millions of dollars of
+[5887.35-5890.03] investment or getting it wrong.
+[5890.03-5891.75] And this is not something we have
+[5891.75-5893.55] the time in the region to
+[5893.55-5894.95] play with in terms of
+[5894.95-5897.70] the threat of climate change and sea level rise.
+[5897.70-5901.05] We've also developed global assets
+[5901.05-5902.77] called Digital Earth Pacific,
+[5902.77-5905.17] which is every single island in the Pacific,
+[5905.17-5908.81] NG special available to everyone in the region.
+[5908.81-5911.17] But the partnerships, I think,
+[5911.17-5913.37] for us in terms of the value of
+[5913.37-5916.33] this type of partnership is to meaningfully work
+[5916.33-5920.13] with organizations like SBC to actually be
+[5920.13-5924.30] the conduit with and two countries because of
+[5924.30-5926.54] the sustainability issues that we have across
+[5926.54-5929.26] the region and the resourcing burden that this places
+[5929.26-5932.66] on countries where you might have three people doing
+[5932.66-5937.22] the job of 25 in other places or 100 in other places,
+[5937.22-5940.58] it's a burden that we're placing on countries and
+[5940.58-5942.02] finding a way to create
+[5942.02-5945.02] that barrier and making it accessible is critical.
+[5945.02-5948.62] The final piece is that translation of information.
+[5948.62-5950.50] This is what I'm most
+[5950.50-5953.74] passionate about because without it,
+[5953.74-5955.98] information cannot be used.
+[5955.98-5958.62] If it's only those from the sector that has
+[5958.62-5961.76] been the person that can understand it,
+[5961.76-5963.20] then we failed at
+[5963.20-5964.60] the very first step of what
+[5964.60-5966.72] that data needs to be used for.
+[5966.72-5969.36] Really recognizing from the outset
+[5969.36-5972.84] where that translation of information needs to sit and
+[5972.84-5975.28] bringing people with the technical skills
+[5975.28-5977.60] that understand community with the trust that
+[5977.60-5980.12] exists in regional organizations like
+[5980.12-5983.28] SPC is critical from the outset.
+[5983.28-5985.64] Thank you for that. And I like how you said
+[5985.64-5989.16] that we need to use the structures that exist.
+[5989.16-5991.44] And again, there are,
+[5991.44-5994.48] I think 39 SIDS countries and territories.
+[5994.48-5997.04] It's going to be impossible to work individually.
+[5997.04-5998.32] So that's definitely something
+[5998.32-6000.52] that the data alliance is working to do too,
+[6000.52-6002.60] not to duplicate,
+[6002.60-6005.48] but to leverage and strengthen the structures that exist.
+[6005.48-6006.64] You also said something that I had
+[6006.64-6007.80] not heard before, but I really like.
+[6007.80-6009.16] I'm going to use this, the
+[6009.16-6011.24] importance of ground truthing the data.
+[6011.24-6012.93] We talked about data exists.
+[6012.93-6014.29] There's tons of data out there.
+[6014.29-6015.89] How do we make sure it's the right data,
+[6015.89-6017.17] but also how do we make sure it's
+[6017.17-6018.49] verified where we can and
+[6018.49-6020.21] then ultimately usable for
+[6020.21-6021.77] decision making by governments.
+[6021.77-6024.13] So I think we've
+[6024.13-6026.37] got a good display here on the impact of partnerships.
+[6026.37-6028.65] Thank you for your partnership and being so sharp
+[6028.65-6031.33] and concise on this panel today.
+[6031.33-6033.45] I appreciate it and thank you very much.
+[6033.45-6035.05] And I'm going to invite
+[6035.05-6036.85] doctor Greg Scott back up to
+[6036.85-6040.01] give some closing remarks. Thank you, everyone.
+[6044.29-6046.73] Thank you. Thank you, everyone.
+[6046.73-6049.97] Thank you to our distinguished panelists.
+[6049.97-6052.93] As you can see, we could have kept
+[6052.93-6054.37] conversations going here for
+[6054.37-6056.77] half the day without any problem whatsoever,
+[6056.77-6059.17] and then had a more interactive session,
+[6059.17-6061.53] but time is against us.
+[6061.53-6063.81] I was going to do a bit of a summary,
+[6063.81-6066.01] but I'm not going to do that because of that fact.
+[6066.01-6067.29] But I did just want to
+[6067.29-6069.17] thank all of you for being here today.
+[6069.17-6071.37] Thank you for your presence,
+[6071.37-6072.93] for your support, for
+[6072.93-6076.25] your contributions to all of our speakers and panelists.
+[6076.25-6080.09] I know it's a very, very busy week here during Ungar.
+[6080.09-6082.97] For your commitment and taking time out to be with us.
+[6082.97-6084.81] We really appreciate it.
+[6084.81-6089.01] And just to finish off as what has been said today,
+[6089.01-6093.65] the efforts here are about ensuring that seeds
+[6093.65-6096.61] become engines of prosperity
+[6096.61-6099.73] and economic development rather than vulnerability.
+[6099.73-6101.73] Data is a key element
+[6101.73-6104.09] underpinning all of that. Thank you so much.
+[6104.09-6106.41] Have a great day, have a great week,
+[6106.41-6109.49] and we're always here to continue the conversations.
+[6109.49-6112.85] So thank you all and thank you for your time.
+[6118.53-6120.61] Thank

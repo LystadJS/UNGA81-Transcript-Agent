@@ -25,6 +25,9 @@ The [HLW Cuba review](reports/hlw-cuba/README.md) collects the 21–28 September
 2026 public transcript inventory and runs the existing upload workflow with
 Cuba, embargo and adjacent-topic refinements. It includes coverage gaps and
 source-linked candidate evidence; it does not release a stance model.
+The [HLW recovery supplement](reports/hlw-cuba/RECOVERY.md) prioritizes the 41
+empty broader-HLW transcript pages, preserving published statements, captions,
+and clearly labeled video transcription drafts with separate provenance.
 
 The [single-reviewer AI pilot](docs/REVIEW_PILOT.md) includes a local review form,
 the selected Google BERT checkpoint, a reviewed-label loader and a post-run

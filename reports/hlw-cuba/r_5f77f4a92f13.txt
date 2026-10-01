@@ -1,0 +1,363 @@
+UNREVIEWED PUBLISHER CAPTIONS. Publisher-provided auto-generated captions.
+https://webtv.un.org/en/asset/k1o/k1o09bx0zc
+
+[0.00-0.30] [Auto-generated transcript: may contain errors]
+[2.07-6.99] Good afternoon, and welcome everyone to the SDG Media Zone.
+[7.31-10.53] We are broadcasting live from the 81st session
+[10.61-13.29] of the United Nations General Assembly.
+[13.73-15.51] My name is Jaya Shree Wyatt,
+[15.59-18.51] I'm the Chief of Human Rights here at the United Nations
+[18.75-20.79] Department of Global Communications.
+[21.23-23.55] And just before we kick off the next session,
+[23.63-28.89] we are thrilled to show a special transmission from Terrestrials
+[29.38-30.27] United.
+[30.40-34.05] This is an independent creative initiative supporting human
+[34.30-37.59] rights and the global movement against hate,
+[37.72-40.05] both online and offline.
+[40.60-42.03] For this campaign,
+[42.40-46.95] Gonzales' creator Jamie Hewlett has created exclusive original
+[47.38-52.17] artwork transforming wearable art into a powerful global
+[52.48-53.31] movement.
+[53.45-58.23] His message is: Terrestrials United, one planet, one human team;
+[58.67-63.51] whatever divides us on Earth, we all look up at the same stars.
+[63.77-65.37] Let's have a look at the video now.
+[158.04-158.84] Fantastic.
+[159.05-164.31] So it is now my pleasure to introduce today's next session
+[164.45-167.67] on Human Rights and Artificial Intelligence:
+[167.75-170.79] The Urgency of Cooperation over Competition.
+[170.87-173.43] And I'd like to invite to the stage our moderator
+[173.62-174.93] and our panelists today.
+[175.55-179.43] We are so honored to have the United Nations High Commissioner
+[179.75-180.57] Volker Türk,
+[180.83-184.23] whose leadership has helped bring a human rights perspective
+[184.31-188.25] to AI, one of the defining challenges of our time.
+[188.33-191.07] And we're also delighted to welcome Kate Taylor,
+[191.28-194.25] Senior Writer at WIRED, to moderate the conversation.
+[194.38-195.18] Over to you, Kate.
+[195.53-196.53] Thank you so much.
+[196.61-198.63] I'm so excited to be here with you all today.
+[199.56-201.81] I'm very excited to speak with you, High Commissioner,
+[202.13-205.47] on this topic of the urgency of collaboration over competition
+[205.73-208.89] in AI right now, which I think is such a timely thing.
+[209.70-213.57] I know you very recently wrote an open letter on this topic,
+[213.70-218.43] and I wanted to start off with asking why now you feel we're
+[218.51-221.13] at this cusp of irreversible change.
+[221.27-224.55] Why is now the time that we need to kind of take action
+[224.99-228.03] on the issues of the potential harms of AI?
+[228.84-230.43] Well, first of all, great to be here.
+[231.04-234.63] And it's interesting because I was just walking over in the New
+[234.76-236.43] York, in some of the New York streets,
+[236.51-238.23] and there are people coming up to me, "Great,
+[238.66-239.85] great letter that you wrote."
+[239.93-242.97] So I didn't realize that it actually had so much influence.
+[243.54-244.08] I mean,
+[244.16-248.31] it's clear what we have seen over the last couple of weeks
+[248.62-252.69] and months is an awakening within the industry,
+[252.82-255.03] within the corporate, within the corporations,
+[255.34-257.61] both by those who are working on these things,
+[257.69-260.91] but also by some of the CEOs, that they're actually asking,
+[261.77-262.57] in a way, for help.
+[263.27-263.77] Yeah.
+[263.85-264.35] To be honest,
+[264.43-267.69] we have been following AI development for the last 9 years,
+[267.77-268.35] and for us,
+[268.43-272.31] it has always been absolutely clear that you need and it's nice
+[272.39-275.25] that we had the Terrestrial video earlier.
+[275.39-279.63] We have only one planet, and we and it's entrusted to us.
+[279.71-282.09] It's also entrusted to future generations.
+[282.17-285.57] And it is absolutely clear when you have very powerful tools
+[285.88-287.79] for good or the bad,
+[288.59-291.15] we need to make sure that they act for the good and not just
+[293.21-296.67] in have risks involved that are potentially extremely,
+[296.81-298.47] extremely damaging for humanity.
+[298.92-299.42] Yes.
+[299.50-301.71] And thinking back to kind of around 9 years ago when you began
+[301.91-302.57] thinking of this,
+[302.65-307.53] when did you begin seeing AI as a human rights issue?
+[307.61-309.33] And what were kind of the first things you realized
+[309.76-312.45] that this applied so concretely when you thought about human
+[312.64-313.27] rights?
+[313.35-316.83] I mean, it starts with I often meet students,
+[316.91-321.03] and I know that there are students here today with us.
+[321.88-325.35] And I meet students who go into studies,
+[325.55-327.99] and at the end of their studies, they wonder,"
+[328.19-331.35] Will I be replaced through an AI agent?
+[331.48-334.65] Will I be actually will what I've I have learned now,
+[334.73-336.27] will this become redundant?"
+[336.35-341.01] So the whole thing of future of work is about right to work.
+[341.09-342.33] It's a fundamental human right.
+[342.41-343.29] We have a right to work.
+[343.37-346.17] We have a right to meaning in life.
+[346.37-347.97] And what does it mean?
+[348.05-349.11] What does AI mean?
+[349.19-351.27] And what are these tools?
+[351.35-353.07] Are we part of their design?
+[353.15-357.99] Are we is there a societal discussion about what this is for us?
+[358.13-361.65] Or is it just decided by a few men, I have to say,
+[361.84-363.63] mostly men that I know,
+[364.19-368.49] who decide for us what is it that they're going to benefit from?
+[368.69-369.19] So no,
+[369.27-372.03] I think that it needs a broader societal discussion about not
+[372.16-376.41] only the value, but also the human rights dimension,
+[376.54-378.93] which is fundamentally about us as humans.
+[379.20-379.70] Yes.
+[379.78-381.09] And I think as a business journalist,
+[381.29-383.85] so much of the discussion is about the competition,
+[383.93-386.67] which of these men are going to make the most money.
+[386.99-390.87] How can we think about collaboration in terms of concrete plans
+[390.95-392.85] for states and for governance?
+[392.99-395.43] What are concrete ways we can encourage collaboration?
+[395.81-401.73] So collaboration is the only thing that saves humanity
+[401.81-404.01] from potential harm.
+[404.09-404.91] And we have you know,
+[404.99-407.43] and it's not the first time that we're confronted with this.
+[408.78-410.07] Sense of responsibility.
+[410.51-414.51] In the past, the human being was not able to extinguish Earth.
+[415.61-419.43] Now, through the nuclear, through the nuclear bomb,
+[419.51-422.67] and through climate change, we're the first generation,
+[423.23-424.83] or probably the second generation,
+[425.14-429.93] that is able to do harm that will not only affect us directly,
+[430.43-432.45] but potentially future generations.
+[432.71-434.67] So our sense of responsibility,
+[434.88-438.03] our sense of what does it mean when we act today,
+[438.83-441.99] what does it mean in terms of long-term strategic thinking,
+[442.31-446.13] what are the decisions that we take today mean for children,
+[446.21-447.99] young people, future generations,
+[448.42-453.15] that sense of responsibility is not in our governance systems.
+[453.23-455.49] We don't have it because it's all short-term.
+[455.62-457.05] Electoral cycles are short-term.
+[457.73-461.43] So it really goes to the fundamentals of governance
+[462.17-467.61] and regulation and societal and the whole of society dialogue.
+[467.69-470.79] So it's not just a few businessmen that decide for us,
+[470.87-472.47] and we give them all the data.
+[472.55-474.99] We give them everything that is dear to us.
+[475.07-476.91] They know everything about us as well.
+[477.24-480.39] No, it's about us taking power back.
+[480.65-481.19] Yeah.
+[481.27-484.35] And looking at past examples of regulation,
+[484.49-488.31] whether that be about nuclear kind of issues or anything else,
+[488.51-490.95] what are blueprints that you're turning to now when you think
+[491.03-491.53] about this?
+[491.61-492.11] I mean, for instance,
+[492.19-494.55] you could look at the pharmaceutical industry.
+[495.16-499.23] When you have medicine go out into the market,
+[499.31-502.23] you have not only rigorous testing.
+[503.02-505.59] And by the way, there's also the gender dimension because,
+[505.73-507.21] as you know, in the past,
+[507.29-511.23] some of the medicine was developed purely with the male in mind.
+[511.31-515.43] It wasn't even they didn't look at women or girls or different
+[515.87-517.71] age groups or people with disabilities.
+[517.85-518.39] So of course,
+[518.48-522.15] today we know that you have to test in a very different way than
+[522.23-524.19] in the past when it comes to medication.
+[524.62-525.75] The same with airplanes.
+[525.83-529.23] You don't have just an airplane fly off and without ever being
+[529.36-530.16] tested.
+[530.40-533.49] Anything that is dangerous or potentially dangerous, of course,
+[533.57-534.45] needs to be tested.
+[534.64-536.85] There need to be rigorous verification process,
+[537.00-537.77] oversight process.
+[537.85-538.89] There needs to be monitoring.
+[539.58-541.05] None of this we have on AI.
+[542.09-547.59] So I mean, look, we saw what happened on the on climate change.
+[547.73-553.47] We saw what the fossil fuel industry for decades did to humanity
+[553.97-558.81] by financing science that was, frankly, totally wrong,
+[559.31-562.89] by influencing politics so that we would lose time to address
+[563.38-565.77] one of the biggest challenges of our time, climate change.
+[565.97-569.37] So I think we cannot allow this to happen on any other things,
+[569.45-570.99] especially on the technological front,
+[571.07-573.93] because we know it happened in the past.
+[574.01-574.62] It failed.
+[574.70-575.97] It was dangerous for us.
+[576.05-579.93] So we again, it's about us taking agency back,
+[580.01-581.01] empowering ourselves,
+[581.14-584.67] and not allowing anyone else to take that power from us.
+[585.04-587.67] And then who has been open to this collaboration since the open
+[587.87-588.60] letter?
+[588.68-592.17] So I had a few reactions, both from a lot from member states,
+[592.26-593.07] I have to say.
+[593.87-596.19] We have I've met a lot of foreign ministers,
+[596.39-599.67] heads of government, all of them referred to this letter.
+[600.34-601.95] Within the UN, the same.
+[602.03-605.91] But also a lot of people, as I mentioned, even in the street,
+[606.83-609.03] and people from the corporate sector as well,
+[609.11-611.73] including one CEO to whom I wrote,
+[611.87-614.55] who immediately wrote me back and said, "This was great."
+[614.63-615.69] Wow.
+[615.78-616.50] I'm so interested.
+[616.58-617.08] So there is.
+[617.16-617.66] Yeah.
+[617.74-618.24] What's the corporate sector?
+[618.32-620.31] I was so curious about what CEOs have been saying.
+[620.51-622.17] What has the response been like?
+[622.32-626.43] I think those who think responsibly and who have been with us
+[627.53-629.67] in integrating human rights, you know,
+[629.75-631.71] the guiding principles on business and human rights,
+[632.14-635.43] they are the ones who obviously see this as a huge potential
+[636.59-639.45] or as a very important part of their framework.
+[640.00-642.57] And they have been working with us on human rights impact
+[642.76-644.43] assessment, on human rights due diligence.
+[644.51-647.19] But to be honest, this is a small proportion of them.
+[647.80-651.57] And that's so we need to push the tech sector to, yeah,
+[651.65-654.81] to ensure that human rights are integrated in everything they
+[654.95-659.31] do, and not only when the product is already out there.
+[659.39-662.79] It has to start with the design, with the development,
+[662.87-666.57] with the deployment, and the use and the marketing of it.
+[666.88-668.85] But we cannot leave it just to them.
+[669.18-669.68] Right.
+[669.76-670.47] That's important as well.
+[670.67-671.17] Yeah.
+[671.25-673.41] If you could prioritize one thing that the leaders
+[673.49-676.05] of these companies would take on or commit to doing,
+[676.25-677.31] what would you ask them to do?
+[677.44-678.12] Transparency.
+[678.20-678.97] Okay.
+[681.22-685.17] Human rights due diligence, and not just lip service to that.
+[685.37-689.43] Really, it has to be integrated into their risk assessments.
+[689.70-693.33] Oversight and independent oversight and verification.
+[694.25-697.47] And then thinking about states and even individuals who are kind
+[697.55-700.83] of emerging as leaders in this coalition for responsibility,
+[700.91-703.89] for change around AI, who are you seeing kind of emerge here?
+[704.04-706.17] I mean, I see a number of I mean,
+[706.36-710.31] there is the Finnish-Norwegian initiative that there are lots
+[710.39-713.13] of governments that are or many member states are now signing
+[713.21-714.21] on to it.
+[714.35-717.57] Of course, we need the big ones to come to the table.
+[717.65-720.21] But if they are not willing at this stage to do that,
+[720.34-724.77] there needs to be a lot of pressure from member states who are
+[724.85-725.64] even smaller.
+[725.87-729.09] The European Union countries can play a very important role.
+[729.23-732.33] So we really need to galvanize energy.
+[732.41-735.57] And I think that's why it becomes also a societal issue,
+[735.94-737.13] especially for young people.
+[737.21-741.03] I remember when young people in 2019 went out there ahead
+[741.11-745.89] of Climate Week and had massive demonstrations and, you know,
+[745.98-748.23] wanted to make sure that it influences politics.
+[748.32-750.39] I think there's a similar moment when it comes
+[750.53-754.17] to this technology and which you have a lot of power.
+[754.97-756.51] You can actually influence things,
+[756.59-759.69] even if they tell you you can't or that you're powerless.
+[759.77-760.56] You are not.
+[760.85-763.17] And that's important because that will trigger action.
+[763.80-764.30] Yes.
+[764.38-766.41] And kind of having had the open letter out in the world
+[766.78-768.87] and being able to meet with so many people, I'm sure,
+[768.95-772.71] this week who want to discuss AI, are you feeling optimistic?
+[772.79-775.59] What are you feeling kind of now that you've seen the response?
+[775.80-778.35] I think there is a moment and a momentum,
+[778.49-781.53] and we need to absolutely keep at it.
+[781.91-785.43] We need to maintain that momentum and, in fact,
+[786.23-790.17] snowball it in a way because I think that will have I believe it
+[790.25-791.19] will have an influence.
+[791.27-792.09] It will have an impact.
+[792.23-793.83] So it's we need to keep going.
+[794.52-795.02] Yes.
+[795.10-796.65] And I'll turn this over to questions from the students after I
+[796.73-798.93] ask one last question, which is, what comes next?
+[799.01-801.09] What would you like to tell the students here that they should
+[801.17-802.53] be kind of advocating for?
+[802.61-804.57] They should be pushing their governments to pass?
+[805.32-808.53] I mean, I think, first of all, you have agency, you have power.
+[809.02-811.77] That's where it starts because I think there's also a lot
+[811.91-818.07] of misinformation about don't, you know, about fear,
+[818.38-821.43] about anger, about, you know,
+[821.68-824.85] that we don't we won't take we will take things away from you.
+[824.99-826.29] But that's absolutely not true.
+[826.37-826.91] We should never,
+[826.99-829.77] ever believe that we don't have agency and we don't have power.
+[829.90-831.93] And of course, there are those who want to take it away,
+[832.01-833.19] but you have it.
+[833.32-836.37] Just use it, mobilize, activate, and yeah,
+[836.57-840.03] and take it as a serious issue and see also the connection
+[840.11-841.29] with all the other issues,
+[841.54-844.83] all our big challenges that we have today, be it climate change,
+[845.81-847.47] be it the environmental impact,
+[847.61-851.07] be it the fact that our societies are fraying,
+[851.15-852.87] that the social contract doesn't work,
+[852.95-856.95] that there's so much polarization, and we can all overcome it.
+[857.03-860.85] And I launched the Global Alliance for Human Rights precisely
+[861.05-864.63] so that we are no longer in the defensive, but in the offensive,
+[865.18-868.89] that we, you know, take our power back.
+[869.04-869.54] Yes.
+[869.62-871.95] And I'll turn this over to one of our students who had some
+[872.14-873.15] incredible questions.
+[874.66-875.46] Hello.
+[876.34-877.14] Hello, everyone.
+[877.62-878.85] I'm Kretima Diwakar,
+[878.93-881.55] and I'm an MBA student at CPARE Columbia University,
+[881.63-883.23] and I'm focusing on AI governance.
+[883.31-884.91] I'm a lawyer by background.
+[885.47-888.57] My question is that most international AI governance
+[889.12-892.41] conversations start from a Western legal and technical baseline.
+[893.62-896.55] How do we ensure that frameworks don't just replicate
+[896.63-900.75] the existing power imbalances by requiring Global South
+[900.94-904.89] countries to adopt tools and approaches that are designed
+[904.97-908.67] in the high-income countries rather than building institutions
+[908.75-912.09] that fit their own contexts and priorities?
+[913.61-917.91] So it was really important that we had an AI summit take place
+[918.05-919.05] in India this year.
+[919.13-921.69] It's the first time that it took place in the Global Majority
+[921.82-922.32] countries.
+[922.40-924.21] And there were a lot of I was there.
+[924.29-925.95] I was invited by the government as well,
+[926.03-931.11] and I had a chance to meet with a lot of startups from not only
+[931.54-934.41] India, but from many Global Majority countries.
+[934.54-935.79] And that was very enriching.
+[936.16-938.13] And I fully agree.
+[938.21-941.61] It is about power, exercise of power.
+[942.40-946.23] And what we see through technology is the perpetuation
+[946.43-949.77] of existing power imbalances and inequities that exist
+[950.03-950.83] in the system.
+[951.29-957.03] So human rights was meant to take those away and to fight them.
+[957.23-959.85] And that's why the human rights dimension in the whole
+[960.10-963.69] governance discussion is so important because it brings in,
+[963.77-966.09] you know, it is about everyone everywhere.
+[966.35-969.99] It is this fundamental radical idea that Article One
+[970.07-972.03] of the Universal Declaration put forward.
+[972.83-975.81] We're all human beings are born free and equal in dignity
+[975.89-976.50] and rights.
+[976.58-979.53] It doesn't depend on where you're born,
+[979.61-981.45] under what circumstances you're born.
+[981.64-982.83] That's the radical idea.
+[982.91-985.89] And we need to bring this up because there are too many who want
+[986.03-990.09] to establish, again, these totally outfashioned,
+[990.23-991.89] old-fashioned ideas of supremacy.
+[991.97-992.91] We are better than others.
+[992.99-994.11] We are superior to them.
+[994.73-997.11] We our lives need to be protected.
+[997.50-999.51] Others don't have to be protected.
+[999.71-1002.87] So it's really important to bring in this dimension that is
+[1003.13-1007.49] an ancient wisdom that comes from essentially the human rights
+[1007.57-1008.37] movement.
+[1010.57-1011.37] Thank you.
+[1011.53-1012.47] Thank you so much.
+[1015.98-1016.48] Hi.
+[1016.56-1017.57] My name is Lara Karja.
+[1018.26-1020.99] I'm with the SUNY Global Engagement Program,
+[1021.07-1024.29] and this semester I'm doing research on AI governance
+[1024.48-1027.65] and particularly focusing on the legal industry.
+[1028.09-1031.19] So you sort of touched on this, but my question was,
+[1031.33-1034.73] if you had to identify three non-negotiable safeguards for any
+[1034.94-1036.53] AI governance framework,
+[1036.61-1038.75] especially in professions that impact people's rights
+[1038.88-1040.13] and freedoms, what would they be?
+[1040.88-1043.61] I mean, absolutely human rights due diligence,
+[1043.69-1045.29] human rights impact assessments.
+[1045.42-1047.93] And as I said already,
+[1048.01-1052.91] when you even conceive it at the very at the design stage,
+[1053.10-1053.84] development, I mean,
+[1053.92-1057.05] throughout the whole life cycle of the development, that's one.
+[1057.13-1058.43] The other one is transparency.
+[1059.12-1062.15] I mean, we need to know and we cannot have it hidden away,
+[1062.23-1063.53] which is what is happening today.
+[1064.44-1068.63] And oversight, independent oversight and monitoring mechanisms.
+[1069.06-1070.55] That's that comes to mind.
+[1071.53-1072.33] Thank you so much.
+[1074.72-1075.77] Well, thank you so much.
+[1075.85-1077.87] I think that that is all we have time for today,
+[1078.01-1080.03] but it was fantastic speaking with you.
+[1080.11-1081.47] Thank you all for coming here today,
+[1081.79-1083.81] and thank you for taking the time, High Commissioner.
+[1083.95-1084.45] Thank you.
+[1084.53-1085.29] Thanks.
+[1085.68-1086.48] Good luck.

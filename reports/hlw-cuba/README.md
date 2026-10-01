@@ -95,8 +95,9 @@ reviewed, no real-data model was trained and no email was sent.
    dialogue/reform positions; avoid collapsing them into a binary alignment label.
 2. Verify consequential wording, figures and allegations against audio or the
    submitted written speech before quoting them externally.
-3. Obtain the 56 missing transcripts or repeat collection into a fresh directory.
-   Keep background proceedings separate from HLW findings.
+3. Review the [41-event recovery supplement](RECOVERY.md) and reconcile overlapping
+   clips before adding unique passages. The 15 missing background proceedings
+   remain outside this recovery scope.
 
 ## Visual presentation
 
