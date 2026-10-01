@@ -1,0 +1,13 @@
+{
+  "id": "reviewed-comparison-v1",
+  "seed": 1102026,
+  "input": "Reviewed quotation only; no country, date, context or rationale features",
+  "development_validation": "Train September 23 pilot; validate September 24-26 packet; no hyperparameter selection",
+  "final_fit": "Refit fixed settings on all 48 development labels before loading held-out test labels",
+  "logistic": {"C": 1.0, "ngram_range": [1, 2], "min_df": 1, "max_features": 5000, "sublinear_tf": true, "max_iter": 2000},
+  "bert": {"epochs": 10, "learning_rate": 0.00005, "batch_size": 8, "weight_decay": 0.01, "max_tokens": 512},
+  "threshold": 0.5,
+  "tuning": "None; no early stopping or test-based changes",
+  "purpose": "User-authorized local reviewed-data experiment, audit only",
+  "publication_eligible": false
+}

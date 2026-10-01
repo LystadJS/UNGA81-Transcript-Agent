@@ -1,0 +1,67 @@
+{
+  "protocol_sha256": "8edd19e19ae27a5d10e22d745897a60185645731b1a6d268be3cf43615dc820c",
+  "development_hashes": [
+    "0ba09bc1113fb50befd7c34977aafa4418582811fa4abbd2603c75017ed528d9",
+    "8aa35ab9d9a5ae577892a0e4c9f90e7a3cc13133b56cd6c496a6db8687825a9f"
+  ],
+  "artifacts": {
+    "logistic.json": "3d7cb2f05b2aacaac892f077977258e15d4e936f97dc8ae6c2fb3f1b1abc6c6a",
+    "protocol.json": "e87462a40d6a2a595e0731109ec4852792e50762d6fc4d9392bc40fe5b1530a5",
+    "bert/config.json": "5b61d68fe4dc5db51a910f77079ce841801e553adfe01544acd84bd799be6131",
+    "bert/model.safetensors": "17d52a609b82f2d3c16a51a90deb3b168e303b053f6b8b3c13be52da907ec254",
+    "bert/special_tokens_map.json": "5aa43c2f985a25296d5a5ce621c2f77376ca8091a47993c492fd5460b895b140",
+    "bert/tokenizer.json": "f17212c38517cfedc9306b57eeffbaf58c4976fcb42e5a87b405f36a7b9a9eb2",
+    "bert/tokenizer_config.json": "584049ddfff5d6aa7c6c839da38fdd25ae3af017385120c99db5140d77315d2f",
+    "bert/vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+  },
+  "validation": {
+    "logistic": {
+      "n": 24,
+      "true_positive": 7,
+      "false_positive": 2,
+      "false_negative": 8,
+      "true_negative": 7,
+      "precision": 0.7777777777777778,
+      "recall": 0.4666666666666667,
+      "specificity": 0.7777777777777778,
+      "f1": 0.5833333333333334,
+      "accuracy": 0.5833333333333334
+    },
+    "bert": {
+      "n": 24,
+      "true_positive": 13,
+      "false_positive": 6,
+      "false_negative": 2,
+      "true_negative": 3,
+      "precision": 0.6842105263157895,
+      "recall": 0.8666666666666667,
+      "specificity": 0.3333333333333333,
+      "f1": 0.7647058823529411,
+      "accuracy": 0.6666666666666666
+    }
+  },
+  "validation_losses": [
+    0.6737853288650513,
+    0.6745410760243734,
+    0.6719962358474731,
+    0.6580856839815775,
+    0.654296875,
+    0.6459641853968302,
+    0.6353039940198263,
+    0.634919007619222,
+    0.6162998874982198,
+    0.6322612365086874
+  ],
+  "final_losses": [
+    0.6716050008932749,
+    0.6572611133257548,
+    0.667842855056127,
+    0.6450680593649546,
+    0.6344873408476511,
+    0.6323268314202627,
+    0.6109740535418192,
+    0.5889710287253062,
+    0.5844880044460297,
+    0.563964714606603
+  ]
+}

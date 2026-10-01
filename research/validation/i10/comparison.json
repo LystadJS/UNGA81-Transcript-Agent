@@ -1,0 +1,136 @@
+{
+  "protocol": {
+    "id": "reviewed-comparison-v1",
+    "seed": 1102026,
+    "input": "Reviewed quotation only; no country, date, context or rationale features",
+    "development_validation": "Train September 23 pilot; validate September 24-26 packet; no hyperparameter selection",
+    "final_fit": "Refit fixed settings on all 48 development labels before loading held-out test labels",
+    "logistic": {
+      "C": 1.0,
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 1,
+      "max_features": 5000,
+      "sublinear_tf": true,
+      "max_iter": 2000
+    },
+    "bert": {
+      "epochs": 10,
+      "learning_rate": 5e-05,
+      "batch_size": 8,
+      "weight_decay": 0.01,
+      "max_tokens": 512
+    },
+    "threshold": 0.5,
+    "tuning": "None; no early stopping or test-based changes",
+    "purpose": "User-authorized local reviewed-data experiment, audit only",
+    "publication_eligible": false
+  },
+  "protocol_sha256": "8edd19e19ae27a5d10e22d745897a60185645731b1a6d268be3cf43615dc820c",
+  "runner_sha256": "6d5c2e6cd4470cfbf3383a84bd7b961eee5d2f4caec9b8dcb0b6b01ca1ab0367",
+  "development_bundle_hashes": [
+    "0ba09bc1113fb50befd7c34977aafa4418582811fa4abbd2603c75017ed528d9",
+    "8aa35ab9d9a5ae577892a0e4c9f90e7a3cc13133b56cd6c496a6db8687825a9f"
+  ],
+  "test_bundle_sha256": "63d3ac2be6bf25ffa6a41f887b0999c4262555b53aa99612855eed4e177d7bcc",
+  "validation": {
+    "logistic": {
+      "n": 24,
+      "true_positive": 7,
+      "false_positive": 2,
+      "false_negative": 8,
+      "true_negative": 7,
+      "precision": 0.7777777777777778,
+      "recall": 0.4666666666666667,
+      "specificity": 0.7777777777777778,
+      "f1": 0.5833333333333334,
+      "accuracy": 0.5833333333333334
+    },
+    "bert": {
+      "n": 24,
+      "true_positive": 13,
+      "false_positive": 6,
+      "false_negative": 2,
+      "true_negative": 3,
+      "precision": 0.6842105263157895,
+      "recall": 0.8666666666666667,
+      "specificity": 0.3333333333333333,
+      "f1": 0.7647058823529411,
+      "accuracy": 0.6666666666666666
+    }
+  },
+  "test": {
+    "logistic": {
+      "n": 24,
+      "true_positive": 3,
+      "false_positive": 21,
+      "false_negative": 0,
+      "true_negative": 0,
+      "precision": 0.125,
+      "recall": 1.0,
+      "specificity": 0.0,
+      "f1": 0.2222222222222222,
+      "accuracy": 0.125
+    },
+    "bert": {
+      "n": 24,
+      "true_positive": 3,
+      "false_positive": 12,
+      "false_negative": 0,
+      "true_negative": 9,
+      "precision": 0.2,
+      "recall": 1.0,
+      "specificity": 0.42857142857142855,
+      "f1": 0.3333333333333333,
+      "accuracy": 0.5
+    },
+    "keyword": {
+      "n": 24,
+      "true_positive": 1,
+      "false_positive": 0,
+      "false_negative": 2,
+      "true_negative": 21,
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "specificity": 1.0,
+      "f1": 0.5,
+      "accuracy": 0.9166666666666666
+    },
+    "always_not_relevant": {
+      "n": 24,
+      "true_positive": 0,
+      "false_positive": 0,
+      "false_negative": 3,
+      "true_negative": 21,
+      "precision": null,
+      "recall": 0.0,
+      "specificity": 1.0,
+      "f1": 0.0,
+      "accuracy": 0.875
+    }
+  },
+  "checkpoint_revision": "30b0a37ccaaa32f332884b96992754e246e48c5f",
+  "runtime": {
+    "torch": "2.10.0+cpu",
+    "transformers": "4.57.6",
+    "scikit-learn": "1.7.2",
+    "numpy": "2.3.5",
+    "scipy": "1.18.1"
+  },
+  "model_artifacts_sha256": {
+    "logistic.json": "3d7cb2f05b2aacaac892f077977258e15d4e936f97dc8ae6c2fb3f1b1abc6c6a",
+    "protocol.json": "e87462a40d6a2a595e0731109ec4852792e50762d6fc4d9392bc40fe5b1530a5",
+    "bert/config.json": "5b61d68fe4dc5db51a910f77079ce841801e553adfe01544acd84bd799be6131",
+    "bert/model.safetensors": "17d52a609b82f2d3c16a51a90deb3b168e303b053f6b8b3c13be52da907ec254",
+    "bert/special_tokens_map.json": "5aa43c2f985a25296d5a5ce621c2f77376ca8091a47993c492fd5460b895b140",
+    "bert/tokenizer.json": "f17212c38517cfedc9306b57eeffbaf58c4976fcb42e5a87b405f36a7b9a9eb2",
+    "bert/tokenizer_config.json": "584049ddfff5d6aa7c6c839da38fdd25ae3af017385120c99db5140d77315d2f",
+    "bert/vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+  },
+  "roundtrip_verified": true,
+  "publication_eligible": false,
+  "daily_integration": false,
+  "note": "Single fixed run; 48 enriched development labels, 24 test passages with 3 positives; retrospective audit-only comparison, not release approval."
+}
