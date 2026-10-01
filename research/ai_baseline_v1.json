@@ -1,0 +1,11 @@
+{
+  "id": "ai-keywords-v1",
+  "task": "Binary AI relevance of the reviewed quotation only",
+  "positive_patterns": ["\\bartificial intelligence\\b", "\\bAI\\b", "\\bmachine learning\\b", "\\bautonomous weapons\\b"],
+  "ignore_case": true,
+  "decision": "Relevant if any pattern matches; otherwise not relevant",
+  "basis": "Existing pilot sampling vocabulary reused without test-specific changes",
+  "fit": "None; no trained parameters or thresholds",
+  "evaluation": "Frozen September 28 test packet; development results reported separately",
+  "publication_eligible": false
+}
