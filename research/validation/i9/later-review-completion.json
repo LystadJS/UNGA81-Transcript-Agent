@@ -1,0 +1,30 @@
+{
+  "completed_at": "2026-10-01T03:49:17.462272Z",
+  "review_mode": "single_reviewer_pilot",
+  "bundle_sha256": "8aa35ab9d9a5ae577892a0e4c9f90e7a3cc13133b56cd6c496a6db8687825a9f",
+  "reviewed_passages": 24,
+  "source_count": 22,
+  "label_counts": {
+    "relevant": 15,
+    "not_relevant": 9
+  },
+  "intervention_counts": {
+    "national_address": 24
+  },
+  "dates": [
+    "2026-09-24",
+    "2026-09-25",
+    "2026-09-26"
+  ],
+  "prior_pilot_country_overlap": 0,
+  "prior_pilot_exact_source_overlap": 0,
+  "held_out_september28_excluded": true,
+  "combined_development_labels": {
+    "relevant": 27,
+    "not_relevant": 21
+  },
+  "validated_export": true,
+  "training_started": false,
+  "publication_eligible": false,
+  "note": "48 reviewed development passages across two enriched packets; no held-out accuracy estimate. Near-duplicate checks remain outstanding."
+}

@@ -1,5 +1,25 @@
 # Later-date development review form
 
+## Completed review
+
+The owner saved the packet at 2026-10-01 03:49 UTC (September 30 in New York).
+Fresh loader verification passed: 24 passages from 22 source records, with 15
+relevant and nine not relevant. All 24 were marked as belonging to national
+addresses by the owner. The private validated export is
+`review-work/ai-later-review/validated-import.json`.
+
+No September 28 passage is included. Neither countries nor exact source hashes
+overlap the revised first pilot. Across both development packets there are now
+48 reviewed passages: 27 relevant and 21 not relevant. These enriched samples
+are not a representative accuracy test. Near-duplicate checks remain necessary.
+No model has been trained or released, and this packet was not attached to the
+different September 23 daily corpus.
+
+See [completion evidence](../research/validation/i9/later-review-completion.json).
+Next: prepare a separate random September 28 review packet, check duplicates
+against both development sets, freeze the test labels and evaluate a simple
+baseline before fine-tuning BERT. The original preparation instructions follow.
+
 The prepared private form is `review-work/ai-later-review/index.html`, served
 locally at http://127.0.0.1:8772/ while its server is running. It contains 24
 passages from September 24–26: 12 lexical AI candidates and 12 non-hits.
