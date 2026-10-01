@@ -22,3 +22,7 @@ source of truth for all subsequent work on this project.
   review still requires the owner's actual label choices/confirmation.
 - The selected text checkpoint is google/bert_uncased_L-2_H-128_A-2 at revision
   30b0a37ccaaa32f332884b96992754e246e48c5f, for local audit-only pilot evaluation.
+
+## Current HLW analytical focus
+
+Prioritize the Cuba embargo and blockade, Cuba-linked sanctions, terrorism-list designation, extraterritorial and financial restrictions, and stated trade, energy and humanitarian effects. Treat general Cuba mentions as background. Generic sanctions references or segment-level co-occurrence do not by themselves establish a Cuba-embargo connection. Preserve original corpus and topic-run provenance when changing presentation filters.
