@@ -1,0 +1,29 @@
+{
+  "candidate_records": 28,
+  "country_overlap_exclusions": 2,
+  "screened_passages": 370,
+  "excluded_passages": {},
+  "eligible_passages": 370,
+  "selected_passages": 24,
+  "selected_countries": 14,
+  "selected_dates": [
+    "2026-09-28"
+  ],
+  "development_bundle_hashes": [
+    "0ba09bc1113fb50befd7c34977aafa4418582811fa4abbd2603c75017ed528d9",
+    "8aa35ab9d9a5ae577892a0e4c9f90e7a3cc13133b56cd6c496a6db8687825a9f"
+  ],
+  "candidate_sha256": "057a507b48c7d216bd6bcc10845151d886281e4523cb4ec06fe957d6e348b484",
+  "seed": 28092026,
+  "method": "Seeded shuffle, duplicate exclusions, first 24 survivors; no keyword sampling",
+  "duplicate_rule": "Casefolded word equality; 5-word shingle containment >=0.8 or Jaccard >=0.6, minimum 20 shingles",
+  "comparison_scope": "48 reviewed development quotes plus 150-word windows at stride 75 across their full source texts; within-test comparisons",
+  "limitation": "Lexical screen cannot guarantee absence of paraphrases or semantic duplication. Human speech-boundary review still required.",
+  "human_review_complete": false,
+  "training_authorized": false,
+  "frozen_packet_sha256": {
+    "passages.csv": "32fb42177d4edbe332536e83b445ab3238247bef756166557ff40f97b503c356",
+    "sources.csv": "0435266e7f90d6efbac91b022fd1c0a66befc9e12d526afa2c7840ab32941823",
+    "propositions.csv": "09f2e72e5ac0a3e6dabb54e69b1d18178054248a2ff2822088086c5e9602f648"
+  }
+}

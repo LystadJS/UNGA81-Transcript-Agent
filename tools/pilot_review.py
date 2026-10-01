@@ -43,7 +43,7 @@ def complete(root,payload):
     reviewer=payload.get('reviewer','').strip()
     if not reviewer or len(reviewer)>100:raise ValueError('Reviewer identity required')
     rows=payload['rows'];ids=[r['passage_id'] for r in rows]
-    if meta.get('packet_kind')=='later_date_development':
+    if meta.get('packet_kind') in ('later_date_development','held_out_test'):
         if any(r.get('boundary') not in ('national_address','other_intervention','uncertain') or (r['boundary']!='national_address' and r.get('label')!='insufficient') for r in rows):
             raise ValueError('Check each intervention; other or uncertain interventions require insufficient context')
         rows=[dict(r,rationale='Intervention: '+r['boundary']+'. '+r.get('rationale','')) for r in rows]

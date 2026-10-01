@@ -18,6 +18,10 @@ def prepare(candidates, output):
     meta=pilot.prepare(output,replay)
     meta.update(packet_kind='later_date_development',held_out_date='2026-09-28',candidate_sha256=pilot.sha(candidates))
     (output/'pilot.json').write_text(json.dumps(meta,indent=2),encoding='utf-8')
+    return render(output)
+
+def render(output):
+    output=Path(output);meta=json.loads((output/'pilot.json').read_text())
     sources={s['source_id']:s for s in rd.rows(output/'sources.csv')[1]}
     cards=[];sampling=[]
     pattern=re.compile(r'\bartificial intelligence\b|\bAI\b|\bmachine learning\b|\bautonomous weapons\b',re.I)
@@ -46,6 +50,8 @@ document.querySelector('form').addEventListener('input',()=>{const d=collect();d
 document.querySelector('#download').onclick=()=>{const blob=new Blob([JSON.stringify(collect(),null,2)],{type:'application/json'});const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='ai-later-review.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);};
 document.querySelector('form').onsubmit=async e=>{e.preventDefault();const p=collect(),status=document.querySelector('#status');if(p.rows.some(r=>r.boundary!=='national_address'&&r.label!=='insufficient')){status.textContent='For other or uncertain interventions, select Insufficient context / excluded intervention.';return;}if(location.protocol==='file:'){status.textContent='Use the local review server to submit, or download your completed review backup and provide it for import.';return;}const button=document.querySelector('#save');button.disabled=true;status.textContent='Saving and validating…';try{const res=await fetch('/complete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});const data=await res.json();if(!res.ok)throw Error(data.error);status.textContent='Saved and validated. Your labels remain audit-only. Download a backup if desired.';try{localStorage.removeItem(key);}catch(e){}document.querySelectorAll('select,input').forEach(x=>x.disabled=true);}catch(e){status.textContent=e.message;button.disabled=false;}};
 </script></html>'''
+    if meta.get('packet_kind')=='held_out_test':
+        page=page.replace('DEVELOPMENT PACKET','HELD-OUT TEST PACKET').replace('24 passages · September 24–26<br>September 28 remains reserved for testing.','24 passages · September 28<br>Reserved for final evaluation.').replace('This enriched sample contains 12 lexical candidates and 12 non-hits. It is for development, not estimating overall accuracy.','This is a seeded random sample after duplicate and country-overlap exclusions. No topic-keyword enrichment was used. Do not use these labels for training or tuning.').replace('AI · Later-date review','AI · September 28 test review')
     page=page.replace('CARDS',''.join(cards)).replace('TOKEN',json.dumps(meta['csrf']))
     (output/'index.html').write_text(page,encoding='utf-8')
     return {'passages':meta['count'],'dates':sorted({s['event_date'] for s in sources.values()}),'held_out_date_excluded':all(s['event_date']!='2026-09-28' for s in sources.values()),'labels_assigned':False}
