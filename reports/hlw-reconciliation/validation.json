@@ -1,0 +1,30 @@
+{
+  "upload_files": 196,
+  "unique_addresses": 195,
+  "entity_types": {
+    "member_state": 191,
+    "regional_organization": 1,
+    "observer_state": 2,
+    "secretary_general": 1
+  },
+  "new_addresses": 0,
+  "duplicate_address_variants": 1,
+  "exact_text_matches": 0,
+  "normalized_token_matches": 1,
+  "changed_token_variants": 195,
+  "low_fivegram_overlap_under_80_percent": 22,
+  "source_meetings": 6,
+  "source_segments": 460,
+  "canonical_source_segments": 196,
+  "other_source_segments": 264,
+  "other_classifications": {
+    "unattributed": 6,
+    "procedural": 230,
+    "reply": 26,
+    "video_introduction": 1,
+    "language_switch_fragment": 1
+  },
+  "all_country_and_date_matches": true,
+  "all_source_hashes_match": true,
+  "archive_sha256": "e36ebc8d341e7c1c9b43f2bf478ae184db630618842e84b9f4f9ec02e6798b87"
+}
