@@ -1,0 +1,72 @@
+{
+  "ai-random-dev-v2": {
+    "candidate_records": 109,
+    "country_overlap_exclusions": 24,
+    "screened_passages": 1204,
+    "excluded_passages": {
+      "normalized_exact": 1
+    },
+    "eligible_passages": 1203,
+    "selected_passages": 24,
+    "selected_countries": 23,
+    "selected_dates": [
+      "2026-09-24",
+      "2026-09-25",
+      "2026-09-26"
+    ],
+    "candidate_sha256": "057a507b48c7d216bd6bcc10845151d886281e4523cb4ec06fe957d6e348b484",
+    "seed": 2102026,
+    "method": "Seeded shuffle, duplicate exclusions, first 24 survivors; no keyword sampling",
+    "duplicate_rule": "Casefolded word equality; 5-word shingle containment >=0.8 or Jaccard >=0.6, minimum 20 shingles",
+    "comparison_scope": "Reviewed quotations and full source text windows from all excluded prior packets; extra reference packet source windows; within-pool duplicate screen",
+    "limitation": "Lexical screen cannot guarantee absence of paraphrases or semantic duplication. Human speech-boundary review still required.",
+    "human_review_complete": false,
+    "training_authorized": false,
+    "frozen_packet_sha256": {
+      "passages.csv": "f0bb319634ae32bea9ac1dc15897632a224eb6059059e5687c56a2d430c2fb7e",
+      "sources.csv": "f83ab659c09661f7b49eab5ce7e7ffd0a2b13106f3b6f69e741c4f292020b7d6",
+      "propositions.csv": "09f2e72e5ac0a3e6dabb54e69b1d18178054248a2ff2822088086c5e9602f648"
+    },
+    "role": "later_date_development",
+    "excluded_review_bundle_hashes": [
+      "0ba09bc1113fb50befd7c34977aafa4418582811fa4abbd2603c75017ed528d9",
+      "8aa35ab9d9a5ae577892a0e4c9f90e7a3cc13133b56cd6c496a6db8687825a9f",
+      "63d3ac2be6bf25ffa6a41f887b0999c4262555b53aa99612855eed4e177d7bcc"
+    ],
+    "extra_reference_source_hashes": []
+  },
+  "ai-fresh-test-v2": {
+    "candidate_records": 28,
+    "country_overlap_exclusions": 16,
+    "screened_passages": 108,
+    "excluded_passages": {},
+    "eligible_passages": 108,
+    "selected_passages": 24,
+    "selected_countries": 11,
+    "selected_dates": [
+      "2026-09-28"
+    ],
+    "candidate_sha256": "057a507b48c7d216bd6bcc10845151d886281e4523cb4ec06fe957d6e348b484",
+    "seed": 3102026,
+    "method": "Seeded shuffle, duplicate exclusions, first 24 survivors; no keyword sampling",
+    "duplicate_rule": "Casefolded word equality; 5-word shingle containment >=0.8 or Jaccard >=0.6, minimum 20 shingles",
+    "comparison_scope": "Reviewed quotations and full source text windows from all excluded prior packets; extra reference packet source windows; within-pool duplicate screen",
+    "limitation": "Lexical screen cannot guarantee absence of paraphrases or semantic duplication. Human speech-boundary review still required.",
+    "human_review_complete": false,
+    "training_authorized": false,
+    "frozen_packet_sha256": {
+      "passages.csv": "57ee233c5f1a057a5bb81fc0455f6099e5c7ea18c37f0a6cf959d2fdbbdb1616",
+      "sources.csv": "976c1bd1ab5db658b97725aeb8ac963d28d7a5e7dbccbe5cd755c1430b58d794",
+      "propositions.csv": "09f2e72e5ac0a3e6dabb54e69b1d18178054248a2ff2822088086c5e9602f648"
+    },
+    "role": "held_out_test",
+    "excluded_review_bundle_hashes": [
+      "0ba09bc1113fb50befd7c34977aafa4418582811fa4abbd2603c75017ed528d9",
+      "8aa35ab9d9a5ae577892a0e4c9f90e7a3cc13133b56cd6c496a6db8687825a9f",
+      "63d3ac2be6bf25ffa6a41f887b0999c4262555b53aa99612855eed4e177d7bcc"
+    ],
+    "extra_reference_source_hashes": [
+      "f83ab659c09661f7b49eab5ce7e7ffd0a2b13106f3b6f69e741c4f292020b7d6"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "development-tuning-v2",
+  "status": "pending_owner_labels",
+  "training_packets": ["ai-pilot-r2", "ai-later-review"],
+  "validation_packet": "ai-random-dev-v2",
+  "test_packet": "ai-fresh-test-v2",
+  "excluded_old_test": "ai-test-sep28",
+  "features": "Quotation text only",
+  "logistic_C": [0.1, 1.0, 10.0],
+  "bert_learning_rate": [0.00003, 0.00005],
+  "bert_epochs": [5, 10],
+  "thresholds": [0.3, 0.4, 0.5, 0.6, 0.7],
+  "selection": "Per model family, maximize F1 on new random development validation; ties: precision, then simpler model (smaller C or fewer epochs/lower learning rate), then higher threshold",
+  "abort_condition": "Validation lacks both resolved binary classes; collect more development labels rather than use test labels",
+  "refit": "After settings are frozen, refit on all resolved development labels; no test-based revisions",
+  "final_evaluation": "Verify packet hashes, load fresh test only after fitting, evaluate once; report unresolved/excluded passages and confusion counts",
+  "publication_eligible": false
+}
