@@ -1,5 +1,29 @@
 # September 28 held-out review packet
 
+## Completed and frozen for evaluation
+
+The owner saved all 24 reviews at 2026-10-01 04:35 UTC. Fresh loader validation
+passed: three relevant and 21 not relevant, with all passages classified by the
+owner as national-address content. The selected passages, source table and
+codebook still match their pre-review hashes. There are no unresolved labels.
+
+The private validated export is
+`review-work/ai-test-sep28/validated-test-import.json`. `test-lock.json` records
+its SHA-256, reviewed-bundle identity and development-bundle identities so later
+evaluation can reject changed inputs. This is a recorded hash freeze, not an
+operating-system write lock. No labels were merged into development data.
+See [completion evidence](../research/validation/i9/sep28-review-completion.json).
+
+There are now 48 reviewed development passages and 24 separate test passages.
+The next step is to prespecify a baseline and metrics, fit/tune only with
+development data, then verify these hashes before a held-out evaluation. With
+only three positive test examples, recall changes by one third for each missed
+positive; accuracy alone would be misleading. Report confusion counts and
+precision/recall with the sample sizes. No model evaluation or training has
+occurred as part of confirming this save.
+
+The preparation record and original review instructions follow.
+
 Open http://127.0.0.1:8773/ while the local server is running. The private HTML is
 `review-work/ai-test-sep28/index.html`. It has 24 unlabelled passages from 14
 countries, with source links, surrounding context, intervention checks, draft

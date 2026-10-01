@@ -1,0 +1,24 @@
+{
+  "completed_at": "2026-10-01T04:35:52.712103Z",
+  "review_mode": "single_reviewer_pilot",
+  "role": "held_out_test",
+  "reviewed_passages": 24,
+  "source_count": 14,
+  "label_counts": {
+    "not_relevant": 21,
+    "relevant": 3
+  },
+  "intervention_counts": {
+    "national_address": 24
+  },
+  "frozen_packet_unchanged": true,
+  "bundle_sha256": "63d3ac2be6bf25ffa6a41f887b0999c4262555b53aa99612855eed4e177d7bcc",
+  "export_sha256": "f5fe172d69c6e95f05907907ae8a964c22e4e8098ebe7f0a67c353f3eece6faf",
+  "development_bundle_hashes": [
+    "0ba09bc1113fb50befd7c34977aafa4418582811fa4abbd2603c75017ed528d9",
+    "8aa35ab9d9a5ae577892a0e4c9f90e7a3cc13133b56cd6c496a6db8687825a9f"
+  ],
+  "training_authorized": false,
+  "model_evaluated": false,
+  "publication_eligible": false
+}
