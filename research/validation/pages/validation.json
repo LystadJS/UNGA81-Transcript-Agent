@@ -18,5 +18,31 @@
   "stale_export_reset": true,
   "invalid_input_rejected": true,
   "remote_packet_tests_passed": 8,
-  "publication_contains_private_packets": false
+  "publication_contains_private_packets": false,
+  "live_url": "https://lystadjs.github.io/UNGA81-Transcript-Agent/",
+  "deployment_run": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/36970059868",
+  "deployment_commit": "396e39fb62f153b6c956b51c8436e3debf38167e",
+  "deployment_passed": true,
+  "live_browser_validation": {
+    "results": [
+      {
+        "width": 1440,
+        "cards": 24,
+        "blank": true,
+        "overflow": false
+      },
+      {
+        "width": 390,
+        "cards": 24,
+        "blank": true,
+        "overflow": false
+      }
+    ],
+    "draft_restore": true,
+    "practice_export": true,
+    "stale_export_reset": true,
+    "invalid_input_rejected": true
+  },
+  "browser_python_packet_identity_matches": true,
+  "local_report_links_resolve": true
 }
