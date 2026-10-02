@@ -1,0 +1,23 @@
+{
+  "live": true,
+  "counts": {
+    "input": 71,
+    "eligible_before_dedup": 71,
+    "duplicates": 0,
+    "eligible": 71,
+    "matched": 22,
+    "unmapped": 40
+  },
+  "coverage": [
+    {
+      "status": "collected",
+      "segments": 71
+    }
+  ],
+  "charts": true,
+  "exports": true,
+  "stale_export_disabled": true,
+  "review_demo": true,
+  "mobile_overflow": false,
+  "page_errors": []
+}

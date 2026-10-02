@@ -10,7 +10,8 @@ site or published reports. It is an explicit sync, not automatic cross-repositor
 deployment. The project repository remains the application source of truth.
 
 The GitHub Pages site provides the project hub, the existing published Cuba/HLW
-report and a browser-only review workspace. Reviewers need no Python, R, local
+report, a live transcript report builder and a browser-only review workspace. See
+[BROWSER_ANALYSIS.md](BROWSER_ANALYSIS.md) for collection, methods and limits. Reviewers need no Python, R, local
 server, administrator privileges or GitHub account. Their organization must still
 allow access to GitHub Pages and browser features; the site cannot bypass security
 policies or guarantee access from every managed computer.
@@ -28,8 +29,9 @@ policies or guarantee access from every managed computer.
    or clipboard access. Return it using the team's approved channel.
 
 The page does **not** submit labels centrally. It uses no review API, telemetry,
-remote model call, webfont or third-party runtime. The review workspace's content
-security policy disallows network connections initiated by its scripts. Opening
+remote model call, webfont or third-party runtime. The content security policy permits same-origin assets and the official UN
+transcript service for user-requested live collection. Review packet text is not
+sent to either origin by the application. Opening
 a source/report link navigates to that destination normally. GitHub still serves
 the public site and receives ordinary web access requests. Review text stays in
 memory unless the reviewer explicitly enables local drafts or exports a file.
@@ -85,7 +87,8 @@ provide authenticated central submissions or synchronize review assignments.
 Those require a separate approved authenticated service. Never put a GitHub token
 in browser code to implement direct repository writes.
 
-Recommended next step: share the site URL and assigned packet through your
+Recommended next step: try a narrow live query in Build a report and check its
+coverage and evidence. For labeling, share the site URL and assigned packet through your
 approved channel, perform one real remote review and import the returned file.
 If personnel need central login and automatic submission, select an approved
 identity provider and backend before extending this interface.

@@ -2,7 +2,7 @@ name: Publish review workspace
 on:
   push:
     branches: [main]
-    paths: ['site/**', 'reports/hlw-cuba/**', 'tools/build_pages.py', '.github/workflows/pages.yml']
+    paths: ['site/**', 'reports/hlw-cuba/**', 'tools/build_pages.py', 'tools/test_browser_analysis.cjs', 'un/config/countries.csv', '.github/workflows/pages.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -20,6 +20,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test browser analysis and collection
+        run: node tools/test_browser_analysis.cjs
       - name: Build public site
         run: python3 tools/build_pages.py _site
       - uses: actions/upload-pages-artifact@v3

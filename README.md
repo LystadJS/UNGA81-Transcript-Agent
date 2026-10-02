@@ -4,7 +4,9 @@ Integrated UN transcript analysis and Shiny readout interface, with the USUN
 executive email theme and Windows-friendly package paths.
 
 **[Open the remote browser workspace](https://lystadjs.github.io/un/transcript-agent/)**
-to review assigned packets without local installation and browse published reports.
+to collect live UN transcripts by topic, dates and speaker region, run selectable
+descriptive methods, download visual reports, and review assigned packets without
+local installation. See the [report builder guide](docs/BROWSER_ANALYSIS.md).
 Packet text stays in the browser; completed reviews are returned as files for
 validated import. See the [remote workspace guide](docs/REMOTE_WORKSPACE.md).
 
