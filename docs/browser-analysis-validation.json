@@ -19,5 +19,35 @@
   "stale_export_disabled": true,
   "review_demo": true,
   "mobile_overflow": false,
-  "page_errors": []
+  "page_errors": [],
+  "published_site_acceptance": {
+    "url": "https://lystadjs.github.io/un/transcript-agent/",
+    "checked_at": "2026-10-02T16:33:48.649Z",
+    "parameters": {
+      "topic": "Artificial Intelligence",
+      "phrases": [
+        "Artificial Intelligence"
+      ],
+      "exclude": [],
+      "start": "2026-09-22",
+      "end": "2026-09-28",
+      "region": "All regions",
+      "scope": "general_debate",
+      "methods": [
+        "frequency",
+        "timeline",
+        "tfidf"
+      ]
+    },
+    "counts": {
+      "input": 460,
+      "eligible_before_dedup": 460,
+      "duplicates": 0,
+      "eligible": 460,
+      "matched": 126,
+      "unmapped": 240
+    },
+    "meetings_collected": 6,
+    "collection_failures": 0
+  }
 }
