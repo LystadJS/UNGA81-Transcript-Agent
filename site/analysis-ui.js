@@ -21,6 +21,7 @@
   let result = null;
   let ready = false;
   let stale = false;
+  let datesEdited = false;
 
 
   // ---------- Form settings and status ----------
@@ -45,7 +46,7 @@
   function settings() {
     return UNAnalysis.parameters({
       topic: el('topic').value.trim(),
-      phrases: [el('topic').value.trim(), ...split(el('phrases').value)],
+      phrases: [el('topic').value.trim(), ...split(el('phrases').value)].filter(Boolean),
       exclude: split(el('excludePhrases').value),
       start: el('startDate').value,
       end: el('endDate').value,
@@ -55,6 +56,79 @@
         .map(input => input.value)
     });
   }
+
+
+  function updateTopicMode() {
+    const all = !el('topic').value.trim();
+
+    el('phrases').disabled = all || !!controller;
+    el('excludePhrases').disabled = all || !!controller;
+    el('topicModeHelp').textContent = all
+      ? 'All passages mode: no topic, related-phrase, or exclusion filtering. Dates, meeting scope, and speaker region still apply.'
+      : 'Topic search: match the topic or any comma-separated related phrase. Exclusion phrases remove matching passages.';
+
+    el('frequencyLabel').textContent = all ? 'Passages by region' : 'Topic frequency by region';
+    el('timelineLabel').textContent = all ? 'Passages by date' : 'Topic frequency by date';
+  }
+
+
+  function recentDates() {
+    // Use the UN New York calendar date, not the visitor's timezone or UTC day.
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit'
+    }).formatToParts(new Date());
+
+    const part = type => parts.find(item => item.type === type).value;
+    const end = `${part('year')}-${part('month')}-${part('day')}`;
+    const start = new Date(end + 'T12:00:00Z');
+    start.setUTCDate(start.getUTCDate() - 6);
+
+    return { start: start.toISOString().slice(0, 10), end };
+  }
+
+
+  function setDates(start, end, explanation) {
+    el('startDate').value = start;
+    el('endDate').value = end;
+    el('dateRangeNote').textContent = `${explanation} ${start} through ${end}.`;
+    invalidate();
+  }
+
+
+  el('topic').addEventListener('input', updateTopicMode);
+  updateTopicMode();
+
+  for (const id of ['startDate', 'endDate']) {
+    el(id).addEventListener('input', () => {
+      datesEdited = true;
+      el('dateRangeNote').textContent = 'Using your selected dates. Changing meeting scope will not change them.';
+    });
+  }
+
+  el('recentDates').onclick = () => {
+    const dates = recentDates();
+    datesEdited = true;
+    setDates(dates.start, dates.end, 'Last 7 days (New York):');
+  };
+
+  el('debateDates').onclick = () => {
+    datesEdited = true;
+    setDates(el('startDate').defaultValue, el('endDate').defaultValue,
+      'General Debate dates; committee proceedings may fall outside this period:');
+  };
+
+  el('meetingScope').addEventListener('change', () => {
+    const untouched = !datesEdited &&
+      el('startDate').value === el('startDate').defaultValue &&
+      el('endDate').value === el('endDate').defaultValue;
+
+    if (untouched && el('meetingScope').value.startsWith('committee_')) {
+      const dates = recentDates();
+      setDates(dates.start, dates.end, 'Switched untouched General Debate defaults to recent dates for committee collection:');
+    }
+
+    invalidate();
+  });
 
 
   // ---------- Reusable report elements ----------
@@ -115,6 +189,7 @@
     const p = report.parameters;
     const counts = report.counts;
     const methods = report.methods;
+    const all = p.mode === 'all';
     const issues = report.coverage.filter(entry => entry.status !== 'collected');
     const byStatus = {};
 
@@ -125,12 +200,12 @@
     let html = `
       <div class="report-document">
         <p class="eyebrow">TRANSCRIPT REPORT</p>
-        <h2>${esc(p.topic)}</h2>
+        <h2>${esc(all ? 'All passages' : p.topic)}</h2>
         <p>${esc(p.start)} through ${esc(p.end)} · ${esc(p.region)}</p>
         <p><strong>Meeting scope:</strong> ${esc(UNMeetingScopes.label(p.scope))}</p>
         <p>
-          Any phrase: ${esc(p.phrases.join(' | '))}.
-          Exclusions: ${esc(p.exclude.join(' | ') || 'None')}.
+          ${all ? 'No topic filter; all available passages within the selected dates, scope, and region are included.'
+            : `Any phrase: ${esc(p.phrases.join(' | '))}. Exclusions: ${esc(p.exclude.join(' | ') || 'None')}.`}
         </p>
         <p class="method-note">
           Prepared ${esc(report.created_at.slice(0, 10))} · English transcripts
@@ -138,9 +213,9 @@
     `;
 
     const metrics = [
-      [counts.eligible, 'Passages analyzed'],
-      [counts.matched, 'Topic matches'],
-      [counts.eligible ? (100 * counts.matched / counts.eligible).toFixed(1) + '%' : 'N/A', 'Match rate'],
+      [counts.input, 'Passages collected'],
+      [counts.eligible, 'Unique passages analyzed'],
+      [counts.matched, all ? 'Included passages' : 'Topic matches'],
       [counts.duplicates, 'Duplicates removed']
     ];
 
@@ -151,18 +226,14 @@
         `).join('')}
       </div>
       <p class="method-note">
-        Matches identify language, not a speaker’s position. These results describe
-        the collected passages; verify their meaning in the source.
+        ${all ? 'All passages mode includes every eligible unique passage, regardless of its subject.'
+          : 'Matches identify language, not a speaker’s position.'}
+        These results describe the collected passages; verify their meaning in the source.
       </p>
     `;
 
-    if (!counts.matched) {
-      html += `
-        <p class="warning">
-          No matching segments were found in the available eligible corpus.
-          This does not establish that the topic was absent from unavailable or excluded sources.
-        </p>
-      `;
+    if (!counts.input || !counts.eligible || (!all && !counts.matched)) {
+      html += `<p class="warning">${esc(completionMessage(report))}</p>`;
     }
 
     if (report.collection && (
@@ -179,7 +250,7 @@
       `;
     }
 
-    if (report.collection?.selected_meetings === 0) {
+    if (report.collection?.selected_meetings === 0 && !report.coverage.some(row => row.status === 'inventory_failed')) {
       html += `
         <p class="warning">
           No meetings were selected from the available inventory for this collection.
@@ -199,7 +270,7 @@
     }
 
     html += `
-      <details class="coverage-panel">
+      <details class="coverage-panel"${issues.length || !counts.input ? ' open' : ''}>
         <summary>Collection coverage</summary>
         <p>
           ${esc(counts.input)} passages collected;
@@ -223,6 +294,13 @@
       `;
     }
 
+    if (report.collection?.inventory_days) {
+      html += table(['Date', 'Inventory status', 'Meetings found', 'Within selected scope'],
+        report.collection.inventory_days.map(day => [
+          day.date, day.status, day.meetings ?? 'Unknown', day.selected ?? 'Unknown'
+        ]));
+    }
+
     html += table(['Status', 'Entries'], Object.entries(byStatus));
     html += table(
       ['Date', 'Meeting / day', 'Status', 'Detail'],
@@ -242,16 +320,20 @@
       if (!methods[key]) continue;
 
       html += `
-        <h3>${title}</h3>
+        <h3>${all ? title.replace('Topic frequency', 'Passages') : title}</h3>
         <p class="method-note">
-          Share of eligible passages containing the topic. Groups without eligible text are omitted.
+          ${all ? 'Counts of unique eligible passages, without topic filtering.'
+            : 'Share of eligible passages containing the topic.'}
+          Groups without eligible text are omitted.
         </p>
-        ${chart(title, methods[key], row => row.name, row => row.percent, '%')}
+        ${chart(all ? title.replace('Topic frequency', 'Passages') : title, methods[key],
+          row => row.name, row => all ? row.total : row.percent, all ? '' : '%')}
         <details>
           <summary>View figures</summary>
-          ${table(['Group', 'Matched', 'Eligible', 'Match %'], methods[key].map(row => [
-            row.name, row.matches, row.total, row.percent.toFixed(2)
-          ]))}
+          ${all ? table(['Group', 'Passages'], methods[key].map(row => [row.name, row.total]))
+            : table(['Group', 'Matched', 'Eligible', 'Match %'], methods[key].map(row => [
+              row.name, row.matches, row.total, row.percent.toFixed(2)
+            ]))}
         </details>
       `;
     }
@@ -259,7 +341,7 @@
     if (methods.length) {
       html += `
         <h3>Passage length</h3>
-        <p class="method-note">Word counts for matched passages.</p>
+        <p class="method-note">Word counts for included unique passages.</p>
         ${chart('Segment length', methods.length, row => row.name, row => row.total)}
         <details>
           <summary>View figures</summary>
@@ -271,11 +353,11 @@
     if (methods.tfidf) {
       html += `
         <h3>TF-IDF term ranking</h3>
-        <p class="method-note">Terms ranked by their average TF-IDF weight across matched passages.</p>
+        <p class="method-note">Terms ranked by their average TF-IDF weight across included unique passages.</p>
         <details>
           <summary>Calculation</summary>
           <p>
-            Top 20 mean L2-normalized weights across matched segments; lowercase Unicode unigrams,
+            Top 20 mean L2-normalized weights across included segments; lowercase Unicode unigrams,
             length &gt;2, fixed English stop list, sublinear TF = 1 + ln(count),
             smoothed IDF = 1 + ln((1 + N)/(1 + document frequency)).
             Vocabulary: ${methods.tfidf.vocabulary}. Query terms may rank highly.
@@ -314,7 +396,7 @@
       <h3>Source passages</h3>
       <p>
         Showing ${Math.min(100, report.matched.length)} of ${report.matched.length} source segments.
-        Download analysis JSON or CSV for all matches and identifiers.
+        Download analysis JSON or CSV for every included unique passage. Save transcripts retains all original collected segments, including duplicates.
       </p>
     `;
 
@@ -363,6 +445,40 @@
     `;
 
     return html;
+  }
+
+
+  // Different failure stages must not be reported as successful zero matches.
+  function completionMessage(report) {
+    const n = report.counts;
+    const failedDays = report.coverage.filter(row => row.status === 'inventory_failed');
+    const failedMeetings = report.coverage.filter(row => row.status === 'failed');
+    const selected = report.collection?.selected_meetings;
+    const range = `${report.parameters.start} through ${report.parameters.end}`;
+    const scope = UNMeetingScopes.label(report.parameters.scope);
+
+    if (!n.input && (failedDays.length || failedMeetings.length)) {
+      const reason = (failedDays[0] || failedMeetings[0]).error || 'Unknown download error';
+      return `Collection incomplete: no usable passages were downloaded. ${reason} See Collection coverage; this is not a zero-match finding.`;
+    }
+
+    if (!n.input && selected === 0) {
+      return `No meetings found for ${scope} from ${range}. Check the dates or use Last 7 days. No transcripts were downloaded.`;
+    }
+
+    if (!n.input) {
+      return `${selected ?? 'Selected'} meetings found, but no usable English transcript passages were available. See Collection coverage for unavailable, pending, or non-English sources.`;
+    }
+
+    const prefix = failedDays.length || report.coverage.some(row => row.status !== 'collected')
+      ? 'Partial collection' : 'Collection ready';
+    const collected = `${prefix}: ${n.input} passages collected; ${n.eligible} unique passages within your filters.`;
+
+    if (!n.eligible) return collected + ' Check dates, speaker region, meeting scope, or the scope of the imported collection.';
+    if (report.parameters.mode === 'all') return collected + ' All passages mode — no topic filter.';
+    if (!n.matched) return collected + ' No topic matches; leave Topic blank to include all passages.';
+
+    return collected + ` ${n.matched} topic matches.`;
   }
 
 
@@ -461,8 +577,9 @@
       el('analysisOutput').hidden = false;
       exportButtons().forEach(button => { button.disabled = false; });
 
-      status('Report ready: ' + result.counts.matched +
-        ' topic matches from ' + result.counts.eligible + ' passages.');
+      el('exportCSV').textContent = result.parameters.mode === 'all'
+        ? 'Included passages (.csv)' : 'Matched passages (.csv)';
+      status(completionMessage(result));
     } catch (error) {
       result = null;
       corpus = null;
@@ -477,6 +594,7 @@
 
       for (const control of el('analysisForm').elements) control.disabled = false;
       el('cancelAnalysis').disabled = true;
+      updateTopicMode();
     }
   };
 
@@ -510,7 +628,8 @@
     const rows = [fields, ...result.matched.map(record => fields.map(field => record[field]))];
     const csv = '\uFEFF' + rows.map(row => row.map(cell).join(',')).join('\r\n');
 
-    save(csv, 'un-matched-segments.csv', 'text/csv;charset=utf-8');
+    save(csv, result.parameters.mode === 'all' ? 'un-all-passages.csv' : 'un-matched-segments.csv',
+      'text/csv;charset=utf-8');
   };
 
   el('exportHTML').onclick = async () => {

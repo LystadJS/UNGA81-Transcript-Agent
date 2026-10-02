@@ -6,7 +6,7 @@
     ? require('./meeting-scopes.js')
     : root.UNMeetingScopes;
 
-  const VERSION = 'browser-descriptive-1.1.0';
+  const VERSION = 'browser-descriptive-1.2.0';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity'];
 
@@ -35,9 +35,21 @@
 
 
   function parameters(p) {
-    if (!p.topic || p.topic.length > 120) {
-      throw Error('Enter a topic of 1–120 characters.');
+    if (!p || typeof p.topic !== 'string' || p.topic.length > 120) {
+      throw Error('Use an optional topic of at most 120 characters.');
     }
+
+    const topic = p.topic.trim();
+    const mode = topic ? 'topic' : 'all';
+
+    if (topic && !canonical(topic)) {
+      throw Error('A topic must contain at least one letter or number.');
+    }
+
+    // A blank Topic explicitly means ALL passages. Stale related/exclusion
+    // fields must not silently narrow this request; the UI disables them too.
+    const phrases = mode === 'all' ? [] : p.phrases;
+    const exclude = mode === 'all' ? [] : p.exclude;
 
     if (!dateOK(p.start) || !dateOK(p.end) || p.end < p.start) {
       throw Error('Enter a valid inclusive date range.');
@@ -52,14 +64,14 @@
       throw Error('Choose at least one supported method.');
     }
 
-    if (!Array.isArray(p.phrases) || !p.phrases.length || p.phrases.length > 20 ||
-        p.phrases.some(value => typeof value !== 'string' ||
+    if (!Array.isArray(phrases) || (mode === 'topic' && !phrases.length) ||
+        phrases.length > 20 || phrases.some(value => typeof value !== 'string' ||
           !canonical(value) || value.length > 120)) {
-      throw Error('Use 1–20 topic phrases of at most 120 characters.');
+      throw Error('Use 1–20 topic phrases, or leave Topic blank to include all passages.');
     }
 
-    if (!Array.isArray(p.exclude) || p.exclude.length > 20 ||
-        p.exclude.some(value => typeof value !== 'string' ||
+    if (!Array.isArray(exclude) || exclude.length > 20 ||
+        exclude.some(value => typeof value !== 'string' ||
           !canonical(value) || value.length > 120)) {
       throw Error('Use at most 20 valid exclusion phrases.');
     }
@@ -68,7 +80,7 @@
       throw Error('Invalid collection scope.');
     }
 
-    return p;
+    return { ...p, topic, mode, phrases, exclude };
   }
 
 
@@ -207,7 +219,7 @@
 
   async function analyze(corpus, p, yieldProgress = async () => {}) {
     validateCorpus(corpus);
-    parameters(p);
+    p = parameters(p);
 
     // Apply committee, date, region and language restrictions before deduping.
     // This prevents out-of-scope text from changing denominators or matches.
@@ -243,7 +255,7 @@
       }
     }
 
-    const matched = records.filter(record => {
+    const matched = p.mode === 'all' ? [...records] : records.filter(record => {
       const body = canonical(record.text);
 
       return p.phrases.some(phrase => hasPhrase(body, phrase)) &&

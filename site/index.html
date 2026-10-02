@@ -11,10 +11,10 @@
     <link href="app.css" rel="stylesheet">
     <script defer src="app.js"></script>
     <link href="analysis.css" rel="stylesheet">
-    <script defer src="meeting-scopes.js"></script>
-    <script defer src="analysis-core.js"></script>
-    <script defer src="collector.js"></script>
-    <script defer src="analysis-ui.js"></script>
+    <script defer src="meeting-scopes.js?v=1.2.0"></script>
+    <script defer src="analysis-core.js?v=1.2.0"></script>
+    <script defer src="collector.js?v=1.2.0"></script>
+    <script defer src="analysis-ui.js?v=1.2.0"></script>
   </head>
 
   <body>
@@ -52,7 +52,7 @@
       <section class="intro">
         <p class="eyebrow">GENERAL DEBATE &amp; UN PROCEEDINGS</p>
         <h2>Generate Record</h2>
-        <p>Choose a topic and define the scope. Compare the transcripts, inspect the sources and prepare a report.</p>
+        <p>Define the dates and meeting scope. Add a topic to search, or leave it blank to collect all available passages.</p>
       </section>
 
       <!-- REPORT BUILDER -->
@@ -69,8 +69,8 @@
           <div class="analysis-grid">
 
             <label>
-              Topic
-              <input id="topic" maxlength="120" required value="Artificial Intelligence">
+              Topic (optional)
+              <input aria-describedby="topicModeHelp" id="topic" maxlength="120" placeholder="Leave blank for all passages">
             </label>
 
             <label>
@@ -80,7 +80,7 @@
 
           </div>
 
-          <p class="hint">Separate related phrases with commas. A match may contain the topic or any related phrase.</p>
+          <p aria-live="polite" class="hint" id="topicModeHelp">Leave Topic blank to include all passages. Related and exclusion phrases are disabled in this mode.</p>
 
           <div class="analysis-grid">
 
@@ -124,6 +124,16 @@
           <p class="hint" id="meetingScopeHelp">Committee filters use meeting identifiers and titles, not mentions within speeches. Choose dates when the committee met; a General Debate-only saved collection cannot supply committee proceedings.</p>
           <p class="hint">Up to 31 days. Region refers to speaker affiliation, not textual mentions.</p>
 
+          <div class="actions">
+            <button class="secondary" id="recentDates" type="button">Last 7 days</button>
+            <button class="secondary" id="debateDates" type="button">General Debate dates</button>
+          </div>
+
+          <p aria-live="polite" class="hint" id="dateRangeNote">
+            Default dates cover the 2026 General Debate. Selecting a committee switches
+            untouched defaults to the last 7 days. Dates you enter are never changed automatically.
+          </p>
+
           <details>
             <summary>More options</summary>
 
@@ -155,12 +165,12 @@
 
               <label class="check">
                 <input checked name="method" type="checkbox" value="frequency">
-                Topic frequency by region
+                <span id="frequencyLabel">Passages by region</span>
               </label>
 
               <label class="check">
                 <input checked name="method" type="checkbox" value="timeline">
-                Topic frequency by date
+                <span id="timelineLabel">Passages by date</span>
               </label>
 
               <label class="check">
@@ -194,11 +204,11 @@
             <button id="exportHTML" type="button">Download report</button>
             <button class="secondary" id="exportResult" type="button">Analysis data (.json)</button>
             <button class="secondary" id="exportCorpus" type="button">Save transcripts</button>
-            <button class="secondary" id="exportCSV" type="button">Matched passages (.csv)</button>
+            <button class="secondary" id="exportCSV" type="button">Included passages (.csv)</button>
             <button class="secondary" id="printAnalysis" type="button">Print / save PDF</button>
           </div>
 
-          <p class="hint">The report includes charts and works offline. Data files retain all matches.</p>
+          <p class="hint">Save transcripts retains every collected source segment. Analysis and CSV use unique passages within your filters; duplicate mappings remain in the analysis JSON.</p>
 
           <div id="analysisReport"></div>
 

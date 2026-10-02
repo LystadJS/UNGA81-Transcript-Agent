@@ -9,9 +9,9 @@ permissions:
   contents: read
 
 jobs:
-  probe:
+  check:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 12
 
     steps:
       - uses: actions/checkout@v4
@@ -20,73 +20,21 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Inspect real UN responses with the checked-out collector
+      - name: Deterministic analysis and committee regression tests
+        run: node tools/test_browser_analysis.cjs
+
+      - name: Install developer-only browser test tools
         run: |
-          mkdir -p live-check
-          node <<'NODE'
-          const fs = require('node:fs');
-          const C = require('./site/collector.js');
-          const countries = require('./site/countries.json');
-          const requests = [];
-          let sequence = 0;
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
 
-          async function request(url, signal) {
-            const row = { url };
-            requests.push(row);
-            try {
-              const response = await fetch(url, {
-                signal: signal || AbortSignal.timeout(60000),
-                headers: { Origin: 'https://lystadjs.github.io' }
-              });
-              row.status = response.status;
-              row.cors = response.headers.get('access-control-allow-origin');
-              row.content_type = response.headers.get('content-type');
-              const raw = await response.text();
-              const filename = 'response-' + (++sequence) + '.txt';
-              fs.writeFileSync('live-check/' + filename, raw);
-              row.file = filename;
-              if (!response.ok) throw Error('HTTP ' + response.status);
-              const data = JSON.parse(raw);
-              row.keys = Object.keys(data);
-              return { data, hash: await C.sha(raw) };
-            } catch (error) {
-              row.error = error.message;
-              throw error;
-            }
-          }
+      - name: Exercise actual UN collection through browser controls
+        run: python tools/test_live_browser.py --site site --live --output live-check/browser
 
-          (async () => {
-            const p = {
-              topic: '', phrases: [], exclude: [],
-              start: '2026-10-01', end: '2026-10-01',
-              scope: 'committee_3', region: 'All regions',
-              methods: ['frequency', 'timeline']
-            };
-            const corpus = await C.collect(p, countries, { request, progress: console.log });
-            const summary = {
-              commit: process.env.GITHUB_SHA,
-              run_at: new Date().toISOString(),
-              parameters: p,
-              collection: corpus.collection,
-              count: corpus.records.length,
-              coverage: corpus.coverage,
-              record_metadata: corpus.records.map(({ text, ...metadata }) => ({ ...metadata, characters: text.length })),
-              requests
-            };
-            fs.writeFileSync('live-check/summary.json', JSON.stringify(summary, null, 2));
-            fs.writeFileSync('live-check/corpus.json', JSON.stringify(corpus));
-            console.log(JSON.stringify(summary, null, 2));
-          })().catch(error => {
-            fs.writeFileSync('live-check/error.json', JSON.stringify({ error: error.stack, requests }, null, 2));
-            console.error(error);
-            process.exitCode = 1;
-          });
-          NODE
-
-      - name: Retain reproducible response evidence
+      - name: Retain acceptance evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: live-collection-check
+          name: browser-collection-acceptance
           path: live-check
           retention-days: 7

@@ -90,6 +90,7 @@
     const coverage = [];
     const days = [];
     const records = [];
+    const inventoryDays = [];
     let chars = 0;
 
     const check = () => {
@@ -144,9 +145,18 @@
         }
 
         meetings.push(...found);
+
+        inventoryDays.push({
+          date,
+          status: 'ok',
+          meetings: found.length,
+          selected: found.filter(meeting => Scopes.matchesMeeting(meeting, p.scope)).length
+        });
       } catch (error) {
         check();
-        coverage.push({ date, status: 'inventory_failed', error: error.message });
+        const failure = { date, status: 'inventory_failed', error: error.message };
+        coverage.push(failure);
+        inventoryDays.push(failure);
       }
     }
 
@@ -154,6 +164,8 @@
     // Filter BEFORE downloading transcripts. Selecting Third Committee does
     // not download every other committee and hide its passages afterward.
     const selected = meetings.filter(meeting => Scopes.matchesMeeting(meeting, p.scope));
+
+    progress(`Inventory checked: ${meetings.length} meetings; ${selected.length} within the selected scope.`);
 
     if (selected.length > 300) {
       throw Error('More than 300 meetings selected. Narrow the dates or meeting scope.');
@@ -182,9 +194,14 @@
         check();
 
         if (data.video?.slug !== meeting.slug ||
-            data.video.date?.slice(0, 10) !== row.date ||
-            !Array.isArray(data.transcript?.data)) {
+            data.video.date?.slice(0, 10) !== row.date) {
           throw Error('Transcript identity or date mismatch.');
+        }
+
+        if (!data.transcript || !Array.isArray(data.transcript.data)) {
+          row.status = 'unavailable';
+          row.error = 'Meeting found, but the requested transcript is not ready or has no segment data.';
+          continue;
         }
 
         row.raw_sha256 = hash;
@@ -238,8 +255,9 @@
 
         chars += added;
         records.push(...batch);
-        row.status = 'collected';
+        row.status = batch.length ? 'collected' : 'empty_transcript';
         row.segments = batch.length;
+        if (!batch.length) row.error = 'Transcript response contains no usable text.';
       } catch (error) {
         check();
         row.status = 'failed';
@@ -259,6 +277,10 @@
         inventory_meetings: meetings.length,
         selected_meetings: selected.length,
         inventory_pages: days,
+        inventory_days: inventoryDays,
+        failed_inventory_days: inventoryDays.filter(day => day.status !== 'ok').length,
+        collected_meetings: coverage.filter(row => row.status === 'collected').length,
+        collected_passages: records.length,
         unit: 'Original UN transcript source segment; may include procedural and non-national interventions',
         english_only: true
       },

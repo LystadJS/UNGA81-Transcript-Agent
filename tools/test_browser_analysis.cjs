@@ -28,3 +28,6 @@ const A=require('../site/analysis-core.js'),C=require('../site/collector.js');
 
 // The existing Pages workflow invokes this file; keep the committee gate here.
 require('./test_browser_committees.cjs');
+
+// All-passages mode and collection diagnostics are release gates too.
+require("./test_browser_all_passages.cjs");
