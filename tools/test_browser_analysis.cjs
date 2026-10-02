@@ -25,3 +25,6 @@ const A=require('../site/analysis-core.js'),C=require('../site/collector.js');
  const abort=new AbortController();abort.abort();await assert.rejects(()=>C.collect(p,countries,{signal:abort.signal,request}),{name:'AbortError'});
  console.log('PASS: browser analysis arithmetic, boundaries, exclusions, deduplication, TF-IDF, limits, collection provenance, failures and cancellation');
 })().catch(e=>{console.error(e);process.exit(1);});
+
+// The existing Pages workflow invokes this file; keep the committee gate here.
+require('./test_browser_committees.cjs');

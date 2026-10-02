@@ -1,40 +1,407 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://transcripts.un.org; object-src 'none'; base-uri 'none'; form-action 'none'">
-<title>UNGA81 Transcript Analysis · Collect, analyze &amp; review</title><link rel="stylesheet" href="theme.css"><link rel="stylesheet" href="app.css"><script src="app.js" defer></script><link rel="stylesheet" href="analysis.css"><script src="analysis-core.js" defer></script><script src="collector.js" defer></script><script src="analysis-ui.js" defer></script></head>
-<body><a class="skip" href="#main">Skip to workspace</a>
-<header><div class="masthead"><span class="mark" aria-hidden="true">UN<br>81</span><div><p class="eyebrow">UN TRANSCRIPT PROJECT</p><h1>UNGA81 Transcript Analysis</h1></div></div></header>
-<nav aria-label="Main"><a href="/un/">← UN Projects</a><a href="#analyze">Build a report</a><a href="#review">Review passages</a><a href="#reports">Reports</a><a href="#help">About the data</a></nav>
-<main id="main"><section class="intro"><p class="eyebrow">GENERAL DEBATE &amp; UN PROCEEDINGS</p><h2>Record Generator</h2><p>Choose a topic and define the scope. Compare the transcripts, inspect the sources and prepare a report.</p></section><section id="analyze"><div class="section-heading"><h2>Build a report</h2><span>English transcripts</span></div>
-<form id="analysisForm">
-<div class="analysis-grid"><label>Topic<input id="topic" required maxlength="120" value="Artificial Intelligence"></label><label>Related phrases<input id="phrases" maxlength="2400" placeholder="For example: AI, machine learning"></label></div>
-<p class="hint">Separate related phrases with commas. A match may contain the topic or any related phrase.</p>
-<div class="analysis-grid"><label>From<input id="startDate" type="date" required value="2026-09-22"></label><label>Through<input id="endDate" type="date" required value="2026-09-28"></label><label>Speaker region<select id="region"><option>All regions</option></select></label><label>Meeting scope<select id="meetingScope"><option value="general_debate">General Debate meetings</option><option value="all">All UN meetings in the inventory</option></select></label></div>
-<p class="hint">Select up to 31 days. Region follows the speaker’s recorded affiliation, not places mentioned in the text.</p>
-<details><summary>More options</summary><label>Exclude phrases<input id="excludePhrases" maxlength="2400" placeholder="Comma-separated exclusions"></label><label>Transcript source<select id="corpusSource"><option value="live">UN transcript service</option><option value="import">Saved collection</option></select></label><label id="corpusFileLabel" hidden>Saved collection (.json)<input id="corpusFile" type="file" accept=".json,application/json"></label><p class="hint">Open a saved collection to work without downloading the transcripts again. The file stays on your device.</p></details>
-<fieldset><legend>Methods</legend><div class="analysis-grid">
-<label class="check"><input type="checkbox" name="method" value="frequency" checked> Topic frequency by region</label>
-<label class="check"><input type="checkbox" name="method" value="timeline" checked> Topic frequency by date</label>
-<label class="check"><input type="checkbox" name="method" value="length"> Passage length</label>
-<label class="check"><input type="checkbox" name="method" value="tfidf" checked> TF-IDF term ranking</label>
-<label class="check"><input type="checkbox" name="method" value="similarity"> Text similarity (cosine)</label></div></fieldset>
+<!DOCTYPE html>
+<html lang="en">
 
-<button id="runAnalysis" type="submit">Generate report</button><button id="cancelAnalysis" type="button" class="secondary" disabled>Cancel</button>
-</form><p id="analysisStatus" role="status" aria-live="polite"></p>
-<div id="analysisOutput" hidden><div class="actions"><button id="exportHTML" type="button">Download report</button><button id="exportResult" type="button" class="secondary">Analysis data (.json)</button><button id="exportCorpus" type="button" class="secondary">Save transcripts</button><button id="exportCSV" type="button" class="secondary">Matched passages (.csv)</button><button id="printAnalysis" type="button" class="secondary">Print / save PDF</button></div><p class="hint">The report includes charts and works offline. Data files retain all matches.</p><div id="analysisReport"></div></div>
-</section>
-<section id="review"><details id="reviewPanel" class="workspace-panel"><summary>Review passages<span>Open an assigned packet</span></summary><div class="section-heading"><h2>Assigned packet</h2><span id="packetBadge">No packet loaded</span></div>
-<div class="load-grid"><div><label for="packetFile">1. Open your assigned packet</label><input id="packetFile" type="file" accept=".json,application/json"><p class="hint">Open the file supplied by your coordinator.</p><button id="demo" type="button" class="secondary">Try a practice packet</button></div><details><summary>Paste a packet</summary><label for="packetText">Packet JSON</label><textarea id="packetText" rows="7" spellcheck="false"></textarea><button id="loadText" type="button">Open pasted packet</button></details></div>
-<p id="loadStatus" role="status" aria-live="polite"></p>
-<div id="workspace" hidden>
-<div class="notice" id="packetInfo"></div><p id="codebook"></p>
-<div class="toolbar"><label for="reviewer">Your name or reviewer role<input id="reviewer" maxlength="100" autocomplete="off"></label><label class="check"><input id="remember" type="checkbox"> Save a draft on this device</label><button id="clearDraft" type="button" class="secondary">Remove saved draft</button></div>
-<p class="hint">Draft storage is optional. On shared devices, leave it off. Use “Download draft” to resume on another computer.</p>
-<div class="resume"><label for="resumeFile">Resume a saved draft or review<input id="resumeFile" type="file" accept=".json,application/json"></label><details><summary>Paste a saved draft</summary><textarea id="resumeText" rows="4" aria-label="Saved review JSON"></textarea><button id="resumePaste" type="button" class="secondary">Restore pasted draft</button></details></div>
-<div id="progress" role="status"></div><form id="reviewForm"><div id="cards"></div><label class="check confirm"><input id="confirm" type="checkbox" required> I personally reviewed every choice and finalize these labels for audit-only use.</label><div class="actions"><button type="submit">Prepare completed review</button><button id="draft" type="button" class="secondary">Download draft</button></div></form>
-<div id="result" hidden><h3 id="resultTitle">Completed review ready</h3><p>Return this file or the text below to the project coordinator. It has not been uploaded or imported automatically.</p><button id="download" type="button">Download review JSON</button><button id="copy" type="button" class="secondary">Copy review text</button><details><summary>Show review text for manual copy</summary><textarea id="resultText" rows="10" readonly aria-label="Review export JSON"></textarea></details></div>
-<p id="saveStatus" role="status" aria-live="polite"></p></div></details></section>
-<section id="reports"><h2>Reports &amp; reference</h2><div class="report-grid"><a class="report" href="reports/hlw-cuba/index.html"><span class="icon" aria-hidden="true">▤</span><h3>Cuba &amp; the General Debate</h3><p>Speeches, policy references and source coverage.</p><span>Open report →</span></a><a class="report" href="https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/main/docs/REVIEWED_MODEL_COMPARISON.md"><span class="icon" aria-hidden="true">◫</span><h3>Model evaluation</h3><p>Compare classification methods and their results.</p><span>Read comparison ↗</span></a><a class="report" href="https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/main/docs/DATA_GUIDE.md"><span class="icon" aria-hidden="true">☷</span><h3>Data &amp; review guide</h3><p>Reviewed labels, evidence requirements and provenance.</p><span>Read guide ↗</span></a></div></section>
-<section id="help"><details id="helpPanel" class="workspace-panel"><summary>About the data<span>Coverage, interpretation and privacy</span></summary><div class="panel-content"><p><strong>The report describes the transcripts collected for your query.</strong> Each passage follows the source’s segment boundaries and may include procedural remarks. English transcripts can contain transcription or interpretation errors; check quotations against the source.</p><p><strong>A phrase match does not establish a speaker’s position.</strong> Counts and text comparisons describe language in the collected material. Missing transcripts and unknown affiliations remain identified in the report.</p><p><strong>Your files and review choices stay on your device.</strong> Live collection contacts the UN transcript service. Download completed reviews and return them to your coordinator; the site does not submit them.</p><p><a href="https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/main/docs/BROWSER_ANALYSIS.md">Methods and collection limits</a> · <a href="https://github.com/LystadJS/UNGA81-Transcript-Agent">Project repository</a></p></div></details></section>
-</main><footer><span>UN Transcript Project</span><span>Independent analysis · <a href="/un/">UN Projects</a></span></footer></body></html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <meta content="no-referrer" name="referrer">
+    <meta content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://transcripts.un.org; object-src 'none'; base-uri 'none'; form-action 'none'" http-equiv="Content-Security-Policy">
+    <title>UNGA81 Transcript Analysis Agent</title>
+    <link href="theme.css" rel="stylesheet">
+    <link href="app.css" rel="stylesheet">
+    <script defer src="app.js"></script>
+    <link href="analysis.css" rel="stylesheet">
+    <script defer src="meeting-scopes.js"></script>
+    <script defer src="analysis-core.js"></script>
+    <script defer src="collector.js"></script>
+    <script defer src="analysis-ui.js"></script>
+  </head>
+
+  <body>
+    <a class="skip" href="#main">Skip to workspace</a>
+
+    <header>
+
+      <div class="masthead">
+        <span aria-hidden="true" class="mark">
+          UN
+          <br>
+          81
+        </span>
+
+        <div>
+          <p class="eyebrow">U.S. Mission to the United Nations</p>
+          <p></p>
+          <h1>UNGA81 Transcript Analysis Agent</h1>
+        </div>
+
+      </div>
+
+    </header>
+
+    <nav aria-label="Main">
+      <a href="/un/">← UN Projects</a>
+      <a href="#analyze">Build a report</a>
+      <a href="#review">Review passages</a>
+      <a href="#reports">Reports</a>
+      <a href="#help">About the data</a>
+    </nav>
+
+    <main id="main">
+
+      <section class="intro">
+        <p class="eyebrow">GENERAL DEBATE &amp; UN PROCEEDINGS</p>
+        <h2>Generate Record</h2>
+        <p>Choose a topic and define the scope. Compare the transcripts, inspect the sources and prepare a report.</p>
+      </section>
+
+      <!-- REPORT BUILDER -->
+
+      <section id="analyze">
+
+        <div class="section-heading">
+          <h2>Build a report</h2>
+          <span>English transcripts</span>
+        </div>
+
+        <form id="analysisForm">
+
+          <div class="analysis-grid">
+
+            <label>
+              Topic
+              <input id="topic" maxlength="120" required value="Artificial Intelligence">
+            </label>
+
+            <label>
+              Related phrases
+              <input id="phrases" maxlength="2400" placeholder="For example: AI, machine learning">
+            </label>
+
+          </div>
+
+          <p class="hint">Separate related phrases with commas. A match may contain the topic or any related phrase.</p>
+
+          <div class="analysis-grid">
+
+            <label>
+              From
+              <input id="startDate" required type="date" value="2026-09-22">
+            </label>
+
+            <label>
+              Through
+              <input id="endDate" required type="date" value="2026-09-28">
+            </label>
+
+            <label>
+              Region (Speaker)
+              <select id="region">
+                <option>All regions</option>
+              </select>
+            </label>
+
+            <label>
+              Meeting scope
+              <select aria-describedby="meetingScopeHelp" id="meetingScope">
+                <option value="general_debate">General Debate meetings</option>
+                <option value="all">All UN meetings in the inventory</option>
+
+                <optgroup label="General Assembly committees">
+                  <option value="committee_1">First Committee — Disarmament and International Security</option>
+                  <option value="committee_2">Second Committee — Economic and Financial</option>
+                  <option value="committee_3">Third Committee — Social, Humanitarian and Cultural</option>
+                  <option value="committee_4">Fourth Committee — Special Political and Decolonization</option>
+                  <option value="committee_5">Fifth Committee — Administrative and Budgetary</option>
+                  <option value="committee_6">Sixth Committee — Legal</option>
+                </optgroup>
+
+              </select>
+            </label>
+
+          </div>
+
+          <p class="hint" id="meetingScopeHelp">Committee filters use meeting identifiers and titles, not mentions within speeches. Choose dates when the committee met; a General Debate-only saved collection cannot supply committee proceedings.</p>
+          <p class="hint">Up to 31 days. Region refers to speaker affiliation, not textual mentions.</p>
+
+          <details>
+            <summary>More options</summary>
+
+            <label>
+              Exclude phrases
+              <input id="excludePhrases" maxlength="2400" placeholder="Comma-separated exclusions">
+            </label>
+
+            <label>
+              Transcript source
+              <select id="corpusSource">
+                <option value="live">UN transcript service</option>
+                <option value="import">Saved collection</option>
+              </select>
+            </label>
+
+            <label hidden id="corpusFileLabel">
+              Saved collection (.json)
+              <input accept=".json,application/json" id="corpusFile" type="file">
+            </label>
+
+            <p class="hint">Open a saved collection to work without downloading the transcripts again. The file stays on your device.</p>
+          </details>
+
+          <fieldset>
+            <legend>Methods</legend>
+
+            <div class="analysis-grid">
+
+              <label class="check">
+                <input checked name="method" type="checkbox" value="frequency">
+                Topic frequency by region
+              </label>
+
+              <label class="check">
+                <input checked name="method" type="checkbox" value="timeline">
+                Topic frequency by date
+              </label>
+
+              <label class="check">
+                <input name="method" type="checkbox" value="length">
+                Passage length
+              </label>
+
+              <label class="check">
+                <input checked name="method" type="checkbox" value="tfidf">
+                TF-IDF term ranking
+              </label>
+
+              <label class="check">
+                <input name="method" type="checkbox" value="similarity">
+                Text similarity (cosine)
+              </label>
+
+            </div>
+
+          </fieldset>
+
+          <button id="runAnalysis" type="submit">Generate report</button>
+          <button class="secondary" disabled id="cancelAnalysis" type="button">Cancel</button>
+        </form>
+
+        <p aria-live="polite" id="analysisStatus" role="status"></p>
+
+        <div hidden id="analysisOutput">
+
+          <div class="actions">
+            <button id="exportHTML" type="button">Download report</button>
+            <button class="secondary" id="exportResult" type="button">Analysis data (.json)</button>
+            <button class="secondary" id="exportCorpus" type="button">Save transcripts</button>
+            <button class="secondary" id="exportCSV" type="button">Matched passages (.csv)</button>
+            <button class="secondary" id="printAnalysis" type="button">Print / save PDF</button>
+          </div>
+
+          <p class="hint">The report includes charts and works offline. Data files retain all matches.</p>
+
+          <div id="analysisReport"></div>
+
+        </div>
+
+      </section>
+
+      <!-- PASSAGE REVIEW WORKSPACE -->
+
+      <section id="review">
+
+        <details class="workspace-panel" id="reviewPanel">
+          <summary>
+            Review passages
+            <span>Open an assigned packet</span>
+          </summary>
+
+          <div class="section-heading">
+            <h2>Assigned packet</h2>
+            <span id="packetBadge">No packet loaded</span>
+          </div>
+
+          <div class="load-grid">
+
+            <div>
+
+              <label for="packetFile">
+                1. Open your assigned packet
+              </label>
+
+              <input accept=".json,application/json" id="packetFile" type="file">
+              <p class="hint">Open the file supplied by your coordinator.</p>
+              <button class="secondary" id="demo" type="button">Try a practice packet</button>
+            </div>
+
+            <details>
+              <summary>Paste a packet</summary>
+
+              <label for="packetText">
+                Packet JSON
+              </label>
+
+              <textarea id="packetText" rows="7" spellcheck="false"></textarea>
+              <button id="loadText" type="button">Open pasted packet</button>
+            </details>
+
+          </div>
+
+          <p aria-live="polite" id="loadStatus" role="status"></p>
+
+          <div hidden id="workspace">
+
+            <div class="notice" id="packetInfo"></div>
+
+            <p id="codebook"></p>
+
+            <div class="toolbar">
+
+              <label for="reviewer">
+                Your name or reviewer role
+                <input autocomplete="off" id="reviewer" maxlength="100">
+              </label>
+
+              <label class="check">
+                <input id="remember" type="checkbox">
+                Save a draft on this device
+              </label>
+
+              <button class="secondary" id="clearDraft" type="button">Remove saved draft</button>
+            </div>
+
+            <p class="hint">Draft storage is optional. On shared devices, leave it off. Use “Download draft” to resume on another computer.</p>
+
+            <div class="resume">
+
+              <label for="resumeFile">
+                Resume a saved draft or review
+                <input accept=".json,application/json" id="resumeFile" type="file">
+              </label>
+
+              <details>
+                <summary>Paste a saved draft</summary>
+                <textarea aria-label="Saved review JSON" id="resumeText" rows="4"></textarea>
+                <button class="secondary" id="resumePaste" type="button">Restore pasted draft</button>
+              </details>
+
+            </div>
+
+            <div id="progress" role="status"></div>
+
+            <form id="reviewForm">
+
+              <div id="cards"></div>
+
+              <label class="check confirm">
+                <input id="confirm" required type="checkbox">
+                I personally reviewed every choice and finalize these labels for audit-only use.
+              </label>
+
+              <div class="actions">
+                <button type="submit">Prepare completed review</button>
+                <button class="secondary" id="draft" type="button">Download draft</button>
+              </div>
+
+            </form>
+
+            <div hidden id="result">
+              <h3 id="resultTitle">Completed review ready</h3>
+              <p>Return this file or the text below to the project coordinator. It has not been uploaded or imported automatically.</p>
+              <button id="download" type="button">Download review JSON</button>
+              <button class="secondary" id="copy" type="button">Copy review text</button>
+
+              <details>
+                <summary>Show review text for manual copy</summary>
+                <textarea aria-label="Review export JSON" id="resultText" readonly rows="10"></textarea>
+              </details>
+
+            </div>
+
+            <p aria-live="polite" id="saveStatus" role="status"></p>
+          </div>
+
+        </details>
+
+      </section>
+
+      <!-- REPORTS AND REFERENCES -->
+
+      <section id="reports">
+        <h2>Reports &amp; reference</h2>
+
+        <div class="report-grid">
+          <a class="report" href="reports/hlw-cuba/index.html">
+            <span aria-hidden="true" class="icon">▤</span>
+            <h3>Cuba &amp; the General Debate</h3>
+            <p>Speeches, policy references and source coverage.</p>
+            <span>Open report →</span>
+          </a>
+          <a class="report" href="https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/main/docs/REVIEWED_MODEL_COMPARISON.md">
+            <span aria-hidden="true" class="icon">◫</span>
+            <h3>Model evaluation</h3>
+            <p>Compare classification methods and their results.</p>
+            <span>Read comparison ↗</span>
+          </a>
+          <a class="report" href="https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/main/docs/DATA_GUIDE.md">
+            <span aria-hidden="true" class="icon">☷</span>
+            <h3>Data &amp; review guide</h3>
+            <p>Reviewed labels, evidence requirements and provenance.</p>
+            <span>Read guide ↗</span>
+          </a>
+        </div>
+
+      </section>
+
+      <!-- COVERAGE, INTERPRETATION, AND PRIVACY -->
+
+      <section id="help">
+
+        <details class="workspace-panel" id="helpPanel">
+          <summary>
+            About the data
+            <span>Coverage, interpretation and privacy</span>
+          </summary>
+
+          <div class="panel-content">
+            <p>
+              <strong>
+                The report describes the transcripts collected for your query.
+              </strong>
+              Each passage follows the source’s segment boundaries and may include procedural remarks. English transcripts can contain transcription or interpretation errors; check quotations against the source.
+            </p>
+            <p>
+              <strong>
+                A phrase match does not establish a speaker’s position.
+              </strong>
+              Counts and text comparisons describe language in the collected material. Missing transcripts and unknown affiliations remain identified in the report.
+            </p>
+            <p>
+              <strong>
+                Your files and review choices stay on your device.
+              </strong>
+              Live collection contacts the UN transcript service. Download completed reviews and return them to your coordinator; the site does not submit them.
+            </p>
+            <p>
+              <a href="https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/main/docs/BROWSER_ANALYSIS.md">Methods and collection limits</a>
+              ·
+              <a href="https://github.com/LystadJS/UNGA81-Transcript-Agent">Project repository</a>
+            </p>
+          </div>
+
+        </details>
+
+      </section>
+
+    </main>
+
+    <footer>
+      <span>UN Transcript Project</span>
+      <span>
+        Independent analysis ·
+        <a href="/un/">UN Projects</a>
+      </span>
+    </footer>
+
+  </body>
+</html>
