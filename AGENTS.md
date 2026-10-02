@@ -32,3 +32,11 @@ source of truth for all subsequent work on this project.
 ## Current HLW analytical focus
 
 Prioritize the Cuba embargo and blockade, Cuba-linked sanctions, terrorism-list designation, extraterritorial and financial restrictions, and stated trade, energy and humanitarian effects. Treat general Cuba mentions as background. Generic sanctions references or segment-level co-occurrence do not by themselves establish a Cuba-embargo connection. Preserve original corpus and topic-run provenance when changing presentation filters.
+
+## Public interface copy
+
+Use the owner’s Personal Writing Assistant voice: direct statements, concrete
+actions, one complete purpose per paragraph, and restrained emphasis. Remove
+repeated explanations and construction commentary. Put technical detail in
+expandable sections; keep consequential source gaps and qualifications visible.
+Give charts the comparison work rather than repeating their contents in prose.
