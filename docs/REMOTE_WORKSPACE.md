@@ -1,6 +1,13 @@
 # Remote browser workspace
 
-Public site: https://LystadJS.github.io/UNGA81-Transcript-Agent/
+Preferred public site: https://lystadjs.github.io/un/transcript-agent/
+
+Navigation: main website Code & Development → [UN Projects](https://lystadjs.github.io/un/)
+→ Transcript Agent. The original https://lystadjs.github.io/UNGA81-Transcript-Agent/
+address remains available. The main website repository contains a public mirror;
+refresh it using `scripts/sync_un_project.py` there after changing this project's
+site or published reports. It is an explicit sync, not automatic cross-repository
+deployment. The project repository remains the application source of truth.
 
 The GitHub Pages site provides the project hub, the existing published Cuba/HLW
 report and a browser-only review workspace. Reviewers need no Python, R, local

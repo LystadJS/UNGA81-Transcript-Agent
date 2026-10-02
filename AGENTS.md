@@ -16,6 +16,12 @@ source of truth for all subsequent work on this project.
   rewriting historical original checksum records. Never commit credentials or new
   private transcript inputs merely because this repository contains public fixtures.
 - Include concrete recommended next steps in responses, as requested by the user.
+- The preferred remote interface is https://lystadjs.github.io/un/transcript-agent/,
+  linked from the main portfolio's code.html through /un/. When public site/report
+  assets change, refresh the main website repository's mirror using its
+  scripts/sync_un_project.py and publish that update as part of the website work.
+  Keep this project repository as the application source of truth; never mirror
+  private review-work files. The original project Pages URL remains available.
 - The owner explicitly selected a single-reviewer operational AI pilot and acts
   as both reviewer and finalizer. Preserve that declared mode; do not require
   independent reviewers for this pilot or claim independent agreement. Human
