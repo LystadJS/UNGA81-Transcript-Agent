@@ -1,0 +1,48 @@
+'use strict';
+const $=id=>document.getElementById(id), LABELS=['relevant','not_relevant','insufficient'], BOUNDARIES=['national_address','other_intervention','uncertain'];
+let packet=null, packetHash='', output=null;
+const canonical=v=>Array.isArray(v)?'['+v.map(canonical).join(',')+']':v&&typeof v==='object'?'{'+Object.keys(v).sort().map(k=>JSON.stringify(k)+':'+canonical(v[k])).join(',')+'}':JSON.stringify(v);
+async function digest(v){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(canonical(v)));return [...new Uint8Array(b)].map(n=>n.toString(16).padStart(2,'0')).join('');}
+const text=(tag,value,cls)=>{const e=document.createElement(tag);e.textContent=value;if(cls)e.className=cls;return e;};
+function validPacket(p){
+ if(!p||p.schema!=='un.remote.packet.v1'||typeof p.packet_id!=='string'||!p.packet_id||!['development','held_out_test','practice'].includes(p.role)||!Array.isArray(p.passages)||!p.passages.length||p.passages.length>200)throw Error('This is not a supported review packet. Ask the coordinator for a remote packet JSON.');
+ const ids=new Set();for(const r of p.passages){for(const k of ['passage_id','country','date','quote','context','source_url'])if(typeof r[k]!=='string')throw Error('Incomplete passage metadata.');if(ids.has(r.passage_id)||!r.passage_id||r.quote.length>10000||r.context.length>20000)throw Error('Invalid or oversized passage.');ids.add(r.passage_id);if(r.source_url&&!/^https:\/\//i.test(r.source_url))throw Error('Source links must use HTTPS.');}
+ if(typeof p.title!=='string'||typeof p.codebook!=='string')throw Error('Missing packet title or codebook.');
+}
+function select(label,cls,choices){const l=text('label',label),s=document.createElement('select');s.className=cls;s.required=true;for(const [value,title] of [['','Choose after reading'],...choices]){const o=text('option',title);o.value=value;s.append(o);}l.append(s);return l;}
+async function loadPacket(raw){
+ if(raw.length>5000000)throw Error('Packet exceeds the 5 MB limit.');const p=JSON.parse(raw);validPacket(p);const h=await digest(p);
+ packet=p;packetHash=h;output=null;$('cards').replaceChildren();$('result').hidden=true;$('reviewer').value='';$('remember').checked=false;$('confirm').checked=false;$('saveStatus').textContent='';
+ $('packetBadge').textContent=p.role==='held_out_test'?'Held-out test':p.role==='practice'?'Fictional practice':'Development review';$('packetInfo').textContent=p.title+' · '+p.passages.length+' passages. '+(p.role==='held_out_test'?'Keep these labels outside training and tuning.':'');$('codebook').textContent=p.codebook;
+ for(const [i,r] of p.passages.entries()){
+  const a=document.createElement('article');a.dataset.id=r.passage_id;a.append(text('h3',`${i+1}. ${r.country} · ${r.date}`),text('p',r.quote,'quote'));
+  const d=document.createElement('details');d.append(text('summary','Read surrounding context and source'),text('p',r.context,'context'));if(r.source_url){const link=text('a','Open source ↗');link.href=r.source_url;link.target='_blank';link.rel='noopener noreferrer';d.append(link);}a.append(d);
+  a.append(select('1. Does this belong to the national address?','boundary',[['national_address','Yes — national address'],['other_intervention','No — another intervention'],['uncertain','Uncertain']]),select('2. AI relevance','relevance',[['relevant','Relevant'],['not_relevant','Not relevant'],['insufficient','Insufficient context / excluded intervention']]));
+  const note=text('label','Optional note'),input=document.createElement('input');input.className='note';input.maxLength=800;note.append(input);a.append(note);$('cards').append(a);
+ }
+ $('workspace').hidden=false;$('loadStatus').textContent='Packet opened locally. Nothing has been uploaded.';update();
+ try{const stored=localStorage.getItem('un-review-'+packetHash);if(stored){restore(JSON.parse(stored));$('remember').checked=true;$('loadStatus').textContent='Packet opened and saved draft restored on this device. Please reconfirm when finished.';}}catch(e){$('loadStatus').textContent='Packet opened. Draft storage unavailable or invalid; use file export to retain choices.';}
+}
+function collect(completed=false){return {schema:'un.remote.review.v1',packet_id:packet.packet_id,packet_sha256:packetHash,role:packet.role,reviewer:$('reviewer').value.trim(),confirmed:completed,completed_at:completed?new Date().toISOString():null,rows:[...$('cards').children].map(a=>({passage_id:a.dataset.id,boundary:a.querySelector('.boundary').value,label:a.querySelector('.relevance').value,rationale:a.querySelector('.note').value.trim()||'No additional note.'}))};}
+function update(){const a=[...$('cards').children];$('progress').textContent=a.filter(x=>x.querySelector('.boundary').value&&x.querySelector('.relevance').value).length+' / '+a.length+' passages reviewed';}
+function changed(){output=null;$('result').hidden=true;$('confirm').checked=false;update();if(packet&&$('remember').checked){try{localStorage.setItem('un-review-'+packetHash,JSON.stringify(collect()));}catch(e){$('saveStatus').textContent='Draft storage unavailable; download a draft before leaving.';}}}
+function restore(d){
+ if(!packet||d.schema!=='un.remote.review.v1'||d.packet_sha256!==packetHash||d.packet_id!==packet.packet_id||!Array.isArray(d.rows)||d.rows.length!==packet.passages.length)throw Error('This draft belongs to a different packet.');
+ const ids=new Set();for(const r of d.rows){if(ids.has(r.passage_id)||!packet.passages.some(p=>p.passage_id===r.passage_id)||!['',...LABELS].includes(r.label)||!['',...BOUNDARIES].includes(r.boundary)||typeof r.rationale!=='string'||r.rationale.length>1000)throw Error('Invalid draft choices.');ids.add(r.passage_id);}
+ $('reviewer').value=typeof d.reviewer==='string'?d.reviewer.slice(0,100):'';for(const a of $('cards').children){const r=d.rows.find(r=>r.passage_id===a.dataset.id);a.querySelector('.boundary').value=r.boundary;a.querySelector('.relevance').value=r.label;a.querySelector('.note').value=r.rationale==='No additional note.'?'':r.rationale;}$('confirm').checked=false;$('result').hidden=true;output=null;update();$('saveStatus').textContent='Draft restored. Confirm again after checking your choices.';
+}
+function download(data,name){const u=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
+function guarded(fn,status='loadStatus'){return async()=>{try{await fn();}catch(e){$(status).textContent=e.message;}};}
+async function fileText(file){if(!file)throw Error('Choose a JSON file first.');if(file.size>5000000)throw Error('File exceeds the 5 MB limit.');return file.text();}
+$('packetFile').addEventListener('change',guarded(async()=>loadPacket(await fileText($('packetFile').files[0]))));
+$('loadText').onclick=guarded(()=>loadPacket($('packetText').value));
+$('resumeFile').addEventListener('change',guarded(async()=>restore(JSON.parse(await fileText($('resumeFile').files[0]))),'saveStatus'));
+$('resumePaste').onclick=guarded(()=>restore(JSON.parse($('resumeText').value)),'saveStatus');
+$('cards').addEventListener('input',changed);$('reviewer').addEventListener('input',changed);
+$('remember').onchange=()=>{if($('remember').checked)changed();else try{localStorage.removeItem('un-review-'+packetHash);}catch(e){$('saveStatus').textContent='Could not access draft storage.';}};
+$('clearDraft').onclick=()=>{try{localStorage.removeItem('un-review-'+packetHash);$('remember').checked=false;$('saveStatus').textContent='Saved draft removed from this device. Current on-screen choices are still available.';}catch(e){$('saveStatus').textContent='Draft storage is unavailable.';}};
+$('draft').onclick=()=>{if(packet)download(collect(),'review-draft.json');};
+$('reviewForm').onsubmit=e=>{e.preventDefault();const d=collect(true);if(!d.reviewer){$('saveStatus').textContent='Enter your name or reviewer role.';return;}if(!$('confirm').checked||d.rows.some(r=>!LABELS.includes(r.label)||!BOUNDARIES.includes(r.boundary)||r.boundary!=='national_address'&&r.label!=='insufficient')){$('saveStatus').textContent='Complete every choice. Other or uncertain interventions require Insufficient context, then your confirmation.';return;}output=d;$('resultTitle').textContent=packet.role==='practice'?'Practice review ready — not real labels':'Completed review ready';$('resultText').value=JSON.stringify(d,null,2);$('result').hidden=false;$('saveStatus').textContent='Ready to return. Download or copy your review; no central submission has occurred.';};
+$('download').onclick=()=>{if(output)download(output,'completed-review.json');};
+$('copy').onclick=guarded(async()=>{if(!output)return;await navigator.clipboard.writeText(JSON.stringify(output,null,2));$('saveStatus').textContent='Copied. Return the text through your approved channel.';},'saveStatus');
+$('demo').onclick=guarded(()=>loadPacket(JSON.stringify({schema:'un.remote.packet.v1',packet_id:'fictional-practice-v1',role:'practice',title:'Fictional practice — not UN evidence',codebook:'Include substantive AI systems, uses, risks and governance. General digital technology alone is insufficient. Relevance is not support.',passages:[{passage_id:'practice-1',country:'Fictional delegation',date:'Practice',quote:'We propose safeguards for artificial intelligence used in public services.',context:'This fictional national-address example is for learning the interface only.',source_url:''},{passage_id:'practice-2',country:'Fictional delegation',date:'Practice',quote:'We will invest in roads and reliable clean water.',context:'This fictional national-address example is for learning the interface only.',source_url:''}]})));

@@ -1,0 +1,22 @@
+{
+  "results": [
+    {
+      "width": 1440,
+      "cards": 24,
+      "blank": true,
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "cards": 24,
+      "blank": true,
+      "overflow": false
+    }
+  ],
+  "draft_restore": true,
+  "practice_export": true,
+  "stale_export_reset": true,
+  "invalid_input_rejected": true,
+  "remote_packet_tests_passed": 8,
+  "publication_contains_private_packets": false
+}
