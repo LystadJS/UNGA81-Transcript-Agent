@@ -6,6 +6,7 @@
   const isNode=typeof module!=='undefined'&&module.exports;
   const C=isNode?require('./cluster-core.js'):root.UNClusters;
   const A=isNode?require('./analysis-core.js'):root.UNAnalysis;
+  const GMM=isNode?require('./gmm-core.js'):root.UNGaussianMixture;
   const normalize=value=>String(value||'').normalize('NFKC').trim().replace(/\s+/g,' ');
   const pairIndex=(a,b)=>{const i=Math.max(a,b),j=Math.min(a,b);return i*(i-1)/2+j;};
 
@@ -123,6 +124,7 @@
     const base={schema:'un.cluster-stability.v1',parameters:s,
       representation:method,algorithm:options.algorithm,algorithm_name:C.algorithmName(options),
       clustering_parameters:{algorithm:options.algorithm,...(noiseAware?{hdbscan:options.hdbscan}:{k:options.k}),...(options.algorithm==='hierarchical'?{linkage:options.linkage}:{})},
+      ...(options.algorithm==='gmm'?{mixture_parameters:options.gmm,hard_assignment_note:'ARI, Jaccard and consensus use highest-membership labels; soft changes are aligned and reported separately.'}:{}),
       ...(noiseAware?{ari_scope:'Shared assigned passages only; two represented clusters required in each fit. Assignment coverage and status transitions reported separately.'}:{}),
       procedure:`Uniform group subsampling without replacement; TF-IDF vocabulary/IDF, ${name} and ${C.algorithmName(options)} refitted in each sample; UMAP excluded`,
       interpretation:'Sensitivity to omitted groups and refitting; not a confidence interval, population estimate, reviewed label or policy agreement probability',
@@ -152,28 +154,32 @@
       const replicate={attempt:attempt+1,groups:chosen,selected_count:subset.length,
         indices:rows.map(i=>indexById.get(subset[i].id)),
         excluded_ids:subset.filter((r,i)=>!terms.vectors[i].size||!indexById.has(r.id)).map(r=>r.id),
-        ...(options.algorithm==='kmeans'?{kmeans_seed:(s.seed+Math.imul(attempt+1,0x85ebca6b))>>>0}:{})};
+        ...(options.algorithm==='kmeans'?{kmeans_seed:(s.seed+Math.imul(attempt+1,0x85ebca6b))>>>0}:options.algorithm==='gmm'?{mixture_seed:(s.seed+Math.imul(attempt+1,0x85ebca6b))>>>0}:{})};
       if(rows.length<4||(!noiseAware&&rows.length<=options.k)){runs.push({...replicate,skipped:'Too few usable passages for the selected clustering settings.'});continue;}
       const representation=C.represent(rows.map(i=>terms.vectors[i]),options.components,method,false);
       Object.assign(replicate,{vocabulary:terms.vocabulary,[method+'_components']:representation.components,[method+'_rank']:representation.rank,
         retained_variance:representation.retained_variance,...(method==='lsa'?{retained_energy:representation.retained_energy}:{})});
       if(!representation.rank){runs.push({...replicate,skipped:'No measurable TF-IDF variation.'});continue;}
-      const fitted=await C.fitPartition(representation.scores,{...options,seed:replicate.kmeans_seed??options.seed},
+      const fitted=await C.fitPartition(representation.scores,{...options,seed:replicate.kmeans_seed??replicate.mixture_seed??options.seed},
         async step=>progress(message+' · '+step));
-      if(fitted.skipped){runs.push({...replicate,skipped:fitted.skipped});continue;}
+      if(fitted.skipped){runs.push({...replicate,skipped:fitted.skipped,...(fitted.diagnostics?{fit_diagnostics:fitted.diagnostics}:{})});continue;}
       const labels=fitted.labels,reference=replicate.indices.map(i=>fit.points[i].cluster),d=fitted.diagnostics;
       const diagnostics=noiseAware?{hdbscan:{clusters:new Set(labels.filter(c=>c>=0)).size,assigned_count:d.assigned_count,unassigned_count:d.unassigned_count,selected_nodes:d.selected_nodes}}:
+        options.algorithm==='gmm'?{gmm:{converged_starts:d.converged_starts,selected_seed:d.selected_seed,soft_counts:d.soft_counts,hard_counts:d.hard_counts,near_floor_dimensions:d.near_floor_dimensions,warnings:d.warnings},memberships:fitted.responsibilities,
+          soft_agreement:GMM.align(replicate.indices.map(i=>fit.points[i].memberships),fitted.responsibilities)}:
         options.algorithm==='kmeans'?{converged_starts:d.converged_starts,inertia:d.inertia}:
         options.algorithm==='pam'?{pam:{total_distance:d.total_distance,mean_distance:d.mean_distance,swaps:d.swaps,
           medoid_ids:fitted.medoids.map(i=>subset[rows[i]].id),tolerance:d.tolerance}}:
         {hierarchical:{linkage:d.linkage,cut_height:d.cut_height,next_merge_height:d.next_merge_height,tied_cut:d.tied_cut}};
       runs.push({...replicate,labels,...diagnostics,
-        ...(noiseAware?assignmentAgreement(reference,labels):{ari:C.ari(reference,labels)}),jaccards:jaccards(reference,labels,clusterIds,noiseAware)});
+        ...(noiseAware?assignmentAgreement(reference,labels):options.algorithm==='gmm'&&(new Set(reference).size<2||new Set(labels).size<2)?{ari:null,ari_unassessed:'Fewer than two highest-membership groups in the shared passages.'}:{ari:C.ari(reference,labels)}),jaccards:jaccards(reference,labels,clusterIds,noiseAware)});
     }
     const successful=runs.filter(r=>!r.skipped),matrix=consensus(base.reference_clusters,runs,noiseAware);
     if(successful.length<s.replicates)base.warnings.push(`${s.replicates-successful.length} samples could not be fitted. Agreement and pair counts use successful samples only; inspect the failure record.`);
     if(successful.length<10)base.warnings.push('Fewer than ten successful samples are available. Inspect coverage before interpreting agreement.');
     return {...base,attempted:runs.length,successful:successful.length,unique_group_samples:subsets.size,
+      ...(options.algorithm==='gmm'?{soft_membership:{mean_total_variation:summary(successful.map(r=>r.soft_agreement.mean_total_variation)),
+        points:fit.points.map((p,i)=>({id:p.id,...summary(successful.flatMap(r=>{const j=r.indices.indexOf(i);return j<0?[]:[r.soft_agreement.point_total_variation[j]];}))}))}}:{}),
       ...(successful.length<2?{skipped:'Fewer than two samples could be fitted; stability summaries are withheld.'}:{
         ari:summary(successful.map(r=>r.ari)),
         clusters:clusterIds.map(cluster=>({cluster,...summary(successful.map(r=>r.jaccards.find(c=>c.cluster===cluster).jaccard))}))}),

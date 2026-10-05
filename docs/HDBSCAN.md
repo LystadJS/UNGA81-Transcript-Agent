@@ -159,4 +159,5 @@ and [parameter selection](https://hdbscan.readthedocs.io/en/latest/parameter_sel
 The [reviewed passage comparison](PASSAGE_TYPES.md) now includes all 460 confirmed
 source types and repeated full/subset fits with originals preserved. [NMF](NMF.md)
 is implemented next in the sequence; neither HDBSCAN nor NMF supplies reviewed
-thematic labels. Regularized Gaussian mixtures remain next.
+thematic labels. [Regularized Gaussian mixtures](GMM.md) now add a separate
+soft-membership comparison on the same reviewed inputs.

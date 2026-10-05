@@ -13,7 +13,7 @@
     if(fit.skipped)return `<h3>Text clusters${fit.representation?' · '+name:''}</h3><p class="warning">${esc(fit.skipped)}</p>`;
     const algorithm=fit.clustering?.name||'k-means',partition=fit.clustering||fit.kmeans;
     const largest=Math.max(0,...fit.clusters.map(c=>c.size))/fit.analyzed_count;
-    const diagnostics=fit.hdbscan?[
+    const diagnostics=fit.gmm?[['Covariance model',fit.gmm.covariance_type],['Variance regularization',fit.gmm.regularization],['Converged starts',fit.gmm.converged_starts+' / '+fit.gmm.starts],['Mean normalized entropy',number(fit.gmm.mean_entropy)]]:fit.hdbscan?[
       ['Minimum cluster size',fit.hdbscan.min_cluster_size],['Density neighbors (including self)',fit.hdbscan.min_samples],
       ['Selection',fit.hdbscan.selection.toUpperCase()],['Assigned / unassigned passages',`${fit.hdbscan.assigned_count} / ${fit.hdbscan.unassigned_count}`],
       ['Silhouette coverage',`${partition.silhouette_count} of ${fit.analyzed_count} included passages`]
@@ -31,7 +31,7 @@
       ['Restart agreement: mean / minimum ARI',`${fit.kmeans.mean_ari_to_selected.toFixed(3)} / ${fit.kmeans.min_ari_to_selected.toFixed(3)}`],
       ['K-means seed',fit.parameters.seed]
     ];
-    const description=fit.hdbscan?'HDBSCAN builds an exact mutual-reachability hierarchy, prunes branches below the minimum cluster size and selects dense groups. No cluster count is forced. Silhouette excludes unassigned passages and requires at least two groups. Membership strength describes density within the selected hierarchy; it is not calibrated confidence or relevance.':
+    const description=fit.gmm?'Gaussian mixtures use regularized diagonal or spherical covariance and the highest-likelihood converged start. Map colors use highest model-conditioned membership. All soft memberships remain available; no noise category is inferred.':fit.hdbscan?'HDBSCAN builds an exact mutual-reachability hierarchy, prunes branches below the minimum cluster size and selects dense groups. No cluster count is forced. Silhouette excludes unassigned passages and requires at least two groups. Membership strength describes density within the selected hierarchy; it is not calibrated confidence or relevance.':
       fit.pam?'PAM minimizes total Euclidean distance to actual passage medoids using BUILD and improving SWAP steps. The result is a single-swap local optimum; global optimality is not guaranteed.':
       fit.hierarchical?`Hierarchical clustering uses ${fit.hierarchical.linkage} linkage and an exact-k cut. ${fit.hierarchical.height_definition}.`:
       'K-means uses Euclidean distance, k-means++ initialization and the lowest-inertia converged result from ten starts.';
@@ -76,12 +76,13 @@
         ${fit.pam||fit.hierarchical||fit.hdbscan?'<p class="method-note">This clustering method is deterministic for fixed scores and source order. Ties can depend on row order. Grouped stability measures sensitivity to omitted source groups; repeated identical fits are not independent evidence.</p>':''}
         ${fit.hdbscan?'<p class="method-note">Equal reachability distances can produce different binary merge orders across implementations, affecting assignments or membership strengths. The JSON retains the exact tree and tie rule. Tree selection stability differs from the grouped resampling assessment below.</p>':''}
       </details>
+      ${fit.gmm?root.UNGaussianView.render(fit,records,table):''}
       ${fit.hierarchical?root.UNHierarchyView.render(fit,records,table):''}
       ${fit.fidelity?root.UNComparisonView.fidelity(fit,table):''}
       ${rep.component_terms?`<details><summary>LSA component vocabulary</summary><p class="method-note">Largest positive and negative term loadings on each axis. Signs can flip without changing the representation; these are descriptors, not reviewed themes or stances.</p>${table(['Component','Positive loadings','Negative loadings'],rep.component_terms.map(c=>['LS '+c.component,c.positive.map(t=>t.term+' ('+t.weight.toFixed(3)+')').join(' · '),c.negative.map(t=>t.term+' ('+t.weight.toFixed(3)+')').join(' · ')||'None']))}</details>`:''}
       ${fit.stability?root.UNStabilityView.render(fit.stability,records,table):''}
       ${fit.hdbscan?`<details class="unassigned-passages"><summary>Unassigned passages · ${fit.hdbscan.unassigned_count}</summary><p class="method-note">These passages were analyzed. Zero-term exclusions are listed separately. No unassigned pool is treated as a cluster.</p>${fit.points.filter(p=>p.cluster===0).map(p=>{const r=byId.get(p.id);return `<details><summary>${esc(r.country)} · ${esc(r.date)} · ${esc(p.id)}</summary><blockquote>${esc(r.text)}</blockquote><a href="${esc(r.source_url)}" target="_blank" rel="noopener noreferrer">Open unassigned passage source ↗</a></details>`;}).join('')||'<p>Every usable passage was assigned under these settings.</p>'}</details>`:''}
-      <h4>Cluster vocabulary and examples</h4><p class="method-note">Terms are ranked by mean TF-IDF weight within each group. They are descriptors, not reviewed topic labels.</p>
+      <h4>Cluster vocabulary and examples</h4><p class="method-note">${fit.gmm?'Terms are ranked by membership-weighted mean TF-IDF for each component. Counts and map colors use highest-membership assignments.':'Terms are ranked by mean TF-IDF weight within each group.'} They are descriptors, not reviewed topic labels.</p>
       <div class="cluster-cards">${fit.clusters.map(c=>{const r=byId.get(c.representative_id);return `<div><h4>Cluster ${c.cluster} <span>· ${c.size} passages</span></h4><p>${c.terms.map(t=>esc(t.term)).join(' · ')}</p><p class="method-note">${esc(c.representative_role||'Nearest passage to the centroid')}: ${esc(r.country)} · ${esc(r.date)}</p><blockquote>${esc(r.text.slice(0,300))}${r.text.length>300?'…':''}</blockquote><a href="${esc(r.source_url)}" target="_blank" rel="noopener noreferrer">Open source ↗</a></div>`;}).join('')}</div>
       <details><summary>Point assignments and coordinates</summary>${table(['Passage','Country','Cluster',...(fit.hdbscan?['Membership strength']:[]),axis+' 1',axis+' 2','UMAP 1','UMAP 2'],fit.points.map(p=>[p.id,byId.get(p.id).country,p.cluster||'Unassigned',...(fit.hdbscan?[number(p.membership_strength)]:[]),p[method][0].toFixed(4),p[method].length>1?p[method][1].toFixed(4):'Not retained',...p.umap.map(v=>v.toFixed(4))]))}</details>
       </section>`;

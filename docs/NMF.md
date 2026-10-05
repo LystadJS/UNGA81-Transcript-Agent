@@ -132,6 +132,7 @@ See [validation evidence](nmf-validation.json) and [comparison data](nmf-compari
    level of detail instead of choosing the lowest in-sample residual.
 3. Expand beyond six meeting groups before making stronger stability claims.
    Audio/source verification remains a separate task for suspected transcript issues.
-4. Proceed to regularized Gaussian mixtures on the existing retained PCA/LSA
-   representations, with covariance constraints, soft membership and the same
-   inclusion and grouped-refit checks. Keep component naming separate.
+4. [Regularized Gaussian mixtures](GMM.md) are now available on the existing
+   retained PCA/LSA representations, with covariance constraints, soft membership
+   and the same inclusion and grouped-refit checks. Compare sensitivity before
+   interpreting either model; keep component naming separate.

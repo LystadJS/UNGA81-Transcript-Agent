@@ -7,6 +7,7 @@
   const M = typeof module !== 'undefined' && module.exports ? require('./representation-metrics.js') : root.UNRepresentationMetrics;
   const B = typeof module !== 'undefined' && module.exports ? require('./cluster-algorithms.js') : root.UNClusterAlgorithms;
   const H = typeof module !== 'undefined' && module.exports ? require('./hdbscan-core.js') : root.UNHDBSCAN;
+  const G = typeof module !== 'undefined' && module.exports ? require('./gmm-core.js') : root.UNGaussianMixture;
   const {DEFAULTS, options} = O;
   const MAX_RECORDS = 600;
   // Mulberry32: local generators prevent UMAP from consuming k-means random state.
@@ -84,10 +85,11 @@
     if(!['pca','lsa'].includes(method))throw Error('Unknown text representation.');
     return method==='lsa'?L.lsa(vectors,components,descriptors):pca(vectors,components);
   }
-  const algorithmName=o=>o.algorithm==='hdbscan'?'HDBSCAN':o.algorithm==='pam'?'PAM':o.algorithm==='hierarchical'?`Hierarchical (${o.linkage})`:'k-means';
+  const algorithmName=o=>o.algorithm==='gmm'?`Gaussian mixture (${o.gmm.covariance})`:o.algorithm==='hdbscan'?'HDBSCAN':o.algorithm==='pam'?'PAM':o.algorithm==='hierarchical'?`Hierarchical (${o.linkage})`:'k-means';
   async function fitPartition(x,value,progress=async()=>{}){
     const o=options(value);
     if(o.algorithm==='hdbscan')return H.fit(x,o.hdbscan,progress);
+    if(o.algorithm==='gmm')return G.fit(x,{...o.gmm,k:o.k,seed:o.seed},progress);
     if(o.algorithm==='kmeans'){
       const runs=await fitKmeans(x,o.k,o.seed,progress);
       if(!runs.length)return {skipped:'k-means could not form the requested number of stable non-empty clusters. Reduce the cluster count.'};
@@ -111,10 +113,17 @@
     await progress(name+' · representing the selected text');const representation=represent(v,o.components,method);
     if(!representation.rank)return {...base,excluded,skipped:'The TF-IDF vectors have no measurable variation.'};
     const x=representation.scores,best=await fitPartition(x,o,progress);
-    if(best.skipped)return {...base,excluded,skipped:best.skipped};
-    const assigned=best.labels.flatMap((c,i)=>c>=0?[i]:[]),k=new Set(best.labels.filter(c=>c>=0)).size;
-    await progress('Checking clustering separation');const sil=k>=2&&assigned.length>k?silhouette(assigned.map(i=>x[i]),assigned.map(i=>best.labels[i])):null;
+    if(best.skipped)return {...base,excluded,skipped:best.skipped,...(best.diagnostics?{fit_diagnostics:best.diagnostics}:{})};
+    const assigned=best.labels.flatMap((c,i)=>c>=0?[i]:[]),hardK=new Set(best.labels.filter(c=>c>=0)).size,k=o.algorithm==='gmm'?o.k:hardK;
+    await progress('Checking clustering separation');const sil=hardK>=2&&assigned.length>hardK?silhouette(assigned.map(i=>x[i]),assigned.map(i=>best.labels[i])):null;
     const summaries=Array.from({length:k},(_,c)=>{const indices=best.labels.flatMap((label,i)=>label===c?[i]:[]),terms=new Map();
+      if(o.algorithm==='gmm'){
+        const mass=best.diagnostics.soft_counts[c];
+        for(let i=0;i<v.length;i++)for(const [term,w]of v[i])terms.set(term,(terms.get(term)||0)+best.responsibilities[i][c]*w);
+        const ordered=selected.map((r,i)=>({id:r.id,index:i,membership:best.responsibilities[i][c]})).sort((a,b)=>b.membership-a.membership||a.index-b.index);
+        return {cluster:c+1,size:indices.length,soft_count:mass,representative_id:ordered[0].id,representative_role:'Highest model-conditioned membership (may be tied)',
+          sources:ordered.slice(0,5).map(({index,...r})=>r),terms:[...terms].map(([term,sum])=>({term,mean:sum/mass})).sort((a,b)=>b.mean-a.mean||a.term.localeCompare(b.term)).slice(0,8)};
+      }
       const center=best.centers?.[c]||x[0].map((_,d)=>indices.reduce((sum,i)=>sum+x[i][d],0)/indices.length);
       for(const i of indices)for(const [term,w] of v[i])terms.set(term,(terms.get(term)||0)+w);
       const representative=best.medoids?.[c]??indices.reduce((a,i)=>d2(x[i],center)<d2(x[a],center)?i:a,indices[0]);
@@ -138,6 +147,7 @@
       umap:{library:'umap-js 1.4.0',neighbors,requested_neighbors:o.neighbors,min_dist:o.minDist,spread:1,epochs:count,seed:o.umapSeed,metric:`Euclidean on the same ${name} scores`,initialization:'random',role:'Display only; no labels supplied'},
       fidelity:M.assess(v,x,layout,selected.map(r=>r.id)),
       clusters:summaries,points:selected.map((r,i)=>({id:r.id,text_sha256:r.text_sha256,cluster:best.labels[i]+1,[method]:x[i],umap:layout[i],
+        ...(o.algorithm==='gmm'?{memberships:best.responsibilities[i],...best.point_diagnostics[i],ambiguous:best.point_diagnostics[i].max_membership<o.gmm.ambiguity}:{}),
         ...(o.algorithm==='hdbscan'?{assignment_status:best.labels[i]<0?'unassigned':'assigned',membership_strength:best.strengths[i]}:{})}))};
     if(o.stability.enabled){
       const S=typeof module!=='undefined'&&module.exports?require('./cluster-stability.js'):root.UNClusterStability;
@@ -169,8 +179,9 @@
       }
     }
     const shared=left.points.flatMap((p,i)=>!noise||(p.cluster>0&&right.points[i].cluster>0)?[i]:[]);
-    const enough=!noise||(shared.length>=2&&new Set(shared.map(i=>left.points[i].cluster)).size>=2&&new Set(shared.map(i=>right.points[i].cluster)).size>=2);
+    const enough=(!noise&&left.algorithm!=='gmm')||(shared.length>=2&&new Set(shared.map(i=>left.points[i].cluster)).size>=2&&new Set(shared.map(i=>right.points[i].cluster)).size>=2);
     return {...base,between_cluster_ari:enough?ari(shared.map(i=>left.points[i].cluster),shared.map(i=>right.points[i].cluster)):null,
+      ...(left.algorithm==='gmm'?{soft_agreement:G.align(left.points.map(p=>p.memberships),right.points.map(p=>p.memberships)),ari_scope:'Highest-membership assignments, requiring two represented groups in each fit. Information criteria cannot be compared across representations.'}:{}),
       ...(noise?{membership_row_labels:rowLabels,membership_column_labels:columnLabels,ari_scope:'Passages assigned in both representations; at least two represented clusters in each',ari_passages:shared.length,assignment_status_agreement:left.points.filter((p,i)=>(p.cluster>0)===(right.points[i].cluster>0)).length/left.points.length}:{}),
       membership_counts:matrix,neighbors,mean_neighbor_overlap:pointComparisons.reduce((sum,p)=>sum+p.neighbor_overlap,0)/pointComparisons.length,
       points:pointComparisons,paired_stability:{count:paired.length,samples:paired,

@@ -1,0 +1,287 @@
+{
+  "status": "PASS numerical, regression and local browser acceptance; live deployment pending",
+  "date": "2026-10-05",
+  "engine": "browser-descriptive-1.9.0",
+  "corpus_sha256": "469f5d00c84a20b735f2cc23e1688ea1868fa38da90e611894b0d759c282deca",
+  "reviewed_mask_sha256": "71a62fb608f8e9437fd8f535e721eb119af3b67da2e05d57c0d2576a8566f8fe",
+  "human_confirmed": 460,
+  "single_reviewer": true,
+  "original_bytes_preserved": true,
+  "sensitivity_grid_fits": 96,
+  "detailed_full_data_fits": 12,
+  "successful_grouped_refits": 360,
+  "unique_omission_sets_per_policy": 6,
+  "independent_EM_and_soft_reference": {
+    "status": "PASS",
+    "sklearn_25_iteration_fixtures": [
+      "diag",
+      "spherical"
+    ],
+    "live_fits": [
+      {
+        "file": "full-diag.json",
+        "representation": "pca",
+        "passages": 458,
+        "independent_EM_max_posterior_error": 1.454392162258955e-14,
+        "soft_refits_checked": 30
+      },
+      {
+        "file": "full-diag.json",
+        "representation": "lsa",
+        "passages": 458,
+        "independent_EM_max_posterior_error": 7.743805596760467e-14,
+        "soft_refits_checked": 30
+      },
+      {
+        "file": "full-spherical.json",
+        "representation": "pca",
+        "passages": 458,
+        "independent_EM_max_posterior_error": 1.6153745008296028e-14,
+        "soft_refits_checked": 30
+      },
+      {
+        "file": "full-spherical.json",
+        "representation": "lsa",
+        "passages": 458,
+        "independent_EM_max_posterior_error": 7.521760991835436e-15,
+        "soft_refits_checked": 30
+      },
+      {
+        "file": "inclusive-diag.json",
+        "representation": "pca",
+        "passages": 198,
+        "independent_EM_max_posterior_error": 1.3766765505351941e-14,
+        "soft_refits_checked": 30
+      },
+      {
+        "file": "inclusive-diag.json",
+        "representation": "lsa",
+        "passages": 198,
+        "independent_EM_max_posterior_error": 3.558264793923627e-14,
+        "soft_refits_checked": 30
+      },
+      {
+        "file": "inclusive-spherical.json",
+        "representation": "pca",
+        "passages": 198,
+        "independent_EM_max_posterior_error": 5.2735593669694936e-15,
+        "soft_refits_checked": 30
+      },
+      {
+        "file": "inclusive-spherical.json",
+        "representation": "lsa",
+        "passages": 198,
+        "independent_EM_max_posterior_error": 6.8833827526759706e-15,
+        "soft_refits_checked": 30
+      },
+      {
+        "file": "substantive-diag.json",
+        "representation": "pca",
+        "passages": 194,
+        "independent_EM_max_posterior_error": 3.774758283725532e-15,
+        "soft_refits_checked": 30
+      },
+      {
+        "file": "substantive-diag.json",
+        "representation": "lsa",
+        "passages": 194,
+        "independent_EM_max_posterior_error": 3.4083846855992306e-14,
+        "soft_refits_checked": 30
+      },
+      {
+        "file": "substantive-spherical.json",
+        "representation": "pca",
+        "passages": 194,
+        "independent_EM_max_posterior_error": 4.773959005888173e-15,
+        "soft_refits_checked": 30
+      },
+      {
+        "file": "substantive-spherical.json",
+        "representation": "lsa",
+        "passages": 194,
+        "independent_EM_max_posterior_error": 8.215650382226158e-15,
+        "soft_refits_checked": 30
+      }
+    ]
+  },
+  "independent_hard_stability_reference": [
+    {
+      "file": "full-diag.json",
+      "representation": "pca",
+      "successful_samples_checked": 30,
+      "passages": 458,
+      "pair_denominators_checked": 104653,
+      "max_ari_or_jaccard_error": 1.1102230246251565e-16,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "file": "full-diag.json",
+      "representation": "lsa",
+      "successful_samples_checked": 30,
+      "passages": 458,
+      "pair_denominators_checked": 104653,
+      "max_ari_or_jaccard_error": 1.1102230246251565e-16,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "file": "full-spherical.json",
+      "representation": "pca",
+      "successful_samples_checked": 30,
+      "passages": 458,
+      "pair_denominators_checked": 104653,
+      "max_ari_or_jaccard_error": 0.0,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "file": "full-spherical.json",
+      "representation": "lsa",
+      "successful_samples_checked": 30,
+      "passages": 458,
+      "pair_denominators_checked": 104653,
+      "max_ari_or_jaccard_error": 1.1102230246251565e-16,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "file": "inclusive-diag.json",
+      "representation": "pca",
+      "successful_samples_checked": 30,
+      "passages": 198,
+      "pair_denominators_checked": 19503,
+      "max_ari_or_jaccard_error": 5.551115123125783e-17,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "file": "inclusive-diag.json",
+      "representation": "lsa",
+      "successful_samples_checked": 30,
+      "passages": 198,
+      "pair_denominators_checked": 19503,
+      "max_ari_or_jaccard_error": 5.551115123125783e-17,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "file": "inclusive-spherical.json",
+      "representation": "pca",
+      "successful_samples_checked": 30,
+      "passages": 198,
+      "pair_denominators_checked": 19503,
+      "max_ari_or_jaccard_error": 1.1102230246251565e-16,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "file": "inclusive-spherical.json",
+      "representation": "lsa",
+      "successful_samples_checked": 30,
+      "passages": 198,
+      "pair_denominators_checked": 19503,
+      "max_ari_or_jaccard_error": 5.551115123125783e-17,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "file": "substantive-diag.json",
+      "representation": "pca",
+      "successful_samples_checked": 30,
+      "passages": 194,
+      "pair_denominators_checked": 18721,
+      "max_ari_or_jaccard_error": 6.938893903907228e-17,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "file": "substantive-diag.json",
+      "representation": "lsa",
+      "successful_samples_checked": 30,
+      "passages": 194,
+      "pair_denominators_checked": 18721,
+      "max_ari_or_jaccard_error": 5.551115123125783e-17,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "file": "substantive-spherical.json",
+      "representation": "pca",
+      "successful_samples_checked": 30,
+      "passages": 194,
+      "pair_denominators_checked": 18721,
+      "max_ari_or_jaccard_error": 1.1102230246251565e-16,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "file": "substantive-spherical.json",
+      "representation": "lsa",
+      "successful_samples_checked": 30,
+      "passages": 194,
+      "pair_denominators_checked": 18721,
+      "max_ari_or_jaccard_error": 1.1102230246251565e-16,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    }
+  ],
+  "local_browser": {
+    "status": "PASS",
+    "source": "http://127.0.0.1:59627/",
+    "reviewed_subset": 194,
+    "original_records": 460,
+    "components": 4,
+    "representations": 2,
+    "grouped_refits": 20,
+    "soft_membership_exports": true,
+    "single_spherical_reference": true,
+    "source_links": true,
+    "report_json_csv_original_exports": true,
+    "stale_exports_blocked": true,
+    "cancellation": true,
+    "wrong_review_rejected": true,
+    "mobile_overflow": false,
+    "browser_errors": [],
+    "uploads": [],
+    "switch_from_single_component_keeps_controls_valid": true,
+    "mixture_view_opened_and_inspected": true
+  },
+  "engineering_limits": [
+    "Shared tokenizer and initial k-means labels; independent EM and diagnostics.",
+    "Six source groups only; repeated omissions and changed initialization are sensitivity checks.",
+    "No human thematic confirmation or source authentication.",
+    "No frozen R D1 method or release-gate change."
+  ],
+  "nmf_browser_regression": {
+    "status": "PASS",
+    "source": "http://127.0.0.1:62970/",
+    "reviewed_subset": 194,
+    "original_records": 460,
+    "components": 6,
+    "grouped_refits": 10,
+    "source_links": true,
+    "report_json_csv_original_exports": true,
+    "stale_exports_blocked": true,
+    "cancellation": true,
+    "wrong_review_rejected": true,
+    "mobile_overflow": false,
+    "browser_errors": [],
+    "uploads": []
+  },
+  "regression_suites": [
+    "test_browser_analysis.cjs",
+    "test_browser_clusters.cjs",
+    "test_browser_stability.cjs",
+    "test_browser_lsa.cjs",
+    "test_browser_partitions.cjs",
+    "test_browser_hdbscan.cjs",
+    "test_browser_nmf.cjs",
+    "test_browser_gmm.cjs"
+  ],
+  "build": {
+    "files": 119,
+    "private_review_work_included": false
+  },
+  "public_mirror_files_hash_checked": 117
+}

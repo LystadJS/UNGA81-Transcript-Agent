@@ -52,6 +52,7 @@
     const byId=new Map(records.map(r=>[r.id,r]));
     html+=`<p>${s.successful} of ${s.attempted} samples fitted, retaining ${s.sample_group_count} of ${s.group_count} ${unit} per sample (${(100*s.effective_group_fraction).toFixed(1)}%). TF-IDF, ${esc((s.representation||'pca').toUpperCase())} and ${esc(s.algorithm_name||'k-means')} were refitted each time.</p>
       <p class="method-note">Agreement describes sensitivity to omitted groups. It does not establish a shared position, a validated category or performance on future speeches.</p>
+      ${s.algorithm==='gmm'?`<p class="method-note">${s.ari.count} samples have assessable highest-membership ARI; two represented groups are required. Jaccard and consensus also use highest memberships. The mixture section reports aligned soft changes separately.</p>`:''}
       ${s.algorithm==='hdbscan'?`<p class="method-note">${s.ari.count} samples have assessable ARI on passages assigned in both fits, with two represented clusters in each. Unassigned passages remain in pair exposure counts but never form a shared cluster. U marks passages unassigned in the reference, not another group.</p>`:''}
       ${s.warnings.map(w=>`<p class="warning">${esc(w)}</p>`).join('')}
       ${intervalChart(s)}

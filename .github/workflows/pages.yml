@@ -37,6 +37,8 @@ jobs:
         run: node tools/test_browser_hdbscan.cjs
       - name: Test NMF and reviewed inclusion
         run: node tools/test_browser_nmf.cjs
+      - name: Test Gaussian mixtures, soft membership and grouped refits
+        run: node tools/test_browser_gmm.cjs
       - name: Test passage masks, source identity and review decisions
         run: |
           python3 tools/test_passage_types.py

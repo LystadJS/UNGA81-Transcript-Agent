@@ -12,7 +12,7 @@
     ? require('./nmf-options.js') : root.UNNMFOptions;
   const PassageSelection = typeof module !== 'undefined' && module.exports
     ? require('./passage-selection.js') : root.UNPassageSelection;
-  const VERSION = 'browser-descriptive-1.8.0';
+  const VERSION = 'browser-descriptive-1.9.0';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters', 'nmf'];
 

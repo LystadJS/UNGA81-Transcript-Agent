@@ -10,19 +10,21 @@
     <link href="theme.css" rel="stylesheet">
     <link href="app.css" rel="stylesheet">
     <script defer src="app.js"></script>
-    <link href="analysis.css?v=1.8.0" rel="stylesheet">
+    <link href="analysis.css?v=1.9.0" rel="stylesheet">
     <script defer src="meeting-scopes.js?v=1.2.0"></script>
-    <script defer src="cluster-options.js?v=1.8.0"></script>
-    <script defer src="nmf-options.js?v=1.8.0"></script>
-    <script defer src="passage-selection.js?v=1.8.0"></script>
-    <script defer src="analysis-core.js?v=1.8.0"></script>
-    <script defer src="nmf-view.js?v=1.8.0"></script>
+    <script defer src="gmm-core.js?v=1.9.0"></script>
+    <script defer src="gmm-view.js?v=1.9.0"></script>
+    <script defer src="cluster-options.js?v=1.9.0"></script>
+    <script defer src="nmf-options.js?v=1.9.0"></script>
+    <script defer src="passage-selection.js?v=1.9.0"></script>
+    <script defer src="analysis-core.js?v=1.9.0"></script>
+    <script defer src="nmf-view.js?v=1.9.0"></script>
     <script defer src="collector.js?v=1.2.0"></script>
-    <script defer src="stability-view.js?v=1.8.0"></script>
-    <script defer src="comparison-view.js?v=1.8.0"></script>
-    <script defer src="hierarchy-view.js?v=1.8.0"></script>
-    <script defer src="cluster-view.js?v=1.8.0"></script>
-    <script defer src="analysis-ui.js?v=1.8.1"></script>
+    <script defer src="stability-view.js?v=1.9.0"></script>
+    <script defer src="comparison-view.js?v=1.9.0"></script>
+    <script defer src="hierarchy-view.js?v=1.9.0"></script>
+    <script defer src="cluster-view.js?v=1.9.0"></script>
+    <script defer src="analysis-ui.js?v=1.9.0"></script>
   </head>
 
   <body>
@@ -209,8 +211,18 @@
           <div id="clusterSettings" hidden>
             <p class="hint">Choose a representation and clustering method, then inspect the groups and their sources. Up to 600 passages; all included passages enter each full-data fit.</p>
             <label>Text representation<select id="representation"><option value="pca">PCA — centered TF-IDF</option><option value="lsa">LSA — uncentered truncated SVD</option><option value="compare">Compare PCA and LSA</option></select></label>
-            <label>Clustering method<select id="clusterAlgorithm"><option value="kmeans">k-means — centroid groups</option><option value="pam">PAM — representative passages</option><option value="hierarchical">Hierarchical — nested groups</option><option value="hdbscan">HDBSCAN — dense groups, with unassigned passages</option></select></label>
+            <label>Clustering method<select id="clusterAlgorithm"><option value="kmeans">k-means — centroid groups</option><option value="pam">PAM — representative passages</option><option value="hierarchical">Hierarchical — nested groups</option><option value="hdbscan">HDBSCAN — dense groups, with unassigned passages</option><option value="gmm">Gaussian mixtures — overlapping memberships</option></select></label>
             <label id="linkageLabel" hidden>Linkage<select id="clusterLinkage"><option value="ward">Ward — within-group variation</option><option value="average">Average — mean pairwise distance</option></select></label>
+            <div id="gmmSettings" hidden>
+              <div class="analysis-grid">
+                <label>Covariance model<select id="gmmCovariance"><option value="diag">Diagonal — separate spread on each axis</option><option value="spherical">Spherical — equal spread across axes</option></select></label>
+                <label>Variance regularization<input id="gmmRegularization" type="number" min="0.00000001" max="0.1" step="any" value="0.0001"></label>
+                <label>Starting points<input id="gmmStarts" type="number" min="1" max="10" step="1" value="5"></label>
+                <label>Iteration limit<input id="gmmIterations" type="number" min="10" max="1000" step="10" value="300"></label>
+                <label>Inspect memberships below<input id="gmmAmbiguity" type="number" min="0.5" max="0.95" step="0.05" value="0.6"></label>
+              </div>
+              <p class="hint">The variance setting adds a floor in retained-score units. Mixtures retain overlapping memberships; the inspection threshold never excludes a passage. Use one component as a single-Gaussian reference. Grouped stability refits the representation and mixture together.</p>
+            </div>
             <div id="hdbscanSettings" hidden>
               <div class="analysis-grid">
                 <label>Minimum group size<input id="hdbMinClusterSize" type="number" min="2" max="600" step="1" value="15"></label>
@@ -225,7 +237,7 @@
                 <label>Clusters (k)<input id="clusterCount" type="number" min="2" max="12" step="1" value="4"></label>
                 <label>UMAP neighbors<input id="umapNeighbors" type="number" min="2" max="100" step="1" value="15"></label>
                 <label>UMAP minimum distance<input id="umapDistance" type="number" min="0" max="0.99" step="0.01" value="0.1"></label>
-                <label>K-means seed<input id="clusterSeed" type="number" min="0" max="4294967295" step="1" value="42"></label>
+                <label><span id="clusterSeedLabel">K-means seed</span><input id="clusterSeed" type="number" min="0" max="4294967295" step="1" value="42"></label>
                 <label>UMAP seed<input id="umapSeed" type="number" min="0" max="4294967295" step="1" value="42"></label>
               </div>
               <p class="hint">Components are capped at each representation's available rank. UMAP settings affect the display only. Comparison uses identical settings for both fits; enabling stability also uses identical group samples.</p>
@@ -412,6 +424,7 @@
         <h2>Reports &amp; reference</h2>
 
         <div class="report-grid">
+          <a class="report" href="gmm-audit.html"><strong>Gaussian mixture comparison</strong><p>Compare memberships, covariance assumptions and sensitivity across reviewed subsets.</p></a>
           <a class="report" href="nmf-audit.html"><strong>NMF component comparison</strong><p>Inspect overlapping components, source examples and sensitivity to passage inclusion.</p></a>
           <a class="report" href="passage-audit.html">
             <h3>Passage composition &amp; clustering</h3>

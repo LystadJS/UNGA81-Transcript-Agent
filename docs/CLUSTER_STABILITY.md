@@ -181,7 +181,11 @@ checks, not external validation of diplomatic categories.
    sensitivity and grouped refits. All 460 [passage-type choices](PASSAGE_TYPES.md)
    are confirmed; full, substantive and broader inclusion policies are compared.
    Component names remain unreviewed.
-6. **Next method:** regularized Gaussian mixture models with model-based membership diagnostics.
+6. **Complete:** [regularized Gaussian mixtures](GMM.md) on both representations,
+   diagonal/spherical covariance, posterior memberships, ambiguity diagnostics,
+   start sensitivity and aligned soft-membership changes in whole-group refits.
+7. **Recommended next:** audit display sensitivity across UMAP settings and seeds
+   using existing neighborhood diagnostics before adding another display method.
 
 Neighborhood overlap, trustworthiness and continuity now accompany representation
 comparisons. Further display sensitivity checks, metric MDS, spectral

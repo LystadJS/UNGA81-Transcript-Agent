@@ -7,7 +7,7 @@ executive email theme and Windows-friendly package paths.
 to collect live UN transcripts by topic, dates and speaker region, run selectable
 descriptive methods, download visual reports, and review assigned packets without
 local installation. See the [report builder guide](docs/BROWSER_ANALYSIS.md).
-The selectable text-cluster workflow uses PCA or LSA representation, k-means, PAM, hierarchical clustering or HDBSCAN on those
+The selectable text-cluster workflow uses PCA or LSA representation, k-means, PAM, hierarchical clustering, HDBSCAN or Gaussian mixtures on those
 scores, and a separate UMAP display with source links and exported diagnostics.
 Compare both representations on the same passages, including cluster membership
 and neighborhood preservation. See the [PCA/LSA comparison guide](docs/LSA_COMPARISON.md).
@@ -25,6 +25,10 @@ retains unassigned sources and conditional stability denominators.
 with source examples, mixture exports and whole-group refits. The
 [NMF comparison](https://lystadjs.github.io/un/transcript-agent/nmf-audit.html)
 compares four, six and eight components across the same reviewed inclusion policies.
+[Gaussian mixtures](docs/GMM.md) add conditional soft memberships, ambiguity diagnostics,
+diagonal/spherical covariance, and aligned membership sensitivity. The
+[mixture comparison](https://lystadjs.github.io/un/transcript-agent/gmm-audit.html)
+records 96 settings checks and 360 grouped refits across reviewed inclusion policies.
 Optional grouped resampling refits TF-IDF, the chosen representation and clustering method, then reports cluster
 stability, consensus pair coverage and passages to inspect. See the
 [stability guide and implementation sequence](docs/CLUSTER_STABILITY.md).

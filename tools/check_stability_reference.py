@@ -36,7 +36,7 @@ def check(path, representation=None):
         labels = np.array(run["labels"])
         ref = reference[indices]
         shared=(ref>0)&(labels>=0) if noise else np.ones(len(labels),dtype=bool)
-        assessable=not noise or (shared.sum()>=2 and len(np.unique(ref[shared]))>=2 and len(np.unique(labels[shared]))>=2)
+        assessable=not (noise or fit.get("algorithm")=="gmm") or (shared.sum()>=2 and len(np.unique(ref[shared]))>=2 and len(np.unique(labels[shared]))>=2)
         if assessable:
             errors.append(abs(adjusted_rand_score(ref[shared], labels[shared]) - run["ari"]))
         else:
