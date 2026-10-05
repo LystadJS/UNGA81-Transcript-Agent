@@ -18,6 +18,7 @@
   let countries = [];
   let controller = null;
   let corpus = null;
+  let importedCorpusFile = null;
   let result = null;
   let ready = false;
   let stale = false;
@@ -603,6 +604,7 @@
       el('analysisOutput').hidden = true;
       result = null;
       corpus = null;
+      importedCorpusFile = null;
       stale = false;
 
       if (el('corpusSource').value === 'import') {
@@ -615,6 +617,7 @@
 
         const savedText=await file.text();
         corpus = UNAnalysis.validateCorpus(JSON.parse(savedText.replace(/^\uFEFF/,'')));
+        importedCorpusFile = file;
 
         for (const record of corpus.records) {
           if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
@@ -667,6 +670,7 @@
     } catch (error) {
       result = null;
       corpus = null;
+      importedCorpusFile = null;
       el('analysisOutput').hidden = true;
 
       status(error.name === 'AbortError'
@@ -757,7 +761,7 @@
 
   el('exportCorpus').onclick = () => {
     if (corpus && !stale) {
-      save(JSON.stringify(corpus), 'un-transcripts.json', 'application/json');
+      save(importedCorpusFile || JSON.stringify(corpus), 'un-transcripts.json', 'application/json');
     }
   };
 

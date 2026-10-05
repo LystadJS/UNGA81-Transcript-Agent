@@ -14,7 +14,9 @@ For the reviewed substantive subset, import the original saved collection, choos
 the reviewed inclusion policy, and load the completed passage review JSON. The
 browser verifies the exact collection bytes, complete source ID/text-hash coverage,
 explicit decisions and reviewer timestamps. **Save transcripts keeps all original
-records.** The analysis records the selected policy and excluded IDs separately.
+records, and imported collections retain their exact file bytes.** This preserves
+the review hash through download and reimport, including whitespace and a byte-order
+mark. The analysis records the selected policy and excluded IDs separately.
 Review files and transcript text are processed locally, without submission.
 
 ## Method and interpretation
