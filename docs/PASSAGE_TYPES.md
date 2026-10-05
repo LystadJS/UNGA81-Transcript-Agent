@@ -184,7 +184,8 @@ mask and leaves the corpus, previous mask and review file intact.
 source integrity and review import, Node comparison checks, and offline browser
 acceptance of saving/resuming a synthetic decision, rejecting a mismatched file,
 source filters and desktop/mobile presentation. The actual mask still has zero
-human decisions. Original corpus bytes, each text hash, exact ordered subset
+human decisions. Both GitHub deployments passed, and the same browser
+checks passed against the published comparison. Original corpus bytes, each text hash, exact ordered subset
 membership, assignment totals and the shared meeting schedule were checked.
 
 Independent Python reconstruction reproduced all ARI/Jaccard and pair counts

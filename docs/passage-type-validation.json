@@ -340,5 +340,28 @@
     "HDBSCAN ARI is conditional on shared assigned observations and assessable samples; all-unassigned fits still enter pair exposure.",
     "Only six meeting groups; repetitions are not independent new evidence.",
     "Different tied merge orders produce limited cross-library assignment/strength differences; every reference noise mask agrees."
-  ]
+  ],
+  "published_browser": {
+    "status": "PASS",
+    "packet_passages": 460,
+    "synthetic_choices": 1,
+    "source_review_saved_and_resumed": true,
+    "wrong_corpus_rejected": true,
+    "substantive_unassigned_filter": true,
+    "report_fit_rows": 30,
+    "charts": 2,
+    "mobile_document_overflow": false,
+    "browser_errors": []
+  },
+  "deployment": {
+    "source_commit": "dc032aa39cfeb2b39a7b8981944cc901caa17e4c",
+    "source_workflow": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37272726446",
+    "source_status": "success",
+    "website_commit": "6d3d0c280820495202cda36aecc10f60ee2427c6",
+    "website_workflow": "https://github.com/LystadJS/LystadJS.github.io/actions/runs/37272729485",
+    "website_status": "success",
+    "report_url": "https://lystadjs.github.io/un/transcript-agent/passage-audit.html",
+    "http_status": 200,
+    "public_mirror_hashes_checked": 108
+  }
 }
