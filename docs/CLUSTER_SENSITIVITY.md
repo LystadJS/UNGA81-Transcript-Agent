@@ -110,3 +110,10 @@ Reproduce both grids with `tools/inspect_cluster_settings.cjs`; supply the saved
 collection and an output JSON path, adding `--density` for the second grid. These
 are engineering and source-inspection results, suitable to share with the stated
 caveats, not a released decision rule or reviewed diplomatic categorization.
+
+## Reviewed follow-up (October 5, 2026)
+
+The earlier recommendations above are now completed: all 460 passage-type choices
+were explicitly confirmed and the fixed comparison rerun. See the [reviewed audit](PASSAGE_TYPES.md)
+and [NMF comparison](NMF.md), including four-, six- and eight-component source examples.
+The original grids remain historical evidence; no setting was tuned to restore separation.

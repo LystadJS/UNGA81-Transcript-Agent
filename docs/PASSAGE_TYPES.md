@@ -3,18 +3,22 @@
 **The substantive subset has much weaker separation than the complete corpus.**
 The high full-corpus agreement scores do not establish thematic groups among
 speeches. This comparison keeps the original collection unchanged and records
-source-type decisions in a separate, provisional mask.
+source-type decisions in a separate mask. On October 5, 2026, the owner completed
+all 460 explicit decisions; the fixed comparison was rerun without provisional opt-in.
 
 Open the [visual comparison](https://lystadjs.github.io/un/transcript-agent/passage-audit.html).
-The [inclusion mask](passage-type-mask.json), [inspection notes](passage-type-inspections.json)
-and [comparison data](passage-type-comparison.json) preserve source IDs, hashes,
+The [reviewed inclusion mask](passage-type-reviewed-mask.json), [inspection notes](passage-type-inspections.json)
+and [reviewed comparison data](passage-type-reviewed-comparison.json) preserve source IDs, hashes,
 proposed types, exclusions, settings and denominators. No new thematic labels,
-model training or daily publication gate was introduced. NMF remains planned.
+supervised model training or daily publication gate was introduced. [NMF is now implemented](NMF.md).
+The original [provisional mask](passage-type-mask.json) and [comparison](passage-type-comparison.json) remain unchanged as historical evidence.
 
 ## Review status and source units
 
-This is **assistant-assisted screening, with zero human-confirmed passage types**.
-It is a completed provisional comparison, not a human-reviewed dataset.
+**All 460 passage types have explicit reviewer-declared confirmations.**
+The review changes `asset/k17/k17s3dutob#2` from uncertain to possible extraneous
+transcription. Its complete text is “Try again.” No inclusion membership changes.
+This is source-type review, not validated thematic labels or audio authentication.
 The owner remains the sole reviewer/finalizer; no independent agreement is claimed.
 Every record received a reproducible structural screen. Additional text inspection
 covered 319 records: 201 opening/middle/closing-window checks, 85 full short-text
@@ -32,15 +36,15 @@ authenticate them. A segment is not necessarily a complete national address.
 The substantive subset includes institutional addresses as well as national ones;
 194 segments must not be described as 194 countries or independently verified speeches.
 
-| Proposed type | Segments | Strict subset | Broader boundary check |
+| Confirmed type | Segments | Strict subset | Broader boundary check |
 | --- | ---: | --- | --- |
 | Substantive address segment | 194 | Included | Included |
 | Chair/introduction/procedure | 229 | Excluded | Excluded |
 | Right of reply | 26 | Excluded | Excluded |
 | Mixed substantive/procedural segment | 3 | Excluded | Included |
 | Address fragment | 1 | Excluded | Included |
-| Possible extraneous transcription | 3 | Excluded | Excluded |
-| Uncertain/insufficient text | 4 | Excluded | Excluded |
+| Possible extraneous transcription | 4 | Excluded | Excluded |
+| Uncertain/insufficient text | 3 | Excluded | Excluded |
 
 Replies can contain substantive positions. Their exclusion defines the address
 comparison, not a judgment of irrelevance. Review them as a separate population
@@ -183,8 +187,7 @@ mask and leaves the corpus, previous mask and review file intact.
 [Validation evidence](passage-type-validation.json) includes six Python tests for
 source integrity and review import, Node comparison checks, and offline browser
 acceptance of saving/resuming a synthetic decision, rejecting a mismatched file,
-source filters and desktop/mobile presentation. The actual mask still has zero
-human decisions. Both GitHub deployments passed, and the same browser
+source filters and desktop/mobile presentation. Those historical tests used a provisional mask. The [reviewed validation](passage-type-reviewed-validation.json) records the new completed import and rerun. All 15 detailed numerical fit files (30 representations, 900 grouped refits) exactly match the earlier fit files; only type metadata changes. Both GitHub deployments passed, and the same browser
 checks passed against the published comparison. Original corpus bytes, each text hash, exact ordered subset
 membership, assignment totals and the shared meeting schedule were checked.
 
@@ -200,9 +203,17 @@ tied-order membership difference with the same noise mask. Both reference
 records preserve those differences rather than claiming universal label identity.
 
 **Share with caveats:** the comparison is reproducible exploratory evidence.
-Source types remain provisional; excerpts do not verify the full factual content
+Source types are now confirmed by the owner; excerpts do not verify the full factual content
 or audio. The smaller corpus, refitted representation, few meetings and conditional
-density agreement all limit interpretation. Confirm the mask's boundary decisions,
-consider replies separately and retain representative unassigned examples. Then
-implement NMF with source-linked components and the same full/subset sensitivity
-checks, without treating components as approved thematic labels.
+density agreement all limit interpretation. Consider replies separately and retain
+representative unassigned examples. Inspect the [NMF comparison](NMF.md) before
+assigning component names; passage-type confirmation does not approve themes.
+
+## Use the confirmed choices remotely
+
+In the browser workspace, choose **Saved collection**, load the original collection,
+then choose **Reviewed substantive addresses** (194) or the broader reviewed policy
+(198). Load the completed `passage-review.json`. The browser validates the exact
+collection hash, every ID/text hash, explicit decisions and reviewer timestamps.
+Incomplete or mismatched reviews stop the run. Save transcripts retains all 460
+original records; the analysis records excluded IDs separately.

@@ -156,6 +156,7 @@ Primary references: [scikit-learn HDBSCAN](https://scikit-learn.org/stable/modul
 [algorithm explanation](https://hdbscan.readthedocs.io/en/latest/how_hdbscan_works.html),
 and [parameter selection](https://hdbscan.readthedocs.io/en/latest/parameter_selection.html).
 
-Next, review a source-type inclusion mask and repeat the fixed comparison on
-substantive passages while retaining all raw records. NMF remains the next planned
-method; HDBSCAN membership alone does not supply a thematic label.
+The [reviewed passage comparison](PASSAGE_TYPES.md) now includes all 460 confirmed
+source types and repeated full/subset fits with originals preserved. [NMF](NMF.md)
+is implemented next in the sequence; neither HDBSCAN nor NMF supplies reviewed
+thematic labels. Regularized Gaussian mixtures remain next.

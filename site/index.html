@@ -10,16 +10,19 @@
     <link href="theme.css" rel="stylesheet">
     <link href="app.css" rel="stylesheet">
     <script defer src="app.js"></script>
-    <link href="analysis.css?v=1.7.0" rel="stylesheet">
+    <link href="analysis.css?v=1.8.0" rel="stylesheet">
     <script defer src="meeting-scopes.js?v=1.2.0"></script>
-    <script defer src="cluster-options.js?v=1.7.0"></script>
-    <script defer src="analysis-core.js?v=1.7.0"></script>
+    <script defer src="cluster-options.js?v=1.8.0"></script>
+    <script defer src="nmf-options.js?v=1.8.0"></script>
+    <script defer src="passage-selection.js?v=1.8.0"></script>
+    <script defer src="analysis-core.js?v=1.8.0"></script>
+    <script defer src="nmf-view.js?v=1.8.0"></script>
     <script defer src="collector.js?v=1.2.0"></script>
-    <script defer src="stability-view.js?v=1.7.0"></script>
-    <script defer src="comparison-view.js?v=1.7.0"></script>
-    <script defer src="hierarchy-view.js?v=1.7.0"></script>
-    <script defer src="cluster-view.js?v=1.7.0"></script>
-    <script defer src="analysis-ui.js?v=1.7.0"></script>
+    <script defer src="stability-view.js?v=1.8.0"></script>
+    <script defer src="comparison-view.js?v=1.8.0"></script>
+    <script defer src="hierarchy-view.js?v=1.8.0"></script>
+    <script defer src="cluster-view.js?v=1.8.0"></script>
+    <script defer src="analysis-ui.js?v=1.8.0"></script>
   </head>
 
   <body>
@@ -161,6 +164,11 @@
             </label>
 
             <p class="hint">Open a saved collection to work without downloading the transcripts again. The file stays on your device.</p>
+            <div id="reviewedSelection" hidden>
+              <label>Passage inclusion<select id="passagePolicy"><option value="full">Complete collection</option><option value="substantive">Reviewed substantive addresses</option><option value="inclusive">Reviewed addresses, mixed remarks and fragments</option></select></label>
+              <label>Completed passage review (.json)<input id="passageReviewFile" type="file" accept=".json,application/json"></label>
+              <p class="hint">Subset selection requires a confirmed decision for every passage in this exact saved collection. The original collection stays intact.</p>
+            </div>
           </details>
 
           <fieldset>
@@ -234,6 +242,23 @@
               <p class="hint">At least three groups are required. Group counts round up, with at least one group left out. Agreement measures consistency in these samples; it does not verify a political interpretation.</p>
             </div>
           </div>
+          <label class="check cluster-choice"><input id="nmfMethod" name="method" type="checkbox" value="nmf">NMF — overlapping components</label>
+          <div id="nmfSettings" hidden>
+            <p class="hint">Find recurring term combinations and inspect passages with overlapping weights. Uses nonnegative TF-IDF directly; up to 600 passages.</p>
+            <div class="analysis-grid">
+              <label>Components<input id="nmfComponents" type="number" min="2" max="12" value="6" step="1"></label>
+              <label>Starting points<input id="nmfStarts" type="number" min="1" max="5" value="3" step="1"></label>
+            </div>
+            <details><summary>NMF settings</summary><div class="analysis-grid">
+              <label>Iteration limit<input id="nmfIterations" type="number" min="50" max="1000" value="300" step="10"></label>
+              <label>Starting seed<input id="nmfSeed" type="number" min="0" max="4294967295" value="42" step="1"></label>
+            </div><p class="hint">The lowest reconstruction error is selected. Starting-point comparisons and convergence are included in the report.</p></details>
+            <label class="check"><input id="nmfStability" type="checkbox">Assess component stability</label>
+            <div id="nmfResampling" hidden><div class="analysis-grid">
+              <label>Keep passages together by<select id="nmfUnit"><option value="meeting">Meeting</option><option value="affiliation">Recorded speaker affiliation</option></select></label>
+              <label>Repetitions<input id="nmfReplicates" type="number" min="10" max="100" value="30" step="1"></label>
+            </div><p class="hint">Retain 80% of groups, leaving at least one out; seed 31415. Refit TF-IDF and NMF, align components by term weights, then compare shared passage mixtures. At least three groups are required.</p></div>
+          </div>
           <button id="runAnalysis" type="submit">Generate report</button>
           <button class="secondary" disabled id="cancelAnalysis" type="button">Cancel</button>
         </form>
@@ -250,6 +275,7 @@
             <button class="secondary" hidden id="exportClusters" type="button">Cluster data (.csv)</button>
             <button class="secondary" hidden id="exportConsensus" type="button">Consensus pairs (.csv)</button>
             <button class="secondary" hidden id="exportHierarchy" type="button">Hierarchy (.csv)</button>
+            <button class="secondary" hidden id="exportNMF" type="button">Component mixtures (.csv)</button>
             <button class="secondary" id="printAnalysis" type="button">Print / save PDF</button>
           </div>
 
@@ -386,9 +412,10 @@
         <h2>Reports &amp; reference</h2>
 
         <div class="report-grid">
+          <a class="report" href="nmf-audit.html"><strong>NMF component comparison</strong><p>Inspect overlapping components, source examples and sensitivity to passage inclusion.</p></a>
           <a class="report" href="passage-audit.html">
             <h3>Passage composition &amp; clustering</h3>
-            <p>Compare the complete corpus with provisional substantive-speech subsets.</p>
+            <p>Compare the complete corpus with reviewed substantive-speech subsets.</p>
             <span>Open comparison →</span>
           </a>
           <a class="report" href="reports/hlw-cuba/index.html">

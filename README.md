@@ -17,10 +17,14 @@ linkage, source-linked dendrograms and complete merge exports. See the
 HDBSCAN retains explicit unassigned passages, source links and assignment coverage
 in every report and export. See the [HDBSCAN guide](docs/HDBSCAN.md) and
 [source inspection and settings comparison](docs/CLUSTER_SENSITIVITY.md).
-The [passage-type audit](docs/PASSAGE_TYPES.md) records provisional inclusion
+The [passage-type audit](docs/PASSAGE_TYPES.md) records reviewed inclusion
 decisions separately and compares the complete corpus with substantive-only and
 broader boundary subsets. The [visual comparison](https://lystadjs.github.io/un/transcript-agent/passage-audit.html)
 retains unassigned sources and conditional stability denominators.
+[NMF](docs/NMF.md) fits overlapping components directly to nonnegative TF-IDF,
+with source examples, mixture exports and whole-group refits. The
+[NMF comparison](https://lystadjs.github.io/un/transcript-agent/nmf-audit.html)
+compares four, six and eight components across the same reviewed inclusion policies.
 Optional grouped resampling refits TF-IDF, the chosen representation and clustering method, then reports cluster
 stability, consensus pair coverage and passages to inspect. See the
 [stability guide and implementation sequence](docs/CLUSTER_STABILITY.md).

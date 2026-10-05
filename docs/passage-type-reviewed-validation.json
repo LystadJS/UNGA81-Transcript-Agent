@@ -1,0 +1,36 @@
+{
+  "status": "PASS reviewed decisions and fixed comparison",
+  "date": "2026-10-05",
+  "human_confirmed": 460,
+  "single_reviewer": true,
+  "original_bytes_preserved": true,
+  "review_file_sha256": "e3c358f3c46f92249da344ae67a2a95510f930e9e63144c232a453e4e3552a8c",
+  "mask_sha256": "71a62fb608f8e9437fd8f535e721eb119af3b67da2e05d57c0d2576a8566f8fe",
+  "changed_choices": [
+    {
+      "id": "asset/k17/k17s3dutob#2",
+      "before": "uncertain",
+      "after": "suspected_transcription_issue"
+    }
+  ],
+  "rerun_files_identical_to_provisional_models": [
+    "full-average.json",
+    "full-hdbscan.json",
+    "full-kmeans.json",
+    "full-pam.json",
+    "full-ward.json",
+    "inclusive-average.json",
+    "inclusive-hdbscan.json",
+    "inclusive-kmeans.json",
+    "inclusive-pam.json",
+    "inclusive-ward.json",
+    "substantive-average.json",
+    "substantive-hdbscan.json",
+    "substantive-kmeans.json",
+    "substantive-pam.json",
+    "substantive-ward.json"
+  ],
+  "full_fits": 30,
+  "group_refits": 900,
+  "prior_independent_reference_checks": "passage-type-validation.json (same numerical fit files; historical provisional record retained)"
+}

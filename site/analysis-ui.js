@@ -52,6 +52,8 @@
       end: el('endDate').value,
       region: el('region').value,
       scope: el('meetingScope').value,
+      nmf:{components:Number(el('nmfComponents').value),starts:Number(el('nmfStarts').value),maxIterations:Number(el('nmfIterations').value),seed:Number(el('nmfSeed').value),
+        stability:{enabled:el('nmfStability').checked,unit:el('nmfUnit').value,replicates:Number(el('nmfReplicates').value),fraction:0.8,seed:31415}},
       clustering: {representation:el('representation').value,algorithm:el('clusterAlgorithm').value,linkage:el('clusterLinkage').value,components:Number(el('pcaComponents').value), k:Number(el('clusterCount').value), neighbors:Number(el('umapNeighbors').value), minDist:Number(el('umapDistance').value), seed:Number(el('clusterSeed').value), umapSeed:Number(el('umapSeed').value),
         hdbscan:{minClusterSize:Number(el('hdbMinClusterSize').value),minSamples:Number(el('hdbMinSamples').value),selection:el('hdbSelection').value},
         stability:{enabled:el('stabilityEnabled').checked,unit:el('stabilityUnit').value,replicates:Number(el('stabilityReplicates').value),fraction:Number(el('stabilityFraction').value),seed:Number(el('stabilitySeed').value)}},
@@ -207,7 +209,7 @@
         <p>${esc(p.start)} through ${esc(p.end)} · ${esc(p.region)}</p>
         <p><strong>Meeting scope:</strong> ${esc(UNMeetingScopes.label(p.scope))}</p>
         <p>
-          ${all ? 'No topic filter; all available passages within the selected dates, scope, and region are included.'
+          ${all ? 'No topic filter; passages follow the selected dates, scope, region and inclusion policy.'
             : `Any phrase: ${esc(p.phrases.join(' | '))}. Exclusions: ${esc(p.exclude.join(' | ') || 'None')}.`}
         </p>
         <p class="method-note">
@@ -215,6 +217,7 @@
         </p>
     `;
 
+    if(report.passage_selection)html+=`<p class="warning">Reviewed inclusion: ${esc(report.passage_selection.policy==='substantive'?'substantive address segments':'substantive, mixed and fragment segments')}. ${report.passage_selection.eligible_after_type_filter} of ${report.passage_selection.eligible_before_type_filter} passages within the date, scope and region filters remain before deduplication. ${report.passage_selection.human_confirmed} explicit passage decisions; reviewer identity is self-declared. Original text is preserved.</p>`;
     const metrics = [
       [counts.input, 'Passages collected'],
       [counts.eligible, 'Unique passages analyzed'],
@@ -354,6 +357,7 @@
     }
 
     if (methods.clusters) html += UNClusterView.render(methods.clusters,report.matched,table,chart);
+    if (methods.nmf) html += UNNMFView.render(methods.nmf,report.matched,table);
 
     if (methods.tfidf) {
       html += `
@@ -479,7 +483,7 @@
       ? 'Partial collection' : 'Collection ready';
     const collected = `${prefix}: ${n.input} passages collected; ${n.eligible} unique passages within your filters.`;
 
-    if (!n.eligible) return collected + ' Check dates, speaker region, meeting scope, or the scope of the imported collection.';
+    if (!n.eligible) return collected + ' Check dates, speaker region, meeting scope, passage inclusion, or the scope of the imported collection.';
     if (report.parameters.mode === 'all') return collected + ' All passages mode — no topic filter.';
     if (!n.matched) return collected + ' No topic matches; leave Topic blank to include all passages.';
 
@@ -515,6 +519,7 @@
 
   el('corpusSource').onchange = () => {
     el('corpusFileLabel').hidden = el('corpusSource').value !== 'import';
+    el('reviewedSelection').hidden=el('corpusSource').value!=='import';
   };
 
   el('cancelAnalysis').onclick = () => controller?.abort();
@@ -544,9 +549,27 @@
   el('clusterAlgorithm').addEventListener('change',updateClusterControls);
   updateClusterControls();
 
+  function updateNMFControls(){
+    const active=el('nmfMethod').checked;el('nmfSettings').hidden=!active;
+    el('nmfSettings').querySelectorAll('input,select').forEach(e=>{e.disabled=!active||!!controller;});
+    el('nmfResampling').hidden=!el('nmfStability').checked;
+    el('nmfResampling').querySelectorAll('input,select').forEach(e=>{e.disabled=!active||!el('nmfStability').checked||!!controller;});
+  }
+  el('nmfMethod').addEventListener('change',updateNMFControls);el('nmfStability').addEventListener('change',updateNMFControls);updateNMFControls();
+  function runNMFWorker(records,vectors,options){
+    return new Promise((resolve,reject)=>{
+      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.8.0');
+      const finish=(fn,v)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(v);};
+      const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));signal.addEventListener('abort',abort,{once:true});
+      worker.onerror=()=>finish(reject,Error('NMF worker could not run. Reload the page or check browser permissions.'));
+      worker.onmessage=({data})=>{if(data.type==='progress')status(data.message);if(data.type==='result')finish(resolve,data.result);if(data.type==='error')finish(reject,Error(data.message));};
+      if(signal.aborted){abort();return;}worker.postMessage({records,vectors:vectors.map(v=>[...v]),options});
+    });
+  }
+
   function runClusterWorker(records,vectors,options,progress) {
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.7.0');
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.8.0');
       const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
       signal.addEventListener('abort',abort,{once:true});
@@ -590,7 +613,8 @@
           throw Error('Choose a collection JSON under 30 MB.');
         }
 
-        corpus = UNAnalysis.validateCorpus(JSON.parse(await file.text()));
+        const savedText=await file.text();
+        corpus = UNAnalysis.validateCorpus(JSON.parse(savedText.replace(/^\uFEFF/,'')));
 
         for (const record of corpus.records) {
           if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
@@ -598,6 +622,15 @@
           if (await UNCollector.sha(record.text) !== record.text_sha256) {
             throw Error('Text hash mismatch for ' + record.id);
           }
+        }
+        if(el('passagePolicy').value!=='full'){
+          const reviewFile=el('passageReviewFile').files[0];
+          if(!reviewFile||reviewFile.size>2000000)throw Error('Choose the completed passage review JSON under 2 MB.');
+          const reviewText=await reviewFile.text();
+          const digest=await crypto.subtle.digest('SHA-256',await file.arrayBuffer());
+          p.passageSelection={policy:el('passagePolicy').value,review:JSON.parse(reviewText.replace(/^\uFEFF/,'')),
+            corpus_sha256:[...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,'0')).join(''),review_sha256:await UNCollector.sha(reviewText)};
+          UNPassageSelection.validate(corpus,p.passageSelection);
         }
       } else {
         corpus = await UNCollector.collect(p, countries, {
@@ -616,7 +649,7 @@
         await pause();
 
         if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
-      }, runClusterWorker);
+      }, runClusterWorker, runNMFWorker);
 
       if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
 
@@ -624,6 +657,7 @@
       el('exportClusters').hidden=!clusterFits(result.methods.clusters).some(f=>f.points);
       el('exportConsensus').hidden=!clusterFits(result.methods.clusters).some(f=>f.stability?.consensus&&!f.stability.skipped);
       el('exportHierarchy').hidden=!clusterFits(result.methods.clusters).some(f=>f.hierarchical);
+      el('exportNMF').hidden=!result.methods.nmf?.points;
       el('analysisOutput').hidden = false;
       exportButtons().forEach(button => { button.disabled = false; });
 
@@ -646,6 +680,7 @@
       el('cancelAnalysis').disabled = true;
       updateTopicMode();
       updateClusterControls();
+      updateNMFControls();
     }
   };
 
@@ -706,6 +741,14 @@
     save('\uFEFF'+rows.map(row=>row.map(quote).join(',')).join('\r\n'),'un-hierarchy.csv','text/csv;charset=utf-8');
   };
 
+  el('exportNMF').onclick=()=>{
+    const f=result?.methods.nmf;if(!f?.points||stale)return;
+    const byId=new Map(result.matched.map(r=>[r.id,r]));
+    const rows=[['id','source_url','text_sha256',...f.components.map(c=>'component_'+c.component+'_weight'),...f.components.map(c=>'component_'+c.component+'_share')],
+      ...f.points.map(p=>[p.id,byId.get(p.id)?.source_url,p.text_sha256,...p.weights,...(p.shares||f.components.map(()=>''))])];
+    const cell=v=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,"'$&").replace(/"/g,'""')+'"';
+    save('\uFEFF'+rows.map(r=>r.map(cell).join(',')).join('\r\n'),'un-nmf-mixtures.csv','text/csv;charset=utf-8');
+  };
   el('exportResult').onclick = () => {
     if (result && !stale) {
       save(JSON.stringify(result, null, 2), 'un-analysis.json', 'application/json');

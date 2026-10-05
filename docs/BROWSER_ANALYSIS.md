@@ -2,7 +2,7 @@
 
 Open https://lystadjs.github.io/un/transcript-agent/#analyze.
 
-Current browser version: **1.7.0**. Text clustering offers k-means, PAM,
+Current browser version: **1.8.0**. Text clustering offers k-means, PAM,
 hierarchical Ward/average linkage and HDBSCAN on either PCA or LSA, including
 paired representation comparison and grouped stability. HDBSCAN preserves explicit
 unassigned passages and reports assignment coverage. See the
@@ -200,3 +200,11 @@ Primary implementation references: [ml-matrix](https://github.com/mljs/matrix),
 [UMAP paper](https://arxiv.org/abs/1802.03426). The JavaScript implementation uses
 random rather than spectral initialization; results are not asserted to match
 Python UMAP coordinates.
+
+## Reviewed inclusion and NMF
+
+Version 1.8.0 adds [NMF components](NMF.md), directly from nonnegative TF-IDF,
+with optional whole-group stability. It does not change PCA/LSA or clustering
+calculations. Saved collections can apply completed passage-type reviews to select
+substantive or broader address subsets, with original text and excluded IDs retained.
+See [passage review](PASSAGE_TYPES.md) for the exact-file validation contract.

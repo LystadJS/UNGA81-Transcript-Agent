@@ -8,9 +8,13 @@
 
   const ClusterOptions = typeof module !== 'undefined' && module.exports
     ? require('./cluster-options.js') : root.UNClusterOptions;
-  const VERSION = 'browser-descriptive-1.7.0';
+  const NMFOptions = typeof module !== 'undefined' && module.exports
+    ? require('./nmf-options.js') : root.UNNMFOptions;
+  const PassageSelection = typeof module !== 'undefined' && module.exports
+    ? require('./passage-selection.js') : root.UNPassageSelection;
+  const VERSION = 'browser-descriptive-1.8.0';
 
-  const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters'];
+  const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters', 'nmf'];
 
   const STOP = new Set(
     ('a an and are as at be been being but by can could did do does for from ' +
@@ -83,7 +87,8 @@
     }
 
     const clustering = p.methods.includes('clusters') ? ClusterOptions.options(p.clustering) : undefined;
-    return { ...p, topic, mode, phrases, exclude, ...(p.methods.includes('clusters')?{clustering}:{}) };
+    const nmf=p.methods.includes('nmf')?NMFOptions.options(p.nmf):undefined;
+    return { ...p, topic, mode, phrases, exclude, ...(p.methods.includes('clusters')?{clustering}:{}),...(nmf?{nmf}:{}) };
   }
 
 
@@ -220,13 +225,14 @@
   }
 
 
-  async function analyze(corpus, p, yieldProgress = async () => {}, runClusters) {
+  async function analyze(corpus, p, yieldProgress = async () => {}, runClusters, runNMF) {
     validateCorpus(corpus);
     p = parameters(p);
 
     // Apply committee, date, region and language restrictions before deduping.
     // This prevents out-of-scope text from changing denominators or matches.
-    const eligible = corpus.records.filter(record => (
+    const selection=PassageSelection.validate(corpus,p.passageSelection);
+    const beforeTypes = corpus.records.filter(record => (
       record.date >= p.start &&
       record.date <= p.end &&
       (p.region === 'All regions' || record.region === p.region) &&
@@ -234,6 +240,7 @@
       record.language === 'en'
     ));
 
+    const eligible=selection?beforeTypes.filter(r=>selection.selected.has(r.id)):beforeTypes;
     const records = [];
     const duplicates = [];
     const seen = new Map();
@@ -286,6 +293,7 @@
       matched,
       methods: {}
     };
+    if(selection){const {selected,...audit}=selection;result.passage_selection={...audit,eligible_before_type_filter:beforeTypes.length,eligible_after_type_filter:eligible.length,excluded_within_filters:beforeTypes.filter(r=>!selected.has(r.id)).map(r=>r.id)};}
 
     if (p.methods.includes('frequency')) {
       result.methods.frequency = distribution(records, 'region', ids);
@@ -314,10 +322,20 @@
     if (p.methods.includes('clusters') && matched.length>600) {
       result.methods.clusters = {parameters:p.clustering,skipped:'Clustering supports at most 600 selected passages. Narrow the dates, topic or region; no sampling was applied.'};
     }
+    if(p.methods.includes('nmf')&&matched.length>600)result.methods.nmf={parameters:p.nmf,skipped:'NMF supports at most 600 selected passages. Narrow the collection; no sampling was applied.'};
     if (p.methods.some(method => ['tfidf', 'similarity'].includes(method)) ||
+        (p.methods.includes('nmf')&&!result.methods.nmf) ||
         (p.methods.includes('clusters') && !result.methods.clusters)) {
       await yieldProgress('Calculating TF-IDF');
       const terms = tfidf(matched);
+
+      if(p.methods.includes('nmf')&&!result.methods.nmf){
+        const runner=runNMF||((records,vectors,settings,progress)=>{
+          if(typeof module==='undefined'||!module.exports)throw Error('NMF worker is unavailable. Reload the page.');
+          return require('./nmf-core.js').run(records,vectors,settings,progress);
+        });
+        result.methods.nmf=await runner(matched,terms.vectors,p.nmf,yieldProgress);
+      }
 
       if (p.methods.includes('clusters') && !result.methods.clusters) {
         const runner = runClusters || ((records,vectors,settings,progress) => {

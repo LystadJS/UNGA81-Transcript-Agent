@@ -1,0 +1,130 @@
+{
+  "status": "PASS local numerical, regression and browser checks; publication pending",
+  "date": "2026-10-05",
+  "engine": "browser-descriptive-1.8.0",
+  "corpus_sha256": "469f5d00c84a20b735f2cc23e1688ea1868fa38da90e611894b0d759c282deca",
+  "reviewed_mask_sha256": "71a62fb608f8e9437fd8f535e721eb119af3b67da2e05d57c0d2576a8566f8fe",
+  "human_confirmed": 460,
+  "single_reviewer": true,
+  "original_bytes_preserved": true,
+  "full_nmf_fits": 9,
+  "group_nmf_refits": 90,
+  "optimization_starts": 297,
+  "all_selected_fits_met_stopping_rule": true,
+  "unique_omission_sets_per_policy": 6,
+  "independent_reference": {
+    "status": "PASS",
+    "fixed_initialization_sklearn_mu_50_iterations": true,
+    "live_fits": [
+      {
+        "policy": "full",
+        "components": 4,
+        "passages": 458,
+        "residual": 19.155163652042685
+      },
+      {
+        "policy": "full",
+        "components": 6,
+        "passages": 458,
+        "residual": 18.85197055979178
+      },
+      {
+        "policy": "full",
+        "components": 8,
+        "passages": 458,
+        "residual": 18.669421604619746
+      },
+      {
+        "policy": "substantive",
+        "components": 4,
+        "passages": 194,
+        "residual": 12.475699731855189
+      },
+      {
+        "policy": "substantive",
+        "components": 6,
+        "passages": 194,
+        "residual": 12.35969386815345
+      },
+      {
+        "policy": "substantive",
+        "components": 8,
+        "passages": 194,
+        "residual": 12.257359536692912
+      },
+      {
+        "policy": "inclusive",
+        "components": 4,
+        "passages": 198,
+        "residual": 12.612676364167482
+      },
+      {
+        "policy": "inclusive",
+        "components": 6,
+        "passages": 198,
+        "residual": 12.499371699948316
+      },
+      {
+        "policy": "inclusive",
+        "components": 8,
+        "passages": 198,
+        "residual": 12.404063472371217
+      }
+    ],
+    "alignments": [
+      {
+        "policy": "substantive",
+        "cosine": 0.36426771306707867,
+        "mixture_l1": 1.0980784110688104
+      },
+      {
+        "policy": "inclusive",
+        "cosine": 0.36164516710695604,
+        "mixture_l1": 1.0663153301889892
+      }
+    ]
+  },
+  "regression_suites": [
+    "browser descriptive and collection (including 31 committee/scope cases)",
+    "PCA / k-means / UMAP",
+    "grouped cluster stability",
+    "LSA and comparison",
+    "PAM / hierarchical",
+    "HDBSCAN and unassigned accounting",
+    "passage mask comparison",
+    "6 Python review/import integrity tests",
+    "NMF / alignment / reviewed inclusion"
+  ],
+  "browser": {
+    "status": "PASS",
+    "source": "http://127.0.0.1:57092/",
+    "reviewed_subset": 194,
+    "original_records": 460,
+    "components": 6,
+    "grouped_refits": 10,
+    "source_links": true,
+    "report_json_csv_original_exports": true,
+    "stale_exports_blocked": true,
+    "cancellation": true,
+    "wrong_review_rejected": true,
+    "mobile_overflow": false,
+    "browser_errors": [],
+    "uploads": []
+  },
+  "final_report_visual_checks": {
+    "nine_fits_available": true,
+    "rank_4_and_8_sources_expandable": true,
+    "chart_labels_clear_of_bars": true,
+    "mobile_document_overflow": false
+  },
+  "limits": [
+    "Six meeting groups; refits do not add independent source evidence.",
+    "Human confirmation concerns passage types, not component meanings.",
+    "Audio, factual content and imported affiliations are not authenticated.",
+    "Independent live-matrix checks reuse production tokenization.",
+    "NMF nonconvex solutions depend on initialization; all starts and convergence status retained."
+  ],
+  "publication": {
+    "status": "pending"
+  }
+}

@@ -35,6 +35,8 @@ jobs:
         run: node tools/test_browser_partitions.cjs
       - name: Test HDBSCAN, unassigned passages and noise-aware stability
         run: node tools/test_browser_hdbscan.cjs
+      - name: Test NMF and reviewed inclusion
+        run: node tools/test_browser_nmf.cjs
       - name: Test passage masks, source identity and review decisions
         run: |
           python3 tools/test_passage_types.py

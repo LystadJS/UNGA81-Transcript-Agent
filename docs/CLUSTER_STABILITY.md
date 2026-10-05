@@ -177,11 +177,11 @@ checks, not external validation of diplomatic categories.
 4. **Complete:** HDBSCAN with explicit unassigned passages, density-setting sensitivity,
    shared-assigned ARI and consensus that never treats noise as a cluster. See the
    [source/settings audit](CLUSTER_SENSITIVITY.md) before interpreting these groups.
-5. **Next method:** NMF theme mixtures with source-linked components. First review
-   source-type inclusion and compare the full corpus with substantive passages.
-   The [provisional comparison](PASSAGE_TYPES.md) is complete; human confirmation
-   of the separately recorded inclusion mask remains pending.
-6. Add regularized Gaussian mixture models with model-based membership diagnostics.
+5. **Complete:** [NMF](NMF.md) overlapping components, source examples, starting-point
+   sensitivity and grouped refits. All 460 [passage-type choices](PASSAGE_TYPES.md)
+   are confirmed; full, substantive and broader inclusion policies are compared.
+   Component names remain unreviewed.
+6. **Next method:** regularized Gaussian mixture models with model-based membership diagnostics.
 
 Neighborhood overlap, trustworthiness and continuity now accompany representation
 comparisons. Further display sensitivity checks, metric MDS, spectral
