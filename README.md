@@ -29,6 +29,9 @@ compares four, six and eight components across the same reviewed inclusion polic
 diagonal/spherical covariance, and aligned membership sensitivity. The
 [mixture comparison](https://lystadjs.github.io/un/transcript-agent/gmm-audit.html)
 records 96 settings checks and 360 grouped refits across reviewed inclusion policies.
+The [display audit](docs/DISPLAY_AUDIT.md) inspects changing memberships and 72
+UMAP layouts. Optional metric MDS compares pairwise-distance preservation while
+keeping fitted groups fixed; reports retain stopping checks, source links and exports.
 Optional grouped resampling refits TF-IDF, the chosen representation and clustering method, then reports cluster
 stability, consensus pair coverage and passages to inspect. See the
 [stability guide and implementation sequence](docs/CLUSTER_STABILITY.md).

@@ -157,9 +157,9 @@ the frozen R D1 pipeline, labels and release gates are unchanged.
 
 1. Inspect the passages with the largest membership changes and compare the saved
    covariance/component/floor alternatives before interpreting a component.
-2. Audit UMAP seed and neighborhood sensitivity with the existing trustworthiness,
-   continuity and neighbor-overlap diagnostics. Preserve fitted memberships across
-   display changes; metric MDS can follow as a separately validated display.
+2. The [display audit](DISPLAY_AUDIT.md) now checks UMAP seeds and neighborhood
+   settings and adds metric MDS on fixed scores. Inspect the local-neighbor versus
+   global-distance tradeoff; neither display validates component meanings.
 3. Add independently sourced meetings and comparable material before stronger
    claims. Continue to separate source verification and component naming from
    numerical fitting; neither is inferred from convergence.

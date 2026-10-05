@@ -184,11 +184,14 @@ checks, not external validation of diplomatic categories.
 6. **Complete:** [regularized Gaussian mixtures](GMM.md) on both representations,
    diagonal/spherical covariance, posterior memberships, ambiguity diagnostics,
    start sensitivity and aligned soft-membership changes in whole-group refits.
-7. **Recommended next:** audit display sensitivity across UMAP settings and seeds
-   using existing neighborhood diagnostics before adding another display method.
+7. **Complete:** [source inspection and 72-layout UMAP sensitivity audit](DISPLAY_AUDIT.md).
+8. **Complete:** metric SMACOF MDS as a separate display on fixed retained scores,
+   with distance-error, neighborhood and convergence diagnostics.
+9. **Recommended next:** verify flagged source text and pilot reviewed within-speech
+   units with parent IDs and offsets before issue-specific interpretations.
 
 Neighborhood overlap, trustworthiness and continuity now accompany representation
-comparisons. Further display sensitivity checks, metric MDS, spectral
+comparisons. Spectral
 clustering, diffusion maps and historical change remain later work requiring
 their own validation and, for historical inference, comparable source data.
 

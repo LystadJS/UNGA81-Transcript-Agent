@@ -56,6 +56,7 @@
       nmf:{components:Number(el('nmfComponents').value),starts:Number(el('nmfStarts').value),maxIterations:Number(el('nmfIterations').value),seed:Number(el('nmfSeed').value),
         stability:{enabled:el('nmfStability').checked,unit:el('nmfUnit').value,replicates:Number(el('nmfReplicates').value),fraction:0.8,seed:31415}},
       clustering: {representation:el('representation').value,algorithm:el('clusterAlgorithm').value,linkage:el('clusterLinkage').value,components:Number(el('pcaComponents').value), k:Number(el('clusterCount').value), neighbors:Number(el('umapNeighbors').value), minDist:Number(el('umapDistance').value), seed:Number(el('clusterSeed').value), umapSeed:Number(el('umapSeed').value),
+        mds:{enabled:el('mdsEnabled').checked,starts:Number(el('mdsStarts').value),maxIterations:Number(el('mdsIterations').value),seed:Number(el('mdsSeed').value)},
         hdbscan:{minClusterSize:Number(el('hdbMinClusterSize').value),minSamples:Number(el('hdbMinSamples').value),selection:el('hdbSelection').value},
         gmm:{covariance:el('gmmCovariance').value,regularization:Number(el('gmmRegularization').value),starts:Number(el('gmmStarts').value),maxIterations:Number(el('gmmIterations').value),ambiguity:Number(el('gmmAmbiguity').value)},
         stability:{enabled:el('stabilityEnabled').checked,unit:el('stabilityUnit').value,replicates:Number(el('stabilityReplicates').value),fraction:Number(el('stabilityFraction').value),seed:Number(el('stabilitySeed').value)}},
@@ -548,11 +549,14 @@
     el('clusterCount').parentElement.hidden=density;
     el('hdbscanSettings').hidden=!density;
     el('hdbscanSettings').querySelectorAll('input,select').forEach(input=>{input.disabled=!active||!density||!!controller;});
+    const mds=active&&el('mdsEnabled').checked;el('mdsSettings').hidden=!mds;
+    el('mdsSettings').querySelectorAll('input').forEach(input=>{input.disabled=!mds||!!controller;});
     const stability=active&&el('stabilityEnabled').checked;
     el('stabilitySettings').hidden=!stability;
     el('stabilitySettings').querySelectorAll('input,select').forEach(input=>{input.disabled=!stability || !!controller;});
   }
   el('clusterMethod').addEventListener('change',updateClusterControls);
+  el('mdsEnabled').addEventListener('change',updateClusterControls);
   el('stabilityEnabled').addEventListener('change',updateClusterControls);
   el('clusterAlgorithm').addEventListener('change',updateClusterControls);
   updateClusterControls();
@@ -566,7 +570,7 @@
   el('nmfMethod').addEventListener('change',updateNMFControls);el('nmfStability').addEventListener('change',updateNMFControls);updateNMFControls();
   function runNMFWorker(records,vectors,options){
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.9.0');
+      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.10.0');
       const finish=(fn,v)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(v);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));signal.addEventListener('abort',abort,{once:true});
       worker.onerror=()=>finish(reject,Error('NMF worker could not run. Reload the page or check browser permissions.'));
@@ -577,7 +581,7 @@
 
   function runClusterWorker(records,vectors,options,progress) {
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.9.0');
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.10.0');
       const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
       signal.addEventListener('abort',abort,{once:true});
@@ -721,20 +725,20 @@
     if(stale)return;
     const fits=clusterFits(result?.methods.clusters).filter(f=>f.points);if(!fits.length)return;
     const compare=!!result.methods.clusters.comparison,typed=fits[0].algorithm!=='kmeans';
-    const density=fits[0].algorithm==='hdbscan';
+    const density=fits[0].algorithm==='hdbscan',mds=fits.some(f=>f.points.some(p=>p.mds));
     const mixture=fits[0].algorithm==='gmm',mixtureK=mixture?fits[0].parameters.k:0;
     const quote=v=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,"'$&").replace(/"/g,'""')+'"';
     const stable=fits.some(f=>f.stability?.consensus&&!f.stability.skipped);
     const dimensions=Math.max(...fits.map(f=>f[f.representation||'pca'].components));
     const prefix=compare?'D':fits[0].representation==='lsa'?'LS':'PC';
-    const fields=[...(compare||typed?['representation']:[]),...(typed?['algorithm','linkage','representative_role','is_representative']:[]),'id','text_sha256','cluster',...(density?['assignment_status','membership_strength']:[]),...(mixture?['covariance','regularization','max_membership','membership_margin','normalized_entropy','ambiguous',...Array.from({length:mixtureK},(_,i)=>'component_'+(i+1)+'_membership'),'membership_refits','mean_membership_tv']:[]),...Array.from({length:dimensions},(_,i)=>prefix+(i+1)),'UMAP1','UMAP2',
+    const fields=[...(compare||typed?['representation']:[]),...(typed?['algorithm','linkage','representative_role','is_representative']:[]),'id','text_sha256','cluster',...(density?['assignment_status','membership_strength']:[]),...(mixture?['covariance','regularization','max_membership','membership_margin','normalized_entropy','ambiguous',...Array.from({length:mixtureK},(_,i)=>'component_'+(i+1)+'_membership'),'membership_refits','mean_membership_tv']:[]),...Array.from({length:dimensions},(_,i)=>prefix+(i+1)),'UMAP1','UMAP2',...(mds?['MDS1','MDS2']:[]),
       ...(stable?['resamples_included','observed_peers','within_cluster_consensus','strongest_other_consensus','consensus_margin',...(density?['resamples_assigned','resamples_unassigned','assignment_rate']:[])]:[])];
     const rows=[fields];
     for(const fit of fits){const method=fit.representation||'pca';
       fit.points.forEach((p,i)=>{const s=!fit.stability?.skipped?fit.stability?.consensus?.points[i]:null;
         const soft=fit.stability?.soft_membership?.points[i];
         const group=fit.clusters[p.cluster-1];
-        rows.push([...(compare||typed?[method]:[]),...(typed?[fit.algorithm,fit.hierarchical?.linkage||'',group?.representative_role||'',group?.representative_id===p.id]:[]),p.id,p.text_sha256,p.cluster,...(density?[p.assignment_status,p.membership_strength]:[]),...(mixture?[fit.gmm.covariance_type,fit.gmm.regularization,p.max_membership,p.membership_margin,p.normalized_entropy,p.ambiguous,...p.memberships,soft?.count,soft?.mean]:[]),...Array.from({length:dimensions},(_,d)=>p[method][d]??''),...p.umap,
+        rows.push([...(compare||typed?[method]:[]),...(typed?[fit.algorithm,fit.hierarchical?.linkage||'',group?.representative_role||'',group?.representative_id===p.id]:[]),p.id,p.text_sha256,p.cluster,...(density?[p.assignment_status,p.membership_strength]:[]),...(mixture?[fit.gmm.covariance_type,fit.gmm.regularization,p.max_membership,p.membership_margin,p.normalized_entropy,p.ambiguous,...p.memberships,soft?.count,soft?.mean]:[]),...Array.from({length:dimensions},(_,d)=>p[method][d]??''),...p.umap,...(mds?(p.mds||['','']):[]),
           ...(stable?[s?.included,s?.observed_peers,s?.within_cluster,s?.strongest_other,s?.margin,...(density?[s?.assigned,s?.unassigned,s?.assignment_rate]:[])]:[])]);
       });
     }

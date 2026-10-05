@@ -76,6 +76,7 @@
         ${fit.pam||fit.hierarchical||fit.hdbscan?'<p class="method-note">This clustering method is deterministic for fixed scores and source order. Ties can depend on row order. Grouped stability measures sensitivity to omitted source groups; repeated identical fits are not independent evidence.</p>':''}
         ${fit.hdbscan?'<p class="method-note">Equal reachability distances can produce different binary merge orders across implementations, affecting assignments or membership strengths. The JSON retains the exact tree and tie rule. Tree selection stability differs from the grouped resampling assessment below.</p>':''}
       </details>
+      ${fit.mds?root.UNMDSView.render(fit,records,table):''}
       ${fit.gmm?root.UNGaussianView.render(fit,records,table):''}
       ${fit.hierarchical?root.UNHierarchyView.render(fit,records,table):''}
       ${fit.fidelity?root.UNComparisonView.fidelity(fit,table):''}

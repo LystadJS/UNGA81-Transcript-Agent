@@ -10,21 +10,23 @@
     <link href="theme.css" rel="stylesheet">
     <link href="app.css" rel="stylesheet">
     <script defer src="app.js"></script>
-    <link href="analysis.css?v=1.9.0" rel="stylesheet">
+    <link href="analysis.css?v=1.10.0" rel="stylesheet">
     <script defer src="meeting-scopes.js?v=1.2.0"></script>
-    <script defer src="gmm-core.js?v=1.9.0"></script>
-    <script defer src="gmm-view.js?v=1.9.0"></script>
-    <script defer src="cluster-options.js?v=1.9.0"></script>
-    <script defer src="nmf-options.js?v=1.9.0"></script>
-    <script defer src="passage-selection.js?v=1.9.0"></script>
-    <script defer src="analysis-core.js?v=1.9.0"></script>
-    <script defer src="nmf-view.js?v=1.9.0"></script>
+    <script defer src="mds-core.js?v=1.10.0"></script>
+    <script defer src="mds-view.js?v=1.10.0"></script>
+    <script defer src="gmm-core.js?v=1.10.0"></script>
+    <script defer src="gmm-view.js?v=1.10.0"></script>
+    <script defer src="cluster-options.js?v=1.10.0"></script>
+    <script defer src="nmf-options.js?v=1.10.0"></script>
+    <script defer src="passage-selection.js?v=1.10.0"></script>
+    <script defer src="analysis-core.js?v=1.10.0"></script>
+    <script defer src="nmf-view.js?v=1.10.0"></script>
     <script defer src="collector.js?v=1.2.0"></script>
-    <script defer src="stability-view.js?v=1.9.0"></script>
-    <script defer src="comparison-view.js?v=1.9.0"></script>
-    <script defer src="hierarchy-view.js?v=1.9.0"></script>
-    <script defer src="cluster-view.js?v=1.9.0"></script>
-    <script defer src="analysis-ui.js?v=1.9.0"></script>
+    <script defer src="stability-view.js?v=1.10.0"></script>
+    <script defer src="comparison-view.js?v=1.10.0"></script>
+    <script defer src="hierarchy-view.js?v=1.10.0"></script>
+    <script defer src="cluster-view.js?v=1.10.0"></script>
+    <script defer src="analysis-ui.js?v=1.10.0"></script>
   </head>
 
   <body>
@@ -242,6 +244,15 @@
               </div>
               <p class="hint">Components are capped at each representation's available rank. UMAP settings affect the display only. Comparison uses identical settings for both fits; enabling stability also uses identical group samples.</p>
             </details>
+            <label class="check"><input id="mdsEnabled" type="checkbox">Compare metric MDS</label>
+            <div id="mdsSettings" hidden>
+              <p class="hint">Compare a display that fits pairwise distances. The representation and memberships stay fixed. Inspect distance error and neighborhood preservation before interpreting the map.</p>
+              <div class="analysis-grid">
+                <label>MDS starting points<input id="mdsStarts" type="number" min="1" max="5" step="1" value="3"></label>
+                <label>MDS iteration limit<input id="mdsIterations" type="number" min="10" max="1000" step="10" value="1000"></label>
+                <label>MDS seed<input id="mdsSeed" type="number" min="0" max="4294967295" step="1" value="42"></label>
+              </div>
+            </div>
             <label class="check"><input id="stabilityEnabled" type="checkbox">Assess cluster stability</label>
             <p class="hint">Leave out whole groups, refit the analysis and check which passages stay together. This takes longer than a single fit.</p>
             <div id="stabilitySettings" hidden>
@@ -424,6 +435,7 @@
         <h2>Reports &amp; reference</h2>
 
         <div class="report-grid">
+          <a class="report" href="display-audit.html"><strong>Membership and display sensitivity</strong><p>Inspect changing memberships, UMAP settings and metric MDS distance preservation.</p></a>
           <a class="report" href="gmm-audit.html"><strong>Gaussian mixture comparison</strong><p>Compare memberships, covariance assumptions and sensitivity across reviewed subsets.</p></a>
           <a class="report" href="nmf-audit.html"><strong>NMF component comparison</strong><p>Inspect overlapping components, source examples and sensitivity to passage inclusion.</p></a>
           <a class="report" href="passage-audit.html">

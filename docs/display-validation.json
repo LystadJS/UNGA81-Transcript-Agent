@@ -1,0 +1,187 @@
+{
+  "status": "PASS",
+  "date": "2026-10-05",
+  "engine_version": "browser-descriptive-1.10.0",
+  "scope": "Local engineering and browser acceptance; deployment verification is recorded separately after publishing.",
+  "corpus_sha256": "469f5d00c84a20b735f2cc23e1688ea1868fa38da90e611894b0d759c282deca",
+  "reviewed_mask_sha256": "71a62fb608f8e9437fd8f535e721eb119af3b67da2e05d57c0d2576a8566f8fe",
+  "source_inspection": {
+    "selected_passages": 15,
+    "ranking": "Top five per inclusion policy by equal average of mean per-passage membership TV across PCA/LSA and diagonal/spherical saved fits",
+    "owner_decisions_preserved": 460,
+    "cached_text_inspected": true,
+    "audio_authenticated": false,
+    "raw_source_text_published": false
+  },
+  "umap_grid": {
+    "representations": 2,
+    "inclusion_policies": 3,
+    "seeds": [
+      7,
+      42,
+      2026
+    ],
+    "neighbors": [
+      5,
+      15,
+      30,
+      50
+    ],
+    "layouts": 72,
+    "seed_pair_comparisons": 72,
+    "reference_layout_reproduced_exactly": true,
+    "scores_ids_memberships_unchanged": true
+  },
+  "mds": {
+    "matrices": 6,
+    "starts_per_matrix": 3,
+    "iteration_limit": 1000,
+    "converged_starts": 18,
+    "selected_iterations_min": 246,
+    "selected_iterations_max": 421,
+    "preserved_initial_iteration_limit": 300,
+    "initial_unfinished_selected_layouts": 4
+  },
+  "independent_reference": {
+    "status": "PASS",
+    "umap_layouts_checked": 72,
+    "umap_seed_pairs_checked": 72,
+    "mds_fits": [
+      {
+        "policy": "full",
+        "representation": "pca",
+        "pairs": 104653,
+        "maximum_coordinate_error": 1.482147737874584e-14
+      },
+      {
+        "policy": "full",
+        "representation": "lsa",
+        "pairs": 104653,
+        "maximum_coordinate_error": 1.9517720772910252e-13
+      },
+      {
+        "policy": "substantive",
+        "representation": "pca",
+        "pairs": 18721,
+        "maximum_coordinate_error": 7.444045380111675e-14
+      },
+      {
+        "policy": "substantive",
+        "representation": "lsa",
+        "pairs": 18721,
+        "maximum_coordinate_error": 1.8041124150158794e-14
+      },
+      {
+        "policy": "inclusive",
+        "representation": "pca",
+        "pairs": 19503,
+        "maximum_coordinate_error": 2.0539125955565396e-14
+      },
+      {
+        "policy": "inclusive",
+        "representation": "lsa",
+        "pairs": 19503,
+        "maximum_coordinate_error": 4.596323321948148e-14
+      }
+    ],
+    "independent_smacof_50_steps": true
+  },
+  "local_browser": {
+    "status": "PASS",
+    "source": "http://127.0.0.1:63943/",
+    "reviewed_subset": 194,
+    "original_records": 460,
+    "components": 4,
+    "representations": 2,
+    "grouped_refits": 20,
+    "mds_off_additional_refits": 20,
+    "mds_on_off_points_and_stability_identical": true,
+    "soft_membership_exports": true,
+    "mds_display_and_exports": true,
+    "mds_convergence_and_stale_controls": true,
+    "single_spherical_reference": true,
+    "source_links": true,
+    "report_json_csv_original_exports": true,
+    "stale_exports_blocked": true,
+    "cancellation": true,
+    "cancel_during_mds": true,
+    "wrong_review_rejected": true,
+    "mobile_overflow": false,
+    "browser_errors": [],
+    "uploads": []
+  },
+  "cross_execution_path_comparison": {
+    "status": "PASS_WITH_PORTABILITY_LIMIT",
+    "comparisons": [
+      {
+        "representation": "pca",
+        "passages": 194,
+        "ids_hashes_hard_assignments_identical": true,
+        "pca_max_absolute_difference": 1.112651637491524e-14,
+        "memberships_max_absolute_difference": 5.395683899678261e-14,
+        "umap_neighbor_agreement": 0.7381443298969073
+      },
+      {
+        "representation": "lsa",
+        "passages": 194,
+        "ids_hashes_hard_assignments_identical": true,
+        "lsa_max_absolute_difference": 6.175615574477433e-15,
+        "memberships_max_absolute_difference": 4.912736883966318e-14,
+        "umap_neighbor_agreement": 0.6932989690721649
+      }
+    ],
+    "note": "Browser and saved Node runs agree on source identities and hard assignments; retained scores and soft memberships differ below 1e-12. UMAP layouts differ despite the same seed. This is an execution-path comparison, not an additional frozen-input seed sweep. Preserve exported coordinates for exact map reproduction."
+  },
+  "nmf_browser_regression": {
+    "status": "PASS",
+    "source": "http://127.0.0.1:55102/",
+    "reviewed_subset": 194,
+    "original_records": 460,
+    "components": 6,
+    "grouped_refits": 10,
+    "source_links": true,
+    "report_json_csv_original_exports": true,
+    "stale_exports_blocked": true,
+    "cancellation": true,
+    "wrong_review_rejected": true,
+    "mobile_overflow": false,
+    "browser_errors": [],
+    "uploads": []
+  },
+  "regression_suites": [
+    "test_browser_analysis.cjs",
+    "test_browser_clusters.cjs",
+    "test_browser_stability.cjs",
+    "test_browser_lsa.cjs",
+    "test_browser_partitions.cjs",
+    "test_browser_hdbscan.cjs",
+    "test_browser_nmf.cjs",
+    "test_browser_gmm.cjs",
+    "test_browser_mds.cjs"
+  ],
+  "passage_identity_regressions": [
+    "test_passage_types.py: 6 passed",
+    "test_passage_comparison.cjs: PASS"
+  ],
+  "build": {
+    "entries_including_directories": 122,
+    "private_review_work_included": false
+  },
+  "visual_inspection": {
+    "desktop_mobile_checked": true,
+    "umap_sensitivity_axes_and_seed_legend_checked": true,
+    "mds_map_and_binned_distances_checked": true,
+    "source_inspection_expanded_checked": true,
+    "maps_preserve_equal_axis_scale": true,
+    "mobile_page_overflow": false
+  },
+  "limitations": [
+    "Shared score inputs and initial coordinates for reference fitting; independent distance evaluation and SMACOF updates.",
+    "Only six meetings; the seed and neighborhood grid is exploratory, not an uncertainty interval.",
+    "Seed settings alone do not guarantee identical UMAP layouts across execution paths; preserve exported coordinates.",
+    "Cached source inspection does not authenticate audio or assertions; no new human labels were inferred.",
+    "Display fidelity does not validate clusters, themes or diplomatic relationships.",
+    "Frozen R D1 pipeline and release gates unchanged."
+  ],
+  "public_mirror_files_hash_checked": 120
+}

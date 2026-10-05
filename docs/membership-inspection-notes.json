@@ -1,0 +1,20 @@
+{
+  "status": "Analyst source inspection; not new human labels or factual authentication",
+  "notes": {
+    "asset/k1b/k1b5jwwa58#71": "Short chair transition from the Andorra address to the Democratic Republic of the Congo address. Repeated protocol language dominates; this is not a national policy statement.",
+    "asset/k17/k17s3dutob#59": "Short chair transition from Trinidad and Tobago to Japan, using the same escort-and-invitation formula. The changing group is procedural vocabulary, not a changing Japanese position.",
+    "asset/k18/k18iyhzwip#33": "Chair transition from Israel to Portugal contains an unrelated request about songs from an entertainment show. Verify the source audio before any textual correction. This is a transcription concern, not evidence of a policy theme.",
+    "asset/k17/k17s3dutob#11": "Chair asks delegates to sit and introduces the King of Jordan. This is a brief procedural opening with a distinctive seating instruction.",
+    "asset/k16/k16g777u83#6": "Chair transition from Belize to Cabo Verde. Long ministerial titles add finance, investment, transformation and governance vocabulary to a procedural template.",
+    "asset/k1b/k1b5jwwa58#23": "The segment moves among ocean management, climate finance, nicotine prevention, renewable energy, maritime security and Taiwan participation. These are several issues within one address; membership movement does not show an inconsistency of stance.",
+    "asset/k18/k18iyhzwip#42": "The segment spans Pacific security, constitutional reform, remittances and labour mobility, HIV and narcotics, climate law and ocean governance. The health and labour passages deserve context alongside the familiar small-island vocabulary.",
+    "asset/k1k/k1kfcwu5kc#37": "A long address combines small-state security, climate and ocean governance, AI access, the Cuba embargo, West Papua and decolonization. Country-name substitutions and broken phrases in the cached text warrant source checking. The Cuba-embargo connection is explicit here.",
+    "asset/k17/k17s3dutob#48": "The address combines non-alignment, maritime security, Security Council reform, climate/debt finance and AI governance. Its rejection of unilateral coercive measures is generic in this segment; do not turn it into a Cuba-embargo position without additional evidence.",
+    "asset/k1u/k1ukg04uyo#39": "The segment combines African representation, Western Sahara, the domestic constitutional transition, a Security Council candidacy, development finance and an explicit call to lift the Cuba embargo. These issues should remain distinct in any thematic reading.",
+    "asset/k17/k17s3dutob#16": "The address shifts from proposed UN accountability and sanctions mechanisms to glaciers and Lake Issyk-Kul financing. Its generic sanctions discussion is not automatically Cuba-specific. The cached closing anniversary number should be checked against the source before reuse.",
+    "asset/k1b/k1b5jwwa58#66": "A comparatively short address links institutional delivery and prevention to eastern DRC security and diplomatic processes. The cached anniversary phrase and inconsistent names warrant source verification; the security assertions remain attributed speech content.",
+    "asset/k1k/k1kfcwu5kc#25": "The segment combines neutrality and preventive diplomacy, an AI code proposal, transport connectivity, landlocked-state cooperation and climate/energy initiatives. Several proposal lists share generic UN cooperation language.",
+    "asset/k1u/k1ukg04uyo#54": "The address combines Armenia normalization, reconstruction and demining with COP29, development assistance, energy exports and transport/digital connectivity. Inspect the source wording of the corridor passage before treating geographic names as reliable features.",
+    "asset/k18/k18iyhzwip#55": "The segment is concentrated on Armenia-Azerbaijan peace and transport connections, then turns to domestic elections, external relationships and biodiversity. Similar transport and peace vocabulary does not establish agreement with another speaker on the underlying claims."
+  }
+}

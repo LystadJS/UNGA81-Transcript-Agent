@@ -2,7 +2,7 @@
 
 Open https://lystadjs.github.io/un/transcript-agent/#analyze.
 
-Current browser version: **1.9.0**. Text clustering offers k-means, PAM,
+Current browser version: **1.10.0**. Text clustering offers k-means, PAM,
 hierarchical Ward/average linkage, HDBSCAN and regularized Gaussian mixtures on either PCA or LSA, including
 paired representation comparison and grouped stability. HDBSCAN preserves explicit
 unassigned passages and reports assignment coverage. See the
@@ -20,6 +20,12 @@ aligned membership changes alongside highest-membership cluster stability.
 4. Inspect collection coverage, denominators and source evidence before sharing.
 5. Download the standalone visual HTML report, analysis JSON, collected transcript
    JSON or matched-segment CSV. Use Print / save PDF for a printable copy.
+
+## Optional metric MDS
+
+Enable **Compare metric MDS** under Text clusters and stability to add a separate
+display of the same retained scores. Inspect distance error and neighborhood
+preservation; original memberships stay fixed. See the [source and display audit](DISPLAY_AUDIT.md).
 
 ## Collection
 

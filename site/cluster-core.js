@@ -8,6 +8,7 @@
   const B = typeof module !== 'undefined' && module.exports ? require('./cluster-algorithms.js') : root.UNClusterAlgorithms;
   const H = typeof module !== 'undefined' && module.exports ? require('./hdbscan-core.js') : root.UNHDBSCAN;
   const G = typeof module !== 'undefined' && module.exports ? require('./gmm-core.js') : root.UNGaussianMixture;
+  const D = typeof module !== 'undefined' && module.exports ? require('./mds-core.js') : root.UNMetricMDS;
   const {DEFAULTS, options} = O;
   const MAX_RECORDS = 600;
   // Mulberry32: local generators prevent UMAP from consuming k-means random state.
@@ -149,6 +150,14 @@
       clusters:summaries,points:selected.map((r,i)=>({id:r.id,text_sha256:r.text_sha256,cluster:best.labels[i]+1,[method]:x[i],umap:layout[i],
         ...(o.algorithm==='gmm'?{memberships:best.responsibilities[i],...best.point_diagnostics[i],ambiguous:best.point_diagnostics[i].max_membership<o.gmm.ambiguity}:{}),
         ...(o.algorithm==='hdbscan'?{assignment_status:best.labels[i]<0?'unassigned':'assigned',membership_strength:best.strengths[i]}:{})}))};
+    if(o.mds.enabled){
+      const display=await D.fit(x,o.mds,progress),{coordinates,...diagnostics}=display;result.mds=diagnostics;
+      if(coordinates){
+        result.mds.fidelity=M.agreement(M.order(M.denseDistances(x)),M.order(M.denseDistances(coordinates)),Math.min(10,Math.floor((x.length-1)/2)),selected.map(r=>r.id));
+        result.points.forEach((p,i)=>{p.mds=coordinates[i];});
+        result.sequence.push('Metric MDS display comparison');
+      }
+    }
     if(o.stability.enabled){
       const S=typeof module!=='undefined'&&module.exports?require('./cluster-stability.js'):root.UNClusterStability;
       result.stability=await S.run(records,result,progress);
