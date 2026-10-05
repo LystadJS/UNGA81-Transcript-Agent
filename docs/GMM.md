@@ -55,8 +55,9 @@ is made. Alternate converged starts are aligned and compared separately.
 
 Warnings identify small soft counts (below max(5, dimensions+1)), variances within
 10% of the regularization floor, components without hard members, failed starts,
-and parameter counts at least as large as the passage count. Limits are 600 usable
-passages, 50 dimensions, 1–12 components (fewer than passages), 1–10 starts and
+and parameter counts at least as large as the passage count. The browser permits
+600 selected passages and requires at least four usable rows, with at most
+50 dimensions and 1–12 components (fewer than passages), 1–10 starts and
 10–1,000 iterations. Existing corpus/filter/review checks still apply.
 
 For k components and d dimensions, parameter counts are 2kd+k−1 (diagonal) and

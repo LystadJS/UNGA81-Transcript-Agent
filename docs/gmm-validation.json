@@ -1,5 +1,5 @@
 {
-  "status": "PASS numerical, regression and local browser acceptance; live deployment pending",
+  "status": "PASS numerical, regression, local and live browser acceptance",
   "date": "2026-10-05",
   "engine": "browser-descriptive-1.9.0",
   "corpus_sha256": "469f5d00c84a20b735f2cc23e1688ea1868fa38da90e611894b0d759c282deca",
@@ -283,5 +283,59 @@
     "files": 119,
     "private_review_work_included": false
   },
-  "public_mirror_files_hash_checked": 117
+  "public_mirror_files_hash_checked": 117,
+  "live_browser": {
+    "status": "PASS",
+    "source": "https://lystadjs.github.io/un/transcript-agent/",
+    "reviewed_subset": 194,
+    "original_records": 460,
+    "components": 4,
+    "representations": 2,
+    "grouped_refits": 20,
+    "soft_membership_exports": true,
+    "single_spherical_reference": true,
+    "source_links": true,
+    "report_json_csv_original_exports": true,
+    "stale_exports_blocked": true,
+    "cancellation": true,
+    "wrong_review_rejected": true,
+    "mobile_overflow": false,
+    "browser_errors": [],
+    "uploads": []
+  },
+  "deployed_assets": {
+    "status": "PASS",
+    "url": "https://lystadjs.github.io/un/transcript-agent/",
+    "manifest_entries": 117,
+    "changed_assets_byte_verified": [
+      "index.html",
+      "gmm-core.js",
+      "gmm-view.js",
+      "gmm-audit.html",
+      "analysis-core.js",
+      "analysis-ui.js",
+      "cluster-options.js",
+      "cluster-core.js",
+      "cluster-stability.js",
+      "cluster-view.js",
+      "cluster-worker.js",
+      "nmf-worker.js",
+      "comparison-view.js",
+      "stability-view.js"
+    ]
+  },
+  "deployments": [
+    {
+      "repository": "LystadJS/UNGA81-Transcript-Agent",
+      "commit": "5fe7d2a1b1e2d29f02be373876dfb1bd357201c9",
+      "conclusion": "success",
+      "run": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37339209749"
+    },
+    {
+      "repository": "LystadJS/LystadJS.github.io",
+      "commit": "93f3f57cce3c466a84a4014643711532b330d8c9",
+      "conclusion": "success",
+      "run": "https://github.com/LystadJS/LystadJS.github.io/actions/runs/37339193150"
+    }
+  ]
 }
