@@ -47,5 +47,54 @@
     "audio_controls_and_source_excerpt": true,
     "mobile_boundary_controls": true,
     "technical_identity_retained_without_full_hash_in_main_flow": true
+  },
+  "live_browser": {
+    "status": "PASS",
+    "location": "https://lystadjs.github.io/un/transcript-agent/passage-pilot.html",
+    "packet_import": true,
+    "audio_decodes": true,
+    "no_preselected_decisions": true,
+    "listening_attestation_required": true,
+    "offset_validation": true,
+    "selection_sets_offsets": true,
+    "unrecorded_edits_block_exports": true,
+    "save_resume": true,
+    "wrong_packet_rejected": true,
+    "unresolved_audio_excluded": true,
+    "derived_units_in_engineering_fixture": 11,
+    "withheld_in_engineering_fixture": 1,
+    "mobile_overflow": false,
+    "browser_errors": [],
+    "uploads": [],
+    "human_decisions_created": false
+  },
+  "deployments": [
+    {
+      "repository": "LystadJS/UNGA81-Transcript-Agent",
+      "commit": "2ea59c20bd6e046b900dac1d6306837e1ee13999",
+      "name": "Publish review workspace",
+      "status": "completed",
+      "conclusion": "success",
+      "run": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37354544558"
+    },
+    {
+      "repository": "LystadJS/LystadJS.github.io",
+      "commit": "b19585a46b248763554177b486cb3c14dc0f4588",
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "run": "https://github.com/LystadJS/LystadJS.github.io/actions/runs/37354557188"
+    }
+  ],
+  "deployed_assets": {
+    "status": "PASS",
+    "manifest_entries": 124,
+    "changed_assets_byte_verified": [
+      "index.html",
+      "passage-pilot.html",
+      "passage-pilot.css",
+      "passage-pilot-core.js",
+      "passage-pilot.js"
+    ]
   }
 }
