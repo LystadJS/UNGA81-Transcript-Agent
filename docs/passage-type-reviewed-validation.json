@@ -32,5 +32,31 @@
   ],
   "full_fits": 30,
   "group_refits": 900,
-  "prior_independent_reference_checks": "passage-type-validation.json (same numerical fit files; historical provisional record retained)"
+  "prior_independent_reference_checks": "passage-type-validation.json (same numerical fit files; historical provisional record retained)",
+  "offline_review_browser": {
+    "status": "PASS",
+    "packet_passages": 460,
+    "synthetic_choices": 1,
+    "source_review_saved_and_resumed": true,
+    "wrong_corpus_rejected": true,
+    "substantive_unassigned_filter": true,
+    "report_fit_rows": 30,
+    "charts": 2,
+    "mobile_document_overflow": false,
+    "browser_errors": []
+  },
+  "live_reviewed_subset_and_preserved_export": "PASS; see nmf-validation.json",
+  "publication": {
+    "status": "PASS",
+    "method_source_commit": "95e295a38f31756aa9cca57ec9fc823654dbb152",
+    "method_website_commit": "675654c56bbd5dbd3a1cc2e4d30e055db789c2d0",
+    "source_deployment": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37331619035",
+    "website_deployment": "https://github.com/LystadJS/LystadJS.github.io/actions/runs/37331626248",
+    "source_conclusion": "success",
+    "website_conclusion": "success",
+    "source_commit": "2cecb8fda8bf375cdfeaed2a66c1a585b77c9020",
+    "website_commit": "f46da95a75a0ec8ff9410b72e787a79038cb20ad",
+    "public_mirror_manifest_files": 114,
+    "changed_public_files_byte_verified": true
+  }
 }

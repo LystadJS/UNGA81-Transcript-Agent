@@ -1,5 +1,5 @@
 {
-  "status": "PASS local numerical, regression and browser checks; publication pending",
+  "status": "PASS numerical, regression, local and live browser acceptance",
   "date": "2026-10-05",
   "engine": "browser-descriptive-1.8.0",
   "corpus_sha256": "469f5d00c84a20b735f2cc23e1688ea1868fa38da90e611894b0d759c282deca",
@@ -125,6 +125,50 @@
     "NMF nonconvex solutions depend on initialization; all starts and convergence status retained."
   ],
   "publication": {
-    "status": "pending"
+    "status": "PASS",
+    "method_source_commit": "95e295a38f31756aa9cca57ec9fc823654dbb152",
+    "method_website_commit": "675654c56bbd5dbd3a1cc2e4d30e055db789c2d0",
+    "source_deployment": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37331619035",
+    "website_deployment": "https://github.com/LystadJS/LystadJS.github.io/actions/runs/37331626248",
+    "source_conclusion": "success",
+    "website_conclusion": "success",
+    "source_commit": "2cecb8fda8bf375cdfeaed2a66c1a585b77c9020",
+    "website_commit": "f46da95a75a0ec8ff9410b72e787a79038cb20ad",
+    "public_mirror_manifest_files": 114,
+    "changed_public_files_byte_verified": true
+  },
+  "published_nmf_browser": {
+    "status": "PASS",
+    "source": "https://lystadjs.github.io/un/transcript-agent/",
+    "reviewed_subset": 194,
+    "original_records": 460,
+    "components": 6,
+    "grouped_refits": 10,
+    "source_links": true,
+    "report_json_csv_original_exports": true,
+    "stale_exports_blocked": true,
+    "cancellation": true,
+    "wrong_review_rejected": true,
+    "mobile_overflow": false,
+    "browser_errors": [],
+    "uploads": []
+  },
+  "byte_export_local": {
+    "status": "PASS",
+    "source": "http://127.0.0.1:64909/",
+    "synthetic_fixture": true,
+    "bom_crlf_indentation_preserved": true,
+    "all_original_records_retained": true,
+    "export_reimport_same_review_valid": true,
+    "browser_errors": []
+  },
+  "byte_export_published": {
+    "status": "PASS",
+    "source": "https://lystadjs.github.io/un/transcript-agent/",
+    "synthetic_fixture": true,
+    "bom_crlf_indentation_preserved": true,
+    "all_original_records_retained": true,
+    "export_reimport_same_review_valid": true,
+    "browser_errors": []
   }
 }
