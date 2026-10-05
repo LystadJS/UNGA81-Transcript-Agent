@@ -2,16 +2,9 @@
 (function(root) {
   'use strict';
   const N = typeof module !== 'undefined' && module.exports ? require('./numerics.js') : root.UNNumerics;
-  const DEFAULTS = {components:20, k:4, neighbors:15, minDist:0.1, seed:42, umapSeed:42};
+  const O = typeof module !== 'undefined' && module.exports ? require('./cluster-options.js') : root.UNClusterOptions;
+  const {DEFAULTS, options} = O;
   const MAX_RECORDS = 600;
-  function options(value = {}) {
-    const o = {...DEFAULTS, ...value};
-    for (const [key, min, max] of [['components',2,50],['k',2,12],['neighbors',2,100],['seed',0,4294967295],['umapSeed',0,4294967295]]) {
-      if (!Number.isInteger(o[key]) || o[key] < min || o[key] > max) throw Error(`Invalid clustering setting: ${key} (${min}–${max}).`);
-    }
-    if (!Number.isFinite(o.minDist) || o.minDist < 0 || o.minDist > 0.99) throw Error('UMAP minimum distance must be between 0 and 0.99.');
-    return o;
-  }
   // Mulberry32: local generators prevent UMAP from consuming k-means random state.
   function rng(seed) {let a=seed>>>0;return ()=>{a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return ((t^(t>>>14))>>>0)/4294967296;};}
   const d2 = (a,b) => a.reduce((sum,x,i)=>sum+(x-b[i])**2,0);
@@ -60,10 +53,21 @@
     }
     return {labels,centers,iterations,converged,inertia:x.reduce((sum,row,i)=>sum+d2(row,centers[labels[i]]),0)};
   }
-  function ari(a,b){const rows=new Map(),cols=new Map(),cells=new Map(),choose=n=>n*(n-1)/2;
+  function ari(a,b){if(a.length!==b.length)throw Error('ARI requires paired labels.');if(a.length<2)return 1;
+    const rows=new Map(),cols=new Map(),cells=new Map(),choose=n=>n*(n-1)/2;
     a.forEach((v,i)=>{rows.set(v,(rows.get(v)||0)+1);cols.set(b[i],(cols.get(b[i])||0)+1);const key=v+','+b[i];cells.set(key,(cells.get(key)||0)+1);});
     const sum=m=>[...m.values()].reduce((s,v)=>s+choose(v),0),expected=sum(rows)*sum(cols)/choose(a.length),max=(sum(rows)+sum(cols))/2;
     return Math.abs(max-expected)<1e-15?1:(sum(cells)-expected)/(max-expected);
+  }
+  async function fitKmeans(x,k,seed,progress=async()=>{}) {
+    const runs=[];
+    for(let start=0;start<10;start++){
+      await progress(`k-means · start ${start+1} of 10`);
+      const fit=oneKmeans(x,k,rng((seed+Math.imul(start,0x9e3779b9))>>>0));
+      if(fit?.converged)runs.push(fit);
+    }
+    runs.sort((a,b)=>a.inertia-b.inertia);
+    return runs;
   }
   function silhouette(x,labels){let total=0;const k=Math.max(...labels)+1;
     for(let i=0;i<x.length;i++){const sums=Array(k).fill(0),counts=Array(k).fill(0);
@@ -82,8 +86,7 @@
     const selected=keep.map(i=>records[i]),v=keep.map(i=>vectors[i]);
     await progress('PCA · representing the selected text');const representation=pca(v,o.components);
     if(!representation.rank)return {...base,excluded,skipped:'The TF-IDF vectors have no measurable variation.'};
-    const x=representation.scores,runs=[];
-    for(let start=0;start<10;start++){await progress(`k-means · start ${start+1} of 10`);const fit=oneKmeans(x,o.k,rng((o.seed+Math.imul(start,0x9e3779b9))>>>0));if(fit?.converged)runs.push(fit);}
+    const x=representation.scores,runs=await fitKmeans(x,o.k,o.seed,progress);
     if(!runs.length)return {...base,excluded,skipped:'k-means could not form the requested number of stable non-empty clusters. Reduce the cluster count.'};
     runs.sort((a,b)=>a.inertia-b.inertia);const best=runs[0],agreement=runs.map(r=>ari(best.labels,r.labels));
     await progress('Checking clustering separation');const sil=silhouette(x,best.labels);
@@ -99,11 +102,16 @@
     const count=umap.initializeFit(x);
     for(let epoch=0;epoch<count;epoch++){umap.step();if(epoch%10===0)await progress(`UMAP · display iteration ${epoch+1} of ${count}`);}
     const layout=umap.getEmbedding();if(layout.some(row=>row.length!==2||row.some(v=>!Number.isFinite(v))))throw Error('UMAP returned an invalid display.');
-    return {...base,excluded,analyzed_count:x.length,pca:{...representation,scores:undefined},
+    const result={...base,excluded,analyzed_count:x.length,pca:{...representation,scores:undefined},
       kmeans:{k:o.k,initialization:'k-means++',starts:10,converged_starts:runs.length,max_iterations:300,iterations:best.iterations,inertia:best.inertia,silhouette:sil,metric:'Euclidean on retained, unwhitened PCA scores',centroids:best.centers,restart_inertia:runs.map(r=>r.inertia),mean_ari_to_selected:agreement.reduce((a,b)=>a+b,0)/agreement.length,min_ari_to_selected:Math.min(...agreement)},
       umap:{library:'umap-js 1.4.0',neighbors,requested_neighbors:o.neighbors,min_dist:o.minDist,spread:1,epochs:count,seed:o.umapSeed,metric:'Euclidean on the same PCA scores',initialization:'random',role:'Display only; no labels supplied'},
       clusters:summaries,points:selected.map((r,i)=>({id:r.id,text_sha256:r.text_sha256,cluster:best.labels[i]+1,pca:x[i],umap:layout[i]}))};
+    if(o.stability.enabled){
+      const S=typeof module!=='undefined'&&module.exports?require('./cluster-stability.js'):root.UNClusterStability;
+      result.stability=await S.run(records,result,progress);
+    }
+    return result;
   }
-  const api={DEFAULTS,MAX_RECORDS,options,rng,pca,oneKmeans,ari,silhouette,run};
+  const api={DEFAULTS,MAX_RECORDS,options,rng,pca,oneKmeans,fitKmeans,ari,silhouette,run};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UNClusters=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

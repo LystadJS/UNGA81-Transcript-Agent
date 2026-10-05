@@ -27,6 +27,8 @@ jobs:
         run: node tools/test_browser_analysis.cjs
       - name: Test PCA, k-means and UMAP separation
         run: node tools/test_browser_clusters.cjs
+      - name: Test grouped resampling and consensus accounting
+        run: node tools/test_browser_stability.cjs
       - name: Build public site
         run: python3 tools/build_pages.py _site
       - uses: actions/upload-pages-artifact@v3

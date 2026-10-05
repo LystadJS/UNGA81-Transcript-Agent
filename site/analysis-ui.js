@@ -52,7 +52,8 @@
       end: el('endDate').value,
       region: el('region').value,
       scope: el('meetingScope').value,
-      clustering: {components:Number(el('pcaComponents').value), k:Number(el('clusterCount').value), neighbors:Number(el('umapNeighbors').value), minDist:Number(el('umapDistance').value), seed:Number(el('clusterSeed').value), umapSeed:Number(el('umapSeed').value)},
+      clustering: {components:Number(el('pcaComponents').value), k:Number(el('clusterCount').value), neighbors:Number(el('umapNeighbors').value), minDist:Number(el('umapDistance').value), seed:Number(el('clusterSeed').value), umapSeed:Number(el('umapSeed').value),
+        stability:{enabled:el('stabilityEnabled').checked,unit:el('stabilityUnit').value,replicates:Number(el('stabilityReplicates').value),fraction:Number(el('stabilityFraction').value),seed:Number(el('stabilitySeed').value)}},
       methods: [...document.querySelectorAll('input[name=method]:checked')]
         .map(input => input.value)
     });
@@ -521,14 +522,18 @@
   function updateClusterControls() {
     const active=el('clusterMethod').checked;
     el('clusterSettings').hidden=!active;
-    el('clusterSettings').querySelectorAll('input').forEach(input=>{input.disabled=!active || !!controller;});
+    el('clusterSettings').querySelectorAll('input,select').forEach(input=>{input.disabled=!active || !!controller;});
+    const stability=active&&el('stabilityEnabled').checked;
+    el('stabilitySettings').hidden=!stability;
+    el('stabilitySettings').querySelectorAll('input,select').forEach(input=>{input.disabled=!stability || !!controller;});
   }
   el('clusterMethod').addEventListener('change',updateClusterControls);
+  el('stabilityEnabled').addEventListener('change',updateClusterControls);
   updateClusterControls();
 
   function runClusterWorker(records,vectors,options,progress) {
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.3.0');
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.4.0');
       const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
       signal.addEventListener('abort',abort,{once:true});
@@ -539,7 +544,8 @@
         if(data.type==='error')finish(reject,Error(data.message));
       };
       if(signal.aborted){abort();return;}
-      worker.postMessage({records:records.map(r=>({id:r.id,text_sha256:r.text_sha256})),vectors:vectors.map(v=>[...v]),options});
+      worker.postMessage({records:records.map(r=>({id:r.id,text_sha256:r.text_sha256,
+        ...(options.stability.enabled?{text:r.text,date:r.date,meeting:r.meeting,scope:r.scope,country:r.country,source_url:r.source_url}:{})})),vectors:vectors.map(v=>[...v]),options});
     });
   }
 
@@ -603,6 +609,7 @@
 
       el('analysisReport').innerHTML = render(result);
       el('exportClusters').hidden=!result.methods.clusters?.points;
+      el('exportConsensus').hidden=!result.methods.clusters?.stability?.consensus || !!result.methods.clusters.stability.skipped;
       el('analysisOutput').hidden = false;
       exportButtons().forEach(button => { button.disabled = false; });
 
@@ -630,11 +637,24 @@
 
 
   // ---------- Export buttons ----------
+  el('exportConsensus').onclick=()=>{
+    const s=result?.methods.clusters?.stability;if(!s?.consensus||s.skipped||stale)return;
+    const quote=v=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,"'$&").replace(/"/g,'""')+'"';
+    const rows=[['left_id','right_id','left_cluster','right_cluster','co_observed','co_clustered','co_assignment_rate']];
+    for(let i=1;i<s.reference_ids.length;i++)for(let j=0;j<i;j++){
+      const pos=i*(i-1)/2+j,o=s.consensus.co_observed[pos],t=s.consensus.co_clustered[pos];
+      rows.push([s.reference_ids[i],s.reference_ids[j],s.reference_clusters[i],s.reference_clusters[j],o,t,o?t/o:'']);
+    }
+    save('\uFEFF'+rows.map(row=>row.map(quote).join(',')).join('\r\n'),'un-consensus.csv','text/csv;charset=utf-8');
+  };
   el('exportClusters').onclick=()=>{
     const fit=result?.methods.clusters;if(!fit?.points || stale)return;
     const quote=v=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,"'$&").replace(/"/g,'""')+'"';
-    const fields=['id','text_sha256','cluster',...Array.from({length:fit.pca.components},(_,i)=>'PC'+(i+1)),'UMAP1','UMAP2'];
-    const rows=[fields,...fit.points.map(p=>[p.id,p.text_sha256,p.cluster,...p.pca,...p.umap])];
+    const stable=fit.stability&&!fit.stability.skipped?fit.stability.consensus?.points:null;
+    const fields=['id','text_sha256','cluster',...Array.from({length:fit.pca.components},(_,i)=>'PC'+(i+1)),'UMAP1','UMAP2',
+      ...(stable?['resamples_included','observed_peers','within_cluster_consensus','strongest_other_consensus','consensus_margin']:[])];
+    const rows=[fields,...fit.points.map((p,i)=>[p.id,p.text_sha256,p.cluster,...p.pca,...p.umap,
+      ...(stable?[stable[i].included,stable[i].observed_peers,stable[i].within_cluster,stable[i].strongest_other,stable[i].margin]:[])])];
     save('\uFEFF'+rows.map(row=>row.map(quote).join(',')).join('\r\n'),'un-clusters.csv','text/csv;charset=utf-8');
   };
 

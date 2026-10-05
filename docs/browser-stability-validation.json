@@ -1,0 +1,83 @@
+{
+  "url": "Local production assets",
+  "engine": "browser-descriptive-1.4.0",
+  "passages": 458,
+  "groups": 6,
+  "successful": 30,
+  "attempted": 30,
+  "unique_group_samples": 6,
+  "ari": {
+    "count": 30,
+    "mean": 0.9586848663269522,
+    "median": 0.9778985622037113,
+    "min": 0.7853704659729207,
+    "max": 1
+  },
+  "cluster_jaccard": [
+    {
+      "cluster": 1,
+      "count": 30,
+      "mean": 0.9843806992568646,
+      "median": 1,
+      "min": 0.8638743455497382,
+      "max": 1
+    },
+    {
+      "cluster": 2,
+      "count": 30,
+      "mean": 0.8058395441573528,
+      "median": 0.8686061381074168,
+      "min": 0.19444444444444445,
+      "max": 1
+    },
+    {
+      "cluster": 3,
+      "count": 30,
+      "mean": 0.9933673915760529,
+      "median": 1,
+      "min": 0.9606299212598425,
+      "max": 1
+    },
+    {
+      "cluster": 4,
+      "count": 30,
+      "mean": 0.8717975516695851,
+      "median": 0.9375,
+      "min": 0.3855421686746988,
+      "max": 1
+    }
+  ],
+  "pair_coverage": {
+    "total": 104653,
+    "observed": 104653,
+    "never_observed": 0,
+    "min": 17,
+    "max": 29,
+    "mean": 20.979312585401278
+  },
+  "seconds": 7.569,
+  "source_links": true,
+  "exports": [
+    "HTML",
+    "JSON",
+    "cluster CSV",
+    "consensus CSV"
+  ],
+  "stale_export_disabled": true,
+  "cancel_during_stability": true,
+  "mobile_overflow": false,
+  "browser_errors": [],
+  "validated_at_utc": "2026-10-05T04:21:26.259830+00:00",
+  "independent_reference": {
+    "successful_samples_checked": 30,
+    "passages": 458,
+    "pair_denominators_checked": 104653,
+    "max_ari_or_jaccard_error": 1.1102230246251565e-16,
+    "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+  },
+  "fixture": {
+    "origin": "Saved public UN General Debate collection",
+    "dates": "2026-09-22 through 2026-09-28",
+    "sha256": "469f5d00c84a20b735f2cc23e1688ea1868fa38da90e611894b0d759c282deca"
+  }
+}

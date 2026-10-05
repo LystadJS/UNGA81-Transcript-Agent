@@ -10,12 +10,14 @@
     <link href="theme.css" rel="stylesheet">
     <link href="app.css" rel="stylesheet">
     <script defer src="app.js"></script>
-    <link href="analysis.css?v=1.3.0" rel="stylesheet">
+    <link href="analysis.css?v=1.4.0" rel="stylesheet">
     <script defer src="meeting-scopes.js?v=1.2.0"></script>
-    <script defer src="analysis-core.js?v=1.3.0"></script>
+    <script defer src="cluster-options.js?v=1.4.0"></script>
+    <script defer src="analysis-core.js?v=1.4.0"></script>
     <script defer src="collector.js?v=1.2.0"></script>
-    <script defer src="cluster-view.js?v=1.3.0"></script>
-    <script defer src="analysis-ui.js?v=1.3.0"></script>
+    <script defer src="stability-view.js?v=1.4.0"></script>
+    <script defer src="cluster-view.js?v=1.4.0"></script>
+    <script defer src="analysis-ui.js?v=1.4.0"></script>
   </head>
 
   <body>
@@ -207,6 +209,17 @@
               </div>
               <p class="hint">PCA components are capped at the available rank. UMAP settings affect the display only. Compare cluster counts and PCA dimensions before assigning meaning to a group.</p>
             </details>
+            <label class="check"><input id="stabilityEnabled" type="checkbox">Assess cluster stability</label>
+            <p class="hint">Leave out whole groups, refit the analysis and check which passages stay together. This takes longer than a single fit.</p>
+            <div id="stabilitySettings" hidden>
+              <div class="analysis-grid">
+                <label>Keep passages together by<select id="stabilityUnit"><option value="meeting">Meeting</option><option value="affiliation">Recorded speaker affiliation</option></select></label>
+                <label>Repetitions<input id="stabilityReplicates" type="number" min="10" max="100" step="1" value="30"></label>
+                <label>Share of groups retained<input id="stabilityFraction" type="number" min="0.5" max="0.9" step="0.05" value="0.8"></label>
+                <label>Resampling seed<input id="stabilitySeed" type="number" min="0" max="4294967295" step="1" value="31415"></label>
+              </div>
+              <p class="hint">At least three groups are required. Group counts round up, with at least one group left out. Agreement measures consistency in these samples; it does not verify a political interpretation.</p>
+            </div>
           </div>
           <button id="runAnalysis" type="submit">Generate report</button>
           <button class="secondary" disabled id="cancelAnalysis" type="button">Cancel</button>
@@ -222,6 +235,7 @@
             <button class="secondary" id="exportCorpus" type="button">Save transcripts</button>
             <button class="secondary" id="exportCSV" type="button">Included passages (.csv)</button>
             <button class="secondary" hidden id="exportClusters" type="button">Cluster data (.csv)</button>
+            <button class="secondary" hidden id="exportConsensus" type="button">Consensus pairs (.csv)</button>
             <button class="secondary" id="printAnalysis" type="button">Print / save PDF</button>
           </div>
 

@@ -6,7 +6,9 @@
     ? require('./meeting-scopes.js')
     : root.UNMeetingScopes;
 
-  const VERSION = 'browser-descriptive-1.3.0';
+  const ClusterOptions = typeof module !== 'undefined' && module.exports
+    ? require('./cluster-options.js') : root.UNClusterOptions;
+  const VERSION = 'browser-descriptive-1.4.0';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters'];
 
@@ -80,13 +82,7 @@
       throw Error('Invalid collection scope.');
     }
 
-    const clustering = {components:20,k:4,neighbors:15,minDist:0.1,seed:42,umapSeed:42,...p.clustering};
-    if (p.methods.includes('clusters')) {
-      for (const [key,min,max] of [['components',2,50],['k',2,12],['neighbors',2,100],['seed',0,4294967295],['umapSeed',0,4294967295]]) {
-        if (!Number.isInteger(clustering[key]) || clustering[key]<min || clustering[key]>max) throw Error(`Invalid clustering setting: ${key} (${min}–${max}).`);
-      }
-      if (!Number.isFinite(clustering.minDist) || clustering.minDist<0 || clustering.minDist>0.99) throw Error('UMAP minimum distance must be between 0 and 0.99.');
-    }
+    const clustering = p.methods.includes('clusters') ? ClusterOptions.options(p.clustering) : undefined;
     return { ...p, topic, mode, phrases, exclude, ...(p.methods.includes('clusters')?{clustering}:{}) };
   }
 

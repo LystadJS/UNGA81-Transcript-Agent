@@ -9,6 +9,9 @@ descriptive methods, download visual reports, and review assigned packets withou
 local installation. See the [report builder guide](docs/BROWSER_ANALYSIS.md).
 The selectable text-cluster workflow uses PCA representation, k-means on those
 scores, and a separate UMAP display with source links and exported diagnostics.
+Optional grouped resampling refits TF-IDF, PCA and k-means, then reports cluster
+stability, consensus pair coverage and passages to inspect. See the
+[stability guide and implementation sequence](docs/CLUSTER_STABILITY.md).
 Packet text stays in the browser; completed reviews are returned as files for
 validated import. See the [remote workspace guide](docs/REMOTE_WORKSPACE.md).
 

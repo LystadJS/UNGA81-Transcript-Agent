@@ -101,6 +101,11 @@ browser methods or an authenticated backend for D1 are warranted.
 
 ## PCA → k-means → UMAP (browser 1.3)
 
+Browser 1.4 additionally offers **Assess cluster stability**: grouped subsampling
+with TF-IDF/PCA/k-means refits, Jaccard/ARI agreement, a consensus heatmap and
+source-linked review candidates. See the [protocol, exports and validation](CLUSTER_STABILITY.md).
+This optional assessment leaves the reference pipeline described below unchanged.
+
 Select **Text clusters: PCA → k-means → UMAP** in the report controls. This uses
 all included unique passages after the existing date, committee/scope, region,
 language, deduplication and optional topic filters. Leaving Topic blank preserves
