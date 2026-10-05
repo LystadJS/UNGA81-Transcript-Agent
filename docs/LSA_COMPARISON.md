@@ -8,7 +8,9 @@ fit. It does not change frozen D1 outputs or reviewed-data publication gates.
 Browser 1.6 also supports [PAM and hierarchical clustering](PARTITION_METHODS.md).
 Choose one clustering algorithm for both representations. The original k-means
 protocol below remains the default; group samples and geometry checks are shared
-by all three algorithms. No automatic method winner or release gate is inferred.
+by those algorithms. Browser 1.7 adds [HDBSCAN](HDBSCAN.md) on the same scores;
+its density settings replace a fixed cluster count, and its comparisons explicitly
+account for unassigned passages. No automatic method winner or release gate is inferred.
 
 ## Use
 
@@ -195,7 +197,9 @@ and desktop/mobile layouts. See [the validation record](browser-lsa-validation.j
 
 **Implemented in 1.6:** PAM and hierarchical clustering now use the same corpus,
 representation and evidence contracts. Keep representation choices explicit
-when comparing those clustering methods. HDBSCAN is next in the implementation sequence.
+when comparing those clustering methods. **Implemented in 1.7:** HDBSCAN with
+explicit unassigned passages and noise-aware stability. See the
+[source inspection and sensitivity audit](CLUSTER_SENSITIVITY.md) for current findings.
 
 Primary references: [Truncated SVD / LSA](https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.TruncatedSVD.html)
 and [trustworthiness](https://scikit-learn.org/stable/modules/generated/sklearn.manifold.trustworthiness.html).

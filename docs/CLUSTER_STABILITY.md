@@ -6,6 +6,11 @@ Browser 1.5 extends this protocol to LSA and paired PCA/LSA comparison; the
 [comparison guide](LSA_COMPARISON.md) documents representation-specific fields.
 Browser 1.6 applies the same resampling schedule and full refits to
 [PAM and hierarchical clustering](PARTITION_METHODS.md), including Ward and average linkage.
+Browser 1.7 adds [HDBSCAN](HDBSCAN.md): ARI uses shared assigned passages,
+noise never counts as a cluster, and all-unassigned fits still contribute pair
+exposure. See that guide for the additional denominators and export fields.
+The fixed-partition definitions below continue to apply to k-means, PAM and
+Ward/average; HDBSCAN uses those explicit extensions.
 It is an exploratory sensitivity assessment. Frozen D1 representations,
 reviewed-model gates and daily publication behavior remain unchanged.
 
@@ -169,8 +174,11 @@ checks, not external validation of diplomatic categories.
    IDs, k-means settings and resampling protocol, plus neighborhood diagnostics.
 3. **Complete:** PAM and hierarchical clustering (Ward/average) use both representations,
    paired group samples, source-linked examples and common stability checks.
-4. **Next:** integrate and validate HDBSCAN, including unassigned passages and sensitivity.
-5. Add NMF theme mixtures with source-linked components.
+4. **Complete:** HDBSCAN with explicit unassigned passages, density-setting sensitivity,
+   shared-assigned ARI and consensus that never treats noise as a cluster. See the
+   [source/settings audit](CLUSTER_SENSITIVITY.md) before interpreting these groups.
+5. **Next method:** NMF theme mixtures with source-linked components. First review
+   source-type inclusion and compare the full corpus with substantive passages.
 6. Add regularized Gaussian mixture models with model-based membership diagnostics.
 
 Neighborhood overlap, trustworthiness and continuity now accompany representation

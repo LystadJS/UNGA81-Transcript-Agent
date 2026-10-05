@@ -10,16 +10,16 @@
     <link href="theme.css" rel="stylesheet">
     <link href="app.css" rel="stylesheet">
     <script defer src="app.js"></script>
-    <link href="analysis.css?v=1.6.0" rel="stylesheet">
+    <link href="analysis.css?v=1.7.0" rel="stylesheet">
     <script defer src="meeting-scopes.js?v=1.2.0"></script>
-    <script defer src="cluster-options.js?v=1.6.0"></script>
-    <script defer src="analysis-core.js?v=1.6.0"></script>
+    <script defer src="cluster-options.js?v=1.7.0"></script>
+    <script defer src="analysis-core.js?v=1.7.0"></script>
     <script defer src="collector.js?v=1.2.0"></script>
-    <script defer src="stability-view.js?v=1.6.0"></script>
-    <script defer src="comparison-view.js?v=1.6.0"></script>
-    <script defer src="hierarchy-view.js?v=1.6.0"></script>
-    <script defer src="cluster-view.js?v=1.6.0"></script>
-    <script defer src="analysis-ui.js?v=1.6.0"></script>
+    <script defer src="stability-view.js?v=1.7.0"></script>
+    <script defer src="comparison-view.js?v=1.7.0"></script>
+    <script defer src="hierarchy-view.js?v=1.7.0"></script>
+    <script defer src="cluster-view.js?v=1.7.0"></script>
+    <script defer src="analysis-ui.js?v=1.7.0"></script>
   </head>
 
   <body>
@@ -201,8 +201,16 @@
           <div id="clusterSettings" hidden>
             <p class="hint">Choose a representation and clustering method, then inspect the groups and their sources. Up to 600 passages; all included passages enter each full-data fit.</p>
             <label>Text representation<select id="representation"><option value="pca">PCA — centered TF-IDF</option><option value="lsa">LSA — uncentered truncated SVD</option><option value="compare">Compare PCA and LSA</option></select></label>
-            <label>Clustering method<select id="clusterAlgorithm"><option value="kmeans">k-means — centroid groups</option><option value="pam">PAM — representative passages</option><option value="hierarchical">Hierarchical — nested groups</option></select></label>
+            <label>Clustering method<select id="clusterAlgorithm"><option value="kmeans">k-means — centroid groups</option><option value="pam">PAM — representative passages</option><option value="hierarchical">Hierarchical — nested groups</option><option value="hdbscan">HDBSCAN — dense groups, with unassigned passages</option></select></label>
             <label id="linkageLabel" hidden>Linkage<select id="clusterLinkage"><option value="ward">Ward — within-group variation</option><option value="average">Average — mean pairwise distance</option></select></label>
+            <div id="hdbscanSettings" hidden>
+              <div class="analysis-grid">
+                <label>Minimum group size<input id="hdbMinClusterSize" type="number" min="2" max="600" step="1" value="15"></label>
+                <label>Density neighbors<input id="hdbMinSamples" type="number" min="2" max="600" step="1" value="5"></label>
+                <label>Group selection<select id="hdbSelection"><option value="eom">EOM — persistent groups</option><option value="leaf">Leaf — finer groups</option></select></label>
+              </div>
+              <p class="hint">HDBSCAN chooses the number of groups and can leave passages unassigned. Density neighbors includes the passage itself. Higher values generally demand denser support; compare assignment coverage alongside stability.</p>
+            </div>
             <details><summary>Clustering settings</summary>
               <div class="analysis-grid">
                 <label>Retained components<input id="pcaComponents" type="number" min="2" max="50" step="1" value="20"></label>

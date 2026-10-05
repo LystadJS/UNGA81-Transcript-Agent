@@ -33,6 +33,8 @@ jobs:
         run: node tools/test_browser_lsa.cjs
       - name: Test PAM, hierarchical clustering and shared stability protocol
         run: node tools/test_browser_partitions.cjs
+      - name: Test HDBSCAN, unassigned passages and noise-aware stability
+        run: node tools/test_browser_hdbscan.cjs
       - name: Build public site
         run: python3 tools/build_pages.py _site
       - uses: actions/upload-pages-artifact@v3

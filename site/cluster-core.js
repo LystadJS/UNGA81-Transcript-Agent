@@ -6,6 +6,7 @@
   const L = typeof module !== 'undefined' && module.exports ? require('./lsa-core.js') : root.UNLSA;
   const M = typeof module !== 'undefined' && module.exports ? require('./representation-metrics.js') : root.UNRepresentationMetrics;
   const B = typeof module !== 'undefined' && module.exports ? require('./cluster-algorithms.js') : root.UNClusterAlgorithms;
+  const H = typeof module !== 'undefined' && module.exports ? require('./hdbscan-core.js') : root.UNHDBSCAN;
   const {DEFAULTS, options} = O;
   const MAX_RECORDS = 600;
   // Mulberry32: local generators prevent UMAP from consuming k-means random state.
@@ -83,9 +84,10 @@
     if(!['pca','lsa'].includes(method))throw Error('Unknown text representation.');
     return method==='lsa'?L.lsa(vectors,components,descriptors):pca(vectors,components);
   }
-  const algorithmName=o=>o.algorithm==='pam'?'PAM':o.algorithm==='hierarchical'?`Hierarchical (${o.linkage})`:'k-means';
+  const algorithmName=o=>o.algorithm==='hdbscan'?'HDBSCAN':o.algorithm==='pam'?'PAM':o.algorithm==='hierarchical'?`Hierarchical (${o.linkage})`:'k-means';
   async function fitPartition(x,value,progress=async()=>{}){
     const o=options(value);
+    if(o.algorithm==='hdbscan')return H.fit(x,o.hdbscan,progress);
     if(o.algorithm==='kmeans'){
       const runs=await fitKmeans(x,o.k,o.seed,progress);
       if(!runs.length)return {skipped:'k-means could not form the requested number of stable non-empty clusters. Reduce the cluster count.'};
@@ -104,14 +106,15 @@
     const vectors=rawVectors.map(v=>v instanceof Map?v:new Map(v)),keep=[],excluded=[];
     vectors.forEach((v,i)=>{if(v.size)keep.push(i);else excluded.push({id:records[i].id,reason:'No terms remain after token and stop-word filtering'});});
     if(keep.length<4)return {...base,excluded,skipped:'Clustering needs at least four passages with usable terms.'};
-    if(o.k>=keep.length)return {...base,excluded,skipped:'Choose fewer clusters than usable passages.'};
+    if(o.algorithm!=='hdbscan'&&o.k>=keep.length)return {...base,excluded,skipped:'Choose fewer clusters than usable passages.'};
     const selected=keep.map(i=>records[i]),v=keep.map(i=>vectors[i]);
     await progress(name+' · representing the selected text');const representation=represent(v,o.components,method);
     if(!representation.rank)return {...base,excluded,skipped:'The TF-IDF vectors have no measurable variation.'};
     const x=representation.scores,best=await fitPartition(x,o,progress);
     if(best.skipped)return {...base,excluded,skipped:best.skipped};
-    await progress('Checking clustering separation');const sil=silhouette(x,best.labels);
-    const summaries=Array.from({length:o.k},(_,c)=>{const indices=best.labels.flatMap((label,i)=>label===c?[i]:[]),terms=new Map();
+    const assigned=best.labels.flatMap((c,i)=>c>=0?[i]:[]),k=new Set(best.labels.filter(c=>c>=0)).size;
+    await progress('Checking clustering separation');const sil=k>=2&&assigned.length>k?silhouette(assigned.map(i=>x[i]),assigned.map(i=>best.labels[i])):null;
+    const summaries=Array.from({length:k},(_,c)=>{const indices=best.labels.flatMap((label,i)=>label===c?[i]:[]),terms=new Map();
       const center=best.centers?.[c]||x[0].map((_,d)=>indices.reduce((sum,i)=>sum+x[i][d],0)/indices.length);
       for(const i of indices)for(const [term,w] of v[i])terms.set(term,(terms.get(term)||0)+w);
       const representative=best.medoids?.[c]??indices.reduce((a,i)=>d2(x[i],center)<d2(x[a],center)?i:a,indices[0]);
@@ -126,13 +129,16 @@
     const layout=umap.getEmbedding();if(layout.some(row=>row.length!==2||row.some(v=>!Number.isFinite(v))))throw Error('UMAP returned an invalid display.');
     await progress(name+' · checking neighborhood preservation');
     const result={...base,excluded,analyzed_count:x.length,[method]:{...representation,scores:undefined},
-      clustering:{algorithm:o.algorithm,name:algorithm,k:o.k,silhouette:sil,metric:`Euclidean on retained, unwhitened ${name} scores`},
-      [o.algorithm]:{k:o.k,...best.diagnostics,silhouette:sil,metric:`Euclidean on retained, unwhitened ${name} scores`,
+      clustering:{algorithm:o.algorithm,name:algorithm,k,silhouette:sil,metric:`Euclidean on retained, unwhitened ${name} scores`,
+        ...(o.algorithm==='hdbscan'?{assigned_count:assigned.length,unassigned_count:x.length-assigned.length,silhouette_scope:'Assigned passages only; requires two clusters and more assigned passages than clusters',silhouette_count:sil===null?0:assigned.length}:{})},
+      [o.algorithm]:{k,...best.diagnostics,silhouette:sil,metric:`Euclidean on retained, unwhitened ${name} scores`,
         ...(o.algorithm==='pam'?{medoid_ids:best.medoids.map(i=>selected[i].id)}:{}),
+        ...(o.algorithm==='hdbscan'?{point_unassigned_cluster:0,unassigned_ids:selected.filter((r,i)=>best.labels[i]<0).map(r=>r.id)}:{}),
         ...(o.algorithm==='hierarchical'?{leaf_ids:selected.map(r=>r.id)}:{})},
       umap:{library:'umap-js 1.4.0',neighbors,requested_neighbors:o.neighbors,min_dist:o.minDist,spread:1,epochs:count,seed:o.umapSeed,metric:`Euclidean on the same ${name} scores`,initialization:'random',role:'Display only; no labels supplied'},
       fidelity:M.assess(v,x,layout,selected.map(r=>r.id)),
-      clusters:summaries,points:selected.map((r,i)=>({id:r.id,text_sha256:r.text_sha256,cluster:best.labels[i]+1,[method]:x[i],umap:layout[i]}))};
+      clusters:summaries,points:selected.map((r,i)=>({id:r.id,text_sha256:r.text_sha256,cluster:best.labels[i]+1,[method]:x[i],umap:layout[i],
+        ...(o.algorithm==='hdbscan'?{assignment_status:best.labels[i]<0?'unassigned':'assigned',membership_strength:best.strengths[i]}:{})}))};
     if(o.stability.enabled){
       const S=typeof module!=='undefined'&&module.exports?require('./cluster-stability.js'):root.UNClusterStability;
       result.stability=await S.run(records,result,progress);
@@ -144,8 +150,9 @@
       protocol:'Same selected rows, TF-IDF, requested dimensions, clustering algorithm/settings and group schedule; each representation fitted independently; no automatic winner selected'};
     if(left.skipped||right.skipped)return {...base,skipped:'Both representations must yield a fit for comparison. See each result for its reason.'};
     if(left.points.length!==right.points.length||left.points.some((p,i)=>p.id!==right.points[i].id))throw Error('Representation comparison requires identical passage order.');
-    const matrix=Array.from({length:left.clustering.k},()=>Array(right.clustering.k).fill(0));
-    left.points.forEach((p,i)=>{matrix[p.cluster-1][right.points[i].cluster-1]++;});
+    const noise=left.algorithm==='hdbscan',rowLabels=[...(noise?[0]:[]),...left.clusters.map(c=>c.cluster)],columnLabels=[...(noise?[0]:[]),...right.clusters.map(c=>c.cluster)];
+    const matrix=rowLabels.map(()=>columnLabels.map(()=>0));
+    left.points.forEach((p,i)=>{matrix[rowLabels.indexOf(p.cluster)][columnLabels.indexOf(right.points[i].cluster)]++;});
     const neighbors=left.fidelity.representation.neighbors;
     const pointComparisons=left.fidelity.representation.points.map((p,i)=>{
       const q=right.fidelity.representation.points[i];
@@ -158,10 +165,13 @@
       const rightRuns=new Map(right.stability.runs.map(r=>[r.attempt,r]));
       for(const r of left.stability.runs){const q=rightRuns.get(r.attempt);
         if(!q||JSON.stringify(r.groups)!==JSON.stringify(q.groups))throw Error('Resampling groups differ between representations.');
-        if(!r.skipped&&!q.skipped)paired.push({attempt:r.attempt,pca_ari:r.ari,lsa_ari:q.ari,lsa_minus_pca:q.ari-r.ari});
+        if(!r.skipped&&!q.skipped&&r.ari!==null&&q.ari!==null)paired.push({attempt:r.attempt,pca_ari:r.ari,lsa_ari:q.ari,lsa_minus_pca:q.ari-r.ari});
       }
     }
-    return {...base,between_cluster_ari:ari(left.points.map(p=>p.cluster),right.points.map(p=>p.cluster)),
+    const shared=left.points.flatMap((p,i)=>!noise||(p.cluster>0&&right.points[i].cluster>0)?[i]:[]);
+    const enough=!noise||(shared.length>=2&&new Set(shared.map(i=>left.points[i].cluster)).size>=2&&new Set(shared.map(i=>right.points[i].cluster)).size>=2);
+    return {...base,between_cluster_ari:enough?ari(shared.map(i=>left.points[i].cluster),shared.map(i=>right.points[i].cluster)):null,
+      ...(noise?{membership_row_labels:rowLabels,membership_column_labels:columnLabels,ari_scope:'Passages assigned in both representations; at least two represented clusters in each',ari_passages:shared.length,assignment_status_agreement:left.points.filter((p,i)=>(p.cluster>0)===(right.points[i].cluster>0)).length/left.points.length}:{}),
       membership_counts:matrix,neighbors,mean_neighbor_overlap:pointComparisons.reduce((sum,p)=>sum+p.neighbor_overlap,0)/pointComparisons.length,
       points:pointComparisons,paired_stability:{count:paired.length,samples:paired,
         mean_ari_difference:paired.length?paired.reduce((sum,p)=>sum+p.lsa_minus_pca,0)/paired.length:null}};

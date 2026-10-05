@@ -7,13 +7,16 @@ executive email theme and Windows-friendly package paths.
 to collect live UN transcripts by topic, dates and speaker region, run selectable
 descriptive methods, download visual reports, and review assigned packets without
 local installation. See the [report builder guide](docs/BROWSER_ANALYSIS.md).
-The selectable text-cluster workflow uses PCA or LSA representation, k-means, PAM or hierarchical clustering on those
+The selectable text-cluster workflow uses PCA or LSA representation, k-means, PAM, hierarchical clustering or HDBSCAN on those
 scores, and a separate UMAP display with source links and exported diagnostics.
 Compare both representations on the same passages, including cluster membership
 and neighborhood preservation. See the [PCA/LSA comparison guide](docs/LSA_COMPARISON.md).
 PAM supplies actual passage medoids; hierarchical clustering offers Ward/average
 linkage, source-linked dendrograms and complete merge exports. See the
 [PAM and hierarchical guide](docs/PARTITION_METHODS.md).
+HDBSCAN retains explicit unassigned passages, source links and assignment coverage
+in every report and export. See the [HDBSCAN guide](docs/HDBSCAN.md) and
+[source inspection and settings comparison](docs/CLUSTER_SENSITIVITY.md).
 Optional grouped resampling refits TF-IDF, the chosen representation and clustering method, then reports cluster
 stability, consensus pair coverage and passages to inspect. See the
 [stability guide and implementation sequence](docs/CLUSTER_STABILITY.md).

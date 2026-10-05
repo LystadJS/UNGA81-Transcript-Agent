@@ -28,8 +28,8 @@
     const clusters=[...new Set(bins.map(b=>b.cluster))];
     const labels=clusters.map(c=>{
       const first=bins.findIndex(b=>b.cluster===c),last=bins.findLastIndex(b=>b.cluster===c),mid=(first+last+1)/2;
-      return `<text x="${70+mid*cell}" y="651" text-anchor="middle" font-size="12">C${c}</text>
-        <text x="58" y="${29+mid*cell}" text-anchor="end" font-size="12">C${c}</text>
+      return `<text x="${70+mid*cell}" y="651" text-anchor="middle" font-size="12">${c?'C'+c:'U'}</text>
+        <text x="58" y="${29+mid*cell}" text-anchor="end" font-size="12">${c?'C'+c:'U'}</text>
         <path d="M ${70+first*cell} 25 V 625 M 70 ${25+first*cell} H 670" stroke="#7d8b99" stroke-width="0.7" fill="none"/>`;
     }).join('');
     return {html:`<div class="consensus-map"><svg viewBox="0 0 700 680" role="img" aria-label="Consensus heatmap, ordered by reference cluster; gray means no observed pairs"><title>Consensus heatmap: share of successful joint samples assigned to the same cluster</title>${rects.join('')}${labels}</svg></div>
@@ -52,12 +52,16 @@
     const byId=new Map(records.map(r=>[r.id,r]));
     html+=`<p>${s.successful} of ${s.attempted} samples fitted, retaining ${s.sample_group_count} of ${s.group_count} ${unit} per sample (${(100*s.effective_group_fraction).toFixed(1)}%). TF-IDF, ${esc((s.representation||'pca').toUpperCase())} and ${esc(s.algorithm_name||'k-means')} were refitted each time.</p>
       <p class="method-note">Agreement describes sensitivity to omitted groups. It does not establish a shared position, a validated category or performance on future speeches.</p>
+      ${s.algorithm==='hdbscan'?`<p class="method-note">${s.ari.count} samples have assessable ARI on passages assigned in both fits, with two represented clusters in each. Unassigned passages remain in pair exposure counts but never form a shared cluster. U marks passages unassigned in the reference, not another group.</p>`:''}
       ${s.warnings.map(w=>`<p class="warning">${esc(w)}</p>`).join('')}
       ${intervalChart(s)}
       <p class="method-note">Dots show mean Jaccard overlap with the best matching sampled cluster. Lines show observed minimum–maximum; parentheses give evaluable samples. These ranges are not confidence intervals. Clusters with fewer than two retained members are not assessed in that sample.</p>
       <details><summary>Agreement and sample coverage</summary>
       ${table(['Measure','Value'],[
         ['Adjusted Rand agreement: mean / min / max',`${number(s.ari.mean)} / ${number(s.ari.min)} / ${number(s.ari.max)}`],
+        ...(s.algorithm==='hdbscan'?[
+          ['Samples with assessable ARI',`${s.ari.count} of ${s.successful}`],
+          ['Assigned passages per sample: min / max',`${Math.min(...s.runs.filter(r=>!r.skipped).map(r=>r.assignment.assigned_count))} / ${Math.max(...s.runs.filter(r=>!r.skipped).map(r=>r.assignment.assigned_count))}`]]:[]),
         ['Distinct group subsets',`${s.unique_group_samples} across ${s.attempted} repetitions`],
         ['Pairs observed at least once',`${coverage.observed} of ${coverage.total}`],
         ['Pairs never observed together',coverage.never_observed],
@@ -67,6 +71,7 @@
       ${table(['Cluster','Evaluable samples','Mean Jaccard','Median','Min','Max'],s.clusters.map(c=>[c.cluster,c.count,number(c.mean),number(c.median),number(c.min),number(c.max)]))}
       <p class="method-note">Adjusted Rand agreement is invariant to cluster numbering. Jaccard matches use only passages present in each sample; matches may be many-to-one. Subsamples select groups uniformly without replacement, while passages retain their original weights within groups. This does not establish independence between groups. The reference fit and UMAP display stay unchanged.</p></details>
       <details open><summary>Which passages stay together?</summary>${matrix.html}
+        ${s.algorithm==='hdbscan'?'<p class="method-note">The heatmap divides shared non-noise assignment counts by all jointly sampled observations, including unassigned outcomes. Conditional rates among jointly assigned pairs are available in the pair CSV with their separate denominators.</p>':''}
         <details><summary>Heatmap bin identifiers</summary>${table(['Bin','Reference cluster','Passage IDs'],matrix.bins.map((b,i)=>[i+1,b.cluster,b.indices.map(j=>s.reference_ids[j]).join(' · ')]))}</details>
       </details>`;
     const candidates=s.consensus.points.filter(p=>p.margin!==null).sort((a,b)=>a.margin-b.margin||a.included-b.included||a.index-b.index).slice(0,10);
@@ -77,7 +82,7 @@
       <blockquote>${esc(r.text)}</blockquote><a href="${esc(r.source_url)}" target="_blank" rel="noopener noreferrer">Open original source ↗</a></details>`;}).join('')}</div>`;
     const unranked=s.consensus.points.filter(p=>p.margin===null).length;
     if(unranked)html+=`<p class="warning">${unranked} passages lack within-cluster or alternative-cluster comparisons and cannot be ranked. Their missing values and inclusion counts remain in the exports.</p>`;
-    html+=`<details><summary>Resampling record</summary>${table(['Sample','Passages used','Components','ARI','Status'],s.runs.map(r=>[r.attempt,r.indices.length,r[(s.representation||'pca')+'_components']??'—',number(r.ari),r.skipped||'Fitted']))}</details></section>`;
+    html+=`<details><summary>Resampling record</summary>${table(['Sample','Passages used','Components',...(s.algorithm==='hdbscan'?['Assigned','Unassigned','Shared assigned']:[]),'ARI','Status'],s.runs.map(r=>[r.attempt,r.indices.length,r[(s.representation||'pca')+'_components']??'—',...(s.algorithm==='hdbscan'?[r.assignment?.assigned_count??'—',r.assignment?.unassigned_count??'—',r.assignment?.shared_assigned_for_ari??'—']:[]),number(r.ari),r.skipped||r.ari_unassessed||'Fitted']))}</details></section>`;
     return html;
   }
   const api={heatmap,render};

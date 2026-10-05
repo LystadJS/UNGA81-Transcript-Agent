@@ -161,9 +161,11 @@ political categories, causal effects or coordination. With few meeting groups,
 many resamples repeat the same omissions. Inspect source passages and compare
 `k` and retained dimensions before interpreting differences between methods.
 
-The next method is **HDBSCAN**, with explicit unassigned/noise passages, minimum
-group-size sensitivity and stability accounting that does not treat shared noise
-labels as co-clustering. NMF and regularized Gaussian mixtures follow.
+**Implemented in 1.7:** [HDBSCAN](HDBSCAN.md) with explicit unassigned passages,
+density-setting sensitivity and stability accounting that never treats shared
+noise labels as co-clustering. The [source/settings audit](CLUSTER_SENSITIVITY.md)
+compares 96 fixed-count settings and 36 density settings. Review source-type
+inclusion before assigning themes. NMF and regularized Gaussian mixtures follow.
 
 Algorithm references: [R cluster PAM](https://stat.ethz.ch/R-manual/R-devel/library/cluster/html/pam.html)
 and [SciPy hierarchical linkage](https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html).

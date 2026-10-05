@@ -1,0 +1,6026 @@
+{
+  "schema": "un.cluster-settings-audit.v1",
+  "input_sha256": "469f5d00c84a20b735f2cc23e1688ea1868fa38da90e611894b0d759c282deca",
+  "selection": {
+    "topic": "",
+    "start": "2026-09-22",
+    "end": "2026-09-28",
+    "region": "All regions",
+    "scope": "general_debate",
+    "methods": [
+      "tfidf"
+    ],
+    "mode": "all",
+    "phrases": [],
+    "exclude": []
+  },
+  "counts": {
+    "input": 460,
+    "eligible_before_dedup": 460,
+    "duplicates": 0,
+    "eligible": 460,
+    "matched": 460,
+    "unmapped": 240
+  },
+  "usable_passages": 458,
+  "meeting_groups": 6,
+  "protocol": "Fixed grid: PCA/LSA, 10/20/40 components, HDBSCAN EOM minimum size=5/15/30, density neighbors=5/10 (includes self). ARI uses only jointly assigned passages with two represented groups in each fit. Full TF-IDF and representation refits for every leave-one-meeting-out cohort; six distinct omissions, not 30 independent repetitions. No auto-selected winner; no UMAP needed for partition sensitivity.",
+  "omission_keys": [
+    "un-asset:k16/k16g777u83",
+    "un-asset:k17/k17s3dutob",
+    "un-asset:k18/k18iyhzwip",
+    "un-asset:k1b/k1b5jwwa58",
+    "un-asset:k1k/k1kfcwu5kc",
+    "un-asset:k1u/k1ukg04uyo"
+  ],
+  "cases": [
+    {
+      "representation": "pca",
+      "components": 10,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 5,
+        "minSamples": 5,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        7,
+        193,
+        75,
+        12,
+        12,
+        6,
+        12,
+        6,
+        41,
+        11,
+        8,
+        8,
+        5
+      ],
+      "largest_share": 0.42139737991266374,
+      "selected_groups": 13,
+      "assigned": 396,
+      "unassigned": 62,
+      "omission_assignment_counts": [
+        323,
+        313,
+        325,
+        321,
+        349,
+        326
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 0.9962630218726225,
+          "assignment": {
+            "both_assigned": 315,
+            "reference_assigned_sample_unassigned": 23,
+            "reference_unassigned_sample_assigned": 8,
+            "both_unassigned": 41,
+            "shared_assigned_for_ari": 315,
+            "assigned_count": 323,
+            "unassigned_count": 64
+          }
+        },
+        {
+          "ari": 0.9972257958526828,
+          "assignment": {
+            "both_assigned": 311,
+            "reference_assigned_sample_unassigned": 23,
+            "reference_unassigned_sample_assigned": 2,
+            "both_unassigned": 51,
+            "shared_assigned_for_ari": 311,
+            "assigned_count": 313,
+            "unassigned_count": 74
+          }
+        },
+        {
+          "ari": 0.9918967947116745,
+          "assignment": {
+            "both_assigned": 312,
+            "reference_assigned_sample_unassigned": 13,
+            "reference_unassigned_sample_assigned": 13,
+            "both_unassigned": 37,
+            "shared_assigned_for_ari": 312,
+            "assigned_count": 325,
+            "unassigned_count": 50
+          }
+        },
+        {
+          "ari": 0.985592521154472,
+          "assignment": {
+            "both_assigned": 306,
+            "reference_assigned_sample_unassigned": 14,
+            "reference_unassigned_sample_assigned": 15,
+            "both_unassigned": 45,
+            "shared_assigned_for_ari": 306,
+            "assigned_count": 321,
+            "unassigned_count": 59
+          }
+        },
+        {
+          "ari": 0.8591132009404747,
+          "assignment": {
+            "both_assigned": 317,
+            "reference_assigned_sample_unassigned": 12,
+            "reference_unassigned_sample_assigned": 32,
+            "both_unassigned": 20,
+            "shared_assigned_for_ari": 317,
+            "assigned_count": 349,
+            "unassigned_count": 32
+          }
+        },
+        {
+          "ari": 0.9788734297326217,
+          "assignment": {
+            "both_assigned": 316,
+            "reference_assigned_sample_unassigned": 18,
+            "reference_unassigned_sample_assigned": 10,
+            "both_unassigned": 36,
+            "shared_assigned_for_ari": 316,
+            "assigned_count": 326,
+            "unassigned_count": 54
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.47583067694734515,
+      "leave_one_meeting_out_ari": [
+        0.9962630218726225,
+        0.9972257958526828,
+        0.9918967947116745,
+        0.985592521154472,
+        0.8591132009404747,
+        0.9788734297326217
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9681607940440915,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 7,
+          "representative_id": "asset/k17/k17s3dutob#2",
+          "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=18:48",
+          "country": "Unidentified",
+          "date": "2026-09-22",
+          "representative_words": 2,
+          "recorded_GA_count": 1,
+          "under_20_words": 5
+        },
+        {
+          "cluster": 2,
+          "size": 193,
+          "representative_id": "asset/k1b/k1b5jwwa58#25",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=4:04:39",
+          "country": "Cyprus",
+          "date": "2026-09-23",
+          "representative_words": 2122,
+          "recorded_GA_count": 1,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 75,
+          "representative_id": "asset/k17/k17s3dutob#31",
+          "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=6:11:35",
+          "country": "GA",
+          "date": "2026-09-22",
+          "representative_words": 48,
+          "recorded_GA_count": 75,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 4,
+          "size": 12,
+          "representative_id": "asset/k1u/k1ukg04uyo#18",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=3:28:31",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 49,
+          "recorded_GA_count": 12,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 5,
+          "size": 12,
+          "representative_id": "asset/k1u/k1ukg04uyo#32",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=6:24:22",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 51,
+          "recorded_GA_count": 12,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 6,
+          "size": 6,
+          "representative_id": "asset/k16/k16g777u83#14",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=2:01:45",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 41,
+          "recorded_GA_count": 6,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 7,
+          "size": 12,
+          "representative_id": "asset/k1k/k1kfcwu5kc#73",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=8:18:31",
+          "country": "United Arab Emirates",
+          "date": "2026-09-28",
+          "representative_words": 223,
+          "recorded_GA_count": 0,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 8,
+          "size": 6,
+          "representative_id": "asset/k1u/k1ukg04uyo#77",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=12:59:59",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 4,
+          "recorded_GA_count": 6,
+          "under_20_words": 4
+        },
+        {
+          "cluster": 9,
+          "size": 41,
+          "representative_id": "asset/k1k/k1kfcwu5kc#4",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=50:37",
+          "country": "GA",
+          "date": "2026-09-28",
+          "representative_words": 28,
+          "recorded_GA_count": 41,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 10,
+          "size": 11,
+          "representative_id": "asset/k18/k18iyhzwip#80",
+          "source_url": "https://transcripts.un.org/en/asset/k18/k18iyhzwip?t=12:23:45",
+          "country": "GA",
+          "date": "2026-09-24",
+          "representative_words": 8,
+          "recorded_GA_count": 11,
+          "under_20_words": 11
+        },
+        {
+          "cluster": 11,
+          "size": 8,
+          "representative_id": "asset/k16/k16g777u83#69",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=9:34:51",
+          "country": "Japan",
+          "date": "2026-09-26",
+          "representative_words": 118,
+          "recorded_GA_count": 0,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 12,
+          "size": 8,
+          "representative_id": "asset/k1k/k1kfcwu5kc#26",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=4:36:09",
+          "country": "GA",
+          "date": "2026-09-28",
+          "representative_words": 28,
+          "recorded_GA_count": 8,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 13,
+          "size": 5,
+          "representative_id": "asset/k1k/k1kfcwu5kc#74",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=8:20:11",
+          "country": "GA",
+          "date": "2026-09-28",
+          "representative_words": 16,
+          "recorded_GA_count": 5,
+          "under_20_words": 5
+        }
+      ]
+    },
+    {
+      "representation": "pca",
+      "components": 10,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 5,
+        "minSamples": 10,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        224,
+        67,
+        19,
+        52,
+        10
+      ],
+      "largest_share": 0.4890829694323144,
+      "selected_groups": 5,
+      "assigned": 372,
+      "unassigned": 86,
+      "omission_assignment_counts": [
+        305,
+        314,
+        302,
+        311,
+        329,
+        316
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 301,
+            "reference_assigned_sample_unassigned": 11,
+            "reference_unassigned_sample_assigned": 4,
+            "both_unassigned": 71,
+            "shared_assigned_for_ari": 301,
+            "assigned_count": 305,
+            "unassigned_count": 82
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 305,
+            "reference_assigned_sample_unassigned": 6,
+            "reference_unassigned_sample_assigned": 9,
+            "both_unassigned": 67,
+            "shared_assigned_for_ari": 305,
+            "assigned_count": 314,
+            "unassigned_count": 73
+          }
+        },
+        {
+          "ari": 0.9944834067488931,
+          "assignment": {
+            "both_assigned": 289,
+            "reference_assigned_sample_unassigned": 15,
+            "reference_unassigned_sample_assigned": 13,
+            "both_unassigned": 58,
+            "shared_assigned_for_ari": 289,
+            "assigned_count": 302,
+            "unassigned_count": 73
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 296,
+            "reference_assigned_sample_unassigned": 4,
+            "reference_unassigned_sample_assigned": 15,
+            "both_unassigned": 65,
+            "shared_assigned_for_ari": 296,
+            "assigned_count": 311,
+            "unassigned_count": 69
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 310,
+            "reference_assigned_sample_unassigned": 12,
+            "reference_unassigned_sample_assigned": 19,
+            "both_unassigned": 40,
+            "shared_assigned_for_ari": 310,
+            "assigned_count": 329,
+            "unassigned_count": 52
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 305,
+            "reference_assigned_sample_unassigned": 6,
+            "reference_unassigned_sample_assigned": 11,
+            "both_unassigned": 58,
+            "shared_assigned_for_ari": 305,
+            "assigned_count": 316,
+            "unassigned_count": 64
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.6242065976960223,
+      "leave_one_meeting_out_ari": [
+        1,
+        1,
+        0.9944834067488931,
+        1,
+        1,
+        1
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9990805677914821,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 224,
+          "representative_id": "asset/k16/k16g777u83#35",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=4:41:56",
+          "country": "India",
+          "date": "2026-09-26",
+          "representative_words": 1668,
+          "recorded_GA_count": 2,
+          "under_20_words": 5
+        },
+        {
+          "cluster": 2,
+          "size": 67,
+          "representative_id": "asset/k17/k17s3dutob#31",
+          "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=6:11:35",
+          "country": "GA",
+          "date": "2026-09-22",
+          "representative_words": 48,
+          "recorded_GA_count": 67,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 19,
+          "representative_id": "asset/k1u/k1ukg04uyo#32",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=6:24:22",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 51,
+          "recorded_GA_count": 19,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 4,
+          "size": 52,
+          "representative_id": "asset/k16/k16g777u83#36",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=4:58:20",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 29,
+          "recorded_GA_count": 52,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 5,
+          "size": 10,
+          "representative_id": "asset/k18/k18iyhzwip#80",
+          "source_url": "https://transcripts.un.org/en/asset/k18/k18iyhzwip?t=12:23:45",
+          "country": "GA",
+          "date": "2026-09-24",
+          "representative_words": 8,
+          "recorded_GA_count": 10,
+          "under_20_words": 10
+        }
+      ]
+    },
+    {
+      "representation": "pca",
+      "components": 10,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 15,
+        "minSamples": 5,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        229,
+        75,
+        29,
+        54
+      ],
+      "largest_share": 0.5,
+      "selected_groups": 4,
+      "assigned": 387,
+      "unassigned": 71,
+      "omission_assignment_counts": [
+        322,
+        317,
+        323,
+        303,
+        340,
+        317
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 320,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 2,
+            "both_unassigned": 60,
+            "shared_assigned_for_ari": 320,
+            "assigned_count": 322,
+            "unassigned_count": 65
+          }
+        },
+        {
+          "ari": 0.9969691865193157,
+          "assignment": {
+            "both_assigned": 315,
+            "reference_assigned_sample_unassigned": 8,
+            "reference_unassigned_sample_assigned": 2,
+            "both_unassigned": 62,
+            "shared_assigned_for_ari": 315,
+            "assigned_count": 317,
+            "unassigned_count": 70
+          }
+        },
+        {
+          "ari": 0.9752195963813304,
+          "assignment": {
+            "both_assigned": 314,
+            "reference_assigned_sample_unassigned": 1,
+            "reference_unassigned_sample_assigned": 9,
+            "both_unassigned": 51,
+            "shared_assigned_for_ari": 314,
+            "assigned_count": 323,
+            "unassigned_count": 52
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 300,
+            "reference_assigned_sample_unassigned": 12,
+            "reference_unassigned_sample_assigned": 3,
+            "both_unassigned": 65,
+            "shared_assigned_for_ari": 300,
+            "assigned_count": 303,
+            "unassigned_count": 77
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 323,
+            "reference_assigned_sample_unassigned": 17,
+            "reference_unassigned_sample_assigned": 17,
+            "both_unassigned": 24,
+            "shared_assigned_for_ari": 323,
+            "assigned_count": 340,
+            "unassigned_count": 41
+          }
+        },
+        {
+          "ari": 0.9962824821560389,
+          "assignment": {
+            "both_assigned": 311,
+            "reference_assigned_sample_unassigned": 9,
+            "reference_unassigned_sample_assigned": 6,
+            "both_unassigned": 54,
+            "shared_assigned_for_ari": 311,
+            "assigned_count": 317,
+            "unassigned_count": 63
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.5908296476216911,
+      "leave_one_meeting_out_ari": [
+        1,
+        0.9969691865193157,
+        0.9752195963813304,
+        1,
+        1,
+        0.9962824821560389
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9947452108427807,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 229,
+          "representative_id": "asset/k16/k16g777u83#35",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=4:41:56",
+          "country": "India",
+          "date": "2026-09-26",
+          "representative_words": 1668,
+          "recorded_GA_count": 3,
+          "under_20_words": 5
+        },
+        {
+          "cluster": 2,
+          "size": 75,
+          "representative_id": "asset/k17/k17s3dutob#31",
+          "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=6:11:35",
+          "country": "GA",
+          "date": "2026-09-22",
+          "representative_words": 48,
+          "recorded_GA_count": 75,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 29,
+          "representative_id": "asset/k1u/k1ukg04uyo#30",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=5:53:17",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 54,
+          "recorded_GA_count": 29,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 4,
+          "size": 54,
+          "representative_id": "asset/k16/k16g777u83#36",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=4:58:20",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 29,
+          "recorded_GA_count": 54,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "pca",
+      "components": 10,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 15,
+        "minSamples": 10,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        224,
+        67,
+        19,
+        52
+      ],
+      "largest_share": 0.4890829694323144,
+      "selected_groups": 4,
+      "assigned": 362,
+      "unassigned": 96,
+      "omission_assignment_counts": [
+        294,
+        304,
+        319,
+        322,
+        329,
+        322
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 291,
+            "reference_assigned_sample_unassigned": 11,
+            "reference_unassigned_sample_assigned": 3,
+            "both_unassigned": 82,
+            "shared_assigned_for_ari": 291,
+            "assigned_count": 294,
+            "unassigned_count": 93
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 295,
+            "reference_assigned_sample_unassigned": 6,
+            "reference_unassigned_sample_assigned": 9,
+            "both_unassigned": 77,
+            "shared_assigned_for_ari": 295,
+            "assigned_count": 304,
+            "unassigned_count": 83
+          }
+        },
+        {
+          "ari": 0.9711387008557825,
+          "assignment": {
+            "both_assigned": 293,
+            "reference_assigned_sample_unassigned": 3,
+            "reference_unassigned_sample_assigned": 26,
+            "both_unassigned": 53,
+            "shared_assigned_for_ari": 293,
+            "assigned_count": 319,
+            "unassigned_count": 56
+          }
+        },
+        {
+          "ari": 0.96781219688047,
+          "assignment": {
+            "both_assigned": 289,
+            "reference_assigned_sample_unassigned": 1,
+            "reference_unassigned_sample_assigned": 33,
+            "both_unassigned": 57,
+            "shared_assigned_for_ari": 289,
+            "assigned_count": 322,
+            "unassigned_count": 58
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 310,
+            "reference_assigned_sample_unassigned": 9,
+            "reference_unassigned_sample_assigned": 19,
+            "both_unassigned": 43,
+            "shared_assigned_for_ari": 310,
+            "assigned_count": 329,
+            "unassigned_count": 52
+          }
+        },
+        {
+          "ari": 0.9696181399904541,
+          "assignment": {
+            "both_assigned": 297,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 25,
+            "both_unassigned": 53,
+            "shared_assigned_for_ari": 297,
+            "assigned_count": 322,
+            "unassigned_count": 58
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.6199953235020432,
+      "leave_one_meeting_out_ari": [
+        1,
+        1,
+        0.9711387008557825,
+        0.96781219688047,
+        1,
+        0.9696181399904541
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9847615062877845,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 224,
+          "representative_id": "asset/k16/k16g777u83#35",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=4:41:56",
+          "country": "India",
+          "date": "2026-09-26",
+          "representative_words": 1668,
+          "recorded_GA_count": 2,
+          "under_20_words": 5
+        },
+        {
+          "cluster": 2,
+          "size": 67,
+          "representative_id": "asset/k17/k17s3dutob#31",
+          "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=6:11:35",
+          "country": "GA",
+          "date": "2026-09-22",
+          "representative_words": 48,
+          "recorded_GA_count": 67,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 19,
+          "representative_id": "asset/k1u/k1ukg04uyo#32",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=6:24:22",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 51,
+          "recorded_GA_count": 19,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 4,
+          "size": 52,
+          "representative_id": "asset/k16/k16g777u83#36",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=4:58:20",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 29,
+          "recorded_GA_count": 52,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "pca",
+      "components": 10,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 30,
+        "minSamples": 5,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        229,
+        121,
+        54
+      ],
+      "largest_share": 0.5,
+      "selected_groups": 3,
+      "assigned": 404,
+      "unassigned": 54,
+      "omission_assignment_counts": [
+        310,
+        337,
+        330,
+        316,
+        340,
+        325
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 310,
+            "reference_assigned_sample_unassigned": 29,
+            "reference_unassigned_sample_assigned": 0,
+            "both_unassigned": 48,
+            "shared_assigned_for_ari": 310,
+            "assigned_count": 310,
+            "unassigned_count": 77
+          }
+        },
+        {
+          "ari": 0.9896354033774429,
+          "assignment": {
+            "both_assigned": 335,
+            "reference_assigned_sample_unassigned": 1,
+            "reference_unassigned_sample_assigned": 2,
+            "both_unassigned": 49,
+            "shared_assigned_for_ari": 335,
+            "assigned_count": 337,
+            "unassigned_count": 50
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 327,
+            "reference_assigned_sample_unassigned": 1,
+            "reference_unassigned_sample_assigned": 3,
+            "both_unassigned": 44,
+            "shared_assigned_for_ari": 327,
+            "assigned_count": 330,
+            "unassigned_count": 45
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 316,
+            "reference_assigned_sample_unassigned": 12,
+            "reference_unassigned_sample_assigned": 0,
+            "both_unassigned": 52,
+            "shared_assigned_for_ari": 316,
+            "assigned_count": 316,
+            "unassigned_count": 64
+          }
+        },
+        {
+          "ari": 0.9160522309990565,
+          "assignment": {
+            "both_assigned": 335,
+            "reference_assigned_sample_unassigned": 22,
+            "reference_unassigned_sample_assigned": 5,
+            "both_unassigned": 19,
+            "shared_assigned_for_ari": 335,
+            "assigned_count": 340,
+            "unassigned_count": 41
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 324,
+            "reference_assigned_sample_unassigned": 8,
+            "reference_unassigned_sample_assigned": 1,
+            "both_unassigned": 47,
+            "shared_assigned_for_ari": 324,
+            "assigned_count": 325,
+            "unassigned_count": 55
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.5878112481756426,
+      "leave_one_meeting_out_ari": [
+        1,
+        0.9896354033774429,
+        1,
+        1,
+        0.9160522309990565,
+        1
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9842812723960832,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 229,
+          "representative_id": "asset/k16/k16g777u83#35",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=4:41:56",
+          "country": "India",
+          "date": "2026-09-26",
+          "representative_words": 1668,
+          "recorded_GA_count": 3,
+          "under_20_words": 5
+        },
+        {
+          "cluster": 2,
+          "size": 121,
+          "representative_id": "asset/k1u/k1ukg04uyo#10",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=2:00:04",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 54,
+          "recorded_GA_count": 121,
+          "under_20_words": 1
+        },
+        {
+          "cluster": 3,
+          "size": 54,
+          "representative_id": "asset/k16/k16g777u83#36",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=4:58:20",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 29,
+          "recorded_GA_count": 54,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "pca",
+      "components": 10,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 30,
+        "minSamples": 10,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        224,
+        119,
+        52
+      ],
+      "largest_share": 0.4890829694323144,
+      "selected_groups": 3,
+      "assigned": 395,
+      "unassigned": 63,
+      "omission_assignment_counts": [
+        302,
+        329,
+        319,
+        322,
+        329,
+        322
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 300,
+            "reference_assigned_sample_unassigned": 31,
+            "reference_unassigned_sample_assigned": 2,
+            "both_unassigned": 54,
+            "shared_assigned_for_ari": 300,
+            "assigned_count": 302,
+            "unassigned_count": 85
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 324,
+            "reference_assigned_sample_unassigned": 3,
+            "reference_unassigned_sample_assigned": 5,
+            "both_unassigned": 55,
+            "shared_assigned_for_ari": 324,
+            "assigned_count": 329,
+            "unassigned_count": 58
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 317,
+            "reference_assigned_sample_unassigned": 3,
+            "reference_unassigned_sample_assigned": 2,
+            "both_unassigned": 53,
+            "shared_assigned_for_ari": 317,
+            "assigned_count": 319,
+            "unassigned_count": 56
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 319,
+            "reference_assigned_sample_unassigned": 1,
+            "reference_unassigned_sample_assigned": 3,
+            "both_unassigned": 57,
+            "shared_assigned_for_ari": 319,
+            "assigned_count": 322,
+            "unassigned_count": 58
+          }
+        },
+        {
+          "ari": 0.9177974219616126,
+          "assignment": {
+            "both_assigned": 327,
+            "reference_assigned_sample_unassigned": 25,
+            "reference_unassigned_sample_assigned": 2,
+            "both_unassigned": 27,
+            "shared_assigned_for_ari": 327,
+            "assigned_count": 329,
+            "unassigned_count": 52
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 320,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 2,
+            "both_unassigned": 53,
+            "shared_assigned_for_ari": 320,
+            "assigned_count": 322,
+            "unassigned_count": 58
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.6014253694161831,
+      "leave_one_meeting_out_ari": [
+        1,
+        1,
+        1,
+        1,
+        0.9177974219616126,
+        1
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9862995703269354,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 224,
+          "representative_id": "asset/k16/k16g777u83#35",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=4:41:56",
+          "country": "India",
+          "date": "2026-09-26",
+          "representative_words": 1668,
+          "recorded_GA_count": 2,
+          "under_20_words": 5
+        },
+        {
+          "cluster": 2,
+          "size": 119,
+          "representative_id": "asset/k1u/k1ukg04uyo#10",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=2:00:04",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 54,
+          "recorded_GA_count": 119,
+          "under_20_words": 1
+        },
+        {
+          "cluster": 3,
+          "size": 52,
+          "representative_id": "asset/k16/k16g777u83#36",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=4:58:20",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 29,
+          "recorded_GA_count": 52,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "pca",
+      "components": 20,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 5,
+        "minSamples": 5,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        219,
+        61,
+        9,
+        19,
+        6,
+        5,
+        37,
+        7,
+        8
+      ],
+      "largest_share": 0.4781659388646288,
+      "selected_groups": 9,
+      "assigned": 371,
+      "unassigned": 87,
+      "omission_assignment_counts": [
+        315,
+        320,
+        309,
+        297,
+        324,
+        305
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 0.9976013993661745,
+          "assignment": {
+            "both_assigned": 306,
+            "reference_assigned_sample_unassigned": 9,
+            "reference_unassigned_sample_assigned": 9,
+            "both_unassigned": 63,
+            "shared_assigned_for_ari": 306,
+            "assigned_count": 315,
+            "unassigned_count": 72
+          }
+        },
+        {
+          "ari": 0.9961891638425946,
+          "assignment": {
+            "both_assigned": 307,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 13,
+            "both_unassigned": 62,
+            "shared_assigned_for_ari": 307,
+            "assigned_count": 320,
+            "unassigned_count": 67
+          }
+        },
+        {
+          "ari": 0.9849527429696825,
+          "assignment": {
+            "both_assigned": 293,
+            "reference_assigned_sample_unassigned": 8,
+            "reference_unassigned_sample_assigned": 16,
+            "both_unassigned": 58,
+            "shared_assigned_for_ari": 293,
+            "assigned_count": 309,
+            "unassigned_count": 66
+          }
+        },
+        {
+          "ari": 0.9898992314102915,
+          "assignment": {
+            "both_assigned": 287,
+            "reference_assigned_sample_unassigned": 11,
+            "reference_unassigned_sample_assigned": 10,
+            "both_unassigned": 72,
+            "shared_assigned_for_ari": 287,
+            "assigned_count": 297,
+            "unassigned_count": 83
+          }
+        },
+        {
+          "ari": 0.9884248492762329,
+          "assignment": {
+            "both_assigned": 310,
+            "reference_assigned_sample_unassigned": 11,
+            "reference_unassigned_sample_assigned": 14,
+            "both_unassigned": 46,
+            "shared_assigned_for_ari": 310,
+            "assigned_count": 324,
+            "unassigned_count": 57
+          }
+        },
+        {
+          "ari": 0.9980791177579206,
+          "assignment": {
+            "both_assigned": 303,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 2,
+            "both_unassigned": 70,
+            "shared_assigned_for_ari": 303,
+            "assigned_count": 305,
+            "unassigned_count": 75
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.4824687834373811,
+      "leave_one_meeting_out_ari": [
+        0.9976013993661745,
+        0.9961891638425946,
+        0.9849527429696825,
+        0.9898992314102915,
+        0.9884248492762329,
+        0.9980791177579206
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9925244174371494,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 219,
+          "representative_id": "asset/k1k/k1kfcwu5kc#35",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=6:00:52",
+          "country": "Costa Rica",
+          "date": "2026-09-28",
+          "representative_words": 1181,
+          "recorded_GA_count": 2,
+          "under_20_words": 4
+        },
+        {
+          "cluster": 2,
+          "size": 61,
+          "representative_id": "asset/k1b/k1b5jwwa58#14",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=2:20:06",
+          "country": "GA",
+          "date": "2026-09-23",
+          "representative_words": 47,
+          "recorded_GA_count": 61,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 9,
+          "representative_id": "asset/k18/k18iyhzwip#44",
+          "source_url": "https://transcripts.un.org/en/asset/k18/k18iyhzwip?t=6:53:54",
+          "country": "GA",
+          "date": "2026-09-24",
+          "representative_words": 55,
+          "recorded_GA_count": 9,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 4,
+          "size": 19,
+          "representative_id": "asset/k1u/k1ukg04uyo#32",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=6:24:22",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 51,
+          "recorded_GA_count": 19,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 5,
+          "size": 6,
+          "representative_id": "asset/k17/k17s3dutob#65",
+          "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=11:36:46",
+          "country": "GA",
+          "date": "2026-09-22",
+          "representative_words": 42,
+          "recorded_GA_count": 6,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 6,
+          "size": 5,
+          "representative_id": "asset/k1u/k1ukg04uyo#18",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=3:28:31",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 49,
+          "recorded_GA_count": 5,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 7,
+          "size": 37,
+          "representative_id": "asset/k1u/k1ukg04uyo#67",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=11:58:52",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 27,
+          "recorded_GA_count": 37,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 8,
+          "size": 7,
+          "representative_id": "asset/k18/k18iyhzwip#80",
+          "source_url": "https://transcripts.un.org/en/asset/k18/k18iyhzwip?t=12:23:45",
+          "country": "GA",
+          "date": "2026-09-24",
+          "representative_words": 8,
+          "recorded_GA_count": 7,
+          "under_20_words": 7
+        },
+        {
+          "cluster": 9,
+          "size": 8,
+          "representative_id": "asset/k1k/k1kfcwu5kc#26",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=4:36:09",
+          "country": "GA",
+          "date": "2026-09-28",
+          "representative_words": 28,
+          "recorded_GA_count": 8,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "pca",
+      "components": 20,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 5,
+        "minSamples": 10,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        215,
+        57,
+        26,
+        46
+      ],
+      "largest_share": 0.46943231441048033,
+      "selected_groups": 4,
+      "assigned": 344,
+      "unassigned": 114,
+      "omission_assignment_counts": [
+        284,
+        281,
+        273,
+        298,
+        297,
+        273
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 281,
+            "reference_assigned_sample_unassigned": 9,
+            "reference_unassigned_sample_assigned": 3,
+            "both_unassigned": 94,
+            "shared_assigned_for_ari": 281,
+            "assigned_count": 284,
+            "unassigned_count": 103
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 277,
+            "reference_assigned_sample_unassigned": 10,
+            "reference_unassigned_sample_assigned": 4,
+            "both_unassigned": 96,
+            "shared_assigned_for_ari": 277,
+            "assigned_count": 281,
+            "unassigned_count": 106
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 268,
+            "reference_assigned_sample_unassigned": 12,
+            "reference_unassigned_sample_assigned": 5,
+            "both_unassigned": 90,
+            "shared_assigned_for_ari": 268,
+            "assigned_count": 273,
+            "unassigned_count": 102
+          }
+        },
+        {
+          "ari": 0.9616315286509576,
+          "assignment": {
+            "both_assigned": 271,
+            "reference_assigned_sample_unassigned": 3,
+            "reference_unassigned_sample_assigned": 27,
+            "both_unassigned": 79,
+            "shared_assigned_for_ari": 271,
+            "assigned_count": 298,
+            "unassigned_count": 82
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 292,
+            "reference_assigned_sample_unassigned": 17,
+            "reference_unassigned_sample_assigned": 5,
+            "both_unassigned": 67,
+            "shared_assigned_for_ari": 292,
+            "assigned_count": 297,
+            "unassigned_count": 84
+          }
+        },
+        {
+          "ari": 0.9963172140771059,
+          "assignment": {
+            "both_assigned": 271,
+            "reference_assigned_sample_unassigned": 9,
+            "reference_unassigned_sample_assigned": 2,
+            "both_unassigned": 98,
+            "shared_assigned_for_ari": 271,
+            "assigned_count": 273,
+            "unassigned_count": 107
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.5286576085247632,
+      "leave_one_meeting_out_ari": [
+        1,
+        1,
+        1,
+        0.9616315286509576,
+        1,
+        0.9963172140771059
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9929914571213438,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 215,
+          "representative_id": "asset/k1k/k1kfcwu5kc#35",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=6:00:52",
+          "country": "Costa Rica",
+          "date": "2026-09-28",
+          "representative_words": 1181,
+          "recorded_GA_count": 2,
+          "under_20_words": 3
+        },
+        {
+          "cluster": 2,
+          "size": 57,
+          "representative_id": "asset/k1b/k1b5jwwa58#14",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=2:20:06",
+          "country": "GA",
+          "date": "2026-09-23",
+          "representative_words": 47,
+          "recorded_GA_count": 57,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 26,
+          "representative_id": "asset/k1u/k1ukg04uyo#32",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=6:24:22",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 51,
+          "recorded_GA_count": 26,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 4,
+          "size": 46,
+          "representative_id": "asset/k16/k16g777u83#48",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=6:59:06",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 31,
+          "recorded_GA_count": 46,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "pca",
+      "components": 20,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 15,
+        "minSamples": 5,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        219,
+        61,
+        29,
+        50
+      ],
+      "largest_share": 0.4781659388646288,
+      "selected_groups": 4,
+      "assigned": 359,
+      "unassigned": 99,
+      "omission_assignment_counts": [
+        301,
+        300,
+        295,
+        310,
+        316,
+        311
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 294,
+            "reference_assigned_sample_unassigned": 8,
+            "reference_unassigned_sample_assigned": 7,
+            "both_unassigned": 78,
+            "shared_assigned_for_ari": 294,
+            "assigned_count": 301,
+            "unassigned_count": 86
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 295,
+            "reference_assigned_sample_unassigned": 6,
+            "reference_unassigned_sample_assigned": 5,
+            "both_unassigned": 81,
+            "shared_assigned_for_ari": 295,
+            "assigned_count": 300,
+            "unassigned_count": 87
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 288,
+            "reference_assigned_sample_unassigned": 7,
+            "reference_unassigned_sample_assigned": 7,
+            "both_unassigned": 73,
+            "shared_assigned_for_ari": 288,
+            "assigned_count": 295,
+            "unassigned_count": 80
+          }
+        },
+        {
+          "ari": 0.9569918422545721,
+          "assignment": {
+            "both_assigned": 286,
+            "reference_assigned_sample_unassigned": 1,
+            "reference_unassigned_sample_assigned": 24,
+            "both_unassigned": 69,
+            "shared_assigned_for_ari": 286,
+            "assigned_count": 310,
+            "unassigned_count": 70
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 310,
+            "reference_assigned_sample_unassigned": 11,
+            "reference_unassigned_sample_assigned": 6,
+            "both_unassigned": 54,
+            "shared_assigned_for_ari": 310,
+            "assigned_count": 316,
+            "unassigned_count": 65
+          }
+        },
+        {
+          "ari": 0.9597068339683713,
+          "assignment": {
+            "both_assigned": 288,
+            "reference_assigned_sample_unassigned": 1,
+            "reference_unassigned_sample_assigned": 23,
+            "both_unassigned": 68,
+            "shared_assigned_for_ari": 288,
+            "assigned_count": 311,
+            "unassigned_count": 69
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.5072651374041763,
+      "leave_one_meeting_out_ari": [
+        1,
+        1,
+        1,
+        0.9569918422545721,
+        1,
+        0.9597068339683713
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9861164460371573,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 219,
+          "representative_id": "asset/k1k/k1kfcwu5kc#35",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=6:00:52",
+          "country": "Costa Rica",
+          "date": "2026-09-28",
+          "representative_words": 1181,
+          "recorded_GA_count": 2,
+          "under_20_words": 4
+        },
+        {
+          "cluster": 2,
+          "size": 61,
+          "representative_id": "asset/k1b/k1b5jwwa58#14",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=2:20:06",
+          "country": "GA",
+          "date": "2026-09-23",
+          "representative_words": 47,
+          "recorded_GA_count": 61,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 29,
+          "representative_id": "asset/k1u/k1ukg04uyo#32",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=6:24:22",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 51,
+          "recorded_GA_count": 29,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 4,
+          "size": 50,
+          "representative_id": "asset/k16/k16g777u83#48",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=6:59:06",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 31,
+          "recorded_GA_count": 50,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "pca",
+      "components": 20,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 15,
+        "minSamples": 10,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        215,
+        57,
+        26,
+        46
+      ],
+      "largest_share": 0.46943231441048033,
+      "selected_groups": 4,
+      "assigned": 344,
+      "unassigned": 114,
+      "omission_assignment_counts": [
+        284,
+        281,
+        299,
+        298,
+        297,
+        288
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 281,
+            "reference_assigned_sample_unassigned": 9,
+            "reference_unassigned_sample_assigned": 3,
+            "both_unassigned": 94,
+            "shared_assigned_for_ari": 281,
+            "assigned_count": 284,
+            "unassigned_count": 103
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 277,
+            "reference_assigned_sample_unassigned": 10,
+            "reference_unassigned_sample_assigned": 4,
+            "both_unassigned": 96,
+            "shared_assigned_for_ari": 277,
+            "assigned_count": 281,
+            "unassigned_count": 106
+          }
+        },
+        {
+          "ari": 0.9606396539423748,
+          "assignment": {
+            "both_assigned": 275,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 24,
+            "both_unassigned": 71,
+            "shared_assigned_for_ari": 275,
+            "assigned_count": 299,
+            "unassigned_count": 76
+          }
+        },
+        {
+          "ari": 0.9616315286509576,
+          "assignment": {
+            "both_assigned": 271,
+            "reference_assigned_sample_unassigned": 3,
+            "reference_unassigned_sample_assigned": 27,
+            "both_unassigned": 79,
+            "shared_assigned_for_ari": 271,
+            "assigned_count": 298,
+            "unassigned_count": 82
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 292,
+            "reference_assigned_sample_unassigned": 17,
+            "reference_unassigned_sample_assigned": 5,
+            "both_unassigned": 67,
+            "shared_assigned_for_ari": 292,
+            "assigned_count": 297,
+            "unassigned_count": 84
+          }
+        },
+        {
+          "ari": 0.95993074633819,
+          "assignment": {
+            "both_assigned": 273,
+            "reference_assigned_sample_unassigned": 7,
+            "reference_unassigned_sample_assigned": 15,
+            "both_unassigned": 85,
+            "shared_assigned_for_ari": 273,
+            "assigned_count": 288,
+            "unassigned_count": 92
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.5286576085247632,
+      "leave_one_meeting_out_ari": [
+        1,
+        1,
+        0.9606396539423748,
+        0.9616315286509576,
+        1,
+        0.95993074633819
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9803669881552538,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 215,
+          "representative_id": "asset/k1k/k1kfcwu5kc#35",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=6:00:52",
+          "country": "Costa Rica",
+          "date": "2026-09-28",
+          "representative_words": 1181,
+          "recorded_GA_count": 2,
+          "under_20_words": 3
+        },
+        {
+          "cluster": 2,
+          "size": 57,
+          "representative_id": "asset/k1b/k1b5jwwa58#14",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=2:20:06",
+          "country": "GA",
+          "date": "2026-09-23",
+          "representative_words": 47,
+          "recorded_GA_count": 57,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 26,
+          "representative_id": "asset/k1u/k1ukg04uyo#32",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=6:24:22",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 51,
+          "recorded_GA_count": 26,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 4,
+          "size": 46,
+          "representative_id": "asset/k16/k16g777u83#48",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=6:59:06",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 31,
+          "recorded_GA_count": 46,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "pca",
+      "components": 20,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 30,
+        "minSamples": 5,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        219,
+        116,
+        50
+      ],
+      "largest_share": 0.4781659388646288,
+      "selected_groups": 3,
+      "assigned": 385,
+      "unassigned": 73,
+      "omission_assignment_counts": [
+        275,
+        323,
+        313,
+        310,
+        344,
+        311
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 0.906807558961367,
+          "assignment": {
+            "both_assigned": 272,
+            "reference_assigned_sample_unassigned": 52,
+            "reference_unassigned_sample_assigned": 3,
+            "both_unassigned": 60,
+            "shared_assigned_for_ari": 272,
+            "assigned_count": 275,
+            "unassigned_count": 112
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 318,
+            "reference_assigned_sample_unassigned": 2,
+            "reference_unassigned_sample_assigned": 5,
+            "both_unassigned": 62,
+            "shared_assigned_for_ari": 318,
+            "assigned_count": 323,
+            "unassigned_count": 64
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 309,
+            "reference_assigned_sample_unassigned": 3,
+            "reference_unassigned_sample_assigned": 4,
+            "both_unassigned": 59,
+            "shared_assigned_for_ari": 309,
+            "assigned_count": 313,
+            "unassigned_count": 62
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 307,
+            "reference_assigned_sample_unassigned": 3,
+            "reference_unassigned_sample_assigned": 3,
+            "both_unassigned": 67,
+            "shared_assigned_for_ari": 307,
+            "assigned_count": 310,
+            "unassigned_count": 70
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 341,
+            "reference_assigned_sample_unassigned": 6,
+            "reference_unassigned_sample_assigned": 3,
+            "both_unassigned": 31,
+            "shared_assigned_for_ari": 341,
+            "assigned_count": 344,
+            "unassigned_count": 37
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 310,
+            "reference_assigned_sample_unassigned": 2,
+            "reference_unassigned_sample_assigned": 1,
+            "both_unassigned": 67,
+            "shared_assigned_for_ari": 310,
+            "assigned_count": 311,
+            "unassigned_count": 69
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.5010276195660845,
+      "leave_one_meeting_out_ari": [
+        0.906807558961367,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9844679264935611,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 219,
+          "representative_id": "asset/k1k/k1kfcwu5kc#35",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=6:00:52",
+          "country": "Costa Rica",
+          "date": "2026-09-28",
+          "representative_words": 1181,
+          "recorded_GA_count": 2,
+          "under_20_words": 4
+        },
+        {
+          "cluster": 2,
+          "size": 116,
+          "representative_id": "asset/k1b/k1b5jwwa58#67",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=11:08:33",
+          "country": "GA",
+          "date": "2026-09-23",
+          "representative_words": 49,
+          "recorded_GA_count": 116,
+          "under_20_words": 1
+        },
+        {
+          "cluster": 3,
+          "size": 50,
+          "representative_id": "asset/k16/k16g777u83#48",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=6:59:06",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 31,
+          "recorded_GA_count": 50,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "pca",
+      "components": 20,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 30,
+        "minSamples": 10,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        215,
+        115,
+        46
+      ],
+      "largest_share": 0.46943231441048033,
+      "selected_groups": 3,
+      "assigned": 376,
+      "unassigned": 82,
+      "omission_assignment_counts": [
+        288,
+        311,
+        299,
+        298,
+        328,
+        288
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 286,
+            "reference_assigned_sample_unassigned": 31,
+            "reference_unassigned_sample_assigned": 2,
+            "both_unassigned": 68,
+            "shared_assigned_for_ari": 286,
+            "assigned_count": 288,
+            "unassigned_count": 99
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 307,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 4,
+            "both_unassigned": 71,
+            "shared_assigned_for_ari": 307,
+            "assigned_count": 311,
+            "unassigned_count": 76
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 294,
+            "reference_assigned_sample_unassigned": 9,
+            "reference_unassigned_sample_assigned": 5,
+            "both_unassigned": 67,
+            "shared_assigned_for_ari": 294,
+            "assigned_count": 299,
+            "unassigned_count": 76
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 298,
+            "reference_assigned_sample_unassigned": 4,
+            "reference_unassigned_sample_assigned": 0,
+            "both_unassigned": 78,
+            "shared_assigned_for_ari": 298,
+            "assigned_count": 298,
+            "unassigned_count": 82
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 327,
+            "reference_assigned_sample_unassigned": 14,
+            "reference_unassigned_sample_assigned": 1,
+            "both_unassigned": 39,
+            "shared_assigned_for_ari": 327,
+            "assigned_count": 328,
+            "unassigned_count": 53
+          }
+        },
+        {
+          "ari": 0.9874745158726917,
+          "assignment": {
+            "both_assigned": 288,
+            "reference_assigned_sample_unassigned": 17,
+            "reference_unassigned_sample_assigned": 0,
+            "both_unassigned": 75,
+            "shared_assigned_for_ari": 288,
+            "assigned_count": 288,
+            "unassigned_count": 92
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.5135344839043617,
+      "leave_one_meeting_out_ari": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        0.9874745158726917
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9979124193121153,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 215,
+          "representative_id": "asset/k1k/k1kfcwu5kc#35",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=6:00:52",
+          "country": "Costa Rica",
+          "date": "2026-09-28",
+          "representative_words": 1181,
+          "recorded_GA_count": 2,
+          "under_20_words": 3
+        },
+        {
+          "cluster": 2,
+          "size": 115,
+          "representative_id": "asset/k1b/k1b5jwwa58#67",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=11:08:33",
+          "country": "GA",
+          "date": "2026-09-23",
+          "representative_words": 49,
+          "recorded_GA_count": 115,
+          "under_20_words": 1
+        },
+        {
+          "cluster": 3,
+          "size": 46,
+          "representative_id": "asset/k16/k16g777u83#48",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=6:59:06",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 31,
+          "recorded_GA_count": 46,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "pca",
+      "components": 40,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 5,
+        "minSamples": 5,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        198,
+        43,
+        20,
+        41,
+        8
+      ],
+      "largest_share": 0.43231441048034935,
+      "selected_groups": 5,
+      "assigned": 310,
+      "unassigned": 148,
+      "omission_assignment_counts": [
+        296,
+        310,
+        254,
+        288,
+        313,
+        257
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 0.9501037994199779,
+          "assignment": {
+            "both_assigned": 257,
+            "reference_assigned_sample_unassigned": 1,
+            "reference_unassigned_sample_assigned": 39,
+            "both_unassigned": 90,
+            "shared_assigned_for_ari": 257,
+            "assigned_count": 296,
+            "unassigned_count": 91
+          }
+        },
+        {
+          "ari": 0.955023320889193,
+          "assignment": {
+            "both_assigned": 262,
+            "reference_assigned_sample_unassigned": 0,
+            "reference_unassigned_sample_assigned": 48,
+            "both_unassigned": 77,
+            "shared_assigned_for_ari": 262,
+            "assigned_count": 310,
+            "unassigned_count": 77
+          }
+        },
+        {
+          "ari": 0.9888119301479006,
+          "assignment": {
+            "both_assigned": 248,
+            "reference_assigned_sample_unassigned": 6,
+            "reference_unassigned_sample_assigned": 6,
+            "both_unassigned": 115,
+            "shared_assigned_for_ari": 248,
+            "assigned_count": 254,
+            "unassigned_count": 121
+          }
+        },
+        {
+          "ari": 0.9729359208805861,
+          "assignment": {
+            "both_assigned": 244,
+            "reference_assigned_sample_unassigned": 2,
+            "reference_unassigned_sample_assigned": 44,
+            "both_unassigned": 90,
+            "shared_assigned_for_ari": 244,
+            "assigned_count": 288,
+            "unassigned_count": 92
+          }
+        },
+        {
+          "ari": 0.9539940305565243,
+          "assignment": {
+            "both_assigned": 271,
+            "reference_assigned_sample_unassigned": 3,
+            "reference_unassigned_sample_assigned": 42,
+            "both_unassigned": 65,
+            "shared_assigned_for_ari": 271,
+            "assigned_count": 313,
+            "unassigned_count": 68
+          }
+        },
+        {
+          "ari": 0.9966760346905984,
+          "assignment": {
+            "both_assigned": 252,
+            "reference_assigned_sample_unassigned": 4,
+            "reference_unassigned_sample_assigned": 5,
+            "both_unassigned": 119,
+            "shared_assigned_for_ari": 252,
+            "assigned_count": 257,
+            "unassigned_count": 123
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.42808245964021446,
+      "leave_one_meeting_out_ari": [
+        0.9501037994199779,
+        0.955023320889193,
+        0.9888119301479006,
+        0.9729359208805861,
+        0.9539940305565243,
+        0.9966760346905984
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9695908394307967,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 198,
+          "representative_id": "asset/k1b/k1b5jwwa58#36",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=5:51:39",
+          "country": "Central African Republic",
+          "date": "2026-09-23",
+          "representative_words": 1567,
+          "recorded_GA_count": 1,
+          "under_20_words": 2
+        },
+        {
+          "cluster": 2,
+          "size": 43,
+          "representative_id": "asset/k17/k17s3dutob#31",
+          "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=6:11:35",
+          "country": "GA",
+          "date": "2026-09-22",
+          "representative_words": 48,
+          "recorded_GA_count": 43,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 20,
+          "representative_id": "asset/k18/k18iyhzwip#60",
+          "source_url": "https://transcripts.un.org/en/asset/k18/k18iyhzwip?t=9:29:37",
+          "country": "GA",
+          "date": "2026-09-24",
+          "representative_words": 51,
+          "recorded_GA_count": 20,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 4,
+          "size": 41,
+          "representative_id": "asset/k16/k16g777u83#40",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=5:30:14",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 28,
+          "recorded_GA_count": 41,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 5,
+          "size": 8,
+          "representative_id": "asset/k1k/k1kfcwu5kc#26",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=4:36:09",
+          "country": "GA",
+          "date": "2026-09-28",
+          "representative_words": 28,
+          "recorded_GA_count": 8,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "pca",
+      "components": 40,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 5,
+        "minSamples": 10,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        35,
+        191,
+        99
+      ],
+      "largest_share": 0.4170305676855895,
+      "selected_groups": 3,
+      "assigned": 325,
+      "unassigned": 133,
+      "omission_assignment_counts": [
+        272,
+        285,
+        267,
+        264,
+        289,
+        236
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 0.9897756241139721,
+          "assignment": {
+            "both_assigned": 264,
+            "reference_assigned_sample_unassigned": 9,
+            "reference_unassigned_sample_assigned": 8,
+            "both_unassigned": 106,
+            "shared_assigned_for_ari": 264,
+            "assigned_count": 272,
+            "unassigned_count": 115
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 269,
+            "reference_assigned_sample_unassigned": 1,
+            "reference_unassigned_sample_assigned": 16,
+            "both_unassigned": 101,
+            "shared_assigned_for_ari": 269,
+            "assigned_count": 285,
+            "unassigned_count": 102
+          }
+        },
+        {
+          "ari": 0.9886086611661337,
+          "assignment": {
+            "both_assigned": 260,
+            "reference_assigned_sample_unassigned": 4,
+            "reference_unassigned_sample_assigned": 7,
+            "both_unassigned": 104,
+            "shared_assigned_for_ari": 260,
+            "assigned_count": 267,
+            "unassigned_count": 108
+          }
+        },
+        {
+          "ari": 0.9884070699308376,
+          "assignment": {
+            "both_assigned": 256,
+            "reference_assigned_sample_unassigned": 1,
+            "reference_unassigned_sample_assigned": 8,
+            "both_unassigned": 115,
+            "shared_assigned_for_ari": 256,
+            "assigned_count": 264,
+            "unassigned_count": 116
+          }
+        },
+        {
+          "ari": 0.9899266472986793,
+          "assignment": {
+            "both_assigned": 280,
+            "reference_assigned_sample_unassigned": 17,
+            "reference_unassigned_sample_assigned": 9,
+            "both_unassigned": 75,
+            "shared_assigned_for_ari": 280,
+            "assigned_count": 289,
+            "unassigned_count": 92
+          }
+        },
+        {
+          "ari": 0.9699069560499344,
+          "assignment": {
+            "both_assigned": 230,
+            "reference_assigned_sample_unassigned": 34,
+            "reference_unassigned_sample_assigned": 6,
+            "both_unassigned": 110,
+            "shared_assigned_for_ari": 230,
+            "assigned_count": 236,
+            "unassigned_count": 144
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.42860834315685703,
+      "leave_one_meeting_out_ari": [
+        0.9897756241139721,
+        1,
+        0.9886086611661337,
+        0.9884070699308376,
+        0.9899266472986793,
+        0.9699069560499344
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9877708264265929,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 35,
+          "representative_id": "asset/k1k/k1kfcwu5kc#10",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=2:09:52",
+          "country": "GA",
+          "date": "2026-09-28",
+          "representative_words": 27,
+          "recorded_GA_count": 34,
+          "under_20_words": 1
+        },
+        {
+          "cluster": 2,
+          "size": 191,
+          "representative_id": "asset/k1b/k1b5jwwa58#36",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=5:51:39",
+          "country": "Central African Republic",
+          "date": "2026-09-23",
+          "representative_words": 1567,
+          "recorded_GA_count": 1,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 99,
+          "representative_id": "asset/k17/k17s3dutob#31",
+          "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=6:11:35",
+          "country": "GA",
+          "date": "2026-09-22",
+          "representative_words": 48,
+          "recorded_GA_count": 99,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "pca",
+      "components": 40,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 15,
+        "minSamples": 5,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        198,
+        106,
+        41
+      ],
+      "largest_share": 0.43231441048034935,
+      "selected_groups": 3,
+      "assigned": 345,
+      "unassigned": 113,
+      "omission_assignment_counts": [
+        287,
+        296,
+        286,
+        280,
+        313,
+        283
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 280,
+            "reference_assigned_sample_unassigned": 9,
+            "reference_unassigned_sample_assigned": 7,
+            "both_unassigned": 91,
+            "shared_assigned_for_ari": 280,
+            "assigned_count": 287,
+            "unassigned_count": 100
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 282,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 14,
+            "both_unassigned": 86,
+            "shared_assigned_for_ari": 282,
+            "assigned_count": 296,
+            "unassigned_count": 91
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 278,
+            "reference_assigned_sample_unassigned": 0,
+            "reference_unassigned_sample_assigned": 8,
+            "both_unassigned": 89,
+            "shared_assigned_for_ari": 278,
+            "assigned_count": 286,
+            "unassigned_count": 89
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 271,
+            "reference_assigned_sample_unassigned": 2,
+            "reference_unassigned_sample_assigned": 9,
+            "both_unassigned": 98,
+            "shared_assigned_for_ari": 271,
+            "assigned_count": 280,
+            "unassigned_count": 100
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 305,
+            "reference_assigned_sample_unassigned": 12,
+            "reference_unassigned_sample_assigned": 8,
+            "both_unassigned": 56,
+            "shared_assigned_for_ari": 305,
+            "assigned_count": 313,
+            "unassigned_count": 68
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 277,
+            "reference_assigned_sample_unassigned": 4,
+            "reference_unassigned_sample_assigned": 6,
+            "both_unassigned": 93,
+            "shared_assigned_for_ari": 277,
+            "assigned_count": 283,
+            "unassigned_count": 97
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.4178713797490494,
+      "leave_one_meeting_out_ari": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "mean_leave_one_meeting_out_ari": 1,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 198,
+          "representative_id": "asset/k1b/k1b5jwwa58#36",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=5:51:39",
+          "country": "Central African Republic",
+          "date": "2026-09-23",
+          "representative_words": 1567,
+          "recorded_GA_count": 1,
+          "under_20_words": 2
+        },
+        {
+          "cluster": 2,
+          "size": 106,
+          "representative_id": "asset/k17/k17s3dutob#31",
+          "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=6:11:35",
+          "country": "GA",
+          "date": "2026-09-22",
+          "representative_words": 48,
+          "recorded_GA_count": 106,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 41,
+          "representative_id": "asset/k16/k16g777u83#40",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=5:30:14",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 28,
+          "recorded_GA_count": 41,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "pca",
+      "components": 40,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 15,
+        "minSamples": 10,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        35,
+        191,
+        99
+      ],
+      "largest_share": 0.4170305676855895,
+      "selected_groups": 3,
+      "assigned": 325,
+      "unassigned": 133,
+      "omission_assignment_counts": [
+        272,
+        285,
+        267,
+        264,
+        289,
+        268
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 0.9897756241139721,
+          "assignment": {
+            "both_assigned": 264,
+            "reference_assigned_sample_unassigned": 9,
+            "reference_unassigned_sample_assigned": 8,
+            "both_unassigned": 106,
+            "shared_assigned_for_ari": 264,
+            "assigned_count": 272,
+            "unassigned_count": 115
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 269,
+            "reference_assigned_sample_unassigned": 1,
+            "reference_unassigned_sample_assigned": 16,
+            "both_unassigned": 101,
+            "shared_assigned_for_ari": 269,
+            "assigned_count": 285,
+            "unassigned_count": 102
+          }
+        },
+        {
+          "ari": 0.9886086611661337,
+          "assignment": {
+            "both_assigned": 260,
+            "reference_assigned_sample_unassigned": 4,
+            "reference_unassigned_sample_assigned": 7,
+            "both_unassigned": 104,
+            "shared_assigned_for_ari": 260,
+            "assigned_count": 267,
+            "unassigned_count": 108
+          }
+        },
+        {
+          "ari": 0.9884070699308376,
+          "assignment": {
+            "both_assigned": 256,
+            "reference_assigned_sample_unassigned": 1,
+            "reference_unassigned_sample_assigned": 8,
+            "both_unassigned": 115,
+            "shared_assigned_for_ari": 256,
+            "assigned_count": 264,
+            "unassigned_count": 116
+          }
+        },
+        {
+          "ari": 0.9899266472986793,
+          "assignment": {
+            "both_assigned": 280,
+            "reference_assigned_sample_unassigned": 17,
+            "reference_unassigned_sample_assigned": 9,
+            "both_unassigned": 75,
+            "shared_assigned_for_ari": 280,
+            "assigned_count": 289,
+            "unassigned_count": 92
+          }
+        },
+        {
+          "ari": 0.989257613573432,
+          "assignment": {
+            "both_assigned": 261,
+            "reference_assigned_sample_unassigned": 3,
+            "reference_unassigned_sample_assigned": 7,
+            "both_unassigned": 109,
+            "shared_assigned_for_ari": 261,
+            "assigned_count": 268,
+            "unassigned_count": 112
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.42860834315685703,
+      "leave_one_meeting_out_ari": [
+        0.9897756241139721,
+        1,
+        0.9886086611661337,
+        0.9884070699308376,
+        0.9899266472986793,
+        0.989257613573432
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9909959360138426,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 35,
+          "representative_id": "asset/k1k/k1kfcwu5kc#10",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=2:09:52",
+          "country": "GA",
+          "date": "2026-09-28",
+          "representative_words": 27,
+          "recorded_GA_count": 34,
+          "under_20_words": 1
+        },
+        {
+          "cluster": 2,
+          "size": 191,
+          "representative_id": "asset/k1b/k1b5jwwa58#36",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=5:51:39",
+          "country": "Central African Republic",
+          "date": "2026-09-23",
+          "representative_words": 1567,
+          "recorded_GA_count": 1,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 99,
+          "representative_id": "asset/k17/k17s3dutob#31",
+          "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=6:11:35",
+          "country": "GA",
+          "date": "2026-09-22",
+          "representative_words": 48,
+          "recorded_GA_count": 99,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "pca",
+      "components": 40,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 30,
+        "minSamples": 5,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        198,
+        106,
+        41
+      ],
+      "largest_share": 0.43231441048034935,
+      "selected_groups": 3,
+      "assigned": 345,
+      "unassigned": 113,
+      "omission_assignment_counts": [
+        263,
+        296,
+        286,
+        280,
+        313,
+        283
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 258,
+            "reference_assigned_sample_unassigned": 31,
+            "reference_unassigned_sample_assigned": 5,
+            "both_unassigned": 93,
+            "shared_assigned_for_ari": 258,
+            "assigned_count": 263,
+            "unassigned_count": 124
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 282,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 14,
+            "both_unassigned": 86,
+            "shared_assigned_for_ari": 282,
+            "assigned_count": 296,
+            "unassigned_count": 91
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 278,
+            "reference_assigned_sample_unassigned": 0,
+            "reference_unassigned_sample_assigned": 8,
+            "both_unassigned": 89,
+            "shared_assigned_for_ari": 278,
+            "assigned_count": 286,
+            "unassigned_count": 89
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 271,
+            "reference_assigned_sample_unassigned": 2,
+            "reference_unassigned_sample_assigned": 9,
+            "both_unassigned": 98,
+            "shared_assigned_for_ari": 271,
+            "assigned_count": 280,
+            "unassigned_count": 100
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 305,
+            "reference_assigned_sample_unassigned": 12,
+            "reference_unassigned_sample_assigned": 8,
+            "both_unassigned": 56,
+            "shared_assigned_for_ari": 305,
+            "assigned_count": 313,
+            "unassigned_count": 68
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 277,
+            "reference_assigned_sample_unassigned": 4,
+            "reference_unassigned_sample_assigned": 6,
+            "both_unassigned": 93,
+            "shared_assigned_for_ari": 277,
+            "assigned_count": 283,
+            "unassigned_count": 97
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.4178713797490494,
+      "leave_one_meeting_out_ari": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "mean_leave_one_meeting_out_ari": 1,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 198,
+          "representative_id": "asset/k1b/k1b5jwwa58#36",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=5:51:39",
+          "country": "Central African Republic",
+          "date": "2026-09-23",
+          "representative_words": 1567,
+          "recorded_GA_count": 1,
+          "under_20_words": 2
+        },
+        {
+          "cluster": 2,
+          "size": 106,
+          "representative_id": "asset/k17/k17s3dutob#31",
+          "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=6:11:35",
+          "country": "GA",
+          "date": "2026-09-22",
+          "representative_words": 48,
+          "recorded_GA_count": 106,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 41,
+          "representative_id": "asset/k16/k16g777u83#40",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=5:30:14",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 28,
+          "recorded_GA_count": 41,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "pca",
+      "components": 40,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 30,
+        "minSamples": 10,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        35,
+        191,
+        99
+      ],
+      "largest_share": 0.4170305676855895,
+      "selected_groups": 3,
+      "assigned": 325,
+      "unassigned": 133,
+      "omission_assignment_counts": [
+        251,
+        285,
+        267,
+        264,
+        289,
+        241
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 0.9893772230412697,
+          "assignment": {
+            "both_assigned": 246,
+            "reference_assigned_sample_unassigned": 27,
+            "reference_unassigned_sample_assigned": 5,
+            "both_unassigned": 109,
+            "shared_assigned_for_ari": 246,
+            "assigned_count": 251,
+            "unassigned_count": 136
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 269,
+            "reference_assigned_sample_unassigned": 1,
+            "reference_unassigned_sample_assigned": 16,
+            "both_unassigned": 101,
+            "shared_assigned_for_ari": 269,
+            "assigned_count": 285,
+            "unassigned_count": 102
+          }
+        },
+        {
+          "ari": 0.9886086611661337,
+          "assignment": {
+            "both_assigned": 260,
+            "reference_assigned_sample_unassigned": 4,
+            "reference_unassigned_sample_assigned": 7,
+            "both_unassigned": 104,
+            "shared_assigned_for_ari": 260,
+            "assigned_count": 267,
+            "unassigned_count": 108
+          }
+        },
+        {
+          "ari": 0.9884070699308376,
+          "assignment": {
+            "both_assigned": 256,
+            "reference_assigned_sample_unassigned": 1,
+            "reference_unassigned_sample_assigned": 8,
+            "both_unassigned": 115,
+            "shared_assigned_for_ari": 256,
+            "assigned_count": 264,
+            "unassigned_count": 116
+          }
+        },
+        {
+          "ari": 0.9899266472986793,
+          "assignment": {
+            "both_assigned": 280,
+            "reference_assigned_sample_unassigned": 17,
+            "reference_unassigned_sample_assigned": 9,
+            "both_unassigned": 75,
+            "shared_assigned_for_ari": 280,
+            "assigned_count": 289,
+            "unassigned_count": 92
+          }
+        },
+        {
+          "ari": 0.9886357745244228,
+          "assignment": {
+            "both_assigned": 236,
+            "reference_assigned_sample_unassigned": 28,
+            "reference_unassigned_sample_assigned": 5,
+            "both_unassigned": 111,
+            "shared_assigned_for_ari": 236,
+            "assigned_count": 241,
+            "unassigned_count": 139
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.42860834315685703,
+      "leave_one_meeting_out_ari": [
+        0.9893772230412697,
+        1,
+        0.9886086611661337,
+        0.9884070699308376,
+        0.9899266472986793,
+        0.9886357745244228
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9908258959935572,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 35,
+          "representative_id": "asset/k1k/k1kfcwu5kc#10",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=2:09:52",
+          "country": "GA",
+          "date": "2026-09-28",
+          "representative_words": 27,
+          "recorded_GA_count": 34,
+          "under_20_words": 1
+        },
+        {
+          "cluster": 2,
+          "size": 191,
+          "representative_id": "asset/k1b/k1b5jwwa58#36",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=5:51:39",
+          "country": "Central African Republic",
+          "date": "2026-09-23",
+          "representative_words": 1567,
+          "recorded_GA_count": 1,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 99,
+          "representative_id": "asset/k17/k17s3dutob#31",
+          "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=6:11:35",
+          "country": "GA",
+          "date": "2026-09-22",
+          "representative_words": 48,
+          "recorded_GA_count": 99,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "lsa",
+      "components": 10,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 5,
+        "minSamples": 5,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        7,
+        183,
+        74,
+        31,
+        6,
+        6,
+        41,
+        11,
+        8,
+        9,
+        5
+      ],
+      "largest_share": 0.39956331877729256,
+      "selected_groups": 11,
+      "assigned": 381,
+      "unassigned": 77,
+      "omission_assignment_counts": [
+        321,
+        340,
+        330,
+        315,
+        337,
+        341
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 0.9959805507534648,
+          "assignment": {
+            "both_assigned": 317,
+            "reference_assigned_sample_unassigned": 9,
+            "reference_unassigned_sample_assigned": 4,
+            "both_unassigned": 57,
+            "shared_assigned_for_ari": 317,
+            "assigned_count": 321,
+            "unassigned_count": 66
+          }
+        },
+        {
+          "ari": 0.9321558906522195,
+          "assignment": {
+            "both_assigned": 309,
+            "reference_assigned_sample_unassigned": 9,
+            "reference_unassigned_sample_assigned": 31,
+            "both_unassigned": 38,
+            "shared_assigned_for_ari": 309,
+            "assigned_count": 340,
+            "unassigned_count": 47
+          }
+        },
+        {
+          "ari": 0.9336815176193853,
+          "assignment": {
+            "both_assigned": 307,
+            "reference_assigned_sample_unassigned": 8,
+            "reference_unassigned_sample_assigned": 23,
+            "both_unassigned": 37,
+            "shared_assigned_for_ari": 307,
+            "assigned_count": 330,
+            "unassigned_count": 45
+          }
+        },
+        {
+          "ari": 0.9909761801869547,
+          "assignment": {
+            "both_assigned": 302,
+            "reference_assigned_sample_unassigned": 4,
+            "reference_unassigned_sample_assigned": 13,
+            "both_unassigned": 61,
+            "shared_assigned_for_ari": 302,
+            "assigned_count": 315,
+            "unassigned_count": 65
+          }
+        },
+        {
+          "ari": 0.9556656055214067,
+          "assignment": {
+            "both_assigned": 308,
+            "reference_assigned_sample_unassigned": 16,
+            "reference_unassigned_sample_assigned": 29,
+            "both_unassigned": 28,
+            "shared_assigned_for_ari": 308,
+            "assigned_count": 337,
+            "unassigned_count": 44
+          }
+        },
+        {
+          "ari": 0.9488117562467231,
+          "assignment": {
+            "both_assigned": 308,
+            "reference_assigned_sample_unassigned": 8,
+            "reference_unassigned_sample_assigned": 33,
+            "both_unassigned": 31,
+            "shared_assigned_for_ari": 308,
+            "assigned_count": 341,
+            "unassigned_count": 39
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.5336034520493358,
+      "leave_one_meeting_out_ari": [
+        0.9959805507534648,
+        0.9321558906522195,
+        0.9336815176193853,
+        0.9909761801869547,
+        0.9556656055214067,
+        0.9488117562467231
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9595452501633589,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 7,
+          "representative_id": "asset/k17/k17s3dutob#0",
+          "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=7:49",
+          "country": "Unidentified",
+          "date": "2026-09-22",
+          "representative_words": 32,
+          "recorded_GA_count": 1,
+          "under_20_words": 5
+        },
+        {
+          "cluster": 2,
+          "size": 183,
+          "representative_id": "asset/k1b/k1b5jwwa58#25",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=4:04:39",
+          "country": "Cyprus",
+          "date": "2026-09-23",
+          "representative_words": 2122,
+          "recorded_GA_count": 1,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 74,
+          "representative_id": "asset/k1b/k1b5jwwa58#39",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=6:27:29",
+          "country": "GA",
+          "date": "2026-09-23",
+          "representative_words": 51,
+          "recorded_GA_count": 74,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 4,
+          "size": 31,
+          "representative_id": "asset/k1u/k1ukg04uyo#30",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=5:53:17",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 54,
+          "recorded_GA_count": 31,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 5,
+          "size": 6,
+          "representative_id": "asset/k17/k17s3dutob#65",
+          "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=11:36:46",
+          "country": "GA",
+          "date": "2026-09-22",
+          "representative_words": 42,
+          "recorded_GA_count": 6,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 6,
+          "size": 6,
+          "representative_id": "asset/k1u/k1ukg04uyo#77",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=12:59:59",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 4,
+          "recorded_GA_count": 6,
+          "under_20_words": 4
+        },
+        {
+          "cluster": 7,
+          "size": 41,
+          "representative_id": "asset/k1k/k1kfcwu5kc#4",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=50:37",
+          "country": "GA",
+          "date": "2026-09-28",
+          "representative_words": 28,
+          "recorded_GA_count": 41,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 8,
+          "size": 11,
+          "representative_id": "asset/k18/k18iyhzwip#80",
+          "source_url": "https://transcripts.un.org/en/asset/k18/k18iyhzwip?t=12:23:45",
+          "country": "GA",
+          "date": "2026-09-24",
+          "representative_words": 8,
+          "recorded_GA_count": 11,
+          "under_20_words": 11
+        },
+        {
+          "cluster": 9,
+          "size": 8,
+          "representative_id": "asset/k1k/k1kfcwu5kc#73",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=8:18:31",
+          "country": "United Arab Emirates",
+          "date": "2026-09-28",
+          "representative_words": 223,
+          "recorded_GA_count": 0,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 10,
+          "size": 9,
+          "representative_id": "asset/k1k/k1kfcwu5kc#32",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=5:47:34",
+          "country": "GA",
+          "date": "2026-09-28",
+          "representative_words": 25,
+          "recorded_GA_count": 9,
+          "under_20_words": 1
+        },
+        {
+          "cluster": 11,
+          "size": 5,
+          "representative_id": "asset/k1k/k1kfcwu5kc#74",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=8:20:11",
+          "country": "GA",
+          "date": "2026-09-28",
+          "representative_words": 16,
+          "recorded_GA_count": 5,
+          "under_20_words": 5
+        }
+      ]
+    },
+    {
+      "representation": "lsa",
+      "components": 10,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 5,
+        "minSamples": 10,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        229,
+        69,
+        20,
+        52,
+        11
+      ],
+      "largest_share": 0.5,
+      "selected_groups": 5,
+      "assigned": 381,
+      "unassigned": 77,
+      "omission_assignment_counts": [
+        318,
+        319,
+        315,
+        337,
+        327,
+        327
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 316,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 2,
+            "both_unassigned": 64,
+            "shared_assigned_for_ari": 316,
+            "assigned_count": 318,
+            "unassigned_count": 69
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 313,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 6,
+            "both_unassigned": 63,
+            "shared_assigned_for_ari": 313,
+            "assigned_count": 319,
+            "unassigned_count": 68
+          }
+        },
+        {
+          "ari": 0.9921647270487256,
+          "assignment": {
+            "both_assigned": 301,
+            "reference_assigned_sample_unassigned": 9,
+            "reference_unassigned_sample_assigned": 14,
+            "both_unassigned": 51,
+            "shared_assigned_for_ari": 301,
+            "assigned_count": 315,
+            "unassigned_count": 60
+          }
+        },
+        {
+          "ari": 0.9689056906094828,
+          "assignment": {
+            "both_assigned": 308,
+            "reference_assigned_sample_unassigned": 0,
+            "reference_unassigned_sample_assigned": 29,
+            "both_unassigned": 43,
+            "shared_assigned_for_ari": 308,
+            "assigned_count": 337,
+            "unassigned_count": 43
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 310,
+            "reference_assigned_sample_unassigned": 16,
+            "reference_unassigned_sample_assigned": 17,
+            "both_unassigned": 38,
+            "shared_assigned_for_ari": 310,
+            "assigned_count": 327,
+            "unassigned_count": 54
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 319,
+            "reference_assigned_sample_unassigned": 3,
+            "reference_unassigned_sample_assigned": 8,
+            "both_unassigned": 50,
+            "shared_assigned_for_ari": 319,
+            "assigned_count": 327,
+            "unassigned_count": 53
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.6273778634841922,
+      "leave_one_meeting_out_ari": [
+        1,
+        1,
+        0.9921647270487256,
+        0.9689056906094828,
+        1,
+        1
+      ],
+      "mean_leave_one_meeting_out_ari": 0.993511736276368,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 229,
+          "representative_id": "asset/k16/k16g777u83#35",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=4:41:56",
+          "country": "India",
+          "date": "2026-09-26",
+          "representative_words": 1668,
+          "recorded_GA_count": 4,
+          "under_20_words": 4
+        },
+        {
+          "cluster": 2,
+          "size": 69,
+          "representative_id": "asset/k1b/k1b5jwwa58#39",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=6:27:29",
+          "country": "GA",
+          "date": "2026-09-23",
+          "representative_words": 51,
+          "recorded_GA_count": 69,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 20,
+          "representative_id": "asset/k1u/k1ukg04uyo#30",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=5:53:17",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 54,
+          "recorded_GA_count": 20,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 4,
+          "size": 52,
+          "representative_id": "asset/k1u/k1ukg04uyo#67",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=11:58:52",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 27,
+          "recorded_GA_count": 52,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 5,
+          "size": 11,
+          "representative_id": "asset/k18/k18iyhzwip#80",
+          "source_url": "https://transcripts.un.org/en/asset/k18/k18iyhzwip?t=12:23:45",
+          "country": "GA",
+          "date": "2026-09-24",
+          "representative_words": 8,
+          "recorded_GA_count": 11,
+          "under_20_words": 11
+        }
+      ]
+    },
+    {
+      "representation": "lsa",
+      "components": 10,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 15,
+        "minSamples": 5,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        230,
+        74,
+        31,
+        54
+      ],
+      "largest_share": 0.5021834061135371,
+      "selected_groups": 4,
+      "assigned": 389,
+      "unassigned": 69,
+      "omission_assignment_counts": [
+        322,
+        313,
+        322,
+        312,
+        348,
+        325
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 321,
+            "reference_assigned_sample_unassigned": 6,
+            "reference_unassigned_sample_assigned": 1,
+            "both_unassigned": 59,
+            "shared_assigned_for_ari": 321,
+            "assigned_count": 322,
+            "unassigned_count": 65
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 312,
+            "reference_assigned_sample_unassigned": 11,
+            "reference_unassigned_sample_assigned": 1,
+            "both_unassigned": 63,
+            "shared_assigned_for_ari": 312,
+            "assigned_count": 313,
+            "unassigned_count": 74
+          }
+        },
+        {
+          "ari": 0.9747128356234841,
+          "assignment": {
+            "both_assigned": 316,
+            "reference_assigned_sample_unassigned": 2,
+            "reference_unassigned_sample_assigned": 6,
+            "both_unassigned": 51,
+            "shared_assigned_for_ari": 316,
+            "assigned_count": 322,
+            "unassigned_count": 53
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 309,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 3,
+            "both_unassigned": 63,
+            "shared_assigned_for_ari": 309,
+            "assigned_count": 312,
+            "unassigned_count": 68
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 336,
+            "reference_assigned_sample_unassigned": 6,
+            "reference_unassigned_sample_assigned": 12,
+            "both_unassigned": 27,
+            "shared_assigned_for_ari": 336,
+            "assigned_count": 348,
+            "unassigned_count": 33
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 318,
+            "reference_assigned_sample_unassigned": 3,
+            "reference_unassigned_sample_assigned": 7,
+            "both_unassigned": 52,
+            "shared_assigned_for_ari": 318,
+            "assigned_count": 325,
+            "unassigned_count": 55
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.6029997121801846,
+      "leave_one_meeting_out_ari": [
+        1,
+        1,
+        0.9747128356234841,
+        1,
+        1,
+        1
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9957854726039139,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 230,
+          "representative_id": "asset/k16/k16g777u83#35",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=4:41:56",
+          "country": "India",
+          "date": "2026-09-26",
+          "representative_words": 1668,
+          "recorded_GA_count": 3,
+          "under_20_words": 5
+        },
+        {
+          "cluster": 2,
+          "size": 74,
+          "representative_id": "asset/k1b/k1b5jwwa58#39",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=6:27:29",
+          "country": "GA",
+          "date": "2026-09-23",
+          "representative_words": 51,
+          "recorded_GA_count": 74,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 31,
+          "representative_id": "asset/k1u/k1ukg04uyo#30",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=5:53:17",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 54,
+          "recorded_GA_count": 31,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 4,
+          "size": 54,
+          "representative_id": "asset/k16/k16g777u83#34",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=4:41:14",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 25,
+          "recorded_GA_count": 54,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "lsa",
+      "components": 10,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 15,
+        "minSamples": 10,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        229,
+        69,
+        20,
+        52
+      ],
+      "largest_share": 0.5,
+      "selected_groups": 4,
+      "assigned": 370,
+      "unassigned": 88,
+      "omission_assignment_counts": [
+        307,
+        308,
+        320,
+        326,
+        327,
+        328
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 305,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 2,
+            "both_unassigned": 75,
+            "shared_assigned_for_ari": 305,
+            "assigned_count": 307,
+            "unassigned_count": 80
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 302,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 6,
+            "both_unassigned": 74,
+            "shared_assigned_for_ari": 302,
+            "assigned_count": 308,
+            "unassigned_count": 79
+          }
+        },
+        {
+          "ari": 0.9713795686695627,
+          "assignment": {
+            "both_assigned": 297,
+            "reference_assigned_sample_unassigned": 4,
+            "reference_unassigned_sample_assigned": 23,
+            "both_unassigned": 51,
+            "shared_assigned_for_ari": 297,
+            "assigned_count": 320,
+            "unassigned_count": 55
+          }
+        },
+        {
+          "ari": 0.9669909273309039,
+          "assignment": {
+            "both_assigned": 297,
+            "reference_assigned_sample_unassigned": 0,
+            "reference_unassigned_sample_assigned": 29,
+            "both_unassigned": 54,
+            "shared_assigned_for_ari": 297,
+            "assigned_count": 326,
+            "unassigned_count": 54
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 310,
+            "reference_assigned_sample_unassigned": 13,
+            "reference_unassigned_sample_assigned": 17,
+            "both_unassigned": 41,
+            "shared_assigned_for_ari": 310,
+            "assigned_count": 327,
+            "unassigned_count": 54
+          }
+        },
+        {
+          "ari": 0.9623972995265899,
+          "assignment": {
+            "both_assigned": 309,
+            "reference_assigned_sample_unassigned": 3,
+            "reference_unassigned_sample_assigned": 19,
+            "both_unassigned": 49,
+            "shared_assigned_for_ari": 309,
+            "assigned_count": 328,
+            "unassigned_count": 52
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.6224069600058711,
+      "leave_one_meeting_out_ari": [
+        1,
+        1,
+        0.9713795686695627,
+        0.9669909273309039,
+        1,
+        0.9623972995265899
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9834612992545093,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 229,
+          "representative_id": "asset/k16/k16g777u83#35",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=4:41:56",
+          "country": "India",
+          "date": "2026-09-26",
+          "representative_words": 1668,
+          "recorded_GA_count": 4,
+          "under_20_words": 4
+        },
+        {
+          "cluster": 2,
+          "size": 69,
+          "representative_id": "asset/k1b/k1b5jwwa58#39",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=6:27:29",
+          "country": "GA",
+          "date": "2026-09-23",
+          "representative_words": 51,
+          "recorded_GA_count": 69,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 20,
+          "representative_id": "asset/k1u/k1ukg04uyo#30",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=5:53:17",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 54,
+          "recorded_GA_count": 20,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 4,
+          "size": 52,
+          "representative_id": "asset/k1u/k1ukg04uyo#67",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=11:58:52",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 27,
+          "recorded_GA_count": 52,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "lsa",
+      "components": 10,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 30,
+        "minSamples": 5,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        230,
+        74,
+        31,
+        54
+      ],
+      "largest_share": 0.5021834061135371,
+      "selected_groups": 4,
+      "assigned": 389,
+      "unassigned": 69,
+      "omission_assignment_counts": [
+        312,
+        334,
+        330,
+        326,
+        348,
+        333
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 0.9010849103789457,
+          "assignment": {
+            "both_assigned": 298,
+            "reference_assigned_sample_unassigned": 29,
+            "reference_unassigned_sample_assigned": 14,
+            "both_unassigned": 46,
+            "shared_assigned_for_ari": 298,
+            "assigned_count": 312,
+            "unassigned_count": 75
+          }
+        },
+        {
+          "ari": 0.9228247491766102,
+          "assignment": {
+            "both_assigned": 319,
+            "reference_assigned_sample_unassigned": 4,
+            "reference_unassigned_sample_assigned": 15,
+            "both_unassigned": 49,
+            "shared_assigned_for_ari": 319,
+            "assigned_count": 334,
+            "unassigned_count": 53
+          }
+        },
+        {
+          "ari": 0.9483176338486483,
+          "assignment": {
+            "both_assigned": 317,
+            "reference_assigned_sample_unassigned": 1,
+            "reference_unassigned_sample_assigned": 13,
+            "both_unassigned": 44,
+            "shared_assigned_for_ari": 317,
+            "assigned_count": 330,
+            "unassigned_count": 45
+          }
+        },
+        {
+          "ari": 0.9492715858204732,
+          "assignment": {
+            "both_assigned": 311,
+            "reference_assigned_sample_unassigned": 3,
+            "reference_unassigned_sample_assigned": 15,
+            "both_unassigned": 51,
+            "shared_assigned_for_ari": 311,
+            "assigned_count": 326,
+            "unassigned_count": 54
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 336,
+            "reference_assigned_sample_unassigned": 6,
+            "reference_unassigned_sample_assigned": 12,
+            "both_unassigned": 27,
+            "shared_assigned_for_ari": 336,
+            "assigned_count": 348,
+            "unassigned_count": 33
+          }
+        },
+        {
+          "ari": 0.9511780836077101,
+          "assignment": {
+            "both_assigned": 320,
+            "reference_assigned_sample_unassigned": 1,
+            "reference_unassigned_sample_assigned": 13,
+            "both_unassigned": 46,
+            "shared_assigned_for_ari": 320,
+            "assigned_count": 333,
+            "unassigned_count": 47
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.6029997121801846,
+      "leave_one_meeting_out_ari": [
+        0.9010849103789457,
+        0.9228247491766102,
+        0.9483176338486483,
+        0.9492715858204732,
+        1,
+        0.9511780836077101
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9454461604720645,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 230,
+          "representative_id": "asset/k16/k16g777u83#35",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=4:41:56",
+          "country": "India",
+          "date": "2026-09-26",
+          "representative_words": 1668,
+          "recorded_GA_count": 3,
+          "under_20_words": 5
+        },
+        {
+          "cluster": 2,
+          "size": 74,
+          "representative_id": "asset/k1b/k1b5jwwa58#39",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=6:27:29",
+          "country": "GA",
+          "date": "2026-09-23",
+          "representative_words": 51,
+          "recorded_GA_count": 74,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 31,
+          "representative_id": "asset/k1u/k1ukg04uyo#30",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=5:53:17",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 54,
+          "recorded_GA_count": 31,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 4,
+          "size": 54,
+          "representative_id": "asset/k16/k16g777u83#34",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=4:41:14",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 25,
+          "recorded_GA_count": 54,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "lsa",
+      "components": 10,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 30,
+        "minSamples": 10,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        229,
+        120,
+        52
+      ],
+      "largest_share": 0.5,
+      "selected_groups": 3,
+      "assigned": 401,
+      "unassigned": 57,
+      "omission_assignment_counts": [
+        309,
+        331,
+        320,
+        326,
+        327,
+        328
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 308,
+            "reference_assigned_sample_unassigned": 29,
+            "reference_unassigned_sample_assigned": 1,
+            "both_unassigned": 49,
+            "shared_assigned_for_ari": 308,
+            "assigned_count": 309,
+            "unassigned_count": 78
+          }
+        },
+        {
+          "ari": 0.9894264988867536,
+          "assignment": {
+            "both_assigned": 330,
+            "reference_assigned_sample_unassigned": 3,
+            "reference_unassigned_sample_assigned": 1,
+            "both_unassigned": 53,
+            "shared_assigned_for_ari": 330,
+            "assigned_count": 331,
+            "unassigned_count": 56
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 320,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 0,
+            "both_unassigned": 50,
+            "shared_assigned_for_ari": 320,
+            "assigned_count": 320,
+            "unassigned_count": 55
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 325,
+            "reference_assigned_sample_unassigned": 0,
+            "reference_unassigned_sample_assigned": 1,
+            "both_unassigned": 54,
+            "shared_assigned_for_ari": 325,
+            "assigned_count": 326,
+            "unassigned_count": 54
+          }
+        },
+        {
+          "ari": 0.9216671029291272,
+          "assignment": {
+            "both_assigned": 325,
+            "reference_assigned_sample_unassigned": 29,
+            "reference_unassigned_sample_assigned": 2,
+            "both_unassigned": 25,
+            "shared_assigned_for_ari": 325,
+            "assigned_count": 327,
+            "unassigned_count": 54
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 328,
+            "reference_assigned_sample_unassigned": 3,
+            "reference_unassigned_sample_assigned": 0,
+            "both_unassigned": 49,
+            "shared_assigned_for_ari": 328,
+            "assigned_count": 328,
+            "unassigned_count": 52
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.6036482722037423,
+      "leave_one_meeting_out_ari": [
+        1,
+        0.9894264988867536,
+        1,
+        1,
+        0.9216671029291272,
+        1
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9851822669693134,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 229,
+          "representative_id": "asset/k16/k16g777u83#35",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=4:41:56",
+          "country": "India",
+          "date": "2026-09-26",
+          "representative_words": 1668,
+          "recorded_GA_count": 4,
+          "under_20_words": 4
+        },
+        {
+          "cluster": 2,
+          "size": 120,
+          "representative_id": "asset/k1u/k1ukg04uyo#10",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=2:00:04",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 54,
+          "recorded_GA_count": 120,
+          "under_20_words": 1
+        },
+        {
+          "cluster": 3,
+          "size": 52,
+          "representative_id": "asset/k1u/k1ukg04uyo#67",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=11:58:52",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 27,
+          "recorded_GA_count": 52,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "lsa",
+      "components": 20,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 5,
+        "minSamples": 5,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        221,
+        61,
+        9,
+        20,
+        7,
+        5,
+        37,
+        7,
+        8
+      ],
+      "largest_share": 0.48253275109170307,
+      "selected_groups": 9,
+      "assigned": 375,
+      "unassigned": 83,
+      "omission_assignment_counts": [
+        317,
+        326,
+        312,
+        294,
+        321,
+        311
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 0.9968598326870076,
+          "assignment": {
+            "both_assigned": 310,
+            "reference_assigned_sample_unassigned": 9,
+            "reference_unassigned_sample_assigned": 7,
+            "both_unassigned": 61,
+            "shared_assigned_for_ari": 310,
+            "assigned_count": 317,
+            "unassigned_count": 70
+          }
+        },
+        {
+          "ari": 0.9879936692920742,
+          "assignment": {
+            "both_assigned": 312,
+            "reference_assigned_sample_unassigned": 2,
+            "reference_unassigned_sample_assigned": 14,
+            "both_unassigned": 59,
+            "shared_assigned_for_ari": 312,
+            "assigned_count": 326,
+            "unassigned_count": 61
+          }
+        },
+        {
+          "ari": 0.9835978716656549,
+          "assignment": {
+            "both_assigned": 297,
+            "reference_assigned_sample_unassigned": 7,
+            "reference_unassigned_sample_assigned": 15,
+            "both_unassigned": 56,
+            "shared_assigned_for_ari": 297,
+            "assigned_count": 312,
+            "unassigned_count": 63
+          }
+        },
+        {
+          "ari": 0.9881483574872721,
+          "assignment": {
+            "both_assigned": 287,
+            "reference_assigned_sample_unassigned": 15,
+            "reference_unassigned_sample_assigned": 7,
+            "both_unassigned": 71,
+            "shared_assigned_for_ari": 287,
+            "assigned_count": 294,
+            "unassigned_count": 86
+          }
+        },
+        {
+          "ari": 0.9871787321345034,
+          "assignment": {
+            "both_assigned": 307,
+            "reference_assigned_sample_unassigned": 18,
+            "reference_unassigned_sample_assigned": 14,
+            "both_unassigned": 42,
+            "shared_assigned_for_ari": 307,
+            "assigned_count": 321,
+            "unassigned_count": 60
+          }
+        },
+        {
+          "ari": 0.991903096052481,
+          "assignment": {
+            "both_assigned": 305,
+            "reference_assigned_sample_unassigned": 6,
+            "reference_unassigned_sample_assigned": 6,
+            "both_unassigned": 63,
+            "shared_assigned_for_ari": 305,
+            "assigned_count": 311,
+            "unassigned_count": 69
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.47822785499458814,
+      "leave_one_meeting_out_ari": [
+        0.9968598326870076,
+        0.9879936692920742,
+        0.9835978716656549,
+        0.9881483574872721,
+        0.9871787321345034,
+        0.991903096052481
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9892802598864989,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 221,
+          "representative_id": "asset/k1k/k1kfcwu5kc#35",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=6:00:52",
+          "country": "Costa Rica",
+          "date": "2026-09-28",
+          "representative_words": 1181,
+          "recorded_GA_count": 2,
+          "under_20_words": 5
+        },
+        {
+          "cluster": 2,
+          "size": 61,
+          "representative_id": "asset/k1b/k1b5jwwa58#14",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=2:20:06",
+          "country": "GA",
+          "date": "2026-09-23",
+          "representative_words": 47,
+          "recorded_GA_count": 61,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 9,
+          "representative_id": "asset/k18/k18iyhzwip#44",
+          "source_url": "https://transcripts.un.org/en/asset/k18/k18iyhzwip?t=6:53:54",
+          "country": "GA",
+          "date": "2026-09-24",
+          "representative_words": 55,
+          "recorded_GA_count": 9,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 4,
+          "size": 20,
+          "representative_id": "asset/k1u/k1ukg04uyo#32",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=6:24:22",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 51,
+          "recorded_GA_count": 20,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 5,
+          "size": 7,
+          "representative_id": "asset/k17/k17s3dutob#65",
+          "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=11:36:46",
+          "country": "GA",
+          "date": "2026-09-22",
+          "representative_words": 42,
+          "recorded_GA_count": 7,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 6,
+          "size": 5,
+          "representative_id": "asset/k1u/k1ukg04uyo#18",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=3:28:31",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 49,
+          "recorded_GA_count": 5,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 7,
+          "size": 37,
+          "representative_id": "asset/k1u/k1ukg04uyo#67",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=11:58:52",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 27,
+          "recorded_GA_count": 37,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 8,
+          "size": 7,
+          "representative_id": "asset/k18/k18iyhzwip#80",
+          "source_url": "https://transcripts.un.org/en/asset/k18/k18iyhzwip?t=12:23:45",
+          "country": "GA",
+          "date": "2026-09-24",
+          "representative_words": 8,
+          "recorded_GA_count": 7,
+          "under_20_words": 7
+        },
+        {
+          "cluster": 9,
+          "size": 8,
+          "representative_id": "asset/k1k/k1kfcwu5kc#26",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=4:36:09",
+          "country": "GA",
+          "date": "2026-09-28",
+          "representative_words": 28,
+          "recorded_GA_count": 8,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "lsa",
+      "components": 20,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 5,
+        "minSamples": 10,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        213,
+        58,
+        27,
+        46
+      ],
+      "largest_share": 0.4650655021834061,
+      "selected_groups": 4,
+      "assigned": 344,
+      "unassigned": 114,
+      "omission_assignment_counts": [
+        289,
+        281,
+        272,
+        298,
+        299,
+        277
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 283,
+            "reference_assigned_sample_unassigned": 7,
+            "reference_unassigned_sample_assigned": 6,
+            "both_unassigned": 91,
+            "shared_assigned_for_ari": 283,
+            "assigned_count": 289,
+            "unassigned_count": 98
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 277,
+            "reference_assigned_sample_unassigned": 10,
+            "reference_unassigned_sample_assigned": 4,
+            "both_unassigned": 96,
+            "shared_assigned_for_ari": 277,
+            "assigned_count": 281,
+            "unassigned_count": 106
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 266,
+            "reference_assigned_sample_unassigned": 14,
+            "reference_unassigned_sample_assigned": 6,
+            "both_unassigned": 89,
+            "shared_assigned_for_ari": 266,
+            "assigned_count": 272,
+            "unassigned_count": 103
+          }
+        },
+        {
+          "ari": 0.961034738169785,
+          "assignment": {
+            "both_assigned": 269,
+            "reference_assigned_sample_unassigned": 4,
+            "reference_unassigned_sample_assigned": 29,
+            "both_unassigned": 78,
+            "shared_assigned_for_ari": 269,
+            "assigned_count": 298,
+            "unassigned_count": 82
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 292,
+            "reference_assigned_sample_unassigned": 17,
+            "reference_unassigned_sample_assigned": 7,
+            "both_unassigned": 65,
+            "shared_assigned_for_ari": 292,
+            "assigned_count": 299,
+            "unassigned_count": 82
+          }
+        },
+        {
+          "ari": 0.9963588859908576,
+          "assignment": {
+            "both_assigned": 275,
+            "reference_assigned_sample_unassigned": 6,
+            "reference_unassigned_sample_assigned": 2,
+            "both_unassigned": 97,
+            "shared_assigned_for_ari": 275,
+            "assigned_count": 277,
+            "unassigned_count": 103
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.531566566227285,
+      "leave_one_meeting_out_ari": [
+        1,
+        1,
+        1,
+        0.961034738169785,
+        1,
+        0.9963588859908576
+      ],
+      "mean_leave_one_meeting_out_ari": 0.992898937360107,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 213,
+          "representative_id": "asset/k1k/k1kfcwu5kc#35",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=6:00:52",
+          "country": "Costa Rica",
+          "date": "2026-09-28",
+          "representative_words": 1181,
+          "recorded_GA_count": 2,
+          "under_20_words": 3
+        },
+        {
+          "cluster": 2,
+          "size": 58,
+          "representative_id": "asset/k1b/k1b5jwwa58#14",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=2:20:06",
+          "country": "GA",
+          "date": "2026-09-23",
+          "representative_words": 47,
+          "recorded_GA_count": 58,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 27,
+          "representative_id": "asset/k1u/k1ukg04uyo#32",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=6:24:22",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 51,
+          "recorded_GA_count": 27,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 4,
+          "size": 46,
+          "representative_id": "asset/k16/k16g777u83#48",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=6:59:06",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 31,
+          "recorded_GA_count": 46,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "lsa",
+      "components": 20,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 15,
+        "minSamples": 5,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        221,
+        61,
+        31,
+        50
+      ],
+      "largest_share": 0.48253275109170307,
+      "selected_groups": 4,
+      "assigned": 363,
+      "unassigned": 95,
+      "omission_assignment_counts": [
+        305,
+        303,
+        298,
+        308,
+        314,
+        311
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 299,
+            "reference_assigned_sample_unassigned": 6,
+            "reference_unassigned_sample_assigned": 6,
+            "both_unassigned": 76,
+            "shared_assigned_for_ari": 299,
+            "assigned_count": 305,
+            "unassigned_count": 82
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 300,
+            "reference_assigned_sample_unassigned": 3,
+            "reference_unassigned_sample_assigned": 3,
+            "both_unassigned": 81,
+            "shared_assigned_for_ari": 300,
+            "assigned_count": 303,
+            "unassigned_count": 84
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 291,
+            "reference_assigned_sample_unassigned": 7,
+            "reference_unassigned_sample_assigned": 7,
+            "both_unassigned": 70,
+            "shared_assigned_for_ari": 291,
+            "assigned_count": 298,
+            "unassigned_count": 77
+          }
+        },
+        {
+          "ari": 0.9554557707137005,
+          "assignment": {
+            "both_assigned": 286,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 22,
+            "both_unassigned": 67,
+            "shared_assigned_for_ari": 286,
+            "assigned_count": 308,
+            "unassigned_count": 72
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 309,
+            "reference_assigned_sample_unassigned": 16,
+            "reference_unassigned_sample_assigned": 5,
+            "both_unassigned": 51,
+            "shared_assigned_for_ari": 309,
+            "assigned_count": 314,
+            "unassigned_count": 67
+          }
+        },
+        {
+          "ari": 0.9570958614640401,
+          "assignment": {
+            "both_assigned": 289,
+            "reference_assigned_sample_unassigned": 4,
+            "reference_unassigned_sample_assigned": 22,
+            "both_unassigned": 65,
+            "shared_assigned_for_ari": 289,
+            "assigned_count": 311,
+            "unassigned_count": 69
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.505356254816721,
+      "leave_one_meeting_out_ari": [
+        1,
+        1,
+        1,
+        0.9554557707137005,
+        1,
+        0.9570958614640401
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9854252720296235,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 221,
+          "representative_id": "asset/k1k/k1kfcwu5kc#35",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=6:00:52",
+          "country": "Costa Rica",
+          "date": "2026-09-28",
+          "representative_words": 1181,
+          "recorded_GA_count": 2,
+          "under_20_words": 5
+        },
+        {
+          "cluster": 2,
+          "size": 61,
+          "representative_id": "asset/k1b/k1b5jwwa58#14",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=2:20:06",
+          "country": "GA",
+          "date": "2026-09-23",
+          "representative_words": 47,
+          "recorded_GA_count": 61,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 31,
+          "representative_id": "asset/k1u/k1ukg04uyo#32",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=6:24:22",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 51,
+          "recorded_GA_count": 31,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 4,
+          "size": 50,
+          "representative_id": "asset/k16/k16g777u83#48",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=6:59:06",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 31,
+          "recorded_GA_count": 50,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "lsa",
+      "components": 20,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 15,
+        "minSamples": 10,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        213,
+        58,
+        27,
+        46
+      ],
+      "largest_share": 0.4650655021834061,
+      "selected_groups": 4,
+      "assigned": 344,
+      "unassigned": 114,
+      "omission_assignment_counts": [
+        289,
+        281,
+        300,
+        298,
+        299,
+        295
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 283,
+            "reference_assigned_sample_unassigned": 7,
+            "reference_unassigned_sample_assigned": 6,
+            "both_unassigned": 91,
+            "shared_assigned_for_ari": 283,
+            "assigned_count": 289,
+            "unassigned_count": 98
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 277,
+            "reference_assigned_sample_unassigned": 10,
+            "reference_unassigned_sample_assigned": 4,
+            "both_unassigned": 96,
+            "shared_assigned_for_ari": 277,
+            "assigned_count": 281,
+            "unassigned_count": 106
+          }
+        },
+        {
+          "ari": 0.9597383990126622,
+          "assignment": {
+            "both_assigned": 275,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 25,
+            "both_unassigned": 70,
+            "shared_assigned_for_ari": 275,
+            "assigned_count": 300,
+            "unassigned_count": 75
+          }
+        },
+        {
+          "ari": 0.961034738169785,
+          "assignment": {
+            "both_assigned": 269,
+            "reference_assigned_sample_unassigned": 4,
+            "reference_unassigned_sample_assigned": 29,
+            "both_unassigned": 78,
+            "shared_assigned_for_ari": 269,
+            "assigned_count": 298,
+            "unassigned_count": 82
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 292,
+            "reference_assigned_sample_unassigned": 17,
+            "reference_unassigned_sample_assigned": 7,
+            "both_unassigned": 65,
+            "shared_assigned_for_ari": 292,
+            "assigned_count": 299,
+            "unassigned_count": 82
+          }
+        },
+        {
+          "ari": 0.9602879144540863,
+          "assignment": {
+            "both_assigned": 277,
+            "reference_assigned_sample_unassigned": 4,
+            "reference_unassigned_sample_assigned": 18,
+            "both_unassigned": 81,
+            "shared_assigned_for_ari": 277,
+            "assigned_count": 295,
+            "unassigned_count": 85
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.531566566227285,
+      "leave_one_meeting_out_ari": [
+        1,
+        1,
+        0.9597383990126622,
+        0.961034738169785,
+        1,
+        0.9602879144540863
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9801768419394223,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 213,
+          "representative_id": "asset/k1k/k1kfcwu5kc#35",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=6:00:52",
+          "country": "Costa Rica",
+          "date": "2026-09-28",
+          "representative_words": 1181,
+          "recorded_GA_count": 2,
+          "under_20_words": 3
+        },
+        {
+          "cluster": 2,
+          "size": 58,
+          "representative_id": "asset/k1b/k1b5jwwa58#14",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=2:20:06",
+          "country": "GA",
+          "date": "2026-09-23",
+          "representative_words": 47,
+          "recorded_GA_count": 58,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 27,
+          "representative_id": "asset/k1u/k1ukg04uyo#32",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=6:24:22",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 51,
+          "recorded_GA_count": 27,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 4,
+          "size": 46,
+          "representative_id": "asset/k16/k16g777u83#48",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=6:59:06",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 31,
+          "recorded_GA_count": 46,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "lsa",
+      "components": 20,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 30,
+        "minSamples": 5,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        221,
+        61,
+        31,
+        50
+      ],
+      "largest_share": 0.48253275109170307,
+      "selected_groups": 4,
+      "assigned": 363,
+      "unassigned": 95,
+      "omission_assignment_counts": [
+        278,
+        324,
+        315,
+        308,
+        341,
+        311
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 272,
+            "reference_assigned_sample_unassigned": 33,
+            "reference_unassigned_sample_assigned": 6,
+            "both_unassigned": 76,
+            "shared_assigned_for_ari": 272,
+            "assigned_count": 278,
+            "unassigned_count": 109
+          }
+        },
+        {
+          "ari": 0.9441579576806711,
+          "assignment": {
+            "both_assigned": 302,
+            "reference_assigned_sample_unassigned": 1,
+            "reference_unassigned_sample_assigned": 22,
+            "both_unassigned": 62,
+            "shared_assigned_for_ari": 302,
+            "assigned_count": 324,
+            "unassigned_count": 63
+          }
+        },
+        {
+          "ari": 0.9533916977880278,
+          "assignment": {
+            "both_assigned": 296,
+            "reference_assigned_sample_unassigned": 2,
+            "reference_unassigned_sample_assigned": 19,
+            "both_unassigned": 58,
+            "shared_assigned_for_ari": 296,
+            "assigned_count": 315,
+            "unassigned_count": 60
+          }
+        },
+        {
+          "ari": 0.9554557707137005,
+          "assignment": {
+            "both_assigned": 286,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 22,
+            "both_unassigned": 67,
+            "shared_assigned_for_ari": 286,
+            "assigned_count": 308,
+            "unassigned_count": 72
+          }
+        },
+        {
+          "ari": 0.9293455951152239,
+          "assignment": {
+            "both_assigned": 318,
+            "reference_assigned_sample_unassigned": 7,
+            "reference_unassigned_sample_assigned": 23,
+            "both_unassigned": 33,
+            "shared_assigned_for_ari": 318,
+            "assigned_count": 341,
+            "unassigned_count": 40
+          }
+        },
+        {
+          "ari": 0.9570958614640401,
+          "assignment": {
+            "both_assigned": 289,
+            "reference_assigned_sample_unassigned": 4,
+            "reference_unassigned_sample_assigned": 22,
+            "both_unassigned": 65,
+            "shared_assigned_for_ari": 289,
+            "assigned_count": 311,
+            "unassigned_count": 69
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.505356254816721,
+      "leave_one_meeting_out_ari": [
+        1,
+        0.9441579576806711,
+        0.9533916977880278,
+        0.9554557707137005,
+        0.9293455951152239,
+        0.9570958614640401
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9565744804602773,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 221,
+          "representative_id": "asset/k1k/k1kfcwu5kc#35",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=6:00:52",
+          "country": "Costa Rica",
+          "date": "2026-09-28",
+          "representative_words": 1181,
+          "recorded_GA_count": 2,
+          "under_20_words": 5
+        },
+        {
+          "cluster": 2,
+          "size": 61,
+          "representative_id": "asset/k1b/k1b5jwwa58#14",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=2:20:06",
+          "country": "GA",
+          "date": "2026-09-23",
+          "representative_words": 47,
+          "recorded_GA_count": 61,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 31,
+          "representative_id": "asset/k1u/k1ukg04uyo#32",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=6:24:22",
+          "country": "GA",
+          "date": "2026-09-25",
+          "representative_words": 51,
+          "recorded_GA_count": 31,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 4,
+          "size": 50,
+          "representative_id": "asset/k16/k16g777u83#48",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=6:59:06",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 31,
+          "recorded_GA_count": 50,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "lsa",
+      "components": 20,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 30,
+        "minSamples": 10,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        213,
+        115,
+        46
+      ],
+      "largest_share": 0.4650655021834061,
+      "selected_groups": 3,
+      "assigned": 374,
+      "unassigned": 84,
+      "omission_assignment_counts": [
+        289,
+        310,
+        300,
+        298,
+        326,
+        295
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 286,
+            "reference_assigned_sample_unassigned": 30,
+            "reference_unassigned_sample_assigned": 3,
+            "both_unassigned": 68,
+            "shared_assigned_for_ari": 286,
+            "assigned_count": 289,
+            "unassigned_count": 98
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 305,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 5,
+            "both_unassigned": 72,
+            "shared_assigned_for_ari": 305,
+            "assigned_count": 310,
+            "unassigned_count": 77
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 293,
+            "reference_assigned_sample_unassigned": 8,
+            "reference_unassigned_sample_assigned": 7,
+            "both_unassigned": 67,
+            "shared_assigned_for_ari": 293,
+            "assigned_count": 300,
+            "unassigned_count": 75
+          }
+        },
+        {
+          "ari": 0.9882026901076707,
+          "assignment": {
+            "both_assigned": 295,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 3,
+            "both_unassigned": 77,
+            "shared_assigned_for_ari": 295,
+            "assigned_count": 298,
+            "unassigned_count": 82
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 323,
+            "reference_assigned_sample_unassigned": 16,
+            "reference_unassigned_sample_assigned": 3,
+            "both_unassigned": 39,
+            "shared_assigned_for_ari": 323,
+            "assigned_count": 326,
+            "unassigned_count": 55
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 295,
+            "reference_assigned_sample_unassigned": 9,
+            "reference_unassigned_sample_assigned": 0,
+            "both_unassigned": 76,
+            "shared_assigned_for_ari": 295,
+            "assigned_count": 295,
+            "unassigned_count": 85
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.5177977980260754,
+      "leave_one_meeting_out_ari": [
+        1,
+        1,
+        1,
+        0.9882026901076707,
+        1,
+        1
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9980337816846118,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 213,
+          "representative_id": "asset/k1k/k1kfcwu5kc#35",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=6:00:52",
+          "country": "Costa Rica",
+          "date": "2026-09-28",
+          "representative_words": 1181,
+          "recorded_GA_count": 2,
+          "under_20_words": 3
+        },
+        {
+          "cluster": 2,
+          "size": 115,
+          "representative_id": "asset/k1b/k1b5jwwa58#67",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=11:08:33",
+          "country": "GA",
+          "date": "2026-09-23",
+          "representative_words": 49,
+          "recorded_GA_count": 115,
+          "under_20_words": 1
+        },
+        {
+          "cluster": 3,
+          "size": 46,
+          "representative_id": "asset/k16/k16g777u83#48",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=6:59:06",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 31,
+          "recorded_GA_count": 46,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "lsa",
+      "components": 40,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 5,
+        "minSamples": 5,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        204,
+        43,
+        20,
+        5,
+        35,
+        5,
+        8
+      ],
+      "largest_share": 0.44541484716157204,
+      "selected_groups": 7,
+      "assigned": 320,
+      "unassigned": 138,
+      "omission_assignment_counts": [
+        263,
+        306,
+        255,
+        296,
+        315,
+        257
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 0.9967125751588607,
+          "assignment": {
+            "both_assigned": 258,
+            "reference_assigned_sample_unassigned": 10,
+            "reference_unassigned_sample_assigned": 5,
+            "both_unassigned": 114,
+            "shared_assigned_for_ari": 258,
+            "assigned_count": 263,
+            "unassigned_count": 124
+          }
+        },
+        {
+          "ari": 0.965137464161944,
+          "assignment": {
+            "both_assigned": 262,
+            "reference_assigned_sample_unassigned": 10,
+            "reference_unassigned_sample_assigned": 44,
+            "both_unassigned": 71,
+            "shared_assigned_for_ari": 262,
+            "assigned_count": 306,
+            "unassigned_count": 81
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 250,
+            "reference_assigned_sample_unassigned": 11,
+            "reference_unassigned_sample_assigned": 5,
+            "both_unassigned": 109,
+            "shared_assigned_for_ari": 250,
+            "assigned_count": 255,
+            "unassigned_count": 120
+          }
+        },
+        {
+          "ari": 0.967843601127783,
+          "assignment": {
+            "both_assigned": 252,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 44,
+            "both_unassigned": 79,
+            "shared_assigned_for_ari": 252,
+            "assigned_count": 296,
+            "unassigned_count": 84
+          }
+        },
+        {
+          "ari": 0.9463251279102076,
+          "assignment": {
+            "both_assigned": 273,
+            "reference_assigned_sample_unassigned": 4,
+            "reference_unassigned_sample_assigned": 42,
+            "both_unassigned": 62,
+            "shared_assigned_for_ari": 273,
+            "assigned_count": 315,
+            "unassigned_count": 66
+          }
+        },
+        {
+          "ari": 0.9934137908653001,
+          "assignment": {
+            "both_assigned": 253,
+            "reference_assigned_sample_unassigned": 12,
+            "reference_unassigned_sample_assigned": 4,
+            "both_unassigned": 111,
+            "shared_assigned_for_ari": 253,
+            "assigned_count": 257,
+            "unassigned_count": 123
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.4203619137457525,
+      "leave_one_meeting_out_ari": [
+        0.9967125751588607,
+        0.965137464161944,
+        1,
+        0.967843601127783,
+        0.9463251279102076,
+        0.9934137908653001
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9782387598706825,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 204,
+          "representative_id": "asset/k1u/k1ukg04uyo#35",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=6:45:46",
+          "country": "Haiti",
+          "date": "2026-09-25",
+          "representative_words": 3071,
+          "recorded_GA_count": 2,
+          "under_20_words": 2
+        },
+        {
+          "cluster": 2,
+          "size": 43,
+          "representative_id": "asset/k1b/k1b5jwwa58#43",
+          "source_url": "https://transcripts.un.org/en/asset/k1b/k1b5jwwa58?t=7:09:24",
+          "country": "GA",
+          "date": "2026-09-23",
+          "representative_words": 50,
+          "recorded_GA_count": 43,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 20,
+          "representative_id": "asset/k18/k18iyhzwip#60",
+          "source_url": "https://transcripts.un.org/en/asset/k18/k18iyhzwip?t=9:29:37",
+          "country": "GA",
+          "date": "2026-09-24",
+          "representative_words": 51,
+          "recorded_GA_count": 20,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 4,
+          "size": 5,
+          "representative_id": "asset/k16/k16g777u83#14",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=2:01:45",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 41,
+          "recorded_GA_count": 5,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 5,
+          "size": 35,
+          "representative_id": "asset/k1k/k1kfcwu5kc#10",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=2:09:52",
+          "country": "GA",
+          "date": "2026-09-28",
+          "representative_words": 27,
+          "recorded_GA_count": 35,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 6,
+          "size": 5,
+          "representative_id": "asset/k18/k18iyhzwip#80",
+          "source_url": "https://transcripts.un.org/en/asset/k18/k18iyhzwip?t=12:23:45",
+          "country": "GA",
+          "date": "2026-09-24",
+          "representative_words": 8,
+          "recorded_GA_count": 5,
+          "under_20_words": 5
+        },
+        {
+          "cluster": 7,
+          "size": 8,
+          "representative_id": "asset/k1k/k1kfcwu5kc#26",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=4:36:09",
+          "country": "GA",
+          "date": "2026-09-28",
+          "representative_words": 28,
+          "recorded_GA_count": 8,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "lsa",
+      "components": 40,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 5,
+        "minSamples": 10,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        192,
+        96,
+        34
+      ],
+      "largest_share": 0.4192139737991266,
+      "selected_groups": 3,
+      "assigned": 322,
+      "unassigned": 136,
+      "omission_assignment_counts": [
+        266,
+        284,
+        265,
+        261,
+        290,
+        235
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 260,
+            "reference_assigned_sample_unassigned": 11,
+            "reference_unassigned_sample_assigned": 6,
+            "both_unassigned": 110,
+            "shared_assigned_for_ari": 260,
+            "assigned_count": 266,
+            "unassigned_count": 121
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 266,
+            "reference_assigned_sample_unassigned": 1,
+            "reference_unassigned_sample_assigned": 18,
+            "both_unassigned": 102,
+            "shared_assigned_for_ari": 266,
+            "assigned_count": 284,
+            "unassigned_count": 103
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 258,
+            "reference_assigned_sample_unassigned": 3,
+            "reference_unassigned_sample_assigned": 7,
+            "both_unassigned": 107,
+            "shared_assigned_for_ari": 258,
+            "assigned_count": 265,
+            "unassigned_count": 110
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 252,
+            "reference_assigned_sample_unassigned": 2,
+            "reference_unassigned_sample_assigned": 9,
+            "both_unassigned": 117,
+            "shared_assigned_for_ari": 252,
+            "assigned_count": 261,
+            "unassigned_count": 119
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 280,
+            "reference_assigned_sample_unassigned": 14,
+            "reference_unassigned_sample_assigned": 10,
+            "both_unassigned": 77,
+            "shared_assigned_for_ari": 280,
+            "assigned_count": 290,
+            "unassigned_count": 91
+          }
+        },
+        {
+          "ari": 0.983796487669703,
+          "assignment": {
+            "both_assigned": 231,
+            "reference_assigned_sample_unassigned": 32,
+            "reference_unassigned_sample_assigned": 4,
+            "both_unassigned": 113,
+            "shared_assigned_for_ari": 231,
+            "assigned_count": 235,
+            "unassigned_count": 145
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.4386072779374829,
+      "leave_one_meeting_out_ari": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        0.983796487669703
+      ],
+      "mean_leave_one_meeting_out_ari": 0.9972994146116171,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 192,
+          "representative_id": "asset/k1u/k1ukg04uyo#35",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=6:45:46",
+          "country": "Haiti",
+          "date": "2026-09-25",
+          "representative_words": 3071,
+          "recorded_GA_count": 1,
+          "under_20_words": 1
+        },
+        {
+          "cluster": 2,
+          "size": 96,
+          "representative_id": "asset/k17/k17s3dutob#31",
+          "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=6:11:35",
+          "country": "GA",
+          "date": "2026-09-22",
+          "representative_words": 48,
+          "recorded_GA_count": 96,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 34,
+          "representative_id": "asset/k1k/k1kfcwu5kc#10",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=2:09:52",
+          "country": "GA",
+          "date": "2026-09-28",
+          "representative_words": 27,
+          "recorded_GA_count": 34,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "lsa",
+      "components": 40,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 15,
+        "minSamples": 5,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        204,
+        106,
+        41
+      ],
+      "largest_share": 0.44541484716157204,
+      "selected_groups": 3,
+      "assigned": 351,
+      "unassigned": 107,
+      "omission_assignment_counts": [
+        286,
+        292,
+        286,
+        283,
+        315,
+        283
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 282,
+            "reference_assigned_sample_unassigned": 14,
+            "reference_unassigned_sample_assigned": 4,
+            "both_unassigned": 87,
+            "shared_assigned_for_ari": 282,
+            "assigned_count": 286,
+            "unassigned_count": 101
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 282,
+            "reference_assigned_sample_unassigned": 11,
+            "reference_unassigned_sample_assigned": 10,
+            "both_unassigned": 84,
+            "shared_assigned_for_ari": 282,
+            "assigned_count": 292,
+            "unassigned_count": 95
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 280,
+            "reference_assigned_sample_unassigned": 3,
+            "reference_unassigned_sample_assigned": 6,
+            "both_unassigned": 86,
+            "shared_assigned_for_ari": 280,
+            "assigned_count": 286,
+            "unassigned_count": 89
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 274,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 9,
+            "both_unassigned": 92,
+            "shared_assigned_for_ari": 274,
+            "assigned_count": 283,
+            "unassigned_count": 97
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 308,
+            "reference_assigned_sample_unassigned": 10,
+            "reference_unassigned_sample_assigned": 7,
+            "both_unassigned": 56,
+            "shared_assigned_for_ari": 308,
+            "assigned_count": 315,
+            "unassigned_count": 66
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 279,
+            "reference_assigned_sample_unassigned": 7,
+            "reference_unassigned_sample_assigned": 4,
+            "both_unassigned": 90,
+            "shared_assigned_for_ari": 279,
+            "assigned_count": 283,
+            "unassigned_count": 97
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.41227589019757327,
+      "leave_one_meeting_out_ari": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "mean_leave_one_meeting_out_ari": 1,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 204,
+          "representative_id": "asset/k1u/k1ukg04uyo#35",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=6:45:46",
+          "country": "Haiti",
+          "date": "2026-09-25",
+          "representative_words": 3071,
+          "recorded_GA_count": 2,
+          "under_20_words": 2
+        },
+        {
+          "cluster": 2,
+          "size": 106,
+          "representative_id": "asset/k17/k17s3dutob#31",
+          "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=6:11:35",
+          "country": "GA",
+          "date": "2026-09-22",
+          "representative_words": 48,
+          "recorded_GA_count": 106,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 41,
+          "representative_id": "asset/k16/k16g777u83#40",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=5:30:14",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 28,
+          "recorded_GA_count": 41,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "lsa",
+      "components": 40,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 15,
+        "minSamples": 10,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        192,
+        96,
+        34
+      ],
+      "largest_share": 0.4192139737991266,
+      "selected_groups": 3,
+      "assigned": 322,
+      "unassigned": 136,
+      "omission_assignment_counts": [
+        266,
+        284,
+        265,
+        261,
+        290,
+        265
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 260,
+            "reference_assigned_sample_unassigned": 11,
+            "reference_unassigned_sample_assigned": 6,
+            "both_unassigned": 110,
+            "shared_assigned_for_ari": 260,
+            "assigned_count": 266,
+            "unassigned_count": 121
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 266,
+            "reference_assigned_sample_unassigned": 1,
+            "reference_unassigned_sample_assigned": 18,
+            "both_unassigned": 102,
+            "shared_assigned_for_ari": 266,
+            "assigned_count": 284,
+            "unassigned_count": 103
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 258,
+            "reference_assigned_sample_unassigned": 3,
+            "reference_unassigned_sample_assigned": 7,
+            "both_unassigned": 107,
+            "shared_assigned_for_ari": 258,
+            "assigned_count": 265,
+            "unassigned_count": 110
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 252,
+            "reference_assigned_sample_unassigned": 2,
+            "reference_unassigned_sample_assigned": 9,
+            "both_unassigned": 117,
+            "shared_assigned_for_ari": 252,
+            "assigned_count": 261,
+            "unassigned_count": 119
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 280,
+            "reference_assigned_sample_unassigned": 14,
+            "reference_unassigned_sample_assigned": 10,
+            "both_unassigned": 77,
+            "shared_assigned_for_ari": 280,
+            "assigned_count": 290,
+            "unassigned_count": 91
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 260,
+            "reference_assigned_sample_unassigned": 3,
+            "reference_unassigned_sample_assigned": 5,
+            "both_unassigned": 112,
+            "shared_assigned_for_ari": 260,
+            "assigned_count": 265,
+            "unassigned_count": 115
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.4386072779374829,
+      "leave_one_meeting_out_ari": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "mean_leave_one_meeting_out_ari": 1,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 192,
+          "representative_id": "asset/k1u/k1ukg04uyo#35",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=6:45:46",
+          "country": "Haiti",
+          "date": "2026-09-25",
+          "representative_words": 3071,
+          "recorded_GA_count": 1,
+          "under_20_words": 1
+        },
+        {
+          "cluster": 2,
+          "size": 96,
+          "representative_id": "asset/k17/k17s3dutob#31",
+          "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=6:11:35",
+          "country": "GA",
+          "date": "2026-09-22",
+          "representative_words": 48,
+          "recorded_GA_count": 96,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 34,
+          "representative_id": "asset/k1k/k1kfcwu5kc#10",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=2:09:52",
+          "country": "GA",
+          "date": "2026-09-28",
+          "representative_words": 27,
+          "recorded_GA_count": 34,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "lsa",
+      "components": 40,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 30,
+        "minSamples": 5,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        204,
+        106,
+        41
+      ],
+      "largest_share": 0.44541484716157204,
+      "selected_groups": 3,
+      "assigned": 351,
+      "unassigned": 107,
+      "omission_assignment_counts": [
+        262,
+        292,
+        286,
+        283,
+        315,
+        283
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 260,
+            "reference_assigned_sample_unassigned": 36,
+            "reference_unassigned_sample_assigned": 2,
+            "both_unassigned": 89,
+            "shared_assigned_for_ari": 260,
+            "assigned_count": 262,
+            "unassigned_count": 125
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 282,
+            "reference_assigned_sample_unassigned": 11,
+            "reference_unassigned_sample_assigned": 10,
+            "both_unassigned": 84,
+            "shared_assigned_for_ari": 282,
+            "assigned_count": 292,
+            "unassigned_count": 95
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 280,
+            "reference_assigned_sample_unassigned": 3,
+            "reference_unassigned_sample_assigned": 6,
+            "both_unassigned": 86,
+            "shared_assigned_for_ari": 280,
+            "assigned_count": 286,
+            "unassigned_count": 89
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 274,
+            "reference_assigned_sample_unassigned": 5,
+            "reference_unassigned_sample_assigned": 9,
+            "both_unassigned": 92,
+            "shared_assigned_for_ari": 274,
+            "assigned_count": 283,
+            "unassigned_count": 97
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 308,
+            "reference_assigned_sample_unassigned": 10,
+            "reference_unassigned_sample_assigned": 7,
+            "both_unassigned": 56,
+            "shared_assigned_for_ari": 308,
+            "assigned_count": 315,
+            "unassigned_count": 66
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 279,
+            "reference_assigned_sample_unassigned": 7,
+            "reference_unassigned_sample_assigned": 4,
+            "both_unassigned": 90,
+            "shared_assigned_for_ari": 279,
+            "assigned_count": 283,
+            "unassigned_count": 97
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.41227589019757327,
+      "leave_one_meeting_out_ari": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "mean_leave_one_meeting_out_ari": 1,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 204,
+          "representative_id": "asset/k1u/k1ukg04uyo#35",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=6:45:46",
+          "country": "Haiti",
+          "date": "2026-09-25",
+          "representative_words": 3071,
+          "recorded_GA_count": 2,
+          "under_20_words": 2
+        },
+        {
+          "cluster": 2,
+          "size": 106,
+          "representative_id": "asset/k17/k17s3dutob#31",
+          "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=6:11:35",
+          "country": "GA",
+          "date": "2026-09-22",
+          "representative_words": 48,
+          "recorded_GA_count": 106,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 41,
+          "representative_id": "asset/k16/k16g777u83#40",
+          "source_url": "https://transcripts.un.org/en/asset/k16/k16g777u83?t=5:30:14",
+          "country": "GA",
+          "date": "2026-09-26",
+          "representative_words": 28,
+          "recorded_GA_count": 41,
+          "under_20_words": 0
+        }
+      ]
+    },
+    {
+      "representation": "lsa",
+      "components": 40,
+      "algorithm": "hdbscan",
+      "hdbscan": {
+        "minClusterSize": 30,
+        "minSamples": 10,
+        "selection": "eom"
+      },
+      "mode": "hdbscan",
+      "n": 458,
+      "cluster_sizes": [
+        192,
+        96,
+        34
+      ],
+      "largest_share": 0.4192139737991266,
+      "selected_groups": 3,
+      "assigned": 322,
+      "unassigned": 136,
+      "omission_assignment_counts": [
+        245,
+        284,
+        265,
+        261,
+        290,
+        238
+      ],
+      "omission_assignment_coverage": [
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 242,
+            "reference_assigned_sample_unassigned": 29,
+            "reference_unassigned_sample_assigned": 3,
+            "both_unassigned": 113,
+            "shared_assigned_for_ari": 242,
+            "assigned_count": 245,
+            "unassigned_count": 142
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 266,
+            "reference_assigned_sample_unassigned": 1,
+            "reference_unassigned_sample_assigned": 18,
+            "both_unassigned": 102,
+            "shared_assigned_for_ari": 266,
+            "assigned_count": 284,
+            "unassigned_count": 103
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 258,
+            "reference_assigned_sample_unassigned": 3,
+            "reference_unassigned_sample_assigned": 7,
+            "both_unassigned": 107,
+            "shared_assigned_for_ari": 258,
+            "assigned_count": 265,
+            "unassigned_count": 110
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 252,
+            "reference_assigned_sample_unassigned": 2,
+            "reference_unassigned_sample_assigned": 9,
+            "both_unassigned": 117,
+            "shared_assigned_for_ari": 252,
+            "assigned_count": 261,
+            "unassigned_count": 119
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 280,
+            "reference_assigned_sample_unassigned": 14,
+            "reference_unassigned_sample_assigned": 10,
+            "both_unassigned": 77,
+            "shared_assigned_for_ari": 280,
+            "assigned_count": 290,
+            "unassigned_count": 91
+          }
+        },
+        {
+          "ari": 1,
+          "assignment": {
+            "both_assigned": 235,
+            "reference_assigned_sample_unassigned": 28,
+            "reference_unassigned_sample_assigned": 3,
+            "both_unassigned": 114,
+            "shared_assigned_for_ari": 235,
+            "assigned_count": 238,
+            "unassigned_count": 142
+          }
+        }
+      ],
+      "singleton_clusters": 0,
+      "silhouette": 0.4386072779374829,
+      "leave_one_meeting_out_ari": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "mean_leave_one_meeting_out_ari": 1,
+      "exemplars": [
+        {
+          "cluster": 1,
+          "size": 192,
+          "representative_id": "asset/k1u/k1ukg04uyo#35",
+          "source_url": "https://transcripts.un.org/en/asset/k1u/k1ukg04uyo?t=6:45:46",
+          "country": "Haiti",
+          "date": "2026-09-25",
+          "representative_words": 3071,
+          "recorded_GA_count": 1,
+          "under_20_words": 1
+        },
+        {
+          "cluster": 2,
+          "size": 96,
+          "representative_id": "asset/k17/k17s3dutob#31",
+          "source_url": "https://transcripts.un.org/en/asset/k17/k17s3dutob?t=6:11:35",
+          "country": "GA",
+          "date": "2026-09-22",
+          "representative_words": 48,
+          "recorded_GA_count": 96,
+          "under_20_words": 0
+        },
+        {
+          "cluster": 3,
+          "size": 34,
+          "representative_id": "asset/k1k/k1kfcwu5kc#10",
+          "source_url": "https://transcripts.un.org/en/asset/k1k/k1kfcwu5kc?t=2:09:52",
+          "country": "GA",
+          "date": "2026-09-28",
+          "representative_words": 27,
+          "recorded_GA_count": 34,
+          "under_20_words": 0
+        }
+      ]
+    }
+  ]
+}

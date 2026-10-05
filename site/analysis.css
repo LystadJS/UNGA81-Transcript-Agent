@@ -10,3 +10,5 @@ body{background:#f4f5f6;font-size:16px;color:#243241}.masthead{padding:24px 32px
 
 .hierarchy-map{overflow:auto;margin:16px 0}.report-document .hierarchy-map svg{width:1030px;min-width:1030px;max-width:none;height:auto}.hierarchy-full{max-height:620px;border:1px solid #d9e0e5}.hierarchy-map a:hover text,.hierarchy-map a:focus text{text-decoration:underline;font-weight:bold}.hierarchy-section h4{font:700 20px Georgia,serif}@media print{.hierarchy-full{max-height:none;overflow:visible}.report-document .hierarchy-map svg{width:100%;min-width:0;max-width:100%}}
 .hierarchy-small{display:none}.report-document .hierarchy-small svg{width:100%;min-width:0;max-width:365px}@media screen and (max-width:700px){.hierarchy-wide{display:none}.hierarchy-small{display:block}}
+
+.assignment-coverage{border-left:3px solid #667580;padding:14px;background:#f3f6f8}.assignment-coverage strong{display:block}.unassigned-passages blockquote{max-height:360px;overflow:auto}

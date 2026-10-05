@@ -2,19 +2,24 @@
 (function(root) {
   'use strict';
   const STABILITY = Object.freeze({enabled:false, unit:'meeting', replicates:30, fraction:0.8, seed:31415});
-  const DEFAULTS = Object.freeze({representation:'pca', algorithm:'kmeans', linkage:'ward', components:20, k:4, neighbors:15, minDist:0.1, seed:42, umapSeed:42, stability:STABILITY});
+  const HDBSCAN = Object.freeze({minClusterSize:15,minSamples:5,selection:'eom'});
+  const DEFAULTS = Object.freeze({representation:'pca', algorithm:'kmeans', linkage:'ward', components:20, k:4, neighbors:15, minDist:0.1, seed:42, umapSeed:42, stability:STABILITY,hdbscan:HDBSCAN});
   function integer(value, key, min, max) {
     if (!Number.isInteger(value) || value < min || value > max) {
       throw Error(`Invalid clustering setting: ${key} (${min}–${max}).`);
     }
   }
   function options(value = {}) {
-    const o = {...DEFAULTS, ...value, stability:{...STABILITY, ...value.stability}};
+    const o = {...DEFAULTS, ...value, stability:{...STABILITY, ...value.stability},hdbscan:{...HDBSCAN,...value.hdbscan}};
     if(!['pca','lsa','compare'].includes(o.representation))throw Error('Choose PCA, LSA or a comparison of both representations.');
-    if(!['kmeans','pam','hierarchical'].includes(o.algorithm))throw Error('Choose k-means, PAM or hierarchical clustering.');
+    if(!['kmeans','pam','hierarchical','hdbscan'].includes(o.algorithm))throw Error('Choose k-means, PAM, hierarchical clustering or HDBSCAN.');
     if(!['ward','average'].includes(o.linkage))throw Error('Choose Ward or average linkage.');
     for (const [key,min,max] of [['components',2,50],['k',2,12],['neighbors',2,100],['seed',0,4294967295],['umapSeed',0,4294967295]]) integer(o[key],key,min,max);
     if (!Number.isFinite(o.minDist) || o.minDist < 0 || o.minDist > 0.99) throw Error('UMAP minimum distance must be between 0 and 0.99.');
+    if(o.algorithm==='hdbscan'){
+      integer(o.hdbscan.minClusterSize,'minimum cluster size',2,600);integer(o.hdbscan.minSamples,'density neighbors',2,600);
+      if(!['eom','leaf'].includes(o.hdbscan.selection))throw Error('Choose EOM or leaf cluster selection.');
+    }
     const s=o.stability;
     if (typeof s.enabled !== 'boolean') throw Error('Choose whether to assess cluster stability.');
     if (s.enabled) {
@@ -25,6 +30,6 @@
     }
     return o;
   }
-  const api={DEFAULTS,STABILITY,options};
+  const api={DEFAULTS,STABILITY,HDBSCAN,options};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UNClusterOptions=api;
 })(globalThis);

@@ -53,6 +53,7 @@
       region: el('region').value,
       scope: el('meetingScope').value,
       clustering: {representation:el('representation').value,algorithm:el('clusterAlgorithm').value,linkage:el('clusterLinkage').value,components:Number(el('pcaComponents').value), k:Number(el('clusterCount').value), neighbors:Number(el('umapNeighbors').value), minDist:Number(el('umapDistance').value), seed:Number(el('clusterSeed').value), umapSeed:Number(el('umapSeed').value),
+        hdbscan:{minClusterSize:Number(el('hdbMinClusterSize').value),minSamples:Number(el('hdbMinSamples').value),selection:el('hdbSelection').value},
         stability:{enabled:el('stabilityEnabled').checked,unit:el('stabilityUnit').value,replicates:Number(el('stabilityReplicates').value),fraction:Number(el('stabilityFraction').value),seed:Number(el('stabilitySeed').value)}},
       methods: [...document.querySelectorAll('input[name=method]:checked')]
         .map(input => input.value)
@@ -529,6 +530,11 @@
     const seeded=el('clusterAlgorithm').value==='kmeans';
     el('clusterSeed').disabled=!active||!seeded||!!controller;
     el('clusterSeed').parentElement.hidden=!seeded;
+    const density=el('clusterAlgorithm').value==='hdbscan';
+    el('clusterCount').disabled=!active||density||!!controller;
+    el('clusterCount').parentElement.hidden=density;
+    el('hdbscanSettings').hidden=!density;
+    el('hdbscanSettings').querySelectorAll('input,select').forEach(input=>{input.disabled=!active||!density||!!controller;});
     const stability=active&&el('stabilityEnabled').checked;
     el('stabilitySettings').hidden=!stability;
     el('stabilitySettings').querySelectorAll('input,select').forEach(input=>{input.disabled=!stability || !!controller;});
@@ -540,7 +546,7 @@
 
   function runClusterWorker(records,vectors,options,progress) {
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.6.0');
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.7.0');
       const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
       signal.addEventListener('abort',abort,{once:true});
@@ -651,12 +657,14 @@
     const fits=clusterFits(result?.methods.clusters).filter(f=>f.stability?.consensus&&!f.stability.skipped);
     if(!fits.length)return;
     const compare=!!result.methods.clusters.comparison,typed=fits[0].algorithm!=='kmeans';
+    const density=fits[0].algorithm==='hdbscan';
     const quote=v=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,"'$&").replace(/"/g,'""')+'"';
-    const rows=[['representation',...(typed?['algorithm','linkage']:[]),'left_id','right_id','left_cluster','right_cluster','co_observed','co_clustered','co_assignment_rate']];
+    const rows=[['representation',...(typed?['algorithm','linkage']:[]),'left_id','right_id','left_cluster','right_cluster','co_observed','co_clustered','co_assignment_rate',...(density?['left_assignment','right_assignment','co_assigned','co_assignment_given_assigned']:[])]];
     for(const fit of fits){const s=fit.stability;
       for(let i=1;i<s.reference_ids.length;i++)for(let j=0;j<i;j++){
         const pos=i*(i-1)/2+j,o=s.consensus.co_observed[pos],t=s.consensus.co_clustered[pos];
-        rows.push([fit.representation||'pca',...(typed?[fit.algorithm,fit.hierarchical?.linkage||'']:[]),s.reference_ids[i],s.reference_ids[j],s.reference_clusters[i],s.reference_clusters[j],o,t,o?t/o:'']);
+        rows.push([fit.representation||'pca',...(typed?[fit.algorithm,fit.hierarchical?.linkage||'']:[]),s.reference_ids[i],s.reference_ids[j],s.reference_clusters[i],s.reference_clusters[j],o,t,o?t/o:'',
+          ...(density?[s.reference_clusters[i]?'assigned':'unassigned',s.reference_clusters[j]?'assigned':'unassigned',s.consensus.co_assigned[pos],s.consensus.co_assigned[pos]?t/s.consensus.co_assigned[pos]:'']:[])]);
       }
     }
     // Preserve the previous PCA-only column contract.
@@ -667,18 +675,19 @@
     if(stale)return;
     const fits=clusterFits(result?.methods.clusters).filter(f=>f.points);if(!fits.length)return;
     const compare=!!result.methods.clusters.comparison,typed=fits[0].algorithm!=='kmeans';
+    const density=fits[0].algorithm==='hdbscan';
     const quote=v=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,"'$&").replace(/"/g,'""')+'"';
     const stable=fits.some(f=>f.stability?.consensus&&!f.stability.skipped);
     const dimensions=Math.max(...fits.map(f=>f[f.representation||'pca'].components));
     const prefix=compare?'D':fits[0].representation==='lsa'?'LS':'PC';
-    const fields=[...(compare||typed?['representation']:[]),...(typed?['algorithm','linkage','representative_role','is_representative']:[]),'id','text_sha256','cluster',...Array.from({length:dimensions},(_,i)=>prefix+(i+1)),'UMAP1','UMAP2',
-      ...(stable?['resamples_included','observed_peers','within_cluster_consensus','strongest_other_consensus','consensus_margin']:[])];
+    const fields=[...(compare||typed?['representation']:[]),...(typed?['algorithm','linkage','representative_role','is_representative']:[]),'id','text_sha256','cluster',...(density?['assignment_status','membership_strength']:[]),...Array.from({length:dimensions},(_,i)=>prefix+(i+1)),'UMAP1','UMAP2',
+      ...(stable?['resamples_included','observed_peers','within_cluster_consensus','strongest_other_consensus','consensus_margin',...(density?['resamples_assigned','resamples_unassigned','assignment_rate']:[])]:[])];
     const rows=[fields];
     for(const fit of fits){const method=fit.representation||'pca';
       fit.points.forEach((p,i)=>{const s=!fit.stability?.skipped?fit.stability?.consensus?.points[i]:null;
         const group=fit.clusters[p.cluster-1];
-        rows.push([...(compare||typed?[method]:[]),...(typed?[fit.algorithm,fit.hierarchical?.linkage||'',group.representative_role,group.representative_id===p.id]:[]),p.id,p.text_sha256,p.cluster,...Array.from({length:dimensions},(_,d)=>p[method][d]??''),...p.umap,
-          ...(stable?[s?.included,s?.observed_peers,s?.within_cluster,s?.strongest_other,s?.margin]:[])]);
+        rows.push([...(compare||typed?[method]:[]),...(typed?[fit.algorithm,fit.hierarchical?.linkage||'',group?.representative_role||'',group?.representative_id===p.id]:[]),p.id,p.text_sha256,p.cluster,...(density?[p.assignment_status,p.membership_strength]:[]),...Array.from({length:dimensions},(_,d)=>p[method][d]??''),...p.umap,
+          ...(stable?[s?.included,s?.observed_peers,s?.within_cluster,s?.strongest_other,s?.margin,...(density?[s?.assigned,s?.unassigned,s?.assignment_rate]:[])]:[])]);
       });
     }
     save('\uFEFF'+rows.map(row=>row.map(quote).join(',')).join('\r\n'),'un-clusters.csv','text/csv;charset=utf-8');

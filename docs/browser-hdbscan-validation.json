@@ -1,0 +1,836 @@
+{
+  "date": "2026-10-05",
+  "engine": "browser-descriptive-1.7.0",
+  "status": "PASS engineering checks; share with documented source and method caveats",
+  "input_sha256": "469f5d00c84a20b735f2cc23e1688ea1868fa38da90e611894b0d759c282deca",
+  "node_suites": [
+    "test_browser_analysis.cjs",
+    "test_browser_clusters.cjs",
+    "test_browser_stability.cjs",
+    "test_browser_lsa.cjs",
+    "test_browser_partitions.cjs",
+    "test_browser_hdbscan.cjs"
+  ],
+  "local_browser": {
+    "url": "http://127.0.0.1:8787/",
+    "cases": [
+      {
+        "mode": "eom",
+        "engine": "browser-descriptive-1.7.0",
+        "passages": 458,
+        "seconds": 20.945,
+        "groups": [
+          [
+            219,
+            61,
+            29,
+            50
+          ],
+          [
+            221,
+            61,
+            31,
+            50
+          ]
+        ],
+        "unassigned": [
+          99,
+          95
+        ],
+        "resamples": [
+          30,
+          30
+        ],
+        "assessable_ari_samples": [
+          30,
+          30
+        ],
+        "mean_stability_ari": [
+          0.9862069457609505,
+          0.9854799417213014
+        ],
+        "between_representation_ari": 1,
+        "all_points_and_sources_retained": true,
+        "exports": [
+          "HTML",
+          "JSON",
+          "cluster CSV",
+          "consensus CSV"
+        ],
+        "mobile_overflow": false
+      },
+      {
+        "mode": "leaf",
+        "engine": "browser-descriptive-1.7.0",
+        "passages": 458,
+        "seconds": 18.742,
+        "groups": [
+          [
+            21,
+            61,
+            18,
+            29,
+            50
+          ],
+          [
+            221,
+            61,
+            31,
+            50
+          ]
+        ],
+        "unassigned": [
+          279,
+          95
+        ],
+        "resamples": [
+          30,
+          30
+        ],
+        "assessable_ari_samples": [
+          30,
+          30
+        ],
+        "mean_stability_ari": [
+          0.9161949429832197,
+          0.8267727813344957
+        ],
+        "between_representation_ari": 0.9370916845294103,
+        "all_points_and_sources_retained": true,
+        "exports": [
+          "HTML",
+          "JSON",
+          "cluster CSV",
+          "consensus CSV"
+        ],
+        "mobile_overflow": false
+      },
+      {
+        "mode": "all-unassigned",
+        "engine": "browser-descriptive-1.7.0",
+        "passages": 458,
+        "seconds": 8.403,
+        "groups": [
+          [],
+          []
+        ],
+        "unassigned": [
+          458,
+          458
+        ],
+        "resamples": [
+          10,
+          10
+        ],
+        "assessable_ari_samples": [
+          0,
+          0
+        ],
+        "mean_stability_ari": [
+          null,
+          null
+        ],
+        "between_representation_ari": null,
+        "all_points_and_sources_retained": true,
+        "exports": [
+          "HTML",
+          "JSON",
+          "cluster CSV",
+          "consensus CSV"
+        ],
+        "mobile_overflow": false
+      }
+    ],
+    "browser_errors": [],
+    "status": "PASS",
+    "stale_exports_disabled": true,
+    "cancellation": true,
+    "settings_do_not_change_coordinates": true
+  },
+  "independent_kernel": {
+    "status": "PASS staged algorithm checks",
+    "reference": "scikit-learn 1.7.2 HDBSCAN; SciPy independently verifies every single-linkage connection level; sklearn validates condensation/selection on the identical tree",
+    "checks": [
+      {
+        "case": "density-0",
+        "passages": 65,
+        "clusters": 3,
+        "unassigned": 20,
+        "reference_ari": 1.0,
+        "noise_mask_equal": true,
+        "membership_strength_max_error": 0.0,
+        "single_linkage_cophenetic_max_error": 0.0,
+        "selection_on_same_tree_matches": true,
+        "cross_implementation_equal": true
+      },
+      {
+        "case": "density-1",
+        "passages": 65,
+        "clusters": 2,
+        "unassigned": 4,
+        "reference_ari": 1.0,
+        "noise_mask_equal": true,
+        "membership_strength_max_error": 0.13986124478589013,
+        "single_linkage_cophenetic_max_error": 0.0,
+        "selection_on_same_tree_matches": true,
+        "cross_implementation_equal": false,
+        "portability_note": "Equal-height binary merge order differs; the full single-linkage geometry and independent selection on the identical tree agree. No claim of cross-library label identity."
+      },
+      {
+        "case": "density-2",
+        "passages": 65,
+        "clusters": 2,
+        "unassigned": 5,
+        "reference_ari": 1.0,
+        "noise_mask_equal": true,
+        "membership_strength_max_error": 0.0,
+        "single_linkage_cophenetic_max_error": 0.0,
+        "selection_on_same_tree_matches": true,
+        "cross_implementation_equal": true
+      },
+      {
+        "case": "density-3",
+        "passages": 65,
+        "clusters": 2,
+        "unassigned": 6,
+        "reference_ari": 0.9427373665264213,
+        "noise_mask_equal": true,
+        "membership_strength_max_error": 0.014950075332479412,
+        "single_linkage_cophenetic_max_error": 0.0,
+        "selection_on_same_tree_matches": true,
+        "cross_implementation_equal": false,
+        "portability_note": "Equal-height binary merge order differs; the full single-linkage geometry and independent selection on the identical tree agree. No claim of cross-library label identity."
+      },
+      {
+        "case": "density-4",
+        "passages": 65,
+        "clusters": 2,
+        "unassigned": 5,
+        "reference_ari": 1.0,
+        "noise_mask_equal": true,
+        "membership_strength_max_error": 0.0,
+        "single_linkage_cophenetic_max_error": 0.0,
+        "selection_on_same_tree_matches": true,
+        "cross_implementation_equal": true
+      },
+      {
+        "case": "density-5",
+        "passages": 65,
+        "clusters": 2,
+        "unassigned": 7,
+        "reference_ari": 1.0,
+        "noise_mask_equal": true,
+        "membership_strength_max_error": 0.0,
+        "single_linkage_cophenetic_max_error": 0.0,
+        "selection_on_same_tree_matches": true,
+        "cross_implementation_equal": true
+      },
+      {
+        "case": "density-6",
+        "passages": 65,
+        "clusters": 2,
+        "unassigned": 5,
+        "reference_ari": 0.5808490428532159,
+        "noise_mask_equal": false,
+        "membership_strength_max_error": 0.7516800505728367,
+        "single_linkage_cophenetic_max_error": 0.0,
+        "selection_on_same_tree_matches": true,
+        "cross_implementation_equal": false,
+        "portability_note": "Equal-height binary merge order differs; the full single-linkage geometry and independent selection on the identical tree agree. No claim of cross-library label identity."
+      },
+      {
+        "case": "density-7",
+        "passages": 65,
+        "clusters": 2,
+        "unassigned": 4,
+        "reference_ari": 1.0,
+        "noise_mask_equal": true,
+        "membership_strength_max_error": 0.0,
+        "single_linkage_cophenetic_max_error": 0.0,
+        "selection_on_same_tree_matches": true,
+        "cross_implementation_equal": true
+      },
+      {
+        "case": "density-8",
+        "passages": 65,
+        "clusters": 2,
+        "unassigned": 6,
+        "reference_ari": 1.0,
+        "noise_mask_equal": true,
+        "membership_strength_max_error": 0.0,
+        "single_linkage_cophenetic_max_error": 0.0,
+        "selection_on_same_tree_matches": true,
+        "cross_implementation_equal": true
+      },
+      {
+        "case": "density-9",
+        "passages": 65,
+        "clusters": 2,
+        "unassigned": 6,
+        "reference_ari": 1.0,
+        "noise_mask_equal": true,
+        "membership_strength_max_error": 0.0,
+        "single_linkage_cophenetic_max_error": 0.0,
+        "selection_on_same_tree_matches": true,
+        "cross_implementation_equal": true
+      },
+      {
+        "case": "density-10",
+        "passages": 65,
+        "clusters": 3,
+        "unassigned": 11,
+        "reference_ari": 1.0,
+        "noise_mask_equal": true,
+        "membership_strength_max_error": 0.0,
+        "single_linkage_cophenetic_max_error": 0.0,
+        "selection_on_same_tree_matches": true,
+        "cross_implementation_equal": true
+      },
+      {
+        "case": "density-11",
+        "passages": 65,
+        "clusters": 2,
+        "unassigned": 0,
+        "reference_ari": 1.0,
+        "noise_mask_equal": true,
+        "membership_strength_max_error": 0.0,
+        "single_linkage_cophenetic_max_error": 0.0,
+        "selection_on_same_tree_matches": true,
+        "cross_implementation_equal": true
+      },
+      {
+        "case": "moons-eom",
+        "passages": 130,
+        "clusters": 2,
+        "unassigned": 0,
+        "reference_ari": 1.0,
+        "noise_mask_equal": true,
+        "membership_strength_max_error": 0.0,
+        "single_linkage_cophenetic_max_error": 0.0,
+        "selection_on_same_tree_matches": true,
+        "cross_implementation_equal": true
+      },
+      {
+        "case": "all-identical-eom",
+        "passages": 16,
+        "clusters": 0,
+        "unassigned": 16,
+        "reference_ari": 1.0,
+        "noise_mask_equal": true,
+        "membership_strength_max_error": 0.0,
+        "single_linkage_cophenetic_max_error": 0.0,
+        "selection_on_same_tree_matches": true,
+        "cross_implementation_equal": true
+      },
+      {
+        "case": "duplicate-groups-eom",
+        "passages": 25,
+        "clusters": 2,
+        "unassigned": 1,
+        "reference_ari": 1.0,
+        "noise_mask_equal": true,
+        "membership_strength_max_error": 0.0,
+        "single_linkage_cophenetic_max_error": 0.0,
+        "selection_on_same_tree_matches": true,
+        "cross_implementation_equal": true
+      },
+      {
+        "case": "uniform-grid-eom",
+        "passages": 25,
+        "clusters": 0,
+        "unassigned": 25,
+        "reference_ari": 1.0,
+        "noise_mask_equal": true,
+        "membership_strength_max_error": 0.0,
+        "single_linkage_cophenetic_max_error": 0.0,
+        "selection_on_same_tree_matches": true,
+        "cross_implementation_equal": true
+      },
+      {
+        "case": "minimum-too-large-eom",
+        "passages": 20,
+        "clusters": 0,
+        "unassigned": 20,
+        "reference_ari": 1.0,
+        "noise_mask_equal": true,
+        "membership_strength_max_error": 0.0,
+        "single_linkage_cophenetic_max_error": 0.0,
+        "selection_on_same_tree_matches": true,
+        "cross_implementation_equal": true
+      },
+      {
+        "case": "moons-leaf",
+        "passages": 130,
+        "clusters": 7,
+        "unassigned": 18,
+        "reference_ari": 0.9610603263084284,
+        "noise_mask_equal": false,
+        "membership_strength_max_error": 0.9240808517117352,
+        "single_linkage_cophenetic_max_error": 0.0,
+        "selection_on_same_tree_matches": true,
+        "cross_implementation_equal": false,
+        "portability_note": "Equal-height binary merge order differs; the full single-linkage geometry and independent selection on the identical tree agree. No claim of cross-library label identity."
+      },
+      {
+        "case": "all-identical-leaf",
+        "passages": 16,
+        "clusters": 0,
+        "unassigned": 16,
+        "reference_ari": 1.0,
+        "noise_mask_equal": true,
+        "membership_strength_max_error": 0.0,
+        "single_linkage_cophenetic_max_error": 0.0,
+        "selection_on_same_tree_matches": true,
+        "cross_implementation_equal": true
+      },
+      {
+        "case": "duplicate-groups-leaf",
+        "passages": 25,
+        "clusters": 2,
+        "unassigned": 1,
+        "reference_ari": 1.0,
+        "noise_mask_equal": true,
+        "membership_strength_max_error": 0.0,
+        "single_linkage_cophenetic_max_error": 0.0,
+        "selection_on_same_tree_matches": true,
+        "cross_implementation_equal": true
+      },
+      {
+        "case": "uniform-grid-leaf",
+        "passages": 25,
+        "clusters": 0,
+        "unassigned": 25,
+        "reference_ari": 1.0,
+        "noise_mask_equal": true,
+        "membership_strength_max_error": 0.0,
+        "single_linkage_cophenetic_max_error": 0.0,
+        "selection_on_same_tree_matches": true,
+        "cross_implementation_equal": true
+      },
+      {
+        "case": "minimum-too-large-leaf",
+        "passages": 20,
+        "clusters": 0,
+        "unassigned": 20,
+        "reference_ari": 1.0,
+        "noise_mask_equal": true,
+        "membership_strength_max_error": 0.0,
+        "single_linkage_cophenetic_max_error": 0.0,
+        "selection_on_same_tree_matches": true,
+        "cross_implementation_equal": true
+      }
+    ]
+  },
+  "real_corpus_reference": {
+    "eom": {
+      "status": "PASS staged algorithm checks",
+      "reference": "scikit-learn 1.7.2 HDBSCAN; SciPy independently verifies every single-linkage connection level; sklearn validates condensation/selection on the identical tree",
+      "checks": [
+        {
+          "case": "pca",
+          "passages": 458,
+          "clusters": 4,
+          "unassigned": 99,
+          "reference_ari": 1.0,
+          "noise_mask_equal": true,
+          "membership_strength_max_error": 0.0,
+          "single_linkage_cophenetic_max_error": 0.0,
+          "selection_on_same_tree_matches": true,
+          "cross_implementation_equal": true
+        },
+        {
+          "case": "lsa",
+          "passages": 458,
+          "clusters": 4,
+          "unassigned": 95,
+          "reference_ari": 1.0,
+          "noise_mask_equal": true,
+          "membership_strength_max_error": 0.0,
+          "single_linkage_cophenetic_max_error": 0.0,
+          "selection_on_same_tree_matches": true,
+          "cross_implementation_equal": true
+        }
+      ]
+    },
+    "leaf": {
+      "status": "PASS staged algorithm checks",
+      "reference": "scikit-learn 1.7.2 HDBSCAN; SciPy independently verifies every single-linkage connection level; sklearn validates condensation/selection on the identical tree",
+      "checks": [
+        {
+          "case": "pca",
+          "passages": 458,
+          "clusters": 5,
+          "unassigned": 279,
+          "reference_ari": 1.0,
+          "noise_mask_equal": true,
+          "membership_strength_max_error": 0.0,
+          "single_linkage_cophenetic_max_error": 0.0,
+          "selection_on_same_tree_matches": true,
+          "cross_implementation_equal": true
+        },
+        {
+          "case": "lsa",
+          "passages": 458,
+          "clusters": 4,
+          "unassigned": 95,
+          "reference_ari": 1.0,
+          "noise_mask_equal": true,
+          "membership_strength_max_error": 0.0,
+          "single_linkage_cophenetic_max_error": 0.0,
+          "selection_on_same_tree_matches": true,
+          "cross_implementation_equal": true
+        }
+      ]
+    },
+    "all-unassigned": {
+      "status": "PASS staged algorithm checks",
+      "reference": "scikit-learn 1.7.2 HDBSCAN; SciPy independently verifies every single-linkage connection level; sklearn validates condensation/selection on the identical tree",
+      "checks": [
+        {
+          "case": "pca",
+          "passages": 458,
+          "clusters": 0,
+          "unassigned": 458,
+          "reference_ari": 1.0,
+          "noise_mask_equal": true,
+          "membership_strength_max_error": 0.0,
+          "single_linkage_cophenetic_max_error": 0.0,
+          "selection_on_same_tree_matches": true,
+          "cross_implementation_equal": true
+        },
+        {
+          "case": "lsa",
+          "passages": 458,
+          "clusters": 0,
+          "unassigned": 458,
+          "reference_ari": 1.0,
+          "noise_mask_equal": true,
+          "membership_strength_max_error": 0.0,
+          "single_linkage_cophenetic_max_error": 0.0,
+          "selection_on_same_tree_matches": true,
+          "cross_implementation_equal": true
+        }
+      ]
+    }
+  },
+  "independent_stability": [
+    {
+      "mode": "eom",
+      "representation": "pca",
+      "successful_samples_checked": 30,
+      "passages": 458,
+      "pair_denominators_checked": 104653,
+      "max_ari_or_jaccard_error": 0.0,
+      "noise_aware": true,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "mode": "eom",
+      "representation": "lsa",
+      "successful_samples_checked": 30,
+      "passages": 458,
+      "pair_denominators_checked": 104653,
+      "max_ari_or_jaccard_error": 0.0,
+      "noise_aware": true,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "mode": "leaf",
+      "representation": "pca",
+      "successful_samples_checked": 30,
+      "passages": 458,
+      "pair_denominators_checked": 104653,
+      "max_ari_or_jaccard_error": 1.1102230246251565e-16,
+      "noise_aware": true,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "mode": "leaf",
+      "representation": "lsa",
+      "successful_samples_checked": 30,
+      "passages": 458,
+      "pair_denominators_checked": 104653,
+      "max_ari_or_jaccard_error": 1.1102230246251565e-16,
+      "noise_aware": true,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "mode": "all-unassigned",
+      "representation": "pca",
+      "successful_samples_checked": 10,
+      "passages": 458,
+      "pair_denominators_checked": 104653,
+      "max_ari_or_jaccard_error": 0,
+      "noise_aware": true,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "mode": "all-unassigned",
+      "representation": "lsa",
+      "successful_samples_checked": 10,
+      "passages": 458,
+      "pair_denominators_checked": 104653,
+      "max_ari_or_jaccard_error": 0,
+      "noise_aware": true,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    }
+  ],
+  "exact_legacy_regression": [
+    {
+      "algorithm": "kmeans",
+      "linkage": null,
+      "representation": "pca",
+      "exact_scores_umap_partition_diagnostics_runs_consensus": true
+    },
+    {
+      "algorithm": "kmeans",
+      "linkage": null,
+      "representation": "lsa",
+      "exact_scores_umap_partition_diagnostics_runs_consensus": true
+    },
+    {
+      "algorithm": "pam",
+      "linkage": null,
+      "representation": "pca",
+      "exact_scores_umap_partition_diagnostics_runs_consensus": true
+    },
+    {
+      "algorithm": "pam",
+      "linkage": null,
+      "representation": "lsa",
+      "exact_scores_umap_partition_diagnostics_runs_consensus": true
+    },
+    {
+      "algorithm": "hierarchical",
+      "linkage": "ward",
+      "representation": "pca",
+      "exact_scores_umap_partition_diagnostics_runs_consensus": true
+    },
+    {
+      "algorithm": "hierarchical",
+      "linkage": "ward",
+      "representation": "lsa",
+      "exact_scores_umap_partition_diagnostics_runs_consensus": true
+    },
+    {
+      "algorithm": "hierarchical",
+      "linkage": "average",
+      "representation": "pca",
+      "exact_scores_umap_partition_diagnostics_runs_consensus": true
+    },
+    {
+      "algorithm": "hierarchical",
+      "linkage": "average",
+      "representation": "lsa",
+      "exact_scores_umap_partition_diagnostics_runs_consensus": true
+    }
+  ],
+  "legacy_browser": {
+    "partitions": {
+      "url": "http://127.0.0.1:8787/",
+      "cases": [
+        {
+          "mode": "pam",
+          "engine": "browser-descriptive-1.7.0",
+          "passages": 458,
+          "seconds": 19.297,
+          "paired_samples": 30,
+          "silhouette": {
+            "pca": 0.34079362124937285,
+            "lsa": 0.34454339281926316
+          },
+          "mean_stability_ari": {
+            "pca": 0.8341031779053653,
+            "lsa": 0.8361553357043323
+          },
+          "between_representation_ari": 1,
+          "cluster_sizes": {
+            "pca": [
+              84,
+              47,
+              61,
+              266
+            ],
+            "lsa": [
+              84,
+              47,
+              61,
+              266
+            ]
+          },
+          "exports": [
+            "JSON",
+            "HTML",
+            "cluster CSV",
+            "consensus CSV"
+          ],
+          "source_links": true,
+          "mobile_overflow": false
+        },
+        {
+          "mode": "ward",
+          "engine": "browser-descriptive-1.7.0",
+          "passages": 458,
+          "seconds": 19.828,
+          "paired_samples": 30,
+          "silhouette": {
+            "pca": 0.40892955152662724,
+            "lsa": 0.4006555109978275
+          },
+          "mean_stability_ari": {
+            "pca": 0.9627343020423899,
+            "lsa": 0.9021211249037029
+          },
+          "between_representation_ari": 0.9590059481107795,
+          "cluster_sizes": {
+            "pca": [
+              82,
+              196,
+              124,
+              56
+            ],
+            "lsa": [
+              90,
+              196,
+              117,
+              55
+            ]
+          },
+          "exports": [
+            "JSON",
+            "HTML",
+            "cluster CSV",
+            "consensus CSV",
+            "hierarchy CSV"
+          ],
+          "source_links": true,
+          "mobile_overflow": false
+        },
+        {
+          "mode": "average",
+          "engine": "browser-descriptive-1.7.0",
+          "passages": 458,
+          "seconds": 20.982,
+          "paired_samples": 30,
+          "silhouette": {
+            "pca": 0.29675825929423816,
+            "lsa": 0.3114706006477383
+          },
+          "mean_stability_ari": {
+            "pca": 0.9370069249884767,
+            "lsa": 0.5460385720236707
+          },
+          "between_representation_ari": 0.5922372208988244,
+          "cluster_sizes": {
+            "pca": [
+              2,
+              445,
+              4,
+              7
+            ],
+            "lsa": [
+              435,
+              4,
+              12,
+              7
+            ]
+          },
+          "exports": [
+            "JSON",
+            "HTML",
+            "cluster CSV",
+            "consensus CSV",
+            "hierarchy CSV"
+          ],
+          "source_links": true,
+          "mobile_overflow": false
+        }
+      ],
+      "browser_errors": [],
+      "shared_coordinates_and_samples": true,
+      "stale_exports_disabled": true,
+      "cancel_during_resampling": true,
+      "status": "PASS"
+    },
+    "kmeans": {
+      "url": "http://127.0.0.1:8787/",
+      "engine": "browser-descriptive-1.7.0",
+      "passages": 458,
+      "components": {
+        "pca": 20,
+        "lsa": 20
+      },
+      "centered_variance": {
+        "pca": 0.24420615993829808,
+        "lsa": 0.24099478202395752
+      },
+      "lsa_energy": 0.30262285219213725,
+      "between_cluster_ari": 0.9746049180297626,
+      "neighbor_overlap_between_representations": 0.9375545851528367,
+      "fidelity": {
+        "pca": {
+          "neighbors": 10,
+          "neighbor_overlap": 0.38471615720524016,
+          "trustworthiness": 0.9329084943132756,
+          "continuity": 0.9346581797547677
+        },
+        "lsa": {
+          "neighbors": 10,
+          "neighbor_overlap": 0.3814410480349345,
+          "trustworthiness": 0.9333560308884119,
+          "continuity": 0.9344104803493449
+        }
+      },
+      "stability": {
+        "pca": {
+          "count": 30,
+          "mean": 0.9586848663269522,
+          "median": 0.9778985622037113,
+          "min": 0.7853704659729207,
+          "max": 1
+        },
+        "lsa": {
+          "count": 30,
+          "mean": 0.9610995819267923,
+          "median": 0.9769358820197691,
+          "min": 0.8083592411884299,
+          "max": 1
+        },
+        "paired": 30
+      },
+      "seconds": 19.434,
+      "shared_reference_colors": true,
+      "source_links": true,
+      "standalone_equals_comparison": true,
+      "exports": [
+        "HTML",
+        "JSON",
+        "cluster CSV",
+        "consensus CSV"
+      ],
+      "stale_exports_disabled": true,
+      "cancel_during_alternative": true,
+      "mobile_overflow": false,
+      "browser_errors": []
+    }
+  },
+  "visual_review": {
+    "desktop": "Inspected EOM and all-unassigned coverage and maps; gray crosses visible; source counts and legends agree.",
+    "mobile": "Inspected EOM: no document overflow; existing map container scrolls horizontally; coverage and legends readable."
+  },
+  "sensitivity": {
+    "partition_full_fits": 96,
+    "partition_omission_fits": 576,
+    "density_full_fits": 36,
+    "density_omission_fits": 216,
+    "omissions_per_setting": 6,
+    "automatic_winner": false
+  },
+  "limits": [
+    "Only six meeting groups; repeated omissions are not independent replications.",
+    "Source examples are spot checks, not human-reviewed source-type labels; audio was not verified.",
+    "ARI and silhouette exclude unassigned passages; coverage must accompany them.",
+    "Equal-height merge ordering can differ across implementations; four of 22 fixture fits differ despite identical single-linkage geometry and verified same-tree selection.",
+    "These tests do not establish substantive categories, future performance, stance or coordination."
+  ]
+}
