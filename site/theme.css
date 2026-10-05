@@ -2,3 +2,32 @@
 *{box-sizing:border-box}body{margin:0;background:#fff;color:var(--usun-ink);font:16px/1.5 var(--usun-sans)}a{color:var(--usun-blue);text-underline-offset:.15em}a:focus-visible,button:focus-visible{outline:3px solid var(--usun-blue);outline-offset:4px}.usun-masthead{background:var(--usun-navy);color:white;padding:22px 44px;border-bottom:4px solid var(--usun-red);display:flex;align-items:center;gap:16px}.usun-seal{width:64px;height:64px;object-fit:contain;flex:none}.usun-identity{font:bold 20px/1.05 'Times New Roman',serif}.usun-department{font:10px/1.6 var(--usun-sans);letter-spacing:.04em;color:#DCE7F2;margin-top:5px}.usun-status{margin-left:auto;font-size:11px;line-height:1.5}.usun-main{padding:28px 44px 36px}.usun-kicker{font-size:11px;color:var(--usun-blue);font-weight:bold;letter-spacing:.05em}.usun-title{font:bold 36px/1.15 var(--usun-serif);color:var(--usun-navy);margin:6px 0;border-bottom:2px solid var(--usun-blue);padding-bottom:8px}.usun-purpose{color:var(--usun-muted);font-style:italic;margin:8px 0 18px}.usun-meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:var(--usun-surface);border-block:1px solid var(--usun-rule);margin:0 0 20px}.usun-meta>div{padding:10px 12px;border-right:1px solid var(--usun-rule)}.usun-meta>div:last-child{border-right:0}.usun-meta dt{font-size:11px;color:var(--usun-blue);font-weight:bold}.usun-meta dd{margin:2px 0 0;overflow-wrap:anywhere}.usun-takeaway{background:var(--usun-takeaway);border-left:5px solid var(--usun-blue);padding:14px 18px;margin:20px 0}.usun-takeaway h2{margin:0 0 5px;font-size:12px;color:var(--usun-blue)}.usun-takeaway p{margin:0}.usun-section{color:var(--usun-blue);font-size:14px;border-bottom:1px solid var(--usun-rule);padding-bottom:4px;margin:24px 0 10px}.usun-table-wrap{overflow-x:auto}.usun-table{width:100%;border-collapse:collapse}.usun-table th,.usun-table td{padding:9px 10px;text-align:left;vertical-align:top;border:1px solid var(--usun-rule)}.usun-table th{background:#EEF4F9;color:var(--usun-blue);font-size:12px}.usun-notes{font-size:13px;color:var(--usun-muted);overflow-wrap:anywhere}.usun-footer{display:flex;justify-content:space-between;gap:16px;padding:14px 44px;background:var(--usun-surface);border-top:1px solid var(--usun-rule);border-bottom:2px solid var(--usun-gold);font-size:11px;color:var(--usun-muted)}
 @media(max-width:640px){.usun-masthead{padding:20px;flex-wrap:wrap}.usun-status{margin:0;width:100%}.usun-main{padding:24px 20px}.usun-title{font-size:28px}.usun-meta{grid-template-columns:1fr}.usun-meta>div{border-right:0;border-bottom:1px solid var(--usun-rule)}.usun-footer{padding:14px 20px;flex-wrap:wrap}}
 @page{size:Letter;margin:.65in .7in}@media print{body{font-size:11pt;line-height:1.35;-webkit-print-color-adjust:exact;print-color-adjust:exact}.usun-main{padding:18pt 0}.usun-masthead{padding:12pt}.usun-title{font-size:24pt}.usun-section{break-after:avoid}.usun-takeaway{break-inside:avoid}thead{display:table-header-group}tr{break-inside:avoid}.usun-footer{padding:9pt 0}.usun-table-wrap{overflow:visible}.usun-status{font-size:8pt}.usun-meta{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+/* USUN mastheads — shared palette and existing approved seal, 2026-10-05. */
+:root{--usun-brand-gold:#C1A783;--usun-brand-navy:#062135;--usun-brand-icon:url("reports/hlw-cuba/seal.png")}
+body>header,body>main>header:first-child{color:var(--usun-brand-gold)}
+body>header .masthead .eyebrow,body>header :is(h1,h2,h3,p,a,span,strong,small,.usun-identity,.usun-department,.usun-status),body>main>header:first-child :is(h1,h2,h3,p,a,span,strong,small){color:var(--usun-brand-gold)}
+/* Directory and collection workspace: replace the boxed monograms. */
+.un-masthead .un-mark{display:block;width:72px;height:72px;flex:none;padding:0;border:0;background:none;box-shadow:none}
+.un-masthead .un-mark img{display:block;width:100%;height:100%;object-fit:contain}
+body>header .masthead{display:grid;grid-template-columns:72px minmax(0,1fr);align-items:center;gap:22px}
+body>header .masthead>div{min-width:0}
+body>header .masthead .mark{display:block;width:72px;height:72px;min-width:72px;margin:0;padding:0;border:0;box-shadow:none;background:var(--usun-brand-icon) center/contain no-repeat;color:transparent;font-size:0;line-height:0;overflow:hidden}
+body>header .masthead .mark br{display:none}
+body>header.usun-masthead .usun-seal{width:72px;height:72px;object-fit:contain;flex:none;border:0;box-shadow:none}
+/* Audit and recovery pages have a plain header rather than a masthead wrapper. */
+body>main>header:first-child,body>header:has(>h1){position:relative;background:var(--usun-brand-navy);border-bottom:4px solid #D01319;padding:26px 30px 26px 124px;min-height:124px}
+body>main>header:first-child::before,body>header:has(>h1)::before{content:"";position:absolute;left:28px;top:26px;width:72px;height:72px;background:var(--usun-brand-icon) center/contain no-repeat}
+body>main>header:first-child h1,body>header:has(>h1) h1{margin-top:0;line-height:1.18}
+body>main>header:first-child a{display:inline-block;text-underline-offset:.2em}
+@media(max-width:700px){
+ .un-masthead .un-mark{width:64px;height:64px}
+ body>header .masthead{grid-template-columns:64px minmax(0,1fr);gap:16px}
+ body>header .masthead .mark{display:block;width:64px;height:64px;min-width:64px}
+ body>header.usun-masthead .usun-seal{width:64px;height:64px}
+}
+@media(max-width:600px){
+ body>main>header:first-child,body>header:has(>h1){padding:106px 20px 22px}
+ body>main>header:first-child::before,body>header:has(>h1)::before{left:20px;top:22px;width:64px;height:64px}
+}
+@media print{body>header,body>main>header:first-child{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
