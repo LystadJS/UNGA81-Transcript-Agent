@@ -1,0 +1,344 @@
+{
+  "status": "PASS engineering checks; provisional passage types, no human confirmations",
+  "date": "2026-10-05",
+  "corpus_sha256": "469f5d00c84a20b735f2cc23e1688ea1868fa38da90e611894b0d759c282deca",
+  "original_bytes_preserved": true,
+  "record_hashes_checked": 460,
+  "source_types": {
+    "human_confirmed": 0,
+    "structural_windows": 201,
+    "full_short_text": 85,
+    "boundary_context": 33,
+    "rule_screen_only": 141
+  },
+  "comparison": {
+    "full_fits": 30,
+    "sampled_fits": 900,
+    "all_samples_completed": true,
+    "same_six_meeting_keys": true,
+    "same_30_group_schedules": true,
+    "exact_original_subset_membership_verified": true,
+    "group_and_assignment_totals_verified": true,
+    "settings_tuned": false
+  },
+  "tests": {
+    "python_integrity_and_review_tests": 6,
+    "node_comparison_tests": "PASS",
+    "offline_browser": {
+      "status": "PASS",
+      "packet_passages": 460,
+      "synthetic_choices": 1,
+      "source_review_saved_and_resumed": true,
+      "wrong_corpus_rejected": true,
+      "substantive_unassigned_filter": true,
+      "report_fit_rows": 30,
+      "charts": 2,
+      "mobile_document_overflow": false,
+      "browser_errors": []
+    }
+  },
+  "independent_stability": [
+    {
+      "policy": "substantive",
+      "mode": "kmeans",
+      "representation": "pca",
+      "successful_samples_checked": 30,
+      "passages": 194,
+      "pair_denominators_checked": 18721,
+      "max_ari_or_jaccard_error": 1.1102230246251565e-16,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "policy": "substantive",
+      "mode": "kmeans",
+      "representation": "lsa",
+      "successful_samples_checked": 30,
+      "passages": 194,
+      "pair_denominators_checked": 18721,
+      "max_ari_or_jaccard_error": 1.1102230246251565e-16,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "policy": "substantive",
+      "mode": "pam",
+      "representation": "pca",
+      "successful_samples_checked": 30,
+      "passages": 194,
+      "pair_denominators_checked": 18721,
+      "max_ari_or_jaccard_error": 1.1102230246251565e-16,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "policy": "substantive",
+      "mode": "pam",
+      "representation": "lsa",
+      "successful_samples_checked": 30,
+      "passages": 194,
+      "pair_denominators_checked": 18721,
+      "max_ari_or_jaccard_error": 2.7755575615628914e-17,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "policy": "substantive",
+      "mode": "ward",
+      "representation": "pca",
+      "successful_samples_checked": 30,
+      "passages": 194,
+      "pair_denominators_checked": 18721,
+      "max_ari_or_jaccard_error": 5.551115123125783e-17,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "policy": "substantive",
+      "mode": "ward",
+      "representation": "lsa",
+      "successful_samples_checked": 30,
+      "passages": 194,
+      "pair_denominators_checked": 18721,
+      "max_ari_or_jaccard_error": 5.551115123125783e-17,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "policy": "substantive",
+      "mode": "average",
+      "representation": "pca",
+      "successful_samples_checked": 30,
+      "passages": 194,
+      "pair_denominators_checked": 18721,
+      "max_ari_or_jaccard_error": 2.220446049250313e-16,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "policy": "substantive",
+      "mode": "average",
+      "representation": "lsa",
+      "successful_samples_checked": 30,
+      "passages": 194,
+      "pair_denominators_checked": 18721,
+      "max_ari_or_jaccard_error": 5.551115123125783e-16,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "policy": "substantive",
+      "mode": "hdbscan",
+      "representation": "pca",
+      "successful_samples_checked": 30,
+      "passages": 194,
+      "pair_denominators_checked": 18721,
+      "max_ari_or_jaccard_error": 0.0,
+      "noise_aware": true,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "policy": "substantive",
+      "mode": "hdbscan",
+      "representation": "lsa",
+      "successful_samples_checked": 30,
+      "passages": 194,
+      "pair_denominators_checked": 18721,
+      "max_ari_or_jaccard_error": 0,
+      "noise_aware": true,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "policy": "inclusive",
+      "mode": "kmeans",
+      "representation": "pca",
+      "successful_samples_checked": 30,
+      "passages": 198,
+      "pair_denominators_checked": 19503,
+      "max_ari_or_jaccard_error": 1.1102230246251565e-16,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "policy": "inclusive",
+      "mode": "kmeans",
+      "representation": "lsa",
+      "successful_samples_checked": 30,
+      "passages": 198,
+      "pair_denominators_checked": 19503,
+      "max_ari_or_jaccard_error": 1.1102230246251565e-16,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "policy": "inclusive",
+      "mode": "pam",
+      "representation": "pca",
+      "successful_samples_checked": 30,
+      "passages": 198,
+      "pair_denominators_checked": 19503,
+      "max_ari_or_jaccard_error": 5.551115123125783e-17,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "policy": "inclusive",
+      "mode": "pam",
+      "representation": "lsa",
+      "successful_samples_checked": 30,
+      "passages": 198,
+      "pair_denominators_checked": 19503,
+      "max_ari_or_jaccard_error": 5.551115123125783e-17,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "policy": "inclusive",
+      "mode": "ward",
+      "representation": "pca",
+      "successful_samples_checked": 30,
+      "passages": 198,
+      "pair_denominators_checked": 19503,
+      "max_ari_or_jaccard_error": 5.551115123125783e-17,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "policy": "inclusive",
+      "mode": "ward",
+      "representation": "lsa",
+      "successful_samples_checked": 30,
+      "passages": 198,
+      "pair_denominators_checked": 19503,
+      "max_ari_or_jaccard_error": 1.1102230246251565e-16,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "policy": "inclusive",
+      "mode": "average",
+      "representation": "pca",
+      "successful_samples_checked": 30,
+      "passages": 198,
+      "pair_denominators_checked": 19503,
+      "max_ari_or_jaccard_error": 3.3306690738754696e-16,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "policy": "inclusive",
+      "mode": "average",
+      "representation": "lsa",
+      "successful_samples_checked": 30,
+      "passages": 198,
+      "pair_denominators_checked": 19503,
+      "max_ari_or_jaccard_error": 3.8510861166685117e-16,
+      "noise_aware": false,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "policy": "inclusive",
+      "mode": "hdbscan",
+      "representation": "pca",
+      "successful_samples_checked": 30,
+      "passages": 198,
+      "pair_denominators_checked": 19503,
+      "max_ari_or_jaccard_error": 0.0,
+      "noise_aware": true,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    {
+      "policy": "inclusive",
+      "mode": "hdbscan",
+      "representation": "lsa",
+      "successful_samples_checked": 30,
+      "passages": 198,
+      "pair_denominators_checked": 19503,
+      "max_ari_or_jaccard_error": 0,
+      "noise_aware": true,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    }
+  ],
+  "independent_hdbscan": {
+    "substantive": {
+      "status": "PASS staged algorithm checks",
+      "reference": "scikit-learn 1.7.2 HDBSCAN; SciPy independently verifies every single-linkage connection level; sklearn validates condensation/selection on the identical tree",
+      "checks": [
+        {
+          "case": "pca",
+          "passages": 194,
+          "clusters": 2,
+          "unassigned": 145,
+          "reference_ari": 0.9947056634309088,
+          "noise_mask_equal": true,
+          "membership_strength_max_error": 0.06913283464610953,
+          "single_linkage_cophenetic_max_error": 0.0,
+          "selection_on_same_tree_matches": true,
+          "cross_implementation_equal": false,
+          "portability_note": "Equal-height binary merge order differs; the full single-linkage geometry and independent selection on the identical tree agree. No claim of cross-library label identity."
+        },
+        {
+          "case": "lsa",
+          "passages": 194,
+          "clusters": 2,
+          "unassigned": 136,
+          "reference_ari": 1.0,
+          "noise_mask_equal": true,
+          "membership_strength_max_error": 0.0,
+          "single_linkage_cophenetic_max_error": 0.0,
+          "selection_on_same_tree_matches": true,
+          "cross_implementation_equal": true
+        }
+      ]
+    },
+    "inclusive": {
+      "status": "PASS staged algorithm checks",
+      "reference": "scikit-learn 1.7.2 HDBSCAN; SciPy independently verifies every single-linkage connection level; sklearn validates condensation/selection on the identical tree",
+      "checks": [
+        {
+          "case": "pca",
+          "passages": 198,
+          "clusters": 2,
+          "unassigned": 149,
+          "reference_ari": 1.0,
+          "noise_mask_equal": true,
+          "membership_strength_max_error": 0.0,
+          "single_linkage_cophenetic_max_error": 0.0,
+          "selection_on_same_tree_matches": true,
+          "cross_implementation_equal": true
+        },
+        {
+          "case": "lsa",
+          "passages": 198,
+          "clusters": 2,
+          "unassigned": 144,
+          "reference_ari": 0.9891563709736709,
+          "noise_mask_equal": true,
+          "membership_strength_max_error": 0.024398190419818278,
+          "single_linkage_cophenetic_max_error": 0.0,
+          "selection_on_same_tree_matches": true,
+          "cross_implementation_equal": false,
+          "portability_note": "Equal-height binary merge order differs; the full single-linkage geometry and independent selection on the identical tree agree. No claim of cross-library label identity."
+        }
+      ]
+    },
+    "strict_tied_assignment": {
+      "pca_differing_ids_after_label_alignment": [
+        "asset/k1u/k1ukg04uyo#9"
+      ],
+      "noise_mask_equal": true
+    }
+  },
+  "visual_review": {
+    "desktop": "Inspected composition bars and full/subset HDBSCAN coverage, labels, denominators and source counts.",
+    "mobile": "No document overflow; chart/table containers scroll. Offline review controls and record status remain readable."
+  },
+  "limits": [
+    "Source type proposals are not human-confirmed training labels.",
+    "Long sources were inspected through structural windows, not exhaustively fact-checked; source audio was not checked.",
+    "The full/subset comparison changes population, sample size, vocabulary and representation together.",
+    "HDBSCAN ARI is conditional on shared assigned observations and assessable samples; all-unassigned fits still enter pair exposure.",
+    "Only six meeting groups; repetitions are not independent new evidence.",
+    "Different tied merge orders produce limited cross-library assignment/strength differences; every reference noise mask agrees."
+  ]
+}

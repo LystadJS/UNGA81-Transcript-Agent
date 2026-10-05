@@ -92,6 +92,11 @@ or a validated classification.
 
 ## Recommended next step
 
+The [provisional passage-type review and fixed subset comparison](PASSAGE_TYPES.md)
+now implements this source-composition check. The separate mask contains 194
+substantive candidates and no human confirmations. Confirm or revise its boundary
+choices before treating it as a human-reviewed inclusion policy.
+
 Review source type before adding thematic interpretations: substantive address,
 chair/procedure, reply, uncertain, or apparent transcription problem. Keep the raw
 collection intact and record a separate reviewed inclusion mask with source IDs

@@ -1,0 +1,2242 @@
+{
+  "corpus_sha256": "469f5d00c84a20b735f2cc23e1688ea1868fa38da90e611894b0d759c282deca",
+  "reviewer_kind": "assistant",
+  "audio_verified": false,
+  "human_confirmed": false,
+  "scope_note": "Structural or boundary checks for all 204 long records; focused short-text and neighboring-context checks for ambiguous records and the 99 full-corpus unassigned passages. Remaining short procedural candidates use the documented lexical screen. This is not a full factual review of each speech.",
+  "rows": [
+    {
+      "id": "asset/k17/k17s3dutob#0",
+      "text_sha256": "ed8912d4c80e664be5a147e29ca37bf7e3b9d06d7a2da1fd89de54e7cdd263a2",
+      "type": "suspected_transcription_issue",
+      "scope": "full_short_text",
+      "reason": "Unrelated song/show playback wording; audio has not been verified. Preserve the source."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#2",
+      "text_sha256": "a0c2cc1374d949943e01a455a7bde5e07ad03af2106124340d4ce4d3da9bded9",
+      "type": "uncertain",
+      "scope": "full_short_text",
+      "reason": "Very short disconnected text does not establish a substantive address or a verified transcription error."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#3",
+      "text_sha256": "af27b9737dd1aef31cccf24eb029310adc3644966185dc75e6aa3157d35e527a",
+      "type": "procedure",
+      "scope": "boundary_context",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#4",
+      "text_sha256": "4ed24877713479246ddb152ab8f284cfc12090b14972546dfe978f3c74ff748b",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#5",
+      "text_sha256": "ed9d798082b96bb5897348e6d4ca18c7e76899fceea42ee92ce87cf75a9ce90c",
+      "type": "mixed_speech_procedure",
+      "scope": "boundary_context",
+      "reason": "Assembly president address is combined with agenda management and the Brazil introduction; retain whole source."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#6",
+      "text_sha256": "7845fd27f76fa8952ac25ab96b371b8f921d982052d597a9431d7d0d0b26737d",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#8",
+      "text_sha256": "92c2cb6084bc29feeb1b61620b8d25d0801ad93978e172a761ef0e715e3d13b3",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#9",
+      "text_sha256": "3979af24f5f11fc023f401dff01e54034d1e8a970d210b4df49c9e41151f479c",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#10",
+      "text_sha256": "bd25112636bec372d324a7fed4342b1f0e8b6b68717580efae5c166c9047a4ea",
+      "type": "suspected_transcription_issue",
+      "scope": "full_short_text",
+      "reason": "Unrelated song/show playback wording; audio has not been verified. Preserve the source."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#11",
+      "text_sha256": "d609d6e8515979cc086e47719de5cc37983c1de7f3536c7b16695043628f1ac1",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#12",
+      "text_sha256": "bc4eb15c0cd05be2ebacbb0c8e5142a8b2c014900403536982800c67f3e6d9e6",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#14",
+      "text_sha256": "646ad3bade10fa909f46afe837abb43784240af428bd361f4f2cb1f51eeddeba",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#16",
+      "text_sha256": "308da415422b7daea665d5a0cb8a22da30d20cc9ffe0c89b0916432363300873",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#17",
+      "text_sha256": "63fbbf8b4cf8808804719eabdb9d037b7561092681b56d9ea64cbf0fcb3bb968",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#18",
+      "text_sha256": "c8932c5495ded9252151197651b8cb6b94fb7c0c43f99ea03307c47ed3493125",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#20",
+      "text_sha256": "24a080347bc14405563a2c026f7bba2c2c8dd2a4dceb0d833dc941ec90ab6c82",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#22",
+      "text_sha256": "f6e8cb833a3d18c23789af7e1e3e9949061d0d7ba9f8452595ae039444a72137",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#24",
+      "text_sha256": "62c6f1827c82d3b3015917b33740dfed21107c2e92563ddd1349c2b305007b1e",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#26",
+      "text_sha256": "6dbcfdb99005dac8573f077422ad816fdd21a1d04cc34ab4a256461d673e7d5b",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#27",
+      "text_sha256": "446ca82fd57add93d274c49d7a636c6d24ef75c583c463a208660d0cc90907d9",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#28",
+      "text_sha256": "a518412e8ca36559f08140b6ee8885ef8fef124b1bcf77097d50d378dd18778b",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#30",
+      "text_sha256": "9313ce3b1d233c311082c0f0e3214552f594052a78bf3aa6513e9e45d1151e42",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#32",
+      "text_sha256": "0f1af02dae11fd6c086502efb6b671f901f07d0c7f6ce98b1d73951525a8f74a",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#33",
+      "text_sha256": "9bd1e1657bcc3ce124498e208cd894d5f818e3ecce40443d816a573f97816667",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#34",
+      "text_sha256": "865622a0cb733492e857ea447c9d1ea4f9f93e451cfa136598b13ef6dd5ebbb3",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#36",
+      "text_sha256": "adb11e597a632a0c316ea18b5d635b513e4ca949d5fa927936c5d8798bddae65",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#38",
+      "text_sha256": "b2901b783657d177a25ab2974def5e06f6824febd43a7b4e231050196f2a6acb",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#40",
+      "text_sha256": "3a77c2fb25e9a4d90c2459513fb13c889a076c72edafb0248aa4eb4c0727d0e8",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#42",
+      "text_sha256": "9e47872e1ed28580a0c9a892bde2ef7d4cc095ff5c05009c92aba38a0a48cdf1",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#44",
+      "text_sha256": "3a3fce2172a8fe9eebd916e0f8dfdd2a37b81c2b0a76f012fb65a302cc3ee780",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#46",
+      "text_sha256": "8eefe401962c6d2de2bbf34219f23909dbba3b9a5654d1f02e6a0a35874094ce",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#48",
+      "text_sha256": "7d96851610dac1b541dc3cdeae6d9cbe301b47ee29d7ebdf882e851fc90d7527",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#50",
+      "text_sha256": "f59e1edd4c7d1460391193ce5f856278ed460092343b55b62a43e7f78ba835a5",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#52",
+      "text_sha256": "ec1c22b9a4c2cf45f71851c2663db254bd44671858328c40dc0d54f6fd729f67",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#53",
+      "text_sha256": "d6c2ce4fa1d2fe95936d575b000ae05ec1900f8f21a9a7ed3ee629fbfb4155d2",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#54",
+      "text_sha256": "44c48597ed285695019b9cff9554f5a108448cad7ce44fec5b14042a9e21caa6",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#55",
+      "text_sha256": "cc914304eef65ece54bfb3e5b4342712d4cdd9f26fa0a95240b6047abc89e75e",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#56",
+      "text_sha256": "f12fd93926d5369264b6da90efadc18958980fe4466b18b33218928a0d6c7123",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#58",
+      "text_sha256": "bd12839fba964b7b515d63c64900d5e0f2e996c0be9a73ba217053bd1b2b6a7f",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#59",
+      "text_sha256": "c599ae018e761d1f5189d9730ff18425de12791138306ad5307e607564104215",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#60",
+      "text_sha256": "14e24a10a8539ffaf7edb8a15b3feff0a823720fcbbb719c4893bb37ec6313a4",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#61",
+      "text_sha256": "7e0b1f2278a0ac3510db10d9b7a8653c2826742b118cedd58c8cd01f87a203f0",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#62",
+      "text_sha256": "255ef2422fe17768da82623a352f2c12109474949fcbe037ec938b2f548e65be",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#64",
+      "text_sha256": "58e5656efbbb3cd0ec486e53dbd733451496ea88ddd6c0df55872e249857e7e0",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#66",
+      "text_sha256": "d9596522ce70883a5f6d51a4e866562f57083e325805db92026ede1a553f72d0",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#68",
+      "text_sha256": "b9378d34ac7d8246f99191693785aadfdf4cde901a2dbb4b62bc4babbb89b999",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#69",
+      "text_sha256": "1657b58e41d7757d4e5a8bd31f057c523b0f6c619d5532a4093be07a3fe2a237",
+      "type": "procedure",
+      "scope": "boundary_context",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k17/k17s3dutob#70",
+      "text_sha256": "8066f9e428386c8ba73c18d8136e065461c2d20dc3620b38db437e277b7500fb",
+      "type": "right_of_reply",
+      "scope": "boundary_context",
+      "reason": "Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#0",
+      "text_sha256": "e2c60da52fbff8121aeafad28e5e463d85f7a2da276f634c6e4ecb4e2ae5b318",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#1",
+      "text_sha256": "f5288cedd4a5c7d716baea2c6f2189036f74d580a3745c2220e4bc1d955ab692",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#3",
+      "text_sha256": "460235a3b9b94e8d8d7e23662d2c475b11f6c4c39befcf213cd63b4cbb99b9e7",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#5",
+      "text_sha256": "d788c1455aa1673cb25d71a576109c5614d9fcc28d4c8e191d5b890e52878331",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#7",
+      "text_sha256": "5dad2750635e48557520a9969dcc7a3ac94ede25e5ba2163f15d237c1f8e6b4d",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#9",
+      "text_sha256": "17664fa7df73b56cd94bbc4da3ec4596ae4af3ce2b1453ec751b40b18b3c8218",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#11",
+      "text_sha256": "3a4457344a5abec5f5e15b8fe7f514ef74fbcc9ac20889a7114c745e8c0f3f4a",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#13",
+      "text_sha256": "4acff279e2ba6680f429591f1a7f03a84d54557202b8512a9b206a746d7c4b35",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#15",
+      "text_sha256": "463e76213ccb1488969e7c7476213f49a3a262ed269205d587d5b84e21505a9c",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#17",
+      "text_sha256": "c35e90d73ad1f485679d4b9edfe0b24a8e0e10a6268a3c3dfa76949b6d855f72",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#19",
+      "text_sha256": "d1a85c472aca0bd894f8a6fec3eb175628c291ff95ae283d5c880a9999826a8e",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#21",
+      "text_sha256": "98d25dc7df25745b0ea636d413b48adb9e62eeb413dd80169baf9b4449a3e2ff",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#23",
+      "text_sha256": "49a2312ce90f078ba0e864f6f37a4c4765737a0c947f5a9f98b510635a04aae7",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#25",
+      "text_sha256": "e4f3e748f55e084db5bf7a6a71c6ecd006fe546ebbd20d624af99998fa6fd532",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#27",
+      "text_sha256": "5d1ce3ef5989991b8f52044aa8cfcc4aea320e1006081189a3ff7ad14bddd5bb",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#29",
+      "text_sha256": "07587018f3559f66a96516f4689a2181e75ee76e36375a32e1e11f97c55dcd5c",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#30",
+      "text_sha256": "c6b393924b0b8e97a2d554b6f15489301c66e1453b6a5d2af794941eae775994",
+      "type": "mixed_speech_procedure",
+      "scope": "boundary_context",
+      "reason": "Chair introduction of Ecuador and Ecuador substantive address share one source segment."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#32",
+      "text_sha256": "c25851af300ca3724cdad48909b2df677a429f1403d3db3e1caf4ff8e8f16619",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#34",
+      "text_sha256": "3e9100645ed53a128f4d1a9815487da554fe26a6d48e66f3f4c3beeb964a1aad",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#36",
+      "text_sha256": "b0bc1a26cfde7d77b5d6235b65b4692367672c2efaeae62e70f638782e6e23ea",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#38",
+      "text_sha256": "2139dbdca3d1a7487d1fa21a6d975c78da655693f78a5b5c9c59ad22ab816c53",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#40",
+      "text_sha256": "f09fcb645b5c0a288888c5b690a6ac4bd667f6fbb5976276af322bc099fe650d",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#41",
+      "text_sha256": "1dac62e60a4ac7a04f3ec23753a083f29d47a3038b13593badad8a6159ccb9e5",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#42",
+      "text_sha256": "21afabab1e9744fdcb196336e19ffdc35e1ff1224160ad51eb6ba36b80fa8e13",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#44",
+      "text_sha256": "5ca5180261c799624f3a62ed7567d31a3700005a2ff5be86a6b445187e5f96cf",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#46",
+      "text_sha256": "4f5afe11b82be7a59f1ea384a5e0770275206132a6ce27a4617e75577e377f38",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#48",
+      "text_sha256": "f43a5b5eab07ac9ad854cc3ba96c89285a15774549eeaf4948dc8cbd3b3bbe27",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#50",
+      "text_sha256": "eee78348d189dad37dd944ebc9441e35e5e94764863d03d2316ac714604819d3",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#52",
+      "text_sha256": "2ae000ea259e38c0acb26a7ea5be7b9a12a30c90e0e817a49158c71ddc354292",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#54",
+      "text_sha256": "2d2e60dbb85f6e245e8233f0be72188d70252ca6eb00fa5f7712bdcf9264bd9d",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#56",
+      "text_sha256": "71a14d292a427ada8d267c4ff575df58eb4aaee282ef19dbf08dcd510942b60a",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#58",
+      "text_sha256": "0693baedaef84cb4631ffc4e018c2c7c1aa1d34545bd6b43381c00de95ef334e",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#60",
+      "text_sha256": "b1cac7036b0dec999936319241d803fcd640690b763cc005ca768d174f72cee3",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#62",
+      "text_sha256": "d9df9d94828acd76c723b7a0d7c6c77c04604bc2437c2a59e4a61824404664db",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#63",
+      "text_sha256": "592f0638b8e27098c6319578b526e33348c78d3e3fd074e07a441e619652a386",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#64",
+      "text_sha256": "a4201a5fb5eb520fe88376058844661797f69378b31c03e5bcfc236e239ef8a9",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#65",
+      "text_sha256": "2862aae6770d71efc6f7ab0f9e9344a1b25c98661b2af642df5dfbcbb0085b5c",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#66",
+      "text_sha256": "6c0c52ef1857f573fe18289af3494e879cca61296a00bc558fbc48c0c74a4549",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#68",
+      "text_sha256": "f4289fd6c71f451459179fb4917f2c18873bf5accabdd7bab56c0bd75580c9f1",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#70",
+      "text_sha256": "07e4b9e106f3a0ea6549455f9a95434f9c886ceda273ee22eb5b91fdac691343",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#71",
+      "text_sha256": "41535faef491348d040ebca2a42f44c65f36968f48f606494274068b93f038fc",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#72",
+      "text_sha256": "6ae77c3c02828893d7d9642ba04e39a29656f9cff99b57e746df597c3bb4a2b5",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#74",
+      "text_sha256": "a89f2cc964aabf887cbb400c6a8ba3b44184ac895bdbaed96d1bcae1d4b30135",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#76",
+      "text_sha256": "910e91ed3e856f88acc331cbba26d90726fc789824c67330a45173a8da532494",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1b/k1b5jwwa58#77",
+      "text_sha256": "c02e6b6e274b90f95afa6f6fe5981fa2d6d8e018a66ff578e19d42b8fb3db010",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#0",
+      "text_sha256": "244b7d27bbacfb02bc8a210892032a0c2fcf83897eb48ad00b31bb910fb35993",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#1",
+      "text_sha256": "b997da09b27b7dda065162e702a931aa8fc626c195b192a77651d840b64c6cff",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#3",
+      "text_sha256": "e347c914ee6d6f4cca9a109a586f2c6047d07ab1c05dfccfc2fdb73893997e1e",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#5",
+      "text_sha256": "821a64ffad9a0965b26a6d4b318e6c3c50e219a60292e45621a4c42e14d2ea24",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#6",
+      "text_sha256": "1e820dd311fa226e6b123da00cec4edf01116600db7ac37f3f3d07081be08a8d",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#7",
+      "text_sha256": "b645e6ba23405a27046cf5eff1843d3b3d5cdc746c9c71bd291284582b56bc0d",
+      "type": "procedure",
+      "scope": "boundary_context",
+      "reason": "Introduces the prerecorded Palestine video; the substantive statement follows in segment #8."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#8",
+      "text_sha256": "939f131638d10d625643739797d78e17e3a2745d3b6028431bde0430cdfa994d",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#10",
+      "text_sha256": "3b6e624bd9db579fb67a3fa5f359af41ba09d2267730a05650850412e372e2fb",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#12",
+      "text_sha256": "d7ed49839219616c75c7111fe6fca76cf2f5906a196cd498862b9558a09f3e0e",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#14",
+      "text_sha256": "717dfabdaee143353af0cb721a18b8ab0d6320c5c025068c7782bf45f96e5e9b",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#16",
+      "text_sha256": "3386ba61499a24c802f2426325b7fbd3a8b529617b8b54982ef13f43e086bc45",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#18",
+      "text_sha256": "ed0e9b8b0a14c7134eb309ac9a134caa4bb6493f54265ae9601c9a4a04e93b50",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#20",
+      "text_sha256": "24b129c648f664776cbb2f44eb78351e6b2926bd4718e8c4324242c14b68b2f3",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#22",
+      "text_sha256": "f04d81e70b974c96a990d46b858113491a0b091d3b61cdc36b7a36dca526d9da",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#23",
+      "text_sha256": "b2050f9911092e01ba378f87924ebb6ff43442bf0677f5d32b52a682efc28356",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#24",
+      "text_sha256": "5eb8a21d79bb54c94154d8317fd2654d396fb35186de3279550dce7470349592",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#25",
+      "text_sha256": "32047bcb3c0829c051b01a276a7e2f2d9a0aa75503177b5892045b58c79a050b",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#26",
+      "text_sha256": "b9e7f3247de5cc8f9b63f17f2c29ba7ccafecec089268cb6d0ee423f672c70cc",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#27",
+      "text_sha256": "190021123a660b307ff3bd526c5f819c53e50e352d531b478e8fdd033007878b",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#28",
+      "text_sha256": "8f4d3d76370531346e7d34417cc1e1ad87332773b1ec0a70d819be6a601b5755",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#29",
+      "text_sha256": "5922f2284c8c36a5b0a2cd16bc0044a37aa3888956d737bf3c8925844d2ca8ac",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#30",
+      "text_sha256": "75ade75ac6b8f7cb063d3280a491f1cd12b91c6af510ad45254b67a380120d35",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#31",
+      "text_sha256": "3c45b41f6b29ef30e7b0669ee2ff89a1a1c983a8a08e038f7ffc58def1e8507a",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#32",
+      "text_sha256": "7c29e6f7fea4f4c5ab47d94a23689a15b337f6f0476d332be5203bdf93e63edb",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#33",
+      "text_sha256": "d10f26d446f99cc95da4649797b97e3e7f0986182fbd348320c3d121d3be4d14",
+      "type": "suspected_transcription_issue",
+      "scope": "full_short_text",
+      "reason": "Unrelated song/show playback wording; audio has not been verified. Preserve the source."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#34",
+      "text_sha256": "747416928fbe54598e9582e9f4bd43e9e236f500847177e492a41df89da318e5",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#35",
+      "text_sha256": "adbe6625fbcd73d068787415ae1b28b7aef3f12dba429e7507c17e64d546c534",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#36",
+      "text_sha256": "2a95424c7b9c829d5c3663c3c519dc816061a1ca7f945e5448e6f39f40094695",
+      "type": "uncertain",
+      "scope": "full_short_text",
+      "reason": "Very short disconnected text does not establish a substantive address or a verified transcription error."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#37",
+      "text_sha256": "1351794e0929dde091b1922f0cc869db30448c98ce02f877ea47467b6574031d",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#38",
+      "text_sha256": "9129011764c581895a316246b64fd490ea9a8611ffa65921b0bfd09660612802",
+      "type": "uncertain",
+      "scope": "full_short_text",
+      "reason": "Very short disconnected text does not establish a substantive address or a verified transcription error."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#40",
+      "text_sha256": "c3785c1ba98b3604a513cf7bfa610c892a90ad81d334360f65002221521634e4",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#42",
+      "text_sha256": "3521f8b145bd70b6103c240c88e61aae55139706b154f607f34c2ed904450ad4",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#43",
+      "text_sha256": "fba3f9498fc2d099d5239889e3c3a3a6baf0e4c4556c6fd426d59cad63b43d4f",
+      "type": "uncertain",
+      "scope": "full_short_text",
+      "reason": "Very short disconnected text does not establish a substantive address or a verified transcription error."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#44",
+      "text_sha256": "cc90624a4ecc58b384a4ba5b8b5a3620acaa927272195ba3c227185771a42b2c",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#45",
+      "text_sha256": "da49dbd0914c7bf496b8e3ce9959d97a5d95ea0a1f33d91beb2cfc8d06599e2c",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#46",
+      "text_sha256": "b945db23359bba422136cad9d9571e83839ae2c878a1594d079cfaee9eae165e",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#47",
+      "text_sha256": "8fd54dfb35cc437839ce68642c04a0305081287f376f6284de174c4e282bea84",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#48",
+      "text_sha256": "f6f78dc38cb157fc32f68277524151cd67390b7bc450d29711207bd1aa68ccac",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#49",
+      "text_sha256": "685b057346a8a8bec860082eac519551062aff5df831eac84ea6d01442c050cd",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#50",
+      "text_sha256": "a6ee76c7105e52844ec3d6474835a8e901b2ad101fa7f56656d3dbf298dd65fb",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#51",
+      "text_sha256": "c6c9bd7053b8c8da22280b60d57cecf74974c4d63d770efb6b0f5083ad9a0673",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#52",
+      "text_sha256": "df3684081e019720d463a8f346490ae6ef86ff8409adc53f36cbef23d30431c7",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#53",
+      "text_sha256": "462bbc729636e29faaeda09fa52554b5edb71c5a3bdb8c0239e6ff26f071e7a6",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#55",
+      "text_sha256": "183ca9c694af3fcc6cf5f53175ce2f6e007ca27536657bc5ca653c598fe6bf73",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#57",
+      "text_sha256": "20bd04331a9ac79eef1f344f3c258fadfc485595bc583b26525ece4717a83877",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#59",
+      "text_sha256": "6cbc39c5cc07e3af0c58724d2df03ac51fc74fcf07528314c15f0e392ed32588",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#61",
+      "text_sha256": "eca990e937a009ceb37a5c7f358dd3a4b91cf0a095c7b148aac05977bf979741",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#63",
+      "text_sha256": "44b2de9c8ff4b119986ffd396c4024f7bd903c3421175a1130a0dc490629eab3",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#65",
+      "text_sha256": "52ed5ab6900516bd3c335046244b482746fc7cb309e920ac4e3ccf3828166ca9",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#67",
+      "text_sha256": "da6a58e0da85a990945522501e42f4a28e4105bd67dfdb240971725e9191196a",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#69",
+      "text_sha256": "1a979ea4ac3385b09d74119867901971b93954236e20a406259976644101067c",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#71",
+      "text_sha256": "8a310e1492718d3fd011c79e8bfd6107b5744e580a0c1038bcd3ce349df848ff",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#73",
+      "text_sha256": "80fff0465af97c36473224da6a6af7d174b853744e1c552ffa4e9b3bb73260f4",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#75",
+      "text_sha256": "9b7ee004c653d26753ee760919c3affa24bd92aa03d49d020aa763abf395f52c",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#77",
+      "text_sha256": "9b6f7880a6ebe5c200f2f9f5fbcb0522b4b3f5eb7cca85f68f278d67bcf94174",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#78",
+      "text_sha256": "e8434216d5d9db3d01349e00179eb6c77b515d03ac1ca3c1c2207de5dbdcdef4",
+      "type": "procedure",
+      "scope": "boundary_context",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#79",
+      "text_sha256": "a80e638a2fab198087cdc87faebb322b5f867303885a9123ac7de9a2ce8cdeaa",
+      "type": "right_of_reply",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#80",
+      "text_sha256": "05b9f55f066c2ec8078165aa5f478353bd258fad4a9d05037a1fab14bfeb401c",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#81",
+      "text_sha256": "eec3670dcb97821fb23e0301451d5d1f1b15ed6558e9132efd8ff9f163dbdb19",
+      "type": "right_of_reply",
+      "scope": "boundary_context",
+      "reason": "Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#82",
+      "text_sha256": "f7b568f67fd65283f13266abb2e52453715024ebddab4cd861f796c9dd07c0df",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#83",
+      "text_sha256": "2a3076a8beb3707308172ab1d0b01f7fec6c7f2f31c22a2e013621a2dff2c478",
+      "type": "right_of_reply",
+      "scope": "boundary_context",
+      "reason": "Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k18/k18iyhzwip#84",
+      "text_sha256": "b7f4afb9c49a3500c26a4a30133099d2b68378d7ac90e89f1ece02d4f268effc",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#0",
+      "text_sha256": "2b28c630bb651a215979b8f7bfd9468aa2ea200c2c681afb8d2e3e2b744ced66",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#1",
+      "text_sha256": "fa88bc2a2f8fb7010912b171507148f91f894b8806a3d577982aec2dd1466664",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#2",
+      "text_sha256": "0baff2bdb23cd1f3d2f282562c53e5f36e2d347ebdfbb7f1505946af2695602f",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#3",
+      "text_sha256": "2cf3ea11ce5ec912095b06dc98f4c41c06e778a29a2fa815f36f89d6d188233f",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#4",
+      "text_sha256": "b479d83f7524ac2b2f5b2e50f14ef9a5cc73bc344724817e745c9d200bb14ba0",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#5",
+      "text_sha256": "4d54810baf88ba7a9abfba22fb404566c011807152db649c00ea2956591f21d0",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#7",
+      "text_sha256": "3ba02d0fe26714855dd12c882eca063370b90c518195870e2bccebe476e20209",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#9",
+      "text_sha256": "b33abfb94ae3256362ab337a6864cbd12625776712be1d7b64f871da4a677c68",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#11",
+      "text_sha256": "786df6a650bf603fea9172a72de13338bbdcb7f7c8d71e45a34893bf3f2ad366",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#13",
+      "text_sha256": "40cf5e955236c935dea5140d10e902a1e4bf573c4c47afc88cc029246c53dd5d",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#15",
+      "text_sha256": "9cd68d932c73f51c8bdf6206a2dff45bdc08a489cf6403d484bf9313f30e4be1",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#17",
+      "text_sha256": "5baf7cb38e059078992e4b2cc56b2ec8e42256ad20919a82655cb687c57fded2",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#19",
+      "text_sha256": "b1595caf99a50f46a58d13792db125d805a61dae1e76a50e59373a59d48c43ab",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#21",
+      "text_sha256": "7e6636e17d538d1f7c2c780547d697d6a8a6c41b202368a61ac40a2e56e0f46a",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#23",
+      "text_sha256": "4272e9b0ef8b7d1ad019a67c5db16458b499aa482323914ef16e214aa484eac7",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#25",
+      "text_sha256": "5d0db9f788b28d77bcbf1238f8cf24b936dc0bfcc997ca83f512d66b9f93b54b",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#27",
+      "text_sha256": "31754ab396c0f03988e386c1a6c0fb5eb24635662d135451b0054cef141d9fbc",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#29",
+      "text_sha256": "a0a7ff1fe4b690f6a54fdd74b5ce96b684dfffb6a658e82f280d9dbeaf650fbb",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#31",
+      "text_sha256": "62efc5bc3913f0f5715339e1a40265f483c8b0de8efbd790b48deb398307f9ed",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#33",
+      "text_sha256": "1be7b04c5a99d7828d5c71aca74df6b55dfddbe3fd4cd4940340d41f73e8ee66",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#35",
+      "text_sha256": "538f529797d3e537006bbc0da2d68b6072ab02ee6a2b3f701950467830cea8b3",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#37",
+      "text_sha256": "be796f4ed086845b0e4322f1fe965ccf9ad0cafe5c710e107456f9c279857d07",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#38",
+      "text_sha256": "958020deb1b7db4f2ffce64b7b2260e2cac8f0202133e050c95afd42886e5775",
+      "type": "procedure",
+      "scope": "boundary_context",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#39",
+      "text_sha256": "e54e65dc31c1c78ae13160cbda09108509d6e5104c83bb398927b325f6dc8456",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#40",
+      "text_sha256": "b58466a466c0ff39c212ae26516d55a1cdebb6ad3f56a7332af1cf6080a71fcf",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#41",
+      "text_sha256": "b535702200b6f35da0178b396564ff11c39529366cb32dfd2675889d5892cbda",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#42",
+      "text_sha256": "ea33f1ffa0525416971f9788284bf5d273fee24b6905c94e74d57a76c785308b",
+      "type": "speech_fragment",
+      "scope": "boundary_context",
+      "reason": "Closing sentence continues Egypt segment #41, which ends mid-sentence. Preserve both segments without merging."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#44",
+      "text_sha256": "9f9acb1222b99aecf433acc7468bd6da39c807f5067731474be72843b325a635",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#46",
+      "text_sha256": "36809294b3e00a7f1a820502eb258dee1616b8cd5328630b372f18baa7154bcb",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#48",
+      "text_sha256": "243638c00c3b840189dc26f1985724c7f1ab1efa371f4f905507e0e66f1bbfad",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#50",
+      "text_sha256": "60c53be9f44afff159f4bf938a0cf4d969d823e5c01f96a2eb381940fdc84434",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#52",
+      "text_sha256": "d16eea411813f9cddc5bf00dd518efb39b787a7b456190c648fc5860bed042f0",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#54",
+      "text_sha256": "5870d1ca5835f0920c02607ca1e859e619e9e61d14f1ead36084059ca6bf18b2",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#56",
+      "text_sha256": "ca256f515544b73a3adc75ae61bf6d643e6fa4a9db35f1f6a5fb00aacd94883d",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#58",
+      "text_sha256": "8622d49d6dd16d3e4e91722b9da3f80f851761dc176d13549b0588ac3b58e235",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#60",
+      "text_sha256": "22fbf6de1fcb0ba763aafdcb05fe9388001012f34a8ecb45eeb2d86369ae7372",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#62",
+      "text_sha256": "6972c5a99e63a179d7f4bb76ef3dfb940a54628207d5ebcfb9812438c652704e",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#64",
+      "text_sha256": "a7a33b4a66ccd4171e31278574e68f255e266dce7be30ba7116a67e640c5accc",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#66",
+      "text_sha256": "c96dc44d6a3ceffb6936bea314408e3e504a24f7dae7e074327659449d0dfee5",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#68",
+      "text_sha256": "f3dfe0eb98c47ae7f114e3e97e80b6f37a686ca8c67c90c95dcab8110ed654b9",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#70",
+      "text_sha256": "1eea27c0675d15b8359c65d67b29d0661a9a0be6adf00fd634fbab266f67f903",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#72",
+      "text_sha256": "1f283eecde7ab6a41decfcf7414f2300c7d803eb2f71010d4647fc39530e2fe6",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#73",
+      "text_sha256": "cfe19dca4641840c7d5ca8bf89b8311e46f4054111a2681e1ade6916026a75ea",
+      "type": "procedure",
+      "scope": "boundary_context",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#74",
+      "text_sha256": "ee3477e01997c226af5a6e694c981f357cd65d5972f04078cb84335cc68d1286",
+      "type": "right_of_reply",
+      "scope": "boundary_context",
+      "reason": "Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#75",
+      "text_sha256": "d119ca871cecb3ce0d941456faef2ce2f1715dbd2a8fc353506f9b5e421edd9d",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#76",
+      "text_sha256": "0cc3aec8938dea54d98bd173d6af837dc4bb9e5a261dcfc16432c5c3a4a202d3",
+      "type": "right_of_reply",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k1u/k1ukg04uyo#77",
+      "text_sha256": "aaaef2cd04b4b7777a31fb13cb8327148ca8c3d2cc2dbac5525052b6bb396684",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k16/k16g777u83#0",
+      "text_sha256": "1fe91a9ec7cd59dfccb5ebc64c6ffe3dc5eec751a9dc5e39c8570aec62fee3fe",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k16/k16g777u83#1",
+      "text_sha256": "cf54db47448e49af6f5400efafefd207cb27185dee7344e636a06ec730867547",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#2",
+      "text_sha256": "056b3f7a514f391f2742588f3c05066b71dad82636e6b6118de28eb9f3491de3",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k16/k16g777u83#3",
+      "text_sha256": "4c526ddbc6063dc64508c2e5672e5c23577cecabec6a0567b605e2155f04c8f5",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#4",
+      "text_sha256": "9c79093d8b64efb328f4a7652b06604f07013f681eb9982e488de96e6eb56d0f",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k16/k16g777u83#5",
+      "text_sha256": "b21387fee5a2407117c9d5c5f8cc780484462d8bf1b53da53dac80c5c077faeb",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#6",
+      "text_sha256": "1b9f0a50015845eab4565507603d853fa13d73a6ea59bcea15f5027dccb910a8",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k16/k16g777u83#7",
+      "text_sha256": "8aac135c3b459db065131b7252edf61210f982721c4fa508fd2bc9eb71ad0f60",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#8",
+      "text_sha256": "7a6b1fd3490d82ab1581caaca1ebeed05c79a826ce89f334852f2145ca930fed",
+      "type": "procedure",
+      "scope": "boundary_context",
+      "reason": "Short chair title fragment between the Cabo Verde address and its language announcement."
+    },
+    {
+      "id": "asset/k16/k16g777u83#9",
+      "text_sha256": "ce20d1193f5de62421e911d3cc0b2bbc796e17720c960c18040a4ddd0c064f01",
+      "type": "procedure",
+      "scope": "boundary_context",
+      "reason": "Announces a switch to Creole; no policy content in this segment. Do not infer the missing language-track content."
+    },
+    {
+      "id": "asset/k16/k16g777u83#10",
+      "text_sha256": "d1ba68cc71315f602e0d8065d7ecdc48d4a405e4676144e4e364ee8c7c55fd42",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k16/k16g777u83#11",
+      "text_sha256": "ea78b34824ff31454cb6cd70b8afe2153e7d04919261e42271d8c5b1f2279118",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#13",
+      "text_sha256": "937659c1db4e6d0fd679deb2f57198b5e9d586da0cac7d788cddd009e87781b9",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#15",
+      "text_sha256": "af6f71252a05db6d6badc81bd01762ea08376c9adf46c2427375da38b65e147c",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#17",
+      "text_sha256": "b6f91c0a4933d79fe0c45f1ed576af66b348288b986983548268e17db9717f51",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#18",
+      "text_sha256": "c321f44c649a5941c867f5ed6891b8aa6764898ec181a64469575ffc8e0d4359",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k16/k16g777u83#19",
+      "text_sha256": "59cf79aa81e8f2393e0392adf7e80bc016b6b29363fa8175fd1042c5b13f27c7",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#21",
+      "text_sha256": "77f72012c5cf62f49933bc833d36ccdd20f12854c571f5801fe60625d31ae267",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#23",
+      "text_sha256": "4625afff4e8faa5d34a84003f4bee0e1b46c0354bbaf9c8babdc64923dcf236e",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#24",
+      "text_sha256": "bcf8562ce9364da0aac15ff9b06538643ff28897eca17532deed0f0203754e61",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k16/k16g777u83#25",
+      "text_sha256": "e3e8b7d216411371478bf75a81352ccfdbb86b8be08b7e4c199a676507c8359f",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#26",
+      "text_sha256": "6a3d6e4a7ce4234790253b51c017c354df645e45fb1397ffa41860a5c0e4201a",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k16/k16g777u83#27",
+      "text_sha256": "224a895f45d7d37c4404db3281114feedce572c7ddbd9328f5678f05ad235771",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#29",
+      "text_sha256": "07e3318bac110028078865353934b15bb7b6e91d6357b6956b184a4ef8e430d4",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#31",
+      "text_sha256": "b9807f0d4e07c3c470e9d235000f56b1885455627986a5ad48f39d839204a088",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#33",
+      "text_sha256": "8d44037cb199b9739f4353adffb011de0e334a020eb95b45b96c991ec06b11e2",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#35",
+      "text_sha256": "6aaba03bf5874c0d157940c5d7ba16d54d7c162d4bc817af2985c42631c5cec6",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#37",
+      "text_sha256": "5d69b939cbd7f8b95a0983d02f477a3f45419827cb2a03131e8009937fdf46a2",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#39",
+      "text_sha256": "3be35049079ff0d79c9fde4493a23efc1a60edf9ee4d03c1e272b350aaca835e",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#41",
+      "text_sha256": "ae625975ac84e5067f2e8b3550ff9bf494f55152a86a4d984e174ebe4b10a5cb",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#43",
+      "text_sha256": "3ed791f1357a093095bf8336f320c452d588fb771c0985666e3e15115c33923c",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#44",
+      "text_sha256": "3fb2537e9619f88bf0d43a034d0d4b09aff03a0b0e7500fc4caf57fdfe4e07ab",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k16/k16g777u83#45",
+      "text_sha256": "9ce6d7cc414e0ffdfedd7d3f8f7e045589fce7e8d9fc06821749c59d317651e8",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#47",
+      "text_sha256": "f00c51295a932228ea084ea612d7a532cb5084176365b42eb0baf26908b92709",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#49",
+      "text_sha256": "a3877a82046392c9e20fa7f25b3400ca034a348064de3fe9462df32f3384ac69",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#51",
+      "text_sha256": "19486d4360c49562b7150b0d01031623701f7e048ba75f4728ceb8993c09c000",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#53",
+      "text_sha256": "c43bfeeaf33d4e9302130e67c4d1222b2ff0b74ea15b3d8b5c34cb53d458a31c",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#55",
+      "text_sha256": "fab40feafdd5d33886922cda443048a934d1d1f98ab40163fcf69aeaab399e0a",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#57",
+      "text_sha256": "89c6ef839a7bd3080fa5663fc47e850ec48abf5b7023e1847143c90f1a929038",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#59",
+      "text_sha256": "dd7bcd0663441ee7724214b446020def3e22adc279dc5bfe288822449802e636",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#61",
+      "text_sha256": "c39fdc65c900600b9f683b160e01355cc3b7fb60779f4183eb34ff2bb04a8807",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#63",
+      "text_sha256": "16961ac172c67464e9bb096f0d6d0ebef4932487b7f58bf4644f48d3c0b191b9",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#65",
+      "text_sha256": "2221f2aca8380c10cab903c955d80dcb26ca32110303dfe5f9e6cbdbe511577a",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k16/k16g777u83#66",
+      "text_sha256": "fb4329ef28ebb0d4b672cc0326b92273714e04a6aec27b8dd2b196b6a85596fb",
+      "type": "procedure",
+      "scope": "boundary_context",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k16/k16g777u83#67",
+      "text_sha256": "bd4475c7bc38dba4ba9f31dc64822ada85f142d7f8e648a01c376793bb5100ec",
+      "type": "right_of_reply",
+      "scope": "boundary_context",
+      "reason": "Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k16/k16g777u83#68",
+      "text_sha256": "4ede066d8336c1f798f99a42575822e78e770658292c8dfe65192bed2247ba64",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k16/k16g777u83#69",
+      "text_sha256": "517e410ae23ffee95ec46749f52fdd561253875db669ad221fe12daa287343f4",
+      "type": "right_of_reply",
+      "scope": "boundary_context",
+      "reason": "Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k16/k16g777u83#70",
+      "text_sha256": "34bb4f1835623a7a42d875d22ea65988944ee37a862ddb851ff8e3a5dd9fcf19",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#0",
+      "text_sha256": "8d28ce5357ff586ac7cf512e9e06243a57da7ad12d2b1340b102e1a77e451f64",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#1",
+      "text_sha256": "f0cff44ac6bc3c53aed84f7b1af49489a86768698e45a7f2d425202eebf48603",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#3",
+      "text_sha256": "f980f65478c76767ce146d9f31b54131be55b8714a11de1066a58da35bf823ef",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#5",
+      "text_sha256": "7e67889995385b261fb31b31cafed6f01aa814185f72af6bbe375aa532553a81",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#7",
+      "text_sha256": "d231f4bda8eff70f085349a30ab9bba704cb0a82da54999234c08c87908fb8a5",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#9",
+      "text_sha256": "2117bf0f786b88ab7ec1a9fee71b2a9bd54fe2ed0906053f6452c47eadb518fa",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#11",
+      "text_sha256": "78f439c55a3ed2a8f6fce44505488ec3880c2f20e312412fdbe1e4863b2c6871",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#13",
+      "text_sha256": "e6b3c14c51dfce1f388b07f203fc2f6a5511c08fcaf99a1da506db74e2d3c85c",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#15",
+      "text_sha256": "437302ebf43a1d988a904a5e4e2ae7a94152929f6f4f1acf1b6dbd4e83d07c55",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#17",
+      "text_sha256": "348a7f75bae0bfb4d0b211a2c87a7360871e2eb1c09147d9db794efdd991be1a",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#18",
+      "text_sha256": "bf92f40dfe6270bd1201336351c97d7920ced6e52b619f40972d8c61af21d265",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#19",
+      "text_sha256": "ae4af3feb0f9b6b7176852e752eeae50238e8a33dfac85c41577ae5a5c4d8866",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#20",
+      "text_sha256": "c2c157e6817deacf74719ddaa46e2086d6003e84011f5e64f07143e3760b16c9",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#21",
+      "text_sha256": "3785f2661daf61cbc11d9f4bf00d1b1cc495d200360fb49f4a7bae5aab5ab8d4",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#22",
+      "text_sha256": "ee7b964ce1f78fb877346d79944c0791c5766d15d6eb363c557e252645c054f8",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#23",
+      "text_sha256": "8f6f964db4019a81579cc1f72aaa829cc8a67079ddbf1f6bdccf5fdf6114cc80",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#24",
+      "text_sha256": "6e1fe9ca4dd3f907e5bf41f6c9d954bf48528c292b9fe6aee3bfc3270e0e09cf",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#25",
+      "text_sha256": "545c28727044d04255ef952b69ea68f94ceb8c1b8d16e87aabc18f499a02fccc",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#26",
+      "text_sha256": "2a231780feabbeb09bc40c740c17f35af412cae3426f4f85477adeec8ff5d664",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#27",
+      "text_sha256": "0ea3244a7a2f7c9aa8e751c5dc7df8bb94f9138c0985a68754cb09b7fe494587",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#28",
+      "text_sha256": "69741371e46200394dd6d7456d4f3b6dff8534738d6ce88109b11e24660d1792",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#29",
+      "text_sha256": "4ab8d22148ceb13c67011dbe5998f025259c5219f12bd91785efba7cd276c313",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#30",
+      "text_sha256": "c698693903dcfc07c244565cde513bd9fbedc223769863e0130d38e4746e7116",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#31",
+      "text_sha256": "462630004fa650b9f49b09f17df91855a12f95ddc9528c16985436f4ede1dd13",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#32",
+      "text_sha256": "e7562f4dbb21b948f0363c89876befd184db9917150ae49dfadf5a635857c705",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#33",
+      "text_sha256": "f8b2bd0d9478b4cb062156e0d825c7d67714ae8f77f3330c1177b66a9557e81d",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#34",
+      "text_sha256": "97bc0c68dc18473a5db098880c720d6decf694ac022970b9d5c2dabfb77eaa8e",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#35",
+      "text_sha256": "0a8f59eb147c8381f897eb6df6f5e0a1c68eca34f67808ea0c4f977f779e86fa",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#36",
+      "text_sha256": "c7ea3461aa893d31630c0471fdbaa2dfd604824520d022c86eeaf19f727de570",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#37",
+      "text_sha256": "1213eb50521a62a86699ef5e75bb3db847cbf524b9091e0821d04127362054f9",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#38",
+      "text_sha256": "b86626d8fabe68b28d5e467a42d617c056e8505f4d10a072d1f7f9f1d98df86b",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#39",
+      "text_sha256": "45f15ea855cdb6e92d3484e99112abd4a2fae6b63cc45a1df3d8da901601d67b",
+      "type": "substantive_speech",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Long address candidate outside reply context; structural text inspection is required, not just a length threshold."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#40",
+      "text_sha256": "fb9bf91569acf29dad1444e36fa4cc2029d55432a358db81f1f4da47955f1201",
+      "type": "mixed_speech_procedure",
+      "scope": "boundary_context",
+      "reason": "Assembly president closing substantive remarks are combined with reply time-limit procedure and Thailand floor call."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#41",
+      "text_sha256": "b2626a170c686bbfe19b0f5057bd318734b40619ebad8c768ab263470861bd5d",
+      "type": "right_of_reply",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#42",
+      "text_sha256": "98604143a0d83d79cfaddb8cd24fba19ba729144cd60ae81564535960c877796",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#43",
+      "text_sha256": "2d36db676cb7619b52858a57d82f777407575daddc205b58490e4a2c1e86e0e2",
+      "type": "right_of_reply",
+      "scope": "boundary_context",
+      "reason": "Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#44",
+      "text_sha256": "fed4727a46d131ce3b47a4c668cf84c482e16cf176df22d0e6ee9c8689688a15",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#45",
+      "text_sha256": "71d59844ef437e06cbbfa7428f2308a4c6dd9487c1164382f0033eabbf747f74",
+      "type": "right_of_reply",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#46",
+      "text_sha256": "3ed20c738fa1682b4defb05d3c5e5adf1803fc2ab748962eaf6bbe695032d444",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#47",
+      "text_sha256": "4a0c356c7740f6bcc248ec764ecd83589f2a55887c925ccd504c9ccec340d8e4",
+      "type": "right_of_reply",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#48",
+      "text_sha256": "02897f13f787e6c7b7f63cfbc87778c9d02fd84539026a7c5fe9df24dadb6f98",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#49",
+      "text_sha256": "6712d435bedd928a0553c17ea5444b06e96efb593e6e40537fe4c0629057495f",
+      "type": "right_of_reply",
+      "scope": "boundary_context",
+      "reason": "Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#50",
+      "text_sha256": "391789359784bea5f486bbac8c28208faebfb0ad276237a95faad7ef482b400f",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#51",
+      "text_sha256": "02aa250c1e3ef41692cd7e17b1e93af473906a3264552ce978dcb66276ba5fec",
+      "type": "right_of_reply",
+      "scope": "boundary_context",
+      "reason": "Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#52",
+      "text_sha256": "ec000c64933199e9b927bb3f865b643add30f3db8fb659867348ed904671fa99",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#53",
+      "text_sha256": "2230e3581242d773dc9d2f00d78d2ec14da351af1c0c4328c144023788fd97d1",
+      "type": "right_of_reply",
+      "scope": "boundary_context",
+      "reason": "Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#54",
+      "text_sha256": "2837fe1c02c753400816ebbb74f2c600fd1285886ef21af3018abb31bfcfa136",
+      "type": "procedure",
+      "scope": "boundary_context",
+      "reason": "One-word floor call between replies; following segment #55 contains the Philippines reply."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#55",
+      "text_sha256": "82d212f18af01b20556d8bf318101e120963257e0c79554da400cb4dc5f8f163",
+      "type": "right_of_reply",
+      "scope": "boundary_context",
+      "reason": "Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#56",
+      "text_sha256": "f0426bf22c68b95a7681a39588a023cec8ed42e0785bcbd5c7acb13fe41140df",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#57",
+      "text_sha256": "81e6f7c9a5551bc6d65b8b3cfe7bbdd3c666757e4bd8f7162d8e40829fa9ca22",
+      "type": "right_of_reply",
+      "scope": "boundary_context",
+      "reason": "Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#58",
+      "text_sha256": "3eace853e3d0baeafe9d16ba47700eca60df5fb32333df8a013d2f016e319ba0",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#59",
+      "text_sha256": "60a26f3a002fb12990b19be9f8b48642cf6f49bd8d587505e484ad5bf814733d",
+      "type": "right_of_reply",
+      "scope": "boundary_context",
+      "reason": "Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#60",
+      "text_sha256": "c139582edd8dbd51edc40b7c26f21f7306aac52470e6f1cbe99aecf95caca089",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#61",
+      "text_sha256": "ba74d97f4dcc7ed550f7c7369b5e0bcfa5ab1baa76579e56dbb9f27067a6ad19",
+      "type": "right_of_reply",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#62",
+      "text_sha256": "0fbffdc93281134573ad42f40722af5ffa2debfe0f05a9f39d30ae4df77a0f4c",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#63",
+      "text_sha256": "9f961a824485853a90c8349150d87967d944ba9e00fbb748655e10531ef0d91b",
+      "type": "right_of_reply",
+      "scope": "structural_windows",
+      "reason": "Opening, middle and closing windows inspected for intervention structure; Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#64",
+      "text_sha256": "f6cfd4d74f1a31c7ade532664890da8a44ea541b2d4df47f538dd9eec95e861d",
+      "type": "procedure",
+      "scope": "boundary_context",
+      "reason": "Chair calls Sudan for a second intervention; the reply follows in #65."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#65",
+      "text_sha256": "fc48dabc0b50f74ae0d99f121622878733621e5e65bdf5bbfb4e06fb4a4ac70e",
+      "type": "right_of_reply",
+      "scope": "boundary_context",
+      "reason": "Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#66",
+      "text_sha256": "fff86ddf1ff717e7777691b07593997fd061233dad4a43ae4fa58c4e2ec9287c",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#67",
+      "text_sha256": "b41c2ab9a48b44bbea3da8cdf64cab4b327012da7467563c7b1c3447ce1489d6",
+      "type": "right_of_reply",
+      "scope": "full_short_text",
+      "reason": "Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#68",
+      "text_sha256": "0075109089909c6c23c3ad82bb2a40459e1ea8927673549ce914201a3ac71a11",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#69",
+      "text_sha256": "84da709185d6a1ba2ee64121036893480af7c74ed0d04e70489773449a2640ea",
+      "type": "right_of_reply",
+      "scope": "boundary_context",
+      "reason": "Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#70",
+      "text_sha256": "a62b4a4db620a886d3f81bee484bb212c797e6d3edbd8d0057594cc2107ec47c",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#71",
+      "text_sha256": "fdc4644da74a41736a177fa44a1d601041a7f3c0cc4d2544282d871d33cf3ca5",
+      "type": "right_of_reply",
+      "scope": "boundary_context",
+      "reason": "Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#72",
+      "text_sha256": "0abf6efb90ed4be7e772db1fd217496bb783d454ed38f432ad6c1946f6822cbd",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#73",
+      "text_sha256": "067af3a79ef8cb2915baf204007f534a5df1d37e725799580e19b734d1d5e806",
+      "type": "right_of_reply",
+      "scope": "boundary_context",
+      "reason": "Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#74",
+      "text_sha256": "d41eb5a25c09fe9c0c2dcac7b4c0324b8b1821f48e0204ee33a3f696dd48d5bd",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#75",
+      "text_sha256": "5635c334e6d836c527c4bdd180b2b14c38a225ffbd06e31c0aea7cb9316949aa",
+      "type": "right_of_reply",
+      "scope": "boundary_context",
+      "reason": "Reply wording and/or preceding chair announcement establishes the intervention context."
+    },
+    {
+      "id": "asset/k1k/k1kfcwu5kc#76",
+      "text_sha256": "485e476d4e0d29bfb4c955d9afcf969372ba8591e2b3ed1f13a904bb0feddb5d",
+      "type": "procedure",
+      "scope": "full_short_text",
+      "reason": "Short source segment contains floor management, introduction, thanks or meeting procedure."
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+const assert=require('node:assert/strict'),crypto=require('node:crypto');
+const {validateMask,compare}=require('./compare_passage_types.cjs');
+const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
+const corpus={records:[{id:'a',text:'original',text_sha256:sha('original')},{id:'b',text:'other',text_sha256:sha('other')}]};
+const bytes=Buffer.from(JSON.stringify(corpus)),mask={schema:'un.passage-type-mask.v1',corpus_sha256:sha(bytes),rows:corpus.records.map(r=>({id:r.id,text_sha256:r.text_sha256,proposed_type:'substantive_speech',confirmed_type:null}))};
+assert.throws(()=>validateMask(corpus,bytes,mask),/allow-provisional/);
+assert.equal(validateMask(corpus,bytes,mask,true).confirmed,0);
+assert.throws(()=>validateMask(corpus,bytes,{...mask,rows:[mask.rows[0],mask.rows[0]]},true),/exactly once/);
+assert.throws(()=>validateMask(corpus,Buffer.from('changed'),mask,true),/original corpus/);
+mask.rows[0].confirmed_type='procedure';assert.throws(()=>validateMask(corpus,bytes,mask,true),/confirmed decision/);
+Object.assign(mask.rows[0],{reviewer:'Test fixture',reviewed_at:new Date().toISOString()});assert.equal(validateMask(corpus,bytes,mask,true).types.get('a'),'procedure');
+const full={algorithm:'hdbscan',points:[{id:'a',cluster:1},{id:'b',cluster:1},{id:'c',cluster:0}]};
+const sub={algorithm:'hdbscan',points:[{id:'a',cluster:1},{id:'b',cluster:2}]};
+assert.equal(compare(full,sub).ari,null);assert.equal(compare(full,sub).assignment.shared_assigned_for_ari,2);
+assert.equal(compare({...full,algorithm:'kmeans'},sub).ari,0);
+assert.equal(compare(full,{...sub,points:sub.points.map(p=>({...p,cluster:0}))}).assignment.unassigned_count,2);
+console.log('PASS comparison requires complete source identity, explicit provisional opt-in and valid human decisions; shared-ID/noise denominators and degenerate ARI are explicit');

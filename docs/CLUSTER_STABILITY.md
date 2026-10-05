@@ -179,6 +179,8 @@ checks, not external validation of diplomatic categories.
    [source/settings audit](CLUSTER_SENSITIVITY.md) before interpreting these groups.
 5. **Next method:** NMF theme mixtures with source-linked components. First review
    source-type inclusion and compare the full corpus with substantive passages.
+   The [provisional comparison](PASSAGE_TYPES.md) is complete; human confirmation
+   of the separately recorded inclusion mask remains pending.
 6. Add regularized Gaussian mixture models with model-based membership diagnostics.
 
 Neighborhood overlap, trustworthiness and continuity now accompany representation
