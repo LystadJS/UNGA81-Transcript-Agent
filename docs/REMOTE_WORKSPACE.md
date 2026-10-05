@@ -29,7 +29,8 @@ policies or guarantee access from every managed computer.
    or clipboard access. Return it using the team's approved channel.
 
 The page does **not** submit labels centrally. It uses no review API, telemetry,
-remote model call, webfont or third-party runtime. The content security policy permits same-origin assets and the official UN
+remote model call, webfont or remotely loaded runtime. The numerical libraries
+for PCA and UMAP are bundled locally with their licenses. The content security policy permits same-origin assets and the official UN
 transcript service for user-requested live collection. Review packet text is not
 sent to either origin by the application. Opening
 a source/report link navigates to that destination normally. GitHub still serves

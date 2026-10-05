@@ -1,0 +1,15 @@
+{
+  "url": "local production assets",
+  "points": 458,
+  "components": 20,
+  "retained_variance": 0.24420615993829808,
+  "k": 4,
+  "silhouette": 0.41171238064732263,
+  "converged_starts": 10,
+  "source_links": true,
+  "html_json_csv_exports": true,
+  "stale_export_disabled": true,
+  "cancel_during_worker": true,
+  "mobile_overflow": false,
+  "errors": []
+}

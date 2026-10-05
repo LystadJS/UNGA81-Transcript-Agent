@@ -1,0 +1,8 @@
+{
+  "name": "un-browser-numerics",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": { "build": "node build.cjs" },
+  "dependencies": { "ml-matrix": "6.15.0", "umap-js": "1.4.0" },
+  "devDependencies": { "esbuild": "0.28.2" }
+}

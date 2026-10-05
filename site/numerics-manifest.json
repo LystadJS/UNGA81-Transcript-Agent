@@ -1,0 +1,45 @@
+{
+  "packages": [
+    {
+      "name": "is-any-array",
+      "version": "3.0.0",
+      "integrity": "sha512-o4h+tylWykC4BD1vaejp6gDxoM13bwW8FGuNs4yIKpj8xbBJcRxJx8vZpq0dCr7ZDEfeKjmsi/euolKhX6f/ww=="
+    },
+    {
+      "name": "ml-array-max",
+      "version": "2.0.0",
+      "integrity": "sha512-QQZ4kENwpWmyNb98UXRDFXrmtIXuXtt1+bSbda/2KA85+F+rrJP8hZk6QOkCQXM2Th9mUDYdq/PNByPdT9ID4A=="
+    },
+    {
+      "name": "ml-array-min",
+      "version": "2.0.0",
+      "integrity": "sha512-GRj6Ky6sW9vGL6yIjgsHmXZ9YgrdmcQ8nCxPqEGeKc6dkfYg1XDYxGFxADUjNuZyoCd5PUscWAS4N+cFaX6hFg=="
+    },
+    {
+      "name": "ml-array-rescale",
+      "version": "2.0.0",
+      "integrity": "sha512-2GGtKfSno94/kIloWGvpp/U5Q5vLvLrza+SAaGsLeo6Xj4mEbA6Gqx+oTfZFkxnd1grT2X007HfJNs3T5BsiVg=="
+    },
+    {
+      "name": "ml-levenberg-marquardt",
+      "version": "2.1.1",
+      "integrity": "sha512-2+HwUqew4qFFFYujYlQtmFUrxCB4iJAPqnUYro3P831wj70eJZcANwcRaIMGUVaH9NDKzfYuA4N5u67KExmaRA=="
+    },
+    {
+      "name": "is-any-array",
+      "version": "0.1.1",
+      "integrity": "sha512-qTiELO+kpTKqPgxPYbshMERlzaFu29JDnpB8s3bjg+JkxBpw29/qqSaOdKv2pCdaG92rLGeG/zG2GauX58hfoA=="
+    },
+    {
+      "name": "ml-matrix",
+      "version": "6.15.0",
+      "integrity": "sha512-wFa1v6KP8bKp+fj0nYmRs1Pb5K4zRkXGKsOvLinvILENFIADncm4XlOI+S1M7yuACMGfI6cfk0IifDgd4j5xmw=="
+    },
+    {
+      "name": "umap-js",
+      "version": "1.4.0",
+      "integrity": "sha512-xxpviF9wUO6Nxrx+C58SoDgea+h2PnVaRPKDelWv0HotmY6BeWeh0kAPJoumfqUkzUvowGsYfMbnsWI0b9do+A=="
+    }
+  ],
+  "sha256": "03459b95f300c77949738137cc0a8e01593b0767e35fc7e6f921bb83963fa2e8"
+}

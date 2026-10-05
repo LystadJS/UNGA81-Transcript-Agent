@@ -6,9 +6,9 @@
     ? require('./meeting-scopes.js')
     : root.UNMeetingScopes;
 
-  const VERSION = 'browser-descriptive-1.2.0';
+  const VERSION = 'browser-descriptive-1.3.0';
 
-  const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity'];
+  const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters'];
 
   const STOP = new Set(
     ('a an and are as at be been being but by can could did do does for from ' +
@@ -80,7 +80,14 @@
       throw Error('Invalid collection scope.');
     }
 
-    return { ...p, topic, mode, phrases, exclude };
+    const clustering = {components:20,k:4,neighbors:15,minDist:0.1,seed:42,umapSeed:42,...p.clustering};
+    if (p.methods.includes('clusters')) {
+      for (const [key,min,max] of [['components',2,50],['k',2,12],['neighbors',2,100],['seed',0,4294967295],['umapSeed',0,4294967295]]) {
+        if (!Number.isInteger(clustering[key]) || clustering[key]<min || clustering[key]>max) throw Error(`Invalid clustering setting: ${key} (${min}–${max}).`);
+      }
+      if (!Number.isFinite(clustering.minDist) || clustering.minDist<0 || clustering.minDist>0.99) throw Error('UMAP minimum distance must be between 0 and 0.99.');
+    }
+    return { ...p, topic, mode, phrases, exclude, ...(p.methods.includes('clusters')?{clustering}:{}) };
   }
 
 
@@ -217,7 +224,7 @@
   }
 
 
-  async function analyze(corpus, p, yieldProgress = async () => {}) {
+  async function analyze(corpus, p, yieldProgress = async () => {}, runClusters) {
     validateCorpus(corpus);
     p = parameters(p);
 
@@ -308,9 +315,21 @@
       result.methods.length = bins.map(({ name, total }) => ({ name, total }));
     }
 
-    if (p.methods.some(method => ['tfidf', 'similarity'].includes(method))) {
+    if (p.methods.includes('clusters') && matched.length>600) {
+      result.methods.clusters = {parameters:p.clustering,skipped:'Clustering supports at most 600 selected passages. Narrow the dates, topic or region; no sampling was applied.'};
+    }
+    if (p.methods.some(method => ['tfidf', 'similarity'].includes(method)) ||
+        (p.methods.includes('clusters') && !result.methods.clusters)) {
       await yieldProgress('Calculating TF-IDF');
       const terms = tfidf(matched);
+
+      if (p.methods.includes('clusters') && !result.methods.clusters) {
+        const runner = runClusters || ((records,vectors,settings,progress) => {
+          if (typeof module === 'undefined' || !module.exports) throw Error('Clustering worker is unavailable. Reload the page.');
+          return require('./cluster-core.js').run(records,vectors,settings,progress);
+        });
+        result.methods.clusters = await runner(matched,terms.vectors,p.clustering,yieldProgress);
+      }
 
       if (p.methods.includes('tfidf')) {
         result.methods.tfidf = {

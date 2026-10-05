@@ -7,6 +7,8 @@ executive email theme and Windows-friendly package paths.
 to collect live UN transcripts by topic, dates and speaker region, run selectable
 descriptive methods, download visual reports, and review assigned packets without
 local installation. See the [report builder guide](docs/BROWSER_ANALYSIS.md).
+The selectable text-cluster workflow uses PCA representation, k-means on those
+scores, and a separate UMAP display with source links and exported diagnostics.
 Packet text stays in the browser; completed reviews are returned as files for
 validated import. See the [remote workspace guide](docs/REMOTE_WORKSPACE.md).
 

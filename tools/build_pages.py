@@ -1,9 +1,12 @@
 """Publish only the static workspace and the already-public HLW report assets."""
-import argparse, csv, json, shutil
+import argparse, csv, hashlib, json, shutil
 from pathlib import Path
 
 def build(output):
     repo=Path(__file__).resolve().parents[1];output=Path(output)
+    numeric_manifest=json.loads((repo/'site/numerics-manifest.json').read_text(encoding='utf-8'))
+    if hashlib.sha256((repo/'site/numerics.js').read_bytes()).hexdigest()!=numeric_manifest['sha256']:
+        raise ValueError('Numerical bundle hash mismatch; rebuild with tools/browser-deps/build.cjs')
     registry=list(csv.DictReader((repo/'un/config/countries.csv').open(encoding='utf-8-sig')))
     if json.loads((repo/'site/countries.json').read_text(encoding='utf-8'))!=registry:
         raise ValueError('Browser country registry is stale; regenerate site/countries.json from un/config/countries.csv')

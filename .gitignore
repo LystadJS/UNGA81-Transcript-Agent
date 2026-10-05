@@ -5,3 +5,4 @@
 .secrets/
 __pycache__/
 /review-work/
+/tools/browser-deps/node_modules/

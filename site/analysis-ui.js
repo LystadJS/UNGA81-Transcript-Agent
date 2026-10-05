@@ -52,6 +52,7 @@
       end: el('endDate').value,
       region: el('region').value,
       scope: el('meetingScope').value,
+      clustering: {components:Number(el('pcaComponents').value), k:Number(el('clusterCount').value), neighbors:Number(el('umapNeighbors').value), minDist:Number(el('umapDistance').value), seed:Number(el('clusterSeed').value), umapSeed:Number(el('umapSeed').value)},
       methods: [...document.querySelectorAll('input[name=method]:checked')]
         .map(input => input.value)
     });
@@ -350,6 +351,8 @@
       `;
     }
 
+    if (methods.clusters) html += UNClusterView.render(methods.clusters,report.matched,table,chart);
+
     if (methods.tfidf) {
       html += `
         <h3>TF-IDF term ranking</h3>
@@ -515,6 +518,31 @@
   el('cancelAnalysis').onclick = () => controller?.abort();
 
 
+  function updateClusterControls() {
+    const active=el('clusterMethod').checked;
+    el('clusterSettings').hidden=!active;
+    el('clusterSettings').querySelectorAll('input').forEach(input=>{input.disabled=!active || !!controller;});
+  }
+  el('clusterMethod').addEventListener('change',updateClusterControls);
+  updateClusterControls();
+
+  function runClusterWorker(records,vectors,options,progress) {
+    return new Promise((resolve,reject)=>{
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.3.0');
+      const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
+      const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
+      signal.addEventListener('abort',abort,{once:true});
+      worker.onerror=()=>finish(reject,Error('The clustering worker could not run. Reload the page or check browser permissions.'));
+      worker.onmessage=({data})=>{
+        if(data.type==='progress')status(data.message);
+        if(data.type==='result')finish(resolve,data.result);
+        if(data.type==='error')finish(reject,Error(data.message));
+      };
+      if(signal.aborted){abort();return;}
+      worker.postMessage({records:records.map(r=>({id:r.id,text_sha256:r.text_sha256})),vectors:vectors.map(v=>[...v]),options});
+    });
+  }
+
   // ---------- Collect / import, analyze, and render ----------
 
   el('analysisForm').onsubmit = async event => {
@@ -569,11 +597,12 @@
         await pause();
 
         if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
-      });
+      }, runClusterWorker);
 
       if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
 
       el('analysisReport').innerHTML = render(result);
+      el('exportClusters').hidden=!result.methods.clusters?.points;
       el('analysisOutput').hidden = false;
       exportButtons().forEach(button => { button.disabled = false; });
 
@@ -595,11 +624,19 @@
       for (const control of el('analysisForm').elements) control.disabled = false;
       el('cancelAnalysis').disabled = true;
       updateTopicMode();
+      updateClusterControls();
     }
   };
 
 
   // ---------- Export buttons ----------
+  el('exportClusters').onclick=()=>{
+    const fit=result?.methods.clusters;if(!fit?.points || stale)return;
+    const quote=v=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,"'$&").replace(/"/g,'""')+'"';
+    const fields=['id','text_sha256','cluster',...Array.from({length:fit.pca.components},(_,i)=>'PC'+(i+1)),'UMAP1','UMAP2'];
+    const rows=[fields,...fit.points.map(p=>[p.id,p.text_sha256,p.cluster,...p.pca,...p.umap])];
+    save('\uFEFF'+rows.map(row=>row.map(quote).join(',')).join('\r\n'),'un-clusters.csv','text/csv;charset=utf-8');
+  };
 
   el('exportResult').onclick = () => {
     if (result && !stale) {

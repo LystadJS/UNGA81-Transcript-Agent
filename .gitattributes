@@ -4,3 +4,5 @@ examples/review/** -text
 # Recovered texts have byte hashes recorded in recovery.json.
 reports/hlw-cuba/r_*.txt -text
 reports/hlw-cuba/w_* -text
+# Preserve the vendored numerical bundle hash across checkout platforms.
+site/numerics.js -text
