@@ -1,0 +1,37 @@
+{
+  "schema": "un.speech-pilot-summary.v1",
+  "corpus_sha256": "469f5d00c84a20b735f2cc23e1688ea1868fa38da90e611894b0d759c282deca",
+  "packet_sha256": "64a8d42f1414ab2af79942f0370d0ed2b502897f44252c382feb0b71fcc35563",
+  "parents_with_passages": 3,
+  "passage_proposals": 12,
+  "audio_concerns": 12,
+  "human_decisions": 0,
+  "originals_changed": false,
+  "coverage": [
+    {
+      "parent_id": "asset/k1b/k1b5jwwa58#23",
+      "country": "Palau",
+      "total_words": 1599,
+      "candidate_chunks": 9,
+      "selected_chunks": 4,
+      "selected_words": 635
+    },
+    {
+      "parent_id": "asset/k18/k18iyhzwip#42",
+      "country": "Fiji",
+      "total_words": 2403,
+      "candidate_chunks": 13,
+      "selected_chunks": 4,
+      "selected_words": 702
+    },
+    {
+      "parent_id": "asset/k1k/k1kfcwu5kc#37",
+      "country": "Vanuatu",
+      "total_words": 3918,
+      "candidate_chunks": 21,
+      "selected_chunks": 4,
+      "selected_words": 698
+    }
+  ],
+  "raw_text_and_clips_published": false
+}

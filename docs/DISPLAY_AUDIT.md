@@ -181,3 +181,5 @@ The frozen R D1 pipeline and its release gates are unchanged.
 Primary references: [UMAP parameters](https://umap-learn.readthedocs.io/en/latest/parameters.html),
 [UMAP reproducibility](https://umap-learn.readthedocs.io/en/latest/reproducibility.html),
 and [metric SMACOF](https://scikit-learn.org/stable/modules/generated/sklearn.manifold.smacof.html).
+
+Follow-up: [source-audio comparison and the smaller-passage pilot](SPEECH_PILOT.md) are prepared. The twelve listening decisions and twelve proposed boundaries await owner review; none has been silently approved.

@@ -2,7 +2,7 @@ name: Publish review workspace
 on:
   push:
     branches: [main]
-    paths: ['site/**', 'reports/hlw-cuba/**', 'tools/build_pages.py', 'tools/test_browser*.cjs', 'tools/*passage*', 'tools/browser-deps/**', 'un/config/countries.csv', '.github/workflows/pages.yml']
+    paths: ['site/**', 'reports/hlw-cuba/**', 'tools/build_pages.py', 'tools/test_browser*.cjs', 'tools/*passage*', 'tools/*speech_pilot*', 'tools/browser-deps/**', 'un/config/countries.csv', '.github/workflows/pages.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -45,6 +45,8 @@ jobs:
         run: |
           python3 tools/test_passage_types.py
           node tools/test_passage_comparison.cjs
+      - name: Test reviewed speech units and immutable source offsets
+        run: node tools/test_speech_pilot.cjs
       - name: Build public site
         run: python3 tools/build_pages.py _site
       - uses: actions/upload-pages-artifact@v3

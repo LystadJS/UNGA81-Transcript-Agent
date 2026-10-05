@@ -1,0 +1,51 @@
+{
+  "status": "PASS",
+  "date": "2026-10-05",
+  "owner_review_status": "Pending: no actual listening or new boundary decisions recorded",
+  "corpus_sha256": "469f5d00c84a20b735f2cc23e1688ea1868fa38da90e611894b0d759c282deca",
+  "reviewed_mask_sha256": "71a62fb608f8e9437fd8f535e721eb119af3b67da2e05d57c0d2576a8566f8fe",
+  "packet_sha256": "64a8d42f1414ab2af79942f0370d0ed2b502897f44252c382feb0b71fcc35563",
+  "originals_and_460_type_decisions_preserved": true,
+  "exact_slice_hashes_checked": 12,
+  "duplicate_proposal_hashes": 0,
+  "audio_clips_hashed_and_decoded": 12,
+  "audio_wording_authenticated": false,
+  "local_browser": {
+    "status": "PASS",
+    "location": "output/speech-review/review.html",
+    "packet_import": true,
+    "audio_decodes": true,
+    "no_preselected_decisions": true,
+    "listening_attestation_required": true,
+    "offset_validation": true,
+    "selection_sets_offsets": true,
+    "unrecorded_edits_block_exports": true,
+    "save_resume": true,
+    "wrong_packet_rejected": true,
+    "unresolved_audio_excluded": true,
+    "derived_units_in_engineering_fixture": 11,
+    "withheld_in_engineering_fixture": 1,
+    "mobile_overflow": false,
+    "browser_errors": [],
+    "uploads": [],
+    "human_decisions_created": false
+  },
+  "unit_checks": "PASS: source hashes, Unicode and byte offsets, audio integrity, explicit review, overlap exclusion, changed packet rejection, incomplete review rejection",
+  "cli_finalization_fixture": {
+    "status": "PASS",
+    "included": 11,
+    "withheld": 1,
+    "actual_owner_decisions": false
+  },
+  "build": {
+    "entries_including_directories": 126,
+    "private_review_work_included": false
+  },
+  "publication_scope": "Generic interface, code, aggregate counts and bounded evidence only; packet, original text, clips and review decisions stay local",
+  "public_mirror_files_hash_checked": 124,
+  "visual_inspection": {
+    "audio_controls_and_source_excerpt": true,
+    "mobile_boundary_controls": true,
+    "technical_identity_retained_without_full_hash_in_main_flow": true
+  }
+}

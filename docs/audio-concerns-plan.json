@@ -1,0 +1,18 @@
+{
+  "schema": "un.audio-concerns-plan.v1",
+  "scope": "Targeted checks of wording flagged in the membership inspection; no automatic corrections",
+  "concerns": [
+    {"id":"A01","parent_id":"asset/k18/k18iyhzwip#33","sentences":[1,2],"reason":"Unrelated entertainment request during chair transition"},
+    {"id":"A02","parent_id":"asset/k1k/k1kfcwu5kc#37","sentences":[9,10],"reason":"Country name rendered as Fernando"},
+    {"id":"A03","parent_id":"asset/k1k/k1kfcwu5kc#37","sentences":[22,23],"reason":"Wording about imposing will through cohesion"},
+    {"id":"A04","parent_id":"asset/k1k/k1kfcwu5kc#37","sentences":[167,168],"reason":"Broken wording about reports and distribution of benefits"},
+    {"id":"A05","parent_id":"asset/k1k/k1kfcwu5kc#37","sentences":[185,186],"reason":"Incomplete phrase about small states"},
+    {"id":"A06","parent_id":"asset/k1k/k1kfcwu5kc#37","sentences":[189,190],"reason":"Country name rendered as FANU"},
+    {"id":"A07","parent_id":"asset/k1k/k1kfcwu5kc#37","sentences":[237,238],"reason":"Session number rendered as A/15"},
+    {"id":"A08","parent_id":"asset/k17/k17s3dutob#16","sentences":[1,2],"reason":"Name of General Assembly president"},
+    {"id":"A09","parent_id":"asset/k17/k17s3dutob#16","sentences":[130,131],"reason":"Independence anniversary number rendered as 31st"},
+    {"id":"A10","parent_id":"asset/k1b/k1b5jwwa58#66","sentences":[0,2],"reason":"Two inconsistent renderings of the General Assembly president's name"},
+    {"id":"A11","parent_id":"asset/k1b/k1b5jwwa58#66","sentences":[6,7],"reason":"Eight years since the Charter was signed"},
+    {"id":"A12","parent_id":"asset/k1u/k1ukg04uyo#54","sentences":[89,90],"reason":"Connectivity qualifier and geographic corridor name"}
+  ]
+}

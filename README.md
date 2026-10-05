@@ -118,3 +118,5 @@ from invalidating them. Keep API keys and local runtime configuration out of Git
 Earlier repository documents are preserved in [docs/legacy](docs/legacy).
 They describe earlier deliverables; this import does not include the separate
 September 28 execution bundle mentioned in the old reproduction document.
+
+The [audio and passage review pilot](docs/SPEECH_PILOT.md) provides bounded source-audio checks and twelve proposed within-speech units with exact parent offsets. Listening and boundary decisions remain pending; source text is preserved.
