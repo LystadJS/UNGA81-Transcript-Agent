@@ -832,5 +832,156 @@
     "ARI and silhouette exclude unassigned passages; coverage must accompany them.",
     "Equal-height merge ordering can differ across implementations; four of 22 fixture fits differ despite identical single-linkage geometry and verified same-tree selection.",
     "These tests do not establish substantive categories, future performance, stance or coordination."
-  ]
+  ],
+  "published_browser": {
+    "url": "https://lystadjs.github.io/un/transcript-agent/",
+    "cases": [
+      {
+        "mode": "eom",
+        "engine": "browser-descriptive-1.7.0",
+        "passages": 458,
+        "seconds": 17.238,
+        "groups": [
+          [
+            219,
+            61,
+            29,
+            50
+          ],
+          [
+            221,
+            61,
+            31,
+            50
+          ]
+        ],
+        "unassigned": [
+          99,
+          95
+        ],
+        "resamples": [
+          30,
+          30
+        ],
+        "assessable_ari_samples": [
+          30,
+          30
+        ],
+        "mean_stability_ari": [
+          0.9862069457609505,
+          0.9854799417213014
+        ],
+        "between_representation_ari": 1,
+        "all_points_and_sources_retained": true,
+        "exports": [
+          "HTML",
+          "JSON",
+          "cluster CSV",
+          "consensus CSV"
+        ],
+        "mobile_overflow": false
+      },
+      {
+        "mode": "leaf",
+        "engine": "browser-descriptive-1.7.0",
+        "passages": 458,
+        "seconds": 16.019,
+        "groups": [
+          [
+            21,
+            61,
+            18,
+            29,
+            50
+          ],
+          [
+            221,
+            61,
+            31,
+            50
+          ]
+        ],
+        "unassigned": [
+          279,
+          95
+        ],
+        "resamples": [
+          30,
+          30
+        ],
+        "assessable_ari_samples": [
+          30,
+          30
+        ],
+        "mean_stability_ari": [
+          0.9161949429832197,
+          0.8267727813344957
+        ],
+        "between_representation_ari": 0.9370916845294103,
+        "all_points_and_sources_retained": true,
+        "exports": [
+          "HTML",
+          "JSON",
+          "cluster CSV",
+          "consensus CSV"
+        ],
+        "mobile_overflow": false
+      },
+      {
+        "mode": "all-unassigned",
+        "engine": "browser-descriptive-1.7.0",
+        "passages": 458,
+        "seconds": 6.718,
+        "groups": [
+          [],
+          []
+        ],
+        "unassigned": [
+          458,
+          458
+        ],
+        "resamples": [
+          10,
+          10
+        ],
+        "assessable_ari_samples": [
+          0,
+          0
+        ],
+        "mean_stability_ari": [
+          null,
+          null
+        ],
+        "between_representation_ari": null,
+        "all_points_and_sources_retained": true,
+        "exports": [
+          "HTML",
+          "JSON",
+          "cluster CSV",
+          "consensus CSV"
+        ],
+        "mobile_overflow": false
+      }
+    ],
+    "browser_errors": [],
+    "status": "PASS",
+    "stale_exports_disabled": true,
+    "cancellation": true,
+    "settings_do_not_change_coordinates": true
+  },
+  "published_results_equal_local": true,
+  "deployment": {
+    "source_commit": "10f9a44ac6cbd4a427d7c8c9c5351b93add20ad4",
+    "source_workflow": {
+      "url": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37269940294",
+      "conclusion": "success"
+    },
+    "website_commit": "69c4aeaba014ebf7ed0fde788433198c88ba2643",
+    "website_workflow": {
+      "url": "https://github.com/LystadJS/LystadJS.github.io/actions/runs/37269941815",
+      "conclusion": "success"
+    },
+    "mirror_public_files_verified": 107,
+    "source_site_matches_mirror_bytes": true
+  }
 }

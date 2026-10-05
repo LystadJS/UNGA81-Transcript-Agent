@@ -135,7 +135,9 @@ exports, cancellation, stale settings and desktop/mobile layouts. Independent
 reconstruction checks all 104,653 pairs in each of six fits, across 140 sampled
 fits; ARI/Jaccard errors are at most floating-point rounding. Existing k-means,
 PAM, Ward and average scores, UMAP, partitions, diagnostics, sample logs and
-consensus match their saved acceptance outputs exactly.
+consensus match their saved acceptance outputs exactly. Both GitHub deployments
+succeeded, and the same three browser cases passed on the published website;
+all exported clustering results exactly matched the local acceptance runs.
 
 ```sh
 node tools/test_browser_hdbscan.cjs
