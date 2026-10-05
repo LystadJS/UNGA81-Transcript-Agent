@@ -1,0 +1,29 @@
+name: Prepare matching UN source headers
+on:
+  push:
+    branches: ["chatgpt/un-header-preview-20261005"]
+permissions:
+  contents: write
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Run the hash-pinned, reviewed header preparation
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PYTHON'
+          import urllib.request, json, base64, hashlib
+          # The immutable script is in the same author's public website repository.
+          # It prepares Git objects only; it cannot move a branch or publish files.
+          sha='a7223e97ea6b3b38fd9283078a18ec706b4679fc'
+          url='https://api.github.com/repos/LystadJS/LystadJS.github.io/git/blobs/'+sha
+          req=urllib.request.Request(url,headers={'Accept':'application/vnd.github+json'})
+          with urllib.request.urlopen(req,timeout=60) as r:
+              data=base64.b64decode(json.load(r)['content'])
+          assert hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()==sha
+          block=data.decode().split("          python3 - <<'PYTHON'\n",1)[1].rsplit('          PYTHON',1)[0]
+          code='\n'.join(line[10:] if line.startswith('          ') else line for line in block.splitlines())
+          exec(compile(code,'reviewed-un-header-preparation','exec'))
+          PYTHON
