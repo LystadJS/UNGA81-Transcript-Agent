@@ -8,7 +8,7 @@
 
   const ClusterOptions = typeof module !== 'undefined' && module.exports
     ? require('./cluster-options.js') : root.UNClusterOptions;
-  const VERSION = 'browser-descriptive-1.4.0';
+  const VERSION = 'browser-descriptive-1.5.0';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters'];
 

@@ -2,6 +2,8 @@
 
 Browser 1.4 adds the first method in the dimension-reduction and unsupervised
 learning sequence: grouped subsampling with full representation refitting.
+Browser 1.5 extends this protocol to LSA and paired PCA/LSA comparison; the
+[comparison guide](LSA_COMPARISON.md) documents representation-specific fields.
 It is an exploratory sensitivity assessment. Frozen D1 representations,
 reviewed-model gates and daily publication behavior remain unchanged.
 
@@ -10,7 +12,8 @@ reviewed-model gates and daily publication behavior remain unchanged.
 1. Open the [workspace](https://lystadjs.github.io/un/transcript-agent/#analyze).
 2. Select dates, meeting scope and region. Leave Topic blank for all passages,
    or enter a topic to assess only its matching passages.
-3. Select **Text clusters: PCA → k-means → UMAP**, then **Assess cluster stability**.
+3. Select **Text clusters**, choose PCA, LSA or their comparison, then
+   **Assess cluster stability**.
 4. Choose **Meeting** (default) or **Recorded speaker affiliation**. The choice
    describes which passages must be omitted together, not a verified claim of
    independence. The latter also includes organizational/procedural affiliations.
@@ -40,8 +43,10 @@ reviewed-model gates and daily publication behavior remain unchanged.
   form one explicitly reported group. It does not infer speaker identity.
 - Refit the vocabulary, smoothed IDF, sublinear TF and L2-normalized vectors on
   the selected records, including selected zero-term records in the IDF document
-  count. Exclude zero vectors before PCA. Refit centered, unwhitened PCA using
-  the requested component count capped at the sample's numerical rank.
+  count. Exclude zero vectors before reduction. Refit centered, unwhitened PCA
+  or uncentered LSA using the requested component count capped at that sample's
+  numerical rank. Comparison mode repeats the exact group schedule and k-means
+  seeds under both representations, retaining both success/failure logs.
 - Refit k-means using the reference `k`, ten seeded k-means++ starts, 300 iterations
   per start, and the lowest-inertia converged non-empty fit. Each repetition uses
   a recorded deterministic seed independent of UMAP. Insufficient rows, zero rank
@@ -153,14 +158,15 @@ checks, not external validation of diplomatic categories.
 ## Implementation sequence
 
 1. **Complete:** grouped resampling, Jaccard/ARI stability and consensus views.
-2. **Next:** truncated SVD / LSA as a representation comparison using the same
-   corpus, source IDs, k-means settings and resampling protocol.
-3. Connect PAM and hierarchical clustering to the common comparison workflow.
+2. **Complete:** truncated SVD / LSA comparison using the same corpus, source
+   IDs, k-means settings and resampling protocol, plus neighborhood diagnostics.
+3. **Next:** connect PAM and hierarchical clustering to the common comparison workflow.
 4. Integrate and validate HDBSCAN, including unassigned passages and sensitivity.
 5. Add NMF theme mixtures with source-linked components.
 6. Add regularized Gaussian mixture models with model-based membership diagnostics.
 
-Visualization fidelity diagnostics accompany representation comparisons. Spectral
+Neighborhood overlap, trustworthiness and continuity now accompany representation
+comparisons. Further display sensitivity checks, metric MDS, spectral
 clustering, diffusion maps and historical change remain later work requiring
 their own validation and, for historical inference, comparable source data.
 

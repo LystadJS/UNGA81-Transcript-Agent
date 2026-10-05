@@ -10,10 +10,15 @@ import numpy as np
 from sklearn.metrics import adjusted_rand_score
 
 
-def check(path):
+def check(path, representation=None):
     with open(path, encoding="utf-8") as stream:
         result = json.load(stream)
-    stability = result["methods"]["clusters"]["stability"]
+    fit = result["methods"]["clusters"]
+    if representation == "lsa" and "comparison" in fit:
+        fit = fit["comparison"]["alternative"]
+    if representation is not None:
+        assert fit.get("representation", "pca") == representation
+    stability = fit["stability"]
     reference = np.array(stability["reference_clusters"])
     n = len(reference)
     observed = np.zeros((n, n), dtype=int)
@@ -57,4 +62,4 @@ def check(path):
 
 
 if __name__ == "__main__":
-    print(json.dumps(check(sys.argv[1]), indent=2))
+    print(json.dumps(check(sys.argv[1], sys.argv[2] if len(sys.argv) > 2 else None), indent=2))

@@ -101,6 +101,10 @@ browser methods or an authenticated backend for D1 are warranted.
 
 ## PCA → k-means → UMAP (browser 1.3)
 
+Browser 1.5 adds **LSA** and **Compare PCA and LSA**, with paired resampling,
+source-linked membership/neighborhood comparisons and visualization fidelity
+diagnostics. PCA remains the default. See [LSA methods and validation](LSA_COMPARISON.md).
+
 Browser 1.4 additionally offers **Assess cluster stability**: grouped subsampling
 with TF-IDF/PCA/k-means refits, Jaccard/ARI agreement, a consensus heatmap and
 source-linked review candidates. See the [protocol, exports and validation](CLUSTER_STABILITY.md).

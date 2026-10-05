@@ -1,0 +1,108 @@
+{
+  "url": "Local production assets",
+  "engine": "browser-descriptive-1.5.0",
+  "passages": 458,
+  "components": {
+    "pca": 20,
+    "lsa": 20
+  },
+  "centered_variance": {
+    "pca": 0.24420615993829808,
+    "lsa": 0.24099478202395752
+  },
+  "lsa_energy": 0.30262285219213725,
+  "between_cluster_ari": 0.9746049180297626,
+  "neighbor_overlap_between_representations": 0.9375545851528367,
+  "fidelity": {
+    "pca": {
+      "neighbors": 10,
+      "neighbor_overlap": 0.38471615720524016,
+      "trustworthiness": 0.9329084943132756,
+      "continuity": 0.9346581797547677
+    },
+    "lsa": {
+      "neighbors": 10,
+      "neighbor_overlap": 0.3814410480349345,
+      "trustworthiness": 0.9333560308884119,
+      "continuity": 0.9344104803493449
+    }
+  },
+  "stability": {
+    "pca": {
+      "count": 30,
+      "mean": 0.9586848663269522,
+      "median": 0.9778985622037113,
+      "min": 0.7853704659729207,
+      "max": 1
+    },
+    "lsa": {
+      "count": 30,
+      "mean": 0.9610995819267923,
+      "median": 0.9769358820197691,
+      "min": 0.8083592411884299,
+      "max": 1
+    },
+    "paired": 30
+  },
+  "seconds": 34.538,
+  "shared_reference_colors": true,
+  "source_links": true,
+  "standalone_equals_comparison": true,
+  "exports": [
+    "HTML",
+    "JSON",
+    "cluster CSV",
+    "consensus CSV"
+  ],
+  "stale_exports_disabled": true,
+  "cancel_during_alternative": true,
+  "mobile_overflow": false,
+  "browser_errors": [],
+  "validated_at_utc": "2026-10-05T04:41:33.745448+00:00",
+  "independent_svd": {
+    "passages": 72,
+    "vocabulary": 6894,
+    "checks": {
+      "pca": {
+        "components": 20,
+        "max_squared_distance_error": 4.263256414560601e-14,
+        "max_centered_variance_ratio_error": 1.3877787807814457e-16
+      },
+      "lsa": {
+        "components": 20,
+        "max_squared_distance_error": 8.570921750106208e-14,
+        "max_centered_variance_ratio_error": 3.885780586188048e-16,
+        "retained_energy_error": 1.1102230246251565e-16,
+        "reconstruction_error_difference": 3.3306690738754696e-16,
+        "max_signed_loading_error": 8.781864124784988e-14
+      },
+      "neighborhood_metrics": {
+        "trustworthiness": 0.6989459815546772,
+        "continuity": 0.7075098814229248,
+        "reference": "scikit-learn trustworthiness, both directions on untied geometry"
+      }
+    },
+    "reference": "NumPy full SVD; sign-invariant geometry plus oriented loadings"
+  },
+  "independent_stability": {
+    "pca": {
+      "successful_samples_checked": 30,
+      "passages": 458,
+      "pair_denominators_checked": 104653,
+      "max_ari_or_jaccard_error": 1.1102230246251565e-16,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    },
+    "lsa": {
+      "successful_samples_checked": 30,
+      "passages": 458,
+      "pair_denominators_checked": 104653,
+      "max_ari_or_jaccard_error": 1.1102230246251565e-16,
+      "reference": "NumPy pair reconstruction and scikit-learn adjusted_rand_score"
+    }
+  },
+  "fixture": {
+    "origin": "Saved public UN General Debate collection",
+    "dates": "2026-09-22 through 2026-09-28",
+    "sha256": "469f5d00c84a20b735f2cc23e1688ea1868fa38da90e611894b0d759c282deca"
+  }
+}

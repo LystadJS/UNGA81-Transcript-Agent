@@ -52,7 +52,7 @@
       end: el('endDate').value,
       region: el('region').value,
       scope: el('meetingScope').value,
-      clustering: {components:Number(el('pcaComponents').value), k:Number(el('clusterCount').value), neighbors:Number(el('umapNeighbors').value), minDist:Number(el('umapDistance').value), seed:Number(el('clusterSeed').value), umapSeed:Number(el('umapSeed').value),
+      clustering: {representation:el('representation').value,components:Number(el('pcaComponents').value), k:Number(el('clusterCount').value), neighbors:Number(el('umapNeighbors').value), minDist:Number(el('umapDistance').value), seed:Number(el('clusterSeed').value), umapSeed:Number(el('umapSeed').value),
         stability:{enabled:el('stabilityEnabled').checked,unit:el('stabilityUnit').value,replicates:Number(el('stabilityReplicates').value),fraction:Number(el('stabilityFraction').value),seed:Number(el('stabilitySeed').value)}},
       methods: [...document.querySelectorAll('input[name=method]:checked')]
         .map(input => input.value)
@@ -533,7 +533,7 @@
 
   function runClusterWorker(records,vectors,options,progress) {
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.4.0');
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.5.0');
       const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
       signal.addEventListener('abort',abort,{once:true});
@@ -608,8 +608,8 @@
       if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
 
       el('analysisReport').innerHTML = render(result);
-      el('exportClusters').hidden=!result.methods.clusters?.points;
-      el('exportConsensus').hidden=!result.methods.clusters?.stability?.consensus || !!result.methods.clusters.stability.skipped;
+      el('exportClusters').hidden=!clusterFits(result.methods.clusters).some(f=>f.points);
+      el('exportConsensus').hidden=!clusterFits(result.methods.clusters).some(f=>f.stability?.consensus&&!f.stability.skipped);
       el('analysisOutput').hidden = false;
       exportButtons().forEach(button => { button.disabled = false; });
 
@@ -637,24 +637,41 @@
 
 
   // ---------- Export buttons ----------
+  const clusterFits=fit=>!fit?[]:[fit,...(fit.comparison?[fit.comparison.alternative]:[])];
   el('exportConsensus').onclick=()=>{
-    const s=result?.methods.clusters?.stability;if(!s?.consensus||s.skipped||stale)return;
+    if(stale)return;
+    const fits=clusterFits(result?.methods.clusters).filter(f=>f.stability?.consensus&&!f.stability.skipped);
+    if(!fits.length)return;
+    const compare=!!result.methods.clusters.comparison;
     const quote=v=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,"'$&").replace(/"/g,'""')+'"';
-    const rows=[['left_id','right_id','left_cluster','right_cluster','co_observed','co_clustered','co_assignment_rate']];
-    for(let i=1;i<s.reference_ids.length;i++)for(let j=0;j<i;j++){
-      const pos=i*(i-1)/2+j,o=s.consensus.co_observed[pos],t=s.consensus.co_clustered[pos];
-      rows.push([s.reference_ids[i],s.reference_ids[j],s.reference_clusters[i],s.reference_clusters[j],o,t,o?t/o:'']);
+    const rows=[['representation','left_id','right_id','left_cluster','right_cluster','co_observed','co_clustered','co_assignment_rate']];
+    for(const fit of fits){const s=fit.stability;
+      for(let i=1;i<s.reference_ids.length;i++)for(let j=0;j<i;j++){
+        const pos=i*(i-1)/2+j,o=s.consensus.co_observed[pos],t=s.consensus.co_clustered[pos];
+        rows.push([fit.representation||'pca',s.reference_ids[i],s.reference_ids[j],s.reference_clusters[i],s.reference_clusters[j],o,t,o?t/o:'']);
+      }
     }
+    // Preserve the previous PCA-only column contract.
+    if(!compare&&fits[0].representation!=='lsa')rows.forEach(row=>row.shift());
     save('\uFEFF'+rows.map(row=>row.map(quote).join(',')).join('\r\n'),'un-consensus.csv','text/csv;charset=utf-8');
   };
   el('exportClusters').onclick=()=>{
-    const fit=result?.methods.clusters;if(!fit?.points || stale)return;
+    if(stale)return;
+    const fits=clusterFits(result?.methods.clusters).filter(f=>f.points);if(!fits.length)return;
+    const compare=!!result.methods.clusters.comparison;
     const quote=v=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,"'$&").replace(/"/g,'""')+'"';
-    const stable=fit.stability&&!fit.stability.skipped?fit.stability.consensus?.points:null;
-    const fields=['id','text_sha256','cluster',...Array.from({length:fit.pca.components},(_,i)=>'PC'+(i+1)),'UMAP1','UMAP2',
+    const stable=fits.some(f=>f.stability?.consensus&&!f.stability.skipped);
+    const dimensions=Math.max(...fits.map(f=>f[f.representation||'pca'].components));
+    const prefix=compare?'D':fits[0].representation==='lsa'?'LS':'PC';
+    const fields=[...(compare?['representation']:[]),'id','text_sha256','cluster',...Array.from({length:dimensions},(_,i)=>prefix+(i+1)),'UMAP1','UMAP2',
       ...(stable?['resamples_included','observed_peers','within_cluster_consensus','strongest_other_consensus','consensus_margin']:[])];
-    const rows=[fields,...fit.points.map((p,i)=>[p.id,p.text_sha256,p.cluster,...p.pca,...p.umap,
-      ...(stable?[stable[i].included,stable[i].observed_peers,stable[i].within_cluster,stable[i].strongest_other,stable[i].margin]:[])])];
+    const rows=[fields];
+    for(const fit of fits){const method=fit.representation||'pca';
+      fit.points.forEach((p,i)=>{const s=!fit.stability?.skipped?fit.stability?.consensus?.points[i]:null;
+        rows.push([...(compare?[method]:[]),p.id,p.text_sha256,p.cluster,...Array.from({length:dimensions},(_,d)=>p[method][d]??''),...p.umap,
+          ...(stable?[s?.included,s?.observed_peers,s?.within_cluster,s?.strongest_other,s?.margin]:[])]);
+      });
+    }
     save('\uFEFF'+rows.map(row=>row.map(quote).join(',')).join('\r\n'),'un-clusters.csv','text/csv;charset=utf-8');
   };
 

@@ -101,8 +101,10 @@
 
   async function run(records,fit,progress=async()=>{}) {
     const options=C.options(fit.parameters),s=options.stability;
+    const method=fit.representation||'pca',name=method.toUpperCase();
     const base={schema:'un.cluster-stability.v1',parameters:s,
-      procedure:'Uniform group subsampling without replacement; TF-IDF vocabulary/IDF and centered PCA refitted in each sample; ten-start k-means; UMAP excluded',
+      representation:method,
+      procedure:`Uniform group subsampling without replacement; TF-IDF vocabulary/IDF and ${name} refitted in each sample; ten-start k-means; UMAP excluded`,
       interpretation:'Sensitivity to omitted groups and refitting; not a confidence interval, population estimate, reviewed label or policy agreement probability',
       reference_ids:fit.points.map(p=>p.id),reference_clusters:fit.points.map(p=>p.cluster),warnings:[]};
     if(!s.enabled)return {...base,skipped:'Stability assessment was not selected.'};
@@ -121,7 +123,7 @@
     const random=C.rng(s.seed);
     for(let attempt=0;attempt<s.replicates;attempt++) {
       const message=`Stability · sample ${attempt+1} of ${s.replicates}`;
-      await progress(message+' · refitting TF-IDF and PCA');
+      await progress(message+' · refitting TF-IDF and '+name);
       const chosen=sampleGroups(G,count,random);subsets.add(chosen.join(','));
       // Preserve corpus row order; never let sampled-group order drive ties.
       const selected=new Set(chosen.flatMap(g=>groups[g].indices));
@@ -132,10 +134,11 @@
         excluded_ids:subset.filter((r,i)=>!terms.vectors[i].size||!indexById.has(r.id)).map(r=>r.id),
         kmeans_seed:(s.seed+Math.imul(attempt+1,0x85ebca6b))>>>0};
       if(rows.length<4||rows.length<=options.k){runs.push({...replicate,skipped:'Too few usable passages for the requested k.'});continue;}
-      const pca=C.pca(rows.map(i=>terms.vectors[i]),options.components);
-      Object.assign(replicate,{vocabulary:terms.vocabulary,pca_components:pca.components,pca_rank:pca.rank,retained_variance:pca.retained_variance});
-      if(!pca.rank){runs.push({...replicate,skipped:'No measurable TF-IDF variation.'});continue;}
-      const fits=await C.fitKmeans(pca.scores,options.k,replicate.kmeans_seed,
+      const representation=C.represent(rows.map(i=>terms.vectors[i]),options.components,method,false);
+      Object.assign(replicate,{vocabulary:terms.vocabulary,[method+'_components']:representation.components,[method+'_rank']:representation.rank,
+        retained_variance:representation.retained_variance,...(method==='lsa'?{retained_energy:representation.retained_energy}:{})});
+      if(!representation.rank){runs.push({...replicate,skipped:'No measurable TF-IDF variation.'});continue;}
+      const fits=await C.fitKmeans(representation.scores,options.k,replicate.kmeans_seed,
         async step=>progress(message+' · '+step));
       if(!fits.length){runs.push({...replicate,skipped:'No converged non-empty k-means fit.'});continue;}
       const labels=fits[0].labels,reference=replicate.indices.map(i=>fit.points[i].cluster);

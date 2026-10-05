@@ -10,14 +10,15 @@
     <link href="theme.css" rel="stylesheet">
     <link href="app.css" rel="stylesheet">
     <script defer src="app.js"></script>
-    <link href="analysis.css?v=1.4.0" rel="stylesheet">
+    <link href="analysis.css?v=1.5.0" rel="stylesheet">
     <script defer src="meeting-scopes.js?v=1.2.0"></script>
-    <script defer src="cluster-options.js?v=1.4.0"></script>
-    <script defer src="analysis-core.js?v=1.4.0"></script>
+    <script defer src="cluster-options.js?v=1.5.0"></script>
+    <script defer src="analysis-core.js?v=1.5.0"></script>
     <script defer src="collector.js?v=1.2.0"></script>
-    <script defer src="stability-view.js?v=1.4.0"></script>
-    <script defer src="cluster-view.js?v=1.4.0"></script>
-    <script defer src="analysis-ui.js?v=1.4.0"></script>
+    <script defer src="stability-view.js?v=1.5.0"></script>
+    <script defer src="comparison-view.js?v=1.5.0"></script>
+    <script defer src="cluster-view.js?v=1.5.0"></script>
+    <script defer src="analysis-ui.js?v=1.5.0"></script>
   </head>
 
   <body>
@@ -195,19 +196,20 @@
 
           </fieldset>
 
-          <label class="check cluster-choice"><input id="clusterMethod" name="method" type="checkbox" value="clusters"> Text clusters: PCA → k-means → UMAP</label>
+          <label class="check cluster-choice"><input id="clusterMethod" name="method" type="checkbox" value="clusters"> Text clusters: PCA or LSA → k-means → UMAP</label>
           <div id="clusterSettings" hidden>
-            <p class="hint">Represent the included passages with PCA, group them with k-means and inspect the groups in UMAP. Up to 600 passages; no sampling.</p>
+            <p class="hint">Choose a text representation, group passages with k-means and inspect them in UMAP. Up to 600 passages; all included passages enter each full-data fit.</p>
+            <label>Text representation<select id="representation"><option value="pca">PCA — centered TF-IDF</option><option value="lsa">LSA — uncentered truncated SVD</option><option value="compare">Compare PCA and LSA</option></select></label>
             <details><summary>Clustering settings</summary>
               <div class="analysis-grid">
-                <label>PCA components<input id="pcaComponents" type="number" min="2" max="50" step="1" value="20"></label>
+                <label>Retained components<input id="pcaComponents" type="number" min="2" max="50" step="1" value="20"></label>
                 <label>Clusters (k)<input id="clusterCount" type="number" min="2" max="12" step="1" value="4"></label>
                 <label>UMAP neighbors<input id="umapNeighbors" type="number" min="2" max="100" step="1" value="15"></label>
                 <label>UMAP minimum distance<input id="umapDistance" type="number" min="0" max="0.99" step="0.01" value="0.1"></label>
                 <label>K-means seed<input id="clusterSeed" type="number" min="0" max="4294967295" step="1" value="42"></label>
                 <label>UMAP seed<input id="umapSeed" type="number" min="0" max="4294967295" step="1" value="42"></label>
               </div>
-              <p class="hint">PCA components are capped at the available rank. UMAP settings affect the display only. Compare cluster counts and PCA dimensions before assigning meaning to a group.</p>
+              <p class="hint">Components are capped at each representation's available rank. UMAP settings affect the display only. Comparison uses identical settings for both fits; enabling stability also uses identical group samples.</p>
             </details>
             <label class="check"><input id="stabilityEnabled" type="checkbox">Assess cluster stability</label>
             <p class="hint">Leave out whole groups, refit the analysis and check which passages stay together. This takes longer than a single fit.</p>

@@ -50,7 +50,7 @@
     const unit=s.parameters.unit==='meeting'?'meetings':'recorded affiliations';
     const matrix=heatmap(s),coverage=s.consensus.pair_coverage;
     const byId=new Map(records.map(r=>[r.id,r]));
-    html+=`<p>${s.successful} of ${s.attempted} samples fitted, retaining ${s.sample_group_count} of ${s.group_count} ${unit} per sample (${(100*s.effective_group_fraction).toFixed(1)}%). TF-IDF, PCA and k-means were refitted each time.</p>
+    html+=`<p>${s.successful} of ${s.attempted} samples fitted, retaining ${s.sample_group_count} of ${s.group_count} ${unit} per sample (${(100*s.effective_group_fraction).toFixed(1)}%). TF-IDF, ${esc((s.representation||'pca').toUpperCase())} and k-means were refitted each time.</p>
       <p class="method-note">Agreement describes sensitivity to omitted groups. It does not establish a shared position, a validated category or performance on future speeches.</p>
       ${s.warnings.map(w=>`<p class="warning">${esc(w)}</p>`).join('')}
       ${intervalChart(s)}
@@ -77,7 +77,7 @@
       <blockquote>${esc(r.text)}</blockquote><a href="${esc(r.source_url)}" target="_blank" rel="noopener noreferrer">Open original source ↗</a></details>`;}).join('')}</div>`;
     const unranked=s.consensus.points.filter(p=>p.margin===null).length;
     if(unranked)html+=`<p class="warning">${unranked} passages lack within-cluster or alternative-cluster comparisons and cannot be ranked. Their missing values and inclusion counts remain in the exports.</p>`;
-    html+=`<details><summary>Resampling record</summary>${table(['Sample','Passages used','Components','ARI','Status'],s.runs.map(r=>[r.attempt,r.indices.length,r.pca_components??'—',number(r.ari),r.skipped||'Fitted']))}</details></section>`;
+    html+=`<details><summary>Resampling record</summary>${table(['Sample','Passages used','Components','ARI','Status'],s.runs.map(r=>[r.attempt,r.indices.length,r[(s.representation||'pca')+'_components']??'—',number(r.ari),r.skipped||'Fitted']))}</details></section>`;
     return html;
   }
   const api={heatmap,render};

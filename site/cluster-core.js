@@ -1,8 +1,10 @@
-/* TF-IDF -> centered PCA scores -> k-means; UMAP visualizes the same scores. */
+/* TF-IDF -> PCA or LSA scores -> k-means; UMAP visualizes the same scores. */
 (function(root) {
   'use strict';
   const N = typeof module !== 'undefined' && module.exports ? require('./numerics.js') : root.UNNumerics;
   const O = typeof module !== 'undefined' && module.exports ? require('./cluster-options.js') : root.UNClusterOptions;
+  const L = typeof module !== 'undefined' && module.exports ? require('./lsa-core.js') : root.UNLSA;
+  const M = typeof module !== 'undefined' && module.exports ? require('./representation-metrics.js') : root.UNRepresentationMetrics;
   const {DEFAULTS, options} = O;
   const MAX_RECORDS = 600;
   // Mulberry32: local generators prevent UMAP from consuming k-means random state.
@@ -76,15 +78,20 @@
       const a=sums[labels[i]]/counts[labels[i]],b=Math.min(...sums.map((s,c)=>c!==labels[i]&&counts[c]?s/counts[c]:Infinity));total+=(b-a)/(Math.max(a,b)||1);
     }return total/x.length;
   }
-  async function run(records,rawVectors,value={},progress=async()=>{}) {
-    const o=options(value),base={schema:'un.text-clusters.v1',parameters:o,sequence:['TF-IDF','PCA','k-means','UMAP'],input_count:records.length};
+  function represent(vectors,components,method='pca',descriptors=true){
+    if(!['pca','lsa'].includes(method))throw Error('Unknown text representation.');
+    return method==='lsa'?L.lsa(vectors,components,descriptors):pca(vectors,components);
+  }
+  async function runSingle(records,rawVectors,value={},progress=async()=>{}) {
+    const o=options(value),method=o.representation,name=method.toUpperCase();
+    const base={schema:'un.text-clusters.v1',representation:method,parameters:o,sequence:['TF-IDF',name,'k-means','UMAP'],input_count:records.length};
     if(records.length>MAX_RECORDS)return {...base,skipped:`Clustering supports at most ${MAX_RECORDS} selected passages. Narrow the dates, topic or region; no sampling was applied.`};
     const vectors=rawVectors.map(v=>v instanceof Map?v:new Map(v)),keep=[],excluded=[];
     vectors.forEach((v,i)=>{if(v.size)keep.push(i);else excluded.push({id:records[i].id,reason:'No terms remain after token and stop-word filtering'});});
     if(keep.length<4)return {...base,excluded,skipped:'Clustering needs at least four passages with usable terms.'};
     if(o.k>=keep.length)return {...base,excluded,skipped:'Choose fewer clusters than usable passages.'};
     const selected=keep.map(i=>records[i]),v=keep.map(i=>vectors[i]);
-    await progress('PCA · representing the selected text');const representation=pca(v,o.components);
+    await progress(name+' · representing the selected text');const representation=represent(v,o.components,method);
     if(!representation.rank)return {...base,excluded,skipped:'The TF-IDF vectors have no measurable variation.'};
     const x=representation.scores,runs=await fitKmeans(x,o.k,o.seed,progress);
     if(!runs.length)return {...base,excluded,skipped:'k-means could not form the requested number of stable non-empty clusters. Reduce the cluster count.'};
@@ -96,22 +103,58 @@
       return {cluster:c+1,size:indices.length,representative_id:selected[representative].id,terms:[...terms].map(([term,sum])=>({term,mean:sum/indices.length})).sort((a,b)=>b.mean-a.mean||a.term.localeCompare(b.term)).slice(0,8)};
     });
     const neighbors=Math.min(o.neighbors,x.length-1),epochs=300;
-    // Fit to PCA scores without labels; assignments never depend on this display.
+    // Fit to retained scores without labels; assignments never depend on this display.
     await progress('UMAP · preparing the display');
     const umap=new N.UMAP({nComponents:2,nNeighbors:neighbors,minDist:o.minDist,spread:1,nEpochs:epochs,random:rng(o.umapSeed)});
     const count=umap.initializeFit(x);
     for(let epoch=0;epoch<count;epoch++){umap.step();if(epoch%10===0)await progress(`UMAP · display iteration ${epoch+1} of ${count}`);}
     const layout=umap.getEmbedding();if(layout.some(row=>row.length!==2||row.some(v=>!Number.isFinite(v))))throw Error('UMAP returned an invalid display.');
-    const result={...base,excluded,analyzed_count:x.length,pca:{...representation,scores:undefined},
-      kmeans:{k:o.k,initialization:'k-means++',starts:10,converged_starts:runs.length,max_iterations:300,iterations:best.iterations,inertia:best.inertia,silhouette:sil,metric:'Euclidean on retained, unwhitened PCA scores',centroids:best.centers,restart_inertia:runs.map(r=>r.inertia),mean_ari_to_selected:agreement.reduce((a,b)=>a+b,0)/agreement.length,min_ari_to_selected:Math.min(...agreement)},
-      umap:{library:'umap-js 1.4.0',neighbors,requested_neighbors:o.neighbors,min_dist:o.minDist,spread:1,epochs:count,seed:o.umapSeed,metric:'Euclidean on the same PCA scores',initialization:'random',role:'Display only; no labels supplied'},
-      clusters:summaries,points:selected.map((r,i)=>({id:r.id,text_sha256:r.text_sha256,cluster:best.labels[i]+1,pca:x[i],umap:layout[i]}))};
+    await progress(name+' · checking neighborhood preservation');
+    const result={...base,excluded,analyzed_count:x.length,[method]:{...representation,scores:undefined},
+      kmeans:{k:o.k,initialization:'k-means++',starts:10,converged_starts:runs.length,max_iterations:300,iterations:best.iterations,inertia:best.inertia,silhouette:sil,metric:`Euclidean on retained, unwhitened ${name} scores`,centroids:best.centers,restart_inertia:runs.map(r=>r.inertia),mean_ari_to_selected:agreement.reduce((a,b)=>a+b,0)/agreement.length,min_ari_to_selected:Math.min(...agreement)},
+      umap:{library:'umap-js 1.4.0',neighbors,requested_neighbors:o.neighbors,min_dist:o.minDist,spread:1,epochs:count,seed:o.umapSeed,metric:`Euclidean on the same ${name} scores`,initialization:'random',role:'Display only; no labels supplied'},
+      fidelity:M.assess(v,x,layout,selected.map(r=>r.id)),
+      clusters:summaries,points:selected.map((r,i)=>({id:r.id,text_sha256:r.text_sha256,cluster:best.labels[i]+1,[method]:x[i],umap:layout[i]}))};
     if(o.stability.enabled){
       const S=typeof module!=='undefined'&&module.exports?require('./cluster-stability.js'):root.UNClusterStability;
       result.stability=await S.run(records,result,progress);
     }
     return result;
   }
-  const api={DEFAULTS,MAX_RECORDS,options,rng,pca,oneKmeans,fitKmeans,ari,silhouette,run};
+  function compareFits(left,right){
+    const base={schema:'un.representation-comparison.v1',alternative:right,
+      protocol:'Same selected rows, TF-IDF, requested dimensions, k, ten starts and seeds; each representation fitted independently; no automatic winner selected'};
+    if(left.skipped||right.skipped)return {...base,skipped:'Both representations must yield a fit for comparison. See each result for its reason.'};
+    if(left.points.length!==right.points.length||left.points.some((p,i)=>p.id!==right.points[i].id))throw Error('Representation comparison requires identical passage order.');
+    const matrix=Array.from({length:left.kmeans.k},()=>Array(right.kmeans.k).fill(0));
+    left.points.forEach((p,i)=>{matrix[p.cluster-1][right.points[i].cluster-1]++;});
+    const neighbors=left.fidelity.representation.neighbors;
+    const pointComparisons=left.fidelity.representation.points.map((p,i)=>{
+      const q=right.fidelity.representation.points[i];
+      return {id:p.id,pca_cluster:left.points[i].cluster,lsa_cluster:right.points[i].cluster,
+        pca_neighbors:p.reduced_neighbors,lsa_neighbors:q.reduced_neighbors,
+        neighbor_overlap:p.reduced_neighbors.filter(id=>q.reduced_neighbors.includes(id)).length/neighbors};
+    });
+    const paired=[];
+    if(left.stability?.runs&&right.stability?.runs){
+      const rightRuns=new Map(right.stability.runs.map(r=>[r.attempt,r]));
+      for(const r of left.stability.runs){const q=rightRuns.get(r.attempt);
+        if(!q||JSON.stringify(r.groups)!==JSON.stringify(q.groups))throw Error('Resampling groups differ between representations.');
+        if(!r.skipped&&!q.skipped)paired.push({attempt:r.attempt,pca_ari:r.ari,lsa_ari:q.ari,lsa_minus_pca:q.ari-r.ari});
+      }
+    }
+    return {...base,between_cluster_ari:ari(left.points.map(p=>p.cluster),right.points.map(p=>p.cluster)),
+      membership_counts:matrix,neighbors,mean_neighbor_overlap:pointComparisons.reduce((sum,p)=>sum+p.neighbor_overlap,0)/pointComparisons.length,
+      points:pointComparisons,paired_stability:{count:paired.length,samples:paired,
+        mean_ari_difference:paired.length?paired.reduce((sum,p)=>sum+p.lsa_minus_pca,0)/paired.length:null}};
+  }
+  async function run(records,rawVectors,value={},progress=async()=>{}){
+    const o=options(value);
+    if(o.representation!=='compare')return runSingle(records,rawVectors,o,progress);
+    const left=await runSingle(records,rawVectors,{...o,representation:'pca'},async m=>progress('PCA comparison · '+m));
+    const right=await runSingle(records,rawVectors,{...o,representation:'lsa'},async m=>progress('LSA comparison · '+m));
+    return {...left,requested_parameters:o,comparison:compareFits(left,right)};
+  }
+  const api={DEFAULTS,MAX_RECORDS,options,rng,pca,lsa:L.lsa,represent,oneKmeans,fitKmeans,ari,silhouette,compareFits,run};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UNClusters=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
