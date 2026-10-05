@@ -1,10 +1,11 @@
-/* TF-IDF -> PCA or LSA scores -> k-means; UMAP visualizes the same scores. */
+/* TF-IDF -> PCA or LSA scores -> selected clustering; UMAP displays the scores. */
 (function(root) {
   'use strict';
   const N = typeof module !== 'undefined' && module.exports ? require('./numerics.js') : root.UNNumerics;
   const O = typeof module !== 'undefined' && module.exports ? require('./cluster-options.js') : root.UNClusterOptions;
   const L = typeof module !== 'undefined' && module.exports ? require('./lsa-core.js') : root.UNLSA;
   const M = typeof module !== 'undefined' && module.exports ? require('./representation-metrics.js') : root.UNRepresentationMetrics;
+  const B = typeof module !== 'undefined' && module.exports ? require('./cluster-algorithms.js') : root.UNClusterAlgorithms;
   const {DEFAULTS, options} = O;
   const MAX_RECORDS = 600;
   // Mulberry32: local generators prevent UMAP from consuming k-means random state.
@@ -82,9 +83,23 @@
     if(!['pca','lsa'].includes(method))throw Error('Unknown text representation.');
     return method==='lsa'?L.lsa(vectors,components,descriptors):pca(vectors,components);
   }
+  const algorithmName=o=>o.algorithm==='pam'?'PAM':o.algorithm==='hierarchical'?`Hierarchical (${o.linkage})`:'k-means';
+  async function fitPartition(x,value,progress=async()=>{}){
+    const o=options(value);
+    if(o.algorithm==='kmeans'){
+      const runs=await fitKmeans(x,o.k,o.seed,progress);
+      if(!runs.length)return {skipped:'k-means could not form the requested number of stable non-empty clusters. Reduce the cluster count.'};
+      const best=runs[0],agreement=runs.map(r=>ari(best.labels,r.labels));
+      return {...best,diagnostics:{initialization:'k-means++',starts:10,converged_starts:runs.length,max_iterations:300,
+        iterations:best.iterations,inertia:best.inertia,centroids:best.centers,restart_inertia:runs.map(r=>r.inertia),
+        mean_ari_to_selected:agreement.reduce((a,b)=>a+b,0)/agreement.length,min_ari_to_selected:Math.min(...agreement)}};
+    }
+    const fit=o.algorithm==='pam'?await B.pam(x,o.k,progress):await B.hierarchical(x,o.k,o.linkage,progress);
+    return fit.converged?fit:{skipped:fit.reason};
+  }
   async function runSingle(records,rawVectors,value={},progress=async()=>{}) {
-    const o=options(value),method=o.representation,name=method.toUpperCase();
-    const base={schema:'un.text-clusters.v1',representation:method,parameters:o,sequence:['TF-IDF',name,'k-means','UMAP'],input_count:records.length};
+    const o=options(value),method=o.representation,name=method.toUpperCase(),algorithm=algorithmName(o);
+    const base={schema:'un.text-clusters.v1',representation:method,algorithm:o.algorithm,parameters:o,sequence:['TF-IDF',name,algorithm,'UMAP'],input_count:records.length};
     if(records.length>MAX_RECORDS)return {...base,skipped:`Clustering supports at most ${MAX_RECORDS} selected passages. Narrow the dates, topic or region; no sampling was applied.`};
     const vectors=rawVectors.map(v=>v instanceof Map?v:new Map(v)),keep=[],excluded=[];
     vectors.forEach((v,i)=>{if(v.size)keep.push(i);else excluded.push({id:records[i].id,reason:'No terms remain after token and stop-word filtering'});});
@@ -93,14 +108,14 @@
     const selected=keep.map(i=>records[i]),v=keep.map(i=>vectors[i]);
     await progress(name+' · representing the selected text');const representation=represent(v,o.components,method);
     if(!representation.rank)return {...base,excluded,skipped:'The TF-IDF vectors have no measurable variation.'};
-    const x=representation.scores,runs=await fitKmeans(x,o.k,o.seed,progress);
-    if(!runs.length)return {...base,excluded,skipped:'k-means could not form the requested number of stable non-empty clusters. Reduce the cluster count.'};
-    runs.sort((a,b)=>a.inertia-b.inertia);const best=runs[0],agreement=runs.map(r=>ari(best.labels,r.labels));
+    const x=representation.scores,best=await fitPartition(x,o,progress);
+    if(best.skipped)return {...base,excluded,skipped:best.skipped};
     await progress('Checking clustering separation');const sil=silhouette(x,best.labels);
-    const summaries=best.centers.map((center,c)=>{const indices=best.labels.flatMap((label,i)=>label===c?[i]:[]),terms=new Map();
+    const summaries=Array.from({length:o.k},(_,c)=>{const indices=best.labels.flatMap((label,i)=>label===c?[i]:[]),terms=new Map();
+      const center=best.centers?.[c]||x[0].map((_,d)=>indices.reduce((sum,i)=>sum+x[i][d],0)/indices.length);
       for(const i of indices)for(const [term,w] of v[i])terms.set(term,(terms.get(term)||0)+w);
-      const representative=indices.reduce((a,i)=>d2(x[i],center)<d2(x[a],center)?i:a,indices[0]);
-      return {cluster:c+1,size:indices.length,representative_id:selected[representative].id,terms:[...terms].map(([term,sum])=>({term,mean:sum/indices.length})).sort((a,b)=>b.mean-a.mean||a.term.localeCompare(b.term)).slice(0,8)};
+      const representative=best.medoids?.[c]??indices.reduce((a,i)=>d2(x[i],center)<d2(x[a],center)?i:a,indices[0]);
+      return {cluster:c+1,size:indices.length,representative_id:selected[representative].id,representative_role:o.algorithm==='pam'?'PAM medoid':'Nearest passage to the cluster centroid',terms:[...terms].map(([term,sum])=>({term,mean:sum/indices.length})).sort((a,b)=>b.mean-a.mean||a.term.localeCompare(b.term)).slice(0,8)};
     });
     const neighbors=Math.min(o.neighbors,x.length-1),epochs=300;
     // Fit to retained scores without labels; assignments never depend on this display.
@@ -111,7 +126,10 @@
     const layout=umap.getEmbedding();if(layout.some(row=>row.length!==2||row.some(v=>!Number.isFinite(v))))throw Error('UMAP returned an invalid display.');
     await progress(name+' · checking neighborhood preservation');
     const result={...base,excluded,analyzed_count:x.length,[method]:{...representation,scores:undefined},
-      kmeans:{k:o.k,initialization:'k-means++',starts:10,converged_starts:runs.length,max_iterations:300,iterations:best.iterations,inertia:best.inertia,silhouette:sil,metric:`Euclidean on retained, unwhitened ${name} scores`,centroids:best.centers,restart_inertia:runs.map(r=>r.inertia),mean_ari_to_selected:agreement.reduce((a,b)=>a+b,0)/agreement.length,min_ari_to_selected:Math.min(...agreement)},
+      clustering:{algorithm:o.algorithm,name:algorithm,k:o.k,silhouette:sil,metric:`Euclidean on retained, unwhitened ${name} scores`},
+      [o.algorithm]:{k:o.k,...best.diagnostics,silhouette:sil,metric:`Euclidean on retained, unwhitened ${name} scores`,
+        ...(o.algorithm==='pam'?{medoid_ids:best.medoids.map(i=>selected[i].id)}:{}),
+        ...(o.algorithm==='hierarchical'?{leaf_ids:selected.map(r=>r.id)}:{})},
       umap:{library:'umap-js 1.4.0',neighbors,requested_neighbors:o.neighbors,min_dist:o.minDist,spread:1,epochs:count,seed:o.umapSeed,metric:`Euclidean on the same ${name} scores`,initialization:'random',role:'Display only; no labels supplied'},
       fidelity:M.assess(v,x,layout,selected.map(r=>r.id)),
       clusters:summaries,points:selected.map((r,i)=>({id:r.id,text_sha256:r.text_sha256,cluster:best.labels[i]+1,[method]:x[i],umap:layout[i]}))};
@@ -123,10 +141,10 @@
   }
   function compareFits(left,right){
     const base={schema:'un.representation-comparison.v1',alternative:right,
-      protocol:'Same selected rows, TF-IDF, requested dimensions, k, ten starts and seeds; each representation fitted independently; no automatic winner selected'};
+      protocol:'Same selected rows, TF-IDF, requested dimensions, clustering algorithm/settings and group schedule; each representation fitted independently; no automatic winner selected'};
     if(left.skipped||right.skipped)return {...base,skipped:'Both representations must yield a fit for comparison. See each result for its reason.'};
     if(left.points.length!==right.points.length||left.points.some((p,i)=>p.id!==right.points[i].id))throw Error('Representation comparison requires identical passage order.');
-    const matrix=Array.from({length:left.kmeans.k},()=>Array(right.kmeans.k).fill(0));
+    const matrix=Array.from({length:left.clustering.k},()=>Array(right.clustering.k).fill(0));
     left.points.forEach((p,i)=>{matrix[p.cluster-1][right.points[i].cluster-1]++;});
     const neighbors=left.fidelity.representation.neighbors;
     const pointComparisons=left.fidelity.representation.points.map((p,i)=>{
@@ -155,6 +173,6 @@
     const right=await runSingle(records,rawVectors,{...o,representation:'lsa'},async m=>progress('LSA comparison · '+m));
     return {...left,requested_parameters:o,comparison:compareFits(left,right)};
   }
-  const api={DEFAULTS,MAX_RECORDS,options,rng,pca,lsa:L.lsa,represent,oneKmeans,fitKmeans,ari,silhouette,compareFits,run};
+  const api={DEFAULTS,MAX_RECORDS,options,rng,pca,lsa:L.lsa,represent,oneKmeans,fitKmeans,fitPartition,algorithmName,ari,silhouette,compareFits,run};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UNClusters=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

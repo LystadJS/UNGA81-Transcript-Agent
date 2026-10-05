@@ -4,6 +4,8 @@ Browser 1.4 adds the first method in the dimension-reduction and unsupervised
 learning sequence: grouped subsampling with full representation refitting.
 Browser 1.5 extends this protocol to LSA and paired PCA/LSA comparison; the
 [comparison guide](LSA_COMPARISON.md) documents representation-specific fields.
+Browser 1.6 applies the same resampling schedule and full refits to
+[PAM and hierarchical clustering](PARTITION_METHODS.md), including Ward and average linkage.
 It is an exploratory sensitivity assessment. Frozen D1 representations,
 reviewed-model gates and daily publication behavior remain unchanged.
 
@@ -13,7 +15,7 @@ reviewed-model gates and daily publication behavior remain unchanged.
 2. Select dates, meeting scope and region. Leave Topic blank for all passages,
    or enter a topic to assess only its matching passages.
 3. Select **Text clusters**, choose PCA, LSA or their comparison, then
-   **Assess cluster stability**.
+   a clustering method, then **Assess cluster stability**.
 4. Choose **Meeting** (default) or **Recorded speaker affiliation**. The choice
    describes which passages must be omitted together, not a verified claim of
    independence. The latter also includes organizational/procedural affiliations.
@@ -24,7 +26,7 @@ reviewed-model gates and daily publication behavior remain unchanged.
 
 ## Fixed protocol
 
-- The original TF-IDF → PCA → k-means → UMAP fit remains the reference. Enabling
+- The selected TF-IDF → PCA/LSA → clustering → UMAP fit remains the reference. Enabling
   stability does not change its coordinates, assignments, seeds or cluster terms.
 - Default: 30 repetitions, 80% of groups retained, seed 31415. Repetitions may be
   10–100 and retained share 50–90%. The existing 600-passage bound applies. No
@@ -45,15 +47,20 @@ reviewed-model gates and daily publication behavior remain unchanged.
   the selected records, including selected zero-term records in the IDF document
   count. Exclude zero vectors before reduction. Refit centered, unwhitened PCA
   or uncentered LSA using the requested component count capped at that sample's
-  numerical rank. Comparison mode repeats the exact group schedule and k-means
-  seeds under both representations, retaining both success/failure logs.
-- Refit k-means using the reference `k`, ten seeded k-means++ starts, 300 iterations
+  numerical rank. Comparison mode repeats the exact group schedule and chosen
+  clustering settings under both representations, retaining both success/failure logs.
+- For k-means, refit using the reference `k`, ten seeded k-means++ starts, 300 iterations
   per start, and the lowest-inertia converged non-empty fit. Each repetition uses
   a recorded deterministic seed independent of UMAP. Insufficient rows, zero rank
   and unsuccessful fitting produce explicit skipped attempts. They never enter
   agreement or pair denominators. Worker termination cancels the entire operation.
+- PAM refits deterministic BUILD + best improving SWAP. Hierarchical clustering
+  rebuilds the entire tree using the selected linkage and cuts at the same `k`.
+  Neither uses a clustering seed or random restarts. Their per-attempt diagnostics
+  identify medoids/objective or linkage/cut heights, respectively. The resampling
+  seed and all agreement/consensus denominators remain common to all methods.
 - No UMAP is fitted during resampling. This assesses sensitivity to omitted
-  groups and refitting, including optimization variation. It does not isolate
+  groups and refitting, including optimization variation for k-means. It does not isolate
   each source of variation or automatically tune `k` or PCA dimensionality.
 
 ## Measures and interpretation
@@ -160,8 +167,9 @@ checks, not external validation of diplomatic categories.
 1. **Complete:** grouped resampling, Jaccard/ARI stability and consensus views.
 2. **Complete:** truncated SVD / LSA comparison using the same corpus, source
    IDs, k-means settings and resampling protocol, plus neighborhood diagnostics.
-3. **Next:** connect PAM and hierarchical clustering to the common comparison workflow.
-4. Integrate and validate HDBSCAN, including unassigned passages and sensitivity.
+3. **Complete:** PAM and hierarchical clustering (Ward/average) use both representations,
+   paired group samples, source-linked examples and common stability checks.
+4. **Next:** integrate and validate HDBSCAN, including unassigned passages and sensitivity.
 5. Add NMF theme mixtures with source-linked components.
 6. Add regularized Gaussian mixture models with model-based membership diagnostics.
 

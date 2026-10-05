@@ -31,6 +31,8 @@ jobs:
         run: node tools/test_browser_stability.cjs
       - name: Test LSA, paired comparison and neighborhood preservation
         run: node tools/test_browser_lsa.cjs
+      - name: Test PAM, hierarchical clustering and shared stability protocol
+        run: node tools/test_browser_partitions.cjs
       - name: Build public site
         run: python3 tools/build_pages.py _site
       - uses: actions/upload-pages-artifact@v3

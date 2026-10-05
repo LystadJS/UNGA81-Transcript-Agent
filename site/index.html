@@ -10,15 +10,16 @@
     <link href="theme.css" rel="stylesheet">
     <link href="app.css" rel="stylesheet">
     <script defer src="app.js"></script>
-    <link href="analysis.css?v=1.5.0" rel="stylesheet">
+    <link href="analysis.css?v=1.6.0" rel="stylesheet">
     <script defer src="meeting-scopes.js?v=1.2.0"></script>
-    <script defer src="cluster-options.js?v=1.5.0"></script>
-    <script defer src="analysis-core.js?v=1.5.0"></script>
+    <script defer src="cluster-options.js?v=1.6.0"></script>
+    <script defer src="analysis-core.js?v=1.6.0"></script>
     <script defer src="collector.js?v=1.2.0"></script>
-    <script defer src="stability-view.js?v=1.5.0"></script>
-    <script defer src="comparison-view.js?v=1.5.0"></script>
-    <script defer src="cluster-view.js?v=1.5.0"></script>
-    <script defer src="analysis-ui.js?v=1.5.0"></script>
+    <script defer src="stability-view.js?v=1.6.0"></script>
+    <script defer src="comparison-view.js?v=1.6.0"></script>
+    <script defer src="hierarchy-view.js?v=1.6.0"></script>
+    <script defer src="cluster-view.js?v=1.6.0"></script>
+    <script defer src="analysis-ui.js?v=1.6.0"></script>
   </head>
 
   <body>
@@ -196,10 +197,12 @@
 
           </fieldset>
 
-          <label class="check cluster-choice"><input id="clusterMethod" name="method" type="checkbox" value="clusters"> Text clusters: PCA or LSA → k-means → UMAP</label>
+          <label class="check cluster-choice"><input id="clusterMethod" name="method" type="checkbox" value="clusters"> Text clusters and stability</label>
           <div id="clusterSettings" hidden>
-            <p class="hint">Choose a text representation, group passages with k-means and inspect them in UMAP. Up to 600 passages; all included passages enter each full-data fit.</p>
+            <p class="hint">Choose a representation and clustering method, then inspect the groups and their sources. Up to 600 passages; all included passages enter each full-data fit.</p>
             <label>Text representation<select id="representation"><option value="pca">PCA — centered TF-IDF</option><option value="lsa">LSA — uncentered truncated SVD</option><option value="compare">Compare PCA and LSA</option></select></label>
+            <label>Clustering method<select id="clusterAlgorithm"><option value="kmeans">k-means — centroid groups</option><option value="pam">PAM — representative passages</option><option value="hierarchical">Hierarchical — nested groups</option></select></label>
+            <label id="linkageLabel" hidden>Linkage<select id="clusterLinkage"><option value="ward">Ward — within-group variation</option><option value="average">Average — mean pairwise distance</option></select></label>
             <details><summary>Clustering settings</summary>
               <div class="analysis-grid">
                 <label>Retained components<input id="pcaComponents" type="number" min="2" max="50" step="1" value="20"></label>
@@ -238,6 +241,7 @@
             <button class="secondary" id="exportCSV" type="button">Included passages (.csv)</button>
             <button class="secondary" hidden id="exportClusters" type="button">Cluster data (.csv)</button>
             <button class="secondary" hidden id="exportConsensus" type="button">Consensus pairs (.csv)</button>
+            <button class="secondary" hidden id="exportHierarchy" type="button">Hierarchy (.csv)</button>
             <button class="secondary" id="printAnalysis" type="button">Print / save PDF</button>
           </div>
 

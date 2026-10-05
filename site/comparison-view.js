@@ -28,16 +28,18 @@
     if(c.skipped)html+=`<p class="warning">${esc(c.skipped)}</p>`;
     else {
       const reference=new Map(fit.points.map(p=>[p.id,p.cluster]));
-      html+=`<p>Both representations use the same ${fit.analyzed_count} passages, TF-IDF vectors, requested dimensions, cluster count and random seeds. PCA subtracts the average term profile; LSA keeps it.</p>
+      html+=`<p>Both representations use the same ${fit.analyzed_count} passages, TF-IDF vectors, requested dimensions and ${esc(fit.clustering?.name||'k-means')} settings. PCA subtracts the average term profile; LSA keeps it.</p>
         ${table(['Measure','PCA','LSA'],[
           ['Retained dimensions',fit.pca.components,right.lsa.components],
           ['Centered TF-IDF variance retained',percent(fit.pca.retained_variance),percent(right.lsa.retained_variance)],
           [`Original neighbors preserved (${c.neighbors} per passage)`,percent(fit.fidelity.representation.neighbor_overlap),percent(right.fidelity.representation.neighbor_overlap)],
-          ['Silhouette in each representation',number(fit.kmeans.silhouette),number(right.kmeans.silhouette)],
+          ['Silhouette in each representation',number((fit.clustering||fit.kmeans).silhouette),number((right.clustering||right.kmeans).silhouette)],
+          ['Largest group share',percent(Math.max(...fit.clusters.map(g=>g.size))/fit.analyzed_count),percent(Math.max(...right.clusters.map(g=>g.size))/right.analyzed_count)],
           ...(fit.stability&&right.stability?[
             ['Successful stability samples',fit.stability.successful??'Not assessed',right.stability.successful??'Not assessed'],
             ['Mean stability ARI',number(fit.stability.ari?.mean),number(right.stability.ari?.mean)]]:[])])}
         <p><strong>Cluster agreement across representations: ${number(c.between_cluster_ari)} ARI.</strong> A value of 1 means the memberships match after relabeling. This comparison does not select a preferred method.</p>
+        ${[fit,right].some(f=>Math.max(...f.clusters.map(g=>g.size))/f.analyzed_count>=0.9)?'<p class="warning">At least one fit places 90% or more of the passages in one group. Inspect the cluster sizes and sources before interpreting its agreement measures.</p>':''}
         <div class="representation-maps"><div><h4>UMAP from PCA</h4>${map(fit,byId,reference)}</div><div><h4>UMAP from LSA</h4>${map(right,byId,reference)}</div></div>
         <p class="method-note">Both maps use the PCA reference colors to track the same passages. The right map's colors are not LSA assignments. Each layout has its own axes and orientation; compare neighbors and memberships rather than shapes or map distances. Open an individual result below to see its own cluster colors.</p>
         <div class="cluster-legend">${fit.clusters.map(g=>`<span><svg width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="6" fill="${root.UNClusterView.colors[g.cluster-1]}"/></svg> PCA cluster ${g.cluster} · ${g.size}</span>`).join('')}</div>

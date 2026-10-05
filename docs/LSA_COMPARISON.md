@@ -5,6 +5,11 @@ the existing PCA → k-means → UMAP workflow. The comparison uses identical
 filtered, deduplicated source passages and preserves the current default PCA
 fit. It does not change frozen D1 outputs or reviewed-data publication gates.
 
+Browser 1.6 also supports [PAM and hierarchical clustering](PARTITION_METHODS.md).
+Choose one clustering algorithm for both representations. The original k-means
+protocol below remains the default; group samples and geometry checks are shared
+by all three algorithms. No automatic method winner or release gate is inferred.
+
 ## Use
 
 1. Open the [workspace](https://lystadjs.github.io/un/transcript-agent/#analyze).
@@ -188,9 +193,9 @@ acceptance also checked standalone LSA against comparison LSA, shared reference
 colors, source links, HTML/JSON/CSV exports, stale controls, second-fit cancellation,
 and desktop/mobile layouts. See [the validation record](browser-lsa-validation.json).
 
-**Next implementation:** PAM and hierarchical clustering under the same corpus,
+**Implemented in 1.6:** PAM and hierarchical clustering now use the same corpus,
 representation and evidence contracts. Keep representation choices explicit
-when comparing those clustering methods.
+when comparing those clustering methods. HDBSCAN is next in the implementation sequence.
 
 Primary references: [Truncated SVD / LSA](https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.TruncatedSVD.html)
 and [trustworthiness](https://scikit-learn.org/stable/modules/generated/sklearn.manifold.trustworthiness.html).

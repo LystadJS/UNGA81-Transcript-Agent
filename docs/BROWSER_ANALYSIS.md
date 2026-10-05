@@ -2,6 +2,10 @@
 
 Open https://lystadjs.github.io/un/transcript-agent/#analyze.
 
+Current browser version: **1.6.0**. Text clustering now offers k-means, PAM and
+hierarchical Ward/average linkage on either PCA or LSA, including paired
+representation comparison and grouped stability. See [the method guide](PARTITION_METHODS.md).
+
 1. Enter a topic and optional comma-separated alternative phrases. A source
    segment matches any phrase; optional exclusion phrases remove the entire
    segment. Matching is case-insensitive over Unicode word tokens. It does not

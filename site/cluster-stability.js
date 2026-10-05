@@ -1,4 +1,4 @@
-/* Group subsampling: refit TF-IDF, PCA and k-means; compare shared observations.
+/* Group subsampling: refit TF-IDF, representation and partition; compare shared observations.
  * Consensus is descriptive co-assignment, not a new partition or a probability
  * of policy agreement. Failed fits never enter pair or agreement denominators. */
 (function(root) {
@@ -103,8 +103,9 @@
     const options=C.options(fit.parameters),s=options.stability;
     const method=fit.representation||'pca',name=method.toUpperCase();
     const base={schema:'un.cluster-stability.v1',parameters:s,
-      representation:method,
-      procedure:`Uniform group subsampling without replacement; TF-IDF vocabulary/IDF and ${name} refitted in each sample; ten-start k-means; UMAP excluded`,
+      representation:method,algorithm:options.algorithm,algorithm_name:C.algorithmName(options),
+      clustering_parameters:{algorithm:options.algorithm,k:options.k,...(options.algorithm==='hierarchical'?{linkage:options.linkage}:{})},
+      procedure:`Uniform group subsampling without replacement; TF-IDF vocabulary/IDF, ${name} and ${C.algorithmName(options)} refitted in each sample; UMAP excluded`,
       interpretation:'Sensitivity to omitted groups and refitting; not a confidence interval, population estimate, reviewed label or policy agreement probability',
       reference_ids:fit.points.map(p=>p.id),reference_clusters:fit.points.map(p=>p.cluster),warnings:[]};
     if(!s.enabled)return {...base,skipped:'Stability assessment was not selected.'};
@@ -132,17 +133,21 @@
       const replicate={attempt:attempt+1,groups:chosen,selected_count:subset.length,
         indices:rows.map(i=>indexById.get(subset[i].id)),
         excluded_ids:subset.filter((r,i)=>!terms.vectors[i].size||!indexById.has(r.id)).map(r=>r.id),
-        kmeans_seed:(s.seed+Math.imul(attempt+1,0x85ebca6b))>>>0};
+        ...(options.algorithm==='kmeans'?{kmeans_seed:(s.seed+Math.imul(attempt+1,0x85ebca6b))>>>0}:{})};
       if(rows.length<4||rows.length<=options.k){runs.push({...replicate,skipped:'Too few usable passages for the requested k.'});continue;}
       const representation=C.represent(rows.map(i=>terms.vectors[i]),options.components,method,false);
       Object.assign(replicate,{vocabulary:terms.vocabulary,[method+'_components']:representation.components,[method+'_rank']:representation.rank,
         retained_variance:representation.retained_variance,...(method==='lsa'?{retained_energy:representation.retained_energy}:{})});
       if(!representation.rank){runs.push({...replicate,skipped:'No measurable TF-IDF variation.'});continue;}
-      const fits=await C.fitKmeans(representation.scores,options.k,replicate.kmeans_seed,
+      const fitted=await C.fitPartition(representation.scores,{...options,seed:replicate.kmeans_seed??options.seed},
         async step=>progress(message+' · '+step));
-      if(!fits.length){runs.push({...replicate,skipped:'No converged non-empty k-means fit.'});continue;}
-      const labels=fits[0].labels,reference=replicate.indices.map(i=>fit.points[i].cluster);
-      runs.push({...replicate,labels,converged_starts:fits.length,inertia:fits[0].inertia,
+      if(fitted.skipped){runs.push({...replicate,skipped:fitted.skipped});continue;}
+      const labels=fitted.labels,reference=replicate.indices.map(i=>fit.points[i].cluster),d=fitted.diagnostics;
+      const diagnostics=options.algorithm==='kmeans'?{converged_starts:d.converged_starts,inertia:d.inertia}:
+        options.algorithm==='pam'?{pam:{total_distance:d.total_distance,mean_distance:d.mean_distance,swaps:d.swaps,
+          medoid_ids:fitted.medoids.map(i=>subset[rows[i]].id),tolerance:d.tolerance}}:
+        {hierarchical:{linkage:d.linkage,cut_height:d.cut_height,next_merge_height:d.next_merge_height,tied_cut:d.tied_cut}};
+      runs.push({...replicate,labels,...diagnostics,
         ari:C.ari(reference,labels),jaccards:jaccards(reference,labels,clusterIds)});
     }
     const successful=runs.filter(r=>!r.skipped),matrix=consensus(base.reference_clusters,runs);

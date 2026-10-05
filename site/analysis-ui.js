@@ -52,7 +52,7 @@
       end: el('endDate').value,
       region: el('region').value,
       scope: el('meetingScope').value,
-      clustering: {representation:el('representation').value,components:Number(el('pcaComponents').value), k:Number(el('clusterCount').value), neighbors:Number(el('umapNeighbors').value), minDist:Number(el('umapDistance').value), seed:Number(el('clusterSeed').value), umapSeed:Number(el('umapSeed').value),
+      clustering: {representation:el('representation').value,algorithm:el('clusterAlgorithm').value,linkage:el('clusterLinkage').value,components:Number(el('pcaComponents').value), k:Number(el('clusterCount').value), neighbors:Number(el('umapNeighbors').value), minDist:Number(el('umapDistance').value), seed:Number(el('clusterSeed').value), umapSeed:Number(el('umapSeed').value),
         stability:{enabled:el('stabilityEnabled').checked,unit:el('stabilityUnit').value,replicates:Number(el('stabilityReplicates').value),fraction:Number(el('stabilityFraction').value),seed:Number(el('stabilitySeed').value)}},
       methods: [...document.querySelectorAll('input[name=method]:checked')]
         .map(input => input.value)
@@ -523,17 +523,24 @@
     const active=el('clusterMethod').checked;
     el('clusterSettings').hidden=!active;
     el('clusterSettings').querySelectorAll('input,select').forEach(input=>{input.disabled=!active || !!controller;});
+    const hierarchical=el('clusterAlgorithm').value==='hierarchical';
+    el('linkageLabel').hidden=!hierarchical;
+    el('clusterLinkage').disabled=!active||!hierarchical||!!controller;
+    const seeded=el('clusterAlgorithm').value==='kmeans';
+    el('clusterSeed').disabled=!active||!seeded||!!controller;
+    el('clusterSeed').parentElement.hidden=!seeded;
     const stability=active&&el('stabilityEnabled').checked;
     el('stabilitySettings').hidden=!stability;
     el('stabilitySettings').querySelectorAll('input,select').forEach(input=>{input.disabled=!stability || !!controller;});
   }
   el('clusterMethod').addEventListener('change',updateClusterControls);
   el('stabilityEnabled').addEventListener('change',updateClusterControls);
+  el('clusterAlgorithm').addEventListener('change',updateClusterControls);
   updateClusterControls();
 
   function runClusterWorker(records,vectors,options,progress) {
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.5.0');
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.6.0');
       const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
       signal.addEventListener('abort',abort,{once:true});
@@ -610,6 +617,7 @@
       el('analysisReport').innerHTML = render(result);
       el('exportClusters').hidden=!clusterFits(result.methods.clusters).some(f=>f.points);
       el('exportConsensus').hidden=!clusterFits(result.methods.clusters).some(f=>f.stability?.consensus&&!f.stability.skipped);
+      el('exportHierarchy').hidden=!clusterFits(result.methods.clusters).some(f=>f.hierarchical);
       el('analysisOutput').hidden = false;
       exportButtons().forEach(button => { button.disabled = false; });
 
@@ -642,37 +650,51 @@
     if(stale)return;
     const fits=clusterFits(result?.methods.clusters).filter(f=>f.stability?.consensus&&!f.stability.skipped);
     if(!fits.length)return;
-    const compare=!!result.methods.clusters.comparison;
+    const compare=!!result.methods.clusters.comparison,typed=fits[0].algorithm!=='kmeans';
     const quote=v=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,"'$&").replace(/"/g,'""')+'"';
-    const rows=[['representation','left_id','right_id','left_cluster','right_cluster','co_observed','co_clustered','co_assignment_rate']];
+    const rows=[['representation',...(typed?['algorithm','linkage']:[]),'left_id','right_id','left_cluster','right_cluster','co_observed','co_clustered','co_assignment_rate']];
     for(const fit of fits){const s=fit.stability;
       for(let i=1;i<s.reference_ids.length;i++)for(let j=0;j<i;j++){
         const pos=i*(i-1)/2+j,o=s.consensus.co_observed[pos],t=s.consensus.co_clustered[pos];
-        rows.push([fit.representation||'pca',s.reference_ids[i],s.reference_ids[j],s.reference_clusters[i],s.reference_clusters[j],o,t,o?t/o:'']);
+        rows.push([fit.representation||'pca',...(typed?[fit.algorithm,fit.hierarchical?.linkage||'']:[]),s.reference_ids[i],s.reference_ids[j],s.reference_clusters[i],s.reference_clusters[j],o,t,o?t/o:'']);
       }
     }
     // Preserve the previous PCA-only column contract.
-    if(!compare&&fits[0].representation!=='lsa')rows.forEach(row=>row.shift());
+    if(!compare&&!typed&&fits[0].representation!=='lsa')rows.forEach(row=>row.shift());
     save('\uFEFF'+rows.map(row=>row.map(quote).join(',')).join('\r\n'),'un-consensus.csv','text/csv;charset=utf-8');
   };
   el('exportClusters').onclick=()=>{
     if(stale)return;
     const fits=clusterFits(result?.methods.clusters).filter(f=>f.points);if(!fits.length)return;
-    const compare=!!result.methods.clusters.comparison;
+    const compare=!!result.methods.clusters.comparison,typed=fits[0].algorithm!=='kmeans';
     const quote=v=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,"'$&").replace(/"/g,'""')+'"';
     const stable=fits.some(f=>f.stability?.consensus&&!f.stability.skipped);
     const dimensions=Math.max(...fits.map(f=>f[f.representation||'pca'].components));
     const prefix=compare?'D':fits[0].representation==='lsa'?'LS':'PC';
-    const fields=[...(compare?['representation']:[]),'id','text_sha256','cluster',...Array.from({length:dimensions},(_,i)=>prefix+(i+1)),'UMAP1','UMAP2',
+    const fields=[...(compare||typed?['representation']:[]),...(typed?['algorithm','linkage','representative_role','is_representative']:[]),'id','text_sha256','cluster',...Array.from({length:dimensions},(_,i)=>prefix+(i+1)),'UMAP1','UMAP2',
       ...(stable?['resamples_included','observed_peers','within_cluster_consensus','strongest_other_consensus','consensus_margin']:[])];
     const rows=[fields];
     for(const fit of fits){const method=fit.representation||'pca';
       fit.points.forEach((p,i)=>{const s=!fit.stability?.skipped?fit.stability?.consensus?.points[i]:null;
-        rows.push([...(compare?[method]:[]),p.id,p.text_sha256,p.cluster,...Array.from({length:dimensions},(_,d)=>p[method][d]??''),...p.umap,
+        const group=fit.clusters[p.cluster-1];
+        rows.push([...(compare||typed?[method]:[]),...(typed?[fit.algorithm,fit.hierarchical?.linkage||'',group.representative_role,group.representative_id===p.id]:[]),p.id,p.text_sha256,p.cluster,...Array.from({length:dimensions},(_,d)=>p[method][d]??''),...p.umap,
           ...(stable?[s?.included,s?.observed_peers,s?.within_cluster,s?.strongest_other,s?.margin]:[])]);
       });
     }
     save('\uFEFF'+rows.map(row=>row.map(quote).join(',')).join('\r\n'),'un-clusters.csv','text/csv;charset=utf-8');
+  };
+
+  el('exportHierarchy').onclick=()=>{
+    if(stale)return;
+    const fits=clusterFits(result?.methods.clusters).filter(f=>f.hierarchical);if(!fits.length)return;
+    const rows=[['representation','algorithm','linkage','node','left','right','height','size','leaf_id','source_url','selected_cluster']];
+    const byId=new Map(result.matched.map(r=>[r.id,r]));
+    for(const fit of fits){const h=fit.hierarchical,prefix=[fit.representation,fit.algorithm,h.linkage];
+      fit.points.forEach((p,i)=>rows.push([...prefix,i,'','',0,1,p.id,byId.get(p.id).source_url,p.cluster]));
+      h.merges.forEach(m=>rows.push([...prefix,m.node,m.left,m.right,m.height,m.size,'','',h.cut_nodes.includes(m.node)?h.cut_nodes.indexOf(m.node)+1:'']));
+    }
+    const quote=v=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,"'$&").replace(/"/g,'""')+'"';
+    save('\uFEFF'+rows.map(row=>row.map(quote).join(',')).join('\r\n'),'un-hierarchy.csv','text/csv;charset=utf-8');
   };
 
   el('exportResult').onclick = () => {

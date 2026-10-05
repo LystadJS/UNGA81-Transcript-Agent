@@ -7,11 +7,14 @@ executive email theme and Windows-friendly package paths.
 to collect live UN transcripts by topic, dates and speaker region, run selectable
 descriptive methods, download visual reports, and review assigned packets without
 local installation. See the [report builder guide](docs/BROWSER_ANALYSIS.md).
-The selectable text-cluster workflow uses PCA or LSA representation, k-means on those
+The selectable text-cluster workflow uses PCA or LSA representation, k-means, PAM or hierarchical clustering on those
 scores, and a separate UMAP display with source links and exported diagnostics.
 Compare both representations on the same passages, including cluster membership
 and neighborhood preservation. See the [PCA/LSA comparison guide](docs/LSA_COMPARISON.md).
-Optional grouped resampling refits TF-IDF, the chosen representation and k-means, then reports cluster
+PAM supplies actual passage medoids; hierarchical clustering offers Ward/average
+linkage, source-linked dendrograms and complete merge exports. See the
+[PAM and hierarchical guide](docs/PARTITION_METHODS.md).
+Optional grouped resampling refits TF-IDF, the chosen representation and clustering method, then reports cluster
 stability, consensus pair coverage and passages to inspect. See the
 [stability guide and implementation sequence](docs/CLUSTER_STABILITY.md).
 Packet text stays in the browser; completed reviews are returned as files for
