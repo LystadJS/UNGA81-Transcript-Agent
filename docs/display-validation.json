@@ -2,7 +2,7 @@
   "status": "PASS",
   "date": "2026-10-05",
   "engine_version": "browser-descriptive-1.10.0",
-  "scope": "Local engineering and browser acceptance; deployment verification is recorded separately after publishing.",
+  "scope": "Local and deployed browser acceptance, independent numerical checks and successful publication.",
   "corpus_sha256": "469f5d00c84a20b735f2cc23e1688ea1868fa38da90e611894b0d759c282deca",
   "reviewed_mask_sha256": "71a62fb608f8e9437fd8f535e721eb119af3b67da2e05d57c0d2576a8566f8fe",
   "source_inspection": {
@@ -173,7 +173,8 @@
     "mds_map_and_binned_distances_checked": true,
     "source_inspection_expanded_checked": true,
     "maps_preserve_equal_axis_scale": true,
-    "mobile_page_overflow": false
+    "mobile_page_overflow": false,
+    "updated_masthead_preserved_on_live_site": true
   },
   "limitations": [
     "Shared score inputs and initial coordinates for reference fitting; independent distance evaluation and SMACOF updates.",
@@ -183,5 +184,67 @@
     "Display fidelity does not validate clusters, themes or diplomatic relationships.",
     "Frozen R D1 pipeline and release gates unchanged."
   ],
-  "public_mirror_files_hash_checked": 120
+  "public_mirror_files_hash_checked": 120,
+  "live_browser": {
+    "status": "PASS",
+    "source": "https://lystadjs.github.io/un/transcript-agent/",
+    "reviewed_subset": 194,
+    "original_records": 460,
+    "components": 4,
+    "representations": 2,
+    "grouped_refits": 20,
+    "mds_off_additional_refits": 20,
+    "mds_on_off_points_and_stability_identical": true,
+    "soft_membership_exports": true,
+    "mds_display_and_exports": true,
+    "mds_convergence_and_stale_controls": true,
+    "single_spherical_reference": true,
+    "source_links": true,
+    "report_json_csv_original_exports": true,
+    "stale_exports_blocked": true,
+    "cancellation": true,
+    "cancel_during_mds": true,
+    "wrong_review_rejected": true,
+    "mobile_overflow": false,
+    "browser_errors": [],
+    "uploads": []
+  },
+  "deployments": [
+    {
+      "repository": "LystadJS/UNGA81-Transcript-Agent",
+      "commit": "e8f4804197c9b3ef277a3e288c840790596510c1",
+      "name": "Publish review workspace",
+      "status": "completed",
+      "conclusion": "success",
+      "run": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37350776272"
+    },
+    {
+      "repository": "LystadJS/LystadJS.github.io",
+      "commit": "77e7d40064ce200f469617242b445208b27681a6",
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "run": "https://github.com/LystadJS/LystadJS.github.io/actions/runs/37350774824"
+    }
+  ],
+  "deployed_assets": {
+    "status": "PASS",
+    "url": "https://lystadjs.github.io/un/transcript-agent/",
+    "manifest_entries": 120,
+    "changed_assets_byte_verified": [
+      "index.html",
+      "mds-core.js",
+      "mds-view.js",
+      "display-audit.html",
+      "analysis-core.js",
+      "analysis-ui.js",
+      "analysis.css",
+      "cluster-options.js",
+      "cluster-core.js",
+      "cluster-view.js",
+      "cluster-worker.js",
+      "nmf-worker.js",
+      "theme.css"
+    ]
+  }
 }
