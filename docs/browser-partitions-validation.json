@@ -347,5 +347,139 @@
     "cluster-stability.js": "9e52ca3ca791b435b65cc737a724b56a646b0293116cfd9edff31e850fc6b4a9",
     "hierarchy-view.js": "e82f1eac88d7b73eb401c8b1b16c46e23d54df03cfdcc6ac9423383c66c9dd27"
   },
-  "interpretation": "Engineering acceptance on a saved public collection; no validated political categories or predictive claim."
+  "interpretation": "Engineering acceptance on a saved public collection; no validated political categories or predictive claim.",
+  "published_browser": {
+    "url": "https://lystadjs.github.io/un/transcript-agent/",
+    "cases": [
+      {
+        "mode": "pam",
+        "engine": "browser-descriptive-1.6.0",
+        "passages": 458,
+        "seconds": 16.768,
+        "paired_samples": 30,
+        "silhouette": {
+          "pca": 0.34079362124937285,
+          "lsa": 0.34454339281926316
+        },
+        "mean_stability_ari": {
+          "pca": 0.8341031779053653,
+          "lsa": 0.8361553357043323
+        },
+        "between_representation_ari": 1,
+        "cluster_sizes": {
+          "pca": [
+            84,
+            47,
+            61,
+            266
+          ],
+          "lsa": [
+            84,
+            47,
+            61,
+            266
+          ]
+        },
+        "exports": [
+          "JSON",
+          "HTML",
+          "cluster CSV",
+          "consensus CSV"
+        ],
+        "source_links": true,
+        "mobile_overflow": false
+      },
+      {
+        "mode": "ward",
+        "engine": "browser-descriptive-1.6.0",
+        "passages": 458,
+        "seconds": 17.618,
+        "paired_samples": 30,
+        "silhouette": {
+          "pca": 0.40892955152662724,
+          "lsa": 0.4006555109978275
+        },
+        "mean_stability_ari": {
+          "pca": 0.9627343020423899,
+          "lsa": 0.9021211249037029
+        },
+        "between_representation_ari": 0.9590059481107795,
+        "cluster_sizes": {
+          "pca": [
+            82,
+            196,
+            124,
+            56
+          ],
+          "lsa": [
+            90,
+            196,
+            117,
+            55
+          ]
+        },
+        "exports": [
+          "JSON",
+          "HTML",
+          "cluster CSV",
+          "consensus CSV",
+          "hierarchy CSV"
+        ],
+        "source_links": true,
+        "mobile_overflow": false
+      },
+      {
+        "mode": "average",
+        "engine": "browser-descriptive-1.6.0",
+        "passages": 458,
+        "seconds": 16.1,
+        "paired_samples": 30,
+        "silhouette": {
+          "pca": 0.29675825929423816,
+          "lsa": 0.3114706006477383
+        },
+        "mean_stability_ari": {
+          "pca": 0.9370069249884767,
+          "lsa": 0.5460385720236707
+        },
+        "between_representation_ari": 0.5922372208988244,
+        "cluster_sizes": {
+          "pca": [
+            2,
+            445,
+            4,
+            7
+          ],
+          "lsa": [
+            435,
+            4,
+            12,
+            7
+          ]
+        },
+        "exports": [
+          "JSON",
+          "HTML",
+          "cluster CSV",
+          "consensus CSV",
+          "hierarchy CSV"
+        ],
+        "source_links": true,
+        "mobile_overflow": false
+      }
+    ],
+    "browser_errors": [],
+    "shared_coordinates_and_samples": true,
+    "stale_exports_disabled": true,
+    "cancel_during_resampling": true,
+    "status": "PASS"
+  },
+  "deployment": {
+    "project_commit": "de20cd3f2de34a6df790cb97af7cb8de779cd924",
+    "project_workflow": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37266405634",
+    "website_commit": "55ce3250fdd246af5028c575321f82794b490468",
+    "website_workflow": "https://github.com/LystadJS/LystadJS.github.io/actions/runs/37266438911",
+    "both_conclusions": "success",
+    "source_mirror_hashes_match": true
+  }
 }
