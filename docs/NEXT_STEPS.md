@@ -44,9 +44,11 @@ excerpts from three speeches; six supported audio outcomes, five discrepancy
 notes and one unclear outcome. Do not request that completed review again. Exact
 replacement-span editing and aligned corrected-text versions remain separate work.
 
-## B. Improve the observation — corpus contract implemented; new-source review remains
+## B. Improve the observation — provisional machine review completed; human adjudication deferred
 
 **Implementation:** [expanded corpus and weighting contract](PASSAGE_CORPUS.md) now freezes 21 development meetings (1–4 October 2026) and 37 reserved comparison meetings (5–6 October), preserves complete source-segment partitions and original bytes, and supplies explicit descriptive weights. Speech/country weights remain withheld until new-source boundaries and attribution support them. The reserved text has not been collected or evaluated; this is not yet independent replication. Existing weighted model fitting remains disabled.
+
+**Owner-directed machine path:** [the automated batch and lexical exploration](MACHINE_REVIEW.md) now covers all 1,293 development source segments, retaining all 2,596 passage partitions. The strict provisional population contains 1,641 passages from 523 observed parents in 16 meetings. Six clustering fits, two NMF decompositions and 16 leave-one-development-meeting-out refits completed. Machine proposals remain separate from human confirmations; human adjudication is deferred and must not block further provisional engineering or exploration. The 37 reserved transcripts remain unopened.
 
 Expand beyond purposive windows to a declared sample of complete or near-complete
 speech partitions, preserving meeting → speech → passage lineage. Select sources
@@ -159,6 +161,6 @@ forecasting, event-risk and causal diffusion models retain their own training,
 evaluation and data prerequisites. They are not prerequisites for transparent
 unsupervised source exploration, and their current safeguards are not bypassed.
 
-**Boundary-review packet:** [the source-linked development packet](BOUNDARY_REVIEW.md) is now prepared for all original development source segments, with explicit pending decisions, cached evidence, resumable JSON and unchanged source/weighting contracts. The 37 reserved meetings remain unopened.
+**Boundary-review packet:** [the source-linked development packet](BOUNDARY_REVIEW.md) remains available for later human adjudication. Its original pending decisions and the previously completed owner pilot are unchanged. Machine review is stored in a separate schema and does not complete that human packet.
 
-**Next step:** complete the new development-source review in that packet, validate the returned choices against the original checkpoint, and freeze the eligible observation population. Internal split/correction cases stay unresolved rather than being promoted to complete speeches. A pinned semantic-embedding comparison follows the eligible-population decision. Keep the reserved temporal frame unopened until a model-specific evaluation protocol is frozen. Establish null-reference and held-out-source validation before promoting discovered groups as nonrandom diplomatic structure.
+**Next step:** add a pinned local semantic-embedding comparison on the same provisional development identities, retaining strict/inclusive selection sensitivity and machine-only status. Internal split/correction cases stay unresolved rather than being promoted to complete speeches. Do not wait for human adjudication to continue this provisional path. Keep all 37 reserved temporal transcripts unopened until separately authorized under a frozen model-specific evaluation protocol. Establish null-reference and held-out-source validation before promoting discovered groups as nonrandom diplomatic structure.
