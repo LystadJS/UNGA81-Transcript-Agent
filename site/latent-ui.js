@@ -14,7 +14,7 @@
   function invalidate(){ticket++;stop('Settings changed; active calculation cancelled.');current=null;archiveA=null;$('results').hidden=true;status('Settings changed. Run or reopen a saved comparison before exporting.');}
   function worker(data){
     stop();busy(true);
-    return new Promise((resolve,reject)=>{const w=new Worker('latent-worker.js');task={worker:w,reject};
+    return new Promise((resolve,reject)=>{const w=new Worker('latent-worker.js?v=1.1.0');task={worker:w,reject};
       const finish=()=>{w.terminate();if(task?.worker===w)task=null;busy(false);};
       w.onmessage=({data:d})=>{if(d.type==='progress'){status(d.message);return;}finish();if(d.type==='error')reject(Error(d.message));else resolve(d);};
       w.onerror=event=>{finish();reject(Error(event.message||'The comparison worker could not run.'));};w.postMessage(data);
@@ -94,13 +94,15 @@
     archiveA=text;show(data,'Archived snapshot · stored results and coordinates restored without refitting. Current renderer; saved numerical runtime is recorded below.');
   }));
   $('savedB').addEventListener('change',guarded(async()=>{
-    if(!archiveA)throw Error('Run a comparison or open saved run A first.');const t=ticket,text=await read($('savedB').files[0],L.LIMIT);if(t!==ticket)return;
+    if(!archiveA)throw Error('Run a comparison or open saved run A first.');current=null;$('results').hidden=true;const t=++ticket,text=await read($('savedB').files[0],L.LIMIT);if(t!==ticket)return;
     const data=await worker({action:'compare_saved',left:archiveA,right:text});if(t!==ticket)return;
     show(data,'Two archived runs · paired only on identical source populations. Keep the original A and B archives for replay; the exported comparison JSON is not a replay bundle.');
   }));
   $('saveRun').addEventListener('click',guarded(()=>{const d=requireResult();if(!d.archive_text)throw Error('Preserve the two original run archives separately.');download('latent-saved-run.json',d.archive_text);}));
   $('saveJSON').addEventListener('click',guarded(()=>download('latent-comparison.json',JSON.stringify(requireResult().result,null,2))));
   $('saveCSV').addEventListener('click',guarded(()=>download('latent-diagnostics.csv',V.csv(requireResult().result),'text/csv;charset=utf-8')));
+  $('saveCoverage').addEventListener('click',guarded(()=>download('latent-coverage.csv',V.coverageCSV(requireResult().result),'text/csv;charset=utf-8')));
+  $('saveWeights').addEventListener('click',guarded(()=>download('latent-weights.csv',V.weightsCSV(requireResult().result),'text/csv;charset=utf-8')));
   $('saveHTML').addEventListener('click',guarded(async()=>{const d=requireResult(),css=await fetch('latent.css').then(r=>{if(!r.ok)throw Error('Export stylesheet unavailable.');return r.text();});if(current!==d)throw Error('Result changed before export.');const content=V.html(d.result).replace(/<details>/g,'<details open>');download('latent-comparison.html','<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><title>Latent structure comparison</title><style>'+css+'</style></head><body><main><h1>Latent structure comparison</h1><p>Exploratory, source-linked output. No automatic substantive labels or publication release.</p>'+content+'</main></body></html>','text/html;charset=utf-8');}));
   renderRows();
 })();

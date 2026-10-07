@@ -26,11 +26,17 @@ The [comparison workspace](LATENT_COMPARISON.md), `site/latent.html`, adds:
   components and hard partitions are not interchangeable quantities. There is
   no composite best-method score or new publication producer.
 
-Acceptance is recorded by `Latent comparison acceptance` in GitHub Actions,
-including existing numerical/provenance regressions and new synthetic browser
-checks. See the implementation guide for executable commands and the scope of
-validation. Engineering acceptance must not be described as a new analysis of
-the owner's private corpus or a substantive diplomatic finding.
+Version 1.1 completes separate saved-run A/B coverage charts, hard and overlapping
+component weighting summaries, dedicated CSVs and complete-cohort replay checks.
+The actual twelve-excerpt pilot now passes archive and browser acceptance;
+three-parent fits remain withheld. This is engineering acceptance, not evidence
+of a representative corpus or a substantive diplomatic finding. See the
+[validation record](comparison-refinement-validation.json) and
+[prioritized implementation sequence](DISCOVERY_PRIORITIES.md).
+
+Acceptance is also recorded by `Latent comparison acceptance` in GitHub Actions,
+including existing numerical/provenance regressions and synthetic browser checks.
+The implementation guide separates private-pilot, synthetic and deployed checks.
 
 The earlier reviewed-unit import and separate correction ledger remain intact.
 All 24 owner decisions in the audio/boundary pilot are complete: twelve included

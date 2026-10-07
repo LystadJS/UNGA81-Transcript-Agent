@@ -1,11 +1,12 @@
 {
   "schema": "un.browser.release.v1",
   "browser_engine": "browser-descriptive-1.12.1",
-  "comparison_engine": "latent-comparison-1.0.0",
+  "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-10-07",
-  "features": ["source-bound saved runs", "parent/excerpt comparison", "reusable settings plans", "date-first individual meeting selection"],
+  "features": ["source-bound saved runs", "parent/excerpt comparison", "separate A/B coverage snapshots", "hard and overlapping component weighting charts", "coverage and weighting CSV exports", "complete-cohort replay validation", "reusable settings plans", "date-first individual meeting selection"],
   "meeting_routes": "Validated canonical UN inventory paths, including HRC and treaty-body routes",
-  "acceptance_run": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37651586467",
+  "previous_acceptance_run": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37651586467",
+  "validation_record": "https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/main/docs/comparison-refinement-validation.json",
   "numerical_kernels_changed": false,
   "D1_publication_gates_changed": false,
   "analysis_status": "exploratory; no automatic substantive labels or formal nonrandomness test"

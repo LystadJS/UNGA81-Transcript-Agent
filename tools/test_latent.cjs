@@ -23,5 +23,39 @@ const copy=x=>JSON.parse(JSON.stringify(x));
   await check('rendered source labels are escaped and HTML has no script tags',async()=>{const r=copy(result);r.entries[0].label='<script>alert(1)</script>';const html=V.html(r);assert.ok(html.includes('&lt;script&gt;'));assert.ok(!/<script\b/i.test(html));assert.ok(html.includes('Parent coverage'));assert.ok(html.includes('href="https://transcripts.un.org/'));});
   await check('CSV strings cannot become spreadsheet formulas',async()=>{const r=copy(result);r.entries[0].summary.label='=HYPERLINK("https://invalid")';assert.ok(V.csv(r).includes("'=HYPERLINK"));});
   await check('progress cancellation rejects without a completed result',async()=>{await assert.rejects(()=>L.run(f.payload,f.plan,{},async()=>{throw Error('TEST CANCEL');}),/TEST CANCEL/);});
+  await check('saved A/B comparison retains separate coverage, weights and cohort changes',async()=>{
+    const p=copy(f.plan);p.base={...p.base,topic:'alpha',phrases:['alpha'],exclude:[]};
+    const b=await L.run(f.payload,p),bText=await L.pack(f.payload,b);
+    const comparison=await L.compareSaved(await L.restore(archive),await L.restore(bText));
+    assert.equal(comparison.snapshots[0].coverage.length,6);assert.equal(comparison.snapshots[1].coverage.length,1);
+    assert.equal(comparison.coverage_change.filter(r=>r.reason==='Only in A retained cohort').length,5);
+    const shared=comparison.coverage_change.find(r=>r.comparable);assert.equal(shared.coverage_change,0);assert.ok(Math.abs(shared.observation_share_change-5/6)<1e-12);
+    assert.match(V.html(comparison),/Saved-run coverage and weighting/);assert.match(V.coverageCSV(comparison),/"A"/);assert.match(V.coverageCSV(comparison),/"B"/);
+    assert.ok(comparison.pairs.every(r=>r.withheld));
+  });
+  await check('NMF and Gaussian summaries balance parents without hardening soft membership',async()=>{
+    const matched=['a','b','c','d','e'].map((id,i)=>({id,parent_id:i<3?'one':i===3?'two':'undefined',country:'Synthetic',source_url:'https://transcripts.un.org/en/asset/test/group0'}));
+    const points=matched.map((r,i)=>({id:r.id,shares:i<3?[.8,.2]:i===3?[.1,.9]:null}));
+    const entry={method:'nmf',result:{matched,methods:{nmf:{parameters:{components:2},points}}}};
+    const m=L.mixtures(entry);assert.ok(Math.abs(m.totals[0].passage_weighted-.625)<1e-12);assert.ok(Math.abs(m.totals[0].parent_balanced-.45)<1e-12);
+    assert.equal(m.parent_count,3);assert.equal(m.defined_parents,2);assert.deepEqual(m.undefined_ids,['e']);assert.equal(m.rows[2].shares[0],null);
+    const g={method:'clusters',result:{matched:matched.slice(0,4),methods:{clusters:{algorithm:'gmm',parameters:{k:2},points:points.slice(0,4).map(p=>({id:p.id,memberships:p.shares}))}}}};
+    assert.deepEqual(L.mixtures(g).totals,m.totals);g.result.methods.clusters.points[0].memberships=[.8,.8];assert.throws(()=>L.mixtures(g),/Invalid saved mixture/);
+    assert.match(V.weightsCSV({entries:[{...entry,id:'test',unit:'excerpt',mixture:m}]}),/defined_groups/);
+  });
+  await check('recomputed hashes cannot conceal changed cohorts, coverage or cached summaries',async()=>{
+    for(const mutate of [r=>r.entries.pop(),r=>r.entries[0].result.matched.pop(),r=>r.coverage[0].coverage_fraction=.001,r=>r.coverage[0].parent_text_sha256='0'.repeat(64),r=>r.entries[0].summary.usable=0,r=>r.entries[0].result.parameters.clustering.seed++]){
+      const changed=JSON.parse(archive),r=JSON.parse(changed.result_json);mutate(r);changed.result_json=JSON.stringify(r);changed.result_sha256=await L.hash(changed.result_json);
+      await assert.rejects(()=>L.restore(JSON.stringify(changed)),/differ|Changed saved point/);
+    }
+  });
+  await check('legacy archives keep exact results and no numerical method is invoked on restore',async()=>{
+    const legacy=copy(result);legacy.engine='latent-comparison-1.0.0';legacy.coverage.forEach(r=>delete r.parent_text_sha256);legacy.entries.forEach(r=>delete r.mixture);
+    const text=await L.pack(f.payload,legacy),C=require('../site/cluster-core.js'),N=require('../site/nmf-core.js'),oldC=C.run,oldN=N.run;
+    try{C.run=N.run=()=>{throw Error('Unexpected numerical refit');};const restored=await L.restore(text);assert.equal(restored.archive_text,text);assert.deepEqual(restored.result,legacy);}finally{C.run=oldC;N.run=oldN;}
+  });
+  await check('unchanged excerpt text with changed parent context cannot earn a comparison score',async()=>{
+    const changed=copy(result.entries[0]);changed.result.matched[0].parent_text_sha256='0'.repeat(64);assert.match(L.paired(result.entries[0],changed).withheld,/parent text changed/);
+  });
   console.log(JSON.stringify({status:'PASS',synthetic_only:true,checks:passed.length,passed,node:process.version,original_private_corpus_used:false}));
 })().catch(error=>{console.error(error);process.exitCode=1;});

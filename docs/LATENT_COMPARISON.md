@@ -2,7 +2,7 @@
 
 Open **Compare latent structure** from the transcript workspace, or open
 [`latent.html`](https://lystadjs.github.io/un/transcript-agent/latent.html).
-The new orchestration engine is `latent-comparison-1.0.0`. Existing browser
+The orchestration engine is `latent-comparison-1.1.0`. Existing browser
 numerical engines, frozen R references, daily adapters and publication gates
 are unchanged. The workspace is an audit tool, not an automatic topic/stance or
 policy-alignment classifier.
@@ -23,7 +23,10 @@ policy-alignment classifier.
    assessable denominators are retained and compared.
 5. Generate the comparison, inspect coverage, fit status, source examples,
    assignment coverage and sensitivity, then save the replayable run or export
-   JSON, diagnostic CSV and self-contained visual HTML.
+   JSON, diagnostic/coverage/weighting CSVs and self-contained visual HTML.
+6. Open saved run A, then saved run B. Each keeps its own coverage, weights and
+   settings. Coverage changes are reported only for identical original parent
+   text; absent parents remain outside the corresponding retained cohort.
 
 The comparison page performs no new transcript collection. It reads imported
 files locally and executes numerical work in a cancellable Web Worker. Its
@@ -56,12 +59,20 @@ contract omits JavaScript-only undefined properties and serializes negative zero
 as zero; finite coordinate values and archived strings round-trip unchanged.
 
 Reopening checks both hashes, revalidates source and review lineage through the
-existing loaders, reconstructs the descriptive selection, verifies source
-identities, metadata and offsets, and restores the stored results. It does not
+existing loaders, reconstructs the complete excerpt and full-parent populations,
+and verifies the planned fit inventory, normalized settings, counts, original
+metadata, offsets, coverage and cached composition summaries. Omitting records
+from an archived fit is rejected even if its outer hash is recalculated. It does not
 refit PCA, clustering, NMF or UMAP. Hashes establish consistency, not authenticity
 of a reviewer or proof of numerical correctness. They do not protect against a
 person deliberately forging both content and hashes. The exact numerical runtime
 is recorded; a seed alone is not claimed to reproduce another environment.
+
+Version 1.0 archives remain readable and byte-preserved. Their original outputs
+are not rewritten to add new fields. The current renderer can derive overlapping
+component summaries from their stored weights. A failed second-run import clears
+the previous comparison and exports, preventing a stale report from appearing
+to describe the rejected file.
 
 Raw historical `analysis.json` exports are not silently promoted into replayable
 runs: they may lack the original input bytes and review lineage. Open a source
@@ -90,6 +101,21 @@ fit. The additional **parent-balanced cluster composition** first calculates
 cluster shares within each represented parent and then averages parents equally.
 That is a descriptive summary of the existing partition, **not** a reweighted PCA,
 TF-IDF or clustering fit. Country-balanced fitting is not implemented in this phase.
+
+The same two summaries now retain NMF's normalized component shares and Gaussian
+mixture responsibilities. No hard assignment is substituted for overlapping
+weights. Undefined NMF shares are excluded, with explicit defined-passage and
+defined-parent denominators; a parent with no defined shares is absent from that
+conditional summary, not a zero-weight theme. Source-record analysis labels its
+balanced summary accordingly: an original transcript segment is not automatically
+a complete speech.
+
+Coverage bars share a 0–100% original-text scale. Paired composition bars show
+passage-weighted and equal-parent summaries on the same scale. Expandable component
+profiles retain source links and values, show up to 30 parents in source order,
+and retain all rows in JSON. Components remain local to their fitted model and
+have no automatic substantive names. The dedicated CSVs retain denominator
+counts, original parent hashes where available, and the balancing unit.
 
 Full speeches and excerpts are different observations in different fitted feature
 spaces. No cross-unit ARI, coordinate displacement, cluster-number matching or
@@ -176,7 +202,21 @@ small-parent refusal and desktop/mobile overflow. Logs and screenshots are saved
 as GitHub Actions artifacts. A successful CI-built-site run is distinct from a
 successful test against a deployed public URL.
 
-This phase does not newly validate the owner's real private twelve-excerpt bundle
-or rerun an expanded reviewed diplomatic corpus. Existing source review is complete;
-no new reviewer choices are invented, and none of the five correction notes is
-silently applied to source text.
+Version 1.1 also runs the owner's real private twelve-excerpt bundle through
+PCA/k-means, LSA/k-means and NMF, archive replay, A/B comparison and browser exports.
+The three-parent models remain withheld. Four included excerpts per parent make
+the pilot's passage-weighted and equal-parent component summaries coincide;
+separate unequal-size fixtures test the case where those weights differ.
+
+Run the private acceptance tool locally with an explicitly selected bundle:
+
+```sh
+node tools/check_latent_pilot.cjs BUILT_SITE_OR_URL REVIEWED_BUNDLE NEW_OUTPUT
+```
+
+The tool writes private archives, reports, CSVs and screenshots only to that new
+local output directory. It does not include private inputs in CI or publish them.
+See [executed validation](comparison-refinement-validation.json) for newly run
+checks, runtimes and deployment evidence. This is workflow acceptance, not a new
+representative corpus or evidence of nonrandom diplomatic structure. All existing
+source review remains complete; correction notes are not silently applied to text.

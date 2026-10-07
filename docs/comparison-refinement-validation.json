@@ -1,0 +1,110 @@
+{
+  "schema": "un.comparison-refinement-validation.v1",
+  "date": "2026-10-07",
+  "comparison_engine": "latent-comparison-1.1.0",
+  "browser_engine": "browser-descriptive-1.12.1",
+  "scope": "Newly executed acceptance for coverage/weighting refinement; inherited numerical kernels unchanged.",
+  "local_core": {
+    "status": "PASS",
+    "checks": 24,
+    "synthetic_only": true,
+    "node": "v24.15.0"
+  },
+  "local_browser": {
+    "status": "PASS",
+    "source": "http://127.0.0.1:56406/latent.html",
+    "synthetic_only": true,
+    "private_owner_bundle_used": false,
+    "checks": [
+      "real worker: PCA/LSA/NMF, full parents, coverage and runtime hashes",
+      "source coverage and hard/soft weighting charts with dedicated CSV exports",
+      "replay archive, numerical JSON, diagnostics CSV and script-free source-linked visual HTML",
+      "validated reusable settings export",
+      "1440px desktop and 390px mobile: no page overflow",
+      "stale settings hide completed results and exports",
+      "saved run restores exact coordinates, numerical results and archive bytes",
+      "two saved-run comparison retains A/B coverage and uses shared identities, not matching numeric labels",
+      "failed run B import clears previous comparison and exports",
+      "tampered saved run rejected without retaining a prior export",
+      "worker cancellation releases no partial result",
+      "three-parent baseline withheld visibly, while excerpt fit remains available",
+      "no JavaScript errors, uploads or external requests"
+    ],
+    "check_count": 13,
+    "browser": "154.0.4258.62",
+    "node": "v24.15.0",
+    "errors": [],
+    "uploads": [],
+    "external_requests": []
+  },
+  "local_owner_pilot": {
+    "status": "PASS",
+    "source": "http://127.0.0.1:56405/latent.html",
+    "actual_owner_bundle": true,
+    "reviewed_excerpts": 12,
+    "parent_speeches": 3,
+    "meetings": 3,
+    "settings_per_run": 3,
+    "parent_models_withheld": true,
+    "exact_archive_replay": true,
+    "A_B_coverage_preserved": true,
+    "display_only_scores_and_assignments_unchanged": true,
+    "NMF_weighting_views_coincide_because_each_parent_has_four_defined_excerpts": true,
+    "script_free_visual_exports": true,
+    "coverage_and_weighting_CSV": true,
+    "mobile_overflow": false,
+    "errors": [],
+    "uploads": [],
+    "external_requests": [],
+    "interpretation": "Workflow pilot, not representative inference or a test of nonrandom diplomatic structure."
+  },
+  "regressions": {
+    "status": "PASS",
+    "browser_suites": [
+      "analysis",
+      "clusters",
+      "stability",
+      "lsa",
+      "partitions",
+      "hdbscan",
+      "nmf",
+      "gmm",
+      "mds",
+      "reviewed_units"
+    ],
+    "additional": [
+      "speech_pilot",
+      "passage_comparison",
+      "meeting_picker"
+    ],
+    "meeting_picker_checks": 12,
+    "passage_type_python_tests": 6
+  },
+  "arithmetic_fixture": {
+    "case": "Unequal child counts with overlapping NMF/GMM weights",
+    "component_1_passage_weighted": 0.625,
+    "component_1_parent_balanced": 0.45,
+    "undefined_NMF_shares": "Excluded with explicit denominators, never converted to zero"
+  },
+  "unchanged_input_sha256": {
+    "original_corpus": "469f5d00c84a20b735f2cc23e1688ea1868fa38da90e611894b0d759c282deca",
+    "passage_type_review": "71a62fb608f8e9437fd8f535e721eb119af3b67da2e05d57c0d2576a8566f8fe",
+    "speech_pilot_packet": "64a8d42f1414ab2af79942f0370d0ed2b502897f44252c382feb0b71fcc35563",
+    "reviewed_analysis_bundle": "f6e1674db4953188eb80214c2d6ba37d1bc4bb5bbb1b2b718007d1d5a27b721f"
+  },
+  "numerical_kernels_changed": false,
+  "weighted_model_fitting_added": false,
+  "D1_publication_gates_changed": false,
+  "private_source_or_review_files_published": false,
+  "reserved_temporal_transcript_text_opened": false,
+  "limitations": [
+    "Three parents cannot support whole-parent model fitting under current minimum of four.",
+    "Twelve purposively reviewed excerpts are an engineering pilot, not representative policy inference.",
+    "Balanced weights are descriptive composition summaries, not weighted estimation.",
+    "No formal null-calibrated nonrandomness or held-out performance claim."
+  ],
+  "deployment": {
+    "status": "pending_publication",
+    "note": "Local acceptance is not evidence of deployed behavior."
+  }
+}

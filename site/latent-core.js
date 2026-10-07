@@ -1,7 +1,7 @@
 /* Source-bound comparison orchestration; existing numerical engines and D1 gates are unchanged. */
 (function (root) {
   'use strict';
-  const VERSION = 'latent-comparison-1.0.0';
+  const VERSION = 'latent-comparison-1.1.0';
   const LIMIT = 128 * 1024 * 1024;
   const encoder = new TextEncoder();
   const node = typeof module !== 'undefined' && module.exports;
@@ -87,7 +87,7 @@
       const spans = children.map(r=>[r.start,r.end]).sort((a,b)=>a[0]-b[0]);
       let covered=0,end=-1;
       for (const [a,b] of spans) { assert(Number.isInteger(a)&&Number.isInteger(b)&&a>=0&&b>a&&b<=length, 'Invalid excerpt span.'); covered+=Math.max(0,b-Math.max(a,end)); end=Math.max(end,b); }
-      return {parent_id:id,country:p.country,source_url:p.source_url,passages:children.length,selected_code_points:covered,parent_code_points:length,coverage_fraction:length?covered/length:null,passage_weight:children.length/(records.length||1),equal_parent_summary_weight:1/groups.size,ids:children.map(r=>r.id)};
+      return {parent_id:id,parent_text_sha256:p.text_sha256,country:p.country,source_url:p.source_url,passages:children.length,selected_code_points:covered,parent_code_points:length,coverage_fraction:length?covered/length:null,passage_weight:children.length/(records.length||1),equal_parent_summary_weight:1/groups.size,ids:children.map(r=>r.id)};
     });
   }
   function summarize(entry) {
@@ -112,6 +112,53 @@
     const labels=[...new Set(fit.points.map(p=>p.cluster))].sort((a,b)=>a-b);
     return {role:'Hard-assignment composition, not a weighted refit; cluster 0 is unassigned, not a theme.',parent_count:groups.size,passage_count:fit.points.length,rows:Array.from(groups,([parent_id,points])=>({parent_id,passages:points.length,shares:labels.map(cluster=>({cluster,share:points.filter(p=>p.cluster===cluster).length/points.length}))})),totals:labels.map(cluster=>({cluster,passage_weighted:fit.points.filter(p=>p.cluster===cluster).length/fit.points.length,parent_balanced:mean(Array.from(groups.values(),ps=>ps.filter(p=>p.cluster===cluster).length/ps.length))}))};
   }
+  // Overlapping weights remain overlapping; no argmax conversion or weighted refit.
+  function mixtures(entry) {
+    const fit=entry.result?.methods?.[entry.method];
+    if(!fit?.points||(entry.method!=='nmf'&&fit.algorithm!=='gmm'))return null;
+    const k=entry.method==='nmf'?fit.parameters.components:fit.parameters.k;
+    const records=new Map(entry.result.matched.map(r=>[r.id,r])),groups=new Map(),undefinedIds=[];
+    for(const p of fit.points){
+      const r=records.get(p.id);assert(r,'Mixture source identity is missing.');
+      const parent=r.parent_id||r.id,v=entry.method==='nmf'?p.shares:p.memberships;
+      if(!groups.has(parent))groups.set(parent,{parent_id:parent,country:r.country,source_url:r.source_url,total:0,points:[]});
+      const g=groups.get(parent);g.total++;
+      if(v===null&&entry.method==='nmf'){undefinedIds.push(p.id);continue;}
+      assert(Array.isArray(v)&&v.length===k&&v.every(x=>Number.isFinite(x)&&x>=0&&x<=1)&&Math.abs(v.reduce((s,x)=>s+x,0)-1)<1e-6,'Invalid saved mixture shares.');
+      g.points.push({id:p.id,values:v});
+    }
+    const valid=[...groups.values()].filter(g=>g.points.length),all=valid.flatMap(g=>g.points);
+    const rows=[...groups.values()].map(g=>({parent_id:g.parent_id,country:g.country,source_url:g.source_url,usable:g.total,defined:g.points.length,shares:Array.from({length:k},(_,j)=>mean(g.points.map(p=>p.values[j])))}));
+    return {kind:entry.method==='nmf'?'nmf_shares':'gmm_responsibilities',role:entry.method==='nmf'?'Normalized NMF weights, not probabilities or stances.':'Conditional Gaussian memberships, not calibrated policy probabilities.',
+      fitting:'Original equal-observation fit; changing the descriptive summary does not refit the model.',
+      passage_count:fit.points.length,defined_passages:all.length,parent_count:groups.size,defined_parents:valid.length,undefined_ids:undefinedIds,rows,
+      totals:Array.from({length:k},(_,j)=>({component:j+1,passage_weighted:mean(all.map(p=>p.values[j])),parent_balanced:mean(rows.filter(r=>r.defined).map(r=>r.shares[j]))}))};
+  }
+  function coverageChange(left,right){
+    const lookup=r=>new Map((r.coverage||[]).map(c=>[c.parent_id,{...c,parent_text_sha256:c.parent_text_sha256||r.entries.flatMap(e=>e.result?.matched||[]).find(p=>p.parent_id===c.parent_id)?.parent_text_sha256}]));
+    const a=lookup(left),b=lookup(right),ids=[...new Set([...a.keys(),...b.keys()])];
+    return ids.map(parent_id=>{
+      const l=a.get(parent_id)||null,r=b.get(parent_id)||null;
+      const comparable=!!(l&&r&&l.parent_text_sha256&&l.parent_text_sha256===r.parent_text_sha256);
+      return {parent_id,country:(l||r).country,left:l,right:r,comparable,
+        coverage_change:comparable?r.coverage_fraction-l.coverage_fraction:null,
+        observation_share_change:comparable?r.passage_weight-l.passage_weight:null,
+        reason:!l?'Only in B retained cohort':!r?'Only in A retained cohort':!comparable?'Original parent text differs or its hash is unavailable':null};
+    });
+  }
+  async function compareSaved(a,b){
+    const prefix=(entries,p)=>entries.map(e=>({...e,id:p+e.id,label:p+e.label,summary:{...e.summary,id:p+e.id,label:p+e.label}}));
+    const left=prefix(a.result.entries,'A/'),right=prefix(b.result.entries,'B/'),pairs=[];
+    for(const l of left)for(const r of right)if(l.unit===r.unit)pairs.push(paired(l,r));
+    const snapshots=[a,b].map((run,i)=>({label:i?'B':'A',created_at:run.result.created_at,plan:run.result.plan,counts:run.result.counts,
+      coverage:run.result.coverage||[],source_hash:run.result.source_hash,selection_hash:run.result.selection_hash,
+      weighting:run.result.weighting,parent_comparison:run.result.parent_comparison}));
+    return {schema:'un.latent-saved-comparison.v1',engine:VERSION,created_at:new Date().toISOString(),entries:[...left,...right],pairs,coverage:[],snapshots,
+      coverage_change:coverageChange(a.result,b.result),archive_sha256:{left:await hash(a.archive_text),right:await hash(b.archive_text)},
+      runtime:{left:a.result.runtime,right:b.result.runtime},source_hash:{left:a.result.source_hash,right:b.result.source_hash},selection_hash:{left:a.result.selection_hash,right:b.result.selection_hash},
+      interpretation:'Two stored runs compared without refitting. Like-for-like metrics require identical source populations and lineage. Settings agreement is not substantive validation.',
+      weighting:'Coverage and weights remain separate for A and B. Composition weights summarize each existing fit; they do not refit models. Preserve the original archives for replay.'};
+  }
   function ari(a,b) {
     assert(a.length===b.length,'Paired labels required.');
     if (a.length<2) return null;
@@ -132,6 +179,7 @@
     const by=new Map(r.points.map(p=>[p.id,p]));
     const shared=l.points.filter(p=>by.get(p.id)?.text_sha256===p.text_sha256);
     if (stable(lsel)!==stable(rsel)||shared.length!==l.points.length||shared.length!==r.points.length) return {...base,shared_usable:shared.length,left_usable:l.points.length,right_usable:r.points.length,withheld:'Source population, order or usable vectors changed. No like-for-like score is reported.'};
+    if(stable(left.result.matched.map(p=>p.parent_text_sha256||null))!==stable(right.result.matched.map(p=>p.parent_text_sha256||null)))return {...base,withheld:'Original parent text changed; excerpt context is not identical.'};
     if (left.method!==right.method) return {...base,withheld:'NMF components and hard partitions are different quantities.'};
     if (left.method==='nmf') {
       if(l.parameters.components!==r.parameters.components)return {...base,withheld:'Different NMF ranks; no forced one-to-one component correspondence.'};
@@ -171,7 +219,7 @@
       const parameters={...u.base,methods:[row.method],[key]:row.options};
       const result=await A.analyze(u.corpus,parameters,progress,(rs,vs,o,pr)=>dependency('cluster-core.js','UNClusters').run(rs,vs,o,pr),(rs,vs,o,pr)=>dependency('nmf-core.js','UNNMF').run(rs,vs,o,pr));
       const entry={id:u.unit+'-'+(i+1),label:row.label,unit:u.unit,method:row.method,result};
-      entry.summary=summarize(entry);entry.composition=compositions(entry);entries.push(entry);
+      entry.summary=summarize(entry);entry.composition=compositions(entry);entry.mixture=mixtures(entry);entries.push(entry);
     }
     const pairs=[];
     for(let i=0;i<entries.length;i++)for(let j=i+1;j<entries.length;j++)if(entries[i].unit===entries[j].unit)pairs.push(paired(entries[i],entries[j]));
@@ -214,10 +262,32 @@
     const A=dependency('analysis-core.js','UNAnalysis'),selected=await A.analyze(ctx.corpus,{...plan.base,methods:['frequency'],...(ctx.selection?{passageSelection:ctx.selection}:{})},progress);
     assert(await hash(stable(manifest(selected.matched)))===result.selection_hash&&stable(manifest(selected.matched))===stable(result.selection),'Saved population differs from the input and selection policy.');
     const parents=new Set(selected.matched.map(r=>r.parent_id));
-    const sourceBy=new Map(ctx.original.records.map(r=>[r.id,r])),selectedBy=new Map(selected.matched.map(r=>[r.id,r]));
-    for(const e of result.entries)for(const r of e.result.matched){const expected=e.unit==='parent'?sourceBy.get(r.id):selectedBy.get(r.id);assert(expected&&stable(expected)===stable(r)&&(e.unit!=='parent'||parents.has(r.id)),'Saved evidence differs from source lineage.');}
+    const primaryBase={...plan.base,methods:['frequency'],...(ctx.selection?{passageSelection:ctx.selection}:{})};
+    const populations=[{unit:payload.kind==='reviewed'?'excerpt':'source',base:primaryBase,selected}];
+    if(plan.compare_parents){
+      assert(payload.kind==='reviewed','Full-parent comparison requires reviewed evidence.');
+      const base={...plan.base,topic:'',phrases:[],exclude:[],methods:['frequency']};
+      populations.push({unit:'parent',base,selected:await A.analyze({...ctx.original,records:ctx.original.records.filter(r=>parents.has(r.id))},base,progress)});
+    }
+    assert(stable(result.counts)===stable(selected.counts)&&stable(result.duplicates)===stable(selected.duplicates),'Saved source accounting differs from selection.');
+    const expectedCoverage=payload.kind==='reviewed'?parentCoverage(selected.matched,ctx.original):[];
+    // 1.0 archives did not include the parent hash in this table; their evidence did.
+    const coverageFields=x=>x.map(({parent_text_sha256,...r})=>r);
+    assert(stable(coverageFields(result.coverage||[]))===stable(coverageFields(expectedCoverage)),'Saved parent coverage or weighting differs from source spans.');
+    assert((result.coverage||[]).every((c,i)=>!c.parent_text_sha256||c.parent_text_sha256===expectedCoverage[i].parent_text_sha256),'Saved coverage parent hash differs from the original.');
+    assert(result.entries.length===populations.length*plan.settings.length,'Saved fit inventory differs from the plan.');
+    let index=0;
+    for(const population of populations)for(const [i,row] of plan.settings.entries()){
+      const entry=result.entries[index++],key=row.method==='clusters'?'clustering':'nmf';
+      const expectedParameters=A.parameters({...population.base,methods:[row.method],[key]:row.options});
+      assert(entry.id===population.unit+'-'+(i+1)&&entry.unit===population.unit&&entry.method===row.method&&entry.label===row.label,'Saved fit identity differs from the plan.');
+      assert(stable(entry.result.parameters)===stable(expectedParameters),'Saved settings differ from the plan.');
+      assert(stable(entry.result.matched)===stable(population.selected.matched)&&stable(entry.result.counts)===stable(population.selected.counts),'Saved evidence population differs from source lineage.');
+      assert(stable(entry.summary)===stable(summarize(entry))&&stable(entry.composition)===stable(compositions(entry)),'Saved summary differs from the stored fit.');
+      const mixture=mixtures(entry);if(entry.mixture!==undefined)assert(stable(entry.mixture)===stable(mixture),'Saved mixture summary differs from its stored weights.');
+    }
     return {payload:freeze(payload),result:freeze(result),archive_text:text,replay:'Stored result and coordinates restored without refitting. Hashes verify consistency, not reviewer authentication or mathematical correctness.'};
   }
-  const api={VERSION,LIMIT,stable,hash,parse,validatePlan,input,manifest,parentCoverage,summarize,compositions,ari,paired,run,validateResult,pack,restore};
+  const api={VERSION,LIMIT,stable,hash,parse,validatePlan,input,manifest,parentCoverage,summarize,compositions,mixtures,coverageChange,compareSaved,ari,paired,run,validateResult,pack,restore};
   if(node)module.exports=api;else root.UNLatent=api;
 })(globalThis);
