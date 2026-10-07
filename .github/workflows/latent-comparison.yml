@@ -1,10 +1,7 @@
 name: Latent comparison acceptance
 on:
-  push:
-    branches: [main, feat/latent-comparison-phase-a]
-    paths: ['site/**', 'tools/*latent*', '.github/workflows/latent-comparison.yml']
   pull_request:
-    paths: ['site/**', 'tools/*latent*', '.github/workflows/latent-comparison.yml']
+    paths: ['site/**', 'tools/*latent*', 'tools/*meeting_picker*', '.github/workflows/latent-comparison.yml']
   workflow_dispatch:
   workflow_call:
 permissions:
@@ -15,7 +12,7 @@ concurrency:
 jobs:
   numerical:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -31,20 +28,21 @@ jobs:
           node tools/test_speech_pilot.cjs
           node tools/test_passage_comparison.cjs
           python3 tools/test_passage_types.py
-      - name: Saved-run, parent and reusable-plan acceptance
+      - name: Saved runs and single-meeting selection
         shell: bash
         run: |
           set -o pipefail
           node tools/test_latent.cjs 2>&1 | tee latent-validation.log
+          node tools/test_meeting_picker.cjs 2>&1 | tee meeting-validation.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: latent-numerical-validation
-          path: latent-validation.log
+          path: '*-validation.log'
   browser:
     needs: numerical
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -52,16 +50,25 @@ jobs:
           node-version: '22'
       - name: Isolated browser QA dependencies
         run: |
-          npm install --prefix "$RUNNER_TEMP/latent-qa" --ignore-scripts --no-audit --no-fund playwright@1.55.0
-          "$RUNNER_TEMP/latent-qa/node_modules/.bin/playwright" install --with-deps chromium
+          timeout 120 npm install --prefix "$RUNNER_TEMP/latent-qa" --ignore-scripts --no-audit --no-fund --fetch-timeout=30000 --fetch-retries=1 playwright@1.55.0
+          if command -v google-chrome >/dev/null; then
+            google-chrome --version
+            echo 'PW_CHANNEL=chrome' >> "$GITHUB_ENV"
+          else
+            timeout 180 "$RUNNER_TEMP/latent-qa/node_modules/.bin/playwright" install --only-shell chromium
+          fi
       - name: Build the public site
         run: python3 tools/build_pages.py _site
-      - name: Desktop, mobile, replay, exports and cancellation
+      - name: Desktop, mobile, replay, exports and meeting selection
         env:
           NODE_PATH: ${{ runner.temp }}/latent-qa/node_modules
-        run: node tools/test_latent_ui.cjs _site latent-browser-validation
+        run: |
+          node tools/test_latent_ui.cjs _site latent-browser-validation
+          node tools/test_meeting_picker_ui.cjs _site meeting-browser-validation
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: latent-browser-validation
-          path: latent-browser-validation
+          path: |
+            latent-browser-validation
+            meeting-browser-validation
