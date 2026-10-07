@@ -1,10 +1,11 @@
 """Numerical smoke tests use synthetic development records only."""
-import copy, unittest
+import copy, unittest, tempfile
+from pathlib import Path
 import numpy as np
 from sklearn.decomposition import NMF
 from sklearn.metrics import adjusted_rand_score
 from threadpoolctl import threadpool_limits
-from analysis import PLAN, fit, shares, weights, select_rows, vectorizer
+from analysis import PLAN, fit, shares, weights, select_rows, vectorizer, save_arrays
 
 
 def rows():
@@ -58,6 +59,21 @@ class NumericalTests(unittest.TestCase):
             m=NMF(n_components=4,init='nndsvda',random_state=1,max_iter=600);W=m.fit_transform(self.fit['X']);H=m.components_
         scale=np.array([2.,3.,4.,5.]);a=W*H.sum(axis=1);b=(W/scale)*(H*scale[:,None]).sum(axis=1)
         np.testing.assert_allclose(a,b)
+    def test_numeric_archive_without_pickle(self):
+        with tempfile.TemporaryDirectory() as d:
+            p=Path(d)/'fit.npz'
+            save_arrays(p, terms=self.fit['v'].get_feature_names_out(), geometry=self.fit['Z'])
+            with np.load(p, allow_pickle=False) as stored:
+                np.testing.assert_array_equal(stored['terms'],self.fit['v'].get_feature_names_out())
+                np.testing.assert_array_equal(stored['geometry'],self.fit['Z'])
+                self.assertTrue(all(not stored[k].dtype.hasobject for k in stored.files))
+    def test_reject_object_archive(self):
+        with tempfile.TemporaryDirectory() as d:
+            with self.assertRaises(ValueError):
+                save_arrays(Path(d)/'unsafe.npz', unsafe=np.array([{'do':'not deserialize'}],dtype=object))
+    def test_holdout_fit_rejected(self):
+        rs=copy.deepcopy(self.rows);rs[0]['split']='holdout'
+        with self.assertRaises(ValueError):fit(rs,self.spec,PLAN)
     def test_ari_relabeling(self):self.assertAlmostEqual(adjusted_rand_score(self.fit['labels'],self.fit['labels']+10),1)
 
 if __name__=='__main__':unittest.main(verbosity=2)
