@@ -1,0 +1,5 @@
+# Executed with Python 3.13.5 and Node 22.16.0; Node validates original corpus lineage.
+numpy==2.3.5
+scipy==1.17.0
+scikit-learn==1.8.0
+threadpoolctl==3.6.0
