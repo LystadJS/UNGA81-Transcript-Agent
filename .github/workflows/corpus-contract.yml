@@ -1,0 +1,61 @@
+name: Passage corpus contract
+on:
+  push:
+    branches: [feat/passage-corpus-contract]
+    paths: ['.github/workflows/corpus-contract.yml', 'research/corpus/**', 'tools/*corpus*', 'docs/PASSAGE_CORPUS.md']
+  pull_request:
+    paths: ['research/corpus/**', 'tools/*corpus*', '.github/workflows/corpus-contract.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Snapshot existing interfaces for contract implementation
+        run: |
+          mkdir -p corpus-evidence
+          git rev-parse HEAD > corpus-evidence/source-commit.txt
+          tar -czf corpus-evidence/interfaces.tar.gz site tools docs AGENTS.md README.md .github/workflows
+      - name: Inventory the declared date frame without opening transcripts
+        if: github.event_name != 'pull_request'
+        run: |
+          node - <<'JS'
+          const fs=require('node:fs');
+          const P=require('./site/meeting-picker-core.js');
+          const C=require('./site/collector.js');
+          (async()=>{
+            const results=[];
+            for(const date of ['2026-10-01','2026-10-02','2026-10-03','2026-10-04','2026-10-05','2026-10-06']){
+              const pages=[];
+              for(let page=1;page<=20;page++){
+                const url=`https://transcripts.un.org/en/meetings.json?date=${date}&xlang=1&page=${page}`;
+                const {data,hash}=await C.readJSON(url);
+                pages.push({url,sha256:hash,data});
+                if(data.hasMore===false)break;
+                if(page===20)throw Error('Inventory limit exceeded');
+              }
+              results.push({date,pages});
+            }
+            fs.writeFileSync('corpus-evidence/inventory-frame.json',JSON.stringify({schema:'un.inventory-frame.v1',retrieved_at:new Date().toISOString(),source:'https://transcripts.un.org',transcripts_opened:0,selection_rule:'All indexed meetings, no topic or outcome filtering. Development: 1–4 October 2026. Reserved temporal comparison: 5–6 October 2026.',dates:results},null,2)+'\n');
+            console.log(JSON.stringify(results.map(x=>({date:x.date,pages:x.pages.length,meetings:x.pages.reduce((n,p)=>n+(p.data.meetings||[]).length,0)}))));
+          })().catch(e=>{console.error(e);process.exitCode=1});
+          JS
+      - name: Execute contract acceptance when implementation is present
+        run: |
+          if [ -f tools/test_passage_corpus.cjs ]; then
+            node tools/test_passage_corpus.cjs
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: corpus-contract-evidence
+          path: corpus-evidence/
+          retention-days: 14
