@@ -1,0 +1,811 @@
+{
+  "schema": "un.inventory-frame.v1",
+  "retrieved_at": "2026-10-07T16:40:19.997Z",
+  "source": "https://transcripts.un.org",
+  "transcripts_opened": 0,
+  "selection_rule": "All indexed meetings, no topic or outcome filtering. Development: 1–4 October 2026. Reserved temporal comparison: 5–6 October 2026.",
+  "dates": [
+    {
+      "date": "2026-10-01",
+      "pages": [
+        {
+          "url": "https://transcripts.un.org/en/meetings.json?date=2026-10-01&xlang=1&page=1",
+          "sha256": "2cdf6c734ede94a4bd5178a0c9d8c3482d8500d7435875ee3f917a3f2c55c4f6",
+          "data": {
+            "meetings": [
+              {
+                "title": "15th UN Crime Congress: Committee II – 1 October 2026",
+                "date": "2026-10-01T00:00:00.000Z",
+                "body": null,
+                "category": "Conferences",
+                "slug": "asset/k1h/k1hk1o0kgr",
+                "duration": "01:07:05",
+                "hasTranscript": true,
+                "pageUrl": "/en/asset/k1h/k1hk1o0kgr",
+                "jsonUrl": "/en/asset/k1h/k1hk1o0kgr.json",
+                "textUrl": "/en/asset/k1h/k1hk1o0kgr.txt"
+              },
+              {
+                "title": "15th UN Crime Congress: Plenary meeting 12 – 1 October 2026",
+                "date": "2026-10-01T00:00:00.000Z",
+                "body": null,
+                "category": "Conferences",
+                "slug": "asset/k1o/k1o86tmojq",
+                "duration": "01:08:03",
+                "hasTranscript": true,
+                "pageUrl": "/en/asset/k1o/k1o86tmojq",
+                "jsonUrl": "/en/asset/k1o/k1o86tmojq.json",
+                "textUrl": "/en/asset/k1o/k1o86tmojq.txt"
+              },
+              {
+                "title": "35th Meeting - 63rd Session of Human Rights Council",
+                "date": "2026-10-01T00:00:00.000Z",
+                "body": null,
+                "category": "Human Rights Council",
+                "slug": "hrc/63/35",
+                "duration": "03:03:00",
+                "hasTranscript": true,
+                "pageUrl": "/en/hrc/63/35",
+                "jsonUrl": "/en/hrc/63/35.json",
+                "textUrl": "/en/hrc/63/35.txt"
+              },
+              {
+                "title": "11th Meeting of States parties and 2026 elections , Subcommittee on Prevention of Torture (SPT)",
+                "date": "2026-10-01T00:00:00.000Z",
+                "body": null,
+                "category": "Human Rights Treaty Bodies",
+                "slug": "asset/k1y/k1yeh656yd",
+                "duration": "02:47:29",
+                "hasTranscript": true,
+                "pageUrl": "/en/asset/k1y/k1yeh656yd",
+                "jsonUrl": "/en/asset/k1y/k1yeh656yd.json",
+                "textUrl": "/en/asset/k1y/k1yeh656yd.txt"
+              },
+              {
+                "title": "15th UN Crime Congress: Plenary meeting 13 – 1 October 2026",
+                "date": "2026-10-01T00:00:00.000Z",
+                "body": null,
+                "category": "Conferences",
+                "slug": "asset/k1f/k1f7a63wn4",
+                "duration": "01:43:56",
+                "hasTranscript": true,
+                "pageUrl": "/en/asset/k1f/k1f7a63wn4",
+                "jsonUrl": "/en/asset/k1f/k1f7a63wn4.json",
+                "textUrl": "/en/asset/k1f/k1f7a63wn4.txt"
+              },
+              {
+                "title": "36th Meeting - 63rd Session of Human Rights Council",
+                "date": "2026-10-01T00:00:00.000Z",
+                "body": null,
+                "category": "Human Rights Council",
+                "slug": "hrc/63/36",
+                "duration": "03:00:13",
+                "hasTranscript": true,
+                "pageUrl": "/en/hrc/63/36",
+                "jsonUrl": "/en/hrc/63/36.json",
+                "textUrl": "/en/hrc/63/36.txt"
+              },
+              {
+                "title": "Third Committee, 1st plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-01T00:00:00.000Z",
+                "body": "Third Committee",
+                "category": "General Assembly",
+                "slug": "ga/c3/81/1",
+                "duration": "02:57:05",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c3/81/1",
+                "jsonUrl": "/en/ga/c3/81/1.json",
+                "textUrl": "/en/ga/c3/81/1.txt"
+              },
+              {
+                "title": "General Assembly: 16th plenary meeting, 81st session",
+                "date": "2026-10-01T00:00:00.000Z",
+                "body": "General Assembly",
+                "category": "General Assembly",
+                "slug": "ga/81/16",
+                "duration": "02:17:18",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/81/16",
+                "jsonUrl": "/en/ga/81/16.json",
+                "textUrl": "/en/ga/81/16.txt"
+              },
+              {
+                "title": "Fourth Committee, 1st plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-01T00:00:00.000Z",
+                "body": "Fourth Committee",
+                "category": "General Assembly",
+                "slug": "ga/c4/81/1",
+                "duration": "01:40:42",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c4/81/1",
+                "jsonUrl": "/en/ga/c4/81/1.json",
+                "textUrl": "/en/ga/c4/81/1.txt"
+              },
+              {
+                "title": "Second Committee, 1st plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-01T00:00:00.000Z",
+                "body": "Second Committee",
+                "category": "General Assembly",
+                "slug": "ga/c2/81/1",
+                "duration": "00:25:42",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c2/81/1",
+                "jsonUrl": "/en/ga/c2/81/1.json",
+                "textUrl": "/en/ga/c2/81/1.txt"
+              },
+              {
+                "title": "FlyDubai, Ethiopia & other topics - Daily Press Briefing",
+                "date": "2026-10-01T00:00:00.000Z",
+                "body": null,
+                "category": "Press Conferences",
+                "slug": "briefing/sg/2026-10-01",
+                "duration": "00:28:10",
+                "hasTranscript": true,
+                "pageUrl": "/en/briefing/sg/2026-10-01",
+                "jsonUrl": "/en/briefing/sg/2026-10-01.json",
+                "textUrl": "/en/briefing/sg/2026-10-01.txt"
+              },
+              {
+                "title": "Aglaia Balta (Greece/Security Council President) on the program of work for the month of October - Press Conference",
+                "date": "2026-10-01T00:00:00.000Z",
+                "body": null,
+                "category": "Press Conferences",
+                "slug": "asset/k1k/k1kfba6ag8",
+                "duration": "00:39:02",
+                "hasTranscript": true,
+                "pageUrl": "/en/asset/k1k/k1kfba6ag8",
+                "jsonUrl": "/en/asset/k1k/k1kfba6ag8.json",
+                "textUrl": "/en/asset/k1k/k1kfba6ag8.txt"
+              },
+              {
+                "title": "Third Committee, 2nd plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-01T00:00:00.000Z",
+                "body": "Third Committee",
+                "category": "General Assembly",
+                "slug": "ga/c3/81/2",
+                "duration": "03:04:55",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c3/81/2",
+                "jsonUrl": "/en/ga/c3/81/2.json",
+                "textUrl": "/en/ga/c3/81/2.txt"
+              }
+            ],
+            "total": 13,
+            "totalIncludingOther": 13,
+            "hasMore": false,
+            "page": 1,
+            "pageSize": 250
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-10-02",
+      "pages": [
+        {
+          "url": "https://transcripts.un.org/en/meetings.json?date=2026-10-02&xlang=1&page=1",
+          "sha256": "492ecc584c95a04f4db770e4d768a909c9b10fd838dab330630421a3f9917d80",
+          "data": {
+            "meetings": [
+              {
+                "title": "37th Meeting - 63rd Session of Human Rights Council",
+                "date": "2026-10-02T00:00:00.000Z",
+                "body": null,
+                "category": "Human Rights Council",
+                "slug": "hrc/63/37",
+                "duration": "03:07:27",
+                "hasTranscript": true,
+                "pageUrl": "/en/hrc/63/37",
+                "jsonUrl": "/en/hrc/63/37.json",
+                "textUrl": "/en/hrc/63/37.txt"
+              },
+              {
+                "title": "UN Geneva Press Briefing: OCHA, UNHCR, WTO, UN Women, WHO, WFP, UNEP",
+                "date": "2026-10-02T00:00:00.000Z",
+                "body": null,
+                "category": "Press Conferences",
+                "slug": "briefing/geneva/2026-10-02",
+                "duration": "01:19:22",
+                "hasTranscript": true,
+                "pageUrl": "/en/briefing/geneva/2026-10-02",
+                "jsonUrl": "/en/briefing/geneva/2026-10-02.json",
+                "textUrl": "/en/briefing/geneva/2026-10-02.txt"
+              },
+              {
+                "title": "38th Meeting - 63rd Session of Human Rights Council",
+                "date": "2026-10-02T00:00:00.000Z",
+                "body": null,
+                "category": "Human Rights Council",
+                "slug": "hrc/63/38",
+                "duration": "03:07:37",
+                "hasTranscript": true,
+                "pageUrl": "/en/hrc/63/38",
+                "jsonUrl": "/en/hrc/63/38.json",
+                "textUrl": "/en/hrc/63/38.txt"
+              },
+              {
+                "title": "Commemoration of International Day of Non-Violence",
+                "date": "2026-10-02T00:00:00.000Z",
+                "body": null,
+                "category": "High-level Events",
+                "slug": "asset/k11/k11mswluhm",
+                "duration": "00:53:57",
+                "hasTranscript": false,
+                "pageUrl": "/en/asset/k11/k11mswluhm",
+                "jsonUrl": "/en/asset/k11/k11mswluhm.json",
+                "textUrl": null
+              },
+              {
+                "title": "Third Committee, 3rd plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-02T00:00:00.000Z",
+                "body": "Third Committee",
+                "category": "General Assembly",
+                "slug": "ga/c3/81/3",
+                "duration": "03:08:47",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c3/81/3",
+                "jsonUrl": "/en/ga/c3/81/3.json",
+                "textUrl": "/en/ga/c3/81/3.txt"
+              },
+              {
+                "title": "Fourth Committee, 2nd plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-02T00:00:00.000Z",
+                "body": "Fourth Committee",
+                "category": "General Assembly",
+                "slug": "ga/c4/81/2",
+                "duration": "02:41:20",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c4/81/2",
+                "jsonUrl": "/en/ga/c4/81/2.json",
+                "textUrl": "/en/ga/c4/81/2.txt"
+              },
+              {
+                "title": "Central Emergency Response Fund, Food And Agriculture Organization - Food Prices, Ethiopia & other topics - Daily Press Briefing",
+                "date": "2026-10-02T00:00:00.000Z",
+                "body": null,
+                "category": "Press Conferences",
+                "slug": "briefing/sg/2026-10-02",
+                "duration": "00:18:59",
+                "hasTranscript": true,
+                "pageUrl": "/en/briefing/sg/2026-10-02",
+                "jsonUrl": "/en/briefing/sg/2026-10-02.json",
+                "textUrl": "/en/briefing/sg/2026-10-02.txt"
+              },
+              {
+                "title": "Third Committee, 4th plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-02T00:00:00.000Z",
+                "body": "Third Committee",
+                "category": "General Assembly",
+                "slug": "ga/c3/81/4",
+                "duration": "02:09:25",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c3/81/4",
+                "jsonUrl": "/en/ga/c3/81/4.json",
+                "textUrl": "/en/ga/c3/81/4.txt"
+              }
+            ],
+            "total": 8,
+            "totalIncludingOther": 8,
+            "hasMore": false,
+            "page": 1,
+            "pageSize": 250
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-10-03",
+      "pages": [
+        {
+          "url": "https://transcripts.un.org/en/meetings.json?date=2026-10-03&xlang=1&page=1",
+          "sha256": "2c8debb987d7d4ecbcebea18e41f984e6abbd1a7879e00b0ccc17d1dde013217",
+          "data": {
+            "meetings": [],
+            "total": 0,
+            "totalIncludingOther": 0,
+            "hasMore": false,
+            "page": 1,
+            "pageSize": 250
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-10-04",
+      "pages": [
+        {
+          "url": "https://transcripts.un.org/en/meetings.json?date=2026-10-04&xlang=1&page=1",
+          "sha256": "2c8debb987d7d4ecbcebea18e41f984e6abbd1a7879e00b0ccc17d1dde013217",
+          "data": {
+            "meetings": [],
+            "total": 0,
+            "totalIncludingOther": 0,
+            "hasMore": false,
+            "page": 1,
+            "pageSize": 250
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-10-05",
+      "pages": [
+        {
+          "url": "https://transcripts.un.org/en/meetings.json?date=2026-10-05&xlang=1&page=1",
+          "sha256": "05787e09c91d5245310be7d9b9495951ec0243a64101dd39c608733a23990b8d",
+          "data": {
+            "meetings": [
+              {
+                "title": "World Habitat Day 2026 - \"Adequate Housing for All\" (Muscat, Oman) (Morning Session)",
+                "date": "2026-10-05T00:00:00.000Z",
+                "body": null,
+                "category": "Conferences",
+                "slug": "asset/k18/k1830eoxgo",
+                "duration": "01:24:36",
+                "hasTranscript": true,
+                "pageUrl": "/en/asset/k18/k1830eoxgo",
+                "jsonUrl": "/en/asset/k18/k1830eoxgo.json",
+                "textUrl": "/en/asset/k18/k1830eoxgo.txt"
+              },
+              {
+                "title": "3008th Meeting, 93rd Session, Committee on the Elimination of Discrimination against Women (CEDAW)",
+                "date": "2026-10-05T00:00:00.000Z",
+                "body": null,
+                "category": "Human Rights Treaty Bodies",
+                "slug": "cedaw/3008",
+                "duration": "01:36:37",
+                "hasTranscript": true,
+                "pageUrl": "/en/cedaw/3008",
+                "jsonUrl": "/en/cedaw/3008.json",
+                "textUrl": "/en/cedaw/3008.txt"
+              },
+              {
+                "title": "39th Meeting - 63rd Session of Human Rights Council",
+                "date": "2026-10-05T00:00:00.000Z",
+                "body": null,
+                "category": "Human Rights Council",
+                "slug": "hrc/63/39",
+                "duration": "03:00:16",
+                "hasTranscript": true,
+                "pageUrl": "/en/hrc/63/39",
+                "jsonUrl": "/en/hrc/63/39.json",
+                "textUrl": "/en/hrc/63/39.txt"
+              },
+              {
+                "title": "World Habitat Day 2026 - \"Adequate Housing for All\" (Muscat, Oman) (Afternoon Session)",
+                "date": "2026-10-05T00:00:00.000Z",
+                "body": null,
+                "category": "Conferences",
+                "slug": "asset/k1n/k1ncqarxvr",
+                "duration": "02:22:11",
+                "hasTranscript": false,
+                "pageUrl": "/en/asset/k1n/k1ncqarxvr",
+                "jsonUrl": "/en/asset/k1n/k1ncqarxvr.json",
+                "textUrl": null
+              },
+              {
+                "title": "40th Meeting - 63rd Session of Human Rights Council",
+                "date": "2026-10-05T00:00:00.000Z",
+                "body": null,
+                "category": "Human Rights Council",
+                "slug": "hrc/63/40",
+                "duration": "03:12:14",
+                "hasTranscript": true,
+                "pageUrl": "/en/hrc/63/40",
+                "jsonUrl": "/en/hrc/63/40.json",
+                "textUrl": "/en/hrc/63/40.txt"
+              },
+              {
+                "title": "3009th Meeting, 93rd Session, Committee on the Elimination of Discrimination against Women (CEDAW)",
+                "date": "2026-10-05T00:00:00.000Z",
+                "body": null,
+                "category": "Human Rights Treaty Bodies",
+                "slug": "cedaw/3009",
+                "duration": "01:18:04",
+                "hasTranscript": false,
+                "pageUrl": "/en/cedaw/3009",
+                "jsonUrl": "/en/cedaw/3009.json",
+                "textUrl": null
+              },
+              {
+                "title": "First Committee, 1st plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-05T00:00:00.000Z",
+                "body": "First Committee",
+                "category": "General Assembly",
+                "slug": "ga/c1/81/1",
+                "duration": "03:07:42",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c1/81/1",
+                "jsonUrl": "/en/ga/c1/81/1.json",
+                "textUrl": "/en/ga/c1/81/1.txt"
+              },
+              {
+                "title": "Third Committee, 5th plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-05T00:00:00.000Z",
+                "body": "Third Committee",
+                "category": "General Assembly",
+                "slug": "ga/c3/81/5",
+                "duration": "02:55:11",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c3/81/5",
+                "jsonUrl": "/en/ga/c3/81/5.json",
+                "textUrl": "/en/ga/c3/81/5.txt"
+              },
+              {
+                "title": "Sixth Committee, 1st plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-05T00:00:00.000Z",
+                "body": "Sixth Committee",
+                "category": "General Assembly",
+                "slug": "ga/c6/81/1/2",
+                "duration": "02:56:43",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c6/81/1/2",
+                "jsonUrl": "/en/ga/c6/81/1/2.json",
+                "textUrl": "/en/ga/c6/81/1/2.txt"
+              },
+              {
+                "title": "Fifth Committee, 1st plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-05T00:00:00.000Z",
+                "body": "Fifth Committee",
+                "category": "General Assembly",
+                "slug": "ga/c5/81/1",
+                "duration": "02:28:42",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c5/81/1",
+                "jsonUrl": "/en/ga/c5/81/1.json",
+                "textUrl": "/en/ga/c5/81/1.txt"
+              },
+              {
+                "title": "Second Committee, 2nd plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-05T00:00:00.000Z",
+                "body": "Second Committee",
+                "category": "General Assembly",
+                "slug": "ga/c2/81/2",
+                "duration": "03:01:09",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c2/81/2",
+                "jsonUrl": "/en/ga/c2/81/2.json",
+                "textUrl": "/en/ga/c2/81/2.txt"
+              },
+              {
+                "title": "Afghanistan, Ethiopia & other topics - Daily Press Briefing",
+                "date": "2026-10-05T00:00:00.000Z",
+                "body": null,
+                "category": "Press Conferences",
+                "slug": "briefing/sg/2026-10-05",
+                "duration": "00:25:42",
+                "hasTranscript": true,
+                "pageUrl": "/en/briefing/sg/2026-10-05",
+                "jsonUrl": "/en/briefing/sg/2026-10-05.json",
+                "textUrl": "/en/briefing/sg/2026-10-05.txt"
+              },
+              {
+                "title": "Second Committee, 3rd plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-05T00:00:00.000Z",
+                "body": "Second Committee",
+                "category": "General Assembly",
+                "slug": "ga/c2/81/3",
+                "duration": "02:55:47",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c2/81/3",
+                "jsonUrl": "/en/ga/c2/81/3.json",
+                "textUrl": "/en/ga/c2/81/3.txt"
+              },
+              {
+                "title": "Third Committee, 6th plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-05T00:00:00.000Z",
+                "body": "Third Committee",
+                "category": "General Assembly",
+                "slug": "ga/c3/81/6/2",
+                "duration": "02:28:40",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c3/81/6/2",
+                "jsonUrl": "/en/ga/c3/81/6/2.json",
+                "textUrl": "/en/ga/c3/81/6/2.txt"
+              },
+              {
+                "title": "Sixth Committee, 2nd plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-05T00:00:00.000Z",
+                "body": "Sixth Committee",
+                "category": "General Assembly",
+                "slug": "ga/c6/81/2",
+                "duration": "02:53:29",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c6/81/2",
+                "jsonUrl": "/en/ga/c6/81/2.json",
+                "textUrl": "/en/ga/c6/81/2.txt"
+              },
+              {
+                "title": "Fourth Committee, 3rd plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-05T00:00:00.000Z",
+                "body": "Fourth Committee",
+                "category": "General Assembly",
+                "slug": "ga/c4/81/3",
+                "duration": "03:01:02",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c4/81/3",
+                "jsonUrl": "/en/ga/c4/81/3.json",
+                "textUrl": "/en/ga/c4/81/3.txt"
+              }
+            ],
+            "total": 16,
+            "totalIncludingOther": 16,
+            "hasMore": false,
+            "page": 1,
+            "pageSize": 250
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-10-06",
+      "pages": [
+        {
+          "url": "https://transcripts.un.org/en/meetings.json?date=2026-10-06&xlang=1&page=1",
+          "sha256": "3ba08288314db9042354b8655b929be7c26022193bd6633f9ced817e00727039",
+          "data": {
+            "meetings": [
+              {
+                "title": "Making a Difference - UN-Habitat Scroll of Honour Award Winners - Urban October 2026 (Muscat, Oman)",
+                "date": "2026-10-06T00:00:00.000Z",
+                "body": null,
+                "category": "Conferences",
+                "slug": "asset/k1r/k1rqyj5xan",
+                "duration": "00:47:22",
+                "hasTranscript": false,
+                "pageUrl": "/en/asset/k1r/k1rqyj5xan",
+                "jsonUrl": "/en/asset/k1r/k1rqyj5xan.json",
+                "textUrl": null
+              },
+              {
+                "title": "3010th Meeting, 93rd Session, Committee on the Elimination of Discrimination against Women (CEDAW)",
+                "date": "2026-10-06T00:00:00.000Z",
+                "body": null,
+                "category": "Human Rights Treaty Bodies",
+                "slug": "cedaw/3010",
+                "duration": "03:03:33",
+                "hasTranscript": true,
+                "pageUrl": "/en/cedaw/3010",
+                "jsonUrl": "/en/cedaw/3010.json",
+                "textUrl": "/en/cedaw/3010.txt"
+              },
+              {
+                "title": "41st Meeting - 63rd Session of Human Rights Council",
+                "date": "2026-10-06T00:00:00.000Z",
+                "body": null,
+                "category": "Human Rights Council",
+                "slug": "hrc/63/41",
+                "duration": "03:21:45",
+                "hasTranscript": true,
+                "pageUrl": "/en/hrc/63/41",
+                "jsonUrl": "/en/hrc/63/41.json",
+                "textUrl": "/en/hrc/63/41.txt"
+              },
+              {
+                "title": "UN Geneva Press Briefing: WHO, UNICEF, IOM, UNECE, ITU, WMO,",
+                "date": "2026-10-06T00:00:00.000Z",
+                "body": null,
+                "category": "Press Conferences",
+                "slug": "briefing/geneva/2026-10-06",
+                "duration": "01:12:38",
+                "hasTranscript": true,
+                "pageUrl": "/en/briefing/geneva/2026-10-06",
+                "jsonUrl": "/en/briefing/geneva/2026-10-06.json",
+                "textUrl": "/en/briefing/geneva/2026-10-06.txt"
+              },
+              {
+                "title": "3011th Meeting, 93rd Session, Committee on the Elimination of Discrimination against Women (CEDAW)",
+                "date": "2026-10-06T00:00:00.000Z",
+                "body": null,
+                "category": "Human Rights Treaty Bodies",
+                "slug": "cedaw/3011",
+                "duration": "01:58:53",
+                "hasTranscript": false,
+                "pageUrl": "/en/cedaw/3011",
+                "jsonUrl": "/en/cedaw/3011.json",
+                "textUrl": null
+              },
+              {
+                "title": "42nd Meeting - 63rd Session of Human Rights Council",
+                "date": "2026-10-06T00:00:00.000Z",
+                "body": null,
+                "category": "Human Rights Council",
+                "slug": "hrc/63/42",
+                "duration": "02:46:36",
+                "hasTranscript": true,
+                "pageUrl": "/en/hrc/63/42",
+                "jsonUrl": "/en/hrc/63/42.json",
+                "textUrl": "/en/hrc/63/42.txt"
+              },
+              {
+                "title": "Sixth Committee, 3rd plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-06T00:00:00.000Z",
+                "body": "Sixth Committee",
+                "category": "General Assembly",
+                "slug": "ga/c6/81/3",
+                "duration": "00:53:36",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c6/81/3",
+                "jsonUrl": "/en/ga/c6/81/3.json",
+                "textUrl": "/en/ga/c6/81/3.txt"
+              },
+              {
+                "title": "Cooperation between the United Nations and regional and subregional organizations (AU) - Security Council, 10233rd meeting",
+                "date": "2026-10-06T00:00:00.000Z",
+                "body": "Security Council",
+                "category": "Security Council",
+                "slug": "sc/10233",
+                "duration": "02:05:55",
+                "hasTranscript": true,
+                "pageUrl": "/en/sc/10233",
+                "jsonUrl": "/en/sc/10233.json",
+                "textUrl": "/en/sc/10233.txt"
+              },
+              {
+                "title": "First Committee, 2nd plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-06T00:00:00.000Z",
+                "body": "First Committee",
+                "category": "General Assembly",
+                "slug": "ga/c1/81/2",
+                "duration": "01:32:41",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c1/81/2",
+                "jsonUrl": "/en/ga/c1/81/2.json",
+                "textUrl": "/en/ga/c1/81/2.txt"
+              },
+              {
+                "title": "Second Committee, 4th plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-06T00:00:00.000Z",
+                "body": "Second Committee",
+                "category": "General Assembly",
+                "slug": "ga/c2/81/4",
+                "duration": "02:57:24",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c2/81/4",
+                "jsonUrl": "/en/ga/c2/81/4.json",
+                "textUrl": "/en/ga/c2/81/4.txt"
+              },
+              {
+                "title": "Fifth Committee, 2nd plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-06T00:00:00.000Z",
+                "body": "Fifth Committee",
+                "category": "General Assembly",
+                "slug": "ga/c5/81/2",
+                "duration": "00:44:50",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c5/81/2",
+                "jsonUrl": "/en/ga/c5/81/2.json",
+                "textUrl": "/en/ga/c5/81/2.txt"
+              },
+              {
+                "title": "Third Committee, 7th plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-06T00:00:00.000Z",
+                "body": "Third Committee",
+                "category": "General Assembly",
+                "slug": "ga/c3/81/7/2",
+                "duration": "03:00:10",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c3/81/7/2",
+                "jsonUrl": "/en/ga/c3/81/7/2.json",
+                "textUrl": "/en/ga/c3/81/7/2.txt"
+              },
+              {
+                "title": "October 7th Commemoration",
+                "date": "2026-10-06T00:00:00.000Z",
+                "body": null,
+                "category": "High-level Events",
+                "slug": "asset/k1c/k1csby03jk",
+                "duration": "01:37:18",
+                "hasTranscript": true,
+                "pageUrl": "/en/asset/k1c/k1csby03jk",
+                "jsonUrl": "/en/asset/k1c/k1csby03jk.json",
+                "textUrl": "/en/asset/k1c/k1csby03jk.txt"
+              },
+              {
+                "title": "Israel, Gaza & other topics - Daily Press Briefing",
+                "date": "2026-10-06T00:00:00.000Z",
+                "body": null,
+                "category": "Press Conferences",
+                "slug": "briefing/sg/2026-10-06",
+                "duration": "00:17:16",
+                "hasTranscript": true,
+                "pageUrl": "/en/briefing/sg/2026-10-06",
+                "jsonUrl": "/en/briefing/sg/2026-10-06.json",
+                "textUrl": "/en/briefing/sg/2026-10-06.txt"
+              },
+              {
+                "title": "Financing the UN Development System: Keeping the Promise",
+                "date": "2026-10-06T00:00:00.000Z",
+                "body": null,
+                "category": "Meetings & Events",
+                "slug": "asset/k17/k17uzy6agr",
+                "duration": "01:23:34",
+                "hasTranscript": true,
+                "pageUrl": "/en/asset/k17/k17uzy6agr",
+                "jsonUrl": "/en/asset/k17/k17uzy6agr.json",
+                "textUrl": "/en/asset/k17/k17uzy6agr.txt"
+              },
+              {
+                "title": "UNODC Special Event on Drug Policy",
+                "date": "2026-10-06T00:00:00.000Z",
+                "body": null,
+                "category": "Meetings & Events",
+                "slug": "asset/k1p/k1pmq8xyp0",
+                "duration": "01:11:18",
+                "hasTranscript": true,
+                "pageUrl": "/en/asset/k1p/k1pmq8xyp0",
+                "jsonUrl": "/en/asset/k1p/k1pmq8xyp0.json",
+                "textUrl": "/en/asset/k1p/k1pmq8xyp0.txt"
+              },
+              {
+                "title": "Civil Society Dialogue with United Nations Security Council President, H.E. Ms. Aglaia Balta (Greece)",
+                "date": "2026-10-06T00:00:00.000Z",
+                "body": null,
+                "category": "Meetings & Events",
+                "slug": "asset/k1o/k1oj2b9eg1",
+                "duration": "00:35:50",
+                "hasTranscript": true,
+                "pageUrl": "/en/asset/k1o/k1oj2b9eg1",
+                "jsonUrl": "/en/asset/k1o/k1oj2b9eg1.json",
+                "textUrl": "/en/asset/k1o/k1oj2b9eg1.txt"
+              },
+              {
+                "title": "Second Committee, 5th plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-06T00:00:00.000Z",
+                "body": "Second Committee",
+                "category": "General Assembly",
+                "slug": "ga/c2/81/5",
+                "duration": "02:44:02",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c2/81/5",
+                "jsonUrl": "/en/ga/c2/81/5.json",
+                "textUrl": "/en/ga/c2/81/5.txt"
+              },
+              {
+                "title": "Fourth Committee, 4th plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-06T00:00:00.000Z",
+                "body": "Fourth Committee",
+                "category": "General Assembly",
+                "slug": "ga/c4/81/4",
+                "duration": "02:54:17",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c4/81/4",
+                "jsonUrl": "/en/ga/c4/81/4.json",
+                "textUrl": "/en/ga/c4/81/4.txt"
+              },
+              {
+                "title": "Third Committee, 8th plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-06T00:00:00.000Z",
+                "body": "Third Committee",
+                "category": "General Assembly",
+                "slug": "ga/c3/81/8/3",
+                "duration": "03:00:33",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c3/81/8/3",
+                "jsonUrl": "/en/ga/c3/81/8/3.json",
+                "textUrl": "/en/ga/c3/81/8/3.txt"
+              },
+              {
+                "title": "Sixth Committee, 4th plenary meeting - General Assembly, 81st session",
+                "date": "2026-10-06T00:00:00.000Z",
+                "body": "Sixth Committee",
+                "category": "General Assembly",
+                "slug": "ga/c6/81/4/2",
+                "duration": "03:33:45",
+                "hasTranscript": true,
+                "pageUrl": "/en/ga/c6/81/4/2",
+                "jsonUrl": "/en/ga/c6/81/4/2.json",
+                "textUrl": "/en/ga/c6/81/4/2.txt"
+              }
+            ],
+            "total": 21,
+            "totalIncludingOther": 21,
+            "hasMore": false,
+            "page": 1,
+            "pageSize": 250
+          }
+        }
+      ]
+    }
+  ]
+}
