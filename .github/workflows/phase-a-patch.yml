@@ -1,0 +1,30 @@
+name: Phase A integration patch
+on:
+  push:
+    branches: [feat/latent-comparison-phase-a]
+    paths: ['tools/phase_a_patch.py', '.github/workflows/phase-a-patch.yml']
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/latent-comparison-phase-a
+      - name: Apply exact-match changes
+        run: python3 tools/phase_a_patch.py
+      - name: Commit only the reviewed patch targets
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add site/latent-core.js site/latent-ui.js site/index.html README.md
+          git commit -m 'Harden latent replay and source state; link the comparison workspace'
+          git push origin HEAD:feat/latent-comparison-phase-a
+          git rev-parse HEAD
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate the patched comparison engine
+        run: node tools/test_latent.cjs
