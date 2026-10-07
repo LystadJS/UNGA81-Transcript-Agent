@@ -30,6 +30,19 @@ PLAN = {'schema':'un.machine-exploration-plan.v1','fit_split':'development','rev
         'summary_weights':['equal_passage','equal_observed_parent','equal_meeting'],
         'interpretation':'No country alliance, stance, independent replication, calibrated significance or complete-speech claim. No sampling. Display coordinates do not determine clusters.'}
 
+def save_arrays(path: Path, **arrays: object) -> None:
+    """Store numeric and Unicode arrays only; loading never requires pickle."""
+    clean = {}
+    for name, value in arrays.items():
+        array = np.asarray(value)
+        if array.dtype.hasobject:
+            if not all(isinstance(x, str) for x in array.flat):
+                raise ValueError('Object arrays other than strings are prohibited')
+            array = array.astype(str)
+        clean[name] = array
+    np.savez_compressed(path, **clean)
+
+
 def vectorizer(plan: dict) -> TfidfVectorizer:
     opts=dict(plan['vectorizer']);opts['ngram_range']=tuple(opts['ngram_range'])
     return TfidfVectorizer(**opts, dtype=np.float64)
@@ -40,6 +53,8 @@ def select_rows(allrows: list[dict], population: str) -> list[dict]:
     return [r for r in allrows if r[population+'_eligible']]
 
 def fit(rows: list[dict], spec: dict, plan: dict) -> dict:
+    if any(r.get('split') != 'development' for r in rows):
+        raise ValueError('Only explicitly declared development observations may enter a fit')
     if not 20 <= len(rows) <= plan['max_observations']:
         raise ValueError('Outside offline research envelope; no truncation or silent sampling')
     v=vectorizer(plan);X=v.fit_transform([r['text'] for r in rows])
@@ -104,7 +119,7 @@ def execute(corpus_path: Path, review_path: Path, out: Path, do_refits: bool=Tru
                                 'meeting_id':r['meeting_id'],'country':r['country'],'actor_role':r['machine_actor_role'],
                                 'cluster':int(l)+1,'x':float(z[0]),'y':float(z[1])} for r,l,z in zip(rs,labels,f['raw']))
             compositions.extend(shares(f))
-            np.savez_compressed(out/(spec['id']+'.npz'),ids=np.array([r['id'] for r in rs]),labels=labels,
+            save_arrays(out/(spec['id']+'.npz'),ids=np.array([r['id'] for r in rs]),labels=labels,
                                 svd_components=f['svd'].components_,svd_raw=f['raw'],normalized_lsa=Z,
                                 idf=f['v'].idf_,terms=f['v'].get_feature_names_out())
         except Exception as e:
@@ -126,7 +141,7 @@ def execute(corpus_path: Path, review_path: Path, out: Path, do_refits: bool=Tru
                     W=model.fit_transform(X);H=model.components_
                 # Resolve arbitrary component scale before making composition summaries.
                 mass=W*H.sum(axis=1)[None,:];den=mass.sum(axis=1);proportions=np.divide(mass,den[:,None],out=np.zeros_like(mass),where=den[:,None]>0)
-                np.savez_compressed(out/f'nmf{rank}.npz',ids=np.array([r['id'] for r in rs]),W=W,H=H,component_shares=proportions,terms=terms)
+                save_arrays(out/f'nmf{rank}.npz',ids=np.array([r['id'] for r in rs]),W=W,H=H,component_shares=proportions,terms=terms)
                 for j in range(rank):
                     top=np.argsort(H[j])[::-1][:12];indices=np.argsort(proportions[:,j])[::-1]
                     examples=[];seen=set()
