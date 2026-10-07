@@ -1,0 +1,10 @@
+{
+  "schema": "un.browser.release.v1",
+  "browser_engine": "browser-descriptive-1.12.0",
+  "comparison_engine": "latent-comparison-1.0.0",
+  "date": "2026-10-07",
+  "features": ["source-bound saved runs", "parent/excerpt comparison", "reusable settings plans", "date-first individual meeting selection"],
+  "numerical_kernels_changed": false,
+  "D1_publication_gates_changed": false,
+  "analysis_status": "exploratory; no automatic substantive labels or formal nonrandomness test"
+}
