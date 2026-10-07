@@ -1,0 +1,27 @@
+name: Development boundary review
+on:
+  push:
+    branches: [feat/development-boundary-packet]
+    paths: ['.github/workflows/boundary-review.yml']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Preserve source interfaces only
+        run: |
+          mkdir -p boundary-evidence
+          git rev-parse HEAD > boundary-evidence/source-commit.txt
+          tar -czf boundary-evidence/source.tar.gz site tools research/corpus docs AGENTS.md README.md .github/workflows
+          node tools/check_passage_corpus.cjs > boundary-evidence/frame-check.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: boundary-source-interfaces
+          path: boundary-evidence/
+          retention-days: 14
