@@ -1,6 +1,6 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.12.0",
+  "browser_engine": "browser-descriptive-1.12.1",
   "comparison_engine": "latent-comparison-1.0.0",
   "date": "2026-10-07",
   "features": ["source-bound saved runs", "parent/excerpt comparison", "reusable settings plans", "date-first individual meeting selection"],

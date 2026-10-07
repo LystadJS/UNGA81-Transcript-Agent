@@ -77,7 +77,7 @@
 
   async function collect(p, countries, { signal, progress = () => {}, request = readJSON } = {}) {
     if (!Scopes.isValid(p.scope)) throw Error('Invalid meeting scope.');
-    if (p.meeting_slug !== undefined && (typeof p.meeting_slug !== 'string' || !/^asset\/[A-Za-z0-9_-]+\/[A-Za-z0-9_-]+$/.test(p.meeting_slug) || p.start !== p.end || p.meeting_date !== p.start || !/^\d{4}-\d{2}-\d{2}$/.test(p.start) || !Number.isFinite(Date.parse(p.start)) || new Date(p.start).toISOString().slice(0,10)!==p.start)) throw Error('Select one meeting on one valid date.');
+    if (p.meeting_slug !== undefined && (typeof p.meeting_slug !== 'string' || !/^[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+){1,5}$/.test(p.meeting_slug) || p.start !== p.end || p.meeting_date !== p.start || !/^\d{4}-\d{2}-\d{2}$/.test(p.start) || !Number.isFinite(Date.parse(p.start)) || new Date(p.start).toISOString().slice(0,10)!==p.start)) throw Error('Select one meeting on one valid date.');
     const matchesSelection = meeting => Scopes.matchesMeeting(meeting, p.scope) && (!p.meeting_slug || meeting.slug === p.meeting_slug);
 
     const alias = new Map();

@@ -588,7 +588,7 @@
   el('nmfMethod').addEventListener('change',updateNMFControls);el('nmfStability').addEventListener('change',updateNMFControls);updateNMFControls();
   function runNMFWorker(records,vectors,options){
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.12.0');
+      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.12.1');
       const finish=(fn,v)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(v);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));signal.addEventListener('abort',abort,{once:true});
       worker.onerror=()=>finish(reject,Error('NMF worker could not run. Reload the page or check browser permissions.'));
@@ -599,7 +599,7 @@
 
   function runClusterWorker(records,vectors,options,progress) {
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.12.0');
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.12.1');
       const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
       signal.addEventListener('abort',abort,{once:true});

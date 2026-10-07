@@ -92,3 +92,12 @@ collector, numerical worker and exports, including desktop/mobile overflow.
 
 A mocked browser run verifies software behavior, not live UN service availability.
 Any live source check is recorded separately with its actual date and outcome.
+
+## Live source route correction — 7 October 2026
+
+The live inventory includes canonical routes such as `hrc/63/25` and `ced/593`,
+not only `asset/...` video routes. Browser 1.12.1 accepts safe multi-segment IDs
+from the verified UN inventory, still rejects traversal/queries/arbitrary URLs,
+and rechecks the exact selected ID at collection. The regression fixtures now
+include HRC and treaty-body routes. The initial asset-only assumption was found
+by the separate live check, not silently classified as missing transcript data.

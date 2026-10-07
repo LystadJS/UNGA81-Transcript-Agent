@@ -14,7 +14,7 @@
     ? require('./passage-selection.js') : root.UNPassageSelection;
   const ReviewedUnits = typeof module !== 'undefined' && module.exports
     ? require('./reviewed-units.js') : root.UNReviewedUnits;
-  const VERSION = 'browser-descriptive-1.12.0';
+  const VERSION = 'browser-descriptive-1.12.1';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters', 'nmf'];
 
@@ -88,7 +88,7 @@
       throw Error('Invalid collection scope.');
     }
 
-    if(p.meeting_slug!==undefined && (typeof p.meeting_slug!=='string'||!/^asset\/[A-Za-z0-9_-]+\/[A-Za-z0-9_-]+$/.test(p.meeting_slug)||p.start!==p.end||p.meeting_date!==p.start)) throw Error('Individual meeting analysis requires one valid meeting ID and its exact date.');
+    if(p.meeting_slug!==undefined && (typeof p.meeting_slug!=='string'||!/^[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+){1,5}$/.test(p.meeting_slug)||p.start!==p.end||p.meeting_date!==p.start)) throw Error('Individual meeting analysis requires one valid meeting ID and its exact date.');
     const clustering = p.methods.includes('clusters') ? ClusterOptions.options(p.clustering) : undefined;
     const nmf=p.methods.includes('nmf')?NMFOptions.options(p.nmf):undefined;
     return { ...p, topic, mode, phrases, exclude, ...(p.methods.includes('clusters')?{clustering}:{}),...(nmf?{nmf}:{}) };

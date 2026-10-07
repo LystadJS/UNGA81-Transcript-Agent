@@ -25,5 +25,15 @@ const transcript=slug=>({video:{slug,date},transcript:{language:'en',data:[{spea
  await check('external source endpoints rejected',async()=>{await assert.rejects(()=>P.list(date,{request:async()=>({hash,data:{page:1,total:1,hasMore:false,meetings:[{...meetings[0],jsonUrl:'https://example.invalid/data'}]}})}),/Unexpected transcript host/);});
  await check('single-meeting non-English and empty transcripts keep coverage',async()=>{for(const mode of ['language','empty']){const r=await C.collect(p,[],{request:async url=>{if(url.includes('meetings.json'))return {hash,data:{page:1,total:1,hasMore:false,meetings:[meetings[1]]}};const data=transcript(meetings[1].slug);if(mode==='language')data.transcript.language='fr';else data.transcript.data=[];return {hash,data};}});assert.equal(r.records.length,0);assert.equal(r.coverage[0].status,mode==='language'?'excluded_language':'empty_transcript');}});
  await check('cancelled inventory publishes no partial list',async()=>{const c=new AbortController();c.abort();await assert.rejects(()=>P.list(date,{signal:c.signal,request}),e=>e.name==='AbortError');});
+ await check('canonical non-asset HRC and treaty-body meeting routes are supported',async()=>{
+  for(const slug of ['hrc/63/25','ced/593','ga/81/1']){
+   const m={...meetings[0],slug,pageUrl:'/en/'+slug,jsonUrl:'/en/'+slug+'.json'};
+   const inventory=await P.list(date,{request:async()=>({hash,data:{page:1,total:1,hasMore:false,meetings:[m]}})});
+   const params={...P.selection(date,inventory.meetings[0]),topic:'',region:'All regions',methods:['frequency']};
+   const collected=await C.collect(params,[],{request:async url=>url.includes('meetings.json')?{hash,data:{page:1,total:1,hasMore:false,meetings:[m]}}:{hash,data:transcript(slug)}});
+   assert.equal(collected.records[0].meeting_slug,slug);assert.equal((await A.analyze(collected,params)).counts.matched,1);
+  }
+  for(const slug of ['../hrc/63','hrc//25','/hrc/63/25','hrc/63/25?x=1','https://example.test/hrc','hrc/%2e%2e/25'])assert.equal(P.validSlug(slug),false,slug);
+ });
  console.log(JSON.stringify({status:'PASS',synthetic_only:true,checks:passed.length,passed,node:process.version}));
 })().catch(e=>{console.error(e);process.exitCode=1;});

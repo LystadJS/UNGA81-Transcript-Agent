@@ -5,7 +5,7 @@
   const C=node?require('./collector.js'):root.UNCollector;
   const S=node?require('./meeting-scopes.js'):root.UNMeetingScopes;
   function dateOK(date){return typeof date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(date)&&Number.isFinite(Date.parse(date))&&new Date(date).toISOString().slice(0,10)===date;}
-  function validSlug(slug){return typeof slug==='string'&&/^asset\/[A-Za-z0-9_-]+\/[A-Za-z0-9_-]+$/.test(slug);}
+  function validSlug(slug){return typeof slug==='string'&&/^[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+){1,5}$/.test(slug);}
   function checkMeeting(m,date){
     if(!m||!validSlug(m.slug)||typeof m.title!=='string'||!m.title.trim()||typeof m.date!=='string'||m.date.slice(0,10)!==date||typeof m.hasTranscript!=='boolean')throw Error('Unexpected meeting identity, title, date or availability.');
     C.sourceURL(m.pageUrl);
