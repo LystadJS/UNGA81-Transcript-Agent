@@ -87,5 +87,54 @@
     "hash_matched_public_files": 125,
     "local_sync_tests_passed": 3,
     "local_sync_test_limitation": "Inherited symlink fixture cannot run on this Windows account (WinError 1314); synchronization code is unchanged by this task."
-  }
+  },
+  "live_browser": {
+    "status": "PASS",
+    "source": "https://lystadjs.github.io/un/transcript-agent/",
+    "reviewed_passages": 12,
+    "parent_speeches": 3,
+    "meetings": 3,
+    "grouped_refits": 10,
+    "group_children_kept_together": true,
+    "nmf": true,
+    "source_offsets_in_exports": true,
+    "bundle_bytes_preserved": true,
+    "corruption_rejected": true,
+    "wrong_import_path_rejected": true,
+    "filtered_parent_denominators": true,
+    "stale_exports_blocked": true,
+    "mobile_overflow": false,
+    "browser_errors": [],
+    "uploads": [],
+    "external_requests": []
+  },
+  "deployed_assets": {
+    "status": "PASS",
+    "public_manifest_entries": 125,
+    "deployed_assets_byte_verified": [
+      "index.html",
+      "analysis-core.js",
+      "analysis-ui.js",
+      "cluster-worker.js",
+      "nmf-worker.js",
+      "reviewed-units.js",
+      "passage-pilot-core.js"
+    ]
+  },
+  "deployments": [
+    {
+      "repository": "LystadJS/UNGA81-Transcript-Agent",
+      "commit": "0c1e3656752da650765020c7c50485734a91a15a",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37570303160"
+    },
+    {
+      "repository": "LystadJS/LystadJS.github.io",
+      "commit": "4e38b15ad1f72fc4ac8373f639218e39dfd3198f",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/LystadJS/LystadJS.github.io/actions/runs/37570303455"
+    }
+  ]
 }
