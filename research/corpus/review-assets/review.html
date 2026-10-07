@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="{{CSP}}">
+<title>Development corpus · Boundary review</title>
+<style>{{CSS}}</style>
+</head>
+<body>
+<header class="masthead"><div class="brand">UN TRANSCRIPT PROJECT <span>RESEARCH / SOURCE REVIEW</span></div>
+<h1>Review the boundaries.<br><em>Keep the original evidence.</em></h1>
+<p id="scope-summary">Development corpus. Review source segments in context before treating them as complete speeches.</p>
+<div class="holdout" id="holdout">Reserved comparison meetings remain unopened.</div></header>
+<main>
+<section id="loading" role="status">Verifying packet and original text hashes…</section>
+<section id="app" hidden>
+<div class="toolbar">
+<label class="reviewer">Reviewer name <input id="reviewer" maxlength="120" autocomplete="off" placeholder="Enter your name"></label>
+<button id="save" type="button">Save review JSON</button>
+<label class="file-button">Resume saved JSON<input id="import" type="file" accept=".json,application/json"></label>
+<button id="clear-cache" type="button" class="quiet">Forget browser copy</button>
+</div>
+<p class="status" id="message" role="status" aria-live="polite">No decisions have been generated.</p>
+<div class="progress-row"><strong id="progress-label"></strong><progress id="progress" max="100" value="0" aria-label="Confirmed source reviews"></progress><span id="cache-status">Save the JSON file before closing.</span></div>
+<details class="guide"><summary>How to review · scope and safeguards</summary>
+<div class="guide-grid"><div><h2>One source segment, one decision</h2><p>Read the original text and neighboring segments. Choose the source type and speech extent. An automatic source segment may contain only part of a speech—or more than one speaker.</p><p><strong>Complete</strong> means the observed segment or explicitly linked segments support a complete intervention. <strong>Near-complete</strong> requires a note describing the gap. Both require an explicit speech ID. Use <strong>Fragment</strong> or <strong>Unknown</strong> when that claim is not supported.</p></div>
+<div><h2>Do not repair evidence here</h2><p>For mixed speakers or an internal split, choose <strong>Uncertain / internal boundary problem</strong> and explain the required split in notes. Original text, source metadata and country attribution cannot be edited. Technical token windows are not semantic topic boundaries.</p><p>“Confirmed” means you made a review decision, not that the passage is necessarily eligible for modeling. Previous owner pilot decisions are separate and unchanged.</p></div></div>
+<p>Changes are cached locally where the browser permits it. <strong>Save review JSON is the durable copy.</strong> A downloaded partial review can be resumed. No transcript or review data are uploaded; original UN links open only when clicked.</p></details>
+<div class="layout">
+<aside class="queue-panel" aria-label="Review queue">
+<h2>Meeting queue</h2>
+<label>Meeting<select id="meeting"></select></label>
+<p id="meeting-status" class="small"></p>
+<label>Show<select id="filter"><option value="all">All source segments</option><option value="pending">Not confirmed</option><option value="confirmed">Confirmed reviews</option><option value="flagged">Confirmed uncertainty / issue</option><option value="unknown-country">Unresolved country</option></select></label>
+<label>Source segment<select id="segment" size="9" aria-label="Source segment"></select></label>
+<p id="queue-count" class="small"></p>
+<button id="next-pending" type="button" class="wide">Next unconfirmed, any meeting</button>
+<p class="small">Default order is date → meeting → original segment order. Filters never remove records from the packet.</p>
+<details><summary>Coverage and provenance</summary><pre id="provenance"></pre></details>
+</aside>
+<article class="source-panel">
+<div id="empty-state" hidden><h2>No source segment to display</h2><p id="empty-message"></p></div>
+<div id="record-view">
+<div class="record-top"><div><p class="eyebrow" id="position"></p><h2 id="record-title" tabindex="-1"></h2></div><span class="badge" id="decision-status">Pending</span></div>
+<p class="metadata" id="metadata"></p>
+<div class="source-links"><a id="source-link" target="_blank" rel="noopener noreferrer">Open original UN meeting ↗</a><a id="raw-link" target="_blank" rel="noopener noreferrer">Cached original response (JSON)</a></div>
+<p class="warning" id="source-warning" hidden></p>
+<div class="record-nav"><button id="previous" type="button">← Previous segment</button><button id="next" type="button">Next segment →</button></div>
+<section class="original"><h3>Original source segment</h3><div id="source-text" class="source-text"></div></section>
+<details class="context"><summary>Previous and next source segments</summary><h3>Previous in this meeting</h3><p id="previous-context" class="source-text"></p><h3>Next in this meeting</h3><p id="next-context" class="source-text"></p></details>
+<details class="partitions"><summary id="partition-summary">Technical passage windows</summary><p class="small">Exact contiguous text spans. Offsets count Unicode code points from zero; the ending position is excluded. These windows are not reviewed topic boundaries.</p><div id="partition-list"></div></details>
+<details class="lineage"><summary>Exact source lineage and recorded speaker metadata</summary><pre id="lineage"></pre><div id="sentences"></div></details>
+<section class="decision-panel" aria-labelledby="decision-heading">
+<h2 id="decision-heading">Your boundary decision</h2>
+<div class="form-grid">
+<label>Source type<select id="type"><option value="">Choose a type</option><option value="substantive_speech">Substantive speech</option><option value="mixed_speech_procedure">Mixed speech and procedure</option><option value="right_of_reply">Right of reply</option><option value="procedure">Procedure / floor management</option><option value="speech_fragment">Speech fragment</option><option value="suspected_transcription_issue">Suspected transcription issue</option><option value="uncertain">Uncertain / internal boundary problem</option></select></label>
+<label>Observed speech extent<select id="extent"><option value="unknown">Unknown</option><option value="complete">Complete</option><option value="near_complete">Near-complete (note required)</option><option value="fragment">Fragment</option></select></label>
+<label class="speech-field">Speech ID<input id="speech" maxlength="240" autocomplete="off" placeholder="Required only for complete / near-complete speech coverage"></label>
+<button id="use-id" class="quiet" type="button">Use this segment’s unique ID</button>
+</div>
+<p class="small">For a speech spanning multiple source segments, reuse the same explicit ID only when the context and recorded metadata support it. The ID button does not confirm your review.</p>
+<label>Boundary / coverage notes<textarea id="note" rows="4" maxlength="10000" placeholder="Describe missing words, mixed speakers, a required internal split, or the basis for near-complete coverage. Notes never replace source text."></textarea></label>
+<p id="decision-history" class="small"></p>
+<div class="actions"><button id="confirm" type="button">Confirm and next</button><button id="reopen" type="button" class="quiet">Reopen this review</button></div>
+<p class="small">Selecting fields saves a draft only. Confirmation records your name and time. No batch or automatic confirmation is provided.</p>
+</section></div>
+</article></div>
+<footer><span id="footer-counts"></span><span>LOCAL REVIEW · NOT AN OFFICIAL VERBATIM RECORD</span></footer>
+</section></main>
+<script type="application/json" id="packet-data">{{PACKET}}</script>
+<script>{{CORE}}</script>
+<script>{{UI}}</script>
+</body></html>
