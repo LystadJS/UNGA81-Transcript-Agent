@@ -1,0 +1,636 @@
+{
+  "schema": "un.boundary-release-validation.v1",
+  "integration_run": "37664878176",
+  "input_commit": "42aead07bd20b9ceb08ef94110f5babfb57ff446",
+  "contract_tests": {
+    "schema": "un.boundary-packet-tests.v1",
+    "synthetic": true,
+    "passed": 45,
+    "failed": 0,
+    "checks": [
+      {
+        "name": "all development meetings, unavailable meeting included",
+        "status": "PASS"
+      },
+      {
+        "name": "all original source segments and partitions included",
+        "status": "PASS"
+      },
+      {
+        "name": "no heldout identity, title, URL or transcript in review model",
+        "status": "PASS"
+      },
+      {
+        "name": "every pending seed is explicitly unconfirmed",
+        "status": "PASS"
+      },
+      {
+        "name": "packet integrity verifies original and Unicode partition hashes",
+        "status": "PASS"
+      },
+      {
+        "name": "tampered packet digest rejected",
+        "status": "PASS"
+      },
+      {
+        "name": "rehashed packet with wrong original text hash rejected",
+        "status": "PASS"
+      },
+      {
+        "name": "rehashed packet with wrong partition hash rejected",
+        "status": "PASS"
+      },
+      {
+        "name": "source pointer cannot be changed",
+        "status": "PASS"
+      },
+      {
+        "name": "external source links rejected",
+        "status": "PASS"
+      },
+      {
+        "name": "unsafe cached-source path rejected",
+        "status": "PASS"
+      },
+      {
+        "name": "pending choices remain pending on import",
+        "status": "PASS"
+      },
+      {
+        "name": "partial matching import preserves remaining pending choices",
+        "status": "PASS"
+      },
+      {
+        "name": "legacy contract import without packet digest is accepted",
+        "status": "PASS"
+      },
+      {
+        "name": "different source bundle rejected",
+        "status": "PASS"
+      },
+      {
+        "name": "different packet version rejected",
+        "status": "PASS"
+      },
+      {
+        "name": "heldout or unknown source ID rejected",
+        "status": "PASS"
+      },
+      {
+        "name": "changed source text hash rejected",
+        "status": "PASS"
+      },
+      {
+        "name": "duplicate review IDs rejected",
+        "status": "PASS"
+      },
+      {
+        "name": "unknown review field rejected",
+        "status": "PASS"
+      },
+      {
+        "name": "string confirmation is not coerced to true",
+        "status": "PASS"
+      },
+      {
+        "name": "reviewer name required",
+        "status": "PASS"
+      },
+      {
+        "name": "source type required",
+        "status": "PASS"
+      },
+      {
+        "name": "complete speech requires ID",
+        "status": "PASS"
+      },
+      {
+        "name": "near-complete speech requires coverage note",
+        "status": "PASS"
+      },
+      {
+        "name": "valid near-complete note accepted",
+        "status": "PASS"
+      },
+      {
+        "name": "future timestamp rejected",
+        "status": "PASS"
+      },
+      {
+        "name": "timezone-free timestamp rejected",
+        "status": "PASS"
+      },
+      {
+        "name": "oversized note rejected",
+        "status": "PASS"
+      },
+      {
+        "name": "shared speech cannot cross meetings",
+        "status": "PASS"
+      },
+      {
+        "name": "shared speech cannot conflict with recorded metadata",
+        "status": "PASS"
+      },
+      {
+        "name": "matching adjacent source segments may share explicit speech ID",
+        "status": "PASS"
+      },
+      {
+        "name": "confirmed engineering choices pass current corpus rebuild",
+        "status": "PASS"
+      },
+      {
+        "name": "already reviewed source decisions are preserved, not reset",
+        "status": "PASS"
+      },
+      {
+        "name": "empty original records remain reviewable",
+        "status": "PASS"
+      },
+      {
+        "name": "builder refuses a changed and resealed derived corpus",
+        "status": "PASS"
+      },
+      {
+        "name": "builder makes no network requests",
+        "status": "PASS"
+      },
+      {
+        "name": "output cannot overwrite prior packet",
+        "status": "PASS"
+      },
+      {
+        "name": "every cached source preserves exact original bytes",
+        "status": "PASS"
+      },
+      {
+        "name": "HTML data encoding prevents closing-script injection",
+        "status": "PASS"
+      },
+      {
+        "name": "source placeholder-like text is never interpreted as a template",
+        "status": "PASS"
+      },
+      {
+        "name": "browser scripts and styles are hash-bound in CSP",
+        "status": "PASS"
+      },
+      {
+        "name": "manifest declares zero generated decisions and source requests",
+        "status": "PASS"
+      },
+      {
+        "name": "saved pending review validates with unchanged original source coverage",
+        "status": "PASS"
+      },
+      {
+        "name": "deterministic rebuild produces identical packet artifacts",
+        "status": "PASS"
+      }
+    ]
+  },
+  "corpus_tests": {
+    "schema": "un.passage-contract-tests.v1",
+    "synthetic": true,
+    "engine": "passage-corpus-1.0.0",
+    "passed": 53,
+    "failed": 0,
+    "checks": [
+      {
+        "name": "reject overlapping split dates",
+        "status": "PASS"
+      },
+      {
+        "name": "reject non-temporal split",
+        "status": "PASS"
+      },
+      {
+        "name": "reject unvalidated fit weighting",
+        "status": "PASS"
+      },
+      {
+        "name": "require all declared dates including empty days",
+        "status": "PASS"
+      },
+      {
+        "name": "reject incomplete pagination",
+        "status": "PASS"
+      },
+      {
+        "name": "reject changing totals",
+        "status": "PASS"
+      },
+      {
+        "name": "reject duplicate meeting IDs",
+        "status": "PASS"
+      },
+      {
+        "name": "reject a mismatched transcript endpoint",
+        "status": "PASS"
+      },
+      {
+        "name": "reject external inventory URL",
+        "status": "PASS"
+      },
+      {
+        "name": "freeze is order-invariant across dates and source responses",
+        "status": "PASS"
+      },
+      {
+        "name": "all parents and passages inherit development, never random row split",
+        "status": "PASS"
+      },
+      {
+        "name": "reject holdout in acquisition bundle",
+        "status": "PASS"
+      },
+      {
+        "name": "require missing-source accounting",
+        "status": "PASS"
+      },
+      {
+        "name": "verify original bytes and UTF-8 roundtrip",
+        "status": "PASS"
+      },
+      {
+        "name": "reject raw-source hash corruption",
+        "status": "PASS"
+      },
+      {
+        "name": "reject response identity mismatch",
+        "status": "PASS"
+      },
+      {
+        "name": "exact Unicode slices reconstruct each entire source parent",
+        "status": "PASS"
+      },
+      {
+        "name": "no discarded tail and partition token bound",
+        "status": "PASS"
+      },
+      {
+        "name": "whitespace and empty originals remain accounted",
+        "status": "PASS"
+      },
+      {
+        "name": "source sentence pointers and codepoint offsets recover source text",
+        "status": "PASS"
+      },
+      {
+        "name": "missing boundary review never becomes a speech",
+        "status": "PASS"
+      },
+      {
+        "name": "pending template choices remain pending",
+        "status": "PASS"
+      },
+      {
+        "name": "reject changed human boundary choice hashes",
+        "status": "PASS"
+      },
+      {
+        "name": "reject duplicate human boundary choices",
+        "status": "PASS"
+      },
+      {
+        "name": "speech cannot cross meetings",
+        "status": "PASS"
+      },
+      {
+        "name": "near-complete needs an explicit coverage note",
+        "status": "PASS"
+      },
+      {
+        "name": "procedure remains in source, excluded analytically",
+        "status": "PASS"
+      },
+      {
+        "name": "country mapping does not infer unknown affiliation",
+        "status": "PASS"
+      },
+      {
+        "name": "speech/country weights withheld on provisional source segments",
+        "status": "PASS"
+      },
+      {
+        "name": "equal-passage weights normalized",
+        "status": "PASS"
+      },
+      {
+        "name": "equal-speech weights equalize different-length speech contribution",
+        "status": "PASS"
+      },
+      {
+        "name": "equal-country weights nest equal speeches within countries",
+        "status": "PASS"
+      },
+      {
+        "name": "equal-meeting weights use meeting, not passage counts",
+        "status": "PASS"
+      },
+      {
+        "name": "weights recompute for each eligible selection",
+        "status": "PASS"
+      },
+      {
+        "name": "do not silently discard missing country for country weights",
+        "status": "PASS"
+      },
+      {
+        "name": "noise and missing fit retain separate denominator mass",
+        "status": "PASS"
+      },
+      {
+        "name": "reject mismatched and duplicate fit assignments",
+        "status": "PASS"
+      },
+      {
+        "name": "serialized corpus is rederived, not trusted",
+        "status": "PASS"
+      },
+      {
+        "name": "byte-identical deterministic rebuild",
+        "status": "PASS"
+      },
+      {
+        "name": "fit reference only on development, preserve negation",
+        "status": "PASS"
+      },
+      {
+        "name": "reference excludes tokens appearing only in heldout data",
+        "status": "PASS"
+      },
+      {
+        "name": "weighted model request fails rather than silently ignored",
+        "status": "PASS"
+      },
+      {
+        "name": "frozen-reference self-transform uses L2-normalized vectors",
+        "status": "PASS"
+      },
+      {
+        "name": "heldout transform requires a prospective lock",
+        "status": "PASS"
+      },
+      {
+        "name": "holdout OOV remains a zero vector, not an imputed signal",
+        "status": "PASS"
+      },
+      {
+        "name": "wrong frozen reference rejects holdout access",
+        "status": "PASS"
+      },
+      {
+        "name": "holdout exact text overlap rejected before scoring",
+        "status": "PASS"
+      },
+      {
+        "name": "holdout raw-source leakage rejected",
+        "status": "PASS"
+      },
+      {
+        "name": "collect-development never requests holdout, even when development fails",
+        "status": "PASS"
+      },
+      {
+        "name": "no overwrite of output directory",
+        "status": "PASS"
+      },
+      {
+        "name": "CSV spreadsheet formula injection is escaped",
+        "status": "PASS"
+      },
+      {
+        "name": "existing numerical kernel accepts bounded derived development inputs",
+        "status": "PASS"
+      },
+      {
+        "name": "tiny reviewed corpus is explicitly withheld",
+        "status": "PASS"
+      }
+    ]
+  },
+  "existing_regression_suites_passed": 15,
+  "packet": {
+    "schema": "un.boundary-packet-receipt.v1",
+    "engine": "boundary-review-1.0.0",
+    "status": "PASS",
+    "packet_sha256": "63bafd4c179bdd491cedb286f83572881ee8d3381b4bd2c250017086b43f2989",
+    "corpus_sha256": "e8fb980cf638e2aef39d0ca3564836c6120201a059e806ccaaee3fd5cc4f593e",
+    "source_bundle_sha256": "bbb40d162089703ce47d6890fa501fcd74f85973d5795246bd86aa9ffac5f9eb",
+    "frame_sha256": "9a814f3f7986896f553072d5a610f6874b57a16adc4c15696da4998ce9b133e0",
+    "counts": {
+      "meetings": 21,
+      "cached_sources": 20,
+      "source_segments": 1293,
+      "passages": 2596,
+      "existing_confirmed": 0,
+      "source_segment_eligible": 2057,
+      "unavailable_meetings": 1
+    },
+    "holdout": {
+      "meetings": 37,
+      "dates": [
+        "2026-10-05",
+        "2026-10-06"
+      ],
+      "transcripts_opened": 0,
+      "state": "reserved_not_downloaded",
+      "scope": "No held-out IDs, titles, links or text are placed in this packet."
+    },
+    "original_source_rederivation": true,
+    "all_source_segments_included": true,
+    "all_partition_code_points_accounted": true,
+    "decisions_generated": 0,
+    "new_source_requests": 0,
+    "link_validation": "Exact frozen development identity and cached-byte verification; no HTTP availability probe.",
+    "owner_pilot_modified": false,
+    "source_text_modified": false,
+    "implementation_sha256": {
+      "research/corpus/boundary-review.js": "f131e76951c20d8efa18074460a277079e2c70240540744db8caa22d86a41887",
+      "tools/boundary_packet.cjs": "659e2702fa4f81c6414c14b6d2c01e19ed6b5a07d9ccf90da58f50f9335c5f66",
+      "research/corpus/review-assets/review.html": "788a6f5ee6281e859f0c3e5d1fc70cd728b648c21f68f92d48284a53bcebae9c",
+      "research/corpus/review-assets/review.css": "ce45341e917e81ad5a864006d33929927c0f0d374d90572844d138dd911990c7",
+      "research/corpus/review-assets/review.js": "2cfba2e19a9963712ec9a2a5801a3cac3858f07b8ca21d207ad59495a281215f"
+    }
+  },
+  "synthetic_browser": {
+    "schema": "un.boundary-browser-tests.v1",
+    "real_source_render_only": false,
+    "synthetic_decision_tests": true,
+    "delivery_mode": "direct_local_file",
+    "passed": 23,
+    "failed": 0,
+    "checks": [
+      {
+        "name": "initial review is wholly pending",
+        "status": "PASS"
+      },
+      {
+        "name": "every development meeting is selectable",
+        "status": "PASS"
+      },
+      {
+        "name": "original Unicode text rendered without modification",
+        "status": "PASS"
+      },
+      {
+        "name": "no source markup becomes an image element",
+        "status": "PASS"
+      },
+      {
+        "name": "desktop page has no horizontal overflow",
+        "status": "PASS"
+      },
+      {
+        "name": "all meeting queues and source links match frozen development sources",
+        "status": "PASS"
+      },
+      {
+        "name": "context never crosses meeting boundaries",
+        "status": "PASS"
+      },
+      {
+        "name": "test writes use synthetic sources",
+        "status": "PASS"
+      },
+      {
+        "name": "confirmation without a reviewer is blocked",
+        "status": "PASS"
+      },
+      {
+        "name": "complete speech without ID is blocked",
+        "status": "PASS"
+      },
+      {
+        "name": "ID helper does not confirm a review",
+        "status": "PASS"
+      },
+      {
+        "name": "explicit confirmation advances to next unconfirmed source",
+        "status": "PASS"
+      },
+      {
+        "name": "export retains every pending row and one confirmed test choice",
+        "status": "PASS"
+      },
+      {
+        "name": "export is bound to exact source bundle",
+        "status": "PASS"
+      },
+      {
+        "name": "browser-local copy resumes saved choices",
+        "status": "PASS"
+      },
+      {
+        "name": "confirmed review is locked until explicitly reopened",
+        "status": "PASS"
+      },
+      {
+        "name": "reopen does not preserve a false confirmation",
+        "status": "PASS"
+      },
+      {
+        "name": "source-bound JSON can resume a prior review",
+        "status": "PASS"
+      },
+      {
+        "name": "mismatched import leaves current choices unchanged",
+        "status": "PASS"
+      },
+      {
+        "name": "no executable source-injection alert occurred",
+        "status": "PASS"
+      },
+      {
+        "name": "mobile page has no horizontal overflow",
+        "status": "PASS"
+      },
+      {
+        "name": "no JavaScript errors",
+        "status": "PASS"
+      },
+      {
+        "name": "no external network request",
+        "status": "PASS"
+      }
+    ],
+    "browser": "154.0.8037.0",
+    "external_requests": [],
+    "javascript_errors": [],
+    "heldout_transcripts_opened": 0
+  },
+  "real_browser": {
+    "schema": "un.boundary-browser-tests.v1",
+    "real_source_render_only": true,
+    "synthetic_decision_tests": false,
+    "delivery_mode": "direct_local_file",
+    "passed": 11,
+    "failed": 0,
+    "checks": [
+      {
+        "name": "initial review is wholly pending",
+        "status": "PASS"
+      },
+      {
+        "name": "every development meeting is selectable",
+        "status": "PASS"
+      },
+      {
+        "name": "original Unicode text rendered without modification",
+        "status": "PASS"
+      },
+      {
+        "name": "no source markup becomes an image element",
+        "status": "PASS"
+      },
+      {
+        "name": "desktop page has no horizontal overflow",
+        "status": "PASS"
+      },
+      {
+        "name": "all meeting queues and source links match frozen development sources",
+        "status": "PASS"
+      },
+      {
+        "name": "context never crosses meeting boundaries",
+        "status": "PASS"
+      },
+      {
+        "name": "real corpus export contains no invented decisions",
+        "status": "PASS"
+      },
+      {
+        "name": "mobile page has no horizontal overflow",
+        "status": "PASS"
+      },
+      {
+        "name": "no JavaScript errors",
+        "status": "PASS"
+      },
+      {
+        "name": "no external network request",
+        "status": "PASS"
+      }
+    ],
+    "browser": "154.0.8037.0",
+    "external_requests": [],
+    "javascript_errors": [],
+    "heldout_transcripts_opened": 0
+  },
+  "real_pending_export": {
+    "status": "PASS",
+    "confirmed": 0,
+    "pending": 1293,
+    "total": 1293,
+    "reviewed_speech_eligible": 0,
+    "heldout_opened": false,
+    "original_source_bundle_sha256": "bbb40d162089703ce47d6890fa501fcd74f85973d5795246bd86aa9ffac5f9eb",
+    "reviewed_corpus_sha256": "23ea09eec14055cbb4e6d0aef8e87d849e7b3631248747306db3c7adc8a41273"
+  },
+  "source_acquisition": "Restored hash-verified development checkpoint only; no UN request",
+  "holdout_transcripts_opened": 0,
+  "source_pipeline_and_public_site_changed": false,
+  "local_browser_limit": "The ChatGPT sandbox blocked file and loopback navigation; direct-file browser acceptance ran separately in GitHub CI."
+}

@@ -153,4 +153,6 @@ forecasting, event-risk and causal diffusion models retain their own training,
 evaluation and data prerequisites. They are not prerequisites for transparent
 unsupervised source exploration, and their current safeguards are not bypassed.
 
-**Next implementation:** prepare the expanded development-source boundary review and freeze the eligible observation population, then add a pinned semantic-embedding comparison. Keep the reserved temporal frame unopened until a model-specific evaluation protocol is frozen. Establish null-reference and held-out-source validation before promoting discovered groups as nonrandom diplomatic structure.
+**Boundary-review packet:** [the source-linked development packet](BOUNDARY_REVIEW.md) is now prepared for all original development source segments, with explicit pending decisions, cached evidence, resumable JSON and unchanged source/weighting contracts. The 37 reserved meetings remain unopened.
+
+**Next step:** complete the new development-source review in that packet, validate the returned choices against the original checkpoint, and freeze the eligible observation population. Internal split/correction cases stay unresolved rather than being promoted to complete speeches. A pinned semantic-embedding comparison follows the eligible-population decision. Keep the reserved temporal frame unopened until a model-specific evaluation protocol is frozen. Establish null-reference and held-out-source validation before promoting discovered groups as nonrandom diplomatic structure.
