@@ -1,0 +1,49 @@
+name: Phase A browser integration
+on:
+  push:
+    branches: [feat/latent-comparison-phase-a]
+    paths: ['tools/phase_a_browser_patch.py', '.github/workflows/phase-a-browser-patch.yml']
+permissions:
+  contents: write
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/latent-comparison-phase-a
+      - name: Apply exact-match integration changes
+        run: python3 tools/phase_a_browser_patch.py
+      - name: Commit only patched targets
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add site/latent-core.js tools/test_latent_ui.cjs .github/workflows/latent-comparison.yml
+          git commit -m 'Bound browser setup; use installed Chrome and validate saved numeric counts'
+          git push origin HEAD:feat/latent-comparison-phase-a
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate the engine
+        run: node tools/test_latent.cjs
+      - name: Browser runtime
+        run: |
+          timeout 120 npm install --prefix "$RUNNER_TEMP/latent-qa" --ignore-scripts --no-audit --no-fund --fetch-timeout=30000 --fetch-retries=1 playwright@1.55.0
+          if command -v google-chrome >/dev/null; then
+            google-chrome --version
+            echo 'PW_CHANNEL=chrome' >> "$GITHUB_ENV"
+          else
+            timeout 180 "$RUNNER_TEMP/latent-qa/node_modules/.bin/playwright" install --only-shell chromium
+          fi
+      - name: Build and test browser workflow
+        env:
+          NODE_PATH: ${{ runner.temp }}/latent-qa/node_modules
+        run: |
+          python3 tools/build_pages.py _site
+          node tools/test_latent_ui.cjs _site latent-browser-validation
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: latent-browser-integration
+          path: latent-browser-validation
