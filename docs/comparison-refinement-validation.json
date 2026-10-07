@@ -104,7 +104,75 @@
     "No formal null-calibrated nonrandomness or held-out performance claim."
   ],
   "deployment": {
-    "status": "pending_publication",
-    "note": "Local acceptance is not evidence of deployed behavior."
+    "status": "PASS",
+    "source_commit": "45af94d5b5cbc974375c51f361642d6aa7e0b05d",
+    "website_commit": "9acb7cde401327f2286b59c54b96cd3cf7cd6f22",
+    "source_workflow": {
+      "url": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37669968039",
+      "conclusion": "success",
+      "jobs": [
+        "validate-latent / numerical",
+        "validate-latent / browser",
+        "deploy"
+      ]
+    },
+    "website_workflow": {
+      "url": "https://github.com/LystadJS/LystadJS.github.io/actions/runs/37669973106",
+      "conclusion": "success"
+    },
+    "project_url_browser": {
+      "status": "PASS",
+      "source": "https://lystadjs.github.io/UNGA81-Transcript-Agent/latent.html",
+      "synthetic_only": true,
+      "private_owner_bundle_used": false,
+      "checks": [
+        "real worker: PCA/LSA/NMF, full parents, coverage and runtime hashes",
+        "source coverage and hard/soft weighting charts with dedicated CSV exports",
+        "replay archive, numerical JSON, diagnostics CSV and script-free source-linked visual HTML",
+        "validated reusable settings export",
+        "1440px desktop and 390px mobile: no page overflow",
+        "stale settings hide completed results and exports",
+        "saved run restores exact coordinates, numerical results and archive bytes",
+        "two saved-run comparison retains A/B coverage and uses shared identities, not matching numeric labels",
+        "failed run B import clears previous comparison and exports",
+        "tampered saved run rejected without retaining a prior export",
+        "worker cancellation releases no partial result",
+        "three-parent baseline withheld visibly, while excerpt fit remains available",
+        "no JavaScript errors, uploads or external requests"
+      ],
+      "check_count": 13,
+      "browser": "154.0.4258.62",
+      "node": "v24.15.0",
+      "errors": [],
+      "uploads": [],
+      "external_requests": []
+    },
+    "preferred_url_owner_pilot": {
+      "status": "PASS",
+      "source": "https://lystadjs.github.io/un/transcript-agent/latent.html",
+      "actual_owner_bundle": true,
+      "reviewed_excerpts": 12,
+      "parent_speeches": 3,
+      "meetings": 3,
+      "settings_per_run": 3,
+      "parent_models_withheld": true,
+      "exact_archive_replay": true,
+      "A_B_coverage_preserved": true,
+      "display_only_scores_and_assignments_unchanged": true,
+      "NMF_weighting_views_coincide_because_each_parent_has_four_defined_excerpts": true,
+      "script_free_visual_exports": true,
+      "coverage_and_weighting_CSV": true,
+      "mobile_overflow": false,
+      "errors": [],
+      "uploads": [],
+      "external_requests": [],
+      "interpretation": "Workflow pilot, not representative inference or a test of nonrandom diplomatic structure."
+    },
+    "preferred_url_runtime_module_hashes_matching_public_mirror": 22,
+    "local_public_manifest_file_hashes_verified": 134,
+    "public_mirror_sync_idempotent": true,
+    "initial_live_attempt": "Network-restricted sandbox refused navigation; the authorized external-network rerun passed.",
+    "private_inputs_uploaded": false,
+    "evidence_scope": "The real reviewed packet ran in a browser against the published preferred URL; the project URL used synthetic acceptance data. Both are distinct from GitHub CI build acceptance."
   }
 }
