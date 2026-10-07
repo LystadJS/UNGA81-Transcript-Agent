@@ -73,7 +73,7 @@
     }
     return {corpus,original,selection,source_hash};
   }
-  const manifest = records => records.map(r=>({id:r.id,text_sha256:r.text_sha256,parent_id:r.parent_id||null}));
+  const manifest = records => records.map(r=>({id:r.id,text_sha256:r.text_sha256,parent_id:r.parent_id||null,date:r.date,country:r.country,region:r.region,language:r.language,scope:r.scope,meeting:r.meeting,source_url:r.source_url,start:r.start??null,end:r.end??null}));
   function parentCoverage(records, original) {
     const parents = new Map(original.records.map(r=>[r.id,r]));
     const groups = new Map();
@@ -117,8 +117,10 @@
     if (a.length<2) return null;
     const rows=new Map(),cols=new Map(),cells=new Map(),choose=n=>n*(n-1)/2;
     a.forEach((v,i)=>{rows.set(v,(rows.get(v)||0)+1);cols.set(b[i],(cols.get(b[i])||0)+1);const k=JSON.stringify([v,b[i]]);cells.set(k,(cells.get(k)||0)+1);});
-    const sum=m=>Array.from(m.values()).reduce((s,n)=>s+choose(n),0),expected=sum(rows)*sum(cols)/choose(a.length),top=(sum(rows)+sum(cols))/2;
-    return Math.abs(top-expected)<1e-15?1:(sum(cells)-expected)/(top-expected);
+    // Integer pair-count products avoid unnecessary fractional cancellation (n <= 600).
+    const sum=m=>Array.from(m.values()).reduce((s,n)=>s+choose(n),0);
+    const pairs=choose(a.length),row=sum(rows),col=sum(cols),numerator=2*(sum(cells)*pairs-row*col),denominator=(row+col)*pairs-2*row*col;
+    return denominator===0?1:numerator/denominator;
   }
   function paired(left,right) {
     const base={left:left.id,right:right.id,scope:'Identical selected source identities and hashes only; not evidence of policy agreement.'};
@@ -187,7 +189,7 @@
       assert(Array.isArray(fit.points)&&fit.points.length<=600,'Invalid saved points.');
       const pointIds=new Set();
       for(const p of fit.points){assert(by.has(p.id)&&by.get(p.id).text_sha256===p.text_sha256&&!pointIds.has(p.id),'Changed saved point identity.');pointIds.add(p.id);
-        if(e.method==='clusters'){assert(Number.isInteger(p.cluster)&&p.cluster>=0,'Invalid saved assignment.');for(const key of [fit.representation,'umap',...(p.mds?['mds']:[])])assert(Array.isArray(p[key])&&p[key].length>=2&&p[key].every(Number.isFinite),'Invalid saved coordinates.');}
+        if(e.method==='clusters'){assert(Number.isInteger(p.cluster)&&p.cluster>=0,'Invalid saved assignment.');for(const key of [fit.representation,'umap',...(p.mds?['mds']:[])])assert(Array.isArray(p[key])&&(key===fit.representation?p[key].length>=1:p[key].length===2)&&p[key].every(Number.isFinite),'Invalid saved coordinates.');}
       }
     }
     return result;

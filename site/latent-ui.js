@@ -70,7 +70,7 @@
   fetch('countries.json').then(r=>r.json()).then(countries=>{const regions=[...new Set(countries.map(r=>r.region).filter(Boolean))];regions.forEach(region=>{const o=document.createElement('option');o.value=region;$('regions').append(o);});}).catch(()=>{});
   document.querySelectorAll('#inputs input,#inputs select,#settings input,#settings select').forEach(el=>{if(el.type!=='file')el.addEventListener('input',()=>{invalidate();renderRows();});});
   $('sourceFile').addEventListener('change',guarded(async()=>{
-    invalidate();const t=ticket,text=await read($('sourceFile').files[0]);if(t!==ticket)return;const source=L.parse(text);
+    invalidate();payload=null;$('sourceStatus').textContent='Validating selected file type…';const t=ticket,text=await read($('sourceFile').files[0]);if(t!==ticket)return;const source=L.parse(text);
     const kind=source.schema==='un.reviewed-speech-analysis.v1'?'reviewed':source.schema==='un.browser.corpus.v1'?'corpus':null;if(!kind)throw Error('Choose a collected corpus or reviewed analysis bundle.');
     payload={kind,text};$('policy').disabled=kind==='reviewed';$('parents').disabled=kind!=='reviewed';if(kind!=='reviewed')$('parents').checked=false;else $('policy').value='';
     $('sourceStatus').textContent='Selected '+$('sourceFile').files[0].name+' · '+kind+'. Source hashes and review lineage will be validated before fitting.';renderRows();
@@ -89,7 +89,7 @@
   $('planFile').addEventListener('change',guarded(async()=>{invalidate();const t=ticket,text=await read($('planFile').files[0],1024*1024);if(t!==ticket)return;setPlan(L.parse(text));status('Plan opened. It will be validated against the current engines before fitting.');}));
   $('savePlan').addEventListener('click',guarded(async()=>{const p=plan();if(!p.settings.length)throw Error('Add a setting first.');const data=await worker({action:'validate_plan',plan:p});download('latent-plan.json',JSON.stringify(data.plan,null,2));status('Validated settings plan saved; it contains no source text.');}));
   $('savedA').addEventListener('change',guarded(async()=>{
-    invalidate();const t=ticket,text=await read($('savedA').files[0],L.LIMIT);if(t!==ticket)return;const data=await worker({action:'restore',text});if(t!==ticket)return;
+    invalidate();payload=null;const t=ticket,text=await read($('savedA').files[0],L.LIMIT);if(t!==ticket)return;const data=await worker({action:'restore',text});if(t!==ticket)return;
     payload=data.payload;setPlan(data.result.plan);$('policy').value=payload.policy||'';$('policy').disabled=payload.kind==='reviewed';$('parents').disabled=payload.kind!=='reviewed';$('sourceStatus').textContent='Exact source restored from saved run A; no re-upload is required.';
     archiveA=text;show(data,'Archived snapshot · stored results and coordinates restored without refitting. Current renderer; saved numerical runtime is recorded below.');
   }));
