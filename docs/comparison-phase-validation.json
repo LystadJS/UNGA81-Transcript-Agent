@@ -1,0 +1,40 @@
+{
+  "phase": "saved-run comparison and individual-meeting selection",
+  "date": "2026-10-07",
+  "comparison_engine": "latent-comparison-1.0.0",
+  "browser_engine": "browser-descriptive-1.12.0",
+  "source_tested_commit": "d76941e12fa4ee9b03334d4cc2a52720e90cf3fe",
+  "engineering_validation": {
+    "status": "PASS",
+    "saved_run_and_comparison_checks": 19,
+    "individual_meeting_checks": 11,
+    "comparison_browser_checks": 11,
+    "meeting_browser_checks": 8,
+    "browser": "Google Chrome 154.0.8037.97",
+    "node": "22.23.3",
+    "workflow_run": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37649212766",
+    "browser_artifact_id": 11495122429,
+    "synthetic_inputs_only": true,
+    "desktop_width": 1440,
+    "mobile_width": 390,
+    "page_overflow": false,
+    "javascript_errors": [],
+    "screenshots_inspected": true
+  },
+  "scope": {
+    "real_private_owner_bundle_rerun": false,
+    "live_UN_inventory_verified_in_this_record": false,
+    "deployed_site_verified_in_this_record": false,
+    "D1_adapters_changed": false,
+    "publication_gates_changed": false,
+    "audio_corrections_applied": false,
+    "formal_nonrandomness_test_added": false
+  },
+  "notes": [
+    "Serialized JSON and exact source/archive bytes round-trip without numerical refitting. JavaScript-only undefined fields are not part of the JSON contract.",
+    "The three-parent baseline is intentionally withheld under the existing four-observation minimum.",
+    "Parent-balanced composition is a descriptive summary, not a weighted model refit.",
+    "Mocked inventory tests and live service checks are recorded separately.",
+    "Final regression and deployment evidence are recorded in the release/Pages and public-mirror workflow runs."
+  ]
+}
