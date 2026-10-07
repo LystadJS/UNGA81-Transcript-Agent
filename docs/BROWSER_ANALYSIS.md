@@ -2,7 +2,9 @@
 
 Open https://lystadjs.github.io/un/transcript-agent/#analyze.
 
-Current browser version: **1.11.0**. Text clustering offers k-means, PAM,
+Current browser version: **1.12.0**. Select **One individual meeting**, enter its date, and choose from the returned meeting list to analyze just that meeting. See [individual-meeting analysis](INDIVIDUAL_MEETINGS.md). The [latent comparison workspace](LATENT_COMPARISON.md) adds saved-run replay, parent/excerpt comparisons and reusable settings.
+
+ Text clustering offers k-means, PAM,
 hierarchical Ward/average linkage, HDBSCAN and regularized Gaussian mixtures on either PCA or LSA, including
 paired representation comparison and grouped stability. HDBSCAN preserves explicit
 unassigned passages and reports assignment coverage. See the

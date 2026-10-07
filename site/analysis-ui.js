@@ -62,7 +62,8 @@
         gmm:{covariance:el('gmmCovariance').value,regularization:Number(el('gmmRegularization').value),starts:Number(el('gmmStarts').value),maxIterations:Number(el('gmmIterations').value),ambiguity:Number(el('gmmAmbiguity').value)},
         stability:{enabled:el('stabilityEnabled').checked,unit:el('stabilityUnit').value,replicates:Number(el('stabilityReplicates').value),fraction:Number(el('stabilityFraction').value),seed:Number(el('stabilitySeed').value)}},
       methods: [...document.querySelectorAll('input[name=method]:checked')]
-        .map(input => input.value)
+        .map(input => input.value),
+      ...(window.UNMeetingPicker?.selection() || {})
     });
   }
 
@@ -221,6 +222,7 @@
         </p>
     `;
 
+    if(report.collection?.selection_mode==='single_meeting')html+=`<p class="method-note"><strong>Individual meeting:</strong> ${esc(report.collection.selected_meeting_title)} · ${esc(report.collection.selected_meeting_date)} · ${esc(report.collection.selected_meeting_slug)}. Only this meeting was collected. Within-meeting passages do not supply independent meeting-level replication.</p>`;
     if(report.passage_selection)html+=`<p class="warning">Reviewed inclusion: ${esc(report.passage_selection.policy==='substantive'?'substantive address segments':'substantive, mixed and fragment segments')}. ${report.passage_selection.eligible_after_type_filter} of ${report.passage_selection.eligible_before_type_filter} passages within the date, scope and region filters remain before deduplication. ${report.passage_selection.human_confirmed} explicit passage decisions; reviewer identity is self-declared. Original text is preserved.</p>`;
     if(report.reviewed_units){const r=report.reviewed_units;
       html+=`<section class="reviewed-unit-summary"><h3>Reviewed speech excerpts</h3>
@@ -586,7 +588,7 @@
   el('nmfMethod').addEventListener('change',updateNMFControls);el('nmfStability').addEventListener('change',updateNMFControls);updateNMFControls();
   function runNMFWorker(records,vectors,options){
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.11.0');
+      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.12.0');
       const finish=(fn,v)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(v);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));signal.addEventListener('abort',abort,{once:true});
       worker.onerror=()=>finish(reject,Error('NMF worker could not run. Reload the page or check browser permissions.'));
@@ -597,7 +599,7 @@
 
   function runClusterWorker(records,vectors,options,progress) {
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.11.0');
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.12.0');
       const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
       signal.addEventListener('abort',abort,{once:true});
@@ -724,6 +726,7 @@
       updateTopicMode();
       updateClusterControls();
       updateNMFControls();
+      window.UNMeetingPicker?.refresh();
     }
   };
 

@@ -1,5 +1,9 @@
 # UNGA81 Transcript Agent
 
+**Individual meetings:** choose **One individual meeting**, enter its date, select a meeting, and generate the existing source-linked analysis and report. See the [meeting selector guide](docs/INDIVIDUAL_MEETINGS.md).
+
+**[Compare latent structure](https://lystadjs.github.io/un/transcript-agent/latent.html)**: saved-run replay, full-parent/reviewed-excerpt comparison, and reusable PCA/LSA, clustering, NMF and display settings. See the [comparison guide](docs/LATENT_COMPARISON.md) and the [unsupervised discovery roadmap](docs/NEXT_STEPS.md). Existing daily publication gates remain unchanged.
+
 Integrated UN transcript analysis and Shiny readout interface, with the USUN
 executive email theme and Windows-friendly package paths.
 

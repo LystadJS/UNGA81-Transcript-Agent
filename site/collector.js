@@ -77,6 +77,8 @@
 
   async function collect(p, countries, { signal, progress = () => {}, request = readJSON } = {}) {
     if (!Scopes.isValid(p.scope)) throw Error('Invalid meeting scope.');
+    if (p.meeting_slug !== undefined && (typeof p.meeting_slug !== 'string' || !/^asset\/[A-Za-z0-9_-]+\/[A-Za-z0-9_-]+$/.test(p.meeting_slug) || p.start !== p.end || p.meeting_date !== p.start || !/^\d{4}-\d{2}-\d{2}$/.test(p.start) || !Number.isFinite(Date.parse(p.start)) || new Date(p.start).toISOString().slice(0,10)!==p.start)) throw Error('Select one meeting on one valid date.');
+    const matchesSelection = meeting => Scopes.matchesMeeting(meeting, p.scope) && (!p.meeting_slug || meeting.slug === p.meeting_slug);
 
     const alias = new Map();
 
@@ -150,7 +152,7 @@
           date,
           status: 'ok',
           meetings: found.length,
-          selected: found.filter(meeting => Scopes.matchesMeeting(meeting, p.scope)).length
+          selected: found.filter(matchesSelection).length
         });
       } catch (error) {
         check();
@@ -163,7 +165,8 @@
 
     // Filter BEFORE downloading transcripts. Selecting Third Committee does
     // not download every other committee and hide its passages afterward.
-    const selected = meetings.filter(meeting => Scopes.matchesMeeting(meeting, p.scope));
+    const selected = meetings.filter(matchesSelection);
+    if(p.meeting_slug && (inventoryDays.some(d=>d.status!=='ok') || selected.length!==1)) throw Error('The selected meeting could not be verified in the complete inventory. Search the date again; no other meeting was substituted.');
 
     progress(`Inventory checked: ${meetings.length} meetings; ${selected.length} within the selected scope.`);
 
@@ -232,6 +235,7 @@
 
           batch.push({
             id: meeting.slug + '#' + segmentIndex,
+            meeting_slug: meeting.slug,
             date: row.date,
             country: country?.country || affiliation || 'Unidentified',
             region: country?.region || 'Unmapped',
@@ -276,6 +280,7 @@
         collected_at: new Date().toISOString(),
         inventory_meetings: meetings.length,
         selected_meetings: selected.length,
+        ...(p.meeting_slug?{selection_mode:'single_meeting',selected_meeting_slug:p.meeting_slug,selected_meeting_title:selected[0].title,selected_meeting_date:p.meeting_date}:{}),
         inventory_pages: days,
         inventory_days: inventoryDays,
         failed_inventory_days: inventoryDays.filter(day => day.status !== 'ok').length,
