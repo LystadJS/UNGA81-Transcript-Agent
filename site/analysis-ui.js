@@ -19,6 +19,7 @@
   let controller = null;
   let corpus = null;
   let importedCorpusFile = null;
+  let audioLedger = null;
   let result = null;
   let ready = false;
   let stale = false;
@@ -221,8 +222,20 @@
     `;
 
     if(report.passage_selection)html+=`<p class="warning">Reviewed inclusion: ${esc(report.passage_selection.policy==='substantive'?'substantive address segments':'substantive, mixed and fragment segments')}. ${report.passage_selection.eligible_after_type_filter} of ${report.passage_selection.eligible_before_type_filter} passages within the date, scope and region filters remain before deduplication. ${report.passage_selection.human_confirmed} explicit passage decisions; reviewer identity is self-declared. Original text is preserved.</p>`;
+    if(report.reviewed_units){const r=report.reviewed_units;
+      html+=`<section class="reviewed-unit-summary"><h3>Reviewed speech excerpts</h3>
+        <p><strong>${r.included.passages} included excerpts · ${r.included.parent_speeches} parent speeches · ${r.included.meetings} meetings.</strong>
+        The import contains ${r.input.passages} excerpts from ${r.input.parent_speeches} speeches; ${r.eligible_before_dedup.passages} pass date, scope and region filters before deduplication.</p>
+        <p class="warning">Selected windows do not cover whole speeches. Boundary approval does not verify every word against audio or establish a theme, relevance or stance. These excerpts cannot support representative performance claims.</p>
+        <details><summary>Speech coverage and review record</summary>
+        ${table(['Parent speech','Excerpts in import','Original text covered'],r.coverage.map(c=>[`${c.country} · ${c.parent_id}`,c.passages,c.coverage_percent.toFixed(1)+'%']))}
+        <p>Coverage uses original Unicode code points before topic and date filtering. Each unique excerpt has equal weight; speeches with more retained excerpts contribute more observations.</p>
+        <p>Audio checks: ${r.audio_decisions.supported} supported, ${r.audio_decisions.mismatch} discrepancies, ${r.audio_decisions.unclear} unclear. Disputed or unclear overlaps are withheld (${r.withheld.length} proposals). Wording notes remain separate; originals are unchanged. Reviewer identity is self-declared.</p>
+        <p>Resampling keeps children of the same parent together using inherited meeting or affiliation groups. Repeated excerpts do not add independent speeches.</p>
+        <p class="method-note">Bundle SHA-256 ${esc(r.bundle_sha256)}<br>Original corpus SHA-256 ${esc(r.corpus_sha256)}</p></details></section>`;
+    }
     const metrics = [
-      [counts.input, 'Passages collected'],
+      [counts.input, report.reviewed_units?'Excerpts imported':'Passages collected'],
       [counts.eligible, 'Unique passages analyzed'],
       [counts.matched, all ? 'Included passages' : 'Topic matches'],
       [counts.duplicates, 'Duplicates removed']
@@ -282,7 +295,7 @@
       <details class="coverage-panel"${issues.length || !counts.input ? ' open' : ''}>
         <summary>Collection coverage</summary>
         <p>
-          ${esc(counts.input)} passages collected;
+          ${esc(counts.input)} ${report.reviewed_units?'excerpts imported':'passages collected'};
           ${esc(counts.eligible_before_dedup)} eligible before deduplication;
           ${esc(counts.unmapped)} with unmapped regions.
         </p>
@@ -408,7 +421,7 @@
       <h3>Source passages</h3>
       <p>
         Showing ${Math.min(100, report.matched.length)} of ${report.matched.length} source segments.
-        Download analysis JSON or CSV for every included unique passage. Save transcripts retains all original collected segments, including duplicates.
+        Download analysis JSON or CSV for every included unique passage. ${report.reviewed_units?'Save reviewed bundle retains the original collection, review packet and choices for re-import.':'Save transcripts retains all original collected segments, including duplicates.'}
       </p>
     `;
 
@@ -420,9 +433,10 @@
           <p class="method-note">${esc(record.region)} · ${esc(UNMeetingScopes.label(record.scope))}</p>
           <p>${esc(record.text.slice(0, 350))}${record.text.length > 350 ? '…' : ''}</p>
           <details>
-            <summary>Read full source segment</summary>
+            <summary>${record.parent_id?'Read reviewed excerpt':'Read full source segment'}</summary>
             <blockquote>${esc(record.text)}</blockquote>
             <p class="method-note">Record ${esc(record.id)} · SHA-256 ${esc(record.text_sha256)}</p>
+            ${record.parent_id?`<p class="method-note">Parent ${esc(record.parent_id)} · Original offsets ${record.start}–${record.end} (Unicode code points, zero-based, end exclusive). ${esc(record.review_scope)}</p>`:''}
           </details>
           <a href="${esc(record.source_url)}" target="_blank" rel="noopener noreferrer">
             Open original source ↗
@@ -519,10 +533,12 @@
   }
 
   el('analysisForm').addEventListener('input', invalidate);
+  el('analysisForm').addEventListener('change', invalidate);
 
   el('corpusSource').onchange = () => {
     el('corpusFileLabel').hidden = el('corpusSource').value !== 'import';
     el('reviewedSelection').hidden=el('corpusSource').value!=='import';
+    el('reviewedUnitsFileLabel').hidden=el('corpusSource').value!=='reviewed';
   };
 
   el('cancelAnalysis').onclick = () => controller?.abort();
@@ -570,7 +586,7 @@
   el('nmfMethod').addEventListener('change',updateNMFControls);el('nmfStability').addEventListener('change',updateNMFControls);updateNMFControls();
   function runNMFWorker(records,vectors,options){
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.10.0');
+      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.11.0');
       const finish=(fn,v)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(v);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));signal.addEventListener('abort',abort,{once:true});
       worker.onerror=()=>finish(reject,Error('NMF worker could not run. Reload the page or check browser permissions.'));
@@ -581,7 +597,7 @@
 
   function runClusterWorker(records,vectors,options,progress) {
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.10.0');
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.11.0');
       const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
       signal.addEventListener('abort',abort,{once:true});
@@ -616,6 +632,7 @@
       result = null;
       corpus = null;
       importedCorpusFile = null;
+      audioLedger = null;
       stale = false;
 
       if (el('corpusSource').value === 'import') {
@@ -646,6 +663,14 @@
             corpus_sha256:[...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,'0')).join(''),review_sha256:await UNCollector.sha(reviewText)};
           UNPassageSelection.validate(corpus,p.passageSelection);
         }
+      } else if(el('corpusSource').value==='reviewed'){
+        status('Validating reviewed excerpts against originals and saved decisions…');
+        const file=el('reviewedUnitsFile').files[0];
+        if(!file||file.size>30000000)throw Error('Choose a reviewed analysis bundle under 30 MB.');
+        const loaded=await UNReviewedUnits.load(await file.arrayBuffer(),UNAnalysis.validateCorpus,async message=>{
+          status(message);await pause();if(controller.signal.aborted)throw new DOMException('Cancelled','AbortError');
+        });
+        corpus=loaded.corpus;audioLedger=loaded.ledger;importedCorpusFile=file;
       } else {
         corpus = await UNCollector.collect(p, countries, {
           signal: controller.signal,
@@ -672,6 +697,8 @@
       el('exportConsensus').hidden=!clusterFits(result.methods.clusters).some(f=>f.stability?.consensus&&!f.stability.skipped);
       el('exportHierarchy').hidden=!clusterFits(result.methods.clusters).some(f=>f.hierarchical);
       el('exportNMF').hidden=!result.methods.nmf?.points;
+      el('exportAudioLedger').hidden=!audioLedger;
+      el('exportCorpus').textContent=result.reviewed_units?'Save reviewed bundle':'Save transcripts';
       el('analysisOutput').hidden = false;
       exportButtons().forEach(button => { button.disabled = false; });
 
@@ -682,12 +709,13 @@
       result = null;
       corpus = null;
       importedCorpusFile = null;
+      audioLedger = null;
       el('analysisOutput').hidden = true;
 
       status(error.name === 'AbortError'
         ? 'Collection cancelled. No partial report was released.'
         : 'Could not complete report: ' + error.message +
-          ' If live access is blocked by your network, import an exported collection.');
+          (el('corpusSource').value==='live'?' If live access is blocked by your network, import an exported collection.':''));
     } finally {
       controller = null;
 
@@ -702,6 +730,8 @@
 
   // ---------- Export buttons ----------
   const clusterFits=fit=>!fit?[]:[fit,...(fit.comparison?[fit.comparison.alternative]:[])];
+  const lineageFields=()=>result?.reviewed_units?['parent_id','parent_text_sha256','start','end','offset_unit']:[];
+  const lineageValues=id=>{const r=result.matched.find(r=>r.id===id);return lineageFields().map(k=>r?.[k]);};
   el('exportConsensus').onclick=()=>{
     if(stale)return;
     const fits=clusterFits(result?.methods.clusters).filter(f=>f.stability?.consensus&&!f.stability.skipped);
@@ -733,13 +763,13 @@
     const prefix=compare?'D':fits[0].representation==='lsa'?'LS':'PC';
     const fields=[...(compare||typed?['representation']:[]),...(typed?['algorithm','linkage','representative_role','is_representative']:[]),'id','text_sha256','cluster',...(density?['assignment_status','membership_strength']:[]),...(mixture?['covariance','regularization','max_membership','membership_margin','normalized_entropy','ambiguous',...Array.from({length:mixtureK},(_,i)=>'component_'+(i+1)+'_membership'),'membership_refits','mean_membership_tv']:[]),...Array.from({length:dimensions},(_,i)=>prefix+(i+1)),'UMAP1','UMAP2',...(mds?['MDS1','MDS2']:[]),
       ...(stable?['resamples_included','observed_peers','within_cluster_consensus','strongest_other_consensus','consensus_margin',...(density?['resamples_assigned','resamples_unassigned','assignment_rate']:[])]:[])];
-    const rows=[fields];
+    const rows=[[...fields,...lineageFields()]];
     for(const fit of fits){const method=fit.representation||'pca';
       fit.points.forEach((p,i)=>{const s=!fit.stability?.skipped?fit.stability?.consensus?.points[i]:null;
         const soft=fit.stability?.soft_membership?.points[i];
         const group=fit.clusters[p.cluster-1];
         rows.push([...(compare||typed?[method]:[]),...(typed?[fit.algorithm,fit.hierarchical?.linkage||'',group?.representative_role||'',group?.representative_id===p.id]:[]),p.id,p.text_sha256,p.cluster,...(density?[p.assignment_status,p.membership_strength]:[]),...(mixture?[fit.gmm.covariance_type,fit.gmm.regularization,p.max_membership,p.membership_margin,p.normalized_entropy,p.ambiguous,...p.memberships,soft?.count,soft?.mean]:[]),...Array.from({length:dimensions},(_,d)=>p[method][d]??''),...p.umap,...(mds?(p.mds||['','']):[]),
-          ...(stable?[s?.included,s?.observed_peers,s?.within_cluster,s?.strongest_other,s?.margin,...(density?[s?.assigned,s?.unassigned,s?.assignment_rate]:[])]:[])]);
+          ...(stable?[s?.included,s?.observed_peers,s?.within_cluster,s?.strongest_other,s?.margin,...(density?[s?.assigned,s?.unassigned,s?.assignment_rate]:[])]:[]),...lineageValues(p.id)]);
       });
     }
     save('\uFEFF'+rows.map(row=>row.map(quote).join(',')).join('\r\n'),'un-clusters.csv','text/csv;charset=utf-8');
@@ -748,11 +778,11 @@
   el('exportHierarchy').onclick=()=>{
     if(stale)return;
     const fits=clusterFits(result?.methods.clusters).filter(f=>f.hierarchical);if(!fits.length)return;
-    const rows=[['representation','algorithm','linkage','node','left','right','height','size','leaf_id','source_url','selected_cluster']];
+    const rows=[['representation','algorithm','linkage','node','left','right','height','size','leaf_id','source_url','selected_cluster',...lineageFields()]];
     const byId=new Map(result.matched.map(r=>[r.id,r]));
     for(const fit of fits){const h=fit.hierarchical,prefix=[fit.representation,fit.algorithm,h.linkage];
-      fit.points.forEach((p,i)=>rows.push([...prefix,i,'','',0,1,p.id,byId.get(p.id).source_url,p.cluster]));
-      h.merges.forEach(m=>rows.push([...prefix,m.node,m.left,m.right,m.height,m.size,'','',h.cut_nodes.includes(m.node)?h.cut_nodes.indexOf(m.node)+1:'']));
+      fit.points.forEach((p,i)=>rows.push([...prefix,i,'','',0,1,p.id,byId.get(p.id).source_url,p.cluster,...lineageValues(p.id)]));
+      h.merges.forEach(m=>rows.push([...prefix,m.node,m.left,m.right,m.height,m.size,'','',h.cut_nodes.includes(m.node)?h.cut_nodes.indexOf(m.node)+1:'',...lineageFields().map(()=>'')]));
     }
     const quote=v=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,"'$&").replace(/"/g,'""')+'"';
     save('\uFEFF'+rows.map(row=>row.map(quote).join(',')).join('\r\n'),'un-hierarchy.csv','text/csv;charset=utf-8');
@@ -761,8 +791,8 @@
   el('exportNMF').onclick=()=>{
     const f=result?.methods.nmf;if(!f?.points||stale)return;
     const byId=new Map(result.matched.map(r=>[r.id,r]));
-    const rows=[['id','source_url','text_sha256',...f.components.map(c=>'component_'+c.component+'_weight'),...f.components.map(c=>'component_'+c.component+'_share')],
-      ...f.points.map(p=>[p.id,byId.get(p.id)?.source_url,p.text_sha256,...p.weights,...(p.shares||f.components.map(()=>''))])];
+    const rows=[['id','source_url','text_sha256',...f.components.map(c=>'component_'+c.component+'_weight'),...f.components.map(c=>'component_'+c.component+'_share'),...lineageFields()],
+      ...f.points.map(p=>[p.id,byId.get(p.id)?.source_url,p.text_sha256,...p.weights,...(p.shares||f.components.map(()=>'')),...lineageValues(p.id)])];
     const cell=v=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,"'$&").replace(/"/g,'""')+'"';
     save('\uFEFF'+rows.map(r=>r.map(cell).join(',')).join('\r\n'),'un-nmf-mixtures.csv','text/csv;charset=utf-8');
   };
@@ -774,8 +804,11 @@
 
   el('exportCorpus').onclick = () => {
     if (corpus && !stale) {
-      save(importedCorpusFile || JSON.stringify(corpus), 'un-transcripts.json', 'application/json');
+      save(importedCorpusFile || JSON.stringify(corpus), result.reviewed_units?'reviewed-analysis.json':'un-transcripts.json', 'application/json');
     }
+  };
+  el('exportAudioLedger').onclick=()=>{
+    if(audioLedger&&!stale)save(JSON.stringify(audioLedger,null,2),'audio-review-ledger.json','application/json');
   };
 
   el('exportCSV').onclick = () => {
@@ -783,7 +816,8 @@
 
     const fields = [
       'id', 'date', 'country', 'region', 'scope', 'meeting',
-      'source_url', 'text_sha256', 'text'
+      'source_url', 'text_sha256', 'text',
+      ...(result.reviewed_units?['parent_id','parent_text_sha256','parent_raw_sha256','corpus_sha256','start','end','offset_unit','utf8_start','utf8_end','source_group','reviewer','reviewed_at','review_scope']:[])
     ];
 
     const cell = value => '"' + String(value ?? '')

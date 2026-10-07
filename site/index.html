@@ -10,23 +10,25 @@
     <link href="theme.css" rel="stylesheet">
     <link href="app.css" rel="stylesheet">
     <script defer src="app.js"></script>
-    <link href="analysis.css?v=1.10.0" rel="stylesheet">
+    <link href="analysis.css?v=1.11.0" rel="stylesheet">
     <script defer src="meeting-scopes.js?v=1.2.0"></script>
-    <script defer src="mds-core.js?v=1.10.0"></script>
-    <script defer src="mds-view.js?v=1.10.0"></script>
-    <script defer src="gmm-core.js?v=1.10.0"></script>
-    <script defer src="gmm-view.js?v=1.10.0"></script>
-    <script defer src="cluster-options.js?v=1.10.0"></script>
-    <script defer src="nmf-options.js?v=1.10.0"></script>
-    <script defer src="passage-selection.js?v=1.10.0"></script>
-    <script defer src="analysis-core.js?v=1.10.0"></script>
-    <script defer src="nmf-view.js?v=1.10.0"></script>
+    <script defer src="mds-core.js?v=1.11.0"></script>
+    <script defer src="mds-view.js?v=1.11.0"></script>
+    <script defer src="gmm-core.js?v=1.11.0"></script>
+    <script defer src="gmm-view.js?v=1.11.0"></script>
+    <script defer src="cluster-options.js?v=1.11.0"></script>
+    <script defer src="nmf-options.js?v=1.11.0"></script>
+    <script defer src="passage-selection.js?v=1.11.0"></script>
+    <script defer src="passage-pilot-core.js?v=1.11.0"></script>
+    <script defer src="reviewed-units.js?v=1.11.0"></script>
+    <script defer src="analysis-core.js?v=1.11.0"></script>
+    <script defer src="nmf-view.js?v=1.11.0"></script>
     <script defer src="collector.js?v=1.2.0"></script>
-    <script defer src="stability-view.js?v=1.10.0"></script>
-    <script defer src="comparison-view.js?v=1.10.0"></script>
-    <script defer src="hierarchy-view.js?v=1.10.0"></script>
-    <script defer src="cluster-view.js?v=1.10.0"></script>
-    <script defer src="analysis-ui.js?v=1.10.0"></script>
+    <script defer src="stability-view.js?v=1.11.0"></script>
+    <script defer src="comparison-view.js?v=1.11.0"></script>
+    <script defer src="hierarchy-view.js?v=1.11.0"></script>
+    <script defer src="cluster-view.js?v=1.11.0"></script>
+    <script defer src="analysis-ui.js?v=1.11.0"></script>
   </head>
 
   <body>
@@ -159,7 +161,14 @@
               <select id="corpusSource">
                 <option value="live">UN transcript service</option>
                 <option value="import">Saved collection</option>
+                <option value="reviewed">Reviewed speech excerpts</option>
               </select>
+            </label>
+
+            <label hidden id="reviewedUnitsFileLabel">
+              Reviewed analysis bundle (.json)
+              <input accept=".json,application/json" id="reviewedUnitsFile" type="file">
+              <span class="hint">Contains the originals, review packet and saved decisions. The report checks each excerpt against its source and shows coverage by parent speech.</span>
             </label>
 
             <label hidden id="corpusFileLabel">
@@ -294,6 +303,7 @@
             <button id="exportHTML" type="button">Download report</button>
             <button class="secondary" id="exportResult" type="button">Analysis data (.json)</button>
             <button class="secondary" id="exportCorpus" type="button">Save transcripts</button>
+            <button class="secondary" hidden id="exportAudioLedger" type="button">Audio review record (.json)</button>
             <button class="secondary" id="exportCSV" type="button">Included passages (.csv)</button>
             <button class="secondary" hidden id="exportClusters" type="button">Cluster data (.csv)</button>
             <button class="secondary" hidden id="exportConsensus" type="button">Consensus pairs (.csv)</button>
@@ -302,7 +312,7 @@
             <button class="secondary" id="printAnalysis" type="button">Print / save PDF</button>
           </div>
 
-          <p class="hint">Save transcripts retains every collected source segment. Analysis and CSV use unique passages within your filters; duplicate mappings remain in the analysis JSON.</p>
+          <p class="hint">Save your input to preserve original sources and any review evidence. Analysis and CSV use unique passages within your filters; duplicate mappings remain in the analysis JSON.</p>
 
           <div id="analysisReport"></div>
 

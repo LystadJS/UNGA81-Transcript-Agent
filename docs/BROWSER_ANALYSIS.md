@@ -2,7 +2,7 @@
 
 Open https://lystadjs.github.io/un/transcript-agent/#analyze.
 
-Current browser version: **1.10.0**. Text clustering offers k-means, PAM,
+Current browser version: **1.11.0**. Text clustering offers k-means, PAM,
 hierarchical Ward/average linkage, HDBSCAN and regularized Gaussian mixtures on either PCA or LSA, including
 paired representation comparison and grouped stability. HDBSCAN preserves explicit
 unassigned passages and reports assignment coverage. See the
@@ -20,6 +20,17 @@ aligned membership changes alongside highest-membership cluster stability.
 4. Inspect collection coverage, denominators and source evidence before sharing.
 5. Download the standalone visual HTML report, analysis JSON, collected transcript
    JSON or matched-segment CSV. Use Print / save PDF for a printable copy.
+
+## Reviewed excerpts within speeches
+
+Under **More options → Transcript source → Reviewed speech excerpts**, open a
+reviewed analysis bundle. It preserves original collection bytes, the source/audio
+packet and saved owner choices. The browser regenerates the approved units and
+checks parent metadata, hashes, offsets and disputed-span exclusions before
+analysis. Reports count excerpts, parent speeches and meetings separately; original
+text remains intact. **Save reviewed bundle** preserves the complete input for
+re-import. Audio discrepancy notes have their own download and are never applied
+as text edits. See [reviewed import](REVIEWED_UNITS.md) for preparation and limits.
 
 ## Optional metric MDS
 

@@ -16,12 +16,11 @@ source of truth for all subsequent work on this project.
   rewriting historical original checksum records. Never commit credentials or new
   private transcript inputs merely because this repository contains public fixtures.
 - Include concrete recommended next steps in responses, as requested by the user.
-- Until the current audio and within-speech passage pilot has a saved, validated
-  complete owner review, end each final response with a brief reminder to finish
-  that review. The initial packet contains 12 audio checks and 12 passage choices;
-  update the reminder to reflect any validated progress. Link the existing packet
-  or review interface when helpful. This is a conversational reminder, not a
-  request for a scheduled notification or a new review packet.
+- The audio and within-speech pilot's 24 owner decisions were saved and validated
+  on 7 October 2026: 12 included passages; six supported audio checks, five
+  discrepancies and one unclear item. Stop the former reminder to complete this
+  packet. Unclear wording and unapplied correction notes remain distinct from
+  incomplete review; consult docs/REVIEWED_UNITS.md for current follow-up work.
 - The preferred remote interface is https://lystadjs.github.io/un/transcript-agent/,
   linked from the main portfolio's code.html through /un/. When public site/report
   assets change, refresh the main website repository's mirror using its

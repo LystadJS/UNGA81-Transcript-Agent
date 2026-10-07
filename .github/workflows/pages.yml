@@ -47,6 +47,8 @@ jobs:
           node tools/test_passage_comparison.cjs
       - name: Test reviewed speech units and immutable source offsets
         run: node tools/test_speech_pilot.cjs
+      - name: Test reviewed-unit analysis imports and correction provenance
+        run: node tools/test_browser_reviewed_units.cjs
       - name: Build public site
         run: python3 tools/build_pages.py _site
       - uses: actions/upload-pages-artifact@v3

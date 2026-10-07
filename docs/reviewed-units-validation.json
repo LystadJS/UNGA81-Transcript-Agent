@@ -1,0 +1,91 @@
+{
+  "status": "PASS",
+  "validated_at": "2026-10-07T04:10:12.725136+00:00",
+  "engine": "browser-descriptive-1.11.0",
+  "owner_review_complete": true,
+  "actual_owner_choices": 24,
+  "review_mode": "single owner reviewer/finalizer",
+  "originals_and_460_type_choices_unchanged": true,
+  "corpus_sha256": "469f5d00c84a20b735f2cc23e1688ea1868fa38da90e611894b0d759c282deca",
+  "packet_sha256": "64a8d42f1414ab2af79942f0370d0ed2b502897f44252c382feb0b71fcc35563",
+  "review_sha256": "26b016269d25ba79d55e0adecfa4621c98592c2934aa9e64e1c00779c82adb44",
+  "bundle_sha256": "f6e1674db4953188eb80214c2d6ba37d1bc4bb5bbb1b2b718007d1d5a27b721f",
+  "approved_input": {
+    "passages": 12,
+    "parent_speeches": 3,
+    "meetings": 3
+  },
+  "withheld": 0,
+  "audio_decisions": {
+    "supported": 6,
+    "mismatch": 5,
+    "unclear": 1
+  },
+  "corrections_applied": 0,
+  "whole_passage_audio_verification": false,
+  "coverage": [
+    {
+      "parent_id": "asset/k1b/k1b5jwwa58#23",
+      "country": "Palau",
+      "passages": 4,
+      "selected_code_points": 4122,
+      "parent_code_points": 10395,
+      "coverage_percent": 39.65367965367965
+    },
+    {
+      "parent_id": "asset/k18/k18iyhzwip#42",
+      "country": "Fiji",
+      "passages": 4,
+      "selected_code_points": 4151,
+      "parent_code_points": 14852,
+      "coverage_percent": 27.949097764610826
+    },
+    {
+      "parent_id": "asset/k1k/k1kfcwu5kc#37",
+      "country": "Vanuatu",
+      "passages": 4,
+      "selected_code_points": 4492,
+      "parent_code_points": 25992,
+      "coverage_percent": 17.282240689442904
+    }
+  ],
+  "original_offsets_unchanged": true,
+  "unit_suites": "PASS: browser analysis, PCA/k-means, stability, LSA, PAM/HC, HDBSCAN, NMF, GMM, MDS, reviewed-unit import, speech pilot, passage comparison; six passage-type tests",
+  "local_browser": {
+    "status": "PASS",
+    "source": "http://127.0.0.1:58469/",
+    "reviewed_passages": 12,
+    "parent_speeches": 3,
+    "meetings": 3,
+    "grouped_refits": 10,
+    "group_children_kept_together": true,
+    "nmf": true,
+    "source_offsets_in_exports": true,
+    "bundle_bytes_preserved": true,
+    "corruption_rejected": true,
+    "wrong_import_path_rejected": true,
+    "filtered_parent_denominators": true,
+    "stale_exports_blocked": true,
+    "mobile_overflow": false,
+    "browser_errors": [],
+    "uploads": [],
+    "external_requests": []
+  },
+  "ordinary_import_regression": {
+    "status": "PASS",
+    "source": "http://127.0.0.1:60548/",
+    "synthetic_fixture": true,
+    "bom_crlf_indentation_preserved": true,
+    "all_original_records_retained": true,
+    "export_reimport_same_review_valid": true,
+    "browser_errors": []
+  },
+  "visual_inspection": "Desktop and mobile parent coverage, source counts and export controls checked; no overflow",
+  "publication": "Generic interface/code, documentation and aggregate validation only. No original text, clips, bundle or individual choices published.",
+  "limits": "Twelve purposive windows in three speeches/meetings; workflow acceptance only. Correction editor/aligned corrected versions and saved-run paired comparison remain future work.",
+  "mirror": {
+    "hash_matched_public_files": 125,
+    "local_sync_tests_passed": 3,
+    "local_sync_test_limitation": "Inherited symlink fixture cannot run on this Windows account (WinError 1314); synchronization code is unchanged by this task."
+  }
+}

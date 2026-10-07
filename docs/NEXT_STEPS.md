@@ -1,15 +1,17 @@
-# Development sequence — 6 October 2026
+# Development sequence — updated 7 October 2026
 
-This is a proposed implementation sequence, not a record of implemented features.
+Step 1's reviewed import and correction ledger are now implemented and validated.
+The subsequent steps remain a proposed implementation sequence.
 The immediate priority is connecting reviewed source units to reproducible
 analysis and interpretation. The existing browser already has PCA/LSA, k-means,
 PAM, hierarchical clustering, HDBSCAN, NMF, Gaussian mixtures, UMAP and metric MDS,
 with method-specific stability or display diagnostics.
 
 The [audio and passage pilot](SPEECH_PILOT.md) has twelve audio concerns and twelve
-boundary proposals awaiting owner decisions. Its exporter preserves original
-source IDs and offsets, but `un.reviewed-speech-units.v1` is not yet an analysis
-workspace input. Completing this review does not create relevance or stance labels.
+boundary proposals with all 24 owner decisions completed. All twelve selected
+passages are approved and avoid disputed or unresolved spans. The
+[reviewed analysis bundle](REVIEWED_UNITS.md) now connects them to browser analysis
+with exact original IDs and offsets. This review supplies no relevance or stance labels.
 
 ## 1. Connect reviewed units and correction records
 
@@ -24,9 +26,13 @@ proposed wording, recording/clip reference, reviewer and decision. Applying a
 correction must produce a new version and an explicit alignment to the original;
 it must not invalidate existing offsets or silently replace the original corpus.
 
-Engineering can proceed with fixtures now. Real imports and corrections require
-the owner's saved decisions. Acceptance means exact source round trips and
-rejection of changed parents, unresolved spans and invalid review records.
+Implemented: a single local import revalidates original collection bytes, packet,
+saved owner choices and every derived unit. Reports/exports retain lineage and
+parent/meeting denominators. A separate audio ledger preserves the five discrepancy
+notes and one unclear outcome without applying wording. Exact source round trips,
+disputed-overlap withholding and changed-input refusal pass engineering tests.
+An interface for approving exact replacement spans and creating aligned corrected
+versions remains future work; the ledger alone does not apply corrections.
 
 ## 2. Add saved-run and paired-comparison controls
 
@@ -118,6 +124,7 @@ and supported-regime evidence. It need not block the browser work above.
   and observation rules. Similar wording or an attractive map is not evidence of
   influence or causation.
 
-The recommended next implementation is step 1's reviewed-unit import and correction
-provenance, followed by step 2's saved-run comparison. Owner review remains a
-separate required input for applying those paths to the current pilot.
+The recommended next implementation is step 2's saved-run and full-parent versus
+excerpt comparison. Retain the pilot's three-speech limit. Separately resolve the
+unclear audio outcome and confirm exact replacement spans before applying any of
+the five discrepancy notes; completion of the original packet is already recorded.

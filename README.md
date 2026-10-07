@@ -37,6 +37,9 @@ stability, consensus pair coverage and passages to inspect. See the
 [stability guide and implementation sequence](docs/CLUSTER_STABILITY.md).
 Packet text stays in the browser; completed reviews are returned as files for
 validated import. See the [remote workspace guide](docs/REMOTE_WORKSPACE.md).
+The [reviewed speech pilot](docs/REVIEWED_UNITS.md) now imports approved excerpts
+with original source offsets, separate parent/meeting counts, coverage and a
+separate audio-discrepancy record. Original transcripts remain unchanged.
 
 ![Interface preview](un/ui/validation/interface_desktop.png)
 

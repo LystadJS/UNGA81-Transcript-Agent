@@ -5,7 +5,16 @@ accepts a private packet locally. The prepared offline HTML contains the same
 interface, original parent text and twelve embedded clips; it needs no server.
 Neither interface sends imported text, audio or choices to a remote service.
 
-## Current state — 5 October 2026
+## Current state — 7 October 2026
+
+All 24 owner choices have been saved and validated against the exact packet.
+Twelve passages are included with their proposed offsets unchanged. The audio
+decisions are six supported, five discrepancies and one unclear; no included
+passage overlaps a disputed or unclear span. The original corpus and all 460
+prior passage-type decisions remain unchanged. Individual notes and clips remain
+local. See [reviewed import and correction provenance](REVIEWED_UNITS.md).
+
+## Preparation record — 5 October 2026
 
 Five original UN transcript snapshots matched the saved corpus hashes exactly.
 Their identified UN Web TV recordings expose English audio/interpretation tracks.
@@ -14,10 +23,10 @@ existing local `Systran/faster-whisper-base.en` model at revision
 `3d3d5dee26484f91867d81cb899cfcf72b96be6c` (CPU/int8, beam 5, VAD enabled,
 no previous-text conditioning). The check records the actual model-weight hash.
 
-**This is a machine comparison with source audio, not completed human listening.**
+**The preparation findings below are machine comparisons, preceding owner review.**
 The second recognizer makes additional errors. None of its proposed wording has
-been substituted into the source. All twelve concerns await an explicit listening
-decision; unresolved is a valid choice. Agreement between recognizers is not
+been substituted into the source. At preparation, all twelve concerns awaited a
+listening decision; unresolved was a valid choice. Agreement between recognizers is not
 independent human corroboration, and disagreement does not establish which is right.
 
 | Concern | Comparison finding | Present status |
@@ -124,6 +133,8 @@ provenance, future timestamps and unconfirmed listening claims. Tests use clearl
 marked engineering choices outside the actual review packet; these are not owner
 decisions. See [validation](speech-pilot-validation.json).
 
-Next: complete the listening and boundary decisions, reconcile any proposed
-corrections separately, then compare only approved units with their full-parent
-baseline. Broader methodological claims still require more independent meetings.
+Next: build saved-run comparisons of the approved units and their full-parent
+baseline. Reconcile the unclear audio item and any correction wording separately.
+Broader methodological claims still require more independent meetings. The earlier
+[preparation validation](speech-pilot-validation.json) remains a historical record;
+[reviewed import validation](reviewed-units-validation.json) records current acceptance.

@@ -12,7 +12,9 @@
     ? require('./nmf-options.js') : root.UNNMFOptions;
   const PassageSelection = typeof module !== 'undefined' && module.exports
     ? require('./passage-selection.js') : root.UNPassageSelection;
-  const VERSION = 'browser-descriptive-1.10.0';
+  const ReviewedUnits = typeof module !== 'undefined' && module.exports
+    ? require('./reviewed-units.js') : root.UNReviewedUnits;
+  const VERSION = 'browser-descriptive-1.11.0';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters', 'nmf'];
 
@@ -228,6 +230,10 @@
   async function analyze(corpus, p, yieldProgress = async () => {}, runClusters, runNMF) {
     validateCorpus(corpus);
     p = parameters(p);
+    if(corpus.reviewed_units||corpus.records.some(r=>r.parent_id)){
+      if(!ReviewedUnits?.isValidated(corpus))throw Error('Reviewed passages require a validated analysis bundle with original sources and saved decisions.');
+      if(p.passageSelection)throw Error('The original passage-type mask cannot be applied to reviewed speech excerpts.');
+    }
 
     // Apply committee, date, region and language restrictions before deduping.
     // This prevents out-of-scope text from changing denominators or matches.
@@ -257,7 +263,8 @@
         duplicates.push({
           id: record.id,
           retained_id: seen.get(key),
-          source_url: record.source_url
+          source_url: record.source_url,
+          ...(record.parent_id?{parent_id:record.parent_id,start:record.start,end:record.end}: {})
         });
       } else {
         seen.set(key, record.id);
@@ -294,6 +301,8 @@
       methods: {}
     };
     if(selection){const {selected,...audit}=selection;result.passage_selection={...audit,eligible_before_type_filter:beforeTypes.length,eligible_after_type_filter:eligible.length,excluded_within_filters:beforeTypes.filter(r=>!selected.has(r.id)).map(r=>r.id)};}
+    if(corpus.reviewed_units)result.reviewed_units={...corpus.reviewed_units,
+      eligible_before_dedup:ReviewedUnits.count(eligible),eligible:ReviewedUnits.count(records),included:ReviewedUnits.count(matched)};
 
     if (p.methods.includes('frequency')) {
       result.methods.frequency = distribution(records, 'region', ids);
