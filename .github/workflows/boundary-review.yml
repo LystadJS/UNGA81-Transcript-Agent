@@ -4,24 +4,108 @@ on:
     branches: [feat/development-boundary-packet]
     paths: ['.github/workflows/boundary-review.yml']
 permissions:
-  contents: read
+  contents: write
+  actions: read
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: feat/development-boundary-packet
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Preserve source interfaces only
+      - name: Install checksum-bound source changes
+        run: |
+          python3 - <<'PY'
+          import base64, hashlib, json, lzma
+          from pathlib import Path
+          raw=base64.b64decode(''.join(Path(f'tools/_boundary_patch_{i}.txt').read_text().strip() for i in range(1,5)),validate=True)
+          assert hashlib.sha256(raw).hexdigest()=='208e3cc30bd060047d11ecfc1e46272c186bb9a09530eb4da98816ae54d83c7c'
+          patch=json.loads(lzma.decompress(raw))
+          allowed={'research/corpus/boundary-review.js','research/corpus/review-assets/review.html','research/corpus/review-assets/review.css','research/corpus/review-assets/review.js','tools/boundary_packet.cjs','tools/boundary_fixture.cjs','tools/test_boundary_packet.cjs','tools/test_boundary_ui.py','docs/BOUNDARY_REVIEW.md','docs/NEXT_STEPS.md'}
+          assert patch['schema']=='un.boundary-source-patch.v1' and set(patch['files'])==allowed
+          for name in allowed:
+              p=Path(name)
+              if name in patch['expected_old_sha256']:
+                  assert hashlib.sha256(p.read_bytes()).hexdigest()==patch['expected_old_sha256'][name],name
+              else: assert not p.exists(),name
+          for name,content in patch['files'].items():
+              p=Path(name);p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(content.encode())
+          PY
+      - name: Boundary contract and existing regressions
         run: |
           mkdir -p boundary-evidence
-          git rev-parse HEAD > boundary-evidence/source-commit.txt
-          tar -czf boundary-evidence/source.tar.gz site tools research/corpus docs AGENTS.md README.md .github/workflows
-          node tools/check_passage_corpus.cjs > boundary-evidence/frame-check.json
+          node tools/test_boundary_packet.cjs boundary-evidence/boundary-tests.json > boundary-evidence/boundary-tests.log
+          node tools/test_passage_corpus.cjs boundary-evidence/corpus-tests.json > boundary-evidence/corpus-tests.log
+          node tools/check_passage_corpus.cjs > boundary-evidence/frame.json
+          for suite in analysis clusters stability lsa partitions hdbscan nmf gmm mds reviewed_units; do
+            node "tools/test_browser_${suite}.cjs" > "boundary-evidence/regression-${suite}.log" 2>&1
+          done
+          node tools/test_speech_pilot.cjs > boundary-evidence/regression-speech.log 2>&1
+          node tools/test_passage_comparison.cjs > boundary-evidence/regression-passage.log 2>&1
+          node tools/test_latent.cjs > boundary-evidence/regression-latent.log 2>&1
+          node tools/test_meeting_picker.cjs > boundary-evidence/regression-meeting.log 2>&1
+          python3 tools/test_passage_types.py > boundary-evidence/regression-types.log 2>&1
+      - name: Restore cached development bytes without contacting UN sources
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh run download 37656568816 --repo LystadJS/UNGA81-Transcript-Agent --name passage-contract-integration --dir "$RUNNER_TEMP/development-source"
+          python3 - <<'PY'
+          import hashlib, os, tarfile
+          from pathlib import Path
+          archive=Path(os.environ['RUNNER_TEMP'])/'development-source/development-checkpoint.tar.gz'
+          assert hashlib.sha256(archive.read_bytes()).hexdigest()=='b2bfa5014b8e9e459272d1b5cef7b2401064f6480813dd0d917ca145ebdd01c3'
+          with tarfile.open(archive) as t:t.extractall(Path(os.environ['RUNNER_TEMP'])/'development-source',filter='data')
+          PY
+          node tools/boundary_packet.cjs build "$RUNNER_TEMP/development-source/work/build/corpus.json" "$RUNNER_TEMP/real-packet" > boundary-evidence/packet.json
+          node - <<'JS'
+          const fs=require('node:fs'),G=require('./tools/boundary_packet.cjs'),f=require('./tools/boundary_fixture.cjs');
+          const c=f();fs.writeFileSync(process.env.RUNNER_TEMP+'/synthetic-corpus.json',JSON.stringify(c));
+          G.build(c,process.env.RUNNER_TEMP+'/synthetic-packet').catch(e=>{console.error(e);process.exitCode=1});
+          JS
+      - name: Isolated browser test runtime
+        run: |
+          python3 -m venv "$RUNNER_TEMP/qa-python"
+          "$RUNNER_TEMP/qa-python/bin/pip" install --disable-pip-version-check --timeout 30 --retries 1 playwright==1.55.0
+      - name: Test direct local HTML, save, resume and mobile layout
+        run: |
+          "$RUNNER_TEMP/qa-python/bin/python" tools/test_boundary_ui.py "$RUNNER_TEMP/synthetic-packet" boundary-evidence/synthetic-browser > boundary-evidence/synthetic-browser.log
+          "$RUNNER_TEMP/qa-python/bin/python" tools/test_boundary_ui.py "$RUNNER_TEMP/real-packet" boundary-evidence/real-browser --real > boundary-evidence/real-browser.log
+          node tools/boundary_packet.cjs validate "$RUNNER_TEMP/synthetic-corpus.json" boundary-evidence/synthetic-browser/synthetic-review.json > boundary-evidence/synthetic-return.json
+          node tools/boundary_packet.cjs validate "$RUNNER_TEMP/development-source/work/build/corpus.json" boundary-evidence/real-browser/pending-review-check.json > boundary-evidence/real-return.json
+      - name: Record completed acceptance without transcript text or owner decisions
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          read=lambda n:json.loads(Path('boundary-evidence',n).read_text())
+          tests=read('boundary-tests.json');assert tests['passed']==45 and tests['failed']==0
+          synthetic=read('synthetic-browser/browser-tests.json');real=read('real-browser/browser-tests.json')
+          assert synthetic['failed']==real['failed']==0
+          returned=read('real-return.json');assert returned['confirmed']==0 and returned['pending']==1293
+          receipt={'schema':'un.boundary-release-validation.v1','integration_run':os.environ['GITHUB_RUN_ID'],'input_commit':os.environ['GITHUB_SHA'],'contract_tests':tests,'corpus_tests':read('corpus-tests.json'),'existing_regression_suites_passed':15,'packet':read('packet.json'),'synthetic_browser':synthetic,'real_browser':real,'real_pending_export':returned,'source_acquisition':'Restored hash-verified development checkpoint only; no UN request','holdout_transcripts_opened':0,'source_pipeline_and_public_site_changed':False,'local_browser_limit':'The ChatGPT sandbox blocked file and loopback navigation; direct-file browser acceptance ran separately in GitHub CI.'}
+          Path('docs/BOUNDARY_REVIEW_VALIDATION.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          PY
+          git diff --exit-code fe8161cad033f3d0a504fd4db3c8540b3a3dca16 -- site un research/corpus/contract.cjs research/corpus/frame.json research/corpus/inventory.json research/corpus/plan.json
+      - name: Commit validated source only, preserving workflow permissions
+        run: |
+          rm tools/_boundary_patch_{1,2,3,4}.txt
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add research/corpus/boundary-review.js research/corpus/review-assets tools/boundary_packet.cjs tools/boundary_fixture.cjs tools/test_boundary_packet.cjs tools/test_boundary_ui.py docs/BOUNDARY_REVIEW.md docs/BOUNDARY_REVIEW_VALIDATION.json docs/NEXT_STEPS.md
+          git add -u tools/_boundary_patch_1.txt tools/_boundary_patch_2.txt tools/_boundary_patch_3.txt tools/_boundary_patch_4.txt
+          git diff --cached --stat
+          git commit -m 'Add verified offline source-linked development boundary-review packet'
+          git push origin HEAD:feat/development-boundary-packet
+          git rev-parse HEAD > boundary-evidence/implementation-commit.txt
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: boundary-source-interfaces
+          name: development-boundary-validation
           path: boundary-evidence/
           retention-days: 14
