@@ -6,10 +6,11 @@ on:
   pull_request:
     paths: ['site/**', 'tools/*latent*', '.github/workflows/latent-comparison.yml']
   workflow_dispatch:
+  workflow_call:
 permissions:
   contents: read
 concurrency:
-  group: latent-${{ github.ref }}
+  group: latent-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   numerical:
@@ -34,7 +35,7 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          node tools/test_latent.cjs | tee latent-validation.log
+          node tools/test_latent.cjs 2>&1 | tee latent-validation.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
