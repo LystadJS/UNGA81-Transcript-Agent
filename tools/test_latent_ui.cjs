@@ -12,7 +12,7 @@ const {chromium}=require('playwright'),{fixture}=require('./latent_fixture.cjs')
     });await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));url='http://127.0.0.1:'+server.address().port+'/';
   }
   if(!url.endsWith('/'))url+='/';
-  const browser=await chromium.launch({headless:true});const checks=[];
+  const browser=await chromium.launch({headless:true,...(process.env.PW_CHANNEL?{channel:process.env.PW_CHANNEL}:{})});const checks=[];
   try{
     const page=await browser.newPage({viewport:{width:1440,height:1000},acceptDownloads:true}),errors=[],uploads=[],external=[];
     page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(r.method()!=='GET')uploads.push(r.url());if(new URL(r.url()).origin!==new URL(url).origin)external.push(r.url());});

@@ -41,3 +41,12 @@ body>main>header:first-child a{display:inline-block;text-underline-offset:.2em}
  body>main>header:first-child::before,body>header:has(>h1)::before{left:20px;top:22px;width:64px;height:64px}
 }
 @media print{body>header,body>main>header:first-child{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+
+/* Individual-meeting discovery, using the existing report typography. */
+.meeting-picker{margin:0 0 1.5rem;padding:1rem;border:1px solid #ccd5df;border-radius:4px;min-width:0}
+.meeting-picker legend{font-weight:700;padding:0 .4rem}
+.meeting-picker-actions{display:flex;gap:.5rem;align-items:end;flex-wrap:wrap}
+.meeting-picker select{width:100%;max-width:100%}
+#selectedMeetingInfo{overflow-wrap:anywhere}
+.meeting-picker [hidden]{display:none!important}
+@media print{.meeting-picker{display:none}}

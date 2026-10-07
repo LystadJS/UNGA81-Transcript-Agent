@@ -179,10 +179,13 @@
   }
   function validateResult(result) {
     assert(result && result.schema==='un.latent-comparison.v1'&&Array.isArray(result.entries)&&result.entries.length<=24,'Invalid saved comparison result.');
+    const checkCounts=c=>assert(c&&['input','eligible_before_dedup','duplicates','eligible','matched'].every(k=>Number.isSafeInteger(c[k])&&c[k]>=0),'Invalid saved source counts.');
+    checkCounts(result.counts);
     const ids=new Set();
     for(const e of result.entries){
       assert(e && typeof e.id==='string'&&!ids.has(e.id)&&['source','parent','excerpt'].includes(e.unit)&&['nmf','clusters'].includes(e.method),'Invalid saved fit identity.');ids.add(e.id);
       assert(e.result&&Array.isArray(e.result.matched)&&e.result.matched.length<=600&&e.result.methods,'Invalid saved analysis.');
+      checkCounts(e.result.counts);
       const by=new Map(e.result.matched.map(r=>[r.id,r]));assert(by.size===e.result.matched.length,'Duplicate saved passage identity.');
       const fit=e.result.methods[e.method];assert(fit&&typeof fit==='object','Missing saved method.');
       if(fit.skipped)continue;
