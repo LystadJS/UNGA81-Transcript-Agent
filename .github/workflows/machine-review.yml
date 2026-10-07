@@ -1,0 +1,59 @@
+name: Provisional machine review
+on:
+  push:
+    branches: [main, feat/machine-development-review]
+    paths: ['research/machine_review/**', 'docs/MACHINE_REVIEW*', '.github/workflows/machine-review.yml']
+  pull_request:
+    paths: ['research/machine_review/**', '.github/workflows/machine-review.yml']
+permissions:
+  contents: read
+concurrency:
+  group: machine-review-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install pinned numerical dependencies
+        run: python -m pip install --disable-pip-version-check -r research/machine_review/requirements.txt
+      - name: Synthetic machine and numerical checks
+        run: |
+          mkdir -p machine-evidence
+          python -m unittest discover -s research/machine_review -p 'test_*.py' -v > machine-evidence/new-tests.log 2>&1
+      - name: Existing corpus and source regressions
+        run: |
+          node tools/test_passage_corpus.cjs machine-evidence/corpus-tests.json > machine-evidence/corpus-tests.log
+          for suite in analysis clusters stability lsa partitions hdbscan nmf gmm mds reviewed_units; do
+            node "tools/test_browser_${suite}.cjs" > "machine-evidence/regression-${suite}.log" 2>&1
+          done
+          node tools/test_speech_pilot.cjs > machine-evidence/regression-speech.log 2>&1
+          node tools/test_passage_comparison.cjs > machine-evidence/regression-passage.log 2>&1
+          node tools/test_latent.cjs > machine-evidence/regression-latent.log 2>&1
+          node tools/test_meeting_picker.cjs > machine-evidence/regression-meeting.log 2>&1
+          python tools/test_passage_types.py > machine-evidence/regression-types.log 2>&1
+      - name: No source acquisition in this workflow
+        run: |
+          python - <<'PY'
+          import hashlib, json, pathlib
+          root=pathlib.Path('research/machine_review')
+          hashes={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in root.iterdir() if p.is_file()}
+          pathlib.Path('machine-evidence/source-hashes.json').write_text(json.dumps(hashes,indent=2)+'\n')
+          print('Synthetic checks only. No UN collection command or holdout evaluation is invoked.')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: machine-review-validation
+          path: machine-evidence/
+          retention-days: 30
