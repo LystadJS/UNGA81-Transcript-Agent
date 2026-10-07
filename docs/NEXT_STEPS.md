@@ -38,7 +38,9 @@ excerpts from three speeches; six supported audio outcomes, five discrepancy
 notes and one unclear outcome. Do not request that completed review again. Exact
 replacement-span editing and aligned corrected-text versions remain separate work.
 
-## B. Improve the observation — next scientific priority
+## B. Improve the observation — corpus contract implemented; new-source review remains
+
+**Implementation:** [expanded corpus and weighting contract](PASSAGE_CORPUS.md) now freezes 21 development meetings (1–4 October 2026) and 37 reserved comparison meetings (5–6 October), preserves complete source-segment partitions and original bytes, and supplies explicit descriptive weights. Speech/country weights remain withheld until new-source boundaries and attribution support them. The reserved text has not been collected or evaluated; this is not yet independent replication. Existing weighted model fitting remains disabled.
 
 Expand beyond purposive windows to a declared sample of complete or near-complete
 speech partitions, preserving meeting → speech → passage lineage. Select sources
@@ -151,7 +153,4 @@ forecasting, event-risk and causal diffusion models retain their own training,
 evaluation and data prerequisites. They are not prerequisites for transparent
 unsupervised source exploration, and their current safeguards are not bypassed.
 
-**Next implementation:** define and implement the expanded passage-corpus and
-weighting contract, then add a pinned semantic-embedding comparison. Establish
-null-reference and held-out-source validation before promoting discovered groups
-as nonrandom diplomatic structure.
+**Next implementation:** prepare the expanded development-source boundary review and freeze the eligible observation population, then add a pinned semantic-embedding comparison. Keep the reserved temporal frame unopened until a model-specific evaluation protocol is frozen. Establish null-reference and held-out-source validation before promoting discovered groups as nonrandom diplomatic structure.

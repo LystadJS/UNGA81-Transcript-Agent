@@ -1,0 +1,6 @@
+{
+  "population": "source_segments",
+  "fit_weighting": "equal_passage",
+  "max_features": 20000,
+  "clustering": {"representation": "pca", "algorithm": "kmeans", "components": 10, "k": 4, "seed": 42}
+}

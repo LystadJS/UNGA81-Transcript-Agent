@@ -1,0 +1,282 @@
+{
+  "schema": "un.passage-contract-validation.v1",
+  "engine": "passage-corpus-1.0.0",
+  "integration_run": "37656568816",
+  "integration_input_commit": "b3d344892544e91e5bae84d212e541389ec4519f",
+  "new_synthetic_checks": {
+    "passed": 53,
+    "failed": 0
+  },
+  "existing_regression_suites": {
+    "passed": 15,
+    "failed": 0
+  },
+  "frame_and_lineage": {
+    "schema": "un.passage-frame-check.v1",
+    "status": "PASS",
+    "frame_sha256": "9a814f3f7986896f553072d5a610f6874b57a16adc4c15696da4998ce9b133e0",
+    "plan_sha256": "ad596151bbaf9ea8d9444183a1255a760f8ef30ca294b66e404eb674fdd2420d",
+    "inventory_sha256": "9b5685a96813f07e59f93d062eb1e89e37953494021bef583583694a4a5f3a86",
+    "development_meetings": 21,
+    "holdout_meetings": 37,
+    "development_transcript_flags": 20,
+    "holdout_transcript_flags": 33,
+    "whole_meeting_and_date_disjoint": true,
+    "holdout_content_state": "reserved_not_downloaded",
+    "formal_independence_established": false,
+    "corpus_sha256": "e8fb980cf638e2aef39d0ca3564836c6120201a059e806ccaaee3fd5cc4f593e",
+    "counts": {
+      "meetings": 21,
+      "parents": 1293,
+      "passages": 2596,
+      "source_segment_eligible": 2057,
+      "reviewed_speech_eligible": 0,
+      "reserved_meetings": 37
+    },
+    "source_statuses": [
+      {
+        "status": "inventory_unavailable",
+        "meetings": 1
+      },
+      {
+        "status": "collected",
+        "meetings": 20
+      }
+    ],
+    "unknown_country_passages": 1202,
+    "all_observed_code_points_accounted": true,
+    "heldout_opened": false,
+    "reviewed_speech_population": "pending_new_source_boundaries; existing owner pilot unchanged"
+  },
+  "acquisition": {
+    "schema": "un.corpus-acquisition.v1",
+    "frame_sha256": "9a814f3f7986896f553072d5a610f6874b57a16adc4c15696da4998ce9b133e0",
+    "source_bundle_sha256": "bbb40d162089703ce47d6890fa501fcd74f85973d5795246bd86aa9ffac5f9eb",
+    "requested_meeting_ids": [
+      "asset/k1f/k1f7a63wn4",
+      "asset/k1h/k1hk1o0kgr",
+      "asset/k1k/k1kfba6ag8",
+      "asset/k1o/k1o86tmojq",
+      "asset/k1y/k1yeh656yd",
+      "briefing/sg/2026-10-01",
+      "ga/81/16",
+      "ga/c2/81/1",
+      "ga/c3/81/1",
+      "ga/c3/81/2",
+      "ga/c4/81/1",
+      "hrc/63/35",
+      "hrc/63/36",
+      "briefing/geneva/2026-10-02",
+      "briefing/sg/2026-10-02",
+      "ga/c3/81/3",
+      "ga/c3/81/4",
+      "ga/c4/81/2",
+      "hrc/63/37",
+      "hrc/63/38"
+    ],
+    "requested_transcripts": 20,
+    "reserved_transcripts_requested": 0,
+    "downloaded": 20,
+    "failed": 0,
+    "inventory_unavailable": 1,
+    "failures": [],
+    "raw_sources_preserved": true
+  },
+  "corpus_audit": {
+    "schema": "un.passage-audit.v1",
+    "engine": "passage-corpus-1.0.0",
+    "corpus_sha256": "e8fb980cf638e2aef39d0ca3564836c6120201a059e806ccaaee3fd5cc4f593e",
+    "frame_sha256": "9a814f3f7986896f553072d5a610f6874b57a16adc4c15696da4998ce9b133e0",
+    "plan_sha256": "ad596151bbaf9ea8d9444183a1255a760f8ef30ca294b66e404eb674fdd2420d",
+    "counts": {
+      "meetings": 21,
+      "parents": 1293,
+      "passages": 2596,
+      "source_segment_eligible": 2057,
+      "reviewed_speech_eligible": 0,
+      "reserved_meetings": 37
+    },
+    "source_statuses": [
+      {
+        "status": "inventory_unavailable",
+        "meetings": 1
+      },
+      {
+        "status": "collected",
+        "meetings": 20
+      }
+    ],
+    "length": {
+      "min": 1,
+      "max": 160
+    },
+    "by_date": [
+      {
+        "value": "2026-10-01",
+        "passages": 1421,
+        "parents": 704,
+        "meetings": 13
+      },
+      {
+        "value": "2026-10-02",
+        "passages": 1175,
+        "parents": 589,
+        "meetings": 7
+      }
+    ],
+    "by_genre": [
+      {
+        "value": "Conferences",
+        "passages": 97,
+        "parents": 56,
+        "meetings": 3
+      },
+      {
+        "value": "Press Conferences",
+        "passages": 248,
+        "parents": 171,
+        "meetings": 4
+      },
+      {
+        "value": "Human Rights Treaty Bodies",
+        "passages": 21,
+        "parents": 4,
+        "meetings": 1
+      },
+      {
+        "value": "General Assembly",
+        "passages": 1115,
+        "parents": 354,
+        "meetings": 8
+      },
+      {
+        "value": "Human Rights Council",
+        "passages": 1115,
+        "parents": 708,
+        "meetings": 4
+      }
+    ],
+    "by_language": [
+      {
+        "value": "en",
+        "passages": 2596,
+        "parents": 1293,
+        "meetings": 20
+      }
+    ],
+    "by_review": [
+      {
+        "value": "pending",
+        "passages": 2596,
+        "parents": 1293,
+        "meetings": 20
+      }
+    ],
+    "unknown_country_passages": 1202,
+    "duplicate_families": 11,
+    "weights": {
+      "source_segments": [
+        {
+          "schema": "un.passage-weights.v1",
+          "scheme": "equal_passage",
+          "population": "source_segments",
+          "selection_sha256": "726bea25b9f51cf503317baa89e3fd7f0022da85ad5b4001a9299f28cd17780b",
+          "role": "Descriptive composition weights, NOT a weighted refit or survey inclusion probabilities",
+          "denominator": 2057,
+          "status": "available",
+          "weight_sum": 0.999999999999986,
+          "kish_weight_concentration": 2057.0000000000755,
+          "independent_sample_size": null,
+          "meetings": 20,
+          "speeches": null,
+          "countries": 139
+        },
+        {
+          "schema": "un.passage-weights.v1",
+          "scheme": "equal_meeting",
+          "population": "source_segments",
+          "selection_sha256": "726bea25b9f51cf503317baa89e3fd7f0022da85ad5b4001a9299f28cd17780b",
+          "role": "Descriptive composition weights, NOT a weighted refit or survey inclusion probabilities",
+          "denominator": 2057,
+          "status": "available",
+          "weight_sum": 0.9999999999999816,
+          "kish_weight_concentration": 968.2515324756954,
+          "independent_sample_size": null,
+          "meetings": 20,
+          "speeches": null,
+          "countries": 139
+        },
+        {
+          "schema": "un.passage-weights.v1",
+          "scheme": "equal_speech",
+          "population": "source_segments",
+          "selection_sha256": "726bea25b9f51cf503317baa89e3fd7f0022da85ad5b4001a9299f28cd17780b",
+          "role": "Descriptive composition weights, NOT a weighted refit or survey inclusion probabilities",
+          "denominator": 2057,
+          "status": "withheld",
+          "reason": "Speech boundaries and extent are not confirmed for every selected observation"
+        },
+        {
+          "schema": "un.passage-weights.v1",
+          "scheme": "equal_country",
+          "population": "source_segments",
+          "selection_sha256": "726bea25b9f51cf503317baa89e3fd7f0022da85ad5b4001a9299f28cd17780b",
+          "role": "Descriptive composition weights, NOT a weighted refit or survey inclusion probabilities",
+          "denominator": 2057,
+          "status": "withheld",
+          "reason": "Speech boundaries and extent are not confirmed for every selected observation"
+        }
+      ],
+      "reviewed_speeches": [
+        {
+          "schema": "un.passage-weights.v1",
+          "scheme": "equal_passage",
+          "population": "reviewed_speeches",
+          "selection_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "role": "Descriptive composition weights, NOT a weighted refit or survey inclusion probabilities",
+          "denominator": 0,
+          "status": "withheld",
+          "reason": "No eligible observations"
+        },
+        {
+          "schema": "un.passage-weights.v1",
+          "scheme": "equal_speech",
+          "population": "reviewed_speeches",
+          "selection_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "role": "Descriptive composition weights, NOT a weighted refit or survey inclusion probabilities",
+          "denominator": 0,
+          "status": "withheld",
+          "reason": "No eligible observations"
+        },
+        {
+          "schema": "un.passage-weights.v1",
+          "scheme": "equal_country",
+          "population": "reviewed_speeches",
+          "selection_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "role": "Descriptive composition weights, NOT a weighted refit or survey inclusion probabilities",
+          "denominator": 0,
+          "status": "withheld",
+          "reason": "No eligible observations"
+        }
+      ]
+    },
+    "holdout": {
+      "meetings": 37,
+      "transcripts_downloaded": 0,
+      "state": "reserved_not_downloaded",
+      "text_overlap_check": "Not yet assessable: held-out transcript bytes have not been opened",
+      "independence": "Not established; temporal and meeting separation only"
+    },
+    "originals_changed": false,
+    "publication_gate_changed": false
+  },
+  "development_analysis": {
+    "holdout_opened": false,
+    "reason": "The existing clustering kernel requires 4\u2013600 selected observations; 2057 were selected. No sampling performed.",
+    "status": "withheld"
+  },
+  "holdout": "37 meetings reserved by metadata before development collection; no holdout transcript requested, fitted, scored or interpreted",
+  "review": "No new human boundary choices fabricated; completed owner pilot unchanged",
+  "scope": "Research CLI and contract only; browser interface, numerical fitting kernels and frozen un/ pipeline unchanged",
+  "node": "v22.23.3"
+}

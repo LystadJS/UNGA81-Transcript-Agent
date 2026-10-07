@@ -1,0 +1,56 @@
+name: Passage corpus contract
+on:
+  push:
+    branches: [main, feat/passage-corpus-contract]
+    paths: ['research/corpus/**', 'tools/*corpus*', 'docs/PASSAGE_CORPUS*', '.github/workflows/corpus-contract.yml']
+  pull_request:
+    paths: ['research/corpus/**', 'tools/*corpus*', '.github/workflows/corpus-contract.yml']
+  workflow_dispatch:
+    inputs:
+      collect_development:
+        description: 'Collect only the frozen public DEVELOPMENT meetings; never the reserved holdout'
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Frozen frame and new contract tests
+        run: |
+          mkdir -p corpus-evidence
+          node tools/check_passage_corpus.cjs > corpus-evidence/frame.json
+          node tools/test_passage_corpus.cjs corpus-evidence/contract-tests.json
+      - name: Existing analytical and source regressions
+        run: |
+          set -o pipefail
+          for suite in analysis clusters stability lsa partitions hdbscan nmf gmm mds reviewed_units; do
+            node "tools/test_browser_${suite}.cjs" > "corpus-evidence/regression-${suite}.log" 2>&1
+          done
+          node tools/test_speech_pilot.cjs > corpus-evidence/regression-speech.log 2>&1
+          node tools/test_passage_comparison.cjs > corpus-evidence/regression-passage.log 2>&1
+          node tools/test_latent.cjs > corpus-evidence/regression-latent.log 2>&1
+          node tools/test_meeting_picker.cjs > corpus-evidence/regression-meeting.log 2>&1
+          python3 tools/test_passage_types.py > corpus-evidence/regression-types.log 2>&1
+      - name: Explicit live-development acquisition and source re-derivation
+        if: github.event_name == 'workflow_dispatch' && inputs.collect_development
+        run: |
+          mkdir -p research/corpus/work
+          node tools/passage_corpus.cjs collect-development research/corpus/frame.json research/corpus/work/source
+          node tools/passage_corpus.cjs build research/corpus/frame.json research/corpus/work/source/source-bundle.json research/corpus/work/build > corpus-evidence/live-audit.json
+          node tools/check_passage_corpus.cjs research/corpus/work/build corpus-evidence/live-check.json
+          cp research/corpus/work/source/acquisition.json corpus-evidence/acquisition.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: passage-corpus-validation
+          path: corpus-evidence/
+          retention-days: 14

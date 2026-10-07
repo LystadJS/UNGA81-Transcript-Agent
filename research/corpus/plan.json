@@ -1,0 +1,13 @@
+{
+  "schema": "un.passage-plan.v1",
+  "selection_rule": "All meetings indexed by the UN transcript service across the six completed calendar dates 1–6 October 2026, without topic, affiliation, availability or analytical-outcome selection. The last two dates are reserved prospectively within this stage.",
+  "development_dates": ["2026-10-01", "2026-10-02", "2026-10-03", "2026-10-04"],
+  "holdout_dates": ["2026-10-05", "2026-10-06"],
+  "split_unit": "whole_meeting",
+  "fit_weighting": "equal_passage",
+  "partition": {"algorithm": "balanced_whitespace_v1", "max_tokens": 160, "min_tokens": 40},
+  "language": "en",
+  "duplicate_policy": "retain_and_audit",
+  "review_policy": "explicit_speech_boundaries",
+  "country_missing": "withhold"
+}
