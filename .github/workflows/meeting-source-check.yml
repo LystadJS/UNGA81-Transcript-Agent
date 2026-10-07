@@ -1,0 +1,35 @@
+name: Live UN meeting source check
+on:
+  push:
+    branches: [main]
+    paths: ['site/meeting-picker-core.js', 'tools/check_meeting_live.cjs', '.github/workflows/meeting-source-check.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Inspect published inventory field types, without transcript text
+        run: |
+          node - <<'JS'
+          const C=require('./site/collector.js');
+          (async()=>{
+            const {data,hash}=await C.readJSON('https://transcripts.un.org/en/meetings.json?date=2026-09-24&xlang=1&page=1');
+            console.log(JSON.stringify({sha256:hash,keys:Object.keys(data),page:data.page,total:data.total,hasMore:data.hasMore,meetings:data.meetings?.slice(0,10).map(m=>({keys:Object.keys(m),slug:m.slug,title:m.title,date:m.date,hasTranscript:m.hasTranscript,hasTranscriptType:typeof m.hasTranscript,pageUrl:m.pageUrl,jsonUrl:m.jsonUrl}))},null,2));
+          })().catch(e=>{console.error(e);process.exitCode=1;});
+          JS
+      - name: Live selected-meeting collection and analysis
+        env:
+          REQUIRE_LIVE_MEETING: '1'
+        run: node tools/check_meeting_live.cjs 2026-09-24 live-meeting-validation.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: live-meeting-source
+          path: live-meeting-validation.json
