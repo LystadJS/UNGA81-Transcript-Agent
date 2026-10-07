@@ -1,130 +1,157 @@
-# Development sequence — updated 7 October 2026
+# Unsupervised diplomatic discovery — roadmap, 7 October 2026
 
-Step 1's reviewed import and correction ledger are now implemented and validated.
-The subsequent steps remain a proposed implementation sequence.
-The immediate priority is connecting reviewed source units to reproducible
-analysis and interpretation. The existing browser already has PCA/LSA, k-means,
-PAM, hierarchical clustering, HDBSCAN, NMF, Gaussian mixtures, UMAP and metric MDS,
-with method-specific stability or display diagnostics.
+**North star:** discover recurring, non-obvious structure in diplomatic language;
+measure its sensitivity to reasonable analytical choices; inspect the underlying
+evidence; and eventually track comparable actors and themes over time. A larger
+method menu is not the objective. Neither attractive maps nor stable clusters
+establish political alignment, coordination, influence, or statistical nonrandomness.
 
-The [audio and passage pilot](SPEECH_PILOT.md) has twelve audio concerns and twelve
-boundary proposals with all 24 owner decisions completed. All twelve selected
-passages are approved and avoid disputed or unresolved spans. The
-[reviewed analysis bundle](REVIEWED_UNITS.md) now connects them to browser analysis
-with exact original IDs and offsets. This review supplies no relevance or stance labels.
+## A. Comparison foundation — implemented in this phase
 
-## 1. Connect reviewed units and correction records
+The [comparison workspace](LATENT_COMPARISON.md), `site/latent.html`, adds:
 
-Build an explicit reviewed-unit import path, alongside the preserved full-source
-corpus. Validate parent IDs, corpus and text hashes, offsets, review provenance,
-overlap exclusions and unit identity. Reports must distinguish passage counts
-from parent-speech and meeting counts. Keep children of the same parent/meeting
-together in resampling and evaluation splits.
+- Source-bound saved runs containing original input bytes, review material,
+  settings, output JSON, module hashes and stored coordinates. Reopening restores
+  the stored numerical output without a refit; current rendering may differ from
+  a historical renderer. Two saved runs can be compared explicitly.
+- Full-parent versus reviewed-excerpt analysis with the same selected parent
+  cohort, original offsets, partial-text coverage, duplicate exclusions, and
+  separate counts. Each model keeps its original fitting weights. Equal-parent
+  composition is an additional summary, not a weighted model fit.
+- Reusable bounded plans for PCA/LSA, k-means, PAM, Ward/average, HDBSCAN, Gaussian
+  mixtures and NMF; dimension/count/density/covariance/display alternatives;
+  shared group-refit settings; source-linked maps and diagnostic exports.
+- Explicitly withheld comparisons when units, source identities/hashes, usable
+  populations or required fitted groups differ. Noise remains visible. NMF
+  components and hard partitions are not interchangeable quantities. There is
+  no composite best-method score or new publication producer.
 
-Add a separate correction record for confirmed audio discrepancies: original span,
-proposed wording, recording/clip reference, reviewer and decision. Applying a
-correction must produce a new version and an explicit alignment to the original;
-it must not invalidate existing offsets or silently replace the original corpus.
+Acceptance is recorded by `Latent comparison acceptance` in GitHub Actions,
+including existing numerical/provenance regressions and new synthetic browser
+checks. See the implementation guide for executable commands and the scope of
+validation. Engineering acceptance must not be described as a new analysis of
+the owner's private corpus or a substantive diplomatic finding.
 
-Implemented: a single local import revalidates original collection bytes, packet,
-saved owner choices and every derived unit. Reports/exports retain lineage and
-parent/meeting denominators. A separate audio ledger preserves the five discrepancy
-notes and one unclear outcome without applying wording. Exact source round trips,
-disputed-overlap withholding and changed-input refusal pass engineering tests.
-An interface for approving exact replacement spans and creating aligned corrected
-versions remains future work; the ledger alone does not apply corrections.
+The earlier reviewed-unit import and separate correction ledger remain intact.
+All 24 owner decisions in the audio/boundary pilot are complete: twelve included
+excerpts from three speeches; six supported audio outcomes, five discrepancy
+notes and one unclear outcome. Do not request that completed review again. Exact
+replacement-span editing and aligned corrected-text versions remain separate work.
 
-## 2. Add saved-run and paired-comparison controls
+## B. Improve the observation — next scientific priority
 
-Expose a compact browser comparison workflow for existing methods, with immutable
-input/selection hashes, representation settings, seeds, runtime versions, outputs
-and saved coordinates. Compare runs on shared source identities; do not infer
-agreement from matching cluster numbers. Changing the representation refits the
-clusters, while a display-only change preserves them.
+Expand beyond purposive windows to a declared sample of complete or near-complete
+speech partitions, preserving meeting → speech → passage lineage. Select sources
+across dates, genres and recorded affiliations without selecting only examples
+that support an attractive clustering. Preserve procedural and uncertain records
+in the source layer; make analytical exclusions explicit.
 
-Add an explicit full-parent versus reviewed-unit comparison, recording coverage
-and omissions and accounting for long speeches contributing more units. Report
-within-parent inspection separately from pooled statistical comparisons. The
-current twelve purposive excerpts cover only three speeches and are not complete
-partitions; they can validate the workflow, not establish superior clustering or
-representative performance. Broader comparisons need more reviewed sources and
-independent meetings under a declared selection policy.
+Freeze the unit-selection and weighting policy before substantive comparison:
+passage-weighted summaries answer a different question from equal-speech or
+equal-country summaries. Add parent/country-weighted fitting only with a defined
+objective and method-specific validation. Keep whole parents together; evaluate
+meeting and affiliation dependence separately rather than calling either grouping
+independent by assumption. Distinguish missing transcription from issue absence.
 
-Acceptance: replay a saved run without changing its inputs or maps; compare
-matching populations with correct denominators; expose changed coverage.
+**Acceptance:** complete lineage and exclusion accounting; recoverable original
+text; reviewed boundary decisions; documented selection/coverage; more distinct
+source groups; inspection of protocol, length, transcription and genre effects.
+The existing three-speech pilot remains an engineering example. Its full-parent
+clustering is correctly withheld by the current four-observation minimum.
 
-## 3. Turn the existing audits into a reusable settings comparison
+## C. Test semantic representation alongside the lexical baseline
 
-Make the current representation/component, cluster-count, density, covariance and
-display sweeps reusable in the interface. Use the same group samples for paired
-comparisons. Show cluster-size imbalance, assignment coverage, hard/soft membership
-stability, source examples and representation/display fidelity together, each with
-its own denominator and limitations. Do not collapse unlike diagnostics into an
-automatic best-method score or select a model because its plot looks separated.
+Retain TF-IDF → PCA/LSA permanently as the transparent lexical baseline. Add one
+locally executed, version-pinned sentence/document encoder, with license and
+checkpoint hashes, explicit passage-length handling, cached vectors and resource
+limits. The existing small BERT relevance classifier is not automatically an
+appropriate semantic embedding model. Do not silently truncate long passages.
 
-This work can proceed before the pending reviews, using the already reviewed
-parent corpus and synthetic engineering fixtures. Larger claims still need more
-independent source groups than the current six-meeting collection.
+Compare exactly the same passage identities under lexical and semantic geometry,
+with separately recorded transformation and fit references. Benchmark sensitivity
+to paraphrase, negation, shared protocol and different positions on the same issue.
+A semantic neighbor is not a policy ally. Multilingual comparison requires its
+own language/interpretation and translation comparability assessment.
 
-## 4. Extend graph-based methods in a controlled order
+**Acceptance:** reproducible inference and reloaded vectors; no text leaves the
+approved execution environment; no leakage from future observations; source-linked
+contrast cases; representation/neighborhood and clustering comparisons that do
+not select a winner from appearance alone.
 
-First port the existing audit-only D1 spectral-clustering method into the browser
-comparison workflow. Define the graph from retained PCA/LSA scores, record the
-neighbor and affinity policies, and disclose disconnected components and isolated
-points. Cluster in the defined representation/graph, not in UMAP or MDS plot
-coordinates. Add source-linked examples and the same group-based sensitivity
-checks. Use an independent numerical reference and known-geometry fixtures.
+## D. Separate robust structure from a claim of nonrandom structure
 
-Then consider diffusion maps as another representation experiment, with a fixed
-kernel/normalization contract, eigenvalue diagnostics and neighborhood/bandwidth
-sensitivity. This geometric method is separate from claiming that diplomatic
-positions or ideas diffuse between states. Neither addition receives substantive
-theme names automatically. These are proposed next browser methods, not new
-implementations delivered by this planning update.
+The current comparison phase measures sensitivity. It does not supply a formal
+null test. PCA and LSA are related transformations of the same lexical data;
+agreement between them is not independent semantic corroboration.
 
-## 5. Complete the evidence-to-report workflow
+Before using the phrase “nonrandom signal,” define a specific null hypothesis and
+an exchangeability/dependence contract. Design reference corpora or simulations
+that preserve the nuisance structure relevant to that hypothesis, such as source
+groups, genre, passage length and token prevalence. Permuting row order alone does
+not test whether a text matrix has latent clusters. Use held-out source groups or
+periods to evaluate findings selected during development, and account for the
+settings searched. Calibrate any proposed release threshold independently.
 
-Let the owner attach tentative thematic descriptions to stable groups/components
-after inspecting representative passages, ambiguous cases, contrary examples and
-unassigned material. Record the supporting IDs and reviewer decision. Carry
-unresolved text, missing source coverage and ambiguity into the report. A cluster
-label is neither a stance label nor a validated diplomatic relationship.
+Build an ensemble association matrix only after this contract is frozen. Avoid
+letting many near-identical settings or display-only UMAP variants receive extra
+votes. Preserve method-family weights, eligible-pair denominators, unassigned
+coverage and failures. Do not interpret a consensus fraction as the probability
+of diplomatic agreement. One-to-one correspondence is inappropriate for genuine
+splits/merges; retain those explicitly.
 
-Validate the complete collect → review → analyze → inspect → export workflow with
-realistic inputs and failure cases. Add a hosted worker only if measured workloads
-exceed browser limits; the existing Pages workflow remains useful for local-in-
-browser processing.
+**Acceptance:** nuisance-only and known-structure fixtures; a declared independent
+holdout; failed-fit accounting; balanced ensemble weighting; distinguishable
+stability, external replication and null-calibrated evidence.
 
-## 6. Integrate accepted methods into the daily pipeline one at a time
+## E. Connect themes, actors and time
 
-Browser features, research kernels and daily adapters are distinct implementation
-layers. D1 still has twelve executable adapters; the separate research layer has
-29 engineering kernels toward its original thirty-method backlog. A new browser
-control does not increase that adapter count. Audit-only integration should verify
-input contracts, reproducibility, missing-data refusal and replay compatibility
-before any change to the O1–O5 publication gates. Complete relevant Shiny and
-Outlook acceptance for any changes to those delivery paths.
+Begin with actor × latent-component profiles and source examples, then assemble
+comparable country/genre/language observations across reporting periods. Freeze a
+reference transform for genuine out-of-sample movement; separately evaluate full
+refits and their alignment. Changes in corpus composition, vocabulary or missing
+sources must not masquerade as a country's movement.
 
-The unresolved driftmapR/M26 dependency still needs its actual source, interface
-and supported-regime evidence. It need not block the browser work above.
+Integrate existing M22 within-country distance, M25 Procrustes and M27 cluster
+correspondence as separate audit-only adapters once their inputs exist. Track
+arrivals/departures and splits/merges. Estimate uncertainty in the retained
+high-dimensional space before presenting two-dimensional arrows. M26/driftmapR
+still requires verified source, interface and supported-regime evidence; it does
+not block this phase. M24 change points and dynamic mixtures follow a defined
+historical observation contract, not merely a larger number of snapshots.
 
-## Separate data-dependent branches
+**Acceptance:** held-out-period evaluation; common-source comparisons; separated
+roster/composition effects; stable alignment anchors; movement distinguishable
+from estimation and display variation; source-backed actor/theme interpretation.
 
-- **AI relevance:** TF-IDF/logistic and the selected small BERT have already been
-  compared. Their next step is the [random development/fresh test round](NEXT_REVIEW_ROUND.md),
-  development-only tuning and a frozen subsequent test. The audio/boundary packet
-  supplies none of those relevance labels.
-- **Stance:** define explicit propositions and collect stance-specific decisions,
-  retaining insufficient evidence. Evaluate a simple baseline and abstention
-  behavior before promoting a learned model.
-- **Historical change:** assemble comparable country/genre/language observations
-  across dates, preserve availability and source versions, and establish a common
-  representation before interpreting movement.
-- **Event or network diffusion:** define time-stamped events, exposure/risk sets
-  and observation rules. Similar wording or an attractive map is not evidence of
-  influence or causation.
+## F. Produce decision-facing evidence, then integrate delivery
 
-The recommended next implementation is step 2's saved-run and full-parent versus
-excerpt comparison. Retain the pilot's three-speech limit. Separately resolve the
-unclear audio outcome and confirm exact replacement spans before applying any of
-the five discrepancy notes; completion of the original packet is already recorded.
+Organize outputs around questions: emerging themes, discourse communities,
+boundary actors, changing actor profiles, and source-backed anomalies. Every
+candidate finding should show its comparison population, sensitivity, missing
+coverage, representative and contrary passages, and a reviewer interpretation.
+Do not infer a bridge actor merely from an unstable assignment or a UMAP location.
+Stance requires an explicit proposition and stance-specific evidence.
+
+Promote accepted components into the daily pipeline one at a time. Browser
+features, research kernels and daily adapters remain separate: D1 has twelve
+executable adapters; the separate research layer has 29 engineering kernels.
+No work in this phase changes those counts or O1–O5 publication gates. Relevant
+Shiny, Outlook, replay and source-failure checks must accompany delivery changes.
+
+Spectral clustering can later reuse the D1 implementation under an explicit graph
+construction contract. Diffusion maps follow a kernel/normalization sensitivity
+study; geometric diffusion is not evidence of diplomatic influence. Add a hosted
+worker only after measured workload requirements exceed the browser envelope.
+
+## Separate supervised and causal branches
+
+The AI relevance pilot retains its [development/fresh-test sequence](NEXT_REVIEW_ROUND.md).
+Source/boundary review supplies no relevance or stance labels. Classification,
+forecasting, event-risk and causal diffusion models retain their own training,
+evaluation and data prerequisites. They are not prerequisites for transparent
+unsupervised source exploration, and their current safeguards are not bypassed.
+
+**Next implementation:** define and implement the expanded passage-corpus and
+weighting contract, then add a pinned semantic-embedding comparison. Establish
+null-reference and held-out-source validation before promoting discovered groups
+as nonrandom diplomatic structure.
