@@ -210,6 +210,37 @@ test('family sensitivity is a list of comparisons, never a universal ranking met
   assert(!Object.hasOwn(base,'significance'));
   assert(!Object.hasOwn(base,'p_value'));
 });
+test('saved consensus sidecar passes structural schema and independent relational invariants', () => {
+  assert.equal(C.validateConsensus(base),true);
+  const bad = clone(base);
+  bad.matrix.association[0][1] = 0.25;
+  assert.throws(() => C.validateConsensus(bad), /matrix\/pair ledger mismatch/);
+});
+test('corrupted pair count or weighted numerator is rejected', () => {
+  const bad = clone(base);
+  bad.pairs[1].assigned_both_count = bad.pairs[1].planned_count + 1;
+  assert.throws(() => C.validateConsensus(bad), /raw pair-opportunity accounting/);
+  const second = clone(base);
+  second.pairs[1].coassigned_weight = second.pairs[1].assigned_both_weight + 0.1;
+  assert.throws(() => C.validateConsensus(second), /weighted opportunity accounting/);
+});
+test('corrupt sidecar source hashes, IDs and group membership are rejected', () => {
+  const bad = clone(base);
+  bad.source.observation_keys[0].text_sha256 = 'not-a-hash';
+  assert.throws(() => C.validateConsensus(bad), /source links\/hashes/);
+  const groupBad = clone(base);
+  groupBad.reproducible_groups[1].members.push(groupBad.reproducible_groups[0].members[0]);
+  assert.throws(() => C.validateConsensus(groupBad), /observation belongs to multiple groups|complete-link group contains unsupported pair/);
+});
+test('invalid parent offsets and mismatched parent hashes fail closed', () => {
+  const scenario = clone(known);
+  scenario.envelopes[0].observations[0].parent_id='synthetic-parent';
+  assert.throws(() => C.runConsensus(scenario.envelopes,{fit_plan:scenario.fit_plan}), /parent missing hash/);
+  scenario.envelopes[0].observations[0].parent_text_sha256=F.sha('synthetic parent');
+  scenario.envelopes[0].observations[0].start=10;
+  scenario.envelopes[0].observations[0].end=5;
+  assert.throws(() => C.runConsensus(scenario.envelopes,{fit_plan:scenario.fit_plan}), /invalid offset/);
+});
 process.stdout.write(JSON.stringify({suite:'consensus-synthetic',tests:count,status:'pass',
   input_models:known.envelopes.length,known_structure_groups:base.reproducible_groups.length,
   reserved_transcripts_opened:0,network_access:false}) + '\n');
