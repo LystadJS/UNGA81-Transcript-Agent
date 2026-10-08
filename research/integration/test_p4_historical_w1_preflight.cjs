@@ -120,4 +120,5 @@ function run(){
     meeting_groups:55,affiliation_source_transitive_groups:1,
     raw_original_harvard_speeches_read:0,frozen_heldout_opened:0})+'\n');
 }
-try{run()}catch(err){process.stderr.write(err.stack+'\n');process.exitCode=1;}
+if(require.main===module){try{run()}catch(err){process.stderr.write(err.stack+'\n');process.exitCode=1;}}
+module.exports={fixture};
