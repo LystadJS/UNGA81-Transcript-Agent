@@ -7,9 +7,9 @@ const crypto=require('node:crypto');
 const C=require('./contracts.js');
 const A=require('./adapters.js');
 const {TaskController}=require('./task-controller.js');
-const UNLatent=require('../../../latent-core.js');
-const UNClusters=require('../../../cluster-core.js');
-const UNLSA=require('../../../lsa-core.js');
+const UNLatent=require('../../../../latent-core.js');
+const UNClusters=require('../../../../cluster-core.js');
+const UNLSA=require('../../../../lsa-core.js');
 
 const fixture=JSON.parse(fs.readFileSync(path.join(__dirname,'fixtures/synthetic-contract.json'),'utf8'));
 const clone=value=>JSON.parse(JSON.stringify(value));
