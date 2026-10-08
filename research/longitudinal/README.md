@@ -57,6 +57,22 @@ The panel validator now recognizes **unverified** P2 inventory separately from g
 
 **Real pilot boundary:** the restricted 99-country, 523 strong original-PV-corroborated speech panel is a purposively selected development subset; it has 269 unverified country-year cells. W4 full-refit alignment is unnecessary if a frozen reference map is reused, and meeting identities across the two eras have **zero literal paired original PV groups**; W4's paired-family bootstrap must remain withheld. Meeting-group leave-one-out checks and affiliation closure audit may be reported descriptively, but cannot be presented as calibrated independence. Source provenance and person authentication remain separate from this engineering fix.
 
+## Conditional meeting/year source-dependence audit
+
+`dependence_sensitivity.py` adds a read-only, source-preserving *descriptive* diagnostic to the W4 workstream, without refitting lexical/embedding bases, W1 models or map coordinates. Given a source-attested panel and two declared periods, it calculates the same common-actor/genre Euclidean statistics as `framework.actor_distances`, then deterministically omits:
+
+1. Each verified UN source meeting **as a whole**, never independent passages;
+2. Each calendar year **with all of its meetings**;
+3. Each combination of one year omitted from each period, when at least two years are observed per period.
+
+All deletions retain the **same pinned feature representation**, do not recalibrate source weights, and explicitly compare against the original set of matched actor affiliations. A deletion changing that matched population is **withheld** from the numerical range and counted as an attempted but incomparable case. Output includes counts of available/unverified observations, matched actors, whole meetings, years and source-family overlap, plus source actor↔meeting connected-component diagnostics.
+
+Returned ranges are *conditional sensitivity, NOT confidence intervals*. Meetings nest within years, and recorded country affiliations recur across meetings/years. The actual P2 restricted 2016–2023 sample has only four calendar-year blocks per era and a single actor–meeting connected component, so treating each meeting/country as independent or applying asymptotic year-cluster standard errors would overstate inferential precision. The regular W4 source-family bootstrap remains withheld unless real independent paired source trajectories and their selection design are independently demonstrated. The absence of a sampling model and pre-2019-fitted representation further prevents population or political-change inference.
+
+Reproduce source-free checks using the existing workflow:
+`python -m unittest discover -s research/longitudinal -p 'test_*.py' -v`.
+All private observed-period/actor-level outputs stay outside public GitHub; this module does not access source text or the 37 reserved 2026 evaluation meetings.
+
 ## Methodology acceptance boundaries
 
 Synthetic benchmarks cover an actor-roster-only shift with zero within-actor motion, known motion under rigid map rotation, fixed reference projection, missing source meeting, cluster-label permutation/split/merge/noise **versus missing fits**, unstable or rank-deficient anchors, chronological ordering independent of supplied list order, mismatched vocabulary/embedding/cluster-fit identity, corrupted source hashes, duplicate IDs, invalid offsets and false speaker-versus-speech attribution, insufficient bootstrap groups, replay determinism, JSON/CSV output and v1 interchange structure. These are engineering controls, not independent corpus replication, bootstrap-coverage calibration, political interpretation or verified future-data readiness.
