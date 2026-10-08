@@ -28,7 +28,7 @@ from research.graph_methods.reproduce import (
     fixture, fit_or_record, run, source_edges, source_concentration, variations,
 )
 from research.graph_methods.interchange import paired_representations
-from research.graph_methods.w1_bridge import _compare_identities, _require_approval
+from research.graph_methods.w1_bridge import _compare_identities, _require_approval, _load_w1_model
 
 
 class SourceIdentityTests(unittest.TestCase):
@@ -413,6 +413,20 @@ class W1BridgeTests(unittest.TestCase):
         changed["observations"] = changed["observations"][::-1]
         with self.assertRaisesRegex(GraphError, "order"):
             _compare_identities(self.m, changed)
+
+    def test_w1_model_selection_and_assignment_denominators(self):
+        labels, model = _load_w1_model(self.envelope, "pinned-model", self.m)
+        self.assertEqual(len(labels), len(self.x))
+        self.assertEqual(model["training_selection_sha256"],
+                         self.m["representation"]["training_selection_sha256"])
+        bad = copy.deepcopy(self.envelope)
+        bad["models"][0]["training_selection_sha256"] = "0" * 64
+        with self.assertRaisesRegex(GraphError, "training selections"):
+            _load_w1_model(bad, "pinned-model", self.m)
+        bad = copy.deepcopy(self.envelope)
+        bad["models"][0]["fit_split"] = "development"
+        with self.assertRaisesRegex(GraphError, "split"):
+            _load_w1_model(bad, "pinned-model", self.m)
 
     def test_commit_not_confused_with_code_sha(self):
         sha = "c" * 64
