@@ -16,7 +16,7 @@ class AuthTests(unittest.TestCase):
         self.row={"id":"fictional-ZZZ-2018","source_status":"available","iso3":"ZZZ",
           "year":2018,"observed_p2_strong_match":True,"actor_kind":"recorded_affiliation",
           "person_identity_authenticated":False,"date_basis":"independent_UN_index",
-          "source_hash_basis":"raw_response_bytes","meeting_id":"A/73/PV.13",
+          "source_hash_basis":"raw_response_bytes","meeting_id":"A/73/PV.13","source_family_id":"A/73/PV.13",
           "source_sha256":H(self.pv),"text_sha256":H(self.text),"date":"2018-09-25",
           "actor_id":"ZZZ","genre":"general_debate"}
         self.claim={"iso3":"ZZZ","year":"2018",
