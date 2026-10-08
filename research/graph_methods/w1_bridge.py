@@ -82,8 +82,8 @@ def _require_approval(approval: dict, code_sha: str) -> None:
         raise GraphError("W1 merged commit SHA-1 (40 hexadecimal characters) required")
     if approval.get("accepted") is not True:
         raise GraphError("W1 acceptance not granted")
-    # This is an explicit local trust input, not a signature or proof the commit is
-    # on GitHub main; coordinator separately verifies the actual merged SHA.
+    # Approval remains a coordinator-controlled local decision; verifying
+    # checkout ancestry additionally blocks arbitrary/unmerged commit claims.
 
 
 def _load_w1_model(envelope: dict, model_id: str, manifest: dict) -> tuple[list[int], dict]:
@@ -180,6 +180,19 @@ def compare_w1_partition(manifest: dict, values: np.ndarray, spectral: dict,
     runner, _ = _w1_files(repo_root)
     code_sha = hashlib.sha256(runner.read_bytes()).hexdigest()
     _require_approval(approval, code_sha)
+    # Explicit approval must also name an existing commit reachable from the
+    # checkout. PR runs check out GitHub's synthetic merge, where W1 main
+    # ancestry is retained; an unmerged W1 PR does not pass this gate.
+    try:
+        ancestry = subprocess.run(
+            ["git", "merge-base", "--is-ancestor", approval["w1_merged_commit_sha"], "HEAD"],
+            cwd=repo_root.resolve(), stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            check=False, timeout=10,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        raise GraphError("Cannot verify accepted W1 merge is in checkout ancestry") from exc
+    if ancestry.returncode != 0:
+        raise GraphError("Approved W1 commit is not an ancestor of this checkout; refuse draft branch")
     if w1_envelope.get("producer", {}).get("workstream_id") != "W1" or (
         w1_envelope["producer"].get("adapter_version") != ALLOWED_W1_ADAPTER or
         w1_envelope["producer"].get("code_sha256") != code_sha
@@ -232,7 +245,10 @@ def compare_w1_partition(manifest: dict, values: np.ndarray, spectral: dict,
         "observation_count": len(values),
         "metrics": validated["metrics"],
         "publication_eligible": False,
-        "limitation": ("W1 assignment metrics on the same original IDs and pinned fitted "
-                       "representation; group resampling and null evidence are separate. "
+        "comparison_protocol": "same_source_and_underlying_representation_identity",
+        "limitation": ("W1 assignment metrics on the same original IDs and pinned underlying "
+                       "representation identity; W1 may refit PCA on that representation, "
+                       "so this does not certify identical fitted distances or a shared "
+                       "coordinate basis. Group resampling and null evidence are separate. "
                        "No political alignment, causal diffusion or p-value claimed."),
     }
