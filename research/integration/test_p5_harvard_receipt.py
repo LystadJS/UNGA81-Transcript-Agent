@@ -98,7 +98,7 @@ class P5PublicReceiptTests(unittest.TestCase):
     def test_existing_p2_and_expanded_105_are_distinct(self):
         p2=json.loads(P2.read_text(encoding="utf8"))
         expanded=json.loads(EXPANDED.read_text(encoding="utf8"))
-        self.assertEqual(p2["official_originals"]["meetings"],63)
+        self.assertEqual(p2["original_source_scope"]["official_meeting_PVs"],63)
         self.assertEqual(expanded["original_sources"]["original_UN_PV_meetings_total"],105)
         self.assertEqual(expanded["restricted_99_country_panel"]["expanded_strong_source_verification"],790)
         self.assertFalse(self.receipt["expanded_W1_repository_scope"][
