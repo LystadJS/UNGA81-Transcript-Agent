@@ -145,3 +145,70 @@ test('no remote data or automatic political inference in prototype sources',()=>
   assert.match(src,/Similarity is not an alliance/);
   assert.match(src,/not political position/);
 });
+
+
+test('complete v1 model × source frame preserves unavailable observations for every model',()=>{
+  const f=get(),e=f.envelope;
+  assert.equal(e.observations.length,11);
+  assert.equal(e.coverage.eligible,10);
+  assert.equal(e.coverage.excluded,1);
+  assert.equal(e.coverage.unavailable_sources,1);
+  assert.equal(e.results.length,22);
+  assert.equal(V.validateEnvelope(e).size,11);
+  for(const model of e.models){
+    const rows=e.results.filter(r=>r.model_id===model.model_id);
+    assert.equal(rows.length,11);
+    const missing=rows.find(r=>r.observation_id==='S11');
+    assert.deepEqual([missing.status,missing.cluster,missing.memberships],
+      ['excluded',null,null]);
+    assert.match(missing.reason,/source_unavailable/);
+    assert.equal(e.coverage.models.find(c=>c.model_id===model.model_id).excluded,1);
+  }
+  for(const kind of V.TYPES){
+    const result=draw(f,kind);
+    assert.equal(result.status,'ready');
+    assert.match(result.html,/Frame 11/);
+  }
+});
+
+test('missing source cannot be dropped, duplicated, fitted, or disguised as issue zero',()=>{
+  const g=get();g.envelope.results=g.envelope.results.filter(r=>r.observation_id!=='S11');
+  assert.throws(()=>V.validateEnvelope(g.envelope),/Result row counts do not reconcile/);
+  const h=get();h.envelope.results.push(clone(h.envelope.results.at(-1)));
+  assert.throws(()=>V.validateEnvelope(h.envelope),/Duplicate model-observation/);
+  const i=get();const missing=i.envelope.results.find(r=>r.observation_id==='S11');
+  missing.status='unassigned';missing.cluster=0;missing.reason=null;
+  assert.throws(()=>V.validateEnvelope(i.envelope),/Excluded source must have/);
+  const j=get();j.envelope.coverage.models[0].excluded=0;
+  assert.throws(()=>V.validateEnvelope(j.envelope),/Incorrect per-model coverage/);
+  const k=get();k.envelope.observations.at(-1).missing_reason=null;
+  assert.throws(()=>V.validateEnvelope(k.envelope),/Unavailable source requires/);
+});
+
+test('explicit eligible abstention/failed fits remain distinct from excluded sources',()=>{
+  const f=get(),e=f.envelope;
+  const noise=e.results.find(r=>r.model_id==='demo-partition'&&r.observation_id==='S09');
+  assert.equal(noise.status,'unassigned');
+  assert.equal(noise.cluster,0);
+  const missing=e.results.find(r=>r.model_id==='demo-partition'&&r.observation_id==='S11');
+  assert.equal(missing.status,'excluded');
+  assert.equal(missing.cluster,null);
+  assert.equal(V.validateEnvelope(e).size,11);
+  const changed=get();
+  const eligible=changed.envelope.results.find(r=>r.model_id==='demo-partition'&&r.observation_id==='S09');
+  eligible.status='not_fitted';eligible.cluster=null;eligible.reason='Synthetic failed fit';
+  changed.envelope.coverage.models[1].unassigned -= 1;
+  changed.envelope.coverage.models[1].not_fitted += 1;
+  assert.equal(V.validateEnvelope(changed.envelope).size,11);
+});
+
+test('overlapping missing and excluded counts must not cause false panel rejection',()=>{
+  const f=get();const p=panel(f,'network');
+  p.coverage.included=10;
+  p.coverage.frame=11;p.coverage.eligible=10;p.coverage.excluded=1;p.coverage.missing=1;
+  assert.equal(V.renderPanel(f.envelope,p).status,'ready');
+  p.coverage.missing=0;
+  assert.throws(()=>V.renderPanel(f.envelope,p),/Incoherent frame/);
+  p.coverage.missing=1;p.coverage.excluded=0;
+  assert.throws(()=>V.renderPanel(f.envelope,p),/Incoherent frame/);
+});
