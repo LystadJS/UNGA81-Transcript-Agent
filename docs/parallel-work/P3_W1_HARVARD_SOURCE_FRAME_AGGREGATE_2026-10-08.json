@@ -1,0 +1,52 @@
+{
+  "schema": "un.w1.p3.historical-source-readiness.aggregate.v1",
+  "date": "2026-10-08",
+  "source": "two user-authorized private P2 ZIP archives, exact previously verified original UN PDFs and P2 correspondence/hash ledgers",
+  "prior_original_PV_63_sha256": "PASS_REPLAYED_PRIVATE",
+  "original_PV_pdf_bytes": 53218960,
+  "selected_2016_2023_correspondences": 523,
+  "selected_source_meeting_groups": 55,
+  "original_Harvard_text_sha256_replay": "NOT_RUN_HARVARD_RAW_ARCHIVE_UNAVAILABLE",
+  "Harvard_v14_declared_original_archive_sha256": "55077dccf7242cdf544aa95c4797c68e443b0c37344c9c112a2e2392ddfcf8e5",
+  "Harvard_v14_original_archive_md5": "81bdd06086d9e7c4e67026acb7325df3",
+  "Harvard_datafile_source": "https://dataverse.harvard.edu/api/access/datafile/13591895",
+  "Harvard_remote_download_attempt": {
+    "result": "HTTP_400_BAD_REQUEST",
+    "actual_archive_received": false,
+    "source_text_published": false
+  },
+  "recorded_affiliations": 99,
+  "years": "2016–2023",
+  "total_country_year_inventory_cells": 792,
+  "source_corroborated_cells": 523,
+  "independent_speaker_index_dates_verified": 520,
+  "source_corroborated_missing_verified_date": 3,
+  "unverified_source_year_cells": 269,
+  "ready_for_date_source_preflight": 520,
+  "not_ready_for_fit": 792,
+  "reserved_Oct_5_6_2026_heldout_transcript_accesses": 0,
+  "source_candidate_selection_sha256": "3ebec834635e4d493e8035aeede3321efb951aa22f2f61d81f6ac7a0f65a4c89",
+  "complete_private_source_frame_sha256": "7f7ab119fb64c1ed3501059c2dd2ae51832ee3b89b80c4c07bf5dd29a4d019a8",
+  "independent_private_synthetic_source_negative_controls": {
+    "attempted": 4,
+    "refused_as_expected": 4
+  },
+  "independent_private_source_replay": {
+    "status": "PASS",
+    "unchanged_output_sha256": true
+  },
+  "W1_600_row_native_limit_noted": true,
+  "native_W1_validateFrame_on_real_historical_frame": "NOT_RUN_SOURCE_TYPE_AND_RAW_TEXT_BLOCKED",
+  "W1_empirical_model_fits": 0,
+  "W4_empirical_model_fits": 0,
+  "source_dependent_inferential_calibration": "NOT_RUN",
+  "publication_eligible": false,
+  "private_rows_or_text_in_public_GitHub": false,
+  "limitations": [
+    "These are historical source-ledger hash/dates, not actual available Harvard raw UTF-8 speeches in this run.",
+    "Recorded country affiliations do not establish authenticated speaker identities, national policy stance or influence.",
+    "269 source-unverified cells plus three missing-date cells cannot be silently excluded from inventory.",
+    "Year-and-meeting source dependence is not fitted or statistically calibrated; 55 original PV documents are clusters, not 523 independent sources.",
+    "2024–2025 source modalities excluded until comparability acceptance."
+  ]
+}
