@@ -98,13 +98,37 @@ jobs:
           const fs = require('node:fs');
           const os = require('node:os');
           const path = require('node:path');
+          const childProcess = require('node:child_process');
           const remove = fs.rmSync;
+          const spawn = childProcess.spawn;
           const prefix = path.join(os.tmpdir(), 'un-method-lab-chromium-');
+          // The Chrome launcher may exit before the headless Chrome children.
+          // Give only this ephemeral browser its own process group so the
+          // original test's SIGTERM kills the group, not just the launcher.
+          childProcess.spawn = function groupedTestChrome(bin, args, options) {
+            if (Array.isArray(args) && args.some(arg =>
+                typeof arg === 'string' &&
+                arg.startsWith('--user-data-dir=' + prefix))) {
+              const child = spawn.call(this, bin, args, {...options, detached: true});
+              const kill = child.kill.bind(child);
+              child.kill = function stopTestChrome(signal = 'SIGTERM') {
+                if (!Number.isSafeInteger(child.pid) || child.pid <= 1)
+                  return kill(signal);
+                try { process.kill(-child.pid, signal); return true; }
+                catch (error) {
+                  if (error.code !== 'ESRCH') throw error;
+                  return kill(signal);
+                }
+              };
+              return child;
+            }
+            return spawn.apply(this, arguments);
+          };
           fs.rmSync = function checkedProfileRemoval(target, options) {
             if (typeof target === 'string' && target.startsWith(prefix) &&
                 options && options.recursive === true && options.force === true) {
               return remove.call(fs, target, {
-                ...options, maxRetries: 20, retryDelay: 250
+                ...options, maxRetries: 12, retryDelay: 100
               });
             }
             return remove.apply(this, arguments);
