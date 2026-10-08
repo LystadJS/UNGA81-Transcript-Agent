@@ -66,7 +66,7 @@ jobs:
           import json,os
           from pathlib import Path
           d=json.loads((Path(os.environ['RUNNER_TEMP'])/'p2-source-readiness.json').read_text())
-          assert d['source_strong_matched_candidate_cells']==523
+          assert d['strong_source_matched_candidate_cells']==523
           assert d['not_source_verified_candidate_cells']==269
           assert d['private_worksheet_tables_evaluated']==0
           assert d['original_pdf_byte_digest_replay']=='NOT_RUN_NO_PRIVATE_PDF_MAP'
