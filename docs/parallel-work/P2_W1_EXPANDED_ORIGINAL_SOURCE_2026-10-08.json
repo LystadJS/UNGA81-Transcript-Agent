@@ -1,0 +1,153 @@
+{
+  "schema": "un.P2-W1.original-source-expanded-audit.aggregate.v1",
+  "audit_date": "2026-10-08",
+  "pre_registration_commit": "4d0e498b50e491b04f28ecc4e07089fc0bc4dcc7",
+  "original_sources": {
+    "original_UN_PV_meetings_prior": 55,
+    "new_verified_original_UN_PV_meetings": 50,
+    "original_UN_PV_meetings_total": 105,
+    "official_index_distinct_meeting_symbols_2016_2023": 105,
+    "original_PDF_complete_SHA256_checks_passed": 105,
+    "complete_PDF_pages": 5184,
+    "original_PDF_bytes": 84661892,
+    "source_original_UN_publisher_signed_sha256": "not_available",
+    "Harvard_v14_tar_original_sha256": "55077dccf7242cdf544aa95c4797c68e443b0c37344c9c112a2e2392ddfcf8e5",
+    "source_date_authority": "UN speaker index or original PV title page",
+    "referenced_years": "2016-2023",
+    "year_2024_2025_2026_used": false,
+    "reserved_2026_meetings_opened": 0
+  },
+  "full_corpus_compare": {
+    "Harvard_country_speeches_2016_2023": 1545,
+    "strong_full_original_PV_matches": 1543,
+    "below_pre_registered_strong_threshold": 2,
+    "strong_rule": "7-token-shingles >=90%; >=8 of 10 deciles >=80%; beginning/end >=40%",
+    "source_original_PV_meeting_symbol_coverage_of_index": "105/105",
+    "persons_authenticated": 0,
+    "estimated_national_census_population_validity": false
+  },
+  "restricted_99_country_panel": {
+    "candidate_country_year_cells": 792,
+    "initial_strong_source_verification": 523,
+    "additional_original_PV_strong": 267,
+    "expanded_strong_source_verification": 790,
+    "original_unverified_cells": 269,
+    "remaining_unverified_cells": 2,
+    "unverified_reasons": {
+      "Harvard_corpus_text_absent": 1,
+      "full_speech_original_match_threshold_failed": 1
+    },
+    "source_verified_meetings": 105,
+    "source_verified_by_year": [
+      99,
+      99,
+      99,
+      99,
+      98,
+      98,
+      99,
+      99
+    ],
+    "original_countries": 99,
+    "substantive_stance_or_person_identification_supported": false
+  },
+  "frozen_64_dimension_reference": {
+    "fitted_years": "2016-2019",
+    "fit_observations": 252,
+    "projection_only_for_all_newly_verified": true,
+    "frozen_reference_sha256": "8da03a179847a8fccb7e8123b8dd278f5edf5d22ad7e74489401a5f2d5cfa054",
+    "original_523_vector_max_abs_replay_error": 5.10702591327572e-15,
+    "refitted_on_new_verified_speeches": false,
+    "mean_within_country_distance_before": 0.5397836547776217,
+    "mean_within_country_distance_after": 0.3867096568453812,
+    "mean_within_country_distance_change": -0.15307399793224047,
+    "common_country_centroid_distance_before": 0.27740712703920045,
+    "common_country_centroid_distance_after": 0.19242204685348316,
+    "interpretation": "change induced by source-coverage selection, NOT confirmed shift in political positions"
+  },
+  "W1_source_authenticated_adapter": {
+    "original_PDF_SHA256s_read_against_private_full_bytes": 105,
+    "original_Harvard_v14_archive_SHA256_valid": true,
+    "source_authenticity_negative_cases_passed": 8,
+    "source_schema": "un.p2.original-pv-reconciled.v1",
+    "W1_input_schema_extension": "additive_original_P2_schema_not_legacy_analysis_v1",
+    "old_v1_interchange_P2_binding": "WITHHELD",
+    "W1_max_source_rows": 600,
+    "W1_actual_runs": [
+      {
+        "cohort": "original_523",
+        "eligible": 523,
+        "model_full_success": 2,
+        "meeting_refits_success": 4,
+        "affiliation_schedules_skipped": 2,
+        "ARI": 0.475553900619864
+      },
+      {
+        "cohort": "balanced_600_validation_only_75_per_year",
+        "eligible": 600,
+        "model_full_success": 2,
+        "meeting_refits_success": 4,
+        "affiliation_schedules_skipped": 2,
+        "ARI": 0.560859476842645
+      }
+    ],
+    "original_790_rows_authenticated_but_not_fitted_in_one_W1_run": true,
+    "original_full_792_companion_valid": {
+      "available": 790,
+      "unverified": 2,
+      "legacy_binding": "withheld"
+    }
+  },
+  "W4_expanded_source_dependent_sensitivity": {
+    "matched_country_affiliations": 99,
+    "original_PV_meetings": 105,
+    "annual_blocks": 8,
+    "years_per_era": 4,
+    "meeting_deletions": {
+      "attempted": 105,
+      "successful": 105,
+      "range": [
+        0.38206429225731525,
+        0.39578277757765934
+      ]
+    },
+    "year_deletions": {
+      "attempted": 8,
+      "successful": 8,
+      "range": [
+        0.38667531197106414,
+        0.4181050009857969
+      ]
+    },
+    "paired_year_deletions": {
+      "attempted": 16,
+      "successful": 16,
+      "range": [
+        0.39064792806788123,
+        0.4383957767770293
+      ]
+    },
+    "paired_independent_meeting_source_families_across_eras": 0,
+    "calibrated_confidence_interval": null,
+    "valid_as": "conditional_deletion_sensitivity_only"
+  },
+  "privacy": {
+    "private_source_linked_rows_public": false,
+    "original_UN_full_pdf_bytes_public": false,
+    "Harvard_full_text_public": false,
+    "fit_vectors_public": false,
+    "reserved_meeting_content_public": false,
+    "evaluation_lock_modified": false,
+    "person_identity_authenticated": false
+  },
+  "release": {
+    "source_attested_descriptive_engineering_P2_W1": true,
+    "full_original_PV_key_and_text_agreement_pass_for_1543": true,
+    "exact_historical_population_eligibility": "NOT_PROVEN",
+    "calibrated_real_coverage_or_inference": "WITHHELD",
+    "government_alignment_or_diplomatic_position_claims": "WITHHELD",
+    "public_analytic_V1_P2_export": "WITHHELD",
+    "public_browser_publication": false,
+    "W4_PR_18_merged": false
+  }
+}

@@ -3,7 +3,7 @@ const crypto=require('node:crypto');
 const C=require('../../site/cluster-core.js');
 const {combinations2}=require('./metrics.cjs');
 const HEX=/^[a-f0-9]{64}$/;
-const SOURCE_SCHEMAS=new Set(['un.browser.corpus.v1','un.passage-corpus.v1','un.passage-frame.v1','un.review.v1','un.source-validation.synthetic.v1']);
+const SOURCE_SCHEMAS=new Set(['un.browser.corpus.v1','un.passage-corpus.v1','un.passage-frame.v1','un.review.v1','un.source-validation.synthetic.v1','un.p2.original-pv-reconciled.v1']);
 const RESERVED=new Set(['2026-10-05','2026-10-06']);
 function assert(ok,msg){if(!ok)throw Error(msg);}
 function digest(value){return crypto.createHash('sha256').update(typeof value==='string'?value:JSON.stringify(value)).digest('hex');}
@@ -16,6 +16,21 @@ function validateFrame(frame){
   assert(['utf8_corpus_export','raw_response_bytes','utf8_response_text','canonical_source_text','source_text_file_bytes','synthetic'].includes(frame.source_hash_basis),'Exact supported upstream source hash basis required.');
   assert(frame.split!=='development'||frame.source_hash_basis!=='synthetic','Development cannot masquerade as synthetic source hashes.');
   assert(typeof frame.source_engine==='string'&&frame.source_engine.length>0,'Source engine identity required.');
+  const P2=frame.source_schema==='un.p2.original-pv-reconciled.v1';
+  if(P2){
+    assert(frame.split==='development'&&frame.source_hash_basis==='raw_response_bytes',
+      'P2 requires real development original-byte source/hash basis');
+    assert(frame.source_sha256==='55077dccf7242cdf544aa95c4797c68e443b0c37344c9c112a2e2392ddfcf8e5',
+      'P2 requires the verified, pinned Harvard release v14 archive SHA-256');
+    const receipt=frame.original_p2_source_provenance;
+    assert(receipt&&receipt.verified_original_meeting_count>=1 &&
+      receipt.full_candidate_country_year_cells>=1 && receipt.source_verified>=1 &&
+      receipt.unverified>=0 && receipt.source_verified+receipt.unverified===receipt.full_candidate_country_year_cells &&
+      receipt.original_archive_sha256===frame.source_sha256 &&
+      hasHash(receipt.selection_sha256),'P2 original source attestation receipt missing or invalid');
+    assert(frame.source_engine==='P2_original_UN_full_PV_Harvard_v14_readonly_adapter',
+      'P2 numerical input must come from original-byte-authenticated adapter');
+  }
   assert(Array.isArray(frame.observations)&&frame.observations.length>0&&frame.observations.length<=600,'Frame requires 1–600 rows; no implicit sampling.');
   const seen=new Set(), eligible=[], excluded=[], rows=[];
   for(const o of frame.observations){
@@ -35,6 +50,20 @@ function validateFrame(frame){
     assert(o.source_status==='available'||typeof o.missing_reason==='string'&&o.missing_reason.length>0,'Missing source must have a reason.');
     assert(o.speech_id==null||o.review_status==='confirmed','Unverified speech identities cannot be promoted.');
     if(o.text!==undefined)assert(typeof o.text==='string'&&digest(o.text)===o.text_sha256,'Provided text does not match its canonical UTF-8 text hash.');
+    if(P2){
+      assert(o.source_status==='available' && o.review_status==='unreviewed' &&
+        o.speech_id==null && /^country-[A-Z]{3}-20(1[6-9]|2[0-3])$/.test(o.id) &&
+        o.country===o.affiliation && o.id==='country-'+o.country+'-'+o.date?.slice(0,4) &&
+        o.role==='recorded_affiliation_not_verified_person',
+        'P2 only permits exact source-verified country-session rows, not person claims');
+      assert(/^A\/7[1-8]\/PV\.\d+$/.test(o.meeting_id) &&
+        o.source_family_id===o.meeting_id && hasHash(o.p2_original_pdf_sha256) &&
+        o.p2_full_speech_verified===true &&
+        ['independent_UN_index','official_UN_PV_header'].includes(o.p2_date_basis) &&
+        o.p2_original_source_hash_basis==='raw_response_bytes' &&
+        o.p2_verification_method==='original_UN_PV_full_speech_7gram_10decile_v1',
+        'P2 original-PV byte identity, full-speech and date-basis attestation required');
+    }
     if(!absent)assert(typeof o.meeting_id==='string'&&o.meeting_id.length>0 || frame.split==='synthetic','Development observations need verified meeting IDs.');
     rows.push(o);
     (absent?excluded:eligible).push(o);
@@ -43,6 +72,8 @@ function validateFrame(frame){
   const identities=eligible.map(r=>[r.id,r.text_sha256]);
   const selection_sha256=digest(identities);
   if(frame.selection_sha256!==undefined&&frame.selection_sha256!==null)assert(selection_sha256===frame.selection_sha256,'Population ID/text hashes changed from pinned selection.');
+  if(P2)assert(frame.original_p2_source_provenance.selection_sha256===selection_sha256,
+    'P2 attestation selection hash is not equal to W1 eligible source population');
   const population_hash=digest([frame.source_schema,frame.source_hash_basis,frame.source_sha256,selection_sha256]);
   return {rows,eligible,excluded,selection_sha256,population_hash,inventory_meetings:frame.inventory_meetings??new Set(rows.map(x=>x.meeting_id).filter(Boolean)).size};
 }
