@@ -1,0 +1,70 @@
+name: Longitudinal source-inventory companion compatibility
+on:
+  push:
+    branches: ['coord/longitudinal-inventory-interchange-v1']
+    paths:
+      - 'docs/parallel-work/source-inventory-v1.cjs'
+      - 'docs/parallel-work/test-source-inventory-v1.cjs'
+      - 'docs/parallel-work/export-source-inventory-v1.cjs'
+      - 'docs/parallel-work/source-inventory-v1.schema.json'
+      - 'docs/parallel-work/SOURCE_INVENTORY_COMPANION_V1.md'
+      - '.github/workflows/longitudinal-source-inventory-v1.yml'
+  pull_request:
+    paths:
+      - 'docs/parallel-work/source-inventory-v1.cjs'
+      - 'docs/parallel-work/test-source-inventory-v1.cjs'
+      - 'docs/parallel-work/export-source-inventory-v1.cjs'
+      - 'docs/parallel-work/source-inventory-v1.schema.json'
+      - 'docs/parallel-work/SOURCE_INVENTORY_COMPANION_V1.md'
+      - '.github/workflows/longitudinal-source-inventory-v1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  v1-and-companion-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax check and synthetic nullable-inventory tests
+        run: |
+          node --check docs/parallel-work/source-inventory-v1.cjs
+          node --check docs/parallel-work/test-source-inventory-v1.cjs
+          node --check docs/parallel-work/export-source-inventory-v1.cjs
+          node docs/parallel-work/test-source-inventory-v1.cjs
+      - name: Unmodified legacy v1 contract, structural and relational tests
+        run: node docs/parallel-work/validate-contract.cjs
+      - name: Check separate JSON Schema is a valid Draft 2020-12 contract
+        run: |
+          python -m pip install jsonschema==4.23.0
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import jsonschema
+          a=Path('docs/parallel-work/source-inventory-v1.schema.json')
+          b=Path('docs/parallel-work/interchange-v1.schema.json')
+          schema=json.loads(a.read_text())
+          jsonschema.Draft202012Validator.check_schema(schema)
+          original=json.loads(b.read_text())
+          assert original['properties']['schema']['const']=='un.parallel-analysis.v1'
+          assert original['properties']['publication_eligible']['const'] is False
+          assert schema['properties']['schema']['const']=='un.parallel-source-inventory.v1'
+          print('PASS: new companion schema and unchanged legacy analytics contract')
+          PY
+
+      - name: Export exact source-only contract for private local P2 test
+        uses: actions/upload-artifact@v4
+        with:
+          name: w4-source-inventory-v1-source-only
+          path: |
+            docs/parallel-work/source-inventory-v1.cjs
+            docs/parallel-work/export-source-inventory-v1.cjs
+            docs/parallel-work/source-inventory-v1.schema.json
+            docs/parallel-work/test-source-inventory-v1.cjs
+          if-no-files-found: error
+          retention-days: 1
