@@ -90,26 +90,48 @@ def validate_panel(panel):
                 'Observation IDs must be unique')
         seen.add(r['id'])
         require(r.get('period') in by_period, f"{r['id']}: unknown period")
-        try:
-            when = date.fromisoformat(r['date'])
-        except (KeyError, TypeError, ValueError) as exc:
-            raise ContractError(f"{r['id']}: missing/invalid source date") from exc
-        require(by_period[r['period']][0] <= when <= by_period[r['period']][1],
-                f"{r['id']}: source date outside period")
-        require(panel['split'] != 'development' or str(when) not in ('2026-10-05', '2026-10-06'),
-                'Reserved holdout dates cannot enter the development adapter')
-        require(nonempty(r.get('genre')) and nonempty(r.get('meeting_id')) and
-                nonempty(r.get('source_family_id')), f"{r['id']}: meeting/genre/source lineage missing")
-        require(hash_ok(r.get('text_sha256')) and hash_ok(r.get('source_sha256')),
-                f"{r['id']}: invalid text/source hash")
+        available_row = r.get('source_status') == 'available'
+        require(r.get('source_status') in ('available', 'unavailable', 'failed', 'empty_transcript',
+                'inventory_failed', 'excluded_language'), f"{r['id']}: missing source status")
+        when = None
+        if r.get('date') is not None:
+            try:
+                when = date.fromisoformat(r['date'])
+            except (TypeError, ValueError) as exc:
+                raise ContractError(f"{r['id']}: invalid source date") from exc
+            require(by_period[r['period']][0] <= when <= by_period[r['period']][1],
+                    f"{r['id']}: source date outside period")
+            require(panel['split'] != 'development' or str(when) not in ('2026-10-05', '2026-10-06'),
+                    'Reserved holdout dates cannot enter the development adapter')
+        else:
+            require(not available_row,
+                    f"{r['id']}: available observation requires verified actual event date")
+        require(nonempty(r.get('genre')), f"{r['id']}: genre missing")
+        if available_row:
+            require(nonempty(r.get('meeting_id')) and nonempty(r.get('source_family_id')),
+                    f"{r['id']}: observed source requires verified meeting and source family")
+            require(hash_ok(r.get('text_sha256')) and hash_ok(r.get('source_sha256')),
+                    f"{r['id']}: observed text/source hashes invalid")
+        else:
+            require(r.get('meeting_id') is None or nonempty(r.get('meeting_id')),
+                    f"{r['id']}: missing meeting identifier is invalid")
+            require(r.get('source_family_id') is None or nonempty(r.get('source_family_id')),
+                    f"{r['id']}: missing source-family identifier is invalid")
+            require(r.get('text_sha256') is None or hash_ok(r.get('text_sha256')),
+                    f"{r['id']}: recorded candidate text hash is invalid")
+            require(r.get('source_sha256') is None or hash_ok(r.get('source_sha256')),
+                    f"{r['id']}: recorded candidate source hash is invalid")
         require(r.get('source_hash_basis') in ('synthetic', 'utf8_response_text',
                     'raw_response_bytes', 'canonical_source_text', 'source_text_file_bytes',
                     'utf8_corpus_export'), f"{r['id']}: source hash basis missing")
-        require(r.get('representation_fingerprint') == feat['fingerprint'],
-                f"{r['id']}: vocabulary, embedding or preprocessing basis changed")
-        require(r.get('representation_id') == feat['id'] and
-                r.get('representation_version') == feat['version'],
-                f"{r['id']}: representation identity changed")
+        if available_row or any(r.get(k) is not None
+                                for k in ('representation_id', 'representation_version',
+                                          'representation_fingerprint')):
+            require(r.get('representation_fingerprint') == feat['fingerprint'],
+                    f"{r['id']}: vocabulary, embedding or preprocessing basis changed")
+            require(r.get('representation_id') == feat['id'] and
+                    r.get('representation_version') == feat['version'],
+                    f"{r['id']}: representation identity changed")
         require(r.get('actor_kind') in ('synthetic', 'verified_speaker', 'recorded_affiliation',
                 'unknown'), f"{r['id']}: ambiguous actor evidence")
         require(r.get('actor_id') is None or nonempty(r.get('actor_id')),
@@ -122,11 +144,11 @@ def validate_panel(panel):
             identity = (r['actor_kind'], r.get('speaker_id') if r['actor_kind'] == 'verified_speaker' else None)
             require(actors.setdefault(r['actor_id'], identity) == identity,
                     f"{r['id']}: inconsistent actor identity across periods")
-        meeting = (r['period'], r['source_family_id'], r['source_sha256'], r['source_hash_basis'])
-        require(meetings.setdefault(r['meeting_id'], meeting) == meeting,
-                f"{r['id']}: meeting reused for incompatible source or period")
-        require(r.get('source_status') in ('available', 'unavailable', 'failed', 'empty_transcript',
-                'inventory_failed', 'excluded_language'), f"{r['id']}: missing source status")
+        if r.get('meeting_id') is not None and r.get('source_sha256') is not None:
+            meeting = (r['period'], r.get('source_family_id'), r['source_sha256'],
+                       r['source_hash_basis'])
+            require(meetings.setdefault(r['meeting_id'], meeting) == meeting,
+                    f"{r['id']}: meeting reused for incompatible source or period")
         require(r.get('parent_id') is None or hash_ok(r.get('parent_text_sha256')),
                 f"{r['id']}: parent hash required")
         off1, off2 = r.get('start'), r.get('end')
@@ -163,7 +185,7 @@ def validate_panel(panel):
     ids_by_period = defaultdict(set)
     for r in available:
         ids_by_period[r['period']].add(r['map_fit_id'])
-    require(all(len(ids_by_period[p]) == 1 for p in by_period),
+    require(all(len(ids_by_period[p]) <= 1 for p in by_period),
             'Exactly one pinned map fit per nonempty period required')
     imported_fits = defaultdict(set)
     for r in available:
@@ -173,7 +195,7 @@ def validate_panel(panel):
     require(all(len(fits) <= 1 for fits in imported_fits.values()),
             'Incompatible imported clustering fits within the same period')
     if feat['fit_policy'] == 'transformed_reference':
-        require(len(set.union(*ids_by_period.values())) == 1,
+        require(len(set().union(*ids_by_period.values())) <= 1,
                 'Transformed-reference comparisons must use exactly the same saved map fit')
     require(all(r['source_hash_basis'] == 'synthetic' for r in rows) if panel['split'] == 'synthetic'
             else all(r['source_hash_basis'] != 'synthetic' for r in rows),
@@ -469,6 +491,31 @@ def compare(panel, before, after, *, anchor_ids=(), bootstrap_reps=200, bootstra
     indices = {p: i for i, p in enumerate(metadata['periods'])}
     require(indices[before] < indices[after], 'Comparison must move forward in time')
     rows = [r for r in panel['observations'] if r['period'] in (before, after)]
+    if not all(any(r['period'] == p and r['source_status'] == 'available' for r in rows)
+               for p in (before, after)):
+        return {'schema': 'un.longitudinal-comparison.v1', 'evaluation_role': 'engineering_only',
+                'publication_eligible': False, 'comparison_status': 'withheld',
+                'reason': 'at_least_one_period_has_no_verified_observations',
+                'split': panel['split'], 'before': before, 'after': after,
+                'representation': {**panel['feature_space'],
+                    'map_method': panel['map_space']['method'],
+                    'map_dimension': panel['map_space']['dimension']},
+                'provenance': {'panel_sha256': digest(panel),
+                               'included_observation_ids': [r['id'] for r in rows]},
+                'coverage': {**metadata, 'compared_available': 0,
+                    'unavailable_by_period': {p: sum(r['period'] == p and
+                        r['source_status'] != 'available' for r in rows) for p in (before, after)}},
+                'high_dimensional': {'rows': [], 'matched_actor_count': 0},
+                'common_source': {'matched_source_families': [], 'actor_family_pairs': [],
+                                  'pair_count': 0, 'mean_distance': None},
+                'alignment': {'mode': 'withheld_no_comparable_period'},
+                'display': {'actor_distances': [], 'common_actor_centroid_distance': None,
+                            'stress': {}, 'movement_is_inferential': False},
+                'cluster_correspondence': {'overlap_edges': [], 'matched_actor_count': 0},
+                'uncertainty': {'status': 'withheld', 'reason': 'missing_comparable_period',
+                                'attempted': 0, 'successful': 0, 'failed': 0},
+                'aligned_coordinates': [],
+                'limitations': ['No movement estimated from absent sources or invented zeros.']}
     high = actor_distances(rows, before, after)
     matched_source = common_source_distances(rows, before, after)
     aligned, transform = align_maps(rows, before, after, panel['feature_space']['fit_policy'],
@@ -484,7 +531,8 @@ def compare(panel, before, after, *, anchor_ids=(), bootstrap_reps=200, bootstra
                'coordinates': aligned[r['id']].tolist()} for r in rows if r['id'] in aligned]
     return {'schema': 'un.longitudinal-comparison.v1', 'evaluation_role': 'engineering_only',
             'publication_eligible': False, 'split': panel['split'], 'before': before, 'after': after,
-            'representation': {**panel['feature_space'], 'map_method': panel['map_space']['method']},
+            'representation': {**panel['feature_space'], 'map_method': panel['map_space']['method'],
+                               'map_dimension': panel['map_space']['dimension']},
             'provenance': {'panel_sha256': digest(panel), 'included_observation_ids': [r['id'] for r in rows]},
             'coverage': {**metadata, 'compared_available': len(coords),
                          'unavailable_by_period': {p: sum(r['period'] == p and r['source_status'] != 'available'
@@ -530,6 +578,10 @@ def to_interchange_v1(panel, comparison, *, upstream=None):
                     'selection_sha256': digest([r['id'] for r in rows]),
                     'frame_sha256': None, 'corpus_sha256': None, 'review_sha256': None,
                     'missing_reason': None}
+    if any(r.get('date') is None for r in rows):
+        raise ContractError('Interchange v1 requires event dates even for unavailable sources; '
+                            'use a separately typed private missing-source inventory until a '
+                            'coordinator-approved nullable-date interchange version exists')
     eligible = [r for r in rows if r['source_status'] == 'available']
     period_ids = (comparison['before'], comparison['after'])
     models, results, coverage = [], [], []
@@ -601,10 +653,11 @@ def to_interchange_v1(panel, comparison, *, upstream=None):
                    'weighting': 'equal_meeting', 'source_group_unit': 'source_family',
                    'duplicate_policy': 'retain_and_audit', 'total_in_frame': len(rows), 'eligible': len(eligible)},
         'observations': observations, 'models': models, 'results': results,
-        'coverage': {'inventory_meetings': len({r['meeting_id'] for r in rows}),
+        'coverage': {'inventory_meetings': len({r['meeting_id'] for r in rows if r.get('meeting_id')}),
                      'observations_total': len(rows), 'eligible': len(eligible),
                      'excluded': len(rows) - len(eligible),
-                     'unavailable_sources': len({r['source_family_id'] for r in rows if r['source_status'] != 'available'}),
+                     'unavailable_sources': len({r.get('source_family_id') or r.get('meeting_id') or r['id']
+                           for r in rows if r['source_status'] != 'available'}),
                      'models': coverage, 'failure_ledger': []},
         'evidence': [], 'diagnostics': diagnostics,
         'limitations': [{'code': 'descriptive_longitudinal_only', 'scope': 'all',
@@ -624,7 +677,9 @@ def write_exports(folder, comparison, envelope):
     with (target / 'aligned-coordinates.csv').open('x', encoding='utf-8', newline='') as handle:
         writer = csv.writer(handle)
         writer.writerow(['observation_id', 'period', 'actor_id', 'meeting_id', 'source_family_id',
-                         'map_fit_id', 'kind'] + [f'display_{i+1}' for i in range(len(comparison['aligned_coordinates'][0]['coordinates']))])
+                         'map_fit_id', 'kind'] + [f'display_{i+1}' for i in range(
+                             len(comparison['aligned_coordinates'][0]['coordinates'])
+                             if comparison['aligned_coordinates'] else comparison['representation']['map_dimension'])])
         for r in comparison['aligned_coordinates']:
             writer.writerow([r['observation_id'], r['period'], r['actor_id'], r['meeting_id'],
                              r['source_family_id'], r['map_fit_id'], r['coordinate_kind'], *r['coordinates']])
