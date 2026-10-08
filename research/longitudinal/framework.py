@@ -135,6 +135,18 @@ def validate_panel(panel):
                 f"{r['id']}: inconsistent Unicode offsets")
         c = r.get('cluster')
         require(c is None or (type(c) is int and c >= 0), f"{r['id']}: bad cluster label")
+        if c is not None:
+            require(nonempty(r.get('cluster_fit_id')) and
+                    hash_ok(r.get('cluster_parameters_sha256')) and
+                    hash_ok(r.get('cluster_training_selection_sha256')),
+                    f"{r['id']}: imported cluster label lacks original fit/parameter/selection identity")
+        if panel['split'] == 'development':
+            require(r.get('unit') in ('source_segment', 'passage', 'reviewed_speech', 'parent', 'country_period')
+                    and r.get('review_status') in ('confirmed', 'pending', 'provisional', 'unreviewed'),
+                    f"{r['id']}: development unit/review status not declared")
+            require(r.get('speech_id') is None or
+                    (r['review_status'] == 'confirmed' and nonempty(r['speech_id'])),
+                    f"{r['id']}: unconfirmed speech identity")
         if r['source_status'] == 'available':
             require(not r.get('missing_reason'), f"{r['id']}: available source has missing reason")
             require(nonempty(r.get('map_fit_id')), f"{r['id']}: map fit provenance absent")
@@ -153,13 +165,20 @@ def validate_panel(panel):
         ids_by_period[r['period']].add(r['map_fit_id'])
     require(all(len(ids_by_period[p]) == 1 for p in by_period),
             'Exactly one pinned map fit per nonempty period required')
+    imported_fits = defaultdict(set)
+    for r in available:
+        if r['cluster'] is not None:
+            imported_fits[r['period']].add((r['cluster_fit_id'],
+                r['cluster_parameters_sha256'], r['cluster_training_selection_sha256']))
+    require(all(len(fits) <= 1 for fits in imported_fits.values()),
+            'Incompatible imported clustering fits within the same period')
     if feat['fit_policy'] == 'transformed_reference':
         require(len(set.union(*ids_by_period.values())) == 1,
                 'Transformed-reference comparisons must use exactly the same saved map fit')
     require(all(r['source_hash_basis'] == 'synthetic' for r in rows) if panel['split'] == 'synthetic'
             else all(r['source_hash_basis'] != 'synthetic' for r in rows),
             'Synthetic and non-synthetic hash bases cannot be mixed')
-    return {'periods': list(by_period), 'available': len(available), 'excluded': len(rows) - len(available),
+    return {'periods': [p for p, _ in ordered], 'available': len(available), 'excluded': len(rows) - len(available),
             'representation_id': feat['id'], 'source_groups': len({r['source_family_id'] for r in available})}
 
 
@@ -319,7 +338,7 @@ def display_stress(rows, period):
     selected = [r for r in rows if r['period'] == period and r['source_status'] == 'available']
     if len(selected) < 3:
         return {'stress': None, 'reason': 'fewer_than_three_rows'}
-    # Bounded deterministic distinct-source sample prevents O(n^2) memory explosion.
+    # Bounded observed-row sample prevents O(n^2) use; repeated source families are retained.
     selected = selected[:min(len(selected), 250)]
     hi = pdist([r['vector'] for r in selected]); lo = pdist([r['map'] for r in selected])
     if np.dot(hi, hi) < 1e-20 or np.dot(lo, lo) < 1e-20:
@@ -340,18 +359,19 @@ def _actor_labels(rows, period):
         counts = Counter(v for v in membership if v is not None and v > 0)
         # Ties, noise, missing cluster and mixed assignment -> explicitly abstain.
         if not counts:
-            out[actor] = 0
+            out[actor] = 0 if 0 in membership else None
         else:
             top = max(counts.values())
             winners = [k for k, n in counts.items() if n == top]
-            out[actor] = winners[0] if len(winners) == 1 and top > len(membership) / 2 else 0
+            out[actor] = (winners[0] if len(winners) == 1 and top > len(membership) / 2
+                          else (0 if 0 in membership else None))
     return out
 
 
 def cluster_correspondence(rows, before, after, min_overlap=2):
     a, b = _actor_labels(rows, before), _actor_labels(rows, after)
     shared = sorted(set(a) & set(b))
-    ta, tb = sorted({v for v in a.values() if v > 0}), sorted({v for v in b.values() if v > 0})
+    ta, tb = sorted({v for v in a.values() if v is not None and v > 0}), sorted({v for v in b.values() if v is not None and v > 0})
     matrix = np.array([[sum(a[x] == i and b[x] == j for x in shared) for j in tb]
                        for i in ta], dtype=int)
     edges = [{'before': i, 'after': j, 'shared_overlap': int(matrix[ii, jj]),
@@ -366,9 +386,11 @@ def cluster_correspondence(rows, before, after, min_overlap=2):
                    for i, j in zip(rr, cc) if matrix[i, j] >= min_overlap]
     supported = [e for e in edges if e['shared_overlap'] >= min_overlap]
     return {'shared_actor_count': len(shared), 'before_clusters': ta, 'after_clusters': tb,
-            'eligible_shared_assigned': sum(a[x] > 0 and b[x] > 0 for x in shared),
+            'eligible_shared_assigned': sum(a[x] is not None and a[x] > 0 and b[x] is not None and b[x] > 0 for x in shared),
             'unassigned_before': sum(a[x] == 0 for x in shared),
             'unassigned_after': sum(b[x] == 0 for x in shared),
+            'not_fitted_before': sum(a[x] is None for x in shared),
+            'not_fitted_after': sum(b[x] is None for x in shared),
             'overlap_edges': edges, 'max_overlap_matching': matched,
             'persistent_candidates': matched,
             'splits': [v for v in ta if sum(e['before'] == v for e in supported) > 1],
@@ -489,6 +511,9 @@ def to_interchange_v1(panel, comparison, *, upstream=None):
                 'Development export requires verified original upstream metadata')
         require(hash_ok(upstream.get('source_sha256')) and hash_ok(upstream.get('selection_sha256')),
                 'Development export must carry original source and selection hashes')
+        require(nonempty(upstream.get('source_engine')) and
+                all(r['source_hash_basis'] == upstream.get('source_hash_basis') for r in rows),
+                'Upstream hash basis must exactly match original observation basis')
     else:
         upstream = {'source_schema': 'synthetic.v1', 'source_engine': 'W4 synthetic longitudinal fixture',
                     'source_hash_basis': 'synthetic',
@@ -501,15 +526,19 @@ def to_interchange_v1(panel, comparison, *, upstream=None):
     models, results, coverage = [], [], []
     for p in period_ids:
         ident = f'W4-imported-{p}'
+        label_fit = next((r for r in eligible if r['period'] == p and r['cluster'] is not None), None)
         models.append({'model_id': ident, 'method_family': 'imported_partition',
                        'method': 'saved_source_linked_cluster_assignment',
                        'representation_id': panel['feature_space']['id'],
                        'representation_version': panel['feature_space']['version'],
-                       'fit_version': next((r['map_fit_id'] for r in eligible if r['period'] == p), 'unavailable'),
+                       'fit_version': label_fit['cluster_fit_id'] if label_fit else 'no_imported_fit',
                        'fit_split': panel['split'],
-                       'parameters_sha256': digest({'period': p, 'kind': 'imported_assignments'}),
-                       'training_selection_sha256': upstream['selection_sha256'],
-                       'diagnostic_basis': 'Imported labels only; no refitting or new classification'})
+                       'parameters_sha256': label_fit['cluster_parameters_sha256'] if label_fit else
+                                            digest({'period': p, 'kind': 'no_imported_fit'}),
+                       'training_selection_sha256': label_fit['cluster_training_selection_sha256'] if label_fit
+                                                    else upstream['selection_sha256'],
+                       'diagnostic_basis': 'Imported partition fit identity; never the display map fit. '
+                                           'Upstream attempt/failure validation required separately.'})
         counts = Counter()
         for r in rows:
             if r['source_status'] != 'available':
@@ -535,7 +564,7 @@ def to_interchange_v1(panel, comparison, *, upstream=None):
     for r in rows:
         observations.append({'id': r['id'], 'text_sha256': r['text_sha256'],
             'parent_id': r.get('parent_id'), 'parent_text_sha256': r.get('parent_text_sha256'),
-            'meeting_id': r['meeting_id'], 'speech_id': r.get('speaker_id') if r['actor_kind'] == 'verified_speaker' else None,
+            'meeting_id': r['meeting_id'], 'speech_id': r.get('speech_id') if r.get('review_status') == 'confirmed' else None,
             'source_family_id': r['source_family_id'], 'date': r['date'], 'country': r.get('country'),
             'source_url': r.get('source_url'), 'json_pointer': r.get('json_pointer'),
             'start': r.get('start'), 'end': r.get('end'),
@@ -543,7 +572,6 @@ def to_interchange_v1(panel, comparison, *, upstream=None):
             'review_status': 'not_applicable' if synthetic else r.get('review_status', 'unreviewed'),
             'exclusion_reasons': [] if r['source_status'] == 'available' else [r['source_status']],
             'source_status': r['source_status'], 'missing_reason': r.get('missing_reason')})
-    models_ids = [m['model_id'] for m in models]
     diagnostics = [{'model_id': None, 'name': 'matched_actors',
         'value': comparison['high_dimensional']['matched_actor_count'],
         'denominator': len({r['actor_id'] for r in eligible if r.get('actor_id')}),
