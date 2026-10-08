@@ -1,0 +1,140 @@
+{
+  "schema": "un.w1.p4.original-source-dependence.aggregate.v1",
+  "audit_date": "2026-10-08",
+  "prior_authorized_inputs": "63 original-PV private ZIP plus 792/520 private P3 frame",
+  "raw_original_UN_PV_PDF_sha256_rechecked_in_private_audit": 63,
+  "original_UN_PV_PDF_sha256_failures": 0,
+  "total_original_source_pdf_bytes": 53218960,
+  "reserved_2026_Oct5_6_meetings_opened": 0,
+  "cohort": {
+    "year_start": 2016,
+    "year_end": 2023,
+    "country_affiliations": 99,
+    "expected_country_year_slots": 792,
+    "source_corroborated": 523,
+    "source_and_event_date_verified": 520,
+    "source_corroborated_without_verified_date": 3,
+    "original_source_unverified": 269,
+    "no_unverified_cells_imputed_zero": true
+  },
+  "original_PV_meeting_groups": 55,
+  "original_PV_group_size": {
+    "minimum": 4,
+    "median": 9,
+    "mean": 9.50909090909091,
+    "maximum": 16
+  },
+  "full_source_corroborated": {
+    "observations": 523,
+    "within_same_PV_pairs": 2498,
+    "pair_opportunities": 136503,
+    "within_same_PV_fraction": 0.01829996410335304,
+    "independent_replicates_not_established": true
+  },
+  "date_corroborated": {
+    "observations": 520,
+    "within_same_PV_pairs": 2471,
+    "pair_opportunities": 134940,
+    "within_same_PV_fraction": 0.018311842300281607,
+    "independent_replicates_not_established": true
+  },
+  "source_family_actor_transitive_closure": {
+    "groups": 1,
+    "largest_group_observations": 520,
+    "grouped_affiliation_W1_resampling_status": "SKIPPED_INSUFFICIENT_GROUPS",
+    "requires_at_least_groups": 3
+  },
+  "pv_source_leave_one_out": {
+    "planned": 55,
+    "attempted": 55,
+    "succeeded": 55,
+    "failed": 0,
+    "minimum_retained_date_verified_cells": 504,
+    "maximum_retained_date_verified_cells": 516,
+    "model_fits": 0,
+    "inferential_CI": false
+  },
+  "year_leave_one_out": {
+    "planned": 8,
+    "executed": 8,
+    "model_fits": 0,
+    "inferential_CI": false
+  },
+  "year_coverage": [
+    {
+      "year": 2016,
+      "source": 56,
+      "date": 55,
+      "original_source_unverified": 43,
+      "source_meetings": 7
+    },
+    {
+      "year": 2017,
+      "source": 53,
+      "date": 52,
+      "original_source_unverified": 46,
+      "source_meetings": 9
+    },
+    {
+      "year": 2018,
+      "source": 71,
+      "date": 71,
+      "original_source_unverified": 28,
+      "source_meetings": 6
+    },
+    {
+      "year": 2019,
+      "source": 72,
+      "date": 72,
+      "original_source_unverified": 27,
+      "source_meetings": 7
+    },
+    {
+      "year": 2020,
+      "source": 63,
+      "date": 63,
+      "original_source_unverified": 36,
+      "source_meetings": 7
+    },
+    {
+      "year": 2021,
+      "source": 66,
+      "date": 66,
+      "original_source_unverified": 33,
+      "source_meetings": 7
+    },
+    {
+      "year": 2022,
+      "source": 83,
+      "date": 83,
+      "original_source_unverified": 16,
+      "source_meetings": 7
+    },
+    {
+      "year": 2023,
+      "source": 59,
+      "date": 58,
+      "original_source_unverified": 40,
+      "source_meetings": 5
+    }
+  ],
+  "private_independent_aggregate_sha256": "72189c9684fe2b2cf97a229d66d08ebeb103ade9059514910d441a1e6fc0da53",
+  "private_replay_identical_digest": true,
+  "publication_eligible": false,
+  "source_model_status": {
+    "raw_Harvard_v14_speech_bytes_checked": false,
+    "native_W1_source_group_methods_on_real_private_rows": "NOT_RUN_PYTHON_INDEPENDENT_REPRODUCTION",
+    "native_W1_source_group_methods_on_synthetic_fixture": "PASS",
+    "native_W1_real_text_frame": "NOT_RUN",
+    "W1_model_fits": 0,
+    "W4_model_fits": 0,
+    "source_independent_resampling_exchangeability_verified": false,
+    "political_alignment_inference": false,
+    "reserve_37_unopened_meetings_preserved": true
+  },
+  "privacy": {
+    "country_rows_committed": false,
+    "PV_hash_rows_committed": false,
+    "raw_source_text_committed": false
+  }
+}
