@@ -33,6 +33,8 @@ jobs:
           node-version: '22'
       - name: New method, negative and lineage controls
         run: node research/validation_framework/tests/test_framework.cjs
+      - name: Direct structural validation against coordinator v1 JSON Schema
+        run: node research/validation_framework/tests/test_schema.cjs
       - name: Existing parallel contract
         run: node docs/parallel-work/validate-contract.cjs
       - name: Existing browser and research regressions (unchanged)
