@@ -186,18 +186,10 @@ class AcceptedW1InteropTests(unittest.TestCase):
             with self.subTest(where=where, field=field):
                 bad = copy.deepcopy(self.manifest)
                 bad[where][0][field] = value
-                if field == "missing_reason":
-                    # Public W1 export includes source status, but explicit reason
-                    # must also be bound: a changed reason cannot claim identical lineage.
-                    self.assertNotEqual(
-                        bad[where][0]["missing_reason"],
-                        self.envelope["observations"][-1]["missing_reason"],
-                    )
-                else:
-                    with self.assertRaises(GraphError):
-                        compare_w1_partition(
-                            bad, self.x, self.spectral, self.envelope, self.approval,
-                            w1_model_id=MODEL_ID, repo_root=ROOT)
+                with self.assertRaises(GraphError):
+                    compare_w1_partition(
+                        bad, self.x, self.spectral, self.envelope, self.approval,
+                        w1_model_id=MODEL_ID, repo_root=ROOT)
 
     def test_refuse_representation_and_unapproved_commit(self):
         bad = copy.deepcopy(self.manifest)
