@@ -45,3 +45,5 @@ jobs:
             w4-private-src/research/longitudinal/requirements.txt
           retention-days: 1
           if-no-files-found: error
+
+# Refresh exact W4 feature-head source for private empirical replay.
