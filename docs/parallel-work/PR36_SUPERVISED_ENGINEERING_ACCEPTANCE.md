@@ -10,6 +10,22 @@
 - Exact-head CI: [GitHub Actions run 37833249784](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37833249784), **completed: success** on head `791f10f61046c1e128c9907099ad84eeddf05f01`. Three completed successful jobs: Node/Python `113503710376`, R `113503710105`, and Chromium `113503894856`. Historical failed runs were corrected, not substituted for the latest passing run.
 - Workflow exception: the coordinator separately and explicitly accepts **only PR #36's named, new, read-only synthetic CI workflow** in `OWNERSHIP.md`, subject to rechecking unchanged privileges, paths and accepted tests just before merging PR #36.
 
+## Coordinator W5/W6 CI cleanup compatibility
+
+During the separate coordinator ownership-document PR, the already-pinned W5
+Chrome CDP fixture failed twice **after its reported test assertions passed**,
+when Chromium 154 continued writing a temporary profile during teardown:
+`ENOTEMPTY: rmdir /tmp/un-method-lab-chromium-*/Default`.
+
+The coordinator CI workflow alone now adds bounded `fs.rmSync` retries
+(`maxRetries=20`, `retryDelay=250` milliseconds) for **only**
+`os.tmpdir()/un-method-lab-chromium-*` and only when recursive/forced
+deletion was already requested. All pinned W5/W6 source bytes, source/test
+assertions, test error propagation, CI permissions and user-facing browser
+assets are unchanged. This is an environment cleanup repair, not a reduced
+acceptance gate. The coordinator PR must **still obtain a complete passing
+W5/W6 check** at its latest head before merge.
+
 ## Acceptance gates (PASS / FAIL / NOT RUN / NOT APPLICABLE)
 
 | Requirement | Decision | Evidence and limitation |
