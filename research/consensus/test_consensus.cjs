@@ -221,7 +221,7 @@ test('corrupted pair count or weighted numerator is rejected', () => {
   bad.pairs[1].assigned_both_count = bad.pairs[1].planned_count + 1;
   assert.throws(() => C.validateConsensus(bad), /raw pair-opportunity accounting/);
   const second = clone(base);
-  second.pairs[1].coassigned_weight = second.pairs[1].assigned_both_weight + 0.1;
+  second.pairs[1].coassigned_weight = second.pairs[1].assigned_both_weight + 0.001;
   assert.throws(() => C.validateConsensus(second), /weighted opportunity accounting/);
 });
 test('corrupt sidecar source hashes, IDs and group membership are rejected', () => {
