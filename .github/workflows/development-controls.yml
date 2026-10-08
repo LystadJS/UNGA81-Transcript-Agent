@@ -1,0 +1,65 @@
+name: Development-only controls and synthetic evaluation
+on:
+  push:
+    branches: [main, feat/development-controls]
+    paths:
+      - 'research/reference_tests/**'
+      - 'docs/DEVELOPMENT_CONTROLS*'
+      - '.github/workflows/development-controls.yml'
+  pull_request:
+    paths:
+      - 'research/reference_tests/**'
+      - '.github/workflows/development-controls.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install pinned numerical dependencies
+        run: python -m pip install -r research/semantic_review/requirements.txt
+      - name: Reject changes to the sealed protocol and real-source access
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('research/reference_tests')
+          lock=json.loads((p/'evaluation-lock.json').read_text())
+          assert lock['sha256']=='2c96f479fae0eded4b226882e05462b7f800c32fa066a6bb26df043b5d278039'
+          assert lock['reserved_meetings']==37 and not lock['evaluation_executed']
+          PY
+      - name: Frozen reference and new nuisance/dry-run synthetic tests
+        run: python -m unittest discover -s research/reference_tests -p 'test_*.py' -v
+      - name: Exercise fixed fake roster and all release branches
+        run: |
+          mkdir -p synthetic-evidence
+          python research/reference_tests/holdout_dryrun.py synthetic-evidence/nominal.json --variant nominal
+          python research/reference_tests/holdout_dryrun.py synthetic-evidence/correlated.json --variant correlated
+          python research/reference_tests/holdout_dryrun.py synthetic-evidence/insufficient.json --variant insufficient
+          python research/reference_tests/holdout_dryrun.py synthetic-evidence/unavailable.json --variant all_unavailable
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          base=Path('synthetic-evidence')
+          wanted={'nominal':'SYNTHETIC_GATE_WOULD_NOT_PASS',
+                  'correlated':'SYNTHETIC_GATE_WOULD_PASS',
+                  'insufficient':'INCONCLUSIVE_SYNTHETIC',
+                  'unavailable':'INCONCLUSIVE_SYNTHETIC'}
+          for name,status in wanted.items():
+              result=json.loads((base/f'{name}.json').read_text())
+              assert result['decision']==status and result['all_meetings']==37
+              assert result['reserved_transcripts_opened']==0 and not result['actual_replication_claim']
+          print('PASS four synthetic outcomes; no UN source access')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: development-controls-synthetic
+          path: synthetic-evidence/
+          retention-days: 14

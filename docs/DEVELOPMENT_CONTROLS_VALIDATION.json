@@ -1,0 +1,111 @@
+{
+  "schema": "un.development-controls-validation.v1",
+  "date": "2026-10-08",
+  "status": "PASS_DEVELOPMENT_ONLY",
+  "base_main_commit": "2b7f0763509d8b0e1fbdfa5eab0b79419dd48eac",
+  "original_sealed_protocol_sha256": "2c96f479fae0eded4b226882e05462b7f800c32fa066a6bb26df043b5d278039",
+  "original_protocol_file_sha256": "d41ea138855d8cd5c03f1064f366031eb61d527a97778f662ce32e31cef5013a",
+  "original_reference_implementation_sha256": "ad3c04643a9b1a97b6b5c75cbe53dd36606ea5502a6d29917a2b67690f8f7f7d",
+  "original_development_corpus_sha256": "e8fb980cf638e2aef39d0ca3564836c6120201a059e806ccaaee3fd5cc4f593e",
+  "development_units": {
+    "strict_passages": 1641,
+    "source_segments": 523,
+    "meetings": 16,
+    "human_confirmed": 0
+  },
+  "negative_controls": {
+    "source_metadata_only": {
+      "overlap": 0.3652007648183556,
+      "country_share": 0.018599791013584117
+    },
+    "source_metadata_plus_country_identity": {
+      "overlap": 0.4187380497131931,
+      "country_share": 0.23908045977011494
+    },
+    "source_metadata_only_p_holm": 0.002,
+    "country_identity_p_holm": 0.002,
+    "methods": "999 parent-blocked permutations per test; fixed original length bins; no transcript text features",
+    "source_result_sha256": "90e112c27a632ab144d8411f8b5630e116fac15bcd935e5dc0ffdd96ce8f2a84"
+  },
+  "country_masking": {
+    "alias_count": 687,
+    "masked_passages": 1243,
+    "matched_parents": 469,
+    "replacements": 3330,
+    "original_neighbor_overlap": 0.3940089228808158,
+    "masked_neighbor_overlap": 0.40764818355640536,
+    "original_country_share": 0.09111807732497387,
+    "masked_country_share": 0.03761755485893417,
+    "p_holm_masked_country": 0.002,
+    "prediction_changes": 213,
+    "partition_ari": 0.7465595924829233,
+    "full_wordpieces": 258930,
+    "chunks": 1642,
+    "truncated_tokens": 0,
+    "result_manifest_sha256": "999efef58b033202784e609d73bec96f7318090f413033c1110fc2c0a4e24143",
+    "implementation_sha256_in_run": "f4848852749c124fe0335533ef462b382adb50dd5ece4e2725bb2919099ae988"
+  },
+  "dry_run": {
+    "mode": "synthetic_only_no_real_data_loader",
+    "variants": {
+      "nominal": "SYNTHETIC_GATE_WOULD_NOT_PASS",
+      "correlated": "SYNTHETIC_GATE_WOULD_PASS",
+      "insufficient": "INCONCLUSIVE_SYNTHETIC",
+      "all_unavailable": "INCONCLUSIVE_SYNTHETIC",
+      "transform-smoke": "SYNTHETIC_GATE_WOULD_NOT_PASS"
+    },
+    "all_fictitious_meetings_per_case": 37,
+    "synthetic_transform_smoke": {
+      "status": "PASS_SYNTHETIC_TRANSFORM_SMOKE",
+      "synthetic": true,
+      "frozen_lexical_features": 9068,
+      "lexical_components": 64,
+      "semantic_input_dimensions": 384,
+      "semantic_components": 64,
+      "semantic_predictions": 792,
+      "distinct_semantic_labels": 10,
+      "used_frozen_center_predictions": true,
+      "model_retrained": false,
+      "holdout_opened": 0
+    },
+    "real_holdout_evaluated": false
+  },
+  "tests": {
+    "new": 20,
+    "inherited_reference": 11,
+    "total": 31,
+    "failed": 0,
+    "real_development_artifact_validation": "PASS",
+    "two_complete_masked_inference_executions": 2,
+    "masking_report_result_identical_across_executions": true
+  },
+  "code_sha256": {
+    "negative_controls.py": "b91f46109ae443584846be7c8c24bc92888ba75981a3df75a38fb52526239667",
+    "mask_sensitivity.py": "f4848852749c124fe0335533ef462b382adb50dd5ece4e2725bb2919099ae988",
+    "holdout_dryrun.py": "46bc1b2f2b8af11c0188232efb887231a8575e60da084cb9a6aa8b9268d1a8d8",
+    "verify_controls.py": "4686b4d39e1de4257859fb7aa047eb4beaefb533be5f9ce5c95862e7c0d5d656",
+    "test_controls.py": "6eee719ceb409c9d197a82f90cbddc6f01ef279bcef57697ad9644bbba5b7cca"
+  },
+  "runtime": {
+    "python": "3.13.5",
+    "numpy": "2.3.5",
+    "scikit_learn": "1.8.0"
+  },
+  "holdout": {
+    "reserved_meetings": 37,
+    "transcripts_opened": 0,
+    "transcripts_requested": 0,
+    "text_rows_analyzed": 0,
+    "status": "metadata_only"
+  },
+  "preserved": [
+    "site/",
+    "un/",
+    "research/reference_tests/evaluation-lock.json",
+    "research/reference_tests/reference.py",
+    "research/reference_tests/evaluation_plan.json",
+    "research/reference_tests/plan.json",
+    "original_owner_pilot"
+  ],
+  "claim_limit": "Nuisance-only significance and masked-text sensitivity are not evidence of policy alignment, calibrated cluster existence or held-out performance."
+}
