@@ -1,0 +1,111 @@
+{
+  "schema": "un.w4.p2.full_original_pv.aggregate.v1",
+  "audit_date": "2026-10-08",
+  "official_originals": {
+    "meetings": 63,
+    "sessions": "71–79",
+    "years": "2016–2024",
+    "pages": 3370,
+    "total_pdf_bytes": 53218960,
+    "all_original_bytes_match_local_manifest_sha256": true,
+    "un_publisher_pdf_sha256_available": false
+  },
+  "comparison": {
+    "examined_source_key_candidates": 985,
+    "unretrieved_original_pv_candidate_rows": 752,
+    "strong_2016_2023": 840,
+    "partial_2024": 94,
+    "insufficient_2024": 50,
+    "harvard_corpus_missing_official_source_present": 1,
+    "year_2025_original_un_verification": "NOT_RUN",
+    "strong_rule": "normalized 7-token-shingle overlap >=90%; >=8/10 deciles coverage >=80%; opening/end checks",
+    "strong_counts_by_year": [
+      82,
+      92,
+      115,
+      120,
+      107,
+      105,
+      128,
+      91,
+      0
+    ],
+    "years": [
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "year_2024_median_overlap": 0.445,
+    "year_2016_2023_median_range": [
+      0.985,
+      0.988
+    ],
+    "source_modalities_equivalent": false
+  },
+  "controls": {
+    "wrong_same_year_original_pv_trials": 96,
+    "median_correct_overlap": 0.985735,
+    "median_wrong_overlap": 0.005161,
+    "max_wrong_overlap": 0.02793,
+    "wrong_pass_strong_gate": 0,
+    "statistical_null_test": false
+  },
+  "priority": {
+    "triaged": 24,
+    "workbook_source_affiliation_corroborated": 14,
+    "of_which_2024_text_variant": 2,
+    "UN_speaker_index_omissions_corroborated": 3,
+    "harvard_corpus_omission_in_original_PV": 1,
+    "unresolved_global_method_gates": 6,
+    "authenticated_individuals": 0,
+    "human_gold_labels": 0
+  },
+  "sample": {
+    "preselected_risk_stratified_cells": 120,
+    "strong_matches": 69,
+    "partial_or_insufficient_matches": 12,
+    "harvard_missing": 1,
+    "pv_not_acquired": 38,
+    "probability_sample": false
+  },
+  "candidate": {
+    "country_affiliations": 99,
+    "epochs": "2016–2019 and 2020–2023",
+    "minimum_verified_years_per_epoch": 2,
+    "eight_year_country_slots": 792,
+    "source_strong_matched_slots": 523,
+    "not_verified_slots": 269,
+    "source_original_meetings": 55,
+    "selection_sha256": "3ebec834635e4d493e8035aeede3321efb951aa22f2f61d81f6ac7a0f65a4c89",
+    "nonrandom_meeting_selection": true,
+    "zero_imputations": 0
+  },
+  "gates": {
+    "full_selected_original_UN_PV_PDF_bytes": "PASS_local_source_manifest",
+    "original_full_speech_correspondence": "PASS_selected_2016_2023_840",
+    "person_authentication": "NOT_RUN",
+    "frozen_representation_and_W1_dependent_validation": "NOT_RUN",
+    "year_2024_2025_measurement_invariance": "NOT_DEMONSTRATED",
+    "W4_real_descriptive_fit": "WITHHELD",
+    "W4_calibrated_inference": "WITHHELD",
+    "publication_eligible": false
+  },
+  "consistency_tests": {
+    "passed": 101,
+    "attempted": 101
+  },
+  "privacy": {
+    "private_person_source_rows_public": false,
+    "original_PV_pdf_bytes_public": false,
+    "recipient_decryption_private_key_public": false,
+    "original_37_reserved_meeting_reads": 0,
+    "evaluation_lock_changes": 0,
+    "original_W4_PR_18_merged": false
+  }
+}
