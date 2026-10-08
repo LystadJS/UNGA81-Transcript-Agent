@@ -1,0 +1,22 @@
+# Public UN plenary symbols only. GA sessions 71–79; no 2026 sources.
+A/71/PV.9
+A/71/PV.10
+A/71/PV.17
+A/71/PV.22
+A/72/PV.8
+A/72/PV.10
+A/72/PV.14
+A/72/PV.20
+A/73/PV.10
+A/74/PV.3
+A/75/PV.4
+A/75/PV.5
+A/75/PV.9
+A/75/PV.11
+A/76/PV.7
+A/77/PV.11
+A/78/PV.8
+A/78/PV.11
+A/79/PV.9
+A/79/PV.10
+A/79/PV.15
