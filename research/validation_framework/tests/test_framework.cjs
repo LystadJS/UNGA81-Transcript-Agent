@@ -61,6 +61,7 @@ function rejection(fn,fragment){assert.throws(fn,e=>String(e.message).includes(f
   });
   await test('refuse unsourced development attribution and unconfirmed speech',()=>{
     const {frame}=makeFixture();frame.split='development';
+    frame.source_schema='un.browser.corpus.v1';frame.source_hash_basis='utf8_corpus_export';
     frame.observations.forEach(r=>r.split='development');
     frame.observations[0].meeting_id=null;
     rejection(()=>F.validateFrame(frame),'Development observations');
