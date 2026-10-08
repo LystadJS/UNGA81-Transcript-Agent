@@ -30,9 +30,13 @@
 
 ## Purpose
 
-United Nations transcripts preserve what delegates said, but they do not automatically tell a reader what deserves attention. **UNGA81 Transcript Agent turns published meeting records into source-linked evidence for diplomatic readouts and comparative text analysis.** A user can examine a single meeting or a range of proceedings, follow recurring issues, compare language across speakers and regions, and return to the passages behind each result.
+On its _https://transcripts.un.org/en_ website, the United Nations has built a comprehensive repository for address and meeting transcripts created by using automatic speech recognition.  These transcripts preserve what diplomatic officials _said_, but this does not necessarily correlate to what deserves the most attention.  **The UNGA81 Transcript Agent transforms open-source meeting records into source-based evidence for diplomatic readouts, comparative text analysis, and nonrandom latent information discovery.**  Users can examine a single meeting or a range of proceedings, follow recurring issues, compare language across speakers and regions, and reference the passages behind each result.  
 
-The project began with the 2026 UN General Assembly General Debate and now includes a browser-based workspace for eligible English transcripts published through the UN transcript service. Its separate R pipeline produces reviewable daily briefing drafts. **The central rule is simple: an analytical claim should remain connected to its source, its denominator, and its limitations.**
+**The governing rule for this project is simple: an analytical claim should remain connected to its source, its denominator, and its limitations.**
+
+## Nonrandom Latent Information Discovery
+
+_Unsupervised machine learning_ offers a unique approach to the task of learning from data.  Unsupervised learning allows data to speak for itself, where no expected outcomes or pre-existing bias can railroad analysis into pre-defined labeling values.  ......
 
 ## Choose a workflow
 
