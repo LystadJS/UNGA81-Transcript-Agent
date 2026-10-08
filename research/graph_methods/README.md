@@ -44,8 +44,10 @@ representations only with exact common observation IDs/hashes, upstream source
 and selection identity, parent/meeting associations and identical distance
 geometry. Pinned MiniLM needs a model revision fingerprint. Cross-basis ARI
 and neighborhood overlap are descriptive; they do not align latent coordinates.
-W1's independent source-validation APIs must be integrated after acceptance,
-not claimed to exist here.
+Merged W1's native source-frame, grouping and assignment-metric APIs are invoked
+by an acceptance-gated Python↔Node adapter only for exactly matched, pinned
+and authorized populations. W1 is an engineering source dependency, not a
+scientific certification of graph discoveries.
 
 ## Numerical and scientific contracts
 
@@ -91,26 +93,46 @@ Coifman and Lafon (2006), *Diffusion Maps*; scipy.linalg.eigh;
 scikit-learn KMeans/trustworthiness; docs/parallel-work/INTERCHANGE_V1.md.
 
 
-## W1 integration readiness (not activated)
+## W1 interoperability — merged source, synthetic bridge validated
 
-W1 source-aware validation resides in draft PR #19 at
-research/validation_framework/** and is not merged or coordinator-accepted.
-The isolated Python W3 bridge (w1_bridge.py) has a strict acceptance gate:
-without actual installed W1 Node validators, coordinator-pinned merged code
-SHA, and matching versioned W1 interchange, it refuses the request. It never
-imports unmerged W1 code, quietly computes a replacement ARI/AMI, or changes
-a failed graph partition. The accepted bridge will call W1's native Node
-evaluateAssignments and validateRelational APIs after checking exact source,
-selection, meeting/parent/offset, missingness and pinned representation identity.
+Source-aware W1 PR #19 merged into main at
+`87dedd6ee7b30fb7cd1e26e8ef26e30ee8e52329` on 8 October 2026.
+The W3 bridge, `w1_bridge.py`, now invokes W1's **actual installed Node**
+`validateFrame`, `schedule` (whole-meeting), `auditSources`,
+`validateRelational` and `evaluateAssignments` APIs when the code is
+present and the caller has an approved merge-commit/code-SHA provenance pin.
+The local bridge also independently checks exact source identity, original
+ID/text hashes, selection, parent/meeting/offset, missing reasons,
+affiliations, review status and representation training-selection version.
+It rejects unmerged/W1-unavailable checkout states, incompatible frame
+schemas, coverage mismatch, impossible soft/hard assignments and unapproved
+code. No W1 metrics are reimplemented by Python as fallback.
 
-The private CLI adds --w1-envelope /private/w1-evidence.json,
---w1-approval /private/w1-approval.json, and --w1-model-id ID.
-All three are required together, only on authorized development inputs;
-private results are stored outside the Git checkout in an owner-only directory.
-Synthetic CI exercises the **withholding/identity checks** and explicitly logs
-W1's full integration as NOT_RUN until accepted and installed.
+**Executed synthetic interoperability:** the CI pull-request merged-tree
+checkout contains W1 from main and W3 from this PR. The W1 native synthetic
+fixture produces 24 eligible observations plus one unavailable/missing source;
+W3 uses the *same* ordered text/SHA identities and invented raw vector basis.
+The tests exercise real W1↔W3 ARI/AMI, independent scikit-learn references,
+whole-meeting group scheduling, exclusion/noise denominators, altered source
+and model hashes, false approval and incomplete assignments. A text-free
+aggregate `w1-w3-interoperability.json` receipt is archived with SHA256
+alongside graph benchmark artifacts on PR-triggered CI runs. Push-only W3
+branch checkouts may not contain W1 files and therefore skip these tests;
+PR merged-tree CI requires them explicitly.
 
-For the precise approval-record schema, coordinator decision matrix,
-remaining scientific limitations, and merge checklist, see
-COORDINATOR_REVIEW.md. No current CI result constitutes W1 integration
-acceptance or a policy/diplomatic finding.
+For private development validation, the CLI supports
+`--w1-envelope /private/w1-evidence.json`,
+`--w1-approval /private/w1-approval.json` and
+`--w1-model-id ID`; supply all three. Outputs must be created outside the
+public GitHub checkout in an owner-only directory. A local approval record is
+not cryptographic authentication or verification of the original transcript
+bytes. Identical *underlying* representation ID/version does not guarantee
+identical fitted distances: W1 can refit PCA, and W3 may operate on its
+pinned original high-dimensional vectors. The comparison is descriptive,
+not an aligned latent coordinate comparison.
+
+For the merge-review gates, required local approval shape, W1 source-schema
+limitations and scientific caveats, see `COORDINATOR_REVIEW.md`. Real
+development-source interoperability and independent/null-calibrated
+diplomatic conclusions remain **NOT RUN**. The W3 file-ownership exception
+still needs a coordinator decision before merging PR #16.
