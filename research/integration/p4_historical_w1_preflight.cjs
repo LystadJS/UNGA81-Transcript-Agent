@@ -53,7 +53,7 @@ function auditPrivateP3(inventory,{resamples=20,seed=31415}={}){
     const key=r.country+'|'+r.year;
     check(!seen.has(key),'Duplicate country-year inventory slot');
     seen.add(key);
-    check(r.id===r.country+'_'+r.year,'Unexpected P3 original observation identity');
+    check(r.id==='gd:'+r.year+':'+r.country,'Unexpected P3 original observation identity');
     check(r.genre==='general_debate'&&r.actor_kind==='recorded_affiliation'&&
       r.review_status.startsWith('source_'),'Original speaker role and genre not retained');
     check(!r.W1_model_fit_eligible&&!r.W4_model_fit_eligible&&
@@ -156,7 +156,7 @@ function auditPrivateP3(inventory,{resamples=20,seed=31415}={}){
     meeting_grouping:{groups:meetingGroups.groups.length,
       planned_resamples:resamples,attempted:meetingPlan.attempted,
       design_sample_sha256:meetingPlan.schedule_sha256,unit:'whole_original_PV',
-      status:meetingPlan.status,source_pair_share:sourceAudit.within_meeting_pair_share??null,
+      status:meetingPlan.status,source_pair_share:sourceAudit.observed_meeting_pair_share??null,
       max_group_count:sourceAudit.largest_meeting_count??null,
       actual_statistical_model_refits:0},
     affiliation_grouping:{groups:affiliationGroups.groups.length,
@@ -166,7 +166,7 @@ function auditPrivateP3(inventory,{resamples=20,seed=31415}={}){
     source_concentration:{meeting_groups:sourceAudit.meetings,
       largest_meeting_observation_count:sourceAudit.largest_meeting_count,
       largest_meeting_observation_share:sourceAudit.largest_meeting_share,
-      within_meeting_pair_fraction:sourceAudit.within_meeting_pair_share,
+      within_meeting_pair_fraction:sourceAudit.observed_meeting_pair_share,
       duplicate_text_hash_groups:sourceAudit.duplicate_text_groups,
       missing_affiliation_observations:sourceAudit.missing_affiliation_count},
     year_leave_one_out:yearsLeftOut,
