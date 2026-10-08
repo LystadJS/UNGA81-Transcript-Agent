@@ -1,0 +1,44 @@
+name: Temporary W4/W1 source-only local replay bundle
+on:
+  push:
+    branches: ['coord/w4-private-local-source-mirror']
+    paths:
+      - '.github/workflows/w4-private-local-source-mirror.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Reject any reserved/private file paths in bundle
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          roots=['research/validation_framework','site/cluster-core.js','site/cluster-algorithms.js','site/analysis-core.js','site/cluster-stability.js','site/gmm-core.js','site/hdbscan-core.js','docs/parallel-work/validate-contract.cjs','docs/parallel-work/interchange-v1.schema.json']
+          files=[p for r in roots for p in (Path(r).rglob('*.cjs') if Path(r).is_dir() else [Path(r)])]
+          assert all(p.exists() for p in files)
+          assert all('reserved' not in str(p).lower() and 'evaluation-lock' not in str(p) for p in files)
+          print('PASS: only W1 numerical/contract code and source-free site kernels; no transcript/evaluation files')
+          PY
+      - name: Upload named source files only, never corpus
+        uses: actions/upload-artifact@v4
+        with:
+          name: w1-w4-source-only-local-replay
+          path: |
+            research/validation_framework/*.cjs
+            research/validation_framework/schemas/*.json
+            site/analysis-core.js
+            site/cluster-core.js
+            site/cluster-algorithms.js
+            site/cluster-stability.js
+            site/gmm-core.js
+            site/hdbscan-core.js
+            docs/parallel-work/validate-contract.cjs
+            docs/parallel-work/interchange-v1.schema.json
+          retention-days: 1
+          if-no-files-found: error
