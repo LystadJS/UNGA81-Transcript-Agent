@@ -357,8 +357,12 @@ def run(corpus_path: Path | None, official_path: Path | None, out: Path,
             try:
                 result = download(url, f, limit)
                 sources[kind] = {**result, "path": f, "url": url}
-            except (AcquisitionError, OSError, urllib.error.URLError):
-                failures[kind] = "https_download_failed_or_source_invalid"
+            except urllib.error.HTTPError as exc:
+                failures[kind] = "http_status_" + str(exc.code)
+            except urllib.error.URLError as exc:
+                failures[kind] = "network_unavailable_" + type(exc.reason).__name__
+            except (AcquisitionError, OSError) as exc:
+                failures[kind] = "file_invalid_" + type(exc).__name__
         else:
             failures[kind] = "file_not_supplied_and_download_not_authorized"
     corpus, official = [], []
