@@ -21,7 +21,7 @@ from research.graph_methods import (
     baseline_comparison, grouped_leave_one_out, parameter_sensitivity,
     to_interchange_v1, equal_population,
 )
-from research.graph_methods.algorithms import pam_partition, procrustes_disparity
+from research.graph_methods.algorithms import pam_partition, procrustes_disparity, diffusion_policy_sensitivity
 from research.graph_methods.core import matrix_digest, digest
 from research.graph_methods.reproduce import (
     fixture, fit_or_record, run, source_edges, variations,
@@ -97,6 +97,41 @@ class SourceIdentityTests(unittest.TestCase):
         bad["representation"]["feature_basis"] = "minilm_pinned"
         with self.assertRaisesRegex(GraphError, "pinned"):
             validate_input(bad, self.x)
+
+    def test_invalid_date_refused(self):
+        bad = copy.deepcopy(self.m)
+        del bad["observations"][0]["date"]
+        with self.assertRaisesRegex(GraphError, "date"):
+            validate_input(bad, self.x)
+        bad = copy.deepcopy(self.m)
+        bad["observations"][0]["date"] = "2026-02-30"
+        with self.assertRaisesRegex(GraphError, "date"):
+            validate_input(bad, self.x)
+
+    def test_frame_exclusion_requires_explicit_lineage(self):
+        excluded = {
+            **copy.deepcopy(self.m["observations"][0]),
+            "id": "fictional-excluded-001",
+            "text_sha256": hashlib.sha256(b"fictional-excluded").hexdigest(),
+            "exclusion_reasons": ["short_or_procedural"],
+        }
+        bad = copy.deepcopy(self.m)
+        bad["total_in_frame"] += 1
+        with self.assertRaisesRegex(GraphError, "Frame denominator"):
+            validate_input(bad, self.x)
+        valid = copy.deepcopy(bad)
+        valid["excluded_observations"] = [excluded]
+        valid["frame_join_sha256"] = digest([
+            [r["id"], r["text_sha256"]]
+            for r in valid["observations"] + valid["excluded_observations"]
+        ])
+        self.assertEqual(validate_input(valid, self.x)["n"], len(self.x))
+        failed = {"method": "spectral", "status": "failed", "reason": "test"}
+        env = to_interchange_v1(valid, self.x, {"failed": failed},
+                                generated_at="2026-10-08T00:00:00Z")
+        self.assertEqual(env["coverage"]["excluded"], 1)
+        self.assertEqual(len(env["observations"]), len(self.x) + 1)
+        self.assertEqual(env["results"][-1]["status"], "excluded")
 
     def test_unknown_population(self):
         bad = copy.deepcopy(self.m)
@@ -269,6 +304,19 @@ class DiffusionTests(unittest.TestCase):
         with self.assertRaises(GraphError):
             diffusion_map(self.g, DiffusionPolicy(time=0))
 
+    def test_diffusion_policy_sweep(self):
+        fitted = diffusion_map(self.g, DiffusionPolicy(alpha=.5, time=2, dimensions=2))
+        policies = [DiffusionPolicy(alpha=0, time=2, dimensions=2),
+                    DiffusionPolicy(alpha=1, time=2, dimensions=2),
+                    DiffusionPolicy(alpha=.5, time=4, dimensions=2),
+                    DiffusionPolicy(alpha=.5, time=2, dimensions=1)]
+        report = diffusion_policy_sensitivity(self.x, self.g, fitted, policies)
+        self.assertEqual(report["planned"], 4)
+        self.assertEqual(len(report["attempts"]), 4)
+        self.assertEqual(sum(r["status"] == "fitted" for r in report["attempts"]),
+                         report["successful"])
+        self.assertIsNone(report["attempts"][3]["procrustes_disparity"])
+
     def test_rotation_invariance(self):
         x = np.random.default_rng(1).normal(size=(30, 2))
         theta = .4
@@ -345,6 +393,16 @@ class IntegrationTests(unittest.TestCase):
                 self.assertEqual(hashlib.sha256((p / name).read_bytes()).hexdigest(), h)
             with self.assertRaisesRegex(GraphError, "empty"):
                 run(m, x, p, synthetic_labels=truth)
+
+    def test_independent_replay_byte_identical(self):
+        m, x, labels = fixture()
+        with tempfile.TemporaryDirectory() as tmp:
+            p1, p2 = Path(tmp) / "r1", Path(tmp) / "r2"
+            run(m, x, p1, synthetic_labels=labels)
+            run(m, x, p2, synthetic_labels=labels)
+            self.assertEqual(
+                json.loads((p1 / "SHA256.json").read_text()),
+                json.loads((p2 / "SHA256.json").read_text()))
 
     def test_nuisance_negative_control_is_not_significance_test(self):
         x = np.random.default_rng(29).normal(size=(40, 5))
