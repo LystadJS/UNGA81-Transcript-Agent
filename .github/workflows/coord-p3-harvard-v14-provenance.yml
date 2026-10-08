@@ -40,7 +40,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - name: Retrieve only the pinned v14 public Harvard Dataverse datafile
+      - name: Probe download of the pinned public Harvard v14 archive; record explicit block if unavailable
+        id: acquisition
         shell: bash
         run: |
           set -euo pipefail
@@ -71,12 +72,28 @@ jobs:
                   error=str(exc)
                   destination.unlink(missing_ok=True)
                   if attempt<2:time.sleep(4)
+          state=Path(os.environ['RUNNER_TEMP'])/'harvard-v14-aggregate.json'
+          out=Path(os.environ['GITHUB_OUTPUT'])
           if error:
-              print('Source acquisition failed; cannot claim independent Harvard v14 verification:',error)
-              raise RuntimeError('Harvard v14 source archive unreachable or incomplete')
-          print('Fetched public archive for checksum verification; no member text is logged')
+              import json
+              state.write_text(json.dumps({
+                'schema':'un.harvard-v14.original-archive.acquisition.v1',
+                'status':'BLOCKED_SOURCE_NOT_RETRIEVED',
+                'datafile_id':13591895,
+                'last_error':error[:180],
+                'original_archive_SHA256_recomputed':False,
+                'raw_speech_text_verified':False,
+                'source_text_artifact_published':False,
+                'W1_real_source_frame_independently_validated':False,
+                'frozen_37_heldout_meetings_opened':0},indent=2)+'\n')
+              with out.open('a') as f:f.write('available=false\\n')
+              print('BLOCKED: Harvard raw original not obtained; source verification is NOT RUN')
+          else:
+              with out.open('a') as f:f.write('available=true\\n')
+              print('Original public archive retrieved for strict checksum verification; no speech text logged')
           PY
-      - name: Match original v14 MD5/SHA and inspect source-year inventory
+      - name: Match original v14 MD5/SHA and inspect source-year inventory (only when obtained)
+        if: steps.acquisition.outputs.available == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -97,9 +114,9 @@ jobs:
           PY
       - name: Upload only source-safe aggregate; never archive or speech text
         uses: actions/upload-artifact@v4
-        if: success()
+        if: always()
         with:
-          name: p3-harvard-v14-aggregate-hashes-only
+          name: p3-harvard-v14-aggregate-hashes-only-or-blocked
           path: ${{ runner.temp }}/harvard-v14-aggregate.json
           if-no-files-found: error
           retention-days: 14
