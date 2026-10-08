@@ -69,3 +69,7 @@ objects and conditional wording now receive stricter treatment. The original
 transcript, original evaluation lock, pilot owner decisions and daily gates are
 unchanged. The offline rules still require human contextual review for diplomatic
 use. See the locked development selection and private source-linked QA packet.
+
+## Expanded development benchmark — 8 October 2026
+
+[The expanded adjudication benchmark](QUICK_READER_ADJUDICATION_BENCHMARK.md) covers the 13 further development meetings (923 source segments), preserving the original seven-meeting audit. It separately scores country attribution, action/object stance precision, named context coverage and sampled abstentions. The private packet retains all 83 source-bound review items and allows offline human review later. Assistant-provisional scores cannot serve as independent human validation or policy publication approval. The revised local rule withholds country-group speakers delivering joint statements, generic endorsement of reports, incidental sanctions references, and confusion of humanitarian law with humanitarian assistance. All reserved transcripts remain unopened.

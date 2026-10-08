@@ -1,0 +1,52 @@
+name: Quick-reader adjudication benchmark
+on:
+  push:
+    branches: [main, feat/quick-reader-adjudication-benchmark]
+    paths:
+      - 'site/meeting-quick-reader.js'
+      - 'research/reference_tests/quick_reader_benchmark.cjs'
+      - 'research/reference_tests/render_adjudication_view.cjs'
+      - 'research/reference_tests/test_quick_reader_benchmark.cjs'
+      - 'tools/test_quick_reader_adjudication_ui.py'
+      - 'docs/QUICK_READER_ADJUDICATION*'
+      - '.github/workflows/quick-reader-adjudication.yml'
+  pull_request:
+    paths:
+      - 'site/meeting-quick-reader.js'
+      - 'research/reference_tests/quick_reader_benchmark.cjs'
+      - 'research/reference_tests/render_adjudication_view.cjs'
+      - 'research/reference_tests/test_quick_reader_benchmark.cjs'
+      - 'tools/test_quick_reader_adjudication_ui.py'
+      - '.github/workflows/quick-reader-adjudication.yml'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Synthetic-only attribution and benchmark regression checks
+        run: |
+          node research/reference_tests/test_quick_reader_benchmark.cjs
+          node tools/test_meeting_quick_reader.cjs
+          node tools/test_meeting_quick_reader_context.cjs
+          node research/reference_tests/test_meeting_attribution.cjs
+          node tools/test_meeting_picker.cjs
+          node tools/test_browser_analysis.cjs
+      - name: Install test-only browser harness
+        run: python -m pip install --disable-pip-version-check playwright==1.55.0
+      - name: Synthetic-only browser interface, export and resume acceptance
+        run: CHROME_BINARY="$(command -v google-chrome)" python tools/test_quick_reader_adjudication_ui.py benchmark-browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: quick-reader-adjudication-synthetic-browser
+          path: benchmark-browser/
+          retention-days: 14

@@ -73,3 +73,7 @@ and do not treat different policy objects as contradictory government stances.
 Agenda cues are transcript-procedural introductions, not verified agenda adoption.
 The exact October 1–4 development source may be audited privately; never open
 the 37 reserved October 5–6 transcripts without separate authorization.
+
+## Expanded quick-reader source-bound benchmark
+
+The initial seven-meeting development QA is complemented by a 13-meeting review. Reuse `research/reference_tests/quick_reader_benchmark.cjs` with exact source hashes and four distinct metrics: individual-country attribution, object-specific expressed stance, specific contextual anchors, and sampled abstention. Maintain source records and assistant-provisional choices separately from future owner-confirmed annotations; never label assistant review as human gold. No general accuracy or recall claims follow from these purposive same-development checks. Do not publish original text, private annotation ledgers, or source-bearing review HTML in this public repository. Retain the 37 unopened held-out transcripts and the original sealed evaluation protocol.
