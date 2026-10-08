@@ -126,6 +126,17 @@ async function run(frame,settings,{saved=null,group_units=['meeting','affiliatio
           unassigned:child.assignments?.filter(v=>v===0).length??0,
           reason:child.reason,convergence:child.convergence,warnings:child.warnings,
           comparison:child.status==='fitted'?M.evaluateAssignments(sample.indices.map(i=>main.assignments[i]),child.assignments):null};
+        if(main.memberships&&child.memberships&&child.status==='fitted'){
+          // Reuse the existing GMM responsibility alignment; component ordinals are arbitrary.
+          const aligned=require('../../site/gmm-core.js').align(sample.indices.map(i=>main.memberships[i]),child.memberships);
+          meta.soft_membership_total_variation=aligned.mean_total_variation;
+        }
+        if(main.strengths&&child.strengths&&child.status==='fitted'){
+          const paired=sample.indices.flatMap((index,j)=>main.assignments[index]>0&&child.assignments[j]>0?
+            [Math.abs(main.strengths[index]-child.strengths[j])]:[]);
+          meta.assigned_strength_absolute_change=paired.length?paired.reduce((sum,v)=>sum+v,0)/paired.length:null;
+          meta.assigned_strength_pairs=paired.length;
+        }
         if(child.status!=='fitted')failureLedger.push({model_id:spec.id,attempt:sample.attempt,
           status:child.status==='failed'?'failed':'skipped',reason:unit+': '+child.reason,seed:meta.seed,source_group:unit});
         runs.push(meta);
@@ -141,6 +152,8 @@ async function run(frame,settings,{saved=null,group_units=['meeting','affiliatio
         ami:M.summarize(used.map(r=>r.comparison.adjusted_mutual_information)),
         pairwise_consistency:M.summarize(used.map(r=>r.comparison.pairwise_assignment_consistency)),
         assignment_status_agreement:M.summarize(used.map(r=>r.comparison.assignment_status_agreement)),
+        soft_membership_total_variation:M.summarize(used.map(r=>r.soft_membership_total_variation)),
+        density_assigned_strength_change:M.summarize(used.map(r=>r.assigned_strength_absolute_change)),
         assessable_ari:used.filter(r=>r.comparison.ari!==null).length,
         not_assessable_ari:used.filter(r=>r.comparison.ari===null).length,
         runs,reason:plan.reason??null};
