@@ -23,7 +23,7 @@ jobs:
       OMP_NUM_THREADS: "1"
       MKL_NUM_THREADS: "1"
       W5_SHA: "2d78dd8b3bba60b61094179a8dea84f78f1f45ed"
-      W6_SHA: "6a404992f34996b4e284a3bdac1f5c3496432478"
+      W6_SHA: "b86c90175e8c2f184062b02db996893319b3339c"
     steps:
       - name: Checkout merged W3/W1 and coordinator-only code
         uses: actions/checkout@v4
@@ -41,7 +41,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: LystadJS/UNGA81-Transcript-Agent
-          ref: 6a404992f34996b4e284a3bdac1f5c3496432478
+          ref: b86c90175e8c2f184062b02db996893319b3339c
           path: .coordinator-input/w6
           persist-credentials: false
       - uses: actions/setup-node@v4
