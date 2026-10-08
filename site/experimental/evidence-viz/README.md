@@ -110,10 +110,11 @@ It saves two full screenshots and eight per-chart PNGs to
 previews/browser/ by default. Source fixtures and offline exports are
 deterministic and do not use a random seed.
 
-Checked-in [previews](previews/) currently include the four SVG renders
-from the synthetic fixture. SVG renders are *not* evidence that responsive
-browser screenshots passed. Report browser tests as passed **only** when the
-Chromium script runs and its output is inspected.
+Checked-in [previews](previews/) include four directly rendered SVG charts
+and two synthesized desktop/mobile composite SVG layouts. These are
+**illustrative vectors, not Chromium screenshots or browser-validated views**.
+Actual responsive PNG screenshots are not yet captured. Report browser tests
+as passed **only** when the Chromium script runs and its output is inspected.
 
 ## Upstream and integration dependencies
 
