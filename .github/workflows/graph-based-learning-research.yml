@@ -67,6 +67,16 @@ jobs:
           else
             echo "NOT_RUN: W1 unmerged/not installed in checkout; intentional acceptance gate."
           fi
+      - name: Verify actual merged W1–W3 native API interoperability (PR merged tree)
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f research/validation_framework/runner.cjs
+          test -f research/validation_framework/interchange.cjs
+          test -f research/validation_framework/metrics.cjs
+          python -m unittest discover -s research/graph_methods/tests -p 'test_w1_interop.py' -v
+          echo 'PASS: actual W1 source-aware JS metrics and W3 Python source-matched bridge, synthetic only.'
       - name: Reproduce a text-free benchmark
         run: python -m research.graph_methods.reproduce --fixture blobs --seed 81 --output "$RUNNER_TEMP/graph-benchmark"
       - name: Verify interchange schema and declared ledger
