@@ -89,3 +89,28 @@ nuisance-preserving negative controls beyond engineering fixtures.
 References: von Luxburg (2007), *A Tutorial on Spectral Clustering*;
 Coifman and Lafon (2006), *Diffusion Maps*; scipy.linalg.eigh;
 scikit-learn KMeans/trustworthiness; docs/parallel-work/INTERCHANGE_V1.md.
+
+
+## W1 integration readiness (not activated)
+
+W1 source-aware validation resides in draft PR #19 at
+research/validation_framework/** and is not merged or coordinator-accepted.
+The isolated Python W3 bridge (w1_bridge.py) has a strict acceptance gate:
+without actual installed W1 Node validators, coordinator-pinned merged code
+SHA, and matching versioned W1 interchange, it refuses the request. It never
+imports unmerged W1 code, quietly computes a replacement ARI/AMI, or changes
+a failed graph partition. The accepted bridge will call W1's native Node
+evaluateAssignments and validateRelational APIs after checking exact source,
+selection, meeting/parent/offset, missingness and pinned representation identity.
+
+The private CLI adds --w1-envelope /private/w1-evidence.json,
+--w1-approval /private/w1-approval.json, and --w1-model-id ID.
+All three are required together, only on authorized development inputs;
+private results are stored outside the Git checkout in an owner-only directory.
+Synthetic CI exercises the **withholding/identity checks** and explicitly logs
+W1's full integration as NOT_RUN until accepted and installed.
+
+For the precise approval-record schema, coordinator decision matrix,
+remaining scientific limitations, and merge checklist, see
+COORDINATOR_REVIEW.md. No current CI result constitutes W1 integration
+acceptance or a policy/diplomatic finding.
