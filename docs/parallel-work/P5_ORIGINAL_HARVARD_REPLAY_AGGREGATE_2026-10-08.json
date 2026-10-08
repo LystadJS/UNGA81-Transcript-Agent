@@ -1,0 +1,88 @@
+{
+  "schema": "un.w4.p5.full_original_harvard.v14_source_validation.public_aggregate.v1",
+  "audit_date": "2026-10-08",
+  "harvard_archive": {
+    "exact_harvard_v14_archive_sha256": "55077dccf7242cdf544aa95c4797c68e443b0c37344c9c112a2e2392ddfcf8e5",
+    "exact_harvard_v14_archive_md5": "81bdd06086d9e7c4e67026acb7325df3",
+    "original_archive_bytes": 71280312,
+    "country_speech_files_2016_2025": 1926,
+    "country_speech_files_by_year_2016_2025": {
+      "2016": 193,
+      "2017": 195,
+      "2018": 195,
+      "2019": 194,
+      "2020": 192,
+      "2021": 193,
+      "2022": 192,
+      "2023": 191,
+      "2024": 191,
+      "2025": 190
+    }
+  },
+  "P2_full_speech_comparison": {
+    "original_PV_pdf_sha256_rechecked": 63,
+    "original_PV_full_text_sha256_rechecked": 63,
+    "independently_recomputed_original_Harvard_to_PV_pairs": 985,
+    "recomputed_strong_count": 840,
+    "recomputed_strong_by_year": {
+      "2016": 82,
+      "2017": 92,
+      "2018": 115,
+      "2019": 120,
+      "2020": 107,
+      "2021": 105,
+      "2022": 128,
+      "2023": 91
+    },
+    "recomputed_source_status_counts": {
+      "strong_full_speech_content_correspondence": 840,
+      "partial_or_variant_transcription": 94,
+      "insufficient_full_speech_text_overlap": 50,
+      "no_corpus_text_for_comparison": 1
+    },
+    "source_verification_ledger_missing_Harvard_speeches": 1,
+    "original_Harvard_raw_country_speech_SHA256_discrepancies": 0,
+    "full_speech_7gram_coverage_and_decile_discrepancies": 0,
+    "full_speech_status_discrepancies": 0
+  },
+  "wrong_meeting_negative_controls": {
+    "wrong_original_same_year_controls": 96,
+    "prior_correct_score_and_wrong_score_exact_replays": 96,
+    "correspondence_score_replay_discrepancies": 0,
+    "wrong_original_strong_false_matches": 0,
+    "maximum_wrong_original_overlap": 0.02793
+  },
+  "restricted_W1_historical_source_preframe": {
+    "complete_country_year_slots_retained": 792,
+    "source_corroborated_cells": 523,
+    "unverified_cells_not_imputed_zero": 269,
+    "verified_original_PV_meeting_source_groups": 55,
+    "index_date_authority": 520,
+    "original_PV_frontpage_meeting_date_authority": 3,
+    "original_Harvard_523_member_SHA256_checked": 523,
+    "original_Harvard_PV_full_speech_7gram_match_recomputed": 523,
+    "source_only_inventories": {
+      "original_P4_input_SHA256": "59460db12f700af9bfe03a223fe30d84bccdfbf4a5ba0383707a153743750347",
+      "private_P5_792_inventory_SHA256": "a25aadb6a71d5de08821da114fc2222afcee1f83d50cb8155893077abf73f057",
+      "private_original_523_member_PV_proof_rows": 523
+    }
+  },
+  "P2_selection_sha256_recomputed": "3ebec834635e4d493e8035aeede3321efb951aa22f2f61d81f6ac7a0f65a4c89",
+  "deterministic_replay": {
+    "two_full_985_pair_replays_match": true,
+    "six_private_provenance_files_byte_identical": true
+  },
+  "expanded_W1_repository_scope": {
+    "original_PVs_reported_on_current_main": 105,
+    "source_corroborated_cells_reported_on_current_main": 790,
+    "additional_50_original_PV_PDFs_private_bytes_available_in_this_run": false,
+    "expanded_105_source_adapter_independently_replayed_this_run": false
+  },
+  "heldout_37_reserved_meetings_opened": 0,
+  "publication_eligible": false,
+  "national_alignment_or_causal_inference_authorized": false,
+  "privacy": {
+    "private_rows_committed_to_GitHub": false,
+    "original_speech_PDFs_or_text_placed_in_public_artifact": false
+  }
+}
