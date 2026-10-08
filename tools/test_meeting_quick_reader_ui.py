@@ -43,15 +43,15 @@ try:
   page.route('https://transcripts.un.org/**',un)
   page.route('**/countries.json',lambda route: route.fulfill(status=200,content_type='application/json',body=json.dumps(countries)))
   page.goto('http://127.0.0.1:%s/index.html#analyze'%server.server_address[1])
-  page.wait_for_function('document.querySelector("#region").options.length >= 3')
+  page.locator('#region option').nth(2).wait_for(state='attached', timeout=15000)
   page.locator('#meetingSelectionMode').select_option('single')
   page.locator('#singleMeetingDate').fill(date)
   page.locator('#findMeetings').click()
-  page.wait_for_function('document.querySelector("#individualMeeting").options.length === 2')
+  page.locator('#individualMeeting option').nth(1).wait_for(state='attached', timeout=15000)
   page.locator('#individualMeeting').select_option(slug)
   page.locator('#topic').fill('climate')
   page.locator('#runAnalysis').click()
-  page.wait_for_function('!document.querySelector("#analysisOutput").hidden || document.querySelector("#analysisStatus").textContent.startsWith("Could not")',timeout=45000)
+  page.locator('#analysisOutput').wait_for(state='visible', timeout=45000)
   assert page.locator('#analysisOutput').is_visible(),page.locator('#analysisStatus').inner_text()
   assert page.locator('.meeting-quick-read').count()==1
   assert page.locator('.meeting-quick-read').inner_text().find('Country-linked expressions')>=0
