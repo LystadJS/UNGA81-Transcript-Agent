@@ -148,6 +148,9 @@ class SyntheticLongitudinalTests(unittest.TestCase):
         self.assertFalse(env['publication_eligible'])
         self.assertEqual(env['coverage']['eligible'], len(p['observations']))
         self.assertEqual(env['coverage']['models'][0]['attempted_fits'], 0)
+        self.assertEqual(env['models'][0]['fit_version'], 'fictional-imported-partition-p0')
+        self.assertNotEqual(env['models'][0]['fit_version'], 'fictional-refit-p0')
+        self.assertEqual(env['models'][0]['parameters_sha256'], sha('partition-parameters-p0'))
         for m in env['coverage']['models']:
             self.assertEqual(m['assigned'] + m['unassigned'] + m['not_fitted'], m['eligible'])
         schema_file = ROOT / 'docs/parallel-work/interchange-v1.schema.json'
@@ -166,6 +169,60 @@ class SyntheticLongitudinalTests(unittest.TestCase):
         p['observations'][0]['text_sha256'] = sha('tampered')
         with self.assertRaises(ContractError):
             to_interchange_v1(p, z)
+
+    def test_chronological_order_independent_of_input_list_order(self):
+        p = self.panel(roster=False)
+        p['periods'].reverse()
+        z = compare(p, 'p0', 'p1', anchor_ids=ANCHORS, bootstrap_reps=50)
+        self.assertEqual((z['before'], z['after']), ('p0', 'p1'))
+        with self.assertRaisesRegex(ContractError, 'forward in time'):
+            compare(p, 'p1', 'p0', anchor_ids=ANCHORS, bootstrap_reps=50)
+
+    def test_missing_fit_is_not_noise_and_cluster_provenance_is_consistent(self):
+        p = self.panel(roster=False)
+        for r in p['observations']:
+            if r['period'] == 'p1' and r['actor_id'] == 'A0':
+                r['cluster'] = None
+        z = cluster_correspondence(p['observations'], 'p0', 'p1')
+        self.assertEqual(z['not_fitted_after'], 1)
+        self.assertEqual(z['unassigned_after'], 0)
+        for r in p['observations']:
+            if r['period'] == 'p1' and r['actor_id'] == 'T1':
+                r['cluster'] = 0
+        z = cluster_correspondence(p['observations'], 'p0', 'p1')
+        self.assertEqual(z['not_fitted_after'], 1)
+        self.assertEqual(z['unassigned_after'], 1)
+        p = self.panel()
+        p['observations'][0]['cluster_fit_id'] = 'unrelated-fit'
+        with self.assertRaisesRegex(ContractError, 'Incompatible imported clustering fits'):
+            validate_panel(p)
+        p = self.panel()
+        p['observations'][0]['cluster_training_selection_sha256'] = None
+        with self.assertRaisesRegex(ContractError, 'original fit/parameter/selection'):
+            validate_panel(p)
+
+    def test_verified_speaker_is_not_verified_speech(self):
+        p = self.panel(roster=False)
+        p['split'] = 'development'
+        for r in p['observations']:
+            r['source_hash_basis'] = 'raw_response_bytes'
+            if r['actor_id'] == 'A0':
+                r['actor_kind'] = 'verified_speaker'
+                r['speaker_id'] = 'fictional-person-A0'
+        z = compare(p, 'p0', 'p1', anchor_ids=ANCHORS, bootstrap_reps=50)
+        original = {'source_schema': 'un.passage-corpus.v1',
+            'source_engine': 'fictional-read-only-upstream', 'source_hash_basis': 'raw_response_bytes',
+            'source_sha256': sha('fictional-source-bytes'), 'selection_sha256': sha('fictional-selection'),
+            'frame_sha256': None, 'corpus_sha256': None, 'review_sha256': None,
+            'missing_reason': None}
+        env = to_interchange_v1(p, z, upstream=original)
+        self.assertTrue(all(r['speech_id'] is None for r in env['observations']))
+        wrong_basis = dict(original, source_hash_basis='utf8_response_text')
+        with self.assertRaisesRegex(ContractError, 'hash basis'):
+            to_interchange_v1(p, z, upstream=wrong_basis)
+        p['observations'][0]['speech_id'] = 'fictional-claimed-speech'
+        with self.assertRaisesRegex(ContractError, 'unconfirmed speech'):
+            validate_panel(p)
 
     def test_development_export_requires_explicit_source_ledger(self):
         p = self.panel(roster=False)
