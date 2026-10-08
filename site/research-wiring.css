@@ -1,0 +1,74 @@
+/* Scoped research hub; uses local fonts and no external resources. */
+:root {
+  --res-navy: #062135; --res-blue: #234e78; --res-gold:#a88750;
+  --res-ink:#182c43; --res-muted:#536475; --res-line:#d5dee6;
+  --res-wash:#f5f7f9;
+}
+* { box-sizing:border-box }
+body.research-shell { margin:0; color:var(--res-ink); background:var(--res-wash);
+  font:15px/1.6 Arial,Helvetica,sans-serif; }
+.research-shell a { color:var(--res-blue); text-underline-offset:3px }
+.research-shell :is(a,button,input,summary):focus-visible {
+  outline:3px solid var(--res-gold); outline-offset:3px }
+.research-skip { position:absolute; left:14px; top:-110px;
+  padding:9px 12px; z-index:50; background:#fff }
+.research-skip:focus { top:12px }
+.research-header { background:var(--res-navy); color:#fff;
+  border-bottom:4px solid var(--res-gold); padding:28px 24px }
+.research-header-inner { max-width:1180px; margin:auto; display:flex;
+  align-items:center; gap:20px; }
+.research-mark { display:grid; flex:none; place-items:center; width:64px;height:64px;
+  border:1px solid #91a4b4; color:#e6d3b2;
+  font:normal 24px Georgia,serif }
+.research-eyebrow,.research-kicker,.research-index { text-transform:uppercase;
+  letter-spacing:.12em; font-size:11px; font-weight:700 }
+.research-eyebrow { color:#d4e0eb; margin:0 0 5px }
+.research-header h1 { margin:0; font:normal 32px/1.2 Georgia,serif; color:#e6d3b2 }
+.research-header p:last-child { margin:8px 0 0; color:#e0e7ef }
+.research-nav { display:flex; flex-wrap:wrap; column-gap:26px; row-gap:8px;
+  padding:12px max(24px,calc((100% - 1180px)/2)); background:#fff;
+  border-bottom:1px solid var(--res-line); font-size:13px }
+.research-main { max-width:1180px; margin:auto; padding:28px 24px 60px }
+.research-intro { margin:3px 0 24px }
+.research-intro h2 { font:normal 28px/1.23 Georgia,serif;
+  color:var(--res-navy); margin:5px 0 11px }
+.research-intro p { max-width:93ch; margin:9px 0 }
+.research-kicker { color:var(--res-blue) }
+.research-hold { display:block; border-left:3px solid var(--res-gold);
+  background:#fff8eb; padding:12px 15px; margin:15px 0; color:#654d2b }
+.research-panel { background:#fff; border:1px solid var(--res-line);
+  padding:24px 26px; margin-bottom:22px; box-shadow:0 4px 15px rgba(6,33,53,.03) }
+.research-panel h2 { font:normal 26px/1.2 Georgia,serif; color:var(--res-navy);
+  margin:6px 0 12px }
+.research-panel p { max-width:100ch }
+.research-index { color:var(--res-blue) }
+.research-field-label { display:block; font-weight:bold; margin-top:16px }
+.research-input-row { display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin:8px 0 }
+.research-input-row input { max-width:100%; border:1px solid var(--res-line);
+  padding:10px; min-height:44px; flex:1 1 340px }
+.research-input-row button { min-height:44px; border:1px solid var(--res-blue);
+  background:var(--res-blue); color:#fff; font:600 13px Arial,Helvetica,sans-serif;
+  padding:10px 15px; cursor:pointer }
+.research-input-row button:disabled { opacity:.55; cursor:not-allowed }
+.research-help { font-size:13px; color:var(--res-muted); overflow-wrap:anywhere }
+#research-status { border-left:3px solid var(--res-blue); padding:9px 12px;
+  background:#f0f5f8; margin:18px 0 11px; font-size:13px }
+#research-status.research-error { border-color:#944b42; background:#fff5f4; color:#7a302c }
+#research-graph .ev-panel { box-shadow:none; padding:16px 12px }
+.research-embed { margin-top:15px }
+.research-embed summary { padding:10px; cursor:pointer; background:#f0f4f7;
+  color:var(--res-blue); font-weight:bold; font-size:13px }
+.research-embed iframe { width:100%; border:1px solid var(--res-line);
+  min-height:740px; margin:14px 0 0; background:#fff }
+.research-footer { text-align:center; padding:28px 18px;
+  border-top:1px solid var(--res-line); font-size:12px; color:var(--res-muted) }
+@media(max-width:600px) {
+  .research-header { padding:23px 17px }
+  .research-header-inner { gap:12px }
+  .research-header h1 { font-size:26px }
+  .research-mark { width:48px;height:48px;font-size:19px }
+  .research-main { padding:21px 12px 36px }
+  .research-panel { padding:18px 14px }
+  .research-panel h2 { font-size:24px }
+  .research-embed iframe { min-height:680px }
+}
