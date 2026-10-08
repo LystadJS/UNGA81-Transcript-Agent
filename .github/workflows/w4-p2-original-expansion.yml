@@ -1,0 +1,57 @@
+name: W4 P2 historical original-PV expansion source audit
+on:
+  push:
+    branches: ['coord/w4-p2-w1-auth-and-calibration']
+    paths:
+      - 'research/source_acquisition/general_debate/p2_expansion_38_meetings.txt'
+      - 'research/source_acquisition/general_debate/p2_expansion_probe.py'
+      - 'research/source_acquisition/general_debate/p2_w1_authenticated.py'
+      - 'research/source_acquisition/general_debate/test_p2_w1_authenticated.py'
+      - '.github/workflows/w4-p2-original-expansion.yml'
+  pull_request:
+    paths:
+      - 'research/source_acquisition/general_debate/p2_expansion_38_meetings.txt'
+      - 'research/source_acquisition/general_debate/p2_expansion_probe.py'
+      - 'research/source_acquisition/general_debate/p2_w1_authenticated.py'
+      - 'research/source_acquisition/general_debate/test_p2_w1_authenticated.py'
+      - '.github/workflows/w4-p2-original-expansion.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  official-original-aggregate-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned PDF extractor
+        run: python -m pip install pymupdf==1.26.7
+      - name: Verify original-PV to W1 authenticated adapter on synthetic negative cases
+        run: python -m unittest discover -s research/source_acquisition/general_debate -p 'test_p2_w1_authenticated.py' -v
+      - name: Read public official source bytes into memory; aggregate evidence only
+        run: python research/source_acquisition/general_debate/p2_expansion_probe.py
+      - name: Ensure no source rows or full texts in uploaded receipt
+        run: |
+          python - <<'PY'
+          import os,json,pathlib
+          p=pathlib.Path(os.environ['RUNNER_TEMP'])/'w4_p2_expansion_aggregate.json'
+          d=json.loads(p.read_text())
+          assert d['totals']['requested']==38
+          assert d['raw_PDF_or_extracted_text_exported'] is False
+          assert d['heldout_2026_meetings_accessed'] is False
+          assert d['new_validated_country_year_observations']==0
+          assert all(len(str(x['year']))==4 for x in d['yearly'])
+          assert 'source_linked_results' not in d
+          print('PASS: aggregate-only original-PV acquisition receipt')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: w4-p2-expansion-aggregate-only
+          path: ${{ runner.temp }}/w4_p2_expansion_aggregate.json
+          if-no-files-found: error
+          retention-days: 14

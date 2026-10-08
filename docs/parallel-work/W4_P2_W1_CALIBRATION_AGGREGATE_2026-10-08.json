@@ -1,0 +1,137 @@
+{
+  "schema": "un.w4.p2_w1_source_auth_calibration.aggregate.v1",
+  "audit_date": "2026-10-08",
+  "P2_authenticated": {
+    "original_PV_PDF_SHA256_checks_passed": 63,
+    "original_Harvard_speech_byte_sha256_passed": 523,
+    "recorded_country_affiliations": 99,
+    "source_meetings_in_pilot": 55,
+    "unverified_country_year_cells": 269,
+    "individual_people_authenticated": 0,
+    "legacy_v1_accepted": false
+  },
+  "W1_execution_local_only": {
+    "P2_source_schema": "un.p2.original-pv-reconciled.v1",
+    "temporary_allowlist_only": true,
+    "full_fits": 2,
+    "meeting_group_refits_completed": 4,
+    "affiliation_resampling_skips": 2,
+    "method": "LSA6 kmeans5 vs Ward5",
+    "ari": 0.475553900619864,
+    "ami": 0.5381238362620577,
+    "production_source_schema_accepted": false
+  },
+  "original_PV_coverage_expansion": {
+    "selected_new_meetings": 38,
+    "yearly_new_meetings": [
+      5,
+      5,
+      5,
+      4,
+      5,
+      5,
+      4,
+      5
+    ],
+    "PDF_bytes_downloaded_and_sha256_hashed": 38,
+    "extractable_full_PDF_texts": 38,
+    "failures": 0,
+    "original_2016_2023_meetings_checked_for_integrity_total": 93,
+    "new_Harvard_text_matches_verified": 0,
+    "new_original_bytes_archived_privately": 0,
+    "source_selection_bias_reduction_demonstrated": false,
+    "actions_run": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37845226174"
+  },
+  "simulation": {
+    "source_attendance_mask": {
+      "observed_speeches": 523,
+      "actors": 99,
+      "years": 8,
+      "meetings": 55
+    },
+    "true_shifts": [
+      0,
+      0.1
+    ],
+    "year_shock_sd": [
+      0.15,
+      0.25
+    ],
+    "panels_per_scenario": [
+      400,
+      400,
+      200,
+      200
+    ],
+    "total_simulated_panels_each_method": 1200,
+    "draws_per_panel": 199,
+    "standard_bootstrap": {
+      "interval_delivery_rate": {
+        "independent_rows": 0,
+        "whole_meeting": 0,
+        "whole_year": 0
+      },
+      "fixed_population_valid_draw_fraction_range": {
+        "independent_rows": [
+          0,
+          0
+        ],
+        "whole_meeting": [
+          0.000075,
+          0.000176
+        ],
+        "whole_year": [
+          0.46246,
+          0.46709
+        ]
+      },
+      "coverage_undefined_due_no_eligible_intervals": true
+    },
+    "positive_cluster_weights": {
+      "full_population_interval_delivery_rate": 1,
+      "coverage_by_scenario": [
+        {
+          "year_sigma": 0.15,
+          "truth": 0,
+          "year_weight": 0.6325,
+          "hierarchical_year_meeting_weight": 0.59
+        },
+        {
+          "year_sigma": 0.15,
+          "truth": 0.1,
+          "year_weight": 0.675,
+          "hierarchical_year_meeting_weight": 0.64
+        },
+        {
+          "year_sigma": 0.25,
+          "truth": 0,
+          "year_weight": 0.62,
+          "hierarchical_year_meeting_weight": 0.585
+        },
+        {
+          "year_sigma": 0.25,
+          "truth": 0.1,
+          "year_weight": 0.66,
+          "hierarchical_year_meeting_weight": 0.635
+        }
+      ],
+      "nominal_coverage": 0.95,
+      "preregistered_coverage_min": 0.92,
+      "calibration_pass": false
+    }
+  },
+  "release": {
+    "private_source_authentication": "PASS",
+    "production_P2_to_W1_interchange": "WITHHELD",
+    "additional_PV_speech_matches": "NOT_RUN",
+    "calibrated_inference": "FAIL",
+    "real_confidence_intervals": "WITHHELD",
+    "publication_eligible": false
+  },
+  "privacy": {
+    "transcript_text_published": false,
+    "private_country_level_rows_published": false,
+    "original_PDFs_published": false,
+    "reserved_37_meetings_accessed": 0
+  }
+}
