@@ -34,11 +34,13 @@ def check(browser,url,out,name):
     sample=out/('synthetic-'+name+'.json');sample.write_text(json.dumps(fixture),encoding='utf-8')
     page.locator('#research-file').set_input_files(sample)
     page.locator('#research-open').click()
+    page.locator('#research-summary:not([hidden])').wait_for(timeout=12000)
     assert page.locator('.ev-panel').count()==4
     fixture['envelope']['producer']['fixture_kind']='private_development'
     sample.write_text(json.dumps(fixture),encoding='utf-8')
     page.locator('#research-file').set_input_files(sample)
     page.locator('#research-open').click()
+    page.locator('#research-status.research-error').wait_for(timeout=12000)
     assert page.locator('.ev-panel').count()==0
     assert 'Evidence rejected' in page.locator('#research-status').inner_text()
     page.locator('#research-example').click()
