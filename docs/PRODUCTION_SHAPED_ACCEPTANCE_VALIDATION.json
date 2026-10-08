@@ -1,0 +1,153 @@
+{
+  "schema": "un.production-shape-readiness-validation.v1",
+  "status": "PASS_ENGINEERING_WITH_SCIENTIFIC_HOLD",
+  "historical_lock_sha256": "2c96f479fae0eded4b226882e05462b7f800c32fa066a6bb26df043b5d278039",
+  "holdout": {
+    "reserved_meetings": 37,
+    "requests": 0,
+    "contents_opened": 0,
+    "scored": 0,
+    "authorization": false
+  },
+  "full_synthetic_pipeline": {
+    "source_rows": 37,
+    "source_statuses": {
+      "collected": 34,
+      "inventory_unavailable": 2,
+      "failed": 1
+    },
+    "source_parents": 442,
+    "passages": 412,
+    "strict_passages": 220,
+    "strict_parents": 216,
+    "strict_meetings": 27,
+    "wordpieces": 29621,
+    "token_chunks": 220,
+    "frozen_centroid_predictions": 220,
+    "legacy_dryrun_decision": "INCONCLUSIVE_SYNTHETIC",
+    "actual_raw384_simulated_gate": "INCONCLUSIVE_SYNTHETIC",
+    "raw384_simulated_metric": 0.4604938271604938,
+    "raw384_simulated_null_mean": 0.07381671795252041,
+    "no_refit": true,
+    "same_run_reproduced_byte_identically": true,
+    "real_holdout_performance": null
+  },
+  "development_nuisance_sensitivity": {
+    "parent_rows": 523,
+    "genre_role_controls": {
+      "cross_meeting": {
+        "queries": 523,
+        "total": 523,
+        "eligible_pair_count": 7845,
+        "min_candidate_pool": 434,
+        "lexical_semantic_overlap": 0.3940089228808158,
+        "lexical_masked_semantic_overlap": 0.4020395156150415,
+        "source_genre_share": 0.6419375398342894,
+        "source_role_share": 0.6710006373486297
+      },
+      "exclude_shared_genre": {
+        "queries": 523,
+        "total": 523,
+        "eligible_pair_count": 7845,
+        "min_candidate_pool": 185,
+        "lexical_semantic_overlap": 0.3464627151051625,
+        "lexical_masked_semantic_overlap": 0.3762906309751434,
+        "source_genre_share": 0,
+        "source_role_share": 0.5937539834289356
+      },
+      "exclude_shared_role": {
+        "queries": 523,
+        "total": 523,
+        "eligible_pair_count": 7845,
+        "min_candidate_pool": 105,
+        "lexical_semantic_overlap": 0.4286806883365201,
+        "lexical_masked_semantic_overlap": 0.4049713193116635,
+        "source_genre_share": 0.49318036966220524,
+        "source_role_share": 0
+      },
+      "exclude_shared_genre_role": {
+        "queries": 326,
+        "total": 523,
+        "eligible_pair_count": 4890,
+        "min_candidate_pool": 12,
+        "lexical_semantic_overlap": 0.39468302658486715,
+        "lexical_masked_semantic_overlap": 0.3820040899795501,
+        "source_genre_share": 0,
+        "source_role_share": 0
+      }
+    },
+    "speaker_proxy": {
+      "proxy_type": "recorded affiliation+recorded function; not verified speaker identity",
+      "non_missing_source_parents": 517,
+      "repeated_across_meetings_proxy_values": 91,
+      "same_proxy_neighbor_share_when_both_recorded": 0.0458537845517954,
+      "neighbor_pairs_with_both_recorded": 7742,
+      "confirmed_person_identity_count": null
+    },
+    "literal_formulas": {
+      "thank you": 486,
+      "technical assistance": 61,
+      "international cooperation": 67,
+      "distinguished": 57,
+      "human rights": 346,
+      "on behalf of": 78,
+      "members of the council": 4,
+      "we call on": 56
+    },
+    "mask_v2": {
+      "changed_passages": 1238,
+      "alias_replacements": 3292,
+      "reused_from_verified_v1_passages": 1607,
+      "reencoded_changed_passages": 34,
+      "full_passage_coverage_count": 1641,
+      "reencoded_wordpieces": 5291,
+      "reencoded_chunks": 34,
+      "truncated_wordpieces": 0,
+      "same_country_neighbor_share_original": 0.09111807732497387,
+      "same_country_neighbor_share_v1": 0.03761755485893417,
+      "same_country_neighbor_share_v2": 0.03782654127481714,
+      "same_source_passage_identifiers": true,
+      "no_refitting": true,
+      "human_approval_created": false
+    },
+    "mask_v2_policy": {
+      "version": "un.country-alias-masking-sensitivity.v2",
+      "historical_v1_unchanged": true,
+      "v1_alias_count": 687,
+      "v2_alias_count": 685,
+      "excluded_aliases": [
+        "island",
+        "thai"
+      ],
+      "excluded_alias_occurrences_in_strict_passages": {
+        "island": 32,
+        "thai": 6
+      },
+      "purpose": "Remove generic island and ambiguous demonym Thai from the registry-derived country-name mask. No claim of comprehensive entity removal.",
+      "original_source_text_edited": false
+    }
+  },
+  "validation": {
+    "new_synthetic_cases": 20,
+    "new_failed": 0,
+    "previous_reference_tests": 31,
+    "all_reference_tests": 51,
+    "machine_review_regression_tests": 57,
+    "semantic_regression_tests": 47,
+    "semantic_skipped": 7
+  },
+  "new_source_hashes": {
+    "synthetic_un_fixture.cjs": "70097d7c444f7d35ce09f2cc17fa88d26ed142ad2c325681fd2b9b405d9ef402",
+    "production_synthetic.py": "5ec96c23baa61dcaa763a6fb68c1bc742ec8c9590c786b53ebeae36a207fed3b",
+    "nuisance_stress.py": "99886bae6e9038d555d7b0c807ab5f4718891beb9f64334a70e332b97e7b63c6",
+    "test_production_shaped.py": "5a15a528b61fc5b15d7cc0c0b4216ad14225aa603c78dd90153c660634b334a2"
+  },
+  "frozen_files_mutated": false,
+  "limitations": [
+    "Real collection adapter not tested/authorized",
+    "Historical synthetic evaluator assumed 64D/64D; actual frozen source metric uses 64D/384D",
+    "No unique speaker IDs or substantively calibrated political null",
+    "Genre and role conditioning changes neighbor-query denominators",
+    "Only synthetic fabricated JSON and saved development text were examined"
+  ]
+}
