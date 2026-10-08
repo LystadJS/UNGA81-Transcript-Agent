@@ -11,6 +11,8 @@ const os=require('node:os');
 const path=require('node:path');
 const http=require('node:http');
 const {setTimeout:delay}=require('node:timers/promises');
+const UNClusters=require('../../../cluster-core.js');
+const UNLSA=require('../../../lsa-core.js');
 
 const SITE=path.resolve(__dirname,'../../../');
 const PREFIX='/parallel/w05-browser/experimental/method-lab/';
@@ -110,6 +112,25 @@ async function main(){
         !p.request.url.startsWith('about:'))outside.push(p.request.url);
     });
     cdp.on('Runtime.exceptionThrown',p=>exceptions.push(p.exceptionDetails?.text||'Unknown exception'));
+    // Browser Worker and Node use the exact same synthetic vectors. Compare the
+    // retained numerical score matrices, not UMAP's visualization coordinates.
+    const raw=[
+      new Map([['alpha',1],['beta',.4]]),
+      new Map([['alpha',.8],['beta',.3]]),
+      new Map([['gamma',1],['delta',.4]]),
+      new Map([['gamma',.8],['delta',.3]])
+    ];
+    const expected={pca:UNClusters.pca(raw,2).scores,lsa:UNLSA.lsa(raw,2).scores};
+    const browserScores=await cdp.evaluate("(async()=>{const w=new Worker('"+PREFIX+"worker.js');const result=await new Promise((resolve,reject)=>{w.onerror=e=>reject(new Error(e.message));w.onmessage=e=>{if(e.data.type==='result')resolve(e.data);if(e.data.type==='error')reject(new Error(e.data.message));};w.postMessage({id:731,action:'numeric_probe'});});w.terminate();return result.scores;})()");
+    for(const method of ['pca','lsa']){
+      assert.equal(browserScores[method].length,expected[method].length);
+      for(let i=0;i<expected[method].length;i++){
+        assert.equal(browserScores[method][i].length,expected[method][i].length);
+        for(let j=0;j<expected[method][i].length;j++)
+          assert.ok(Math.abs(browserScores[method][i][j]-expected[method][i][j])<1e-7,
+            method+' Node/Chromium score mismatch at '+i+','+j);
+      }
+    }
     const snapshots=[];
     for(const [name,width,height,mobile] of [['desktop',1440,900,false],['mobile',390,844,true]]){
       await cdp.send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:mobile?2:1,mobile});
@@ -134,7 +155,7 @@ async function main(){
     assert.deepEqual(outside,[],'Unexpected external transmission.');
     assert.deepEqual(exceptions,[],'Uncaught browser exceptions.');
     console.log(JSON.stringify({status:'PASS',test:'isolated_method_lab_chromium',snapshots,
-      external_requests:outside.length,exceptions:exceptions.length},null,2));
+      external_requests:outside.length,exceptions:exceptions.length,numeric_parity:['pca','lsa']},null,2));
   } finally {
     cdp?.close();
     child.kill('SIGTERM');
