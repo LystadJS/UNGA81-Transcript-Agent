@@ -1,0 +1,453 @@
+{
+  "schema": "un.parallel-analysis.v1",
+  "contract_version": "1.0.0",
+  "producer": {
+    "workstream_id": "W5",
+    "adapter_version": "0.1.0",
+    "code_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "runtime": "synthetic metadata fixture",
+    "generated_at": "2026-10-08T10:00:00Z",
+    "fixture_kind": "synthetic"
+  },
+  "upstream": {
+    "source_schema": "synthetic.v1",
+    "source_engine": "synthetic fixture only",
+    "source_hash_basis": "synthetic",
+    "source_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "frame_sha256": null,
+    "corpus_sha256": null,
+    "selection_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "review_sha256": null,
+    "missing_reason": null
+  },
+  "cohort": {
+    "split": "synthetic",
+    "population": "synthetic observations",
+    "unit": "synthetic",
+    "selection_policy": "all synthetic rows",
+    "weighting": "none",
+    "source_group_unit": "synthetic",
+    "duplicate_policy": "retain_and_audit",
+    "total_in_frame": 5,
+    "eligible": 4
+  },
+  "observations": [
+    {
+      "id": "synthetic-1",
+      "text_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "parent_id": null,
+      "parent_text_sha256": null,
+      "meeting_id": "fixture-meeting-1",
+      "speech_id": null,
+      "source_family_id": null,
+      "date": "2026-10-01",
+      "country": null,
+      "source_url": null,
+      "json_pointer": null,
+      "start": null,
+      "end": null,
+      "unit": "synthetic",
+      "review_status": "not_applicable",
+      "exclusion_reasons": [],
+      "source_status": "available",
+      "missing_reason": null
+    },
+    {
+      "id": "synthetic-2",
+      "text_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "parent_id": null,
+      "parent_text_sha256": null,
+      "meeting_id": "fixture-meeting-1",
+      "speech_id": null,
+      "source_family_id": null,
+      "date": "2026-10-01",
+      "country": null,
+      "source_url": null,
+      "json_pointer": null,
+      "start": null,
+      "end": null,
+      "unit": "synthetic",
+      "review_status": "not_applicable",
+      "exclusion_reasons": [],
+      "source_status": "available",
+      "missing_reason": null
+    },
+    {
+      "id": "synthetic-3",
+      "text_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+      "parent_id": null,
+      "parent_text_sha256": null,
+      "meeting_id": "fixture-meeting-2",
+      "speech_id": null,
+      "source_family_id": null,
+      "date": "2026-10-01",
+      "country": null,
+      "source_url": null,
+      "json_pointer": null,
+      "start": null,
+      "end": null,
+      "unit": "synthetic",
+      "review_status": "not_applicable",
+      "exclusion_reasons": [],
+      "source_status": "available",
+      "missing_reason": null
+    },
+    {
+      "id": "synthetic-4",
+      "text_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+      "parent_id": null,
+      "parent_text_sha256": null,
+      "meeting_id": "fixture-meeting-2",
+      "speech_id": null,
+      "source_family_id": null,
+      "date": "2026-10-01",
+      "country": null,
+      "source_url": null,
+      "json_pointer": null,
+      "start": null,
+      "end": null,
+      "unit": "synthetic",
+      "review_status": "not_applicable",
+      "exclusion_reasons": [],
+      "source_status": "available",
+      "missing_reason": null
+    },
+    {
+      "id": "synthetic-5",
+      "text_sha256": null,
+      "parent_id": null,
+      "parent_text_sha256": null,
+      "meeting_id": null,
+      "speech_id": null,
+      "source_family_id": null,
+      "date": "2026-10-01",
+      "country": null,
+      "source_url": null,
+      "json_pointer": null,
+      "start": null,
+      "end": null,
+      "unit": "synthetic",
+      "review_status": "not_applicable",
+      "exclusion_reasons": [
+        "Synthetic unavailable source"
+      ],
+      "source_status": "unavailable",
+      "missing_reason": "Synthetic missing content; not a negative finding"
+    }
+  ],
+  "models": [
+    {
+      "model_id": "fixture-kmeans",
+      "method_family": "partition",
+      "method": "kmeans",
+      "representation_id": "synthetic-tfidf-pca-1",
+      "representation_version": "fixture-1",
+      "fit_version": "fixture-1",
+      "fit_split": "synthetic",
+      "parameters_sha256": "5555555555555555555555555555555555555555555555555555555555555555",
+      "training_selection_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "diagnostic_basis": "illustrative synthetic partition and mixture"
+    },
+    {
+      "model_id": "fixture-pam",
+      "method_family": "partition",
+      "method": "pam",
+      "representation_id": "synthetic-tfidf-pca-1",
+      "representation_version": "fixture-1",
+      "fit_version": "fixture-1",
+      "fit_split": "synthetic",
+      "parameters_sha256": "6666666666666666666666666666666666666666666666666666666666666666",
+      "training_selection_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "diagnostic_basis": "illustrative synthetic partition and mixture"
+    },
+    {
+      "model_id": "fixture-nmf",
+      "method_family": "mixture",
+      "method": "nmf",
+      "representation_id": "synthetic-tfidf-nmf-1",
+      "representation_version": "fixture-1",
+      "fit_version": "fixture-1",
+      "fit_split": "synthetic",
+      "parameters_sha256": "7777777777777777777777777777777777777777777777777777777777777777",
+      "training_selection_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "diagnostic_basis": "illustrative synthetic partition and mixture"
+    }
+  ],
+  "results": [
+    {
+      "model_id": "fixture-kmeans",
+      "observation_id": "synthetic-1",
+      "status": "assigned",
+      "cluster": 1,
+      "membership_kind": "none",
+      "memberships": null,
+      "membership_strength": null,
+      "representation_basis_id": "synthetic-tfidf-pca-1",
+      "reason": null
+    },
+    {
+      "model_id": "fixture-kmeans",
+      "observation_id": "synthetic-2",
+      "status": "assigned",
+      "cluster": 1,
+      "membership_kind": "none",
+      "memberships": null,
+      "membership_strength": null,
+      "representation_basis_id": "synthetic-tfidf-pca-1",
+      "reason": null
+    },
+    {
+      "model_id": "fixture-kmeans",
+      "observation_id": "synthetic-3",
+      "status": "assigned",
+      "cluster": 2,
+      "membership_kind": "none",
+      "memberships": null,
+      "membership_strength": null,
+      "representation_basis_id": "synthetic-tfidf-pca-1",
+      "reason": null
+    },
+    {
+      "model_id": "fixture-kmeans",
+      "observation_id": "synthetic-4",
+      "status": "assigned",
+      "cluster": 2,
+      "membership_kind": "none",
+      "memberships": null,
+      "membership_strength": null,
+      "representation_basis_id": "synthetic-tfidf-pca-1",
+      "reason": null
+    },
+    {
+      "model_id": "fixture-kmeans",
+      "observation_id": "synthetic-5",
+      "status": "excluded",
+      "cluster": null,
+      "membership_kind": "none",
+      "memberships": null,
+      "membership_strength": null,
+      "representation_basis_id": "synthetic-tfidf-pca-1",
+      "reason": "Source unavailable in synthetic fixture"
+    },
+    {
+      "model_id": "fixture-pam",
+      "observation_id": "synthetic-1",
+      "status": "assigned",
+      "cluster": 1,
+      "membership_kind": "none",
+      "memberships": null,
+      "membership_strength": null,
+      "representation_basis_id": "synthetic-tfidf-pca-1",
+      "reason": null
+    },
+    {
+      "model_id": "fixture-pam",
+      "observation_id": "synthetic-2",
+      "status": "assigned",
+      "cluster": 2,
+      "membership_kind": "none",
+      "memberships": null,
+      "membership_strength": null,
+      "representation_basis_id": "synthetic-tfidf-pca-1",
+      "reason": null
+    },
+    {
+      "model_id": "fixture-pam",
+      "observation_id": "synthetic-3",
+      "status": "assigned",
+      "cluster": 2,
+      "membership_kind": "none",
+      "memberships": null,
+      "membership_strength": null,
+      "representation_basis_id": "synthetic-tfidf-pca-1",
+      "reason": null
+    },
+    {
+      "model_id": "fixture-pam",
+      "observation_id": "synthetic-4",
+      "status": "assigned",
+      "cluster": 2,
+      "membership_kind": "none",
+      "memberships": null,
+      "membership_strength": null,
+      "representation_basis_id": "synthetic-tfidf-pca-1",
+      "reason": null
+    },
+    {
+      "model_id": "fixture-pam",
+      "observation_id": "synthetic-5",
+      "status": "excluded",
+      "cluster": null,
+      "membership_kind": "none",
+      "memberships": null,
+      "membership_strength": null,
+      "representation_basis_id": "synthetic-tfidf-pca-1",
+      "reason": "Source unavailable in synthetic fixture"
+    },
+    {
+      "model_id": "fixture-nmf",
+      "observation_id": "synthetic-1",
+      "status": "assigned",
+      "cluster": 1,
+      "membership_kind": "nmf_share",
+      "memberships": [
+        0.8,
+        0.2
+      ],
+      "membership_strength": null,
+      "representation_basis_id": "synthetic-tfidf-nmf-1",
+      "reason": null
+    },
+    {
+      "model_id": "fixture-nmf",
+      "observation_id": "synthetic-2",
+      "status": "assigned",
+      "cluster": 1,
+      "membership_kind": "nmf_share",
+      "memberships": [
+        0.65,
+        0.35
+      ],
+      "membership_strength": null,
+      "representation_basis_id": "synthetic-tfidf-nmf-1",
+      "reason": null
+    },
+    {
+      "model_id": "fixture-nmf",
+      "observation_id": "synthetic-3",
+      "status": "assigned",
+      "cluster": 2,
+      "membership_kind": "nmf_share",
+      "memberships": [
+        0.1,
+        0.9
+      ],
+      "membership_strength": null,
+      "representation_basis_id": "synthetic-tfidf-nmf-1",
+      "reason": null
+    },
+    {
+      "model_id": "fixture-nmf",
+      "observation_id": "synthetic-4",
+      "status": "assigned",
+      "cluster": 2,
+      "membership_kind": "nmf_share",
+      "memberships": [
+        0.4,
+        0.6
+      ],
+      "membership_strength": null,
+      "representation_basis_id": "synthetic-tfidf-nmf-1",
+      "reason": null
+    },
+    {
+      "model_id": "fixture-nmf",
+      "observation_id": "synthetic-5",
+      "status": "excluded",
+      "cluster": null,
+      "membership_kind": "none",
+      "memberships": null,
+      "membership_strength": null,
+      "representation_basis_id": "synthetic-tfidf-nmf-1",
+      "reason": "Source unavailable in synthetic fixture"
+    }
+  ],
+  "coverage": {
+    "inventory_meetings": 2,
+    "observations_total": 5,
+    "eligible": 4,
+    "excluded": 1,
+    "unavailable_sources": 1,
+    "models": [
+      {
+        "model_id": "fixture-kmeans",
+        "eligible": 4,
+        "assigned": 4,
+        "unassigned": 0,
+        "not_fitted": 0,
+        "excluded": 1,
+        "attempted_fits": 1,
+        "successful_fits": 1,
+        "failed_fits": 0
+      },
+      {
+        "model_id": "fixture-pam",
+        "eligible": 4,
+        "assigned": 4,
+        "unassigned": 0,
+        "not_fitted": 0,
+        "excluded": 1,
+        "attempted_fits": 1,
+        "successful_fits": 1,
+        "failed_fits": 0
+      },
+      {
+        "model_id": "fixture-nmf",
+        "eligible": 4,
+        "assigned": 4,
+        "unassigned": 0,
+        "not_fitted": 0,
+        "excluded": 1,
+        "attempted_fits": 1,
+        "successful_fits": 1,
+        "failed_fits": 0
+      }
+    ],
+    "failure_ledger": []
+  },
+  "evidence": [
+    {
+      "observation_id": "synthetic-1",
+      "source_url": null,
+      "json_pointer": null,
+      "start": null,
+      "end": null,
+      "role": "representative",
+      "proposition_id": null,
+      "verification": "synthetic"
+    }
+  ],
+  "diagnostics": [
+    {
+      "model_id": "fixture-kmeans",
+      "name": "synthetic_fit",
+      "value": 1,
+      "denominator": 4,
+      "unit": "observation",
+      "status": "descriptive",
+      "reason": null
+    },
+    {
+      "model_id": "fixture-pam",
+      "name": "synthetic_fit",
+      "value": 1,
+      "denominator": 4,
+      "unit": "observation",
+      "status": "descriptive",
+      "reason": null
+    },
+    {
+      "model_id": "fixture-nmf",
+      "name": "synthetic_fit",
+      "value": 1,
+      "denominator": 4,
+      "unit": "observation",
+      "status": "descriptive",
+      "reason": null
+    }
+  ],
+  "limitations": [
+    {
+      "code": "synthetic_only",
+      "scope": "all",
+      "description": "Artificial IDs and fit labels only. No transcript text, diplomatic attribution, numeric validity or inferential evidence."
+    },
+    {
+      "code": "mixture_not_stance",
+      "scope": "fixture-nmf",
+      "description": "NMF component shares and displayed leading components are lexical, not exclusive government groupings or calibrated probabilities."
+    }
+  ],
+  "publication_eligible": false,
+  "evaluation_role": "engineering_only"
+}

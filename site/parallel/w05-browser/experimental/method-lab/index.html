@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; worker-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Research Method Lab · Experimental</title>
+  <link rel="stylesheet" href="method-lab.css">
+  <script defer src="contracts.js"></script>
+  <script defer src="adapters.js"></script>
+  <script defer src="task-controller.js"></script>
+  <script defer src="method-lab.js"></script>
+</head>
+<body>
+  <header class="masthead">
+    <div class="topline"><span>UN Transcript Research</span><span>W5 · Experimental · Not published</span></div>
+    <h1>Research Method Lab</h1>
+    <p>Inspect source-bound statistical results and run existing local methods without changing the production analysis pipeline.</p>
+  </header>
+  <main>
+    <section class="panel" aria-labelledby="inputs-title">
+      <div class="section-head"><span class="index">01</span><h2 id="inputs-title">Research inputs</h2></div>
+      <p>Import a validated <code>un.parallel-analysis.v1</code> envelope, a method-lab archive, or a source-checked <code>un.latent-saved-run.v1</code> archive. All imported files stay in this browser session.</p>
+      <div class="form-grid">
+        <div class="control"><label for="archive">Validated result / saved run</label><input type="file" id="archive" accept=".json,application/json"><button id="open" type="button">Inspect selected file</button></div>
+        <div class="control"><label for="corpus">Authorized corpus / reviewed bundle</label><input type="file" id="corpus" accept=".json,application/json"><label for="plan">Existing latent-plan JSON</label><input type="file" id="plan" accept=".json,application/json"><button id="execute" type="button">Run existing browser methods</button></div>
+      </div>
+      <label class="consent"><input id="authorize" type="checkbox">I confirm any supplied transcript text is authorized development or synthetic material, not reserved holdout data.</label>
+      <div class="actions">
+        <button id="example" type="button" class="quiet">Open synthetic fixture</button>
+        <button id="cancel" type="button" class="quiet" disabled>Cancel active computation</button>
+        <button id="export" type="button" class="quiet" disabled>Export reproducible saved run</button>
+      </div>
+      <div class="status" id="status" role="status" aria-live="polite">No analysis loaded. Synthetic fixture is available without any transcript source.</div>
+      <div id="resources" class="resources" aria-live="polite"></div>
+    </section>
+
+    <section class="panel" aria-labelledby="comparison-title" id="results" hidden>
+      <div class="section-head"><span class="index">02</span><h2 id="comparison-title">Compatible model comparison</h2></div>
+      <div class="form-grid">
+        <div class="control"><label for="left">Model A</label><select id="left"></select></div>
+        <div class="control"><label for="right">Model B</label><select id="right"></select></div>
+      </div>
+      <p class="note" id="comparison"></p>
+      <div class="result-grid">
+        <article class="result-panel" id="left-result" aria-label="Model A results"></article>
+        <article class="result-panel" id="right-result" aria-label="Model B results"></article>
+      </div>
+      <h3>Source-linked observation inspection</h3>
+      <p class="note">Select any observation to inspect both models. A missing or skipped fit is not a negative finding. No row is silently sampled.</p>
+      <div id="observations" class="table-wrap"></div>
+      <div id="inspection" class="inspection" aria-live="polite"></div>
+    </section>
+
+    <section class="panel" aria-labelledby="capabilities-title">
+      <div class="section-head"><span class="index">03</span><h2 id="capabilities-title">Execution and methodological boundary</h2></div>
+      <div id="capabilities" class="capabilities"></div>
+      <p class="note">Every imported row retains its original observation ID, text hash, source metadata, status, and missingness. Cross-source or cross-geometry numerical comparisons are withheld; there is no automatic model winner.</p>
+      <details><summary>Local MiniLM feasibility and network handling</summary>
+        <p>The lab does not download model weights or tokenizer files and makes no third-party network requests. Optional MiniLM would require an explicitly pinned, locally served model package; tokenizer parity, model license and file sizes, WASM/WebGPU fallback, accuracy against pinned offline outputs, browser caching, privacy review, and desktop/mobile memory benchmarks before activation. Existing pinned MiniLM representations may be imported only through source-verified offline interchange results. Local inference is not advertised as implemented.</p>
+      </details>
+    </section>
+  </main>
+  <footer>Read-only experimental adapter · Engineering-only results · No held-out evaluation or production deployment</footer>
+</body>
+</html>
