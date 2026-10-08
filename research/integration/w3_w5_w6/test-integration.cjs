@@ -105,16 +105,29 @@ test('W6 renders a W3 graph with explicit kNN affinity (never falsely called cos
   assert.doesNotMatch(view.html, /policy position probability/);
 });
 
-test('W6 explicitly cannot accept source-complete W3 24+1 frame; no lossy relabeling', () => {
+test('repaired W6 accepts full W3 24+1 source frame with explicit excluded model rows', () => {
   assert.equal(W5.validateParallel(MISSING.envelope), MISSING.envelope);
   const x = Bridge.forW6Network(MISSING);
-  assert.equal(x.status, 'blocked_contract');
-  assert.equal(x.panel, null);
-  assert.match(x.reason, /excluded\/model rows/);
+  assert.equal(x.status, 'ready');
+  assert.equal(x.panel.nodes.length, 24);
+  assert.equal(x.panel.coverage.frame, 25);
+  assert.equal(x.panel.coverage.excluded, 1);
+  assert.equal(x.panel.coverage.missing, 1);
   assert.equal(MISSING.envelope.observations.length, 25);
   assert.equal(MISSING.envelope.results.length, 50);
   assert.equal(MISSING.envelope.coverage.models[0].excluded, 1);
-  assert.throws(() => W6.validateEnvelope(MISSING.envelope), /Result row counts do not reconcile/);
+  assert.equal(W6.validateEnvelope(MISSING.envelope).size, 25);
+  const view=W6.renderPanel(MISSING.envelope,x.panel);
+  assert.equal(view.status,'ready');
+  assert.match(view.html,/Frame 25/);
+  assert.match(view.html,/excluded 1/);
+  assert.match(view.html,/missing 1/);
+  assert.equal(x.panel.edges.length,MISSING.receipt.graph.edge_count);
+  const broken=copy(MISSING);
+  broken.envelope.results=broken.envelope.results.filter(r=>r.observation_id!==
+    broken.envelope.observations.at(-1).id);
+  assert.throws(()=>W6.validateEnvelope(broken.envelope),
+    /Result row counts do not reconcile/);
 });
 
 test('96-node W3 graph is fully accounted for and W6 receives a WITHHELD state', () => {
