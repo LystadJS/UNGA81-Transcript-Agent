@@ -36,13 +36,9 @@ jobs:
           name: w1-w4-source-only-local-replay
           path: |
             research/validation_framework/*.cjs
+            research/validation_framework/examples/*.cjs
             research/validation_framework/schemas/*.json
-            site/analysis-core.js
-            site/cluster-core.js
-            site/cluster-algorithms.js
-            site/cluster-stability.js
-            site/gmm-core.js
-            site/hdbscan-core.js
+            site/*.js
             docs/parallel-work/validate-contract.cjs
             docs/parallel-work/interchange-v1.schema.json
             w4-private-src/research/longitudinal/*.py
