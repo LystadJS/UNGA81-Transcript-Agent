@@ -1,0 +1,100 @@
+{
+  "schema": "un.w4.p2.verified_originals.private_replay_aggregate.v1",
+  "date": "2026-10-08",
+  "original_source_scope": {
+    "sessions": "71–79",
+    "years": "2016–2024",
+    "official_meeting_PVs": 63,
+    "document_pages": 3370,
+    "PDF_bytes": 53218960,
+    "full_PV_extracted_characters": 14471233,
+    "year_counts": {
+      "2016": 7,
+      "2017": 9,
+      "2018": 6,
+      "2019": 7,
+      "2020": 7,
+      "2021": 7,
+      "2022": 7,
+      "2023": 5,
+      "2024": 8
+    }
+  },
+  "fresh_private_byte_replay": {
+    "original_pdf_sha256_match": 63,
+    "pdf_length_match": 63,
+    "pdf_page_counts_match": 63,
+    "first_page_PV_symbols_match": 63,
+    "complete_PV_text_sha256_match": 63,
+    "complete_PV_text_length_match": 63,
+    "duplicate_or_missing_PV_count": 0,
+    "PDF_source_manifest_reconciles_across_two_independent_uploaded_ZIPs": true,
+    "ZIP_CRC_path_and_symlink_validation": "PASS",
+    "external_UN_publisher_signed_SHA256_available": false,
+    "discrepancy_count": 0
+  },
+  "correspondence_ledger": {
+    "country_year_source_rows": 1737,
+    "rows_with_verified_PV_hash_and_pages": 985,
+    "stored_overlap_metric_classifications_recomputed": 985,
+    "strong_2016_2023": 840,
+    "partial_or_variant_2024": 94,
+    "insufficient_2024": 50,
+    "Harvard_corpus_omission_with_official_PV": 1,
+    "not_acquired_original_PV": 752,
+    "Harvard_original_speech_bytes_in_uploaded_ZIPs": false,
+    "seven_token_shingle_overlap_from_original_Harvard_speech_bytes_recomputed": false,
+    "score_classification_mismatches": 0
+  },
+  "longitudinal_candidate": {
+    "country_affiliations": 99,
+    "year_range": "2016–2023",
+    "expected_country_year_cells": 792,
+    "strong_source_verified_year_cells": 523,
+    "unverified_country_year_cells": 269,
+    "unverified_cells_not_imputed_as_zero": true,
+    "prior_epoch_verified": 252,
+    "later_epoch_verified": 271,
+    "independent_original_meeting_source_groups": 55,
+    "selection_sha256_recomputed": "3ebec834635e4d493e8035aeede3321efb951aa22f2f61d81f6ac7a0f65a4c89",
+    "selected_rows_matching_original_PV_byte_SHA256": 523,
+    "selected_rows_matching_saved_840_strong_speech_ledger": 523,
+    "W4_model_fit_eligible": false
+  },
+  "controls": {
+    "wrong_meeting_same_year_comparisons": 96,
+    "wrong_PV_greater_equal_90pct": 0,
+    "maximum_wrong_PV_saved_overlap": 0.02793,
+    "not_a_statistical_null_calibration": true
+  },
+  "gates": {
+    "private_original_pdf_byte_replay": "PASS",
+    "private_PV_full_meeting_text_extraction_replay": "PASS",
+    "stored_correspondence_scores_consistency": "PASS",
+    "independent_Harvard_text_seven_shingle_replay": "NOT_RUN_MISSING_ORIGINAL_HARVARD_TEXT",
+    "authenticated_individual_speaker_identity": "NOT_RUN",
+    "W1_real_meeting_family_dependence": "NOT_RUN",
+    "W4_high_dimensional_representation_frozen": false,
+    "W4_descriptive_empirical_fit": "WITHHELD",
+    "W4_calibrated_inference": "WITHHELD",
+    "publication_eligible": false,
+    "original_37_Oct_5_6_reserved_transcripts_opened": 0
+  },
+  "privacy": {
+    "private_original_PDF_bytes_committed_to_public_GitHub": false,
+    "private_speech_text_committed": false,
+    "per_PV_SHA_or_identity_rows_committed": false,
+    "encrypted_recipient_private_keys_committed": false,
+    "frozen_evaluation_lock_modified": false,
+    "D1_O1_O5_gates_modified": false,
+    "reviewer_gold_labels_created": 0
+  },
+  "limitations": [
+    "All PDF and full-PV-text SHA-256 were freshly replayed against the private original acquisition and extraction manifests, not externally UN-signed publisher hashes.",
+    "Harvard v14 original country-speech bytes were absent from the two uploaded P2 archives; seven-token overlap classifications were replayed from saved scores, not recalculated from speech bytes.",
+    "2016–2023 selected original PV meetings were sampled purposively, not as a probability sample. Selected source-group count 55.",
+    "2024 mixed OCR/translation and 2025 ASR text cannot be pooled with 2016–2023 under an unverified common measurement model.",
+    "Recorded affiliation is not an individually authenticated human, a statement of government position, causal influence or statistically calibrated temporal drift."
+  ],
+  "status": "PASS_FULL_PRIVATE_ORIGINAL_DOCUMENT_BYTES_AND_PV_TEXT_HASHES; EMPIRICAL_W4_WITHHELD"
+}

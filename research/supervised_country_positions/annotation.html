@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Country Positions | Private Annotation Workspace</title>
+  <style>
+    :root { color-scheme: light; font-family: "Segoe UI", Arial, sans-serif;
+      --navy: #092a44; --gold: #a58c5f; --muted: #506275; --rule: #ccd6df; }
+    body { max-width: 1120px; margin: auto; color: #173047; padding: 26px 22px 70px;
+      background: #fafbfd; line-height: 1.55; }
+    header { border-top: 6px solid var(--navy); border-bottom: 1px solid var(--gold);
+      padding: 14px 0 18px; margin-bottom: 20px; }
+    h1 { font-size: 1.75rem; margin: 0; color: var(--navy); }
+    h2 { font-size: 1.15rem; color: var(--navy); }
+    p { margin: .55rem 0; }
+    .subtle { color: var(--muted); font-size: .92rem; }
+    .notice { background: #f5f1e8; border-left: 4px solid var(--gold); padding: 12px 16px; }
+    .controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: end; margin: 18px 0; }
+    .controls label { display: grid; gap: 5px; font-weight: 600; font-size: .94rem; }
+    input, select, textarea, button { font: inherit; }
+    input[type=file], input[type=text], select, textarea { border: 1px solid #92a6b5;
+      border-radius: 4px; padding: 7px; background: white; max-width: 100%; }
+    button { border: 1px solid var(--navy); color: white; background: var(--navy);
+      border-radius: 4px; padding: 9px 14px; cursor: pointer; }
+    button:disabled { opacity: .48; cursor: not-allowed; }
+    article { border: 1px solid var(--rule); background: white; padding: 17px;
+      margin: 18px 0; border-radius: 5px; }
+    blockquote { border-left: 3px solid #9bb6cc; padding: 4px 15px;
+      margin: 14px 0; font-family: Georgia, serif; white-space: pre-wrap; }
+    .answers { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; }
+    .answers label, .rationale { display: grid; gap: 5px; font-weight: 600; }
+    textarea { width: 100%; box-sizing: border-box; min-height: 62px; }
+    a { color: #075995; }
+    :focus-visible { outline: 3px solid #b08037; outline-offset: 3px; }
+    @media(max-width:650px) { .answers { grid-template-columns: 1fr; } body { padding: 14px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Country Positions — Annotation Workspace</h1>
+    <p class="subtle">Private, blind review · Source contract un.review.v1 · Draft positions only</p>
+  </header>
+  <div class="notice">
+    <strong>Local review only.</strong> Select a private packet prepared by
+    <code>prepare_review.py</code>. No prediction, inferred position, or previously
+    selected label is shown. The exported JSON contains source excerpts and must
+    remain outside a public Git repository. No browser data is sent to a server.
+  </div>
+  <div class="controls">
+    <label>Private review packet (.json)
+      <input type="file" id="packet" accept=".json,application/json">
+    </label>
+    <label>Optional saved draft (.json)
+      <input type="file" id="resume" accept=".json,application/json">
+    </label>
+    <label>Reviewer pseudonym (required)
+      <input type="text" id="reviewer" maxlength="80" placeholder="reviewer-01" autocomplete="off">
+    </label>
+    <button type="button" id="save" disabled>Export private draft</button>
+  </div>
+  <p id="status" role="status" aria-live="polite">No packet loaded.</p>
+  <main id="items"></main>
+  <script>
+    'use strict';
+    const $ = id => document.getElementById(id);
+    const allowedIssue = ['relevant', 'not_relevant', 'insufficient'];
+    const allowedStance = ['support', 'oppose', 'conditional', 'descriptive', 'insufficient'];
+    let packet = null;
+    let decisions = new Map();
+    function element(tag, parent, value, className) {
+      const node = document.createElement(tag);
+      if (value !== undefined) node.textContent = String(value);
+      if (className) node.className = className;
+      if (parent) parent.append(node);
+      return node;
+    }
+    function status(message) { $('status').textContent = message; }
+    function select(parent, title, items, value, onChange) {
+      const label = element('label', parent, title);
+      const control = element('select', label);
+      const empty = element('option', control, '— No review yet —');
+      empty.value = '';
+      for (const name of items) {
+        const option = element('option', control, name.replace('_', ' '));
+        option.value = name;
+      }
+      control.value = value || '';
+      control.addEventListener('change', () => onChange(control.value));
+      return control;
+    }
+    function render() {
+      const host = $('items'); host.replaceChildren();
+      if (!packet) return;
+      packet.items.forEach((item, index) => {
+        const existing = decisions.get(item.item_id) || {};
+        const article = element('article', host);
+        element('h2', article, (index + 1) + '. ' + item.issue_id + ' / ' +
+          item.proposition_id);
+        element('p', article, 'Proposition: ' + item.proposition);
+        element('p', article, 'Scope: ' + item.scope, 'subtle');
+        element('p', article, 'Do not infer from: ' + item.exclusion_rule, 'subtle');
+        element('p', article, 'Recorded affiliation: ' + item.country_affiliation +
+          ' · ' + item.event_date + ' · ' + item.source_id +
+          ' · codepoint offsets [' + item.start + ', ' + item.end + ')', 'subtle');
+        const quote = element('blockquote', article, item.quote);
+        quote.setAttribute('aria-label', 'Source passage');
+        if (typeof item.source_url === 'string' && item.source_url.startsWith('https://')) {
+          const link = element('a', article, 'Open original source');
+          link.href = item.source_url; link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+        }
+        const controls = element('div', article, undefined, 'answers');
+        const update = (field, value) => {
+          const state = decisions.get(item.item_id) || {};
+          state[field] = value;
+          state.reviewed_at = new Date().toISOString();
+          if (field === 'issue_label' && value !== 'relevant' &&
+              state.stance_label && state.stance_label !== 'insufficient') {
+            state.stance_label = '';
+          }
+          decisions.set(item.item_id, state);
+          if (field === 'issue_label' && state.stance_label === '') stance.value = '';
+          stance.disabled = Boolean(state.issue_label && state.issue_label !== 'relevant');
+          status(decisions.size + ' of ' + packet.items.length +
+            ' items touched. Drafts are not finalized annotations.');
+        };
+        const issue = select(controls, 'Issue relevance', allowedIssue,
+          existing.issue_label, value => update('issue_label', value));
+        const stance = select(controls, 'Position on the precise proposition',
+          allowedStance, existing.stance_label, value => update('stance_label', value));
+        stance.disabled = Boolean(existing.issue_label && existing.issue_label !== 'relevant');
+        const rationale = element('label', article, 'Reason for the decision', 'rationale');
+        const notes = element('textarea', rationale);
+        notes.placeholder = 'Record the action, policy object, attribution, or reason for uncertainty.';
+        notes.value = existing.rationale || '';
+        notes.addEventListener('input', () => update('rationale', notes.value));
+      });
+    }
+    function validatePacket(value) {
+      if (!value || value.schema !== 'un.country-positions.annotation-packet.v1' ||
+          value.dataset_kind !== 'unreviewed' || value.publication_eligible !== false ||
+          !/^[a-f0-9]{64}$/.test(value.packet_sha256 || '') ||
+          !Array.isArray(value.items) || !value.items.length || value.items.length > 200 ||
+          new Set(value.items.map(item => item.item_id)).size !== value.items.length) {
+        throw new Error('Invalid or nonprivate source packet');
+      }
+    }
+    async function readFile(control) {
+      if (!control.files || !control.files[0]) throw new Error('Choose a JSON file');
+      if (control.files[0].size > 4_000_000) throw new Error('Review file exceeds 4 MB');
+      return JSON.parse(await control.files[0].text());
+    }
+    $('packet').addEventListener('change', async () => {
+      try {
+        const value = await readFile($('packet'));
+        validatePacket(value);
+        packet = value; decisions = new Map(); $('save').disabled = false;
+        render(); status('Loaded ' + value.items.length + ' blind source-linked items.');
+      } catch (error) { packet = null; $('save').disabled = true; render(); status(error.message); }
+    });
+    $('resume').addEventListener('change', async () => {
+      try {
+        if (!packet) throw new Error('Load the source packet first');
+        const draft = await readFile($('resume'));
+        if (draft.schema !== 'un.country-positions.annotation-draft.v1' ||
+            draft.packet_sha256 !== packet.packet_sha256 || !Array.isArray(draft.decisions)) {
+          throw new Error('Draft/source packet digest or schema mismatch');
+        }
+        const valid = new Set(packet.items.map(item => item.item_id));
+        for (const item of draft.decisions) {
+          if (!valid.has(item.item_id) || decisions.has(item.item_id))
+            throw new Error('Unknown/duplicate draft item');
+        }
+        decisions = new Map(draft.decisions.map(item => [item.item_id, item]));
+        $('reviewer').value = draft.reviewer_id || '';
+        render(); status('Restored ' + decisions.size + ' draft review entries.');
+      } catch (error) { status(error.message); }
+    });
+    $('save').addEventListener('click', () => {
+      try {
+        if (!packet) throw new Error('Load the packet first');
+        const reviewer_id = $('reviewer').value.trim();
+        if (!/^[A-Za-z0-9_.-]{3,80}$/.test(reviewer_id))
+          throw new Error('Enter a reviewer pseudonym (3–80 letters, digits, _, ., or -).');
+        const out = [];
+        for (const [item_id, choice] of decisions) {
+          if (!choice.issue_label && !choice.stance_label) continue;
+          if (!allowedIssue.includes(choice.issue_label))
+            throw new Error('Issue relevance is required for every reviewed item.');
+          if (choice.stance_label && !allowedStance.includes(choice.stance_label))
+            throw new Error('Unknown stance label.');
+          if (choice.issue_label !== 'relevant' &&
+              choice.stance_label && choice.stance_label !== 'insufficient')
+            throw new Error('Issue/stance labels conflict.');
+          if (!choice.rationale || choice.rationale.trim().length < 8)
+            throw new Error('At least eight characters of rationale required for each label.');
+          out.push({ item_id, issue_label: choice.issue_label,
+            stance_label: choice.stance_label || '',
+            rationale: choice.rationale.trim(), reviewed_at: choice.reviewed_at });
+        }
+        if (!out.length) throw new Error('Select and explain at least one decision.');
+        const result = { schema: 'un.country-positions.annotation-draft.v1',
+          packet_sha256: packet.packet_sha256, reviewer_id, decisions: out,
+          finalized: false, human_gold: false, publication_eligible: false };
+        const blob = new Blob([JSON.stringify(result, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url; link.download = 'country-position-private-draft.json';
+        document.body.append(link); link.click(); link.remove();
+        URL.revokeObjectURL(url);
+        status('Exported ' + out.length + ' unfinalized decisions. Finalize separately under un.review.v1.');
+      } catch (error) { status(error.message); }
+    });
+  </script>
+</body>
+</html>
