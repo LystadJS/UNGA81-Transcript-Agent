@@ -166,7 +166,8 @@ async function main() {
         assert.ok(close(first.scores[i][j],second.scores[i][j]));
       }
     }
-    assert.equal(lsa1.rank,2);
+    assert.ok(lsa1.rank >= 2);
+    assert.equal(lsa1.components,2);
   });
   console.log('TOTAL '+tests+' tests passed; synthetic only; browser/device acceptance separate.');
 }
