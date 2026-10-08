@@ -80,30 +80,21 @@ def fetch_one(symbol):
                     "download_complete_pdf_header_and_eof": True,
                     "downloaded_utc": datetime.now(timezone.utc).isoformat(),
                 }
-                with tempfile.NamedTemporaryFile(suffix=".pdf") as tmp:
-                    tmp.write(payload)
-                    tmp.flush()
-                    try:
-                        info = subprocess.run(
-                            ["pdfinfo", tmp.name], capture_output=True, text=True,
-                            timeout=25, check=True
-                        )
-                        m = re.search(r"^Pages:\s*(\d+)", info.stdout, re.M)
-                        record["pages"] = int(m.group(1)) if m else None
-                        text = subprocess.run(
-                            ["pdftotext", "-enc", "UTF-8", tmp.name, "-"],
-                            capture_output=True, timeout=35, check=True
-                        ).stdout.decode("utf-8", "replace")
-                        record["full_pdf_extracted_text_sha256"] = hashlib.sha256(text.encode("utf-8")).hexdigest()
-                        record["extracted_chars"] = len(text)
-                        record["extracted_text_available"] = len(text) >= 300
-                        record["symbol_found_in_extracted_text"] = (
-                            symbol.replace("/", "").replace(".", "").lower()
-                            in re.sub(r"[^a-zA-Z0-9]", "", text[:3000]).lower()
-                        )
-                    except (subprocess.SubprocessError, FileNotFoundError) as exc:
-                        record["extracted_text_available"] = False
-                        record["extraction_error_kind"] = type(exc).__name__
+                try:
+                    import pymupdf
+                    with pymupdf.open(stream=payload, filetype="pdf") as pdf:
+                        text = "\n".join(page.get_text(sort=True) for page in pdf)
+                        record["pages"] = len(pdf)
+                    record["full_pdf_extracted_text_sha256"] = hashlib.sha256(text.encode("utf-8")).hexdigest()
+                    record["extracted_chars"] = len(text)
+                    record["extracted_text_available"] = len(text) >= 300
+                    record["symbol_found_in_extracted_text"] = (
+                        symbol.replace("/", "").replace(".", "").lower()
+                        in re.sub(r"[^a-zA-Z0-9]", "", text[:3000]).lower()
+                    )
+                except (ImportError, RuntimeError, ValueError, OSError) as exc:
+                    record["extracted_text_available"] = False
+                    record["extraction_error_kind"] = type(exc).__name__
                 return symbol, payload, record
             except urllib.error.HTTPError as exc:
                 problems.append("http_" + str(exc.code))
