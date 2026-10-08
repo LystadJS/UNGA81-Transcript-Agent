@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: supervised-positions-\${{ github.event.pull_request.number || github.ref }}
+  group: supervised-positions-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -91,5 +91,5 @@ jobs:
           fi
       - name: Browser evidence, local review, privacy, keyboard and mobile QA
         env:
-          NODE_PATH: \${{ runner.temp }}/supervised-qa/node_modules
+          NODE_PATH: ${{ runner.temp }}/supervised-qa/node_modules
         run: node research/supervised_country_positions/test_browser.cjs
