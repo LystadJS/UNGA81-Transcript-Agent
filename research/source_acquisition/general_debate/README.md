@@ -52,6 +52,17 @@ An **observed-union candidate population** is used until an independent UN membe
 - No access or mutation of frozen heldout content, evaluation locks, user-reviewed decisions or D1 O1–O5 gates.
 - CI executes synthetic tests and attempts acquisition into an ephemeral runner-private temp directory; it uploads **only aggregate receipts**. Network/source HTTP errors are acquisition blockers, not evidence that tests or sources passed. Never upload private/ or downloaded_sources/.
 
+## Explicit fallback when primary sources cannot be fetched
+
+The first GitHub Actions live acquisition attempted both Harvard Dataverse and the UN Library's direct CSV, but **neither was retrieved** in that run (Actions #37811519412). The offline tests (8 of 8) and privacy contract passed; **no actual source reconciliation was performed**. Consult each newer aggregate receipt for updated status and non-sensitive HTTP error class.
+
+A separately pinned, **lower-trust** open GitHub RDS from Jihyeonbae/UNGDC may provide a partial 2016–2022 filename-equivalent country/session inventory. Its README documents 1946–2022. The file is pinned to repository commit 62df50941fd7afc00cb75256e1f91fe1ae690011 and Git blob 1325ee6b0d6ff2d8a85b11807a514b9fb7d86871; downloaded bytes are verified against the Git blob identity before parsing. Install pyreadr==0.5.4, then run:
+
+    python research/source_acquisition/general_debate/mirror_inventory.py \
+      --out /your/private/research/general-debate-mirror-p0-001
+
+This produces ONLY a partial third-party-derived 2016–2022 private index and non-identifying aggregate receipts; 2023–2025 cells explicitly say **outside the documented mirror release**, never no speech. Git identity checks provenance **to that mirror**, not fidelity to original UN documents or equivalence to Harvard v14. Do not merge the mirror text fingerprint with the original Harvard/UN byte basis or promote mirror results into W4 inference. This branch's CI may run the mirror independently of the two-source acquisition gate; failure of either primary source remains unresolved.
+
 ## Outstanding P0–P1 gates
 
 1. Obtain both actual source files, verify file ID, version, SHA-256 and year/session coverage; if the endpoint blocks automated requests, use authorized offline download rather than bypassing controls.
