@@ -50,3 +50,28 @@ body>main>header:first-child a{display:inline-block;text-underline-offset:.2em}
 #selectedMeetingInfo{overflow-wrap:anywhere}
 .meeting-picker [hidden]{display:none!important}
 @media print{.meeting-picker{display:none}}
+
+/* Compact first-page reader: quiet executive hierarchy, full-width in print. */
+.report-document .meeting-quick-read{border-top:3px solid #062135;border-bottom:1px solid #ccd5df;padding:21px 0 24px;margin:18px 0 24px;max-width:100%;break-inside:auto}
+.report-document .meeting-quick-read>.eyebrow{font-size:11px;color:#677688;letter-spacing:.1em;margin:0 0 4px}
+.report-document .meeting-quick-read h3{margin:3px 0 12px;font-size:24px}
+.report-document .meeting-quick-read h4{margin:22px 0 10px;font:700 17px Georgia,serif;color:#062135}
+.report-document .meeting-quick-read>p{max-width:95ch;line-height:1.6;margin:8px 0 11px}
+.report-document .quick-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:#d9e2e9;border:1px solid #d9e2e9;margin:20px 0 14px}
+.report-document .quick-stats>div{background:#f8fafb;padding:12px 11px;min-width:0}
+.report-document .quick-stats strong{display:block;font:700 22px Georgia,serif;color:#062135}
+.report-document .quick-stats span{display:block;font-size:12px;line-height:1.45;color:#455566;margin-top:4px}
+.report-document .meeting-quick-read td:last-child{max-width:420px;overflow-wrap:anywhere}
+.report-document .meeting-quick-read td a{overflow-wrap:anywhere}
+.report-document .meeting-quick-read>details{margin-top:15px}
+@media(max-width:720px){.report-document .quick-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.report-document .meeting-quick-read h3{font-size:22px}}
+@media print{.report-document .meeting-quick-read{break-after:auto}.report-document .quick-stats>div,.report-document .meeting-quick-read tr{break-inside:avoid}}
+
+@media(max-width:650px){
+ .report-document .meeting-quick-read .position-table{overflow:visible}
+ .report-document .meeting-quick-read .position-table table,.report-document .meeting-quick-read .position-table tbody{display:block;width:100%}
+ .report-document .meeting-quick-read .position-table thead{display:none}
+ .report-document .meeting-quick-read .position-table tr{display:block;border-top:1px solid #bdcad5;padding:10px 0}
+ .report-document .meeting-quick-read .position-table td{display:block;max-width:none!important;border:0;padding:4px 6px;overflow-wrap:anywhere;font-size:13px}
+ .report-document .meeting-quick-read .position-table td::before{content:attr(data-label);display:block;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:#687787;font-weight:700;margin-bottom:2px}
+}

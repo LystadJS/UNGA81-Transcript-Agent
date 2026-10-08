@@ -101,3 +101,44 @@ from the verified UN inventory, still rejects traversal/queries/arbitrary URLs,
 and rechecks the exact selected ID at collection. The regression fixtures now
 include HRC and treaty-body routes. The initial asset-only assumption was found
 by the separate live check, not silently classified as missing transcript data.
+
+## Opening quick reader — October 2026
+
+A selected individual meeting now opens with **At a glance** before the model
+figures.  The section is computed on-device from all retrieved English source
+segments of that exact meeting, even if an optional Topic narrows the deeper
+statistical analysis.  The HTML export, print view, and analysis JSON retain
+the same opening synopsis.  Range reports are unaffected.
+
+The opening prose is deterministic, intentionally concise, and calibrated to the
+JSL Writing Voice requirements: one clear claim per paragraph, concrete evidence,
+and immediate limitations.  No third-party generative AI API, remote classifier,
+or token-billed service is required.  Fixed categories count source segments,
+not unique speakers or verified speeches, and direct source links permit rapid
+checking.  These subject categories are **not** the official meeting agenda.
+
+The snapshot reports recorded source segments, median segment length, distinct
+registry-mapped country labels, and unresolved country segments.  Country-linked
+expressions are classified conservatively as *support or advocacy expressed*,
+*concern or opposition expressed*, or *mixed or qualified*, only when a recorded
+country-affiliated source contains a first-person evaluative clause about the
+subject.  A country name in a third-party statement, a topic keyword, a speech
+by a presiding official, or an unmapped affiliation cannot establish a country
+position.  The wording remains provisional and must be inspected in context.
+
+The collector now retains bounded **original speaker function, group,
+affiliation, and optional source-provided name/ID** fields.  It never derives a
+person ID or confirms the authority of a speaker.  Affiliation + function is a
+coarse research proxy, not person identity.  Canonical meeting paths support
+institutional *series* identification, not formal agenda verification.  Older
+imported data lacking these fields remains usable; its country positions may
+be withheld for missing attribution.
+
+Engineering tests cover all-matching and topic-filtered report pathways, source
+links, no-attribution and procedural cases, role and genre cautions, empty
+transcripts, mixed statements, quote/third-party resistance, and HTML escaping.
+The **development-only speaker/agenda audit** uses cached 1–2 October records,
+rejects all reserved dates, and keeps source-linked individual records private;
+only anonymized aggregate coverage may enter the public repository.  All
+37 reserved 5–6 October transcripts remain unopened and the SHA256-sealed
+evaluation protocol unchanged.

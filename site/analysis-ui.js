@@ -193,6 +193,41 @@
   }
 
 
+  // ---------- Local single-meeting quick reader ----------
+  function renderQuickReader(q){
+    if(!q)return '';
+    const evidence=items=>(items||[]).map(item=>item.source_url&&UNMeetingQuickReader.safeURL(item.source_url)
+      ? `<a href="${esc(item.source_url)}" target="_blank" rel="noopener noreferrer" title="${esc(item.record_id)}">${esc(item.excerpt)}</a>`
+      : esc(item.excerpt)).join(' · ');
+    const stat=q.stats;
+    const cats=q.themes.slice(0,5);
+    const rank=className=>({support_or_advocacy_expressed:'Support or advocacy expressed',concern_or_opposition_expressed:'Concern or opposition expressed',mixed_or_qualified:'Mixed or qualified'}[className]||'Not established');
+    const positions=q.positions.slice(0,12);
+    return `<section class="meeting-quick-read" aria-label="Meeting quick read">
+      <p class="eyebrow">QUICK READER · OFFLINE, SOURCE-LINKED</p>
+      <h3>At a glance</h3>
+      ${q.paragraphs.map(p=>`<p>${esc(p)}</p>`).join('')}
+      <div class="quick-stats" role="group" aria-label="Meeting descriptive statistics">
+        <div><strong>${esc(stat.source_segments)}</strong><span>Recorded English segments</span></div>
+        <div><strong>${esc(stat.recorded_countries)}</strong><span>Mapped country labels</span></div>
+        <div><strong>${esc(stat.unresolved_country_segments)}</strong><span>Unresolved country segments</span></div>
+        <div><strong>${esc(stat.median_words_per_segment===null?'—':stat.median_words_per_segment)}</strong><span>Median words per segment</span></div>
+      </div>
+      <p class="method-note"><strong>Meeting record:</strong> ${esc(q.meeting_title)} · ${esc(q.meeting_date||'Date unknown')}. ${esc(q.agenda.label)}. This is metadata or an institutional series proxy, not an independently verified agenda.</p>
+      <h4>Subjects appearing in the transcript</h4>
+      ${cats.length?table(['Broad subject','Source segments','Example from the record'],cats.map(t=>[t.label,t.segments,t.evidence[0]?.excerpt||'No source excerpt'])):'<p>No recurring category was identified by the local issue dictionary.</p>'}
+      ${cats.some(t=>t.evidence.length)?`<details><summary>Open evidence links for these subjects</summary><ol>${cats.map(t=>`<li><strong>${esc(t.label)}:</strong> ${evidence(t.evidence)}</li>`).join('')}</ol></details>`:''}
+      <h4>Country-linked expressions</h4>
+      <p class="method-note">Broad descriptions of explicit first-person statements on a named subject. A country's presence, a keyword mention, or a source segment is not proof of an official position. Confirm wording and attribution before citing.</p>
+      ${positions.length?`<div class="table-wrap position-table"><table><thead><tr><th scope="col">Country label</th><th scope="col">Subject</th><th scope="col">Recorded expression</th><th scope="col">Original evidence</th></tr></thead><tbody>${positions.map(r=>`<tr><td data-label="Country">${esc(r.country)}</td><td data-label="Subject">${esc(r.issue)}</td><td data-label="Expression">${esc(rank(r.classification))}</td><td data-label="Source evidence">${evidence(r.evidence)}</td></tr>`).join('')}</tbody></table></div>`:'<p>No attributed first-person expression meets the conservative rule. Country positions are not established from these passages.</p>'}
+      ${q.positions.length>12?`<p class="method-note">The opening table shows 12 of ${esc(q.positions.length)} entries. The complete source-linked classifications are retained in the analysis JSON.</p>`:''}
+      <details><summary>How this quick read was produced, and what it cannot establish</summary>
+        <p>Everything above was generated locally from this meeting's collected English text using a fixed issue dictionary and source-linked sentence cues. No external generative AI API, remote classifier, or new model fitting was used.</p>
+        <ul>${q.limitations.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+      </details>
+    </section>`;
+  }
+
   // ---------- Report content ----------
 
   function render(report) {
@@ -207,21 +242,19 @@
       byStatus[entry.status] = (byStatus[entry.status] || 0) + 1;
     }
 
+    const single = report.collection?.selection_mode==='single_meeting';
     let html = `
       <div class="report-document">
-        <p class="eyebrow">TRANSCRIPT REPORT</p>
-        <h2>${esc(all ? 'All passages' : p.topic)}</h2>
+        <p class="eyebrow">${single?'SINGLE-MEETING BRIEF':'TRANSCRIPT REPORT'}</p>
+        <h2>${esc(single?report.collection.selected_meeting_title:(all?'All passages':p.topic))}</h2>
         <p>${esc(p.start)} through ${esc(p.end)} · ${esc(p.region)}</p>
-        <p><strong>Meeting scope:</strong> ${esc(UNMeetingScopes.label(p.scope))}</p>
-        <p>
-          ${all ? 'No topic filter; passages follow the selected dates, scope, region and inclusion policy.'
-            : `Any phrase: ${esc(p.phrases.join(' | '))}. Exclusions: ${esc(p.exclude.join(' | ') || 'None')}.`}
-        </p>
-        <p class="method-note">
-          Prepared ${esc(report.created_at.slice(0, 10))} · English transcripts
-        </p>
+        ${single?'':`<p><strong>Meeting scope:</strong> ${esc(UNMeetingScopes.label(p.scope))}</p>
+        <p>${all?'No topic filter; passages follow the selected dates, scope, region and inclusion policy.':`Any phrase: ${esc(p.phrases.join(' | '))}. Exclusions: ${esc(p.exclude.join(' | ') || 'None')}.`}</p>`}
+        <p class="method-note">Prepared ${esc(report.created_at.slice(0, 10))} · English transcripts</p>
     `;
 
+    if(report.quick_reader)html+=renderQuickReader(report.quick_reader);
+    if(single)html+=`<p class="method-note">${all?'The detailed analysis below uses every eligible source segment.':`The detailed analysis below is restricted to the topic ${esc(p.topic)}; the opening summary covers the whole recorded meeting.`}</p>`;
     if(report.collection?.selection_mode==='single_meeting')html+=`<p class="method-note"><strong>Individual meeting:</strong> ${esc(report.collection.selected_meeting_title)} · ${esc(report.collection.selected_meeting_date)} · ${esc(report.collection.selected_meeting_slug)}. Only this meeting was collected. Within-meeting passages do not supply independent meeting-level replication.</p>`;
     if(report.passage_selection)html+=`<p class="warning">Reviewed inclusion: ${esc(report.passage_selection.policy==='substantive'?'substantive address segments':'substantive, mixed and fragment segments')}. ${report.passage_selection.eligible_after_type_filter} of ${report.passage_selection.eligible_before_type_filter} passages within the date, scope and region filters remain before deduplication. ${report.passage_selection.human_confirmed} explicit passage decisions; reviewer identity is self-declared. Original text is preserved.</p>`;
     if(report.reviewed_units){const r=report.reviewed_units;

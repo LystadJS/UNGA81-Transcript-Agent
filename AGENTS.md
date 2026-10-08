@@ -45,3 +45,19 @@ actions, one complete purpose per paragraph, and restrained emphasis. Remove
 repeated explanations and construction commentary. Put technical detail in
 expandable sections; keep consequential source gaps and qualifications visible.
 Give charts the comparison work rather than repeating their contents in prose.
+
+## Progress and executive meeting readouts
+
+For every substantive project request, give a visible planned-work progress bar
+(0–100%) in user updates and final handoff. Percentages track validated
+completion of the current requested task, not scientific release readiness; do
+not say 100% while requested GitHub publication or tests remain unverified.
+
+At the opening of each individual-meeting report, display a short reader-first
+summary, basic descriptive source statistics, and cautious country-linked
+expressions. Use JSL Writing Voice's direct anchor sentences and evidence
+qualifications through deterministic offline templates, without an external
+GenAI API. Retain original source links and distinguish source text from official
+agenda, actual votes, verified person identities, and government positions.
+Never infer stance from mere topic mentions. Preserve the existing publication
+gates and all 37 unopened reserved meetings.

@@ -247,7 +247,17 @@
             text_sha256: await sha(text),
             raw_sha256: hash,
             json_pointer: '/transcript/data/' + segmentIndex,
-            timestamps_flagged: row.timestamps_flagged
+            timestamps_flagged: row.timestamps_flagged,
+            // Original source labels are retained without inventing personal identity.
+            speaker_metadata: {
+              affiliation: typeof speaker.affiliation === 'string' ? speaker.affiliation.slice(0, 240) : null,
+              affiliation_full: typeof speaker.affiliation_full === 'string' ? speaker.affiliation_full.slice(0, 240) : null,
+              function: typeof speaker.function === 'string' ? speaker.function.slice(0, 240) : null,
+              group: typeof speaker.group === 'string' ? speaker.group.slice(0, 240) : null,
+              ...(typeof speaker.name === 'string' ? {name:speaker.name.slice(0, 240)} : {}),
+              ...(typeof speaker.id === 'string' ? {id:speaker.id.slice(0, 240)} : {})
+            },
+            attribution: {country_status:country?.country?'registry_mapped':'unresolved',basis:country?.country?'source_affiliation_country_registry':'none'}
           });
         }
 
