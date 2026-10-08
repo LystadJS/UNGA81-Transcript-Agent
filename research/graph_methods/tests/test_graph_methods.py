@@ -5,6 +5,7 @@ from dataclasses import replace
 import copy
 import hashlib
 import json
+import os
 from pathlib import Path
 import tempfile
 import unittest
@@ -19,7 +20,7 @@ from research.graph_methods import (
     GraphError, GraphPolicy, SpectralPolicy, DiffusionPolicy, build_affinity,
     validate_input, spectral_clustering, diffusion_map, fidelity,
     baseline_comparison, grouped_leave_one_out, parameter_sensitivity,
-    to_interchange_v1, equal_population,
+    to_interchange_v1, equal_population, w1_availability, compare_w1_partition,
 )
 from research.graph_methods.algorithms import pam_partition, procrustes_disparity, diffusion_policy_sensitivity
 from research.graph_methods.core import matrix_digest, digest
@@ -27,6 +28,7 @@ from research.graph_methods.reproduce import (
     fixture, fit_or_record, run, source_edges, source_concentration, variations,
 )
 from research.graph_methods.interchange import paired_representations
+from research.graph_methods.w1_bridge import _compare_identities, _require_approval
 
 
 class SourceIdentityTests(unittest.TestCase):
@@ -107,6 +109,44 @@ class SourceIdentityTests(unittest.TestCase):
         bad = copy.deepcopy(self.m)
         bad["observations"][0]["date"] = "2026-02-30"
         with self.assertRaisesRegex(GraphError, "date"):
+            validate_input(bad, self.x)
+
+    def test_unavailable_frame_source_has_null_hash_not_zero(self):
+        excluded = {
+            **copy.deepcopy(self.m["observations"][0]),
+            "id": "fictional-unavailable",
+            "text_sha256": None,
+            "parent_id": None,
+            "parent_text_sha256": None,
+            "source_status": "unavailable",
+            "missing_reason": "The invented meeting contains no collected text",
+            "exclusion_reasons": ["source_not_collected"],
+        }
+        full = copy.deepcopy(self.m)
+        full["excluded_observations"] = [excluded]
+        full["total_in_frame"] += 1
+        full["unavailable_sources"] = 1
+        full["frame_join_sha256"] = digest([
+            [r["id"], r["text_sha256"]]
+            for r in full["observations"] + full["excluded_observations"]
+        ])
+        validate_input(full, self.x)
+        env = to_interchange_v1(full, self.x, {
+            "w3": {"method": "spectral", "status": "failed",
+                   "reason": "independently recorded failed fit"}
+        }, generated_at="2026-10-08T00:00:00Z")
+        self.assertEqual(env["observations"][-1]["text_sha256"], None)
+        self.assertEqual(env["coverage"]["unavailable_sources"], 1)
+        self.assertEqual(env["results"][-1]["status"], "excluded")
+
+    def test_development_requires_parent_and_verified_speech(self):
+        bad = copy.deepcopy(self.m)
+        bad["observations"][0]["speech_id"] = "unverified-speech"
+        with self.assertRaisesRegex(GraphError, "speech"):
+            validate_input(bad, self.x)
+        bad = copy.deepcopy(self.m)
+        bad["observations"][0]["parent_text_sha256"] = None
+        with self.assertRaisesRegex(GraphError, "parent"):
             validate_input(bad, self.x)
 
     def test_frame_exclusion_requires_explicit_lineage(self):
@@ -336,6 +376,58 @@ class DiffusionTests(unittest.TestCase):
         self.assertLess(procrustes_disparity(x, x @ r), 1e-12)
 
 
+class W1BridgeTests(unittest.TestCase):
+    """W1 remains a draft PR: test the cross-language gate without importing it."""
+
+    def setUp(self):
+        self.m, self.x, _ = fixture()
+        self.fitted = spectral_clustering(
+            build_affinity(self.x, GraphPolicy(n_neighbors=16, bandwidth=1.4)),
+            SpectralPolicy(n_clusters=3),
+        )
+        self.envelope = to_interchange_v1(
+            self.m, self.x, {"pinned-model": self.fitted},
+            generated_at="2026-10-08T00:00:00Z",
+        )
+
+    def test_unaccepted_w1_gates_refuse_import(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.assertEqual(w1_availability(Path(d))["status"], "withheld")
+            with self.assertRaisesRegex(GraphError, "coordinator"):
+                compare_w1_partition(
+                    self.m, self.x, self.fitted, self.envelope, {},
+                    w1_model_id="pinned-model", repo_root=Path(d),
+                )
+
+    def test_source_bound_w1_population_compatibility(self):
+        _compare_identities(self.m, self.envelope)
+        changed = copy.deepcopy(self.envelope)
+        changed["observations"][0]["parent_id"] = "invented-different-parent"
+        with self.assertRaisesRegex(GraphError, "parent"):
+            _compare_identities(self.m, changed)
+        changed = copy.deepcopy(self.envelope)
+        changed["upstream"]["selection_sha256"] = "0" * 64
+        with self.assertRaisesRegex(GraphError, "selection"):
+            _compare_identities(self.m, changed)
+        changed = copy.deepcopy(self.envelope)
+        changed["observations"] = changed["observations"][::-1]
+        with self.assertRaisesRegex(GraphError, "order"):
+            _compare_identities(self.m, changed)
+
+    def test_commit_not_confused_with_code_sha(self):
+        sha = "c" * 64
+        approved = {
+            "schema": "un.w1-approval.v1", "adapter_version": "source-validation-1.0.0",
+            "w1_producer_code_sha256": sha,
+            "w1_merged_commit_sha": "d" * 40, "accepted": True,
+        }
+        _require_approval(approved, sha)
+        with self.assertRaisesRegex(GraphError, "SHA"):
+            _require_approval({**approved, "w1_merged_commit_sha": "d" * 64}, sha)
+        with self.assertRaisesRegex(GraphError, "not granted"):
+            _require_approval({**approved, "accepted": False}, sha)
+
+
 class IntegrationTests(unittest.TestCase):
     def test_exactly_paired_representation_rotation(self):
         m, x, _ = fixture()
@@ -437,6 +529,27 @@ class IntegrationTests(unittest.TestCase):
             self.assertEqual(
                 json.loads((p1 / "SHA256.json").read_text()),
                 json.loads((p2 / "SHA256.json").read_text()))
+
+    def test_private_development_never_writes_inside_repo(self):
+        m, x, _ = fixture()
+        m = copy.deepcopy(m)
+        m["split"] = "development"
+        m["upstream"]["source_schema"] = "un.passage-corpus.v1"
+        m["upstream"]["source_hash_basis"] = "canonical_source_text"
+        m["representation"]["feature_basis"] = "tfidf_lsa"
+        for row in m["observations"]:
+            row["split"] = "development"
+        validate_input(m, x)
+        repo = Path(__file__).resolve().parents[3]
+        with self.assertRaisesRegex(GraphError, "outside Git"):
+            run(m, x, repo / "forbidden-private-research-output")
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp) / "private"
+            report = run(m, x, folder)
+            self.assertEqual(report["split"], "development")
+            self.assertEqual(os.stat(folder).st_mode & 0o077, 0)
+            self.assertEqual(os.stat(folder / "receipt.json").st_mode & 0o077, 0)
+            self.assertNotEqual(report["w1_source_aware"]["status"], "validated")
 
     def test_nuisance_negative_control_is_not_significance_test(self):
         x = np.random.default_rng(29).normal(size=(40, 5))
