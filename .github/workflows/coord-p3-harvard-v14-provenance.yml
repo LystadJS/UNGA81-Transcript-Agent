@@ -1,0 +1,108 @@
+name: Coordinator P3 Harvard v14 corpus provenance (ephemeral public source)
+
+on:
+  push:
+    branches: [coord/p3-harvard-v14-sourceframe]
+    paths:
+      - research/integration/p3_harvard_archive_audit.py
+      - research/integration/test_p3_harvard_archive_audit.py
+      - .github/workflows/coord-p3-harvard-v14-provenance.yml
+  pull_request:
+    paths:
+      - research/integration/p3_harvard_archive_audit.py
+      - research/integration/test_p3_harvard_archive_audit.py
+      - .github/workflows/coord-p3-harvard-v14-provenance.yml
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-refusals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m unittest discover -s research/integration -p test_p3_harvard_archive_audit.py -v
+      - run: node docs/parallel-work/validate-contract.cjs
+
+  source-metadata-download:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Retrieve only the pinned v14 public Harvard Dataverse datafile
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/harvard-v14-private"
+          python3 - <<'PY'
+          import os,time,urllib.request
+          from pathlib import Path
+          destination=Path(os.environ['RUNNER_TEMP'])/'harvard-v14-private'/'UNGDC_1946-2025.tar.gz'
+          url='https://dataverse.harvard.edu/api/access/datafile/13591895'
+          error=None
+          for attempt in range(3):
+              try:
+                  req=urllib.request.Request(url,headers={
+                    'User-Agent':'UNGA81-Source-Validation/1.0 (independent original corpus audit)',
+                    'Accept':'application/octet-stream'})
+                  with urllib.request.urlopen(req,timeout=90) as response:
+                      if response.status!=200:raise ValueError('HTTP source status not 200')
+                      total=0
+                      with destination.open('xb') as f:
+                          while block:=response.read(1024*1024):
+                              total+=len(block)
+                              if total>200_000_000:raise ValueError('Unexpected source size')
+                              f.write(block)
+                  if total<100_000:raise ValueError('Retrieved corpus too short')
+                  error=None
+                  break
+              except Exception as exc:
+                  error=str(exc)
+                  destination.unlink(missing_ok=True)
+                  if attempt<2:time.sleep(4)
+          if error:
+              print('Source acquisition failed; cannot claim independent Harvard v14 verification:',error)
+              raise RuntimeError('Harvard v14 source archive unreachable or incomplete')
+          print('Fetched public archive for checksum verification; no member text is logged')
+          PY
+      - name: Match original v14 MD5/SHA and inspect source-year inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 research/integration/p3_harvard_archive_audit.py \
+            --archive "$RUNNER_TEMP/harvard-v14-private/UNGDC_1946-2025.tar.gz" \
+            --aggregate-output "$RUNNER_TEMP/harvard-v14-aggregate.json"
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          d=json.loads((Path(os.environ['RUNNER_TEMP'])/'harvard-v14-aggregate.json').read_text())
+          assert d['archive_md5_matches_accepted_prior'] is True
+          assert d['archive_sha256_matches_accepted_prior'] is True
+          assert d['country_speeches_2016_2025']==1926
+          assert d['source_text_artifact_published'] is False
+          assert d['W1_real_source_frame_independently_validated'] is False
+          assert d['frozen_37_heldout_meetings_opened']==0
+          print('PASS: independently downloaded exact Harvard v14 original archive; 2016–2025 keys checked')
+          PY
+      - name: Upload only source-safe aggregate; never archive or speech text
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: p3-harvard-v14-aggregate-hashes-only
+          path: ${{ runner.temp }}/harvard-v14-aggregate.json
+          if-no-files-found: error
+          retention-days: 14
+      - name: Destroy transient speech archive
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/harvard-v14-private"
