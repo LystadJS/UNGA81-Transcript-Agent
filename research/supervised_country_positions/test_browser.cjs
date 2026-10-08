@@ -55,7 +55,7 @@ async function checkViewer(browser, temporary, width) {
     assert.match(await page.locator('h1').innerText(), /Country Position/);
     assert.match(await page.locator('body').innerText(), /fictional/i);
     assert.equal(await page.locator('#results').isHidden(), true);
-    const reportPath = path.join(temporary, 'fictional-report.json');
+    const reportPath = path.join(temporary, 'fictional-report-' + width + '.json');
     fs.writeFileSync(reportPath, JSON.stringify(report), { flag: 'wx' });
     await page.locator('#file').setInputFiles(reportPath);
     await page.waitForFunction(() => !document.getElementById('results').hidden);
@@ -77,6 +77,8 @@ async function checkViewer(browser, temporary, width) {
     assert.ok(await page.locator('#inspection .evidence').count() >= 2);
     assert.match(await page.locator('#inspection').innerText(), /SHA-256/);
 
+    await page.locator('#year').selectOption('2026');
+    assert.match(await page.locator('#status').innerText(), /2026/);
     await page.locator('#year').selectOption('2025');
     assert.match(await page.locator('#status').innerText(), /2025/);
     assert.equal(await page.locator('#network circle').count(), 6);
@@ -84,7 +86,7 @@ async function checkViewer(browser, temporary, width) {
 
     // Viewer must refuse even a one-field rebranding of an empirical result.
     const bad = { ...report, publication_eligible: true };
-    const badPath = path.join(temporary, 'forbidden-report.json');
+    const badPath = path.join(temporary, 'forbidden-report-' + width + '.json');
     fs.writeFileSync(badPath, JSON.stringify(bad), { flag: 'wx' });
     await page.locator('#file').setInputFiles(badPath);
     await page.waitForFunction(() => document.getElementById('results').hidden);
@@ -121,7 +123,7 @@ async function checkAnnotation(browser, temporary, width) {
         start: 0, end: 52
       }]
     };
-    const packetPath = path.join(temporary, 'fictional-annotation-packet.json');
+    const packetPath = path.join(temporary, 'fictional-annotation-packet-' + width + '.json');
     fs.writeFileSync(packetPath, JSON.stringify(pkt), { flag: 'wx' });
     await page.locator('#packet').setInputFiles(packetPath);
     await page.waitForFunction(() => !document.getElementById('save').disabled);
@@ -150,7 +152,7 @@ async function checkAnnotation(browser, temporary, width) {
     assert.equal(downloaded.decisions[0].stance_label, 'support');
 
     // Re-opening the saved human draft must restore the selections and notes.
-    const draftPath = path.join(temporary, 'fictional-review-draft.json');
+    const draftPath = path.join(temporary, 'fictional-review-draft-' + width + '.json');
     fs.writeFileSync(draftPath, JSON.stringify(downloaded), { flag: 'wx' });
     await page.locator('#resume').setInputFiles(draftPath);
     assert.equal(await selects.nth(0).inputValue(), 'relevant');
@@ -159,7 +161,7 @@ async function checkAnnotation(browser, temporary, width) {
 
     // Incompatible packet digests must fail closed, not restore another review.
     const wrong = { ...downloaded, packet_sha256: 'b'.repeat(64) };
-    const wrongPath = path.join(temporary, 'wrong-draft.json');
+    const wrongPath = path.join(temporary, 'wrong-draft-' + width + '.json');
     fs.writeFileSync(wrongPath, JSON.stringify(wrong), { flag: 'wx' });
     await page.locator('#resume').setInputFiles(wrongPath);
     assert.match(await page.locator('#status').innerText(), /mismatch/);
