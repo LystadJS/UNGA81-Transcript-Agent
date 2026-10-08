@@ -1,0 +1,40 @@
+name: W4 longitudinal synthetic and interchange checks
+on:
+  pull_request:
+    paths:
+      - 'research/longitudinal/**'
+      - '.github/workflows/longitudinal-framework.yml'
+  push:
+    branches: [main, 'feat/longitudinal-latent-structure']
+    paths:
+      - 'research/longitudinal/**'
+      - '.github/workflows/longitudinal-framework.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-longitudinal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install bounded scientific dependencies
+        run: python -m pip install -r research/longitudinal/requirements.txt
+      - name: Source-only synthetic method unit tests
+        run: python -m unittest discover -s research/longitudinal -p 'test_*.py' -v
+      - name: Existing interchange and methods regression
+        run: |
+          node docs/parallel-work/validate-contract.cjs
+          python research/methods.py
+      - name: Fictional no-motion and known-motion CLI exports
+        run: |
+          python research/longitudinal/run_demo.py --output "$RUNNER_TEMP/w4-roster"
+          python research/longitudinal/run_demo.py --motion --output "$RUNNER_TEMP/w4-motion"
