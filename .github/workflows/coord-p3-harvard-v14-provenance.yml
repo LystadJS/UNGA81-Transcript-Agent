@@ -86,10 +86,10 @@ jobs:
                 'source_text_artifact_published':False,
                 'W1_real_source_frame_independently_validated':False,
                 'frozen_37_heldout_meetings_opened':0},indent=2)+'\n')
-              with out.open('a') as f:f.write('available=false\\n')
+              with out.open('a') as f:f.write('available=false\n')
               print('BLOCKED: Harvard raw original not obtained; source verification is NOT RUN')
           else:
-              with out.open('a') as f:f.write('available=true\\n')
+              with out.open('a') as f:f.write('available=true\n')
               print('Original public archive retrieved for strict checksum verification; no speech text logged')
           PY
       - name: Match original v14 MD5/SHA and inspect source-year inventory (only when obtained)
