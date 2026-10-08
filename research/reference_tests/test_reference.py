@@ -13,6 +13,22 @@ class ReferenceChecks(unittest.TestCase):
         self.plan=read(HERE/'plan.json')
         self.future=read(HERE/'evaluation_plan.json')
 
+    def test_committed_metadata_only_lock_and_development_aggregate(self):
+        import hashlib,json
+        from reference import canonical,digest
+        lock=read(HERE/'evaluation-lock.json')
+        verify_seal(lock,'un.heldout-evaluation-lock.v1')
+        record=read(HERE/'development-reference.json')
+        verify_seal(record,'un.development-reference-results.v1')
+        self.assertEqual(lock['reference_aggregate_sha256'],digest(canonical({k:v for k,v in record.items() if k!='sha256'})))
+        self.assertEqual(lock['reference_implementation_sha256'],digest((HERE/'reference.py').read_bytes()))
+        self.assertEqual(lock['reference_plan_sha256'],digest((HERE/'plan.json').read_bytes()))
+        self.assertEqual(lock['evaluation_plan_sha256'],digest((HERE/'evaluation_plan.json').read_bytes()))
+        self.assertEqual(lock['reserved_meetings'],37)
+        self.assertFalse(lock['evaluation_executed'])
+        self.assertNotIn('raw_base64',json.dumps(lock))
+        self.assertNotIn('"text"',json.dumps(record))
+
     def test_plan_lock_and_separation(self):
         validate_plan(self.plan,self.future)
         for field,value in [('permutations',100),('holdout_access',True),('neighbors',2),('holdout_meetings',36)]:

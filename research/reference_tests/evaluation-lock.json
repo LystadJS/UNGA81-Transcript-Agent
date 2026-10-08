@@ -1,0 +1,54 @@
+{
+  "schema": "un.heldout-evaluation-lock.v1",
+  "version": "1.0.0",
+  "holdout_state": "reserved_not_downloaded",
+  "reserved_meetings": 37,
+  "reserved_dates": [
+    "2026-10-05",
+    "2026-10-06"
+  ],
+  "reserved_identifiers_sha256": "24aa39883fabc777ba4fb9e54b6792f1eda063c0fc6bc8fbe4bf453c50048671",
+  "frame_sha256": "9a814f3f7986896f553072d5a610f6874b57a16adc4c15696da4998ce9b133e0",
+  "source_corpus_sha256": "e8fb980cf638e2aef39d0ca3564836c6120201a059e806ccaaee3fd5cc4f593e",
+  "reference_plan_sha256": "db9013da2f998eb60315b3c0cdcc04fb77269decc51e390a736f7e29229d66c4",
+  "evaluation_plan_sha256": "a9241342bdf2567515399f13a8aa912bdac2845cb0e0f469e650ee8b010ba314",
+  "reference_implementation_sha256": "ad3c04643a9b1a97b6b5c75cbe53dd36606ea5502a6d29917a2b67690f8f7f7d",
+  "semantic_comparison_implementation_sha256": "fa2af6842917ac970d92cdac5d47d5599b0e7cedede6e4999d50ffe4fc01ba56",
+  "semantic_encoder_implementation_sha256": "a3a2d09cf292ea31574f90d0163e338020636cc9729d109b8cc704a4a301879d",
+  "machine_review_implementation_sha256": "e3efef592f3f4144989ed8f18f1560175d120df120e73501d6f12b772ed4699d",
+  "semantic_model_lock_sha256": "d12d9c008ae9e4e63fd4ac6edfb4728b3f381baab02d49233ed19680b4f28af7",
+  "saved_lexical_model_sha256": "024efddebaf2faff995f2bc6571d464d06087ee01e10856ee2a7cbf6d66bc548",
+  "saved_semantic_pca_model_sha256": "c0d4b5ec278195e47953d3c12e1f53d5b47304a1211adff83f12115193d739cb",
+  "saved_raw_semantic_sha256": "fb17b40d52387f8c6441721a1c2cacc32232b899e49120748f5387d73628ebdb",
+  "reference_aggregate_sha256": "c0a84344eda4ef46a24e4fab6c4f274e54cfb360c8b6bd5425f9920aefced2c4",
+  "development_excess_overlap": 0.2818059614745402,
+  "replication_floor_excess": 0.1409029807372701,
+  "predeclared_eligibility_gates": {
+    "min_eligible_parents": 200,
+    "min_distinct_meetings": 8,
+    "min_movable_fraction": 0.7,
+    "min_crossmeeting_neighbors": 15,
+    "max_familywise_alpha": 0.05,
+    "effect_floor": "heldout_excess_overlap_at_least_one_half_of_saved_development_excess_and_positive",
+    "when_not_met": "inconclusive_or_not_replicated; never re-optimize_on_holdout"
+  },
+  "fixed_controls_and_metrics": {
+    "lexical": "frozen_tfidf_vocabulary_idf_svd64_and_k10_centroid_prediction_no_refit",
+    "semantic": "pinned_minilm_and_frozen_semantic_pca64_center_components_and_k10_centroid_prediction_no_refit",
+    "retrieval": "crossmeeting_15_nearest_neighbors_in_holdout_high_dimensional_parent_vectors_only"
+  },
+  "no_holdout_acquisition_performed": true,
+  "human_review_state": "provisional_only",
+  "evaluation_executed": false,
+  "authorization_required": "separate_explicit_authorization_to_access_reserved_content",
+  "prohibitions": [
+    "holdout_download_during_freeze",
+    "holdout_embedding_during_freeze",
+    "holdout_fit_during_freeze",
+    "tune_settings_on_holdout",
+    "treat_2d_plot_as_metric",
+    "claim_semantic_similarity_is_stance",
+    "suppress_unavailable_meetings"
+  ],
+  "sha256": "2c96f479fae0eded4b226882e05462b7f800c32fa066a6bb26df043b5d278039"
+}

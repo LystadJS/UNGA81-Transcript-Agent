@@ -1,0 +1,90 @@
+{
+  "schema": "un.development-reference-results.v1",
+  "status": "completed_provisional_development_reference",
+  "source_parents": 523,
+  "passages_selected": 1641,
+  "represented_meetings": 16,
+  "unit_definition": "observed_source_segment_with_eligible_passages_aggregated_not_verified_speech",
+  "length_bin_upper_edges": [
+    197,
+    365
+  ],
+  "nuisance_blocks": {
+    "blocks": 38,
+    "singletons": 7,
+    "movable": 516,
+    "movable_fraction": 0.9866156787762906
+  },
+  "richer_role_blocks": {
+    "blocks": 63,
+    "singletons": 21,
+    "movable": 502,
+    "movable_fraction": 0.9598470363288719
+  },
+  "country_parent_rows": 319,
+  "repeated_recorded_countries": 86,
+  "country_blocks": {
+    "blocks": 34,
+    "singletons": 9,
+    "movable": 310,
+    "movable_fraction": 0.9717868338557993
+  },
+  "primary": {
+    "id": "lexical_semantic_crossmeeting_agreement",
+    "observed": 0.3940089228808158,
+    "reference_mean": 0.11220296140627563,
+    "reference_sd": 0.00567301215290153,
+    "reference_q05": 0.10274059910771192,
+    "reference_q50": 0.11217335882727852,
+    "reference_q95": 0.1218738049713193,
+    "excess_above_reference_mean": 0.2818059614745402,
+    "nominal_monte_carlo_p": 0.001,
+    "permutations": 999,
+    "inference": "development-only conditional permutation; validity depends on within-block exchangeability",
+    "rich_block_reference_q95": 0.13040152963671128,
+    "rich_block_reference_mean": 0.11996292021785968,
+    "holm_adjusted_p": 0.002,
+    "conditional_reference_exceeded_at_alpha_005": true,
+    "establishes_nonrandom_diplomatic_alignment": false
+  },
+  "secondary": {
+    "id": "recorded_country_recurrence",
+    "observed": 0.09111807732497387,
+    "reference_mean": 0.015777323823300833,
+    "reference_sd": 0.001891685965514158,
+    "reference_q05": 0.012748171368861024,
+    "reference_q50": 0.01567398119122257,
+    "reference_q95": 0.019017763845350054,
+    "excess_above_reference_mean": 0.07534075350167305,
+    "nominal_monte_carlo_p": 0.001,
+    "permutations": 999,
+    "inference": "development-only conditional permutation; validity depends on within-block exchangeability",
+    "holm_adjusted_p": 0.002,
+    "conditional_reference_exceeded_at_alpha_005": true,
+    "establishes_nonrandom_diplomatic_alignment": false
+  },
+  "alpha_familywise": 0.05,
+  "limits": [
+    "Exploratory: primary representations and features were developed on these same observations.",
+    "Parent means aggregate technical passages from source segments; no verified speech boundaries.",
+    "Exchangeability within meeting/length (even with role sensitivity) is an assumption, not proven.",
+    "Recorded affiliation may be missing or unreliable; same-country neighbors need not share policy views.",
+    "Conditioned null tests neither establish clusters exist nor demonstrate geopolitical nonrandomness.",
+    "The planned holdout was not opened, encoded, fit, scored or inspected."
+  ],
+  "development_corpus_sha256": "e8fb980cf638e2aef39d0ca3564836c6120201a059e806ccaaee3fd5cc4f593e",
+  "frame_sha256": "9a814f3f7986896f553072d5a610f6874b57a16adc4c15696da4998ce9b133e0",
+  "model_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+  "heldout_transcripts_opened": 0,
+  "human_confirmations": 0,
+  "plan_sha256": "db9013da2f998eb60315b3c0cdcc04fb77269decc51e390a736f7e29229d66c4",
+  "semantic_saved_manifest_sha256": "e970499a29a08b0a7b959559fbde98bde18cf06392612383dc80b4664e2cbc6b",
+  "parent_identity_digest": "536adf419515009ac57bc13a7282384c03fc9665f96670682eb3ff44da2a8748",
+  "contextual_override_audit": {
+    "contextual_annotations": 13,
+    "strict_membership_changes": 0,
+    "inclusive_membership_changes": 16,
+    "meaning": "Machine-only contextual edits are never human approvals; held-out sources receive no contextual overrides."
+  },
+  "sha256": "c0a84344eda4ef46a24e4fab6c4f274e54cfb360c8b6bd5425f9920aefced2c4"
+}

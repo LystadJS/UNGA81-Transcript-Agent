@@ -36,7 +36,7 @@
     "meaning": "Machine-only contextual edits are never human approvals; held-out sources receive no contextual overrides."
   },
   "synthetic_unit_checks": {
-    "passed": 10,
+    "passed": 11,
     "failed": 0
   },
   "real_development_repeatability": {
