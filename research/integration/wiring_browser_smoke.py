@@ -81,8 +81,9 @@ def verify(browser, base: str, fixtures: Path, folder: Path,
              ["WITHHELD","96 source-bound observations","No sampling performed"])
         ]:
             choose(page, fixtures/scenario)
-            page.locator("#research-status").get_by_text(expected,
-                exact=False).wait_for(timeout=15000)
+            page.wait_for_function(
+                "(needle) => document.getElementById('research-status').textContent.includes(needle)",
+                arg=expected,timeout=15000)
             text=page.locator("#research-status").inner_text()+" "+page.locator(
                 "#research-graph").inner_text()
             for term in assertions:
@@ -111,8 +112,9 @@ def verify(browser, base: str, fixtures: Path, folder: Path,
                 out.write(b" ")
             page.locator("#research-files").set_input_files(paths)
             page.locator("#research-import").click()
-            page.locator("#research-status").get_by_text("Checksum mismatch",
-                exact=False).wait_for(timeout=15000)
+            page.wait_for_function(
+                "() => document.getElementById('research-status').textContent.includes('Checksum mismatch')",
+                timeout=15000)
             assert page.locator("#research-graph .ev-panel").count()==0
         viewport_width=page.evaluate("document.documentElement.scrollWidth")
         assert viewport_width<=width+2, \
