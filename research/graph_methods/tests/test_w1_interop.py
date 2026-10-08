@@ -142,6 +142,14 @@ class AcceptedW1InteropTests(unittest.TestCase):
         self.assertEqual(metrics["pair_opportunities_assigned_both"], 276)
         self.assertEqual(metrics["assignment_coverage_left"], 1)
         self.assertEqual(metrics["assignment_coverage_right"], 1)
+        self.assertEqual(result["source_validation"]["eligible"], 24)
+        self.assertEqual(result["source_validation"]["excluded"], 1)
+        self.assertEqual(result["source_validation"]["selection_sha256"],
+                         self.manifest["upstream"]["selection_sha256"])
+        self.assertEqual(result["source_validation"]["meeting_group_schedule"]["status"],
+                         "scheduled")
+        self.assertEqual(result["source_validation"]["meeting_group_schedule"]["groups"], 6)
+        self.assertEqual(result["source_validation"]["meeting_group_schedule"]["attempted"], 2)
         w1_rows = {r["observation_id"]: r for r in self.envelope["results"]
                    if r["model_id"] == MODEL_ID}
         labels = [w1_rows[o["id"]]["cluster"] for o in self.manifest["observations"]]
