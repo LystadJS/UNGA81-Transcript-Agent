@@ -140,3 +140,23 @@ guardrails only. No evidence of valid themes, statistical significance,
 geopolitical alignment, government policy, clustering calibration or
 change over time is asserted. Real-source adapters remain blocked pending
 upstream source, model, privacy and uncertainty validation.
+
+## Source-complete excluded/missing-frame repair (W3/W5 compatibility)
+
+The synthetic inventory contains 11 source identities: 10 eligible and one unavailable.
+Each model now has 11 result rows, including a distinct 'excluded' result
+for the unavailable source, with cluster null and explicit missing reason.
+The text SHA of an unavailable source remains null. Each model has
+assigned + unassigned + not_fitted = 10 and excluded = 1.
+Missing/unavailable is a subset of excluded, not a disjoint third category.
+
+New negative tests reject dropped, duplicated, falsely assigned and
+miscounted results and panel coverage. The authoritative W1/W3/W5
+un.parallel-analysis.v1 frame and status contract remains unchanged.
+
+For Chromium using an already installed browser binary:
+
+    python site/experimental/evidence-viz/browser_smoke.py --browser-path /usr/bin/google-chrome --outdir /tmp/w6-browser-qa
+
+Only invented synthetic sources may enter this public research prototype;
+browser screenshots are engineering QA, not diplomatic findings.
