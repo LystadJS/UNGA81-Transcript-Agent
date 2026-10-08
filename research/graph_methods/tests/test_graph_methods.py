@@ -24,8 +24,9 @@ from research.graph_methods import (
 from research.graph_methods.algorithms import pam_partition, procrustes_disparity, diffusion_policy_sensitivity
 from research.graph_methods.core import matrix_digest, digest
 from research.graph_methods.reproduce import (
-    fixture, fit_or_record, run, source_edges, variations,
+    fixture, fit_or_record, run, source_edges, source_concentration, variations,
 )
+from research.graph_methods.interchange import paired_representations
 
 
 class SourceIdentityTests(unittest.TestCase):
@@ -203,6 +204,16 @@ class GraphQualityTests(unittest.TestCase):
             build_affinity(np.array([[0., 0], [1, 0], [0, 1], [1, 1]]),
                            GraphPolicy(n_neighbors=2, metric="cosine"))
 
+    def test_recorded_source_concentration_and_duplicate_hash(self):
+        m, x, _ = fixture()
+        graph = build_affinity(x, GraphPolicy(n_neighbors=8))
+        report = source_concentration(m["observations"], graph)
+        self.assertEqual(report["edge_count"], graph.diagnostics["edge_count"])
+        self.assertEqual(report["duplicate_text_hash_observations"], 0)
+        self.assertEqual(report["recorded_group_fields"]["meeting_id"]["known_node_count"], len(x))
+        self.assertIsNone(report["recorded_group_fields"]["country"]["within_group_share"])
+        self.assertTrue(0 <= report["recorded_group_fields"]["parent_id"]["within_group_share"] <= 1)
+
     def test_source_linked_edges(self):
         m, x, _ = fixture()
         g = build_affinity(x, GraphPolicy(n_neighbors=8))
@@ -326,6 +337,29 @@ class DiffusionTests(unittest.TestCase):
 
 
 class IntegrationTests(unittest.TestCase):
+    def test_exactly_paired_representation_rotation(self):
+        m, x, _ = fixture()
+        transformed = x @ np.array([[0., -1.], [1., 0.]])
+        peer = copy.deepcopy(m)
+        peer["representation"]["id"] = "fictional-rotated-geometry"
+        peer["representation"]["matrix_sha256"] = matrix_digest(transformed)
+        outcome = paired_representations(
+            m, x, peer, transformed,
+            GraphPolicy(n_neighbors=16, bandwidth=1.4),
+            SpectralPolicy(n_clusters=3), DiffusionPolicy(dimensions=2),
+        )
+        self.assertEqual(outcome["n_shared"], len(x))
+        self.assertAlmostEqual(outcome["neighbor_overlap"], 1, places=8)
+        self.assertEqual(outcome["status"], "paired_source_only")
+        mismatched = copy.deepcopy(peer)
+        mismatched["upstream"]["selection_sha256"] = "0" * 64
+        with self.assertRaises(GraphError):
+            paired_representations(
+                m, x, mismatched, transformed,
+                GraphPolicy(n_neighbors=16, bandwidth=1.4),
+                SpectralPolicy(n_clusters=3), DiffusionPolicy(dimensions=2),
+            )
+
     def test_group_resampling_never_uses_rows(self):
         m, x, _ = fixture()
         g = build_affinity(x, GraphPolicy(n_neighbors=16, bandwidth=1.4))
