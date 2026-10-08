@@ -71,8 +71,19 @@
       'Frame/eligibility accounting mismatch.');
     const eligible=env.observations.filter(o => o.source_status === 'available' &&
       Array.isArray(o.exclusion_reasons) && !o.exclusion_reasons.length);
-    assert(eligible.length === env.cohort.eligible, 'Eligible source identities do not match the ledger.');
+    const excluded=env.observations.filter(o => o.source_status !== 'available' ||
+      Array.isArray(o.exclusion_reasons) && o.exclusion_reasons.length > 0);
+    const unavailable=env.observations.filter(o => o.source_status !== 'available');
+    assert(eligible.length === env.cohort.eligible &&
+      excluded.length === env.coverage.excluded &&
+      unavailable.length === env.coverage.unavailable_sources,
+      'Eligible, excluded, and unavailable identities do not match the frame ledger.');
+    assert(env.observations.every(o => Array.isArray(o.exclusion_reasons) &&
+      (o.source_status === 'available' || o.exclusion_reasons.length > 0 && !!o.missing_reason)),
+      'Unavailable source requires an explicit exclusion and missing reason.');
     const observationIDs=new Set(env.observations.map(o => o.id));
+    const sourceById=new Map(env.observations.map(o => [o.id,o]));
+    const modelIDs=new Set(env.models.map(m => m.model_id));
     const seenResults=new Set();
     for(const r of env.results){
       const m=env.models.find(x => x.model_id === r.model_id);
@@ -81,24 +92,43 @@
       const key=r.model_id+'\u001f'+r.observation_id;
       assert(!seenResults.has(key),'Duplicate model-observation fit record.');
       seenResults.add(key);
+      const source=sourceById.get(r.observation_id);
+      const isExcluded=source.source_status !== 'available' || source.exclusion_reasons.length > 0;
+      assert((r.status === 'excluded') === isExcluded,
+        'Excluded source must have an explicit excluded result; eligible source cannot be excluded.');
       assert(r.status === 'assigned' && Number.isInteger(r.cluster) && r.cluster>0 ||
         r.status === 'unassigned' && r.cluster===0 ||
         ['not_fitted','excluded'].includes(r.status) && r.cluster===null && !!r.reason,
         'Incoherent assignment, abstention or fit-failure status.');
+      if (r.status === 'excluded' || r.status === 'not_fitted')
+        assert(r.membership_kind === 'none' && r.memberships === null &&
+          r.membership_strength === null,
+          'Excluded/not-fitted observations cannot have fitted memberships.');
       if(['gmm_responsibility','nmf_share'].includes(r.membership_kind))
-        assert(Array.isArray(r.memberships) && r.memberships.every(range) &&
-          Math.abs(r.memberships.reduce((a,b)=>a+b,0)-1)<1e-6,'Invalid soft membership normalization.');
+        assert(r.status === 'assigned' && Array.isArray(r.memberships) &&
+          r.memberships.length > 0 && r.memberships.every(range) &&
+          Math.abs(r.memberships.reduce((a,b)=>a+b,0)-1)<1e-6,
+          'Invalid soft membership normalization.');
     }
+    assert(env.coverage.models.length === env.models.length &&
+      new Set(env.coverage.models.map(x=>x.model_id)).size === modelIDs.size &&
+      env.coverage.models.every(x=>modelIDs.has(x.model_id)),
+      'Every fitted model needs exactly one coverage ledger.');
     for(const m of env.models){
       const c=env.coverage.models.find(x => x.model_id === m.model_id);
       assert(c && c.eligible===env.cohort.eligible &&
         c.assigned+c.unassigned+c.not_fitted===c.eligible &&
-        c.attempted_fits===c.successful_fits+c.failed_fits,'Incorrect per-model coverage.');
+        c.excluded===env.coverage.excluded &&
+        c.attempted_fits===c.successful_fits+c.failed_fits,
+        'Incorrect per-model coverage.');
       const r=env.results.filter(x=>x.model_id===m.model_id);
-      assert(r.length===c.eligible &&
+      assert(r.length === env.observations.length &&
         r.filter(x=>x.status==='assigned').length===c.assigned &&
-        r.filter(x=>x.status==='unassigned').length===c.unassigned,
-        'Result row counts do not reconcile.');
+        r.filter(x=>x.status==='unassigned').length===c.unassigned &&
+        r.filter(x=>x.status==='not_fitted').length===c.not_fitted &&
+        r.filter(x=>x.status==='excluded').length===c.excluded &&
+        new Set(r.map(x=>x.observation_id)).size===env.observations.length,
+        'Result row counts do not reconcile across the full source frame.');
     }
     assert(env.evidence.every(x=>observationIDs.has(x.observation_id)),
       'Evidence references an unknown source identity.');
@@ -124,10 +154,14 @@
     }
     assert(panel.coverage && ['frame','eligible','included','excluded','missing'].every(k =>
       Number.isInteger(panel.coverage[k]) && panel.coverage[k] >= 0), 'Coverage ledger is required.');
+    // Missing/unavailable observations are also excluded. They are NOT a third
+    // disjoint population to add to eligible + excluded.
     assert(panel.coverage.frame === env.cohort.total_in_frame &&
       panel.coverage.eligible === env.cohort.eligible &&
-      panel.coverage.included <= panel.coverage.eligible &&
-      panel.coverage.excluded + panel.coverage.missing + panel.coverage.included <= panel.coverage.frame,
+      panel.coverage.excluded === env.coverage.excluded &&
+      panel.coverage.missing === env.coverage.unavailable_sources &&
+      panel.coverage.missing <= panel.coverage.excluded &&
+      panel.coverage.included <= panel.coverage.eligible,
       'Incoherent frame/eligible/missing counts.');
     assert(Array.isArray(panel.warnings), 'Warnings array required.');
     if (panel.status !== 'ready') assert(typeof panel.reason === 'string' && panel.reason.length,
