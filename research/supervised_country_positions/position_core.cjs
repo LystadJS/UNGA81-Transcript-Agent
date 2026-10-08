@@ -7,6 +7,7 @@
  * assigns political allegiance, or publishes empirical position results.
  * Its only executable input class is synthetic_engineering.
  */
+const { createHash } = require('node:crypto');
 const SCHEMA = 'un.country-positions.evidence.v1';
 const REPORT_SCHEMA = 'un.country-positions.report.v1';
 const STANCES = Object.freeze(['support', 'oppose', 'conditional', 'descriptive', 'insufficient']);
@@ -94,6 +95,9 @@ function validateFrame(frame, codebook) {
       source.name.trim(), 'Invalid recorded country affiliation');
     requireThat(validDate(source.date), 'Invalid source date');
     requireThat(SHA.test(source.text_sha256), 'Missing/invalid canonical text hash');
+    requireThat(typeof source.text === 'string' &&
+      createHash('sha256').update(source.text, 'utf8').digest('hex') === source.text_sha256,
+      'Full synthetic original text does not match its declared SHA-256');
     requireThat(typeof source.source_family_id === 'string' && source.source_family_id,
       'Source family required to prevent duplicate speech counting');
     requireThat(typeof source.language === 'string' && source.language &&
