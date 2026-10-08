@@ -48,3 +48,15 @@ jobs:
         run: |
           python research/longitudinal/run_demo.py --output "$RUNNER_TEMP/w4-roster"
           python research/longitudinal/run_demo.py --motion --output "$RUNNER_TEMP/w4-motion"
+      - name: W1 relational interchange validator on actual W4 exports
+        run: |
+          node - "$RUNNER_TEMP/w4-roster/interchange-v1.json" "$RUNNER_TEMP/w4-motion/interchange-v1.json" <<'NODE'
+          'use strict';
+          const fs = require('node:fs');
+          const { validateRelational } = require('./research/validation_framework/interchange.cjs');
+          for (const file of process.argv.slice(2)) {
+            const output = JSON.parse(fs.readFileSync(file, 'utf8'));
+            if (!validateRelational(output)) throw new Error('W4 interchange rejected by W1');
+          }
+          console.log('PASS W1 relational validation: both W4 generated envelopes');
+          NODE
