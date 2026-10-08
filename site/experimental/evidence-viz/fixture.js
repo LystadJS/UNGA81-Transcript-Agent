@@ -56,6 +56,14 @@
         membership_kind:'none',memberships:null,membership_strength:null,
         representation_basis_id:'demo-tfidf-2026',reason:i>7?'Synthetic noise / unassigned':null}
     ]);
+    // Source unavailable is also excluded, not an observed zero. Preserve
+    // one explicit result row for every model/source identity in the frame.
+    for (const model_id of ['demo-nmf', 'demo-partition']) results.push({
+      model_id, observation_id:'S11', status:'excluded', cluster:null,
+      membership_kind:'none',memberships:null,membership_strength:null,
+      representation_basis_id:'demo-tfidf-2026',
+      reason:'source_unavailable: Synthetic source absent from collected observations'
+    });
     const env={
       schema:'un.parallel-analysis.v1',contract_version:'1.0.0',
       producer:{workstream_id:'W6',adapter_version:'0.1.0',
@@ -74,9 +82,9 @@
         excluded:1,unavailable_sources:1,
         models:[
           {model_id:'demo-nmf',eligible:10,assigned:10,unassigned:0,
-            not_fitted:0,excluded:0,attempted_fits:1,successful_fits:1,failed_fits:0},
+            not_fitted:0,excluded:1,attempted_fits:1,successful_fits:1,failed_fits:0},
           {model_id:'demo-partition',eligible:10,assigned:8,unassigned:2,
-            not_fitted:0,excluded:0,attempted_fits:1,successful_fits:1,failed_fits:0}
+            not_fitted:0,excluded:1,attempted_fits:1,successful_fits:1,failed_fits:0}
         ],failure_ledger:[]},
       evidence:ids.map(id=>({observation_id:id,source_url:null,
         json_pointer:'/synthetic/'+id,start:null,end:null,
