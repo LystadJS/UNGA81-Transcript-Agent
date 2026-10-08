@@ -131,6 +131,13 @@ function validateInventory(x,legacy=null){
     assert(legacy.schema==='un.parallel-analysis.v1'&&
       legacy.contract_version==='1.0.0'&&legacy.publication_eligible===false,
       'Wrong or published legacy envelope');
+    assert(new Set(['un.browser.corpus.v1','un.latent-comparison.v1',
+      'un.passage-corpus.v1','un.review.v1','synthetic.v1'])
+      .has(legacy.upstream?.source_schema),
+      'Historical P2 source is not an approved legacy v1 upstream enum; coordinator schema acceptance required');
+    assert(legacy.cohort.total_in_frame===legacy.observations.length &&
+      new Set(legacy.observations.map(r=>r.id)).size===legacy.observations.length,
+      'Legacy v1 original observation inventory and unique IDs required');
     assert(legacy.upstream.source_schema===x.upstream.source_schema &&
       legacy.upstream.source_hash_basis===x.upstream.source_hash_basis &&
       legacy.upstream.source_sha256===x.upstream.source_sha256,
