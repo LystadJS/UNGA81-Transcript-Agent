@@ -1,0 +1,27 @@
+name: Parallel interchange contract
+on:
+  pull_request:
+    paths:
+      - 'docs/parallel-work/**'
+      - '.github/workflows/parallel-contract.yml'
+  push:
+    branches: [main, coord/parallel-interchange-v1]
+    paths:
+      - 'docs/parallel-work/**'
+      - '.github/workflows/parallel-contract.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate structural and relational contract with synthetic-only fixtures
+        run: node docs/parallel-work/validate-contract.cjs
