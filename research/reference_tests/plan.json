@@ -1,0 +1,39 @@
+{
+  "schema": "un.development-nuisance-reference-plan.v1",
+  "version": "1.0.0",
+  "status": "prospectively_declared_before_reference_execution",
+  "split": "development_only",
+  "holdout_access": false,
+  "holdout_meetings": 37,
+  "development_corpus_sha256": "e8fb980cf638e2aef39d0ca3564836c6120201a059e806ccaaee3fd5cc4f593e",
+  "development_frame_sha256": "9a814f3f7986896f553072d5a610f6874b57a16adc4c15696da4998ce9b133e0",
+  "semantic_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+  "population": "strict_machine_only_provisional",
+  "unit": "observed_source_segment_with_eligible_passages_aggregated_not_verified_speech",
+  "aggregation": "passage_token_count_weighted_average_then_L2_normalize",
+  "views": ["saved_lexical_lsa64", "cached_raw_semantic384"],
+  "nuisance": {
+    "blocking": "same_meeting_and_frozen_parent_token_length_tercile",
+    "length_bin_upper_edges": [197,365],
+    "parent_role_sensitivity": "additional_block_by_recorded_actor_role",
+    "country_missingness": "unknown_country_never_imputed_and_not_permuted_into_known_rows"
+  },
+  "permutations": 999,
+  "seed": 20261008,
+  "neighbors": 15,
+  "alpha": 0.05,
+  "multiplicity": "Holm_two_declared_tests",
+  "declared_tests": [
+    {"id":"lexical_semantic_crossmeeting_agreement", "target":"mean_parent_level_fraction_of_identical_15_crossmeeting_neighbors", "shuffle":"semantic_parent_vectors_within_meeting_length_bin", "tail":"greater"},
+    {"id":"recorded_country_recurrence", "target":"mean_parent_level_fraction_of_same_recorded_country_among_15_crossmeeting_semantic_neighbors", "shuffle":"known_repeated_country_labels_within_meeting_length_bin", "tail":"greater"}
+  ],
+  "gates": {
+    "min_parent_units": 200,
+    "min_meetings": 8,
+    "min_movable_fraction": 0.70,
+    "min_known_repeated_country_parents": 150,
+    "min_repeated_countries": 20
+  },
+  "meaning": "Conditional development references test representation pairing and recorded-country recurrence only; not a global cluster-null, stance, coalitions, causal political diffusion, or independent replication. Parent is a source segment, not a verified speech.",
+  "no_human_approvals": true
+}

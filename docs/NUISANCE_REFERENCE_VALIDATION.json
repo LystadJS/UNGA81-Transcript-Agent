@@ -1,0 +1,58 @@
+{
+  "schema": "un.nuisance-reference-validation.v1",
+  "status": "executed_development_only",
+  "unit": "observed_source_parent_not_human_reviewed_speech",
+  "corpus_sha256": "e8fb980cf638e2aef39d0ca3564836c6120201a059e806ccaaee3fd5cc4f593e",
+  "source_frame_sha256": "9a814f3f7986896f553072d5a610f6874b57a16adc4c15696da4998ce9b133e0",
+  "source_parent_count": 523,
+  "strict_passage_count": 1641,
+  "meeting_count": 16,
+  "reference_plan_sha256": "db9013da2f998eb60315b3c0cdcc04fb77269decc51e390a736f7e29229d66c4",
+  "reference_results_sha256": "c0a84344eda4ef46a24e4fab6c4f274e54cfb360c8b6bd5425f9920aefced2c4",
+  "frozen_evaluation_lock_sha256": "2c96f479fae0eded4b226882e05462b7f800c32fa066a6bb26df043b5d278039",
+  "frozen_evaluation_lock_file_sha256": "d41ea138855d8cd5c03f1064f366031eb61d527a97778f662ce32e31cef5013a",
+  "numerical_draws_sha256": "b872397767e8d01e54c779699b6ed24ac11a7848d0580d06b1851cf2e12a01ce",
+  "methods_sha256": "ad3c04643a9b1a97b6b5c75cbe53dd36606ea5502a6d29917a2b67690f8f7f7d",
+  "dev_only_conditional_results": {
+    "primary_15_neighbor_overlap": 0.3940089228808158,
+    "primary_null_mean": 0.11220296140627563,
+    "primary_null_q95": 0.1218738049713193,
+    "primary_holm_p": 0.002,
+    "recorded_country_share": 0.09111807732497387,
+    "recorded_country_null_mean": 0.015777323823300833,
+    "recorded_country_null_q95": 0.019017763845350054,
+    "recorded_country_holm_p": 0.002
+  },
+  "unit_coverage": {
+    "meeting_length_movable": 516,
+    "meeting_length_role_movable": 502,
+    "known_repeated_country_parents": 319,
+    "repeated_countries": 86
+  },
+  "contextual_override_audit": {
+    "contextual_annotations": 13,
+    "strict_membership_changes": 0,
+    "inclusive_membership_changes": 16,
+    "meaning": "Machine-only contextual edits are never human approvals; held-out sources receive no contextual overrides."
+  },
+  "synthetic_unit_checks": {
+    "passed": 10,
+    "failed": 0
+  },
+  "real_development_repeatability": {
+    "executions": 2,
+    "reference_files_byte_identical": true,
+    "protocol_files_byte_identical": true,
+    "draws_files_byte_identical": true
+  },
+  "prior_regression_suites": "Existing semantic, machine and corpus checks were completed in preceding release; this receipt does not claim new execution of all prior suites.",
+  "holdout": {
+    "reserved_meetings": 37,
+    "content_opened": 0,
+    "content_requested": 0,
+    "scored": 0,
+    "evaluation_executed": false
+  },
+  "interpretation": "Conditional associations only; no global cluster-null or statistically established political alignment.",
+  "runtime": "Python 3.13 / pinned previous semantic requirements / deterministic BLAS one thread"
+}

@@ -1,0 +1,5 @@
+# Development reference and reserved evaluation
+
+Use only previously saved development artifacts for reference calibration. Do not read, download, embed, train on, score, or inspect any transcript belonging to the 37 reserved meetings from October 5–6, 2026. Frozen metadata alone may be read to commit its digest. A subsequent evaluation requires separate explicit authorization.
+
+Never treat parent source segments as independently verified speeches; preserve provisional machine decisions and unresolved attributions. Null shuffles operate on whole observed source segments within meeting and frozen length bins. A nominal conditional Monte Carlo result does **not** establish global nonrandom diplomatic clustering, coalitions, political positions, or causal influence. Publish only reusable source code, plans, and text-free aggregate receipts; leave source text and numerical row-level evidence in conversation artifacts. Never alter `un/`, `site/`, or previous release gates as part of this task.

@@ -173,3 +173,10 @@ unsupervised source exploration, and their current safeguards are not bypassed.
 [The local semantic comparison](SEMANTIC_COMPARISON.md) is implemented on the unchanged provisional populations. Six fits and 16 development-meeting omission refits completed, with full token coverage and source-bound caches. Lexical/semantic agreement is partial; authored opposition probes and poor 2-D fidelity prohibit stance or coalition claims. Human adjudication remains deferred and does not block this provisional research path.
 
 **Current next step:** implement nuisance-preserving development reference tests and pre-register a model-specific evaluation protocol. Keep all 37 reserved meetings unopened until separately authorized. Do not add more encoders or promote consensus percentages as diplomatic agreement before these checks.
+
+
+## Conditional development references and evaluation lock — 8 October 2026
+
+The [executed nuisance-reference assessment](NUISANCE_REFERENCE.md) tests source-segment-level cross-meeting lexical/semantic neighbor overlap and recorded-country recurrence against 999 within-meeting, length-bin shuffled development references. Both show conditional association; neither establishes statistically nonrandom diplomatic coalitions, political positions, or independence. The 37 temporally reserved meetings remain unopened. A metadata-only SHA256 evaluation lock freezes models, source scope, nuisance blocks, comparison metrics, multiplicity and one-shot evaluation gates without implementing or authorizing access to the reserved transcript text.
+
+**Next:** develop nuisance-only and known-structure negative controls and an independent source/attribution audit; seek separate authorization before implementing or running the locked holdout evaluation. Later human review remains required for policymaker-facing findings.
