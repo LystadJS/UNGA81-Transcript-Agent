@@ -121,6 +121,12 @@ async function main(){
       new Map([['gamma',.8],['delta',.3]])
     ];
     const expected={pca:UNClusters.pca(raw,2).scores,lsa:UNLSA.lsa(raw,2).scores};
+    const snapshots=[];
+    for(const [name,width,height,mobile] of [['desktop',1440,900,false],['mobile',390,844,true]]){
+      await cdp.send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:mobile?2:1,mobile});
+      await cdp.send('Page.navigate',{url:'http://127.0.0.1:'+port+PREFIX+'index.html'});
+      await cdp.until("document.readyState==='complete' && !!document.querySelector('#example')");
+      if(name==='desktop') {
     const browserScores=await cdp.evaluate("(async()=>{const w=new Worker('"+PREFIX+"worker.js');const result=await new Promise((resolve,reject)=>{w.onerror=e=>reject(new Error(e.message));w.onmessage=e=>{if(e.data.type==='result')resolve(e.data);if(e.data.type==='error')reject(new Error(e.data.message));};w.postMessage({id:731,action:'numeric_probe'});});w.terminate();return result.scores;})()");
     for(const method of ['pca','lsa']){
       assert.equal(browserScores[method].length,expected[method].length);
@@ -131,11 +137,8 @@ async function main(){
             method+' Node/Chromium score mismatch at '+i+','+j);
       }
     }
-    const snapshots=[];
-    for(const [name,width,height,mobile] of [['desktop',1440,900,false],['mobile',390,844,true]]){
-      await cdp.send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:mobile?2:1,mobile});
-      await cdp.send('Page.navigate',{url:'http://127.0.0.1:'+port+PREFIX+'index.html'});
-      await cdp.until("document.readyState==='complete' && !!document.querySelector('#example')");
+      }
+
       const started=Date.now();
       await cdp.evaluate("document.querySelector('#example').click()");
       await cdp.until("!document.querySelector('#results').hidden && !!document.querySelector('#observations table tbody tr')");
