@@ -51,6 +51,25 @@ class MirrorFallbackTests(unittest.TestCase):
             self.assertFalse(report["independent_un_source_crosswalk_complete"])
             self.assertFalse(report["publication_eligible"])
 
+    def test_invalid_country_codes_have_private_exception_rows(self):
+        with tempfile.TemporaryDirectory() as temp:
+            folder = Path(temp)
+            file = folder / "unresolved.rds"
+            pyreadr.write_rds(str(file), pd.DataFrame({
+                "ccode_iso": ["???", "USA"],
+                "year": [2018, 2018], "session": [73, 73],
+                "text": ["fictional invalid-code intervention", "fictional valid intervention"],
+            }))
+            report = run(folder / "audited", source=file)
+            y = next(x for x in report["coverage"]["per_year"] if x["year"] == 2018)
+            self.assertEqual(y["mirror_rows"], 1)
+            self.assertEqual(y["invalid_country_code_rows"], 1)
+            self.assertEqual(report["coverage"]["excluded_invalid_code_rows"], 1)
+            private = folder / "audited" / "private" / "mirror_code_exceptions_private.csv"
+            self.assertIn("???", private.read_text(encoding="utf-8"))
+            public = folder / "audited" / "public_aggregate" / "mirror_receipt.json"
+            self.assertNotIn("???", public.read_text(encoding="utf-8"))
+
     def test_bad_rds_format_fails_closed(self):
         with tempfile.TemporaryDirectory() as temp:
             folder = Path(temp)
