@@ -1,0 +1,95 @@
+name: Supervised country positions — synthetic acceptance
+
+on:
+  pull_request:
+    paths:
+      - 'research/supervised_country_positions/**'
+      - '.github/workflows/supervised-country-positions.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: supervised-positions-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  node-python:
+    name: Native Node 22 and Python 3
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Synthetic provenance, position and offline-script checks
+        run: node research/supervised_country_positions/test_positions.cjs
+      - name: Private annotation workflow synthetic checks
+        run: python3 research/supervised_country_positions/test_prepare_review.py
+      - name: Reproducible fictional report build and release guard
+        run: |
+          node research/supervised_country_positions/build_synthetic.cjs "$RUNNER_TEMP/synthetic-country-positions.json"
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          p = Path(os.environ["RUNNER_TEMP"]) / "synthetic-country-positions.json"
+          data = json.loads(p.read_text(encoding="utf-8"))
+          assert data["dataset_kind"] == "synthetic_engineering"
+          assert data["publication_eligible"] is False
+          assert data["daily_adapter_integrated"] is False
+          assert data["model_fitted"] is False
+          assert all(x["verification"] == "synthetic_only" for x in data["evidence"])
+          print("PASS unpublished, fictional research report")
+          PY
+
+  r-kernels:
+    name: Native R M12/M17 engineering regression
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+      - name: Install isolated dependency for existing M12/M17 kernels
+        run: Rscript -e 'if (!requireNamespace("glmnet", quietly = TRUE)) install.packages("glmnet", quiet = TRUE)'
+      - name: Reuse unchanged synthetic-only I6 kernels
+        run: Rscript research/supervised_country_positions/test_m12_m17_adapter.R
+
+  chromium:
+    name: Real desktop/mobile Chromium acceptance
+    needs: node-python
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated Playwright QA runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --prefix "$RUNNER_TEMP/supervised-qa" \
+            --ignore-scripts --no-audit --no-fund playwright@1.55.0
+          if command -v google-chrome >/dev/null; then
+            google-chrome --version
+            echo 'PW_CHANNEL=chrome' >> "$GITHUB_ENV"
+          else
+            "$RUNNER_TEMP/supervised-qa/node_modules/.bin/playwright" install --only-shell chromium
+          fi
+      - name: Browser evidence, local review, privacy, keyboard and mobile QA
+        env:
+          NODE_PATH: ${{ runner.temp }}/supervised-qa/node_modules
+        run: node research/supervised_country_positions/test_browser.cjs
