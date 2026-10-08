@@ -65,6 +65,9 @@ function rejection(fn,fragment){assert.throws(fn,e=>String(e.message).includes(f
     frame.observations[0].meeting_id=null;
     rejection(()=>F.validateFrame(frame),'Development observations');
     frame.observations[0].meeting_id='verified';
+    frame.observations[0].date='2026-10-07';
+    rejection(()=>F.validateFrame(frame),'pre-holdout');
+    frame.observations[0].date='2026-01-01';
     frame.observations[0].speech_id='unverified-person';
     rejection(()=>F.validateFrame(frame),'Unverified speech');
   });
@@ -84,7 +87,7 @@ function rejection(fn,fragment){assert.throws(fn,e=>String(e.message).includes(f
     assert(m.groups.every(group=>new Set(group.map(i=>rows[i].meeting_id)).size===1));
     const copy=structuredClone(rows);
     copy[0].source_family_id='joint-source';copy[1].source_family_id='joint-source';
-    copy[0].parent_id=null;copy[1].parent_id=null;
+    // Distinct parents but identical original source family must still be grouped.
     const joined=F.unionGroups(copy,'affiliation');
     assert(joined.groups.some(group=>group.includes(0)&&group.includes(1)),'Multi-affiliation source segment must remain together.');
   });
