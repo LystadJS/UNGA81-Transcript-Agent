@@ -1,0 +1,67 @@
+name: Graph research — spectral and diffusion (synthetic only)
+
+on:
+  push:
+    branches:
+      - feat/graph-based-learning
+    paths:
+      - "research/graph_methods/**"
+      - ".github/workflows/graph-based-learning-research.yml"
+  pull_request:
+    paths:
+      - "research/graph_methods/**"
+      - ".github/workflows/graph-based-learning-research.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  graph-research-synthetic:
+    name: graph-w3-python-synthetic
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONHASHSEED: "0"
+      SOURCE_DATE_EPOCH: "0"
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: research/graph_methods/requirements.txt
+      - name: Install pinned research/test dependencies
+        run: python -m pip install -r research/graph_methods/requirements.txt
+      - name: Run synthetic tests
+        run: python -m unittest discover -s research/graph_methods/tests -v
+      - name: Reproduce a text-free benchmark
+        run: python -m research.graph_methods.reproduce --fixture blobs --seed 81 --output "$RUNNER_TEMP/graph-benchmark"
+      - name: Verify interchange schema and declared ledger
+        run: |
+          python - <<'PY'
+          import json, pathlib, jsonschema, os
+          root=pathlib.Path(os.environ['RUNNER_TEMP'])/'graph-benchmark'
+          schema=json.loads(pathlib.Path('docs/parallel-work/interchange-v1.schema.json').read_text())
+          env=json.loads((root/'interchange-v1.json').read_text())
+          jsonschema.Draft202012Validator(schema, format_checker=jsonschema.FormatChecker()).validate(env)
+          assert env['publication_eligible'] is False
+          assert env['evaluation_role'] == 'engineering_only'
+          assert len(env['results']) == len(env['observations'])*len(env['models'])
+          report=json.loads((root/'receipt.json').read_text())
+          assert report['heldout_transcripts_opened']==0
+          assert report['attempts']['failed_primary']==0
+          print('Synthetic-only graph v1 receipt validated')
+          PY
+      - name: Upload text-free synthetic benchmark for coordinator
+        uses: actions/upload-artifact@v4
+        with:
+          name: graph-w3-synthetic-receipt
+          path: ${{ runner.temp }}/graph-benchmark
+          if-no-files-found: error
+          retention-days: 7
