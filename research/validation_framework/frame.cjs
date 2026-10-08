@@ -22,6 +22,7 @@ function validateFrame(frame){
     seen.add(o.id);
     assert(o.split===frame.split,'Mixed selection splits are prohibited.');
     assert(!RESERVED.has(o.date),'Reserved October 5–6 transcript metadata cannot enter development fitting.');
+    if(frame.split==='development')assert(/^\d{4}-\d{2}-\d{2}$/.test(o.date)&&o.date<='2026-10-04','Only verified pre-holdout development dates through October 4 are allowed.');
     assert(o.source_status==='available'||o.source_status==='unavailable','Unknown source availability.');
     const absent=o.source_status!=='available'||(Array.isArray(o.exclusion_reasons)&&o.exclusion_reasons.length>0);
     assert(o.text_sha256===null||hasHash(o.text_sha256),'Invalid text digest.');
@@ -75,9 +76,10 @@ function unionGroups(rows,unit){
     const r=rows[i];let affiliation=String(r.affiliation??r.country??'').trim().normalize('NFKC').toLowerCase();
     if(!affiliation||['unknown','unidentified','unmapped'].includes(affiliation)){affiliation='unidentified affiliation';unknownAffiliations++;}
     if(unit==='meeting')assert(typeof r.meeting_id==='string'&&r.meeting_id,'Whole-meeting resampling requires verified meeting IDs.');
-    const segment=r.parent_id ? 'parent:'+r.parent_id : r.source_family_id ? 'family:'+r.source_family_id : r.meeting_id ? 'meeting:'+r.meeting_id : null;
-    assert(segment,'No verified source-segment group; grouped resampling withheld.');
-    const labels=unit==='meeting'?['meeting:'+r.meeting_id]:['affiliation:'+affiliation,'segment:'+segment];
+    const segments=[...(r.parent_id?['parent:'+r.parent_id]:[]),...(r.source_family_id?['family:'+r.source_family_id]:[])];
+    if(!segments.length&&r.meeting_id)segments.push('meeting:'+r.meeting_id);
+    assert(segments.length,'No verified source-segment group; grouped resampling withheld.');
+    const labels=unit==='meeting'?['meeting:'+r.meeting_id]:['affiliation:'+affiliation,...segments];
     // Bipartite transitive closure ensures the same source segment is never divided across samples.
     for(const key of labels){if(keys.has(key))link(i,keys.get(key));else keys.set(key,i);}
   }
