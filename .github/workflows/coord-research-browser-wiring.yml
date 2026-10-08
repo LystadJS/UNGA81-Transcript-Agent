@@ -86,8 +86,33 @@ jobs:
       - name: W5 existing real-Chromium local execution regression
         shell: bash
         run: |
-          BROWSER_BIN="$(command -v google-chrome || command -v chromium)" \
-            node site/parallel/w05-browser/experimental/method-lab/test-browser.cjs
+          set -euo pipefail
+          browser="$(command -v google-chrome || command -v chromium)"
+          # Chromium can finish a valid receipt just before releasing its temporary
+          # profile directory. Retry only that exact cleanup race, and require a
+          # subsequent zero-exit execution; never conceal a failing test.
+          for attempt in 1 2 3; do
+            set +e
+            BROWSER_BIN="$browser" node site/parallel/w05-browser/experimental/method-lab/test-browser.cjs \
+              > "$RUNNER_TEMP/w5-chrome-$attempt.log" 2>&1
+            code=$?
+            set -e
+            cat "$RUNNER_TEMP/w5-chrome-$attempt.log"
+            if [ "$code" -eq 0 ]; then
+              echo "PASS: clean-exit W5 Chrome regression on attempt $attempt"
+              exit 0
+            fi
+            if grep -q 'ENOTEMPTY: directory not empty' "$RUNNER_TEMP/w5-chrome-$attempt.log" \
+                && grep -q '"status": "PASS"' "$RUNNER_TEMP/w5-chrome-$attempt.log" \
+                && grep -q '"numeric_parity"' "$RUNNER_TEMP/w5-chrome-$attempt.log"; then
+              echo "::warning::W5 browser receipt passed but Chrome cleanup raced (attempt $attempt); retrying full test."
+            else
+              echo "::error::W5 Chrome substantive test failure (attempt $attempt)."
+              exit "$code"
+            fi
+          done
+          echo "::error::W5 Chrome did not complete a clean-exit verification after 3 attempts."
+          exit 1
       - name: Upload synthetic-only browser evidence
         if: always()
         uses: actions/upload-artifact@v4
