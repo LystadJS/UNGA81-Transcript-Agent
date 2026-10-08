@@ -43,6 +43,17 @@ jobs:
         run: |
           node docs/parallel-work/validate-contract.cjs
           node docs/parallel-work/test-source-inventory-v1.cjs
+      - name: Supply exact source-only P2 adapter for private original-source replay
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2-w1-source-adapter-code-only
+          path: |
+            research/source_acquisition/p2_expansion/p2_to_w1_source_adapter.cjs
+            research/source_acquisition/p2_expansion/test_p2_to_w1.cjs
+            research/validation_framework/frame.cjs
+            research/validation_framework/schemas/input-frame.v1.schema.json
+          if-no-files-found: error
+          retention-days: 1
       - name: Parse additive W1 input schema
         run: |
           python - <<'PY'
