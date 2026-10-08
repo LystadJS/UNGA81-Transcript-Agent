@@ -84,3 +84,16 @@ Permanent text-free aggregate source receipts:
 5. W4 currently rejects null meeting IDs/source hashes for genuinely unavailable rows. **Do not invent these identifiers to make ingestion pass.** Fix the W4 source adapter under a subsequent approved change.
 
 **Release boundary:** Candidate coverage and archive hashes are P0–P1 research logistics, not W4 empirical statistical validation, political change, significance or publication eligibility.
+
+## Uploaded primary-source reconstruction — 8 October 2026
+
+Both previously unavailable original source files were supplied through the private chat (not added to public GitHub). The Dataverse `dataverse_files.zip` contained the exact v14.0 `UNGDC_1946-2025.tar.gz` and `Speakers_by_session.xlsx`; both **publisher-reported MD5 checksums and sizes passed**. ZIP CRC passed. The uploaded UN Library `GA_debate_speech_dataset_20260129.csv` passed expected header and link structure and its local SHA-256 was recorded, but an external publisher checksum was unavailable.
+
+**Aggregate outcomes:** 1,926 ISO3 country speech text files for 2016–2025 plus nine separately inventoried two-letter EU observer text files; 2,008 official UN speaker index rows in 2016–2024 (1,734 distinct country-session keys); 1,936 Harvard speaker metadata rows in 2016–2025; candidate union of 195 ISO3 entities across 1,950 year cells; 1,733 three-source **key-only** matches for 2016–2024. For 2025, all 190 Harvard country speech files have Harvard-associated speaker metadata but no independent UN index in this version. Historical-year missing cells remain **unknown rather than verified absent**.
+
+**Discrepancies:** Full confidential ledger with 719 open flags: 3 critical, 21 high, 694 review, 1 medium. It includes 273 country-year groups with multiple UN speaker records, 340 nonidentical normalized speaker-name strings (not proof of different people), five malformed raw Harvard workbook ISO values, and source-key gap flags. Nine EU texts are retained as non-state observations; they must not be counted as 193-state roster entries.
+
+**Important archival fidelity warning:** The v14 README documents **2024 mixed PDF/OCR/automated translation** methods and **2025 Whisper-1 ASR from simultaneous interpretation audio**. These are *not* observationally exchangeable with earlier written UN speech records without a validated method-stratified design. No original UN PV statement text was independently compared, no speakers were authenticated as individuals, no historical membership census was validated, and W4 empirical/inferential/publication eligibility remains **WITHHELD**.
+
+Aggregate public-safe receipt: [2026-10-08-uploaded-v14-reconciliation-aggregate.json](receipts/2026-10-08-uploaded-v14-reconciliation-aggregate.json). The full country-session inventory, source-linked discrepancy ledger, and executable local reconciliation script were delivered **privately** in the conversation and must not be committed to this public repository. The earlier GitHub Actions remote-download failure remains correctly recorded; it does not negate the separate verified local files.
+
