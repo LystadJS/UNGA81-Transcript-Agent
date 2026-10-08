@@ -120,6 +120,20 @@ class SyntheticLongitudinalTests(unittest.TestCase):
         with self.assertRaisesRegex(ContractError, 'Reserved holdout'):
             validate_panel(p)
 
+    def test_repeated_passages_do_not_outvote_other_meetings(self):
+        p = self.panel(roster=False)
+        original = cluster_correspondence(p['observations'], 'p0', 'p1')
+        record = next(r for r in p['observations'] if r['period'] == 'p1'
+                      and r['actor_id'] == 'A0' and r['source_family_id'] == 'fictional-series-0')
+        for i in range(80):
+            dup = dict(record, id=f'fictional-duplicate-{i}', cluster=8)
+            p['observations'].append(dup)
+        with_duplicates = cluster_correspondence(p['observations'], 'p0', 'p1')
+        self.assertEqual(original['overlap_edges'], with_duplicates['overlap_edges'])
+        self.assertEqual(original['eligible_shared_assigned'],
+                         with_duplicates['eligible_shared_assigned'])
+        self.assertEqual(original['unassigned_after'], with_duplicates['unassigned_after'])
+
     def test_anchor_degenerate_incomplete_and_unstable(self):
         p = self.panel()
         with self.assertRaises(AlignmentError):
