@@ -81,11 +81,17 @@ def verify(page, viewport: str, output: Path) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--outdir", type=Path, default=HERE / "previews" / "browser")
+    parser.add_argument("--browser-path", type=Path, default=None,
+                        help="Use an existing local Chromium/Chrome binary (no browser download).")
     args = parser.parse_args()
     output = args.outdir.resolve()
     output.mkdir(parents=True, exist_ok=True)
     with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(headless=True)
+        browser = playwright.chromium.launch(
+            headless=True,
+            executable_path=str(args.browser_path.resolve()) if args.browser_path else None,
+            args=["--no-sandbox", "--disable-dev-shm-usage"],
+        )
         try:
             for name, width, height in (
                 ("desktop", 1440, 900),
