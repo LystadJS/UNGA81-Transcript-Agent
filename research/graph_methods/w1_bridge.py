@@ -160,7 +160,9 @@ def _compare_identities(manifest: dict, envelope: dict) -> None:
                     "speech_id", "date", "source_status", "source_url", "json_pointer",
                     "start", "end", "country", "missing_reason",
                     "review_status", "exclusion_reasons"):
-            if w1.get(key) != w3.get(key):
+            left = w1.get(key, []) if key == "exclusion_reasons" else w1.get(key)
+            right = w3.get(key, []) if key == "exclusion_reasons" else w3.get(key)
+            if left != right:
                 raise GraphError("W1/W3 source identity/attribution mismatch: " + key)
     if (envelope["coverage"]["eligible"] != len(included) or
             envelope["coverage"]["excluded"] != len(excluded) or
