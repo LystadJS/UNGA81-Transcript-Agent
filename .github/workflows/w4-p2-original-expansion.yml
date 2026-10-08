@@ -5,11 +5,15 @@ on:
     paths:
       - 'research/source_acquisition/general_debate/p2_expansion_38_meetings.txt'
       - 'research/source_acquisition/general_debate/p2_expansion_probe.py'
+      - 'research/source_acquisition/general_debate/p2_w1_authenticated.py'
+      - 'research/source_acquisition/general_debate/test_p2_w1_authenticated.py'
       - '.github/workflows/w4-p2-original-expansion.yml'
   pull_request:
     paths:
       - 'research/source_acquisition/general_debate/p2_expansion_38_meetings.txt'
       - 'research/source_acquisition/general_debate/p2_expansion_probe.py'
+      - 'research/source_acquisition/general_debate/p2_w1_authenticated.py'
+      - 'research/source_acquisition/general_debate/test_p2_w1_authenticated.py'
       - '.github/workflows/w4-p2-original-expansion.yml'
   workflow_dispatch:
 permissions:
