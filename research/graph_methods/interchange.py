@@ -18,7 +18,7 @@ from .algorithms import SpectralPolicy, DiffusionPolicy
 def code_digest() -> str:
     h = hashlib.sha256()
     root = Path(__file__).resolve().parent
-    for filename in ("core.py", "algorithms.py", "interchange.py", "reproduce.py"):
+    for filename in ("core.py", "algorithms.py", "interchange.py", "reproduce.py", "w1_bridge.py"):
         if (root / filename).exists():
             h.update(filename.encode())
             h.update((root / filename).read_bytes())
