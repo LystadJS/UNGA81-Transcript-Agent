@@ -107,11 +107,28 @@ test('historical P2 original schema is supported only in sidecar, not old v1',()
     {id:'after',start:'2022-01-01',end:'2022-12-31'}];
   panel.observations[0].year=2019;panel.observations[1].year=2022;
   panel.observations[1].date='2022-09-22';
+  panel.observations[1].date_basis='independent_UN_index';
+  panel.observations[1].source_hash_basis='raw_response_bytes';
+  panel.observations[1].observed_p2_strong_match=true;
+  panel.observations[1].source_original_pdf_sha256=panel.observations[1].source_sha256;
   panel.observations.forEach(r=>{r.actor_kind='recorded_affiliation';r.actor_id='ZZZ';});
   const src={...upstream,source_schema:'un.p2.original-pv-reconciled.v1',
     source_hash_basis:'raw_response_bytes'};
   const i=fromPanel(panel,src);assert.equal(validateInventory(i).legacy_binding,'withheld');
   reject(()=>fromPanel(panel,src,{legacy}),'different original sources');
+});
+test('P2 observed claims are rejected without authentic source verification evidence',()=>{
+  const {upstream,panel}=mk();
+  panel.split='development';panel.periods=[
+    {id:'before',start:'2019-01-01',end:'2019-12-31'},
+    {id:'after',start:'2022-01-01',end:'2022-12-31'}];
+  panel.observations[0].year=2019;panel.observations[1].year=2022;
+  panel.observations[1].date='2022-09-22';
+  panel.observations.forEach(r=>{r.actor_kind='recorded_affiliation';r.actor_id='ZZZ';});
+  panel.observations[1].source_hash_basis='raw_response_bytes';
+  const genuine={...upstream,source_schema:'un.p2.original-pv-reconciled.v1',
+    source_hash_basis:'raw_response_bytes'};
+  reject(()=>fromPanel(panel,genuine),'P2 original document byte');
 });
 test('reserved October 2026 dates refused',()=>{
   const {upstream,panel}=mk();panel.periods[1].end='2026-10-06';
