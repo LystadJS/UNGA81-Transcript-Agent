@@ -10,6 +10,9 @@ on:
       - research/integration/test_p4_historical_w1_preflight.cjs
       - research/integration/p4_official_PV_date_supplement.cjs
       - research/integration/test_p4_official_PV_date_supplement.cjs
+      - research/integration/test_p5_harvard_receipt.py
+      - docs/parallel-work/P5_ORIGINAL_HARVARD_REPLAY_2026-10-08.md
+      - docs/parallel-work/P5_ORIGINAL_HARVARD_REPLAY_AGGREGATE_2026-10-08.json
       - .github/workflows/coord-p3-harvard-v14-provenance.yml
   pull_request:
     paths:
@@ -19,6 +22,9 @@ on:
       - research/integration/test_p4_historical_w1_preflight.cjs
       - research/integration/p4_official_PV_date_supplement.cjs
       - research/integration/test_p4_official_PV_date_supplement.cjs
+      - research/integration/test_p5_harvard_receipt.py
+      - docs/parallel-work/P5_ORIGINAL_HARVARD_REPLAY_2026-10-08.md
+      - docs/parallel-work/P5_ORIGINAL_HARVARD_REPLAY_AGGREGATE_2026-10-08.json
       - .github/workflows/coord-p3-harvard-v14-provenance.yml
 
 permissions:
@@ -36,6 +42,7 @@ jobs:
         with:
           python-version: '3.13'
       - run: python -m unittest discover -s research/integration -p test_p3_harvard_archive_audit.py -v
+      - run: python -m unittest discover -s research/integration -p test_p5_harvard_receipt.py -v
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
