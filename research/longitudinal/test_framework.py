@@ -264,6 +264,19 @@ class SyntheticLongitudinalTests(unittest.TestCase):
         with self.assertRaisesRegex(ContractError, 'fabricated vectors'):
             validate_panel(p3)
 
+    def test_unverified_inventory_is_not_misclassified_unavailable(self):
+        p = self.panel(roster=False, unavailable_family=('p1', 3))
+        for r in p['observations']:
+            if r['source_status'] != 'available':
+                r.update({'source_status': 'unverified', 'date': None,
+                          'meeting_id': None, 'source_family_id': None,
+                          'source_sha256': None, 'text_sha256': None})
+        self.assertEqual(validate_panel(p)['excluded'], 9)
+        z = compare(p, 'p0', 'p1', anchor_ids=ANCHORS, bootstrap_reps=50)
+        self.assertEqual(z['coverage']['unavailable_by_period']['p1'], 9)
+        with self.assertRaisesRegex(ContractError, 'source_status enum has no unverified'):
+            to_interchange_v1(p, z)
+
     def test_wholly_unavailable_comparison_period_withheld_not_zero(self):
         p = self.panel(roster=False)
         for r in p['observations']:
