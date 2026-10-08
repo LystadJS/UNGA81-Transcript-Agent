@@ -1,12 +1,15 @@
 # W3 / PR #16 — coordinator merge-review handoff
 
-**Disposition:** engineering review candidate; keep draft and unmerged until
-the W3 ownership exception is resolved. W1 was merged into main as an
-engineering source-aware validator at commit
-87dedd6ee7b30fb7cd1e26e8ef26e30ee8e52329 (PR #19). Actual W1↔W3
-synthetic interoperability has passed on GitHub PR merged-tree CI; private
-development-data validation and scientific release remain separate withheld
-gates. Do not inspect the 37 reserved October 5–6 transcripts.
+**Disposition:** engineering-only merge candidate. The owner approved W3's
+specific namespace and CI exception, recorded and **merged** through
+[coordinator PR #23](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/23)
+at `74bc2c70d0f7a79b8cf319d50b4d8d18f0978875`.
+W1 source-aware validation was previously merged at
+`87dedd6ee7b30fb7cd1e26e8ef26e30ee8e52329` (PR #19). W1↔W3
+synthetic interoperability has passed on PR merged-tree CI. The owner has
+authorized PR #16's merge **after final coordinator review and passing checks**.
+Real development-data validation and scientific release remain withheld.
+Do not inspect the 37 reserved October 5–6 transcripts.
 
 ## Baseline and file boundary
 
@@ -36,8 +39,8 @@ gates. Do not inspect the 37 reserved October 5–6 transcripts.
 | Cross-W1 metrics on authorized *real development* sources | NOT RUN | Requires actual source/representation cache, coordinator-supplied approval record and private output location |
 | Held-out or nuisance-calibrated cluster significance | NOT RUN / WITHHELD | Requires separately authorized scientific protocol |
 | Browser release and D1 integration | NOT APPLICABLE | No existing site, D1 or release file modified |
-| Exclusive ownership | EXCEPTION | User-requested graph_methods/ and unique CI conflict with coordinator OWNERSHIP.md's reserved W3 prefix and coordinator-owned CI |
-| Merger | BLOCKED for coordinator decision | Do not merge on green fixture CI alone |
+| Exclusive ownership | PASS — explicit owner exception | Coordinator PR #23 merged; OWNERSHIP.md now explicitly permits W3 graph_methods/ and its new, uniquely named read-only CI only |
+| Merger | AUTHORIZED — pending final CI/review | Owner authorized merge; coordinator must verify latest head and results, keep engineering-only publication status |
 
 ## Conditional W1 integration interface
 
@@ -116,8 +119,8 @@ source-unavailable/missing transcript to absence of an issue.
 
 1. Re-fetch main and PR #16, verify changed paths, current base/head SHA,
    artifact hashes, source privacy and all Actions job conclusions on that head.
-2. Approve the explicit W3 namespace/unique-CI exception in a coordinator-owned
-   decision record **or** relocate W3 files into the original ownership prefix.
+2. Verify the already-approved W3 namespace/unique-CI exception in the
+   merged coordinator-owned OWNERSHIP.md at 74bc2c70d0f7a79b8cf319d50b4d8d18f0978875.
 3. Confirm W1 merge SHA 87dedd6ee7b30fb7cd1e26e8ef26e30ee8e52329
    remains an ancestor of the PR test checkout and verify its Node code hash.
    Review W1's unsupported un.passage-frame.v1 interchange enum; no
@@ -128,11 +131,12 @@ source-unavailable/missing transcript to absence of an issue.
 5. Validate any later authorized real development data privately under W1's
    original source/meeting dependence contract, without opening the
    37 reserved transcripts or claiming inferential discovery.
-6. Coordinator alone merges after ownership approval, integrates accepted
-   methods with active browser workers, updates release manifests, and later
-   mirrors a separately verified public build.
+6. Coordinator may merge PR #16 only after passing exact-head CI and final
+   scope review. Browser wiring, release manifests and portfolio mirror remain
+   separate follow-on approval/work; none is implied by this engineering merge.
+   Verify the actual post-merge main commit and the path-limited synthetic CI.
 
-Recommended coordinator disposition now: **engineering review-ready, W1/W3
-synthetic interoperability verified, real private-source comparability and
-scientific release withheld, W3 ownership exception unresolved; leave PR #16
-unmerged until that coordinator decision.**
+Recommended coordinator disposition: **owner authorized engineering-only
+merge of W3 following latest-head CI and source/ownership review.** W1/W3
+synthetic interoperability verified; real source comparability, null
+calibration, political interpretation, and public release withheld.
