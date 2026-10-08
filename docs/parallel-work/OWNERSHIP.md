@@ -1,0 +1,28 @@
+# Exclusive namespace and branch ownership register
+
+**Status:** branch names below are reservations for worker use, not claims that the seven branches or PRs have been created. Each worker owns exactly one branch and the indicated files. No shared worker edits. Coordinator branch for this initial protocol: `coord/parallel-interchange-v1`.
+
+| ID | Reserved worker branch | Exclusive new implementation namespace | Allowed public tests and documentation |
+| --- | --- | --- | --- |
+| W1 | `feat/parallel-w01-source-validation` | `research/parallel/w01-source-validation/**` | Only inside that subtree |
+| W2 | `feat/parallel-w02-consensus` | `research/parallel/w02-consensus/**` | Only inside that subtree |
+| W3 | `feat/parallel-w03-spectral-diffusion` | `research/parallel/w03-spectral-diffusion/**` | Only inside that subtree |
+| W4 | `feat/parallel-w04-longitudinal` | `research/parallel/w04-longitudinal/**` | Only inside that subtree |
+| W5 | `feat/parallel-w05-browser` | `site/parallel/w05-browser/**` | Only inside that subtree; synthetic Node tests colocated |
+| W6 | `feat/parallel-w06-visualization` | `site/parallel/w06-visualization/**` | Only inside that subtree |
+| W7 | `feat/parallel-w07-diplomat-ux` | `site/parallel/w07-diplomat-ux/**` | Only inside that subtree |
+
+Worker code may **import** existing production APIs and the read-only v1 schema, but must not rewrite their source. Each PR contains files **only** in its owned prefix. Worker-specific documentation/tests go inside that prefix, not `docs/**` or `tools/**`. Workers can give the coordinator an integration patch proposal in the PR description. Do not add a worker to an existing `site/index.html`, `site/latent.html` or loader by directly changing that file.
+
+### Coordinator-only shared surfaces
+
+- `AGENTS.md`, `README.md`, `docs/NEXT_STEPS.md`, all `docs/parallel-work/**` and shared contract versions.
+- Existing browser entry points and loaders: `site/index.html`, `site/latent.html`, `site/app.js`, `site/analysis-ui.js`, `site/latent-ui.js`, `site/latent-worker.js`, `site/cluster-worker.js`, `site/app.css`, `site/analysis.css`, and any existing referenced shared site asset. **Treat all other pre-existing `site/**` paths as integration-owned too**, even if not listed.
+- `site/release.json`, `site/numerics-manifest.json`, `un/**/PACKAGE_MANIFEST.json`, built/public manifests, `tools/build_pages.py`, `.github/workflows/**`, and all existing `un/**`, `research/corpus/**`, `research/reference_tests/**` and shared `research/engines*.R` source.
+- `LystadJS/LystadJS.github.io` mirror, workflow, portfolio pages and live verification.
+
+**Immutables even for the coordinator (unless a separate explicit authorized protocol is provided):** frozen held-out lock and protocol; the 37 October 5–6 transcript contents; original corpus/source hash records; 24 completed owner review decisions; D1 O1–O5 gates. Do not touch these as part of the seven-workstream integration.
+
+### Ownership enforcement
+
+Before reviewing any worker PR, list every changed filename (including renames, symlinks, submodules, workflow changes and deleted files). Reject any file outside its namespace, including path traversal or changes introduced through generated assets. Reject competing PRs claiming one output/entry-point namespace, even if the Git diff does not mechanically conflict. Reserve a coordinator integration PR to connect accepted modules to existing browser files. Workers never independently merge, enable auto-merge or force-push.
