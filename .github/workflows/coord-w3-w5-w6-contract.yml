@@ -1,0 +1,141 @@
+name: Coordinator W3 to W5/W6 interface validation (synthetic only)
+
+on:
+  pull_request:
+    paths:
+      - "research/integration/w3_w5_w6/**"
+      - "docs/parallel-work/W3_W5_W6_INTEGRATION_REVIEW.md"
+      - ".github/workflows/coord-w3-w5-w6-contract.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pinned-consumer-contracts:
+    name: W3 source output against pinned real W5/W6 draft consumers
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PYTHONHASHSEED: "0"
+      SOURCE_DATE_EPOCH: "0"
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      W5_SHA: "2d78dd8b3bba60b61094179a8dea84f78f1f45ed"
+      W6_SHA: "b86c90175e8c2f184062b02db996893319b3339c"
+    steps:
+      - name: Checkout merged W3/W1 and coordinator-only code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Checkout pinned W5 draft into isolated scratch tree (read only)
+        uses: actions/checkout@v4
+        with:
+          repository: LystadJS/UNGA81-Transcript-Agent
+          ref: 2d78dd8b3bba60b61094179a8dea84f78f1f45ed
+          path: .coordinator-input/w5
+          persist-credentials: false
+      - name: Checkout pinned W6 draft into isolated scratch tree (read only)
+        uses: actions/checkout@v4
+        with:
+          repository: LystadJS/UNGA81-Transcript-Agent
+          ref: b86c90175e8c2f184062b02db996893319b3339c
+          path: .coordinator-input/w6
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: research/graph_methods/requirements.txt
+      - name: Verify pinned upstream SHAs and install W3 dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C .coordinator-input/w5 rev-parse HEAD)" = "$W5_SHA"
+          test "$(git -C .coordinator-input/w6 rev-parse HEAD)" = "$W6_SHA"
+          python -m pip install -r research/graph_methods/requirements.txt
+      - name: Build source-linked native W3 synthetic scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m research.integration.w3_w5_w6.make_synthetic --output "$RUNNER_TEMP/w3-consumer-fixtures"
+      - name: Execute original pinned W5 and W6 Node tests (read only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          node .coordinator-input/w5/site/parallel/w05-browser/experimental/method-lab/test-method-lab.cjs
+          node --test .coordinator-input/w6/site/experimental/evidence-viz/tests.cjs
+      - name: Execute merged W1/W3 provenance and numerical regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          node docs/parallel-work/validate-contract.cjs
+          node research/validation_framework/tests/test_framework.cjs
+          node research/validation_framework/tests/test_schema.cjs
+          python -m unittest discover -s research/graph_methods/tests -v
+      - name: Check W3-to-W5/W6 interoperability against authentic consumers
+        shell: bash
+        env:
+          COORD_W3_FIXTURES: ${{ runner.temp }}/w3-consumer-fixtures
+          COORD_W5_CONTRACTS: ${{ github.workspace }}/.coordinator-input/w5/site/parallel/w05-browser/experimental/method-lab/contracts.js
+          COORD_W5_ADAPTERS: ${{ github.workspace }}/.coordinator-input/w5/site/parallel/w05-browser/experimental/method-lab/adapters.js
+          COORD_W6_RENDERER: ${{ github.workspace }}/.coordinator-input/w6/site/experimental/evidence-viz/evidence-viz.js
+        run: |
+          set -euo pipefail
+          node --test research/integration/w3_w5_w6/test-integration.cjs
+      - name: Write text-free W3/W5/W6 integration receipt
+        shell: bash
+        env:
+          COORD_W3_FIXTURES: ${{ runner.temp }}/w3-consumer-fixtures
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/w3-consumer-contract-receipt"
+          node - <<'JS'
+          const fs=require('node:fs'),path=require('node:path');
+          const B=require('./research/integration/w3_w5_w6/bridge.cjs');
+          const cohorts={};
+          for(const key of ['small','missing','large']){
+            const b=B.fromDirectory(path.join(process.env.COORD_W3_FIXTURES,key));
+            const v=B.forW6Network(b);
+            cohorts[key]={
+              counts:b.population,
+              graph_edge_count:b.receipt.graph.edge_count,
+              graph_connected_components:b.receipt.graph.connected_components,
+              w5:'compatible_read_only_source_v1',
+              w6_status:v.status,
+              w6_reason:v.reason||v.panel?.reason||null,
+              source_sha256:b.envelope.upstream.source_sha256,
+              selection_sha256:b.envelope.upstream.selection_sha256,
+              code_sha256:b.envelope.producer.code_sha256,
+              input_files_sha256:b.input_sha256
+            };
+          }
+          const report={
+            schema:'un.coordinator.w3-w5-w6-synthetic-contract-receipt.v1',
+            release:'engineering_only',publication_eligible:false,
+            w5_snapshot:process.env.W5_SHA,w6_snapshot:process.env.W6_SHA,
+            source:'native W3 synthetic output; no transcript text',
+            heldout_transcripts_opened:0,cohorts,
+            limitation:'Not scientific evidence, a browser release or a model of political influence.'
+          };
+          fs.writeFileSync(path.join(process.env.RUNNER_TEMP,'w3-consumer-contract-receipt','receipt.json'),
+            JSON.stringify(report,null,2)+'\n');
+          console.log(JSON.stringify({scenarios:Object.fromEntries(Object.entries(cohorts).map(
+            ([name,v])=>[name,{eligible:v.counts.eligible,excluded:v.counts.excluded,w6_status:v.w6_status}]))
+          },null,2));
+          JS
+      - name: Upload source-free coordination artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coordinator-w3-w5-w6-synthetic-contract
+          path: |
+            ${{ runner.temp }}/w3-consumer-contract-receipt
+            ${{ runner.temp }}/w3-consumer-fixtures/*/SHA256.json
+            ${{ runner.temp }}/w3-consumer-fixtures/*/receipt.json
+          if-no-files-found: error
+          retention-days: 7
