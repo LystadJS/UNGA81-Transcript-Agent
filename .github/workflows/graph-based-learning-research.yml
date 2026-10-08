@@ -98,6 +98,29 @@ jobs:
           assert report['attempts']['failed_primary']==0
           print('Synthetic-only graph v1 receipt validated')
           PY
+      - name: Archive W1-W3 synthetic interoperability receipt (PR only)
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m research.graph_methods.tests.test_w1_interop --receipt "$RUNNER_TEMP/graph-benchmark/w1-w3-interoperability.json"
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          root=Path(os.environ["RUNNER_TEMP"])/"graph-benchmark"
+          sha_file=root/"SHA256.json"
+          digests=json.loads(sha_file.read_text(encoding="utf8"))
+          name="w1-w3-interoperability.json"
+          evidence=json.loads((root/name).read_text(encoding="utf8"))
+          assert evidence["publication_eligible"] is False
+          assert evidence["heldout_transcripts_opened"] == 0
+          assert evidence["frame"]["eligible"] == 24
+          assert evidence["frame"]["excluded"] == 1
+          assert evidence["comparison"]["source_validation"]["meeting_group_schedule"]["status"] == "scheduled"
+          digests[name]=hashlib.sha256((root/name).read_bytes()).hexdigest()
+          sha_file.write_text(json.dumps(digests,indent=2,sort_keys=True)+"\n", encoding="utf8")
+          print("W1-W3 synthetic receipt archived with SHA256 verification")
+          PY
       - name: Upload text-free synthetic benchmark for coordinator
         uses: actions/upload-artifact@v4
         with:
