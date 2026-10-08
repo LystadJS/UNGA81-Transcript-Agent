@@ -144,7 +144,8 @@ def main():
     parser.add_argument('--selftest',action='store_true')
     args=parser.parse_args()
     if args.selftest:
-        meetings=np.tile(np.arange(8,dtype=np.int16),(99,1))
+        meetings=np.array([[8*(i//5)+j for j in range(8)]
+                           for i in range(99)],dtype=np.int16)
         mask=np.ones((99,8),dtype=np.int8)
         result=experiment(mask,meetings,'iid_year',8)
         assert result['year_welch_t']['attempted']==8
