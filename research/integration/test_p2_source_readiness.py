@@ -143,7 +143,7 @@ class P2SourceReadinessTests(unittest.TestCase):
     def test_wrong_original_meeting_is_never_strong(self):
         t = fake_tables()
         t["Wrong PV Controls"][0]["Wrong 7gram overlap"]="0.91"
-        with self.assertRaisesRegex(S.SourceGateError,"wrong-document"):
+        with self.assertRaisesRegex(S.SourceGateError,"Wrong-document"):
             S.audit_tables(t,self.expected)
 
     def test_pdf_byte_check_is_strict_and_local(self):
