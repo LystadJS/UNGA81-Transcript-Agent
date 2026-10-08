@@ -168,3 +168,7 @@ The three remaining sampled country entries are descriptive source-linked
 expressions, not verified government-wide positions. Continue independent
 speaker-boundary and exact-proposition work on development only. Do not release
 the frozen holdout without separate authorization.
+
+## Quick-reader benchmark expansion — 8 October 2026
+
+[The source-bound adjudication benchmark](QUICK_READER_ADJUDICATION_BENCHMARK.md) now covers every one of the 13 additional available development meetings (923 source segments), on top of the prior seven-meeting QA. Its four separate source-dependent metrics and explicit abstention denominators expose substantial missing specific-context coverage. The self-contained review packet records assistant suggestions separately; no new human gold labels exist. **Next:** acquire independent adjudication of the provisional cases, specify a new context-extraction rule on a separate development subset, and evaluate without tuning to the same benchmark. Do not open the 37 reserved meetings or change the frozen evaluation lock.

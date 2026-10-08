@@ -3,7 +3,7 @@
   'use strict';
   const ISSUES = Object.freeze([
     {id:'human_rights',label:'Human rights and accountability',pattern:/\b(?:human rights|civil liberties|civil rights|racial discrimination|accountability|humanitarian law|fundamental freedom|rights violation)\b/i},
-    {id:'humanitarian',label:'Humanitarian assistance',pattern:/\b(?:humanitarian|refugees?|displaced persons|food security|relief efforts?|humanitarian access|civilian protection|humanitarian assistance)\b/i},
+    {id:'humanitarian',label:'Humanitarian assistance',pattern:/\b(?:humanitarian(?!\s+(?:law|rights)\b)|refugees?|displaced persons|food security|relief efforts?|humanitarian access|civilian protection|humanitarian assistance)\b/i},
     {id:'peace_security',label:'Peace and security',pattern:/\b(?:ceasefire|disarmament|peacekeeping|armed conflict|nuclear weapon|nuclear disarmament|security council|military intervention|peace process)\b/i},
     {id:'development',label:'Development and economic cooperation',pattern:/\b(?:sustainable development|economic development|technical assistance|financing|poverty|public infrastructure|economic growth|education|trade cooperation|development cooperation)\b/i},
     {id:'climate',label:'Climate and the environment',pattern:/\b(?:climate change|climate action|greenhouse gas|biodiversity|renewable energy|environmental protection|energy transition|emissions)\b/i},
@@ -71,7 +71,7 @@
     if(group && !/^(?:national delegation|country delegation|national representative)$/i.test(group) &&
        group.toLowerCase()!==affiliation.toLowerCase())return true;
     const opening=String(record.text||'').slice(0,700);
-    return /\b(?:i|we|my delegation|our delegation)\s+(?:have the honou?r to\s+|am\s+(?:honou?red|privileged)\s+to\s+|will\s+)?(?:speak|speaking|address|deliver)(?:\s+[^.!?]{0,65})?\s+on behalf of\b/i.test(opening) &&
+    return /\b(?:i|we|my delegation|our delegation)\s+(?:have the honou?r (?:to|of)\s+|am\s+(?:honou?red|privileged)\s+to\s+|will\s+)?(?:speak|speaking|address|deliver(?:ing|ed)?|make|making)(?:\s+[^.!?]{0,65})?\s+on behalf of\b/i.test(opening) &&
       !/\bon behalf of (?:my|our) (?:country|delegation|government)\b/i.test(opening);
   }
   function agendaCues(rows){
@@ -104,6 +104,10 @@
       const action=tail.match(/^(?:(?:strongly|fully|firmly|clearly|also|continue to|repeatedly|deeply)\s+){0,3}(do not support|cannot support|are against|express concern|are concerned|have concerns|stand behind|call for|commit to|object to|endorse|support(?:s)?|welcome(?:s)?|urge(?:s)?|advocate(?:s)?|favor(?:s)?|favour(?:s)?|oppose(?:s)?|reject(?:s)?|condemn(?:s)?|deplore(?:s)?|back(?:s)?)\b/i);
       if(!action)continue;
       const object=tail.slice(action[0].length).trim();
+      // Support for a document or concern about someone mentioned in a clause
+      // is not support for every issue mentioned later in that clause.
+      if(/^(?:(?:the|an?|this|that)\s+)?(?:oral\s+)?(?:report|update|briefing|statement|presentation|remarks|dialogue)\b/i.test(object) ||
+         /^(?:that|whether|how|why)\b/i.test(object))continue;
       const objective=object.split(/\s+/).slice(0,10).join(' ');
       const targetAt=objective.search(issue.pattern);if(targetAt<0)continue;
       // A secondary noun in another policy object's complement is not itself

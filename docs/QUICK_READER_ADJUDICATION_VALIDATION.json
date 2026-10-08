@@ -1,0 +1,54 @@
+{
+  "schema": "un.quick-reader-adjudication-validation.v1",
+  "scope": "cached development October 1-2; 13 additional meetings; no reserved transcripts",
+  "base_source_sha256": "e8fb980cf638e2aef39d0ca3564836c6120201a059e806ccaaee3fd5cc4f593e",
+  "prior_reviewed_meetings": 7,
+  "additional_meetings": 13,
+  "additional_source_segments": 923,
+  "benchmark_cases": {
+    "original_predictions": 20,
+    "abstention_opportunities": 226,
+    "sampled_abstentions": 36,
+    "curated_context_anchors": 27,
+    "total_review_cases": 83
+  },
+  "review_status": "assistant_provisional_not_owner_confirmed",
+  "provisional_original": {
+    "attribution_correct": 19,
+    "attribution_denominator": 20,
+    "stance_supported": 15,
+    "stance_denominator": 20,
+    "joint_supported": 14,
+    "joint_denominator": 20,
+    "context_anchors_covered": 7,
+    "context_anchors_assessed": 27,
+    "abstentions_appropriately_withheld": 16,
+    "abstentions_possible_misses": 12,
+    "abstentions_uncertain": 8
+  },
+  "post_repair_same_sample": {
+    "joint_supported": 14,
+    "assessable": 14,
+    "note": "targeted in-sample correction; not a held-out precision estimate"
+  },
+  "holdout_transcripts_opened": 0,
+  "external_genai_calls": 0,
+  "limits": "Not an independent human benchmark, general precision/recall or verified policy attribution. Revalidate after independent reviewer input.",
+  "local_validation": {
+    "new_synthetic_tests_passed": 24,
+    "existing_quick_reader_checks_passed": 25,
+    "context_checks_passed": 25,
+    "attribution_checks_passed": 11,
+    "meeting_picker_checks_passed": 12,
+    "browser_analysis_checks_passed": 31,
+    "offline_browser_viewports": [
+      1440,
+      390
+    ],
+    "synthetic_export_resume": "PASS",
+    "report_render": "PASS",
+    "external_requests": 0,
+    "heldout_accesses": 0
+  },
+  "remote_ci_status": "pending_publication"
+}

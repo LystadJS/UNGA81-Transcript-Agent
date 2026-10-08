@@ -9,12 +9,13 @@
     "reusable settings plans",
     "date-first individual meeting selection",
     "offline source-linked executive quick reader in individual meeting reports",
-    "source-audited courtesy and collective spokesperson safeguards with recorded agenda cues"
+    "source-audited courtesy and collective spokesperson safeguards with recorded agenda cues",
+    "source-bound 13-meeting development adjudication benchmark and conservative country-expression fixes"
   ],
   "meeting_routes": "Validated canonical UN inventory paths, including HRC and treaty-body routes",
   "acceptance_run": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37651586467",
   "numerical_kernels_changed": false,
   "D1_publication_gates_changed": false,
-  "analysis_status": "exploratory; source-checked seven-meeting development audit, conservative contextual country expressions; no official policy inference or GenAI API",
-  "quick_reader_engine": "un.meeting-quick-reader.v1.1-source-checked"
+  "analysis_status": "exploratory; 20-meeting development QA with 13 additional source-linked meetings, 83 assistant-provisional benchmark cases; context omissions remain, no official policy inference or GenAI API",
+  "quick_reader_engine": "un.meeting-quick-reader.v1.2-context-and-adjudication"
 }
