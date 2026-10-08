@@ -29,7 +29,14 @@ def check(browser,url,out,name):
     svg=out/('research-'+name+'.svg');download.value.save_as(str(svg))
     assert ET.parse(svg).getroot().tag.endswith('svg')
     page.screenshot(path=str(out/('research-'+name+'.png')),full_page=True)
-    assert page.evaluate('document.documentElement.scrollWidth')<=width+1,'Page overflow'
+    page_width=page.evaluate('document.documentElement.scrollWidth')
+    if page_width>width+1:
+      offenders=page.evaluate("""() => [...document.querySelectorAll('body *')].map(el=>{
+        const b=el.getBoundingClientRect();
+        return {tag:el.tagName,cls:String(el.className).slice(0,70),
+          left:Math.round(b.left),right:Math.round(b.right),width:Math.round(b.width)};
+      }).filter(x=>x.right>document.documentElement.clientWidth+1).slice(0,18)""")
+      raise AssertionError(f'Page overflow on {name}: width={page_width} viewport={width}; offenders={offenders}')
     fixture=json.loads(page.evaluate('JSON.stringify(UNEvidenceFixture.fixture())'))
     sample=out/('synthetic-'+name+'.json');sample.write_text(json.dumps(fixture),encoding='utf-8')
     page.locator('#research-file').set_input_files(sample)
