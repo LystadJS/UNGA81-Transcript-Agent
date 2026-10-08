@@ -49,7 +49,7 @@ run_supervised_synthetic <- function(method_id, input) {
   stop_if(!file.exists(kernel_path),
           "Run the adapter from the UNGA81 repository root")
   environment <- new.env(parent = globalenv())
-  sys.source(kernel_path, envir = environment)
+  source(kernel_path, local = environment, chdir = FALSE, echo = FALSE)
   fitted <- environment$i6_compute(method_id, input$kernel)
   stop_if(!identical(fitted$publication_eligible, FALSE) ||
             !identical(fitted$daily_adapter_integrated, FALSE) ||
