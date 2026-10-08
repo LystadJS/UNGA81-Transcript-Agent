@@ -88,7 +88,53 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          BROWSER_BIN="$CHROME_BIN" node .coordinator-input/w5/site/parallel/w05-browser/experimental/method-lab/test-browser.cjs
+          # Chrome 154 can keep writing an ephemeral profile immediately after
+          # SIGTERM, causing the original W5 test's final rmSync to raise
+          # ENOTEMPTY *after its evidence assertions pass*. Preserve the
+          # pinned W5 source, all assertions and failure behavior. Only add
+          # bounded native Node cleanup retries for that exact temporary profile.
+          cat > "$RUNNER_TEMP/w5-chrome-profile-cleanup.cjs" <<'JS'
+          'use strict';
+          const fs = require('node:fs');
+          const os = require('node:os');
+          const path = require('node:path');
+          const childProcess = require('node:child_process');
+          const remove = fs.rmSync;
+          const spawn = childProcess.spawn;
+          const prefix = path.join(os.tmpdir(), 'un-method-lab-chromium-');
+          // The Chrome launcher may exit before the headless Chrome children.
+          // Give only this ephemeral browser its own process group so the
+          // original test's SIGTERM kills the group, not just the launcher.
+          childProcess.spawn = function groupedTestChrome(bin, args, options) {
+            if (Array.isArray(args) && args.some(arg =>
+                typeof arg === 'string' &&
+                arg.startsWith('--user-data-dir=' + prefix))) {
+              const child = spawn.call(this, bin, args, {...options, detached: true});
+              const kill = child.kill.bind(child);
+              child.kill = function stopTestChrome(signal = 'SIGTERM') {
+                if (!Number.isSafeInteger(child.pid) || child.pid <= 1)
+                  return kill(signal);
+                try { process.kill(-child.pid, signal); return true; }
+                catch (error) {
+                  if (error.code !== 'ESRCH') throw error;
+                  return kill(signal);
+                }
+              };
+              return child;
+            }
+            return spawn.apply(this, arguments);
+          };
+          fs.rmSync = function checkedProfileRemoval(target, options) {
+            if (typeof target === 'string' && target.startsWith(prefix) &&
+                options && options.recursive === true && options.force === true) {
+              return remove.call(fs, target, {
+                ...options, maxRetries: 12, retryDelay: 100
+              });
+            }
+            return remove.apply(this, arguments);
+          };
+          JS
+          BROWSER_BIN="$CHROME_BIN" node --require "$RUNNER_TEMP/w5-chrome-profile-cleanup.cjs" .coordinator-input/w5/site/parallel/w05-browser/experimental/method-lab/test-browser.cjs
       - name: W5 independent Playwright desktop/mobile screenshots and keyboard/privacy
         shell: bash
         run: |
