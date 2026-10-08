@@ -6,6 +6,7 @@
   const controller=new window.UNMethodLabTasks.TaskController('worker.js');
   const el=id=>document.getElementById(id);
   const state={views:[],kind:null,archive_text:null,comparison:null,resource:null};
+  let epoch=0;
   const bytes=n=>Number.isFinite(n) ? (n/1024/1024).toFixed(2)+' MiB' : 'unavailable';
   const integer=n=>Number.isFinite(n) ? String(n) : 'unavailable';
   function node(tag,text,className) {
@@ -43,6 +44,7 @@
     el('resources').textContent=[elapsed,input,retained,memory].filter(Boolean).join(' · ');
   }
   function invalidate() {
+    epoch++;
     controller.cancel();
     state.views=[];state.kind=null;state.archive_text=null;state.comparison=null;state.resource=null;
     el('results').hidden=true;
@@ -209,7 +211,8 @@
       (result.runtime_warning || 'Inspect fit coverage and exclusions before interpreting patterns.'));
     busy(false);
   }
-  async function task(action, fields) {
+  async function task(action, fields, expectedEpoch=epoch) {
+    if(expectedEpoch !== epoch)return;
     busy(true);
     status('Validating source identity and input versions…');
     try {
@@ -217,16 +220,17 @@
         status(event.message || 'Working: '+event.phase);
         resource(event);
       });
+      if(expectedEpoch !== epoch)return;
       if(result.kind==='export') {
         saveFile('method-lab-saved-run.json',result.text);
         resource(result);
         status('Source-bound method-lab archive exported. No refit was performed.');
       } else adopt(result);
     } catch(error) {
+      if(expectedEpoch !== epoch)return;
       status(error.message,true);
-      busy(false);
     }
-    busy(false);
+    if(expectedEpoch === epoch)busy(false);
   }
   function saveFile(name,text) {
     const blob=new Blob([text],{type:'application/json'});
@@ -254,33 +258,40 @@
     });
     el('open').addEventListener('click',async()=>{
       invalidate();
+      const ticket=epoch;
       try {
         const text=await read(el('archive').files?.[0],C.MAX_ARCHIVE_BYTES,'saved run');
+        if(ticket!==epoch)return;
         const header=JSON.parse(text.replace(/^\uFEFF/,''));
         const authorization=header.schema==='un.latent-saved-run.v1'?confirmDevelopment():null;
-        await task('open',{text,authorization});
-      }catch(error){status(error.message,true);}
+        await task('open',{text,authorization},ticket);
+      }catch(error){if(ticket===epoch)status(error.message,true);}
     });
     el('execute').addEventListener('click',async()=>{
       invalidate();
+      const ticket=epoch;
       try {
         const authorization=confirmDevelopment();
         const source=await read(el('corpus').files?.[0],40*1024*1024,'local source');
         const planText=await read(el('plan').files?.[0],1024*1024,'latent method plan');
+        if(ticket!==epoch)return;
         const parsed=JSON.parse(source.replace(/^\uFEFF/,''));
         const kind=parsed.schema==='un.browser.corpus.v1'?'corpus':
           parsed.schema==='un.reviewed-speech-analysis.v1'?'reviewed':null;
         if(!kind)throw new Error('Run requires a current browser corpus or validated reviewed bundle.');
-        await task('run_local',{authorization,payload:{kind,text:source},plan:JSON.parse(planText)});
-      }catch(error){status(error.message,true);}
+        await task('run_local',{authorization,payload:{kind,text:source},plan:JSON.parse(planText)},ticket);
+      }catch(error){if(ticket===epoch)status(error.message,true);}
     });
     el('example').addEventListener('click',async()=>{
       invalidate();
+      const ticket=epoch;
       try{
         const response=await fetch('./fixtures/synthetic-contract.json',{cache:'no-store'});
         if(!response.ok)throw new Error('Synthetic fixture unavailable.');
-        await task('open',{text:await response.text()});
-      }catch(error){status(error.message,true);}
+        const text=await response.text();
+        if(ticket!==epoch)return;
+        await task('open',{text},ticket);
+      }catch(error){if(ticket===epoch)status(error.message,true);}
     });
     el('cancel').addEventListener('click',()=>{
       controller.cancel();
