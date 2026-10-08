@@ -1,0 +1,57 @@
+name: P2 encrypted original UN meeting-document retrieval
+on:
+  push:
+    branches: ['coord/p2-secure-original-pvs']
+    paths:
+      - 'research/source_acquisition/general_debate/p2_secure_originals.py'
+      - 'research/source_acquisition/general_debate/p2_initial_meetings.txt'
+      - '.github/workflows/p2-secure-original-pv-retrieval.yml'
+  pull_request:
+    paths:
+      - 'research/source_acquisition/general_debate/p2_secure_originals.py'
+      - 'research/source_acquisition/general_debate/p2_initial_meetings.txt'
+      - '.github/workflows/p2-secure-original-pv-retrieval.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  encrypted-official-documents:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned authenticated encryption library
+        run: python -m pip install cryptography==44.0.3
+      - name: Check PDF extraction utilities
+        run: command -v pdftotext && command -v pdfinfo
+      - name: Test sealed envelope with synthetic bytes only
+        run: python research/source_acquisition/general_debate/p2_secure_originals.py --selftest
+      - name: Acquire publicly accessible official PV document bytes and encrypt
+        env:
+          W4_RECIPIENT_PUBLIC_KEY: "E6z9F0BVSO7zhA9igzvB1wh98FyRTq0MsyNOqem+YSU="
+        run: |
+          python research/source_acquisition/general_debate/p2_secure_originals.py \
+            --symbols research/source_acquisition/general_debate/p2_initial_meetings.txt \
+            --public-key "$W4_RECIPIENT_PUBLIC_KEY" \
+            --sealed-output "$RUNNER_TEMP/p2-sealed/official-originals.sealed" --workers 4
+      - name: Fail closed on artifacts other than ciphertext
+        run: |
+          python - <<'PY'
+          import os,pathlib
+          p=pathlib.Path(os.environ['RUNNER_TEMP'])/'p2-sealed'
+          files=list(p.iterdir())
+          assert len(files)==1 and files[0].name=='official-originals.sealed'
+          assert files[0].read_bytes()[:8]==b'UNW4P2\x00\x01'
+          print('PASS: only recipient-encrypted ciphertext is exported; no original PDF or speech text')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2-recipient-encrypted-un-originals
+          path: ${{ runner.temp }}/p2-sealed/official-originals.sealed
+          if-no-files-found: error
+          retention-days: 1
