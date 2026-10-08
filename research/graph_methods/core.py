@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
+from datetime import date
 import hashlib
 import json
 from typing import Any
@@ -80,6 +81,8 @@ def validate_input(manifest: dict, values: np.ndarray) -> dict:
         raise GraphError("Pinned representation ID, version, basis and training selection required")
     if not all(is_sha(rep.get(key)) for key in ("matrix_sha256", "training_selection_sha256")):
         raise GraphError("Missing representation/matrix integrity hashes")
+    if rep.get("distance_geometry") not in {"euclidean", "cosine"}:
+        raise GraphError("Representation must name an explicit distance geometry")
     if rep["feature_basis"] not in {"tfidf_pca", "tfidf_lsa", "minilm_pinned", "synthetic"}:
         raise GraphError("Unrecognized feature basis; no implicit basis alignment")
     if rep["feature_basis"] == "minilm_pinned" and not is_sha(rep.get("model_revision_sha256")):
@@ -98,7 +101,15 @@ def validate_input(manifest: dict, values: np.ndarray) -> dict:
         ids.add(row["id"])
         if not is_sha(row.get("text_sha256")):
             raise GraphError("Missing source-linked observation text hash")
-        if row.get("date") in RESERVED_DATES or row.get("split", manifest["split"]) != manifest["split"]:
+        stamp = row.get("date")
+        if not isinstance(stamp, str) or len(stamp) != 10:
+            raise GraphError("Missing complete observation date; do not impute one")
+        try:
+            if date.fromisoformat(stamp).isoformat() != stamp:
+                raise ValueError("Noncanonical date")
+        except ValueError as exc:
+            raise GraphError("Invalid canonical ISO observation date") from exc
+        if stamp in RESERVED_DATES or row.get("split", manifest["split"]) != manifest["split"]:
             raise GraphError("Reserved 5–6 October observations and cross-split rows prohibited")
         if any(field in row for field in ("text", "transcript", "quote")):
             raise GraphError("Graph manifests must contain metadata only, never source text")
