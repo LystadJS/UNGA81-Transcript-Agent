@@ -1,129 +1,120 @@
-# UNGA81 Transcript Agent
+<p align="center">
+  <img src="assets/readme-banner.svg" alt="USUN seal and UNGA81 Transcript Agent: source-linked analysis of United Nations proceedings" width="100%" />
+</p>
 
-**Individual meetings:** choose **One individual meeting**, enter its date, select a meeting, and generate the existing source-linked analysis and report. See the [meeting selector guide](docs/INDIVIDUAL_MEETINGS.md).
+<p align="center">
+  <a href="un/ui/START_HERE.md"><img alt="R 4.3 or newer" src="https://img.shields.io/badge/R-4.3%2B-062135?style=flat-square" /></a>
+  <a href="un/ui/START_HERE.md"><img alt="Shiny local interface" src="https://img.shields.io/badge/Shiny-local%20UI-062135?style=flat-square" /></a>
+  <a href="docs/BROWSER_ANALYSIS.md"><img alt="JavaScript browser application" src="https://img.shields.io/badge/JavaScript-browser-062135?style=flat-square" /></a>
+  <a href="site/release.json"><img alt="Browser engine version 1.12.1" src="https://img.shields.io/badge/Browser-v1.12.1-002D74?style=flat-square" /></a>
+  <a href="docs/LATENT_COMPARISON.md"><img alt="Node.js 22 for tests" src="https://img.shields.io/badge/Node.js-22%20tests-062135?style=flat-square" /></a>
+  <a href="research/README.md"><img alt="Python 3.11 or newer for optional research" src="https://img.shields.io/badge/Python-3.11%2B%20optional-062135?style=flat-square" /></a>
+</p>
 
-**[Compare latent structure](https://lystadjs.github.io/un/transcript-agent/latent.html)**: saved-run replay, full-parent/reviewed-excerpt comparison, and reusable PCA/LSA, clustering, NMF and display settings. See the [comparison guide](docs/LATENT_COMPARISON.md) and the [unsupervised discovery roadmap](docs/NEXT_STEPS.md). Existing daily publication gates remain unchanged.
+<p align="center">
+  <a href="docs/BROWSER_ANALYSIS.md"><img alt="TF-IDF and cosine similarity" src="https://img.shields.io/badge/Methods-TF--IDF%20%2B%20cosine-002D74?style=flat-square" /></a>
+  <a href="docs/LSA_COMPARISON.md"><img alt="PCA and LSA" src="https://img.shields.io/badge/Methods-PCA%20%2F%20LSA-002D74?style=flat-square" /></a>
+  <a href="docs/PARTITION_METHODS.md"><img alt="k-means, PAM, and hierarchical clustering" src="https://img.shields.io/badge/Methods-clustering-002D74?style=flat-square" /></a>
+  <a href="docs/HDBSCAN.md"><img alt="HDBSCAN" src="https://img.shields.io/badge/Methods-HDBSCAN-002D74?style=flat-square" /></a>
+  <a href="docs/NMF.md"><img alt="NMF and Gaussian mixtures" src="https://img.shields.io/badge/Methods-NMF%20%2F%20GMM-002D74?style=flat-square" /></a>
+  <a href="docs/DISPLAY_AUDIT.md"><img alt="UMAP and MDS visualization" src="https://img.shields.io/badge/Display-UMAP%20%2F%20MDS-002D74?style=flat-square" /></a>
+</p>
 
-Integrated UN transcript analysis and Shiny readout interface, with the USUN
-executive email theme and Windows-friendly package paths.
+<p align="center">
+  <a href="https://lystadjs.github.io/un/transcript-agent/"><strong>Open report builder</strong></a>
+  &nbsp;&middot;&nbsp;
+  <a href="https://lystadjs.github.io/un/transcript-agent/latent.html">Compare latent structure</a>
+  &nbsp;&middot;&nbsp;
+  <a href="#local-r--shiny-workflow">Install locally</a>
+</p>
 
-**[Open the remote browser workspace](https://lystadjs.github.io/un/transcript-agent/)**
-to collect live UN transcripts by topic, dates and speaker region, run selectable
-descriptive methods, download visual reports, and review assigned packets without
-local installation. See the [report builder guide](docs/BROWSER_ANALYSIS.md).
-The selectable text-cluster workflow uses PCA or LSA representation, k-means, PAM, hierarchical clustering, HDBSCAN or Gaussian mixtures on those
-scores, and a separate UMAP display with source links and exported diagnostics.
-Compare both representations on the same passages, including cluster membership
-and neighborhood preservation. See the [PCA/LSA comparison guide](docs/LSA_COMPARISON.md).
-PAM supplies actual passage medoids; hierarchical clustering offers Ward/average
-linkage, source-linked dendrograms and complete merge exports. See the
-[PAM and hierarchical guide](docs/PARTITION_METHODS.md).
-HDBSCAN retains explicit unassigned passages, source links and assignment coverage
-in every report and export. See the [HDBSCAN guide](docs/HDBSCAN.md) and
-[source inspection and settings comparison](docs/CLUSTER_SENSITIVITY.md).
-The [passage-type audit](docs/PASSAGE_TYPES.md) records reviewed inclusion
-decisions separately and compares the complete corpus with substantive-only and
-broader boundary subsets. The [visual comparison](https://lystadjs.github.io/un/transcript-agent/passage-audit.html)
-retains unassigned sources and conditional stability denominators.
-[NMF](docs/NMF.md) fits overlapping components directly to nonnegative TF-IDF,
-with source examples, mixture exports and whole-group refits. The
-[NMF comparison](https://lystadjs.github.io/un/transcript-agent/nmf-audit.html)
-compares four, six and eight components across the same reviewed inclusion policies.
-[Gaussian mixtures](docs/GMM.md) add conditional soft memberships, ambiguity diagnostics,
-diagonal/spherical covariance, and aligned membership sensitivity. The
-[mixture comparison](https://lystadjs.github.io/un/transcript-agent/gmm-audit.html)
-records 96 settings checks and 360 grouped refits across reviewed inclusion policies.
-The [display audit](docs/DISPLAY_AUDIT.md) inspects changing memberships and 72
-UMAP layouts. Optional metric MDS compares pairwise-distance preservation while
-keeping fitted groups fixed; reports retain stopping checks, source links and exports.
-Optional grouped resampling refits TF-IDF, the chosen representation and clustering method, then reports cluster
-stability, consensus pair coverage and passages to inspect. See the
-[stability guide and implementation sequence](docs/CLUSTER_STABILITY.md).
-Packet text stays in the browser; completed reviews are returned as files for
-validated import. See the [remote workspace guide](docs/REMOTE_WORKSPACE.md).
-The [reviewed speech pilot](docs/REVIEWED_UNITS.md) now imports approved excerpts
-with original source offsets, separate parent/meeting counts, coverage and a
-separate audio-discrepancy record. Original transcripts remain unchanged.
+## Purpose
 
-![Interface preview](un/ui/validation/interface_desktop.png)
+United Nations transcripts preserve what delegates said, but they do not automatically tell a reader what deserves attention. **UNGA81 Transcript Agent turns published meeting records into source-linked evidence for diplomatic readouts and comparative text analysis.** A user can examine a single meeting or a range of proceedings, follow recurring issues, compare language across speakers and regions, and return to the passages behind each result.
 
-## Start on Windows
+The project began with the 2026 UN General Assembly General Debate and now includes a browser-based workspace for eligible English transcripts published through the UN transcript service. Its separate R pipeline produces reviewable daily briefing drafts. **The central rule is simple: an analytical claim should remain connected to its source, its denominator, and its limitations.**
 
-Clone or extract this repository into a short location such as `C:\work\unga81`.
-The application is in **un/**. Keep this path short for the saved model files.
+## Choose a workflow
 
-1. Install R 4.3 or later.
-2. Open `un/ui/Setup.bat` to install the interface's declared dependencies.
-3. Open `un/ui/Start.bat` to launch the local Shiny interface.
-4. Choose dates and topics, generate a readout, inspect the evidence, and save an unsent draft.
+| Workflow | Use it for | Entry point |
+| --- | --- | --- |
+| **Browser report builder** | Collect published transcripts on demand; analyze a meeting, topic, date range, or region; export visual reports and evidence. No installation or external AI API required. | [Open workspace](https://lystadjs.github.io/un/transcript-agent/) |
+| **Latent-structure comparison** | Reopen saved runs; compare PCA/LSA, clustering, and component settings; inspect reviewed excerpts against their parent speeches. | [Open comparison](https://lystadjs.github.io/un/transcript-agent/latent.html) |
+| **Local R / Shiny briefing** | Run the controlled D1 analysis, set tracked issues, review the five-slot briefing, and save an unsent Outlook draft. | [Local setup](un/ui/START_HERE.md) |
 
-For the full D1 pipeline setup, use [un/START_HERE.md](un/START_HERE.md).
-The [UI guide](un/ui/START_HERE.md) explains input modes and setup.
-The [read-only preview](un/ui/Interface%20Preview.html) is included for local viewing.
+## Browser workflow — no installation
 
-## Current capabilities and methods
+1. Open the [report builder](https://lystadjs.github.io/un/transcript-agent/). Choose **One individual meeting** to search the UN's date-specific meeting inventory, or choose a date range and meeting scope for broader analysis.
+2. Select the meeting, dates, and any speaker-region restrictions. **Leave Topic blank** to analyze all eligible passages; enter a topic and related phrases to narrow the evidence. A missing match is not proof that an issue was absent.
+3. Select the available descriptive, clustering, or component methods, then choose **Generate report**. The report records collection coverage, source links, excluded or unavailable material, and the settings used.
+4. Inspect the source passages before drawing conclusions. Download the standalone HTML report, transcript and analysis JSON, or evidence CSV; use the browser's print function to save a PDF.
 
-The [HLW Cuba review](reports/hlw-cuba/README.md) collects the 21–28 September
-2026 public transcript inventory and runs the existing upload workflow with
-Cuba, embargo and adjacent-topic refinements. It includes coverage gaps and
-source-linked candidate evidence; it does not release a stance model.
-The [HLW recovery supplement](reports/hlw-cuba/RECOVERY.md) prioritizes the 41
-empty broader-HLW transcript pages, preserving published statements, captions,
-and clearly labeled video transcription drafts with separate provenance.
+The browser requests inventory and transcript records from [transcripts.un.org](https://transcripts.un.org/en). Date and public source requests reach the UN service; topic filtering and numerical analysis run on the user's device. There is no account, hosted model endpoint, scheduled collection, or automatic email send. The [collection and method guide](docs/BROWSER_ANALYSIS.md) records source, language, resource, and export limits. The [individual-meeting guide](docs/INDIVIDUAL_MEETINGS.md) explains the date-first selector and its source checks.
 
-The [single-reviewer AI pilot](docs/REVIEW_PILOT.md) includes a local review form,
-the selected Google BERT checkpoint, a reviewed-label loader and a post-run
-audit attachment. Saving labels does not publish model predictions.
+## Local R & Shiny workflow
 
-Open the [visual review example](examples/review/index.html) locally for the
-actual unsent readout, four audit charts and appearance controls. See the
-[dataset-building guide](docs/DATA_GUIDE.md) for the reviewed-data workflow.
+For the Windows briefing application, install **R 4.3 or newer** and use a short checkout path to avoid Windows extraction and model-filename limits. From PowerShell:
 
-The [Research work](research/README.md) adds 29 tested standalone engineering
-kernels toward the 30-method daily-adapter backlog; driftmapR (M26) remains unresolved. These
-prototypes are not daily adapters and accept synthetic engineering inputs only.
-Daily D1 implementation remains at 12 adapters. The optional review-workspace
-tools use Python 3.11+; the daily pipeline remains R-native.
+```powershell
+git clone https://github.com/LystadJS/UNGA81-Transcript-Agent.git
+cd UNGA81-Transcript-Agent\un\ui
+.\Setup.bat
+.\Verify.bat
+.\Start.bat
+```
 
-See the [repository inventory](docs/INVENTORY.md) for the three input workflows,
-all 42 registered methods, the 12 executable adapters, and current limitations.
+Choose **Use the installed pipeline**, enter a reporting date, and add up to 20 issues to track. Generate the readout, examine the evidence and coverage, then save the **unsent** `.eml`, HTML, plaintext, or audit archive (and PDF when a compatible renderer is available). User-defined topics retrieve candidate passages; they do not alter the frozen corpus or automatically classify national positions. Use [the local UI guide](un/ui/START_HERE.md) for interface modes and [the D1 setup guide](un/START_HERE.md) for command-line runs and dependency controls.
 
-The historical [I5 extension and remaining roadmap](docs/I5.md) describes the six new
-audit-only methods and its original 30-method backlog. See [I8](research/I8.md) for current progress and recommended next steps.
+## How it works
 
-## Included
+```text
+UN transcript inventory + published source records
+                     |
+           Source identity and provenance
+                     |
+    Date / meeting / language / region selection
+                     |
+      Exact-text deduplication + topic matching
+                     |
+        Descriptive and optional exploratory
+              text-analysis methods
+                     |
+      Coverage + diagnostics + source passages
+                     |
+     Visual HTML / JSON / CSV / printable report
+             (local R also: EML draft)
+```
 
-- Native R D1-I5 analytical pipeline, publication gates, and exactly five email outputs.
-- Shiny interface with editable topics, source evidence, coverage, and draft exports.
-- USUN seal, navy/red palette, and local outline icons.
-- Replay fixtures, frozen model/reference artifacts, inherited validation and tests.
-- [Path mapping and extraction notes](un/PATHS.md) and current file checksums.
+**Collection and interpretation remain separate operations.** The collector records which meetings and transcript segments were available; eligibility rules and deduplication determine what enters each analysis; methods describe that retained text. Reports preserve the source links, selection settings, and missing-data accounting needed to inspect a result rather than treating the chart as the evidence.
 
-## Validation status
+### Implemented method layers
 
-Current regression and Shiny server checks are recorded in
-[I5 acceptance](un/validation/i5/README.md).
+| Layer | What is available | Interpretive boundary |
+| --- | --- | --- |
+| **Descriptive browser analysis** | Frequencies by date and speaker region, passage lengths, TF-IDF, and cosine similarity. | Counts and lexical resemblance describe observed text, not support or opposition. |
+| **Exploratory browser analysis** | PCA or LSA; k-means, PAM, hierarchical clustering, HDBSCAN, and Gaussian mixtures; NMF components; UMAP and optional MDS displays; group-refit and sensitivity diagnostics. | Clusters, components, and distances have no automatic diplomatic labels. Noise, ambiguity, withheld fits, and population changes remain visible. |
+| **Frozen R D1 pipeline** | Rule-based issue evidence, frozen TF-IDF, PCA/PCoA, clustering and network diagnostics; **12 executable adapters out of 42 registered methods**. | Daily publication gates remain separate from research diagnostics. An adapter's existence is not authority to publish its output. |
 
-Earlier import validation: Windows ZIP extraction and checksums passed. All 62 R files parsed, all 9 Shiny
-adapter checks passed, and all 2,567 checked saved-data references resolved.
-The backend passed 96/97 checks; PDF creation failed because the local Python
-launcher could not run. Desktop and mobile theme previews passed layout checks,
-and the Shiny UI constructor rendered. The later I5 server tests passed after adding `zip` to the QA environment.
-Full browser and native Outlook acceptance remain open.
+[Detailed method inventory](docs/INVENTORY.md) · [Latent comparison and saved-run contracts](docs/LATENT_COMPARISON.md) · [Research roadmap](docs/NEXT_STEPS.md)
 
-See [packaging validation](docs/packaging.md) and [theme validation](un/ui/THEME.md).
-Inherited acceptance records describe their original runs, not a new full
-regression run for this repository import. No email is sent automatically.
+## Outputs, review, and limitations
 
-## Reproduction and provenance
+Browser reports can be exported as standalone HTML with linked source evidence, JSON containing settings and analytical results, and CSVs for retained passages and supported diagnostics. The local R workflow additionally assembles a USUN-themed Outlook draft, with predefined analytical slots and country readouts. **These outputs are drafts for inspection, not automatic judgments about countries or instructions to distribute a briefing.**
 
-[REPRODUCE.md](REPRODUCE.md) describes this checkout. The imported baseline was the
-short-path, themed `un-ui.zip` build; current source includes the I5 extension. Package checksums are preserved
-in `un/SHA256SUMS.txt`; `.gitattributes` prevents checkout line-ending conversion
-from invalidating them. Keep API keys and local runtime configuration out of Git.
+English transcript tracks may include interpretation or automatic transcription. Missing or late source records remain coverage gaps; an individual transcript segment is not necessarily a complete speech. Exact-text deduplication does not establish that near-duplicates are absent. A small or dependent set of meetings cannot support claims of independent replication merely because it contains many passages.
 
-Earlier repository documents are preserved in [docs/legacy](docs/legacy).
-They describe earlier deliverables; this import does not include the separate
-September 28 execution bundle mentioned in the old reproduction document.
+**Research status (8 October 2026):** the lexical/semantic, country-name, agenda, and speaker-attribution controls are development-stage diagnostics. Production-shaped collection tests use synthetic responses. The **37 reserved held-out meeting transcripts remain unopened**, and no substantive alignment, stance, or forecasting model has been authorized for release by these tests. See [development controls](docs/DEVELOPMENT_CONTROLS.md), [synthetic acceptance](docs/PRODUCTION_SHAPED_ACCEPTANCE.md), and [roster-adapter verification](docs/ROSTER_ADAPTER_PUBLICATION.md).
 
-The [audio and passage review pilot](docs/SPEECH_PILOT.md) provides bounded source-audio checks and twelve proposed within-speech units with exact parent offsets. Listening and boundary decisions remain pending; source text is preserved.
+## Repository guide
+
+| Path | Contents |
+| --- | --- |
+| [`site/`](site/) | Browser collector, local numerical analysis, report builder, and comparison workspace |
+| [`un/`](un/) | R analytical pipeline, Shiny UI, email templates, configuration, and frozen policies |
+| [`research/`](research/) | Development-only text, representation, and evaluation methods with explicit validation boundaries |
+| [`docs/`](docs/) | Method contracts, operating guides, acceptance records, and research roadmap |
+| [`reports/`](reports/) · [`examples/`](examples/) | Evidence-oriented examples and historical reports |
+
+The browser release is recorded in [`site/release.json`](site/release.json) (**1.12.1** at this revision); the saved-run comparison engine is **1.1.0**. For reproducible local checks, start with [`REPRODUCE.md`](REPRODUCE.md). Historical acceptance records are labeled by their original run and should not be mistaken for a new full-system test.
+
+<sub>Public reports are analytical aids. Verify quotations, transcription, speaker attribution, coverage, and conclusions against the linked UN records before citing or circulating findings.</sub>
