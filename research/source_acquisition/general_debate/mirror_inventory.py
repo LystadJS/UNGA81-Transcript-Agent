@@ -86,7 +86,8 @@ def inventory(source: Path, out: Path) -> dict:
     keys: dict[int, set[str]] = {year: set() for year in YEARS}
     seen: dict[tuple[int, str], int] = {}
     errors = {"bad_numeric_year_or_session": 0, "session_year_mismatch": 0,
-              "invalid_iso3": 0, "blank_text": 0, "outside_requested_2016_2025": 0}
+              "invalid_iso3": 0, "blank_text": 0, "outside_requested_2016_2025": 0,
+              "outside_documented_2022_release": 0}
     private_rows = []
     for _, row in frame.iterrows():
         try:
@@ -96,6 +97,9 @@ def inventory(source: Path, out: Path) -> dict:
             continue
         if year not in YEARS:
             errors["outside_requested_2016_2025"] += 1
+            continue
+        if year > 2022:
+            errors["outside_documented_2022_release"] += 1
             continue
         if session != year - 1945:
             errors["session_year_mismatch"] += 1
