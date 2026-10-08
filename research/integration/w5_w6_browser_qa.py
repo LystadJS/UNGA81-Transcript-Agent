@@ -72,7 +72,7 @@ def exercise(browser, origin: str, name: str, width: int, height: int,
         assert inspector.evaluate("(e) => document.activeElement === e")
         page.keyboard.press("Enter")
         assert "Text SHA-256" in page.locator("#inspection").inner_text()
-        assert "unverified" in page.locator("#inspection").inner_text().lower()
+        assert "not verified speaker" in page.locator("#inspection").inner_text().lower()
         assert "source" in page.locator("#inspection").inner_text().lower()
         page.screenshot(path=str(destination / f"w5-{name}.png"), full_page=True)
         page.locator("#authorize").check()
