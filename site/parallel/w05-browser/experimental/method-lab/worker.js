@@ -112,7 +112,7 @@ self.onmessage = async event => {
       const result=await self.UNLatent.run(data.payload,plan,runtime,message=>
         send(id, 'progress', {phase:'fit', message}));
       const archive_text=await self.UNLatent.pack(data.payload,result);
-      const view=adapters.fromLegacy({result});
+      const view=adapters.fromLegacy({payload:data.payload,result});
       send(id, 'result', {kind:'legacy', views:[view], archive_text,
         elapsed_ms:clock()-started, retained_observations:view.observations.length,
         supplied_bytes:inputBytes(data.payload.text)});
