@@ -1,0 +1,194 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Source-aware validation input v1 (validation also has relational rules)",
+  "type": "object",
+  "required": [
+    "schema",
+    "split",
+    "source_schema",
+    "source_engine",
+    "source_sha256",
+    "source_hash_basis",
+    "observations"
+  ],
+  "properties": {
+    "schema": {
+      "const": "un.source-validation.frame.v1"
+    },
+    "split": {
+      "enum": [
+        "synthetic",
+        "development"
+      ]
+    },
+    "source_schema": {
+      "enum": [
+        "un.browser.corpus.v1",
+        "un.passage-corpus.v1",
+        "un.passage-frame.v1",
+        "un.review.v1",
+        "un.source-validation.synthetic.v1"
+      ]
+    },
+    "source_engine": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "source_hash_basis": {
+      "type": "string",
+      "minLength": 4
+    },
+    "unit": {
+      "type": "string"
+    },
+    "selection_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "inventory_meetings": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "observations": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 600,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "split",
+          "source_status",
+          "text_sha256"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "split": {
+            "enum": [
+              "synthetic",
+              "development"
+            ]
+          },
+          "source_status": {
+            "enum": [
+              "available",
+              "unavailable"
+            ]
+          },
+          "text_sha256": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "parent_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "parent_text_sha256": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "meeting_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_family_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "speech_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "review_status": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "country": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "affiliation": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "genre": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "source_url": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "json_pointer": {
+            "type": "string"
+          },
+          "start": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "end": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "exclusion_reasons": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "missing_reason": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
