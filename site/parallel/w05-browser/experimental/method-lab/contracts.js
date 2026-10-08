@@ -265,17 +265,21 @@
       sameArray(population(left), population(right));
     const sameRepresentation = a.representation === b.representation &&
       a.representation_version === b.representation_version;
-    const paired = identical && sameRepresentation;
+    const sameProtocol = sameRepresentation && a.family === b.family &&
+      a.method === b.method && a.fit_version === b.fit_version &&
+      a.settings_hash === b.settings_hash;
+    const paired = identical && sameProtocol;
     return {
-      identical_population:identical, same_representation:sameRepresentation,
+      identical_population:identical, same_representation:sameRepresentation, same_fit_protocol:sameProtocol,
       numerical_comparison_permitted:paired,
       paired_count:identical ? left.observations.length : 0,
       assigned_both:paired ? [...new Map(a.rows.map(r => [r.observation_id, r])).keys()].filter(id =>
         a.rows.find(r => r.observation_id === id)?.status === 'assigned' &&
         b.rows.find(r => r.observation_id === id)?.status === 'assigned').length : null,
       reason:!identical ? 'Different source hash/basis, split, observation identity, unit or selection: comparison blocked.' :
-        !sameRepresentation ? 'Identical source rows, but representation/fit geometry differs. Display only; no paired metric.' :
-        'Descriptive paired inspection only; stability is not inferential evidence.'
+        !sameRepresentation ? 'Identical sources but representation geometry differs; display only.' :
+        !sameProtocol ? 'Same source and representation, but algorithm or fit settings/version differ; side-by-side only.' :
+        'Matching fit protocol; descriptive paired inspection only, not inferential evidence.'
     };
   }
 
