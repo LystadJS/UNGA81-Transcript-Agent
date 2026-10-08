@@ -92,17 +92,22 @@ function toInterchangeV1(out){
     evidence.push({observation_id:p.observation_id,source_url:p.source_url,json_pointer:p.json_pointer,
       start:p.start,end:p.end,role:'ambiguous',proposition_id:null,verification:c.verification});
   }
+  const sourceSchema=out.frame.source_schema==='un.source-validation.synthetic.v1'&&out.frame.split==='synthetic'
+    ?'synthetic.v1':out.frame.source_schema;
+  assert(['synthetic.v1','un.browser.corpus.v1','un.latent-comparison.v1',
+    'un.passage-corpus.v1','un.review.v1'].includes(sourceSchema),
+    'Coordinator v1 schema does not support this upstream source schema; request coordinator schema extension.');
   const envelope={schema:'un.parallel-analysis.v1',contract_version:'1.0.0',
     producer:{workstream_id:'W1',adapter_version:'source-validation-1.0.0',code_sha256:CODE_SHA,
       runtime:process.version,generated_at:new Date().toISOString(),
       fixture_kind:out.frame.split==='synthetic'?'synthetic':'private_development'},
-    upstream:{source_schema:out.frame.source_schema,source_engine:out.frame.source_engine,
+    upstream:{source_schema:sourceSchema,source_engine:out.frame.source_engine,
       source_hash_basis:out.frame.source_hash_basis,source_sha256:out.frame.source_sha256,
       frame_sha256:null,corpus_sha256:null,selection_sha256:out.frame.selection_sha256,review_sha256:null,missing_reason:null},
     cohort:{split:out.frame.split,population:'same_eligible_source_bound_observations',
       unit:out.frame.unit,selection_policy:'explicit source IDs + original text hash identities',
-      weighting:'equal_observation_with_source_group_resampling',
-      source_group_unit:'meeting_or_recorded_affiliation_transitive_source_segment',
+      weighting:out.frame.unit==='passage'?'equal_passage':'none',
+      source_group_unit:out.frame.split==='synthetic'?'synthetic':'meeting',
       duplicate_policy:'retain_and_audit',
       total_in_frame:rows.length,eligible:eligible.length},
     observations:rows.map(r=>observation(r,out.frame.unit)),
