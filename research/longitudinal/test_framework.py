@@ -238,6 +238,58 @@ class SyntheticLongitudinalTests(unittest.TestCase):
         with self.assertRaisesRegex(ContractError, 'unconfirmed speech'):
             validate_panel(p)
 
+    def test_missing_source_can_have_true_null_provenance(self):
+        p = self.panel(roster=False, unavailable_family=('p1', 3))
+        missing = [r for r in p['observations'] if r['source_status'] != 'available']
+        self.assertTrue(missing)
+        for r in missing:
+            for name in ('meeting_id', 'source_family_id', 'source_sha256',
+                         'text_sha256', 'date', 'representation_id',
+                         'representation_version', 'representation_fingerprint'):
+                r[name] = None
+        accepted = validate_panel(p)
+        self.assertEqual(accepted['excluded'], len(missing))
+        z = compare(p, 'p0', 'p1', anchor_ids=ANCHORS, bootstrap_reps=50)
+        self.assertEqual(z['uncertainty']['status'], 'withheld')
+        with self.assertRaisesRegex(ContractError, 'Interchange v1 requires event dates'):
+            to_interchange_v1(p, z)
+        p2 = copy.deepcopy(p)
+        one = next(r for r in p2['observations'] if r['source_status'] == 'available')
+        one['date'] = None
+        with self.assertRaisesRegex(ContractError, 'requires verified actual event date'):
+            validate_panel(p2)
+        p3 = copy.deepcopy(p)
+        one = next(r for r in p3['observations'] if r['source_status'] != 'available')
+        one['vector'] = [0.0] * p3['feature_space']['dimension']
+        with self.assertRaisesRegex(ContractError, 'fabricated vectors'):
+            validate_panel(p3)
+
+    def test_wholly_unavailable_comparison_period_withheld_not_zero(self):
+        p = self.panel(roster=False)
+        for r in p['observations']:
+            if r['period'] == 'p1':
+                r.update({'source_status':'unavailable', 'missing_reason':'fictional_uncollected',
+                    'date':None, 'meeting_id':None, 'source_family_id':None,
+                    'source_sha256':None, 'text_sha256':None,
+                    'vector':None, 'map':None, 'cluster':None, 'map_fit_id':None,
+                    'representation_id':None, 'representation_version':None,
+                    'representation_fingerprint':None})
+        result = compare(p, 'p0', 'p1', bootstrap_reps=50)
+        self.assertEqual(result['comparison_status'], 'withheld')
+        self.assertEqual(result['uncertainty']['attempted'], 0)
+        self.assertEqual(result['aligned_coordinates'][0]['period'], 'p0') if result['aligned_coordinates'] else None
+        p['observations'] = [dict(r, source_status='unavailable', missing_reason='fictional_missing',
+            date=None, meeting_id=None, source_family_id=None, source_sha256=None, text_sha256=None,
+            vector=None, map=None, map_fit_id=None, cluster=None,
+            representation_id=None, representation_version=None, representation_fingerprint=None)
+            for r in p['observations']]
+        empty = compare(p, 'p0', 'p1', bootstrap_reps=50)
+        self.assertEqual(empty['comparison_status'], 'withheld')
+        with tempfile.TemporaryDirectory() as d:
+            names = write_exports(Path(d)/'new', empty, {})
+            self.assertIn('aligned-coordinates.csv', names)
+            self.assertIn('display_2', (Path(d)/'new'/'aligned-coordinates.csv').read_text())
+
     def test_development_export_requires_explicit_source_ledger(self):
         p = self.panel(roster=False)
         p['split'] = 'development'
