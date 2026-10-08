@@ -60,3 +60,16 @@ jobs:
           }
           console.log('PASS W1 relational validation: both W4 generated envelopes');
           NODE
+
+      - name: Publish source-code-only local replay artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: w4-source-only-dependence-audit
+          path: |
+            research/longitudinal/framework.py
+            research/longitudinal/dependence_sensitivity.py
+            research/longitudinal/fixtures.py
+            research/longitudinal/test_dependence_sensitivity.py
+            research/longitudinal/requirements.txt
+          retention-days: 1
+          if-no-files-found: error
