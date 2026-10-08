@@ -123,6 +123,21 @@ test('untrusted labels are escaped in interactive and static outputs',()=>{
   assert.match(v.svg,/&lt;img/);
 });
 
+test('cross-panel source, model and temporal identity contradictions fail closed',()=>{
+  const a=get();panel(a,'country-theme').cells[0].observation_ids=['S04'];
+  assert.throws(()=>draw(a,'country-theme'),/Country attribution mismatch/);
+  const b=get();panel(b,'network').edges[0].observation_ids=['S01','S03'];
+  assert.throws(()=>draw(b,'network'),/edge must link evidence from each endpoint/);
+  const c=get();panel(c,'longitudinal').alignments[0].reference_basis='other-model';
+  assert.throws(()=>draw(c,'longitudinal'),/Alignment ledger incomplete/);
+  const d=get();panel(d,'longitudinal').actors[0].positions[0].observation_ids=['S02'];
+  assert.throws(()=>draw(d,'longitudinal'),/Actor-period source date mismatch/);
+  const e=get();e.envelope.coverage.eligible=9;
+  assert.throws(()=>draw(e,'network'),/Frame\/eligibility accounting mismatch/);
+  const f=get();panel(f,'network').identity.representation_version='arbitrary-version';
+  assert.throws(()=>draw(f,'network'),/Unknown representation and version/);
+});
+
 test('no remote data or automatic political inference in prototype sources',()=>{
   const fs=require('node:fs');
   const src=fs.readFileSync(require('node:path').join(__dirname,'evidence-viz.js'),'utf8');
