@@ -1,61 +1,43 @@
 name: Pinned semantic comparison
 on:
   push:
-    branches: [feat/pinned-semantic-comparison]
-    paths: ['.github/workflows/semantic-comparison.yml']
+    branches: [main, feat/pinned-semantic-comparison]
+    paths: ['research/semantic_review/**', 'docs/SEMANTIC_COMPARISON*', '.github/workflows/semantic-comparison.yml']
+  pull_request:
+    paths: ['research/semantic_review/**', '.github/workflows/semantic-comparison.yml']
+  workflow_dispatch:
 permissions:
-  contents: write
-  actions: read
+  contents: read
+concurrency:
+  group: semantic-comparison-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
-  integrate:
+  validate:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     env:
       OPENBLAS_NUM_THREADS: '1'
       OMP_NUM_THREADS: '1'
+      SEMANTIC_MODEL_DIR: ${{ github.workspace }}/semantic-model
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: feat/pinned-semantic-comparison
-          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - name: Install only checksum-verified reusable sources
-        run: |
-          python - <<'PY'
-          import base64,hashlib,json,lzma
-          from pathlib import Path
-          packed=base64.b64decode(''.join(Path(f'tools/_semantic_patch_{i}.txt').read_text().strip() for i in range(1,6)),validate=True)
-          assert hashlib.sha256(packed).hexdigest()=='1d48f0eb8fdf50fe66af56a6f907ad28b2eb9bead75b58169016c56bedafbcac','Source transfer digest mismatch'
-          patch=json.loads(lzma.decompress(packed))
-          names=['AGENTS.md','compare.py','probes.json','download_model.py','test_semantic.py','export_html.py','RUN_CONTRACT.md','plan.json','encoder.py','model-lock.json','make_notebook.py','requirements-report.txt','.gitignore','requirements.txt']
-          allowed={f'research/semantic_review/{n}' for n in names}|{'docs/NEXT_STEPS.md','docs/SEMANTIC_COMPARISON.md','docs/SEMANTIC_COMPARISON_VALIDATION.json'}
-          assert patch['schema']=='un.source-patch.v1' and set(patch['files'])==allowed
-          for name in allowed:
-              p=Path(name)
-              if name in patch['expected_old_sha256']:
-                  assert hashlib.sha256(p.read_bytes()).hexdigest()==patch['expected_old_sha256'][name],name
-              else: assert not p.exists(),name
-          for name,text in patch['files'].items():
-              p=Path(name);p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(text.encode('utf8'))
-          print('Verified and installed 17 reusable source/documentation files')
-          PY
-      - name: Restore pinned public model only
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh run download 37719212377 --repo LystadJS/UNGA81-Transcript-Agent --name pinned-semantic-runtime --dir "$RUNNER_TEMP/pinned"
-          echo "SEMANTIC_MODEL_DIR=$RUNNER_TEMP/pinned/model" >> "$GITHUB_ENV"
-          python -m pip install --disable-pip-version-check -r research/semantic_review/requirements.txt
-      - name: Synthetic encoder and inherited regression checks
+      - name: Install pinned numerical and local encoder runtime
+        run: python -m pip install --disable-pip-version-check -r research/semantic_review/requirements.txt
+      - name: Acquire and verify pinned public model only
+        run: python research/semantic_review/download_model.py "$SEMANTIC_MODEL_DIR"
+      - name: Offline encoder and numerical synthetic checks
         run: |
           mkdir -p semantic-evidence
           python research/semantic_review/test_semantic.py > semantic-evidence/semantic-tests.log 2>&1
           python -m unittest discover -s research/machine_review -p 'test_*.py' -v > semantic-evidence/machine-tests.log 2>&1
+      - name: Existing corpus and source regressions
+        run: |
           node tools/test_passage_corpus.cjs semantic-evidence/corpus-tests.json > semantic-evidence/corpus-tests.log
           for suite in analysis clusters stability lsa partitions hdbscan nmf gmm mds reviewed_units; do
             node "tools/test_browser_${suite}.cjs" > "semantic-evidence/regression-${suite}.log" 2>&1
@@ -65,8 +47,10 @@ jobs:
           node tools/test_latent.cjs > semantic-evidence/regression-latent.log 2>&1
           node tools/test_meeting_picker.cjs > semantic-evidence/regression-meeting.log 2>&1
           python tools/test_passage_types.py > semantic-evidence/regression-types.log 2>&1
+      - name: Record acceptance scope without transcript data
+        run: |
           python - <<'PY'
-          import hashlib,json
+          import hashlib,json,os
           from pathlib import Path
           logs=Path('semantic-evidence')
           assert 'Ran 47 tests' in (logs/'semantic-tests.log').read_text()
@@ -74,23 +58,12 @@ jobs:
           tests=json.loads((logs/'corpus-tests.json').read_text());assert tests['passed']==53 and tests['failed']==0
           sources={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in Path('research/semantic_review').iterdir() if p.is_file()}
           (logs/'source-hashes.json').write_text(json.dumps(sources,indent=2)+'\n')
-          (logs/'scope.json').write_text(json.dumps({'new_synthetic_tests':47,'machine_tests':57,'corpus_checks':53,'existing_suites':15,'real_corpus_used':False,'heldout_transcripts_requested':0,'human_choices_changed':False},indent=2)+'\n')
+          (logs/'scope.json').write_text(json.dumps({'commit':os.environ['GITHUB_SHA'],'new_synthetic_tests':47,'machine_tests':57,'corpus_checks':53,'existing_suites':15,'real_corpus_used':False,'heldout_transcripts_requested':0,'human_choices_changed':False},indent=2)+'\n')
+          print('Pinned public model and synthetic fixtures only. No UN transcript collection or holdout evaluation.')
           PY
-          git diff --exit-code ae178679f04454eb201f7342cdc7d0e978609bd1 -- site un research/corpus research/machine_review
-      - name: Commit validated source without changing workflow permissions
-        run: |
-          rm tools/_semantic_patch_{1,2,3,4,5}.txt
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add research/semantic_review docs/SEMANTIC_COMPARISON.md docs/SEMANTIC_COMPARISON_VALIDATION.json docs/NEXT_STEPS.md
-          git add -u tools/_semantic_patch_1.txt tools/_semantic_patch_2.txt tools/_semantic_patch_3.txt tools/_semantic_patch_4.txt tools/_semantic_patch_5.txt
-          git diff --cached --stat
-          git commit -m 'Add pinned offline semantic embeddings, exact lexical comparisons and provenance validation'
-          git push origin HEAD:feat/pinned-semantic-comparison
-          git rev-parse HEAD > semantic-evidence/implementation-commit.txt
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: semantic-integration-validation
+          name: semantic-comparison-validation
           path: semantic-evidence/
           retention-days: 30
