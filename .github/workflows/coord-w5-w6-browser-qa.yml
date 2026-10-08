@@ -1,0 +1,140 @@
+name: Coordinator W5 and W6 browser acceptance (synthetic only)
+
+on:
+  pull_request:
+    paths:
+      - "docs/parallel-work/OWNERSHIP.md"
+      - "research/integration/w5_w6_browser_qa.py"
+      - ".github/workflows/coord-w5-w6-browser-qa.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-w5-w6-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      W5_SHA: "2d78dd8b3bba60b61094179a8dea84f78f1f45ed"
+      W6_SHA: "b86c90175e8c2f184062b02db996893319b3339c"
+      PYTHONNOUSERSITE: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Checkout pinned W5 worker (source only, no branch edits)
+        uses: actions/checkout@v4
+        with:
+          repository: LystadJS/UNGA81-Transcript-Agent
+          ref: 2d78dd8b3bba60b61094179a8dea84f78f1f45ed
+          path: .coordinator-input/w5
+          persist-credentials: false
+      - name: Checkout pinned W6 worker (source only, no branch edits)
+        uses: actions/checkout@v4
+        with:
+          repository: LystadJS/UNGA81-Transcript-Agent
+          ref: b86c90175e8c2f184062b02db996893319b3339c
+          path: .coordinator-input/w6
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Assert code pins and discover local Chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C .coordinator-input/w5 rev-parse HEAD)" = "$W5_SHA"
+          test "$(git -C .coordinator-input/w6 rev-parse HEAD)" = "$W6_SHA"
+          command -v google-chrome || command -v chromium
+          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium)" >> "$GITHUB_ENV"
+          (google-chrome --version || chromium --version)
+          node --version
+      - name: Install Playwright Python binding (reuse local Chrome binary)
+        shell: bash
+        run: python -m pip install playwright==1.55.0
+      - name: Run independent W5 Node synthetic and failure/replay suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          node .coordinator-input/w5/site/parallel/w05-browser/experimental/method-lab/test-method-lab.cjs
+      - name: Run independent W6 Node structural, missingness and export suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --test .coordinator-input/w6/site/experimental/evidence-viz/tests.cjs
+      - name: Validate W6 complete frame with authoritative merged W1 relational API
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'JS'
+          const V=require('./research/validation_framework/interchange.cjs');
+          const F=require('./.coordinator-input/w6/site/experimental/evidence-viz/fixture.js');
+          const e=F.fixture().envelope;
+          if(V.validateRelational(e)!==true)throw Error('W1 relational validator rejected W6 fixture');
+          for(const m of e.models) {
+            const r=e.results.filter(z=>z.model_id===m.model_id);
+            if(r.length!==e.observations.length ||
+               r.filter(z=>z.status==='excluded').length!==e.coverage.excluded)
+               throw Error('W6 incomplete model-by-source frame');
+          }
+          console.log('PASS: full source-bound W6 fixture accepted by merged W1 relational validator.');
+          JS
+          node docs/parallel-work/validate-contract.cjs
+      - name: W5 real Chromium CDP browser and PCA/LSA parity
+        shell: bash
+        env:
+          BROWSER_BIN: ${{ env.CHROME_BIN }}
+        run: |
+          set -euo pipefail
+          node .coordinator-input/w5/site/parallel/w05-browser/experimental/method-lab/test-browser.cjs
+      - name: W5 independent Playwright desktop/mobile screenshots and keyboard/privacy
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/integration/w5_w6_browser_qa.py \
+            --site .coordinator-input/w5/site \
+            --browser-path "$CHROME_BIN" \
+            --outdir "$RUNNER_TEMP/w5-browser-qa"
+      - name: W6 real Chromium desktop/mobile keyboard, exports, empty/failure states
+        shell: bash
+        run: |
+          set -euo pipefail
+          python .coordinator-input/w6/site/experimental/evidence-viz/browser_smoke.py \
+            --browser-path "$CHROME_BIN" \
+            --outdir "$RUNNER_TEMP/w6-browser-qa"
+      - name: Verify screenshot and exported evidence only contains invented sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s "$RUNNER_TEMP/w5-browser-qa/w5-desktop.png"
+          test -s "$RUNNER_TEMP/w5-browser-qa/w5-mobile.png"
+          test -s "$RUNNER_TEMP/w6-browser-qa/suite-desktop.png"
+          test -s "$RUNNER_TEMP/w6-browser-qa/suite-mobile.png"
+          test -s "$RUNNER_TEMP/w6-browser-qa/consensus-desktop-export.svg"
+          test -s "$RUNNER_TEMP/w6-browser-qa/consensus-mobile-export.html"
+          grep -q 'SYNTHETIC' "$RUNNER_TEMP/w6-browser-qa/consensus-mobile-export.html"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          p=Path(os.environ['RUNNER_TEMP'])/'w5-browser-qa'/'w5-browser-qa.json'
+          evidence=json.loads(p.read_text())
+          assert evidence['publication_eligible'] is False
+          assert evidence['heldout_transcripts_opened'] == 0
+          assert len(evidence['viewports']) == 2
+          assert all(v['external_requests']==0 for v in evidence['viewports'])
+          print('PASS: synthetic-only desktop/mobile browser QA evidence.')
+          PY
+      - name: Upload browser acceptance screenshots and source-free receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: w5-w6-synthetic-browser-acceptance
+          path: |
+            ${{ runner.temp }}/w5-browser-qa
+            ${{ runner.temp }}/w6-browser-qa
+          if-no-files-found: warn
+          retention-days: 7
