@@ -39,6 +39,9 @@ class MirrorFallbackTests(unittest.TestCase):
             self.assertEqual(years[2025]["mirror_scope"],
                              "outside_mirror_release_not_missing_speech")
             self.assertEqual(report["coverage"]["quality"]["session_year_mismatch"], 1)
+            self.assertEqual(report["coverage"]["excluded_invalid_code_rows"], 0)
+            self.assertTrue((folder / "private_output" / "private" /
+                             "mirror_code_exceptions_private.csv").exists())
             self.assertEqual(report["coverage"]["selected_rows"], 4)
             self.assertEqual(report["coverage"]["quality"]["outside_documented_2022_release"], 1)
             public = folder / "private_output" / "public_aggregate"
