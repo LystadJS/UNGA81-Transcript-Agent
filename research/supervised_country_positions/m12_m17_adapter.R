@@ -49,7 +49,27 @@ run_supervised_synthetic <- function(method_id, input) {
   stop_if(!file.exists(kernel_path),
           "Run the adapter from the UNGA81 repository root")
   environment <- new.env(parent = globalenv())
-  source(kernel_path, local = environment, chdir = FALSE, echo = FALSE)
+  # engines.R's historical top-level import relies on sys.frame(1)$ofile,
+  # which is NULL when source() runs inside this adapter function. Execute the
+  # *unchanged* parsed expressions in order and resolve the one known companion
+  # import explicitly; refuse new/upstream import patterns rather than guessing.
+  expressions <- parse(file = kernel_path, keep.source = FALSE)
+  imports <- which(vapply(expressions, function(expr) {
+    is.call(expr) && identical(expr[[1L]], as.name("source"))
+  }, logical(1)))
+  stop_if(length(imports) != 1L ||
+            !grepl("engines_more.R",
+                   paste(deparse(expressions[[imports]]), collapse = ""), fixed = TRUE),
+          "Unexpected original I6 companion import; integration review required")
+  companion <- file.path(dirname(kernel_path), "engines_more.R")
+  stop_if(!file.exists(companion), "Original I7 companion source missing")
+  for (i in seq_along(expressions)) {
+    if (i == imports) {
+      sys.source(companion, envir = environment, keep.source = FALSE)
+    } else {
+      eval(expressions[[i]], envir = environment)
+    }
+  }
   fitted <- environment$i6_compute(method_id, input$kernel)
   stop_if(!identical(fitted$publication_eligible, FALSE) ||
             !identical(fitted$daily_adapter_integrated, FALSE) ||
