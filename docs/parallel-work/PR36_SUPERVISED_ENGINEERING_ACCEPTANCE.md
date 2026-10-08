@@ -17,14 +17,20 @@ Chrome CDP fixture failed twice **after its reported test assertions passed**,
 when Chromium 154 continued writing a temporary profile during teardown:
 `ENOTEMPTY: rmdir /tmp/un-method-lab-chromium-*/Default`.
 
-The coordinator CI workflow alone now adds bounded `fs.rmSync` retries
-(`maxRetries=20`, `retryDelay=250` milliseconds) for **only**
-`os.tmpdir()/un-method-lab-chromium-*` and only when recursive/forced
-deletion was already requested. All pinned W5/W6 source bytes, source/test
-assertions, test error propagation, CI permissions and user-facing browser
-assets are unchanged. This is an environment cleanup repair, not a reduced
-acceptance gate. The coordinator PR must **still obtain a complete passing
-W5/W6 check** at its latest head before merge.
+The first coordinator CI repair attempted bounded `fs.rmSync` retries alone;
+this did **not** pass because the Chrome launcher left processes alive, so
+the temporary profile remained in use. The refined runner-only preloader gives
+**only the ephemeral W5 Chrome** its own process group and applies the original
+test's SIGTERM to that group, followed by bounded `fs.rmSync` retries
+(`maxRetries=12`, `retryDelay=100` milliseconds) for **only**
+`os.tmpdir()/un-method-lab-chromium-*` when recursive/forced deletion was
+already requested. This does not alter the browser assertions, selected corpus,
+test source bytes, score thresholds or failure handling.
+
+All pinned W5/W6 source bytes, existing source/test assertions, CI permissions
+and user-facing browser assets are unchanged. The coordinator PR **still
+requires a complete passing W5/W6 check on its latest head** before merge.
+Historical failing runs remain evidence, not PASS.
 
 ## Acceptance gates (PASS / FAIL / NOT RUN / NOT APPLICABLE)
 
