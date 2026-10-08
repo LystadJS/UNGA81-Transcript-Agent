@@ -1,0 +1,50 @@
+name: W2 consensus clustering (synthetic only)
+on:
+  pull_request:
+    paths:
+      - 'research/consensus/**'
+      - '.github/workflows/consensus-clustering.yml'
+  push:
+    branches: ['feat/consensus-clustering']
+    paths:
+      - 'research/consensus/**'
+      - '.github/workflows/consensus-clustering.yml'
+permissions:
+  contents: read
+jobs:
+  numerical-and-provenance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Independent synthetic numerical and source-link tests
+        run: node research/consensus/test_consensus.cjs
+      - name: Regress existing analytical and interchange contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          node docs/parallel-work/validate-contract.cjs
+          for suite in clusters partitions stability lsa hdbscan gmm; do
+            node "tools/test_browser_${suite}.cjs"
+          done
+          node tools/test_latent.cjs
+          node tools/test_passage_comparison.cjs
+          node tools/test_passage_corpus.cjs
+      - name: Verify reproducible synthetic report exports
+        shell: bash
+        run: |
+          set -euo pipefail
+          node research/consensus/run_synthetic.cjs "$RUNNER_TEMP/consensus-synthetic"
+          node -e 'const r=require(process.env.RUNNER_TEMP+"/consensus-synthetic/validation-receipt.json"); if(r.holdout_access!==false || r.publication_eligible!==false || r.descriptive_groups!==2 || r.nuisance_rejected!==6) process.exit(1);'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: consensus-w2-synthetic-reports
+          path: ${{ runner.temp }}/consensus-synthetic/
+          if-no-files-found: warn
+          retention-days: 7
