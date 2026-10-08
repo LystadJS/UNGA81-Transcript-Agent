@@ -1,0 +1,163 @@
+name: Graph research — spectral and diffusion (synthetic only)
+
+on:
+  push:
+    branches:
+      - main
+      - feat/graph-based-learning
+    paths:
+      - "research/graph_methods/**"
+      - ".github/workflows/graph-based-learning-research.yml"
+  pull_request:
+    paths:
+      - "research/graph_methods/**"
+      - ".github/workflows/graph-based-learning-research.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  graph-research-synthetic:
+    name: graph-w3-python-synthetic
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONHASHSEED: "0"
+      SOURCE_DATE_EPOCH: "0"
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          # The accepted W1 merge is a genuine ancestor; a depth-1 PR checkout
+          # cannot validate that ancestry, so fetch history without opening data.
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: research/graph_methods/requirements.txt
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install pinned research/test dependencies
+        run: python -m pip install -r research/graph_methods/requirements.txt
+      - name: Run synthetic tests
+        run: python -m unittest discover -s research/graph_methods/tests -v
+      - name: Existing source and numerical regressions (unchanged code)
+        shell: bash
+        run: |
+          set -euo pipefail
+          node docs/parallel-work/validate-contract.cjs
+          for suite in analysis clusters stability lsa partitions hdbscan nmf gmm mds reviewed_units; do
+            node "tools/test_browser_${suite}.cjs"
+          done
+          node tools/test_latent.cjs
+          node tools/test_passage_comparison.cjs
+          python3 tools/test_passage_types.py
+      - name: Accepted W1 integration gate (conditional, no draft import)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -f research/validation_framework/frame.cjs &&
+                -f research/validation_framework/interchange.cjs &&
+                -f research/validation_framework/metrics.cjs ]]; then
+            node research/validation_framework/tests/test_framework.cjs
+            node research/validation_framework/tests/test_schema.cjs
+            echo "W1 code present; graph comparison still requires explicit coordinator-pinned acceptance."
+          else
+            echo "NOT_RUN: W1 unmerged/not installed in checkout; intentional acceptance gate."
+          fi
+      - name: Verify actual merged W1–W3 interoperability (PR merge or main)
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f research/validation_framework/runner.cjs
+          test -f research/validation_framework/interchange.cjs
+          test -f research/validation_framework/metrics.cjs
+          python -m unittest discover -s research/graph_methods/tests -p 'test_w1_interop.py' -v
+          echo 'PASS: actual W1 source-aware JS metrics and W3 Python source-matched bridge, synthetic only.'
+      - name: Reproduce a text-free benchmark
+        run: python -m research.graph_methods.reproduce --fixture blobs --seed 81 --output "$RUNNER_TEMP/graph-benchmark"
+      - name: Verify interchange schema and declared ledger
+        run: |
+          python - <<'PY'
+          import json, pathlib, jsonschema, os
+          root=pathlib.Path(os.environ['RUNNER_TEMP'])/'graph-benchmark'
+          schema=json.loads(pathlib.Path('docs/parallel-work/interchange-v1.schema.json').read_text())
+          env=json.loads((root/'interchange-v1.json').read_text())
+          jsonschema.Draft202012Validator(schema, format_checker=jsonschema.FormatChecker()).validate(env)
+          assert env['publication_eligible'] is False
+          assert env['evaluation_role'] == 'engineering_only'
+          assert len(env['results']) == len(env['observations'])*len(env['models'])
+          report=json.loads((root/'receipt.json').read_text())
+          assert report['heldout_transcripts_opened']==0
+          assert report['attempts']['failed_primary']==0
+          print('Synthetic-only graph v1 receipt validated')
+          PY
+      - name: Independently validate W3 v1 envelope with merged W1 relational API
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'JS'
+          const assert = require('node:assert/strict');
+          const fs = require('node:fs');
+          const path = require('node:path');
+          const {validateRelational} = require('./research/validation_framework/interchange.cjs');
+          const file = path.join(process.env.RUNNER_TEMP, 'graph-benchmark', 'interchange-v1.json');
+          const full = JSON.parse(fs.readFileSync(file, 'utf8'));
+          assert.equal(validateRelational(full), true);
+          assert.equal(full.coverage.models.length, 2);
+          assert.equal(full.coverage.eligible, 96);
+          assert.equal(full.results.length, 192);
+          // Invalid source/model mapping, missing pair, duplicate result and
+          // forged coverage must fail; W3's own assertions are not sufficient.
+          const wrongBasis = structuredClone(full);
+          wrongBasis.results[0].representation_basis_id = 'forged-other-basis';
+          assert.throws(() => validateRelational(wrongBasis));
+          const missingResult = structuredClone(full);
+          missingResult.results.pop();
+          assert.throws(() => validateRelational(missingResult));
+          const badLedger = structuredClone(full);
+          badLedger.coverage.models[0].assigned += 1;
+          assert.throws(() => validateRelational(badLedger));
+          const duplicateId = structuredClone(full);
+          duplicateId.results[1].observation_id = duplicateId.results[0].observation_id;
+          assert.throws(() => validateRelational(duplicateId));
+          console.log('PASS: accepted W1 relational validator checked generated W3 v1 envelope and four negative cases.');
+          JS
+      - name: Archive W1-W3 synthetic interoperability receipt (merged tree)
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m research.graph_methods.tests.test_w1_interop --receipt "$RUNNER_TEMP/graph-benchmark/w1-w3-interoperability.json"
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          root=Path(os.environ["RUNNER_TEMP"])/"graph-benchmark"
+          sha_file=root/"SHA256.json"
+          digests=json.loads(sha_file.read_text(encoding="utf8"))
+          name="w1-w3-interoperability.json"
+          evidence=json.loads((root/name).read_text(encoding="utf8"))
+          assert evidence["publication_eligible"] is False
+          assert evidence["heldout_transcripts_opened"] == 0
+          assert evidence["frame"]["eligible"] == 24
+          assert evidence["frame"]["excluded"] == 1
+          assert evidence["comparison"]["source_validation"]["meeting_group_schedule"]["status"] == "scheduled"
+          digests[name]=hashlib.sha256((root/name).read_bytes()).hexdigest()
+          sha_file.write_text(json.dumps(digests,indent=2,sort_keys=True)+"\n", encoding="utf8")
+          print("W1-W3 synthetic receipt archived with SHA256 verification")
+          PY
+      - name: Upload text-free synthetic benchmark for coordinator
+        uses: actions/upload-artifact@v4
+        with:
+          name: graph-w3-synthetic-receipt
+          path: ${{ runner.temp }}/graph-benchmark
+          if-no-files-found: error
+          retention-days: 7
