@@ -9,7 +9,7 @@
 | W3 | `feat/graph-based-learning` | `research/graph_methods/**` | Within that subtree, plus **only** `.github/workflows/graph-based-learning-research.yml` under the 8 October 2026 owner-approved exception |
 | W4 | `feat/longitudinal-latent-structure` | `research/longitudinal/**` | Within this subtree, **plus only** the new `.github/workflows/longitudinal-framework.yml` under the 8 October 2026 owner-approved exception |
 | W5 | `feat/parallel-w05-browser` | `site/parallel/w05-browser/**` | Only inside that subtree; synthetic Node tests colocated |
-| W6 | `feat/parallel-w06-visualization` | `site/parallel/w06-visualization/**` | Only inside that subtree |
+| W6 | `feat/evidence-visualization-suite` | `site/experimental/evidence-viz/**` | Only inside this subtree, by explicit 8 October 2026 owner-approved W6 exception; no worker workflow edits |
 | W7 | `feat/parallel-w07-diplomat-ux` | `site/parallel/w07-diplomat-ux/**` | Only inside that subtree |
 
 Worker code may **import** existing production APIs and the read-only v1 schema, but must not rewrite their source. Each PR contains files **only** in its owned prefix, except the precisely named W3 and W4 new workflows approved below. Worker-specific documentation/tests go inside that prefix, not `docs/**` or `tools/**`. Workers can give the coordinator an integration patch proposal in the PR description. Do not add a worker to an existing `site/index.html`, `site/latent.html` or loader by directly changing that file.
@@ -29,12 +29,33 @@ The repository owner explicitly approved the path/CI exception for [PR #16](http
 
 The original proposed `feat/parallel-w03-spectral-diffusion` / `research/parallel/w03-spectral-diffusion/**` reservation is superseded for W3; no second spectral/diffusion implementation branch is authorized. This is a **file-ownership and uniquely named CI exception only**, not independent scientific validation, permission to open the 37 reserved October 5–6 transcripts, approval to infer political positions or influence, or public browser/D1 release authority. Coordinator PR acceptance, per-head CI, source provenance, and W1 compatibility gates remain required before any merge. PR #16 must remain engineering-only unless a subsequent distinct validation/release decision is made.
 
+### Owner-approved W6 exception — 8 October 2026
+
+The repository owner explicitly approved the W6 implementation namespace
+exception for PR #20. W6 may retain branch `feat/evidence-visualization-suite`
+and the exclusive new implementation/documentation/tests prefix
+`site/experimental/evidence-viz/**`. The earlier proposed
+`feat/parallel-w06-visualization` / `site/parallel/w06-visualization/**`
+reservation is superseded. No duplicate competing W6 implementation branch
+is authorized. The approval is recorded by a **coordinator-owned change**;
+W6 worker PR #20 may not edit `docs/parallel-work/**` or `.github/workflows/**`.
+
+Scope is restricted to new W6 assets within that prefix; no modifications
+to pre-existing site browser entry points, shared workers/CSS, canonical
+source schemas, daily D1 gates, frozen source hashes/evaluation lock, 37
+reserved October 5–6 transcripts, release manifests or portfolio mirror.
+This is only a path-ownership exception. Independent Node/source/real-browser
+validation, corrected missing/excluded-frame accounting, W3 graph semantics,
+privacy/accessibility review and coordinator merge/release acceptance still
+apply. The W6 prototype remains engineering-only and does not establish
+national positions, alliances, significance, policy transmission or causality.
+
 ### Owner-approved W4 exception — 8 October 2026
 
-The repository owner explicitly approved reconciliation of [PR #18](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/18) with this contract. The W4 reservation above now adopts the already-existing `feat/longitudinal-latent-structure` branch and its exclusive `research/longitudinal/**` path. **Only PR #18** may add `.github/workflows/longitudinal-framework.yml`, which must be path-limited to W4 synthetic tests with read-only permissions. This permits no edits to any pre-existing workflow, shared loader, browser source, frozen data, project-wide registry, or release gate. W3's separately authorized exception above is unaffected; the other workstreams retain their original boundaries. The former `feat/parallel-w04-longitudinal` / `research/parallel/w04-longitudinal/**` proposal is superseded for W4; no second longitudinal implementation branch is authorized.
+The repository owner explicitly approved reconciliation of [PR #18](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/18) with this contract. The W4 reservation above now adopts the already-existing `feat/longitudinal-latent-structure` branch and its exclusive `research/longitudinal/**` path. **Only PR #18** may add `.github/workflows/longitudinal-framework.yml`, which must be path-limited to W4 synthetic tests with read-only permissions. This permits no edits to any pre-existing workflow, shared loader, browser source, frozen data, project-wide registry, or release gate. W3's and W6's separately authorized exceptions above are unaffected; the other workstreams retain their original boundaries. The former `feat/parallel-w04-longitudinal` / `research/parallel/w04-longitudinal/**` proposal is superseded for W4; no second longitudinal implementation branch is authorized.
 
 This is a **path/CI exception, not a scientific or production approval**. W4 remains engineering-only until explicit source-lineage, dependence, statistical-comparability, real longitudinal coverage and release reviews pass. The separate coordinator acceptance checklist still applies, and no acceptance or merge is implied by this exception.
 
 ### Ownership enforcement
 
-Before reviewing any worker PR, list every changed filename (including renames, symlinks, submodules, workflow changes and deleted files). Reject any file outside its namespace **and any narrowly approved W3/W4 new workflow exception**, including path traversal or changes introduced through generated assets. Reject competing PRs claiming one output/entry-point namespace, even if the Git diff does not mechanically conflict. Reserve a coordinator integration PR to connect accepted modules to existing browser files. Workers never independently merge, enable auto-merge or force-push.
+Before reviewing any worker PR, list every changed filename (including renames, symlinks, submodules, workflow changes and deleted files). Reject any file outside its namespace **and any narrowly approved W3/W4 new workflow exception or the W6 path exception**, including path traversal or changes introduced through generated assets. Reject competing PRs claiming one output/entry-point namespace, even if the Git diff does not mechanically conflict. Reserve a coordinator integration PR to connect accepted modules to existing browser files. Workers never independently merge, enable auto-merge or force-push.
