@@ -8,7 +8,7 @@
   'use strict';
   const sha=c=>c.repeat(64);
   const periods=['2025','2026','2027'];
-  const national=['Illustrative State A','Illustrative State B','Illustrative State C'];
+  const national=['Illustrative State A','Illustrative State B','Illustrative State C','Illustrative State D'];
   const ids=Array.from({length:10},(_,i)=>'S'+String(i+1).padStart(2,'0'));
   const shares=[
     [.70,.30,0],[.70,.30,0],[.70,.30,0],
@@ -31,7 +31,7 @@
     observations.push({
       id:'S11',text_sha256:null,parent_id:null,parent_text_sha256:null,
       meeting_id:'demo-meeting-4',speech_id:null,source_family_id:'demo-family-4',
-      date:'2026-03-01',country:null,source_url:null,json_pointer:null,
+      date:'2026-03-01',country:national[3],source_url:null,json_pointer:null,
       start:null,end:null,unit:'synthetic',review_status:'not_applicable',
       exclusion_reasons:['source_unavailable'],source_status:'unavailable',
       missing_reason:'Synthetic source absent from collected observations'
@@ -137,17 +137,18 @@
       components:[1,2,3].map(n=>({id:'T'+n,label:'Component '+n})),
       cells:[]
     };
-    for(let i=0;i<3;i++)for(let t=0;t<3;t++){
+    for(let i=0;i<4;i++)for(let t=0;t<3;t++){
       const row=ids.slice(i*3,i*3+3);
-      const missing=i===2&&t===2;
+      const missing=i===3,withheld=i===2&&t===2;
       countryTheme.cells.push({
         country:national[i],component:'T'+(t+1),
-        status:missing?'missing':'observed',
-        weighted_sum:missing?null:shares.slice(i*3,i*3+3).reduce((s,a)=>s+a[t],0),
-        weight_total:missing?null:3,
-        evidence_count:missing?0:3,
-        observation_ids:missing?[]:row,
-        missing_reason:missing?'Upstream component attribution deliberately withheld':null
+        status:missing?'missing':withheld?'withheld':'observed',
+        weighted_sum:missing||withheld?null:shares.slice(i*3,i*3+3).reduce((s,a)=>s+a[t],0),
+        weight_total:missing||withheld?null:3,
+        evidence_count:missing||withheld?0:3,
+        observation_ids:missing||withheld?[]:row,
+        missing_reason:missing?'No eligible source for this synthetic country':
+          withheld?'Upstream component attribution deliberately withheld':null
       });
     }
     const network={
