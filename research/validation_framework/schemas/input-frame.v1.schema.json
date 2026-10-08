@@ -27,7 +27,8 @@
         "un.passage-corpus.v1",
         "un.passage-frame.v1",
         "un.review.v1",
-        "un.source-validation.synthetic.v1"
+        "un.source-validation.synthetic.v1",
+        "un.p2.original-pv-reconciled.v1"
       ]
     },
     "source_engine": {
@@ -186,9 +187,98 @@
           },
           "text": {
             "type": "string"
+          },
+          "p2_original_pdf_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "p2_full_speech_verified": {
+            "type": "boolean"
+          },
+          "p2_date_basis": {
+            "enum": [
+              "independent_UN_index",
+              "official_UN_PV_header"
+            ]
+          },
+          "p2_original_source_hash_basis": {
+            "const": "raw_response_bytes"
+          },
+          "p2_verification_method": {
+            "const": "original_UN_PV_full_speech_7gram_10decile_v1"
+          }
+        }
+      }
+    },
+    "original_p2_source_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verified_original_meeting_count",
+        "full_candidate_country_year_cells",
+        "source_verified",
+        "unverified",
+        "original_archive_sha256",
+        "selection_sha256"
+      ],
+      "properties": {
+        "verified_original_meeting_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "full_candidate_country_year_cells": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "source_verified": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "unverified": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "original_archive_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "selection_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "source_schema": {
+            "const": "un.p2.original-pv-reconciled.v1"
+          }
+        },
+        "required": [
+          "source_schema"
+        ]
+      },
+      "then": {
+        "required": [
+          "original_p2_source_provenance"
+        ],
+        "properties": {
+          "observations": {
+            "items": {
+              "required": [
+                "p2_original_pdf_sha256",
+                "p2_full_speech_verified",
+                "p2_date_basis",
+                "p2_original_source_hash_basis",
+                "p2_verification_method"
+              ]
+            }
           }
         }
       }
     }
-  }
+  ]
 }
