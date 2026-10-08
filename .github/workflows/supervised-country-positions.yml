@@ -61,7 +61,7 @@ jobs:
         with:
           use-public-rspm: true
       - name: Install isolated dependency for existing M12/M17 kernels
-        run: Rscript -e 'install.packages("glmnet", repos = "https://cloud.r-project.org", quiet = TRUE)'
+        run: Rscript -e 'if (!requireNamespace("glmnet", quietly = TRUE)) install.packages("glmnet", quiet = TRUE)'
       - name: Reuse unchanged synthetic-only I6 kernels
         run: Rscript research/supervised_country_positions/test_m12_m17_adapter.R
 
