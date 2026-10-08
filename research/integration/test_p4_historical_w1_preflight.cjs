@@ -7,7 +7,8 @@ const fakeHash=x=>crypto.createHash('sha256').update('FICTION_ONLY:'+x).digest('
 const sum=[7,9,6,7,7,7,7,5];
 function fixture(){
   const result=[],symbols=new Set();
-  let undatedLeft=3;
+  // Three invented index gaps at the same years as the private official PV
+  // review; no real country identities or meeting text occur in this fixture.
   for(let i=0;i<99;i++){
     const country='X'+String.fromCharCode(65+Math.floor(i/26))+String.fromCharCode(65+i%26);
     const keep=new Set([i%4,(i+1)%4,4+i%4,4+(i+1)%4]);
@@ -16,8 +17,8 @@ function fixture(){
     for(let j=0;j<8;j++){
       const year=2016+j,verified=keep.has(j);
       const symbol='A/'+(year-1945)+'/PV.'+(1+i%sum[j]);
-      const isUndated=verified&&undatedLeft>0;
-      if(isUndated)undatedLeft--;
+      const isUndated=verified&&((i===0&&(year===2016||year===2017))||
+        (i===3&&year===2023));
       const state=!verified?'original_PV_not_verified_not_speech_absence':
           isUndated?'source_corroborated_date_unverified':
           'source_and_index_date_corroborated_hash_only';
