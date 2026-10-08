@@ -1,0 +1,85 @@
+name: W4 P2 historical source metadata and frozen-gate validation
+
+on:
+  pull_request:
+    paths:
+      - "research/integration/p2_source_readiness.py"
+      - "research/integration/test_p2_source_readiness.py"
+      - "docs/parallel-work/W4_P2_INDEXED_SOURCE_AUDIT_2026-10-08.json"
+      - "docs/parallel-work/W4_P2_SOURCE_READINESS_UPDATE_2026-10-08.md"
+      - ".github/workflows/coord-p2-source-readiness.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  historical-source-metadata:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Check aggregate provenance, reported source/missingness and frozen evaluation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          a=json.loads(Path('docs/parallel-work/W4_P2_INDEXED_SOURCE_AUDIT_2026-10-08.json').read_text())
+          assert a['independent_indexed_workbook_metadata_checks']['passed']==24
+          assert a['original_pdf_bytes_rechecked_this_turn'] is False
+          assert a['workbook_original_file_sha256_recomputed'] is False
+          assert a['candidate_panel']['year_cells_total']==792
+          assert a['candidate_panel']['source_strong_verified_year_cells']==523
+          assert a['candidate_panel']['unverified_year_cells']==269
+          assert a['candidate_panel']['w4_empirically_eligible_labels']==0
+          assert a['reserved_meetings_2026_oct_5_6_opened']==0
+          assert a['publication_eligible'] is False
+          lock=json.loads(Path('research/reference_tests/evaluation-lock.json').read_text())
+          assert lock['holdout_state']=='reserved_not_downloaded'
+          assert lock['reserved_meetings']==37
+          assert lock['evaluation_executed'] is False
+          print('PASS: actual-source indexed metadata ledger, unverified cells and frozen holdout gates')
+          PY
+      - name: Synthetic source validator negative cases and merged W1 regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/integration -p 'test_p2_source_readiness.py' -v
+          node docs/parallel-work/validate-contract.cjs
+          node research/validation_framework/tests/test_framework.cjs
+      - name: Reproduce only public-safe aggregate, never real-source text
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m research.integration.p2_source_readiness > "$RUNNER_TEMP/p2-source-readiness.json"
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          d=json.loads((Path(os.environ['RUNNER_TEMP'])/'p2-source-readiness.json').read_text())
+          assert d['source_strong_matched_candidate_cells']==523
+          assert d['not_source_verified_candidate_cells']==269
+          assert d['private_worksheet_tables_evaluated']==0
+          assert d['original_pdf_byte_digest_replay']=='NOT_RUN_NO_PRIVATE_PDF_MAP'
+          assert d['W1_source_frame_eligible'] is False
+          assert d['W4_descriptive_fit_eligible'] is False
+          assert d['publication_eligible'] is False
+          assert d['reserved_37_meetings_opened']==0
+          print('PASS: public aggregate only, PDF-byte replay and real fit explicitly NOT RUN')
+          PY
+      - name: Upload source-safe aggregate readiness receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: w4-p2-no-private-rows-readiness
+          path: ${{ runner.temp }}/p2-source-readiness.json
+          if-no-files-found: error
+          retention-days: 10
