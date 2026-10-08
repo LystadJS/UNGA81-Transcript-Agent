@@ -61,7 +61,9 @@ async function main() {
   await reject('claim of release eligibility rejected',v=>{v.publication_eligible=true;return v;},/Engineering-only/);
   await test('comparison permits only source/representation-matched partitions',()=>{
     const view=C.fromParallel(fixture);
-    assert.equal(A.compareViews(view,view,'fixture-kmeans','fixture-pam').numerical_comparison_permitted,true);
+    assert.equal(A.compareViews(view,view,'fixture-kmeans','fixture-pam').identical_population,true);
+    assert.equal(A.compareViews(view,view,'fixture-kmeans','fixture-pam').numerical_comparison_permitted,false);
+    assert.equal(A.compareViews(view,view,'fixture-kmeans','fixture-kmeans').numerical_comparison_permitted,true);
     assert.equal(A.compareViews(view,view,'fixture-kmeans','fixture-nmf').numerical_comparison_permitted,false);
     const changed=clone(fixture);
     changed.upstream.source_sha256='f'.repeat(64);
