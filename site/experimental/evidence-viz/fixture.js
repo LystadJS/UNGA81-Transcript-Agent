@@ -33,7 +33,7 @@
       meeting_id:'demo-meeting-4',speech_id:null,source_family_id:'demo-family-4',
       date:'2026-03-01',country:null,source_url:null,json_pointer:null,
       start:null,end:null,unit:'synthetic',review_status:'not_applicable',
-      exclusion_reasons:[],source_status:'unavailable',
+      exclusion_reasons:['source_unavailable'],source_status:'unavailable',
       missing_reason:'Synthetic source absent from collected observations'
     });
     const models=[
@@ -71,7 +71,7 @@
         duplicate_policy:'retain_and_flag',total_in_frame:11,eligible:10},
       observations,models,results,
       coverage:{inventory_meetings:4,observations_total:11,eligible:10,
-        excluded:0,unavailable_sources:1,
+        excluded:1,unavailable_sources:1,
         models:[
           {model_id:'demo-nmf',eligible:10,assigned:10,unassigned:0,
             not_fitted:0,excluded:0,attempted_fits:1,successful_fits:1,failed_fits:0},
@@ -101,7 +101,7 @@
     };
     const common=(kind,measure,included,warnings=[])=>({
       kind,status:'ready',reason:null,identity:JSON.parse(JSON.stringify(identity)),
-      measure,coverage:{frame:11,eligible:10,included,excluded:0,missing:1},
+      measure,coverage:{frame:11,eligible:10,included,excluded:1,missing:1},
       warnings
     });
     const consensus={
@@ -215,6 +215,25 @@
     const f=fixture(),p=f.panels.find(x=>x.kind===kind);
     if(!p)throw Error('Unknown fixture chart');
     p.status=state;
+    if (state==='empty') {
+      f.envelope.cohort.total_in_frame=0;
+      f.envelope.cohort.eligible=0;
+      f.envelope.observations=[];
+      f.envelope.results=[];
+      f.envelope.evidence=[];
+      f.envelope.coverage.inventory_meetings=0;
+      f.envelope.coverage.observations_total=0;
+      f.envelope.coverage.eligible=0;
+      f.envelope.coverage.excluded=0;
+      f.envelope.coverage.unavailable_sources=0;
+      for (const m of f.envelope.coverage.models) {
+        m.eligible=0; m.assigned=0; m.unassigned=0;
+        m.not_fitted=0; m.excluded=0;
+        m.attempted_fits=0; m.successful_fits=0; m.failed_fits=0;
+      }
+      p.identity.observation_refs=[];
+      p.coverage={frame:0,eligible:0,included:0,excluded:0,missing:0};
+    }
     p.reason=state==='empty'?'No eligible source observations for this display':
       'Upstream calculation not validated; no display values released';
     p.coverage.included=0;
