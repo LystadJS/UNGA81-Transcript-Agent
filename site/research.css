@@ -30,6 +30,8 @@
 #research-status { min-height:23px; color:#234e78; font-weight:700; overflow-wrap:anywhere; }
 #research-status.research-error { color:#944b42; }
 .research-summary { margin:20px 0 28px; padding:18px 20px; background:#fff; border:1px solid #d5dee6; }
+.research-summary, .research-summary p, .research-summary :is(td,th), .research-hint { min-width:0; max-width:100%; overflow-wrap:anywhere; word-break:break-word; }
+.research-page .ev-panel :is(td,th,summary,p,span) { overflow-wrap:anywhere; }
 .research-summary h3 { margin:0 0 10px; font:normal 20px Georgia,serif; }
 .research-summary .research-meta { display:flex; flex-wrap:wrap; gap:9px 24px; margin:10px 0; }
 .research-meta span { overflow-wrap:anywhere; font-size:13px; }
