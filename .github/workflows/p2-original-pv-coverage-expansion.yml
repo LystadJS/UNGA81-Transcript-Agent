@@ -1,0 +1,55 @@
+name: P2 preregistered original-PV coverage expansion
+on:
+  push:
+    branches: ['coord/p2-w1-verified-expansion-calibration-20261008']
+    paths:
+      - 'research/source_acquisition/p2_expansion/**'
+      - '.github/workflows/p2-original-pv-coverage-expansion.yml'
+  pull_request:
+    paths:
+      - 'research/source_acquisition/p2_expansion/**'
+      - '.github/workflows/p2-original-pv-coverage-expansion.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  encrypted-official-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned offline PDF and cryptographic readers
+        run: python -m pip install cryptography==44.0.3 pymupdf==1.26.7
+      - name: Verify synthetic encrypted-envelope roundtrip
+        run: python research/source_acquisition/p2_expansion/secure_originals.py --selftest
+      - name: Fetch 50 public historical UN meeting originals; export ciphertext only
+        env:
+          W4_RECIPIENT_PUBLIC_KEY: "E6z9F0BVSO7zhA9igzvB1wh98FyRTq0MsyNOqem+YSU="
+        run: |
+          python research/source_acquisition/p2_expansion/secure_originals.py \
+            --symbols research/source_acquisition/p2_expansion/pv_gap_census_50.txt \
+            --public-key "$W4_RECIPIENT_PUBLIC_KEY" \
+            --sealed-output "$RUNNER_TEMP/p2-expand/original-pvs-50.sealed" \
+            --workers 4
+      - name: Assert only ciphertext may be published as artifact
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import os
+          folder=Path(os.environ['RUNNER_TEMP'])/'p2-expand'
+          files=list(folder.iterdir())
+          assert len(files)==1 and files[0].name=='original-pvs-50.sealed'
+          assert files[0].read_bytes()[:8]==b'UNW4P2\x00\x01'
+          print('PASS: no decrypted PDF, text, person/source record or secret in workflow artifact')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2-expansion-50-recipient-encrypted-official-pvs
+          path: ${{ runner.temp }}/p2-expand/original-pvs-50.sealed
+          retention-days: 1
+          if-no-files-found: error
