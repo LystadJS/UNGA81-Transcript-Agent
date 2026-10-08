@@ -3,11 +3,13 @@ on:
   push:
     branches: ['coord/p2-w1-verified-expansion-calibration-20261008']
     paths:
-      - 'research/source_acquisition/p2_expansion/**'
+      - 'research/source_acquisition/p2_expansion/secure_originals.py'
+      - 'research/source_acquisition/p2_expansion/pv_gap_census_50.txt'
       - '.github/workflows/p2-original-pv-coverage-expansion.yml'
   pull_request:
     paths:
-      - 'research/source_acquisition/p2_expansion/**'
+      - 'research/source_acquisition/p2_expansion/secure_originals.py'
+      - 'research/source_acquisition/p2_expansion/pv_gap_census_50.txt'
       - '.github/workflows/p2-original-pv-coverage-expansion.yml'
   workflow_dispatch:
 permissions:
