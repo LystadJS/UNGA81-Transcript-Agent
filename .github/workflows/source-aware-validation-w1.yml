@@ -71,6 +71,7 @@ jobs:
               assert 'Harbor ferry cargo' not in t, 'Leaked fixture raw text'
               assert 'private_development' not in t
           print('PASS generated synthetic public contract & non-text-only artifact gate')
+          print('PUBLIC_COMPARISON_SUMMARY',json.dumps({'models':report['models'],'comparisons':[{'left':r['left'],'right':r['right'],'status':r['status'],'ari':r.get('metrics',{}).get('ari') if r.get('metrics') else None,'ami':r.get('metrics',{}).get('adjusted_mutual_information') if r.get('metrics') else None,'shared_assigned':r.get('metrics',{}).get('assigned_both') if r.get('metrics') else None} for r in report['comparisons']],'failures':report['failure_count'],'cases':report['cases_count']}))
           PY
       - uses: actions/upload-artifact@v4
         with:
