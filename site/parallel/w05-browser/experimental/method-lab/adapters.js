@@ -48,7 +48,8 @@
       'Invalid legacy fit inventory.');
     const source = {
       schema:'un.latent-comparison.v1', hash:restored.result.source_hash,
-      hash_basis:'utf8_corpus_export', selection_hash:restored.result.selection_hash,
+      hash_basis:restored.payload?.kind === 'reviewed' ? 'utf8_reviewed_bundle' : 'utf8_corpus_export',
+      selection_hash:restored.result.selection_hash,
       unit:'mixed', split:'development_not_verified'
     };
     const byID = new Map(), models = [];
