@@ -70,3 +70,18 @@ development analysis remains subject to its own source-validation checks.
 and public build asset manifest. The user requested preparation of this
 wiring PR, **not its merge or deployment**. Do not enable public navigation
 or change release manifests in main until a separate explicit approval.
+
+## Executed draft-PR QA — 8 October 2026
+
+- GitHub Actions [coordinator research browser QA 37817376697](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37817376697): **PASS**, with real Chromium desktop 1440×900 and mobile 390×844 on the disposable build. Both W5 and W6 reviewed iframes loaded, and the native W3-generated 24, 24+1, and 96 synthetic source frames were independently imported and reconciled.
+- The 24-source and 24 eligible + 1 unavailable source graph panels rendered with source-linked original IDs and full frame counts; the 96-observation graph correctly **withheld** its network display above W6's 50-node limit. Tampered edge file failed SHA-256 before rendering and cleared previous graph output.
+- Keyboard evidence inspection, no page-level horizontal overflow, no external network requests, no page exceptions, and desktop/mobile browser screenshots were checked.
+- Existing W5 original 20/20 Node and W6 repaired 16/16 Node tests, original latent/PCA/LSA/partition/reviewed-unit regressions, the canonical interchange test, source-free fixture construction and selective build allowlist passed in the same CI run.
+- [Parallel contract CI 37817376325](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37817376325) and [latent comparison acceptance CI 37817376132](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37817376132) both **PASS** on the same tested branch head.
+- [Synthetic-only browser screenshots and SHA-verified research receipts (artifact 11567328126)](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37817376697/artifacts/11567328126) are real browser QA evidence, not UN empirical findings.
+
+**Release result: WITHHELD.** These PASS results authorize a coordinator
+browser-wiring review candidate, not automatic merge/deployment, changes
+to site/release.json or the portfolio website, or publication of a
+source-dependent statistical finding. PR stays draft until the owner
+separately authorizes public release.
