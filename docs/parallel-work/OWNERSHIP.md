@@ -8,7 +8,7 @@
 | W2 | `feat/parallel-w02-consensus` | `research/parallel/w02-consensus/**` | Only inside that subtree |
 | W3 | `feat/graph-based-learning` | `research/graph_methods/**` | Within that subtree, plus **only** `.github/workflows/graph-based-learning-research.yml` under the 8 October 2026 owner-approved exception |
 | W4 | `feat/longitudinal-latent-structure` | `research/longitudinal/**` | Within this subtree, **plus only** the new `.github/workflows/longitudinal-framework.yml` under the 8 October 2026 owner-approved exception |
-| W5 | `feat/parallel-w05-browser` | `site/parallel/w05-browser/**` | Only inside that subtree; synthetic Node tests colocated |
+| W5 | `feat/browser-research-engine` | `site/parallel/w05-browser/**` | Only inside the already-reserved W5 subtree; synthetic Node/browser tests colocated |
 | W6 | `feat/evidence-visualization-suite` | `site/experimental/evidence-viz/**` | Only inside this subtree, by explicit 8 October 2026 owner-approved W6 exception; no worker workflow edits |
 | W7 | `feat/parallel-w07-diplomat-ux` | `site/parallel/w07-diplomat-ux/**` | Only inside that subtree |
 
@@ -28,6 +28,20 @@ Worker code may **import** existing production APIs and the read-only v1 schema,
 The repository owner explicitly approved the path/CI exception for [PR #16](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/16), after requesting coordinator review and authorizing its merge. The W3 reservation now adopts the existing `feat/graph-based-learning` branch and exclusive `research/graph_methods/**` implementation namespace. **Only PR #16** may add the *new* `.github/workflows/graph-based-learning-research.yml` workflow. It must stay limited to W3 synthetic engineering and read-only regression/contract tests, with `contents: read`. This exception does not authorize changes to any pre-existing workflow, shared entry point/loader, `site/**`, `un/**`, frozen source or evaluation protocol, D1 O1–O5 gates, versioned interchange schema, release manifests, or portfolio mirror. W3 workers must not modify `docs/parallel-work/**`; this coordinator-only decision records the already-issued owner approval.
 
 The original proposed `feat/parallel-w03-spectral-diffusion` / `research/parallel/w03-spectral-diffusion/**` reservation is superseded for W3; no second spectral/diffusion implementation branch is authorized. This is a **file-ownership and uniquely named CI exception only**, not independent scientific validation, permission to open the 37 reserved October 5–6 transcripts, approval to infer political positions or influence, or public browser/D1 release authority. Coordinator PR acceptance, per-head CI, source provenance, and W1 compatibility gates remain required before any merge. PR #16 must remain engineering-only unless a subsequent distinct validation/release decision is made.
+
+### Coordinator W5 branch-name reconciliation — 8 October 2026
+
+The W5 source implementation was created under `feat/browser-research-engine`,
+as specified directly by the repository owner, while maintaining the
+already-reserved exclusive `site/parallel/w05-browser/**` implementation
+prefix. The coordinator adopts that existing branch name for PR #21; the
+former proposed `feat/parallel-w05-browser` reservation is superseded.
+This is a **branch-name reconciliation, not a new file namespace**.
+W5 may not alter pre-existing site components, global CSS, shared release
+entry points, publication manifests, frozen sources or coordinator workflows.
+W5 still requires independent source/relational, real-browser, privacy and
+resource validation before an engineering-only merge. It does not authorize
+public release, MiniLM downloads or scientific claims.
 
 ### Owner-approved W6 exception — 8 October 2026
 
