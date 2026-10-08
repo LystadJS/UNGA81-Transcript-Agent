@@ -95,6 +95,10 @@ test('duplicate country-year keys rejected',()=>{
   const {upstream,panel}=mk();
   panel.split='development';panel.observations.forEach(r=>{
     r.actor_kind='recorded_affiliation';r.actor_id='ZZZ';});
+  panel.observations[1].source_hash_basis='raw_response_bytes';
+  panel.observations[1].date_basis='independent_UN_index';
+  panel.observations[1].observed_p2_strong_match=true;
+  panel.observations[1].source_original_pdf_sha256=panel.observations[1].source_sha256;
   panel.observations.push({...panel.observations[0],id:'duplicated-actor-year'});
   const src={...upstream,source_hash_basis:'raw_response_bytes',
     source_schema:'un.p2.original-pv-reconciled.v1'};
