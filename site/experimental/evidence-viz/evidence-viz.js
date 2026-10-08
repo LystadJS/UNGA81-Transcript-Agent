@@ -171,8 +171,9 @@
       lookup.set(key,r);
       inspector['cons-' + z] = {
         ids:[a.a,a.b], summary: 'Equal-family average: ' + pct(value) + '. ' +
-        together + '/' + eligible + ' eligible pair exposures across ' + rates.length +
-        ' assessable families; failed attempts ' + failure + '. ' +
+        together + '/' + eligible + ' pooled pair exposures; equal weighting of ' + rates.length +
+        ' assessable families. Family breakdown: ' +
+        a.families.map(f => f.family+' '+f.together+'/'+f.eligible+' eligible, '+f.failed+' failures').join('; ') + '. ' +
         (r.unstable ? 'Assignment instability flagged upstream. ' : '') +
         (a.missing_reason || '')
       };
@@ -332,7 +333,7 @@
       marks+='<line x1="'+a.x+'" y1="'+a.y+'" x2="'+b.x+'" y2="'+b.y+
         '" stroke="'+(e.duplicate_sensitivity==='sensitive'||e.agenda_sensitivity==='sensitive'?
           COLORS.warn:COLORS.blue)+'" stroke-width="'+(1+e.strength*5)+
-        '" opacity=".70"'+(e.duplicate_sensitivity==='not_assessed'?' stroke-dasharray="5 4"':'')+
+        '" opacity=".70"'+((e.duplicate_sensitivity==='not_assessed'||e.agenda_sensitivity==='not_assessed')?' stroke-dasharray="5 4"':'')+
         '><title>'+escape(e.from+'–'+e.to+' strength '+decimal(e.strength))+'</title></line>';
     }
     for(const n of p.nodes){
@@ -410,6 +411,8 @@
       for(let j=0;j<p.periods.length;j++){
         const q=by.get(p.periods[j]);
         if(!q || q.status!=='observed')continue;
+        // Local scores from a failed alignment cannot share an axis with the reference period.
+        if(j>0 && !validEdges.has(p.periods[j-1]+'\u001f'+p.periods[j]))continue;
         const previous=by.get(p.periods[j-1]),key=p.periods[j-1]+'\u001f'+p.periods[j];
         if(j>0&&previous?.status==='observed'&&validEdges.has(key) && a.roster_status==='matched'){
           marks+='<line x1="'+px(previous.xy[0])+'" y1="'+py(previous.xy[1])+
@@ -435,7 +438,7 @@
       escape(a.selection_comparability),escape(a.uncertainty_status)]));
     const content='<p class="ev-note">Coordinates are supplied aligned latent scores, not diplomatic positions. '+
       'A connecting line requires passing rank/degeneracy checks, ≥3 anchors, checked source-selection comparability, '+
-      'and matched actor observations in adjacent periods. Gaps, arrivals and departures remain unconnected.</p>'+
+      'and matched actor observations in adjacent periods. Unaligned-period coordinates are entirely withheld from this shared axis. Gaps, arrivals and departures remain unconnected.</p>'+
       '<div class="ev-figure">'+svg+'</div>'+
       rows(['Actor / source grouping','Roster','Attribution','Comparable transitions','Inspect periods'],lines)+
       '<h3>Alignment and withholding ledger</h3>'+
