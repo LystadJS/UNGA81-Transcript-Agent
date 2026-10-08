@@ -1,0 +1,103 @@
+name: Coordinator synthetic W3/W5/W6 research browser wiring QA
+
+on:
+  pull_request:
+    paths:
+      - "site/research.html"
+      - "site/research-wiring.js"
+      - "site/research-wiring.css"
+      - "site/index.html"
+      - "site/latent.html"
+      - "tools/build_pages.py"
+      - "research/integration/wiring_browser_smoke.py"
+      - "docs/parallel-work/BROWSER_RESEARCH_WIRING_REVIEW.md"
+      - ".github/workflows/coord-research-browser-qa.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  experimental-wiring:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONHASHSEED: "0"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: research/graph_methods/requirements.txt
+      - name: Verify local browser and JS syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium)" >> "$GITHUB_ENV"
+          node --check site/research-wiring.js
+          node docs/parallel-work/validate-contract.cjs
+      - name: Install pinned offline numerical and browser-test bindings
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install -r research/graph_methods/requirements.txt
+          python -m pip install playwright==1.55.0
+      - name: Build disposable public-site preview from explicitly approved assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/build_pages.py "$RUNNER_TEMP/research-preview"
+          test -s "$RUNNER_TEMP/research-preview/research.html"
+          test -s "$RUNNER_TEMP/research-preview/research-wiring.js"
+          test -s "$RUNNER_TEMP/research-preview/parallel/w05-browser/experimental/method-lab/worker.js"
+          test -s "$RUNNER_TEMP/research-preview/parallel/w05-browser/experimental/method-lab/fixtures/synthetic-contract.json"
+          test -s "$RUNNER_TEMP/research-preview/experimental/evidence-viz/evidence-viz.js"
+          test ! -e "$RUNNER_TEMP/research-preview/experimental/evidence-viz/browser_smoke.py"
+          test ! -e "$RUNNER_TEMP/research-preview/experimental/evidence-viz/tests.cjs"
+          test ! -e "$RUNNER_TEMP/research-preview/parallel/w05-browser/experimental/method-lab/ACCEPTANCE.md"
+          grep -q 'Research methods (experimental)' "$RUNNER_TEMP/research-preview/index.html"
+      - name: Native W5/W6 and legacy browser/source regression checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          node site/parallel/w05-browser/experimental/method-lab/test-method-lab.cjs
+          node --test site/experimental/evidence-viz/tests.cjs
+          node tools/test_latent.cjs
+          node tools/test_browser_lsa.cjs
+          node tools/test_browser_partitions.cjs
+          node tools/test_browser_reviewed_units.cjs
+      - name: Generate native W3 synthetic sources for browser import
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m research.integration.w3_w5_w6.make_synthetic \
+            --output "$RUNNER_TEMP/w3-browser-fixtures"
+      - name: Chromium desktop/mobile research hub and source-graph acceptance
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/integration/wiring_browser_smoke.py \
+            --site "$RUNNER_TEMP/research-preview" \
+            --fixtures "$RUNNER_TEMP/w3-browser-fixtures" \
+            --browser "$CHROME_BIN" \
+            --output "$RUNNER_TEMP/research-browser-qa"
+      - name: Archive only text-free browser QA screenshots and replay receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coordinator-research-browser-synthetic-qa
+          path: |
+            ${{ runner.temp }}/research-browser-qa
+            ${{ runner.temp }}/w3-browser-fixtures/*/receipt.json
+            ${{ runner.temp }}/w3-browser-fixtures/*/SHA256.json
+          if-no-files-found: warn
+          retention-days: 7

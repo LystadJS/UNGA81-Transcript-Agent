@@ -10,12 +10,35 @@
     "date-first individual meeting selection",
     "offline source-linked executive quick reader in individual meeting reports",
     "source-audited courtesy and collective spokesperson safeguards with recorded agenda cues",
-    "source-bound 13-meeting development adjudication benchmark and conservative country-expression fixes"
+    "source-bound 13-meeting development adjudication benchmark and conservative country-expression fixes",
+    "synthetic W3 source-verified graph inspection and isolated W5/W6 research previews"
   ],
   "meeting_routes": "Validated canonical UN inventory paths, including HRC and treaty-body routes",
   "acceptance_run": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37651586467",
   "numerical_kernels_changed": false,
   "D1_publication_gates_changed": false,
   "analysis_status": "exploratory; 20-meeting development QA with 13 additional source-linked meetings, 83 assistant-provisional benchmark cases; context omissions remain, no official policy inference or GenAI API",
-  "quick_reader_engine": "un.meeting-quick-reader.v1.2-context-and-adjudication"
+  "quick_reader_engine": "un.meeting-quick-reader.v1.2-context-and-adjudication",
+  "research_browser": {
+    "status": "released_synthetic_research_preview",
+    "entry": "research.html",
+    "interchange": "un.parallel-analysis.v1",
+    "graph_import": "W3 synthetic-only local files, SHA256 verified, no source retrieval",
+    "browser_methods": "W5 experimental browser kernels and W6 source-linked visualization",
+    "accepted_worker_merges": {
+      "W3": "58ad3c25de97beea33325331b4b74fb784ca2e8f",
+      "W5": "316f3b81cecc0bba0920277f5551bc8d0313764f",
+      "W6": "16ad599cf88aa6b76e3c8ee45551f6e9c36f7503"
+    },
+    "experimental_acceptance_runs": [
+      "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37817756085",
+      "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37817755721",
+      "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37817755763"
+    ],
+    "empirical_validation": "not_run",
+    "real_source_or_pinned_minilm_inference": false,
+    "political_or_causal_inference_authorized": false,
+    "heldout_37_meetings_opened": false,
+    "D1_gates_unchanged": true
+  }
 }

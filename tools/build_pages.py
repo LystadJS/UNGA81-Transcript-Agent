@@ -19,6 +19,28 @@ def build(output):
         if p.is_symlink():raise ValueError('Symlink in public report')
         if p.is_file() and p.suffix.lower() in ('.html','.css','.js','.json','.png','.svg','.txt','.pdf','.docx','.csv','.md'):
             shutil.copy2(p,dest/p.name)
+    # Explicitly approved synthetic research browser assets. Never recurse
+    # through site/: tests, draft reviews, local screenshots, private inputs,
+    # and user-generated archives are not publishable Pages content.
+    reviewed_research_assets = {
+        'parallel/w05-browser/experimental/method-lab': (
+            'index.html', 'contracts.js', 'adapters.js', 'task-controller.js',
+            'method-lab.js', 'method-lab.css', 'worker.js'),
+        'parallel/w05-browser/experimental/method-lab/fixtures': (
+            'synthetic-contract.json',),
+        'experimental/evidence-viz': (
+            'index.html', 'styles.css', 'fixture.js',
+            'evidence-viz.js', 'demo.js'),
+    }
+    for relative, names in reviewed_research_assets.items():
+        source_dir = repo/'site'/relative
+        target_dir = output/relative
+        target_dir.mkdir(parents=True, exist_ok=True)
+        for name in names:
+            original = source_dir/name
+            if original.is_symlink() or not original.is_file():
+                raise ValueError(f'Missing or symlinked reviewed research asset: {relative}/{name}')
+            shutil.copy2(original, target_dir/name)
     (output/'.nojekyll').write_text('')
     return {'files':len(list(output.rglob('*'))),'private_review_work_included':False}
 
