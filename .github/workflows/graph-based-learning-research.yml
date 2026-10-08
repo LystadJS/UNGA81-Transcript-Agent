@@ -3,6 +3,7 @@ name: Graph research — spectral and diffusion (synthetic only)
 on:
   push:
     branches:
+      - main
       - feat/graph-based-learning
     paths:
       - "research/graph_methods/**"
@@ -70,8 +71,8 @@ jobs:
           else
             echo "NOT_RUN: W1 unmerged/not installed in checkout; intentional acceptance gate."
           fi
-      - name: Verify actual merged W1–W3 native API interoperability (PR merged tree)
-        if: github.event_name == 'pull_request'
+      - name: Verify actual merged W1–W3 interoperability (PR merge or main)
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
         shell: bash
         run: |
           set -euo pipefail
@@ -99,7 +100,7 @@ jobs:
           print('Synthetic-only graph v1 receipt validated')
           PY
       - name: Independently validate W3 v1 envelope with merged W1 relational API
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
         shell: bash
         run: |
           set -euo pipefail
@@ -130,8 +131,8 @@ jobs:
           assert.throws(() => validateRelational(duplicateId));
           console.log('PASS: accepted W1 relational validator checked generated W3 v1 envelope and four negative cases.');
           JS
-      - name: Archive W1-W3 synthetic interoperability receipt (PR only)
-        if: github.event_name == 'pull_request'
+      - name: Archive W1-W3 synthetic interoperability receipt (merged tree)
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
         shell: bash
         run: |
           set -euo pipefail
