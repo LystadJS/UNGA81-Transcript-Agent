@@ -31,11 +31,31 @@ const path=require('node:path');
 const root=process.cwd();
 const I=require(path.join(root,'research/validation_framework/interchange.cjs'));
 const M=require(path.join(root,'research/validation_framework/metrics.cjs'));
+const F=require(path.join(root,'research/validation_framework/frame.cjs'));
 const payload=JSON.parse(fs.readFileSync(0,'utf8'));
 I.validateRelational(payload.envelope);
+const population=F.validateFrame(payload.frame);
+if(population.selection_sha256!==payload.envelope.upstream.selection_sha256)
+  throw Error('W1 raw frame/selected IDs and interchange export disagree');
+if(population.eligible.length!==payload.left.length||
+   population.excluded.length!==payload.envelope.coverage.excluded)
+  throw Error('W1 native validated-frame denominator mismatch');
+const audit=F.auditSources(population.eligible);
+const schedule=F.schedule(population.eligible,'meeting',2,0.8,31);
 if(payload.left!==null && payload.right!==null){
   const result=M.evaluateAssignments(payload.left,payload.right);
-  process.stdout.write(JSON.stringify({status:'validated',metrics:result}));
+  process.stdout.write(JSON.stringify({status:'validated',metrics:result,
+    source_validation:{
+      eligible:population.eligible.length,excluded:population.excluded.length,
+      selection_sha256:population.selection_sha256,
+      meeting_group_schedule:{
+        status:schedule.status,groups:schedule.groups,
+        attempted:schedule.attempted,reason:schedule.reason||null
+      },
+      largest_meeting_share:audit.largest_meeting_share,
+      duplicate_text_groups:audit.duplicate_text_groups,
+      missing_affiliation_count:audit.missing_affiliation_count
+    }}));
 }else{
   process.stdout.write(JSON.stringify({status:'validated',metrics:null}));
 }
@@ -48,11 +68,12 @@ def _w1_files(repo_root: Path) -> tuple[Path, Path]:
     runner = directory / "runner.cjs"
     bridge = directory / "interchange.cjs"
     metrics = directory / "metrics.cjs"
-    if not all(p.is_file() and not p.is_symlink() for p in (runner, bridge, metrics)):
+    frame = directory / "frame.cjs"
+    if not all(p.is_file() and not p.is_symlink() for p in (runner, bridge, metrics, frame)):
         raise GraphError(
             "W1 unavailable: coordinator must merge and accept PR #19 before the graph bridge can activate"
         )
-    if not all(p.resolve().is_relative_to(root) for p in (runner, bridge, metrics)):
+    if not all(p.resolve().is_relative_to(root) for p in (runner, bridge, metrics, frame)):
         raise GraphError("Refuse W1 code outside the declared repository checkout")
     return runner, bridge
 
@@ -171,6 +192,35 @@ def _compare_identities(manifest: dict, envelope: dict) -> None:
         raise GraphError("W1/W3 coverage inventory mismatch")
 
 
+def _w1_source_frame(manifest: dict) -> dict:
+    """Construct W1's metadata-only *real* source-frame validator input."""
+    schema = manifest["upstream"]["source_schema"]
+    if schema == "synthetic.v1":
+        schema = "un.source-validation.synthetic.v1"
+    if schema not in {
+        "un.source-validation.synthetic.v1", "un.browser.corpus.v1",
+        "un.passage-corpus.v1", "un.review.v1",
+    }:
+        raise GraphError("W1 frame validator lacks an accepted adapter for this source schema")
+    observations = [
+        {**row, "split": manifest["split"],
+         "exclusion_reasons": row.get("exclusion_reasons", [])}
+        for row in manifest["observations"] + manifest.get("excluded_observations", [])
+    ]
+    upstream = manifest["upstream"]
+    return {
+        "schema": "un.source-validation.frame.v1",
+        "split": manifest["split"], "source_schema": schema,
+        "source_engine": upstream["source_engine"],
+        "source_hash_basis": upstream["source_hash_basis"],
+        "source_sha256": upstream["source_sha256"],
+        "selection_sha256": upstream["selection_sha256"],
+        "unit": manifest.get("unit", "passage"),
+        "inventory_meetings": manifest["inventory_meetings"],
+        "observations": observations,
+    }
+
+
 def compare_w1_partition(manifest: dict, values: np.ndarray, spectral: dict,
                          w1_envelope: dict, approval: dict, *,
                          w1_model_id: str, repo_root: Path = ROOT) -> dict:
@@ -217,7 +267,8 @@ def compare_w1_partition(manifest: dict, values: np.ndarray, spectral: dict,
         Draft202012Validator(schema, format_checker=FormatChecker()).validate(w1_envelope)
     except Exception as exc:
         raise GraphError("W1 v1 structural schema verification refused") from exc
-    payload = {"envelope": w1_envelope, "left": w1_labels, "right": s_labels.tolist()}
+    payload = {"envelope": w1_envelope, "frame": _w1_source_frame(manifest),
+               "left": w1_labels, "right": s_labels.tolist()}
     try:
         result = subprocess.run(
             ["node", "-e", W1_NODE_CODE], cwd=repo_root.resolve(),
@@ -247,6 +298,7 @@ def compare_w1_partition(manifest: dict, values: np.ndarray, spectral: dict,
         "selection_sha256": manifest["upstream"]["selection_sha256"],
         "observation_count": len(values),
         "metrics": validated["metrics"],
+        "source_validation": validated["source_validation"],
         "publication_eligible": False,
         "comparison_protocol": "same_source_and_underlying_representation_identity",
         "limitation": ("W1 assignment metrics on the same original IDs and pinned underlying "
