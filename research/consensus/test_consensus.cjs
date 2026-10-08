@@ -30,8 +30,8 @@ test('all synthetic interchange v1 envelopes pass strict upstream validation', (
 });
 test('pair counts preserve numerator and three different missingness mechanisms', () => {
   const s = find(base, a1, a2), n = find(base, a1, b1);
-  assert.equal(s.coassigned_count, 7);
-  assert.equal(s.assigned_both_count, 7);
+  assert.equal(s.coassigned_count, 8);
+  assert.equal(s.assigned_both_count, 8);
   assert.equal(s.planned_count, 9);
   assert.equal(s.missing_pair_count, 1);
   assert.equal(s.noise_pair_count, 0);
