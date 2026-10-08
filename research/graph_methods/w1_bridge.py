@@ -93,6 +93,10 @@ def _load_w1_model(envelope: dict, model_id: str, manifest: dict) -> tuple[list[
     rep = manifest["representation"]
     if model["representation_id"] != rep["id"] or model["representation_version"] != rep["version"]:
         raise GraphError("W1 and W3 do not share a pinned representation basis/version")
+    if model.get("training_selection_sha256") != rep["training_selection_sha256"]:
+        raise GraphError("W1 and W3 fitted-representation training selections differ")
+    if model.get("fit_split") != manifest["split"]:
+        raise GraphError("W1 model was fitted on a different source split")
     n = len(manifest["observations"])
     mapping: dict[str, dict] = {}
     for row in envelope["results"]:
@@ -215,8 +219,11 @@ def compare_w1_partition(manifest: dict, values: np.ndarray, spectral: dict,
         raise GraphError("Accepted W1 validator did not return JSON") from exc
     if validated.get("status") != "validated" or not isinstance(validated.get("metrics"), dict):
         raise GraphError("Accepted W1 metrics did not produce a validated comparison")
+    assessable = (validated["metrics"].get("ari") is not None and
+                  validated["metrics"].get("adjusted_mutual_information") is not None)
     return {
-        "schema": "un.w1-w3-comparison.v1", "status": "descriptive",
+        "schema": "un.w1-w3-comparison.v1",
+        "status": "descriptive" if assessable else "inconclusive",
         "w1_model_id": w1_model_id, "w1_model_basis": ref_model["representation_id"],
         "w1_version": ALLOWED_W1_ADAPTER, "w1_code_sha256": code_sha,
         "w1_accepted_commit_sha": approval["w1_merged_commit_sha"],
