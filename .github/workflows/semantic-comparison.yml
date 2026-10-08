@@ -1,0 +1,60 @@
+name: Pinned semantic comparison
+on:
+  push:
+    branches: [feat/pinned-semantic-comparison]
+    paths: ['.github/workflows/semantic-comparison.yml']
+permissions:
+  contents: read
+jobs:
+  provision:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Download only the pinned public encoder and preserve hashes
+        run: |
+          mkdir -p semantic-assets/model semantic-assets/wheels
+          python - <<'PY'
+          import hashlib,json,urllib.request
+          from pathlib import Path
+          repo='sentence-transformers/all-MiniLM-L6-v2'
+          revision='1110a243fdf4706b3f48f1d95db1a4f5529b4d41'
+          base='https://huggingface.co/'
+          with urllib.request.urlopen(base+'api/models/'+repo+'/revision/'+revision+'?blobs=true',timeout=60) as r:
+              meta=json.load(r)
+          assert meta['sha']==revision and meta['cardData']['license']=='apache-2.0'
+          by={x['rfilename']:x for x in meta['siblings']}
+          names=['onnx/model.onnx','tokenizer.json','tokenizer_config.json','special_tokens_map.json','vocab.txt','config.json','sentence_bert_config.json','1_Pooling/config.json','modules.json','README.md']
+          manifest={'schema':'un.semantic-model-lock.v1','repository':repo,'revision':revision,'license':'apache-2.0','files':{}}
+          for name in names:
+              path=Path('semantic-assets/model',name);path.parent.mkdir(parents=True,exist_ok=True)
+              source=base+repo+'/resolve/'+revision+'/'+name
+              with urllib.request.urlopen(source,timeout=120) as r:path.write_bytes(r.read())
+              digest=hashlib.sha256(path.read_bytes()).hexdigest()
+              remote=by[name].get('lfs',{}).get('sha256')
+              if remote:assert remote==digest,(name,remote,digest)
+              manifest['files'][name]={'sha256':digest,'bytes':path.stat().st_size,'url':source,'upstream_lfs_sha256':remote}
+          Path('semantic-assets/model-lock.json').write_text(json.dumps(manifest,indent=2)+'\n')
+          Path('semantic-assets/model-metadata.json').write_text(json.dumps(meta,indent=2)+'\n')
+          print(json.dumps({'revision':revision,'files':len(names),'bytes':sum(x['bytes'] for x in manifest['files'].values()),'transcripts_accessed':0}))
+          PY
+      - name: Acquire wheels for isolated offline inference
+        run: |
+          python -m pip download --only-binary=:all: --dest semantic-assets/wheels onnxruntime==1.23.0 tokenizers==0.22.1
+          python - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          Path('semantic-assets/wheel-sha256.json').write_text(json.dumps({p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in Path('semantic-assets/wheels').glob('*.whl')},indent=2)+'\n')
+          PY
+      - name: Preserve current reusable interfaces only
+        run: |
+          git rev-parse HEAD > semantic-assets/source-commit.txt
+          tar -czf semantic-assets/source.tar.gz site tools research/corpus research/machine_review docs AGENTS.md README.md .github/workflows
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pinned-semantic-runtime
+          path: semantic-assets/
+          retention-days: 14
