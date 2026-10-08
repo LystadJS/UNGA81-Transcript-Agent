@@ -1,0 +1,69 @@
+name: Pinned semantic comparison
+on:
+  push:
+    branches: [main, feat/pinned-semantic-comparison]
+    paths: ['research/semantic_review/**', 'docs/SEMANTIC_COMPARISON*', '.github/workflows/semantic-comparison.yml']
+  pull_request:
+    paths: ['research/semantic_review/**', '.github/workflows/semantic-comparison.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: semantic-comparison-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      SEMANTIC_MODEL_DIR: ${{ github.workspace }}/semantic-model
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install pinned numerical and local encoder runtime
+        run: python -m pip install --disable-pip-version-check -r research/semantic_review/requirements.txt
+      - name: Acquire and verify pinned public model only
+        run: python research/semantic_review/download_model.py "$SEMANTIC_MODEL_DIR"
+      - name: Offline encoder and numerical synthetic checks
+        run: |
+          mkdir -p semantic-evidence
+          python research/semantic_review/test_semantic.py > semantic-evidence/semantic-tests.log 2>&1
+          python -m unittest discover -s research/machine_review -p 'test_*.py' -v > semantic-evidence/machine-tests.log 2>&1
+      - name: Existing corpus and source regressions
+        run: |
+          node tools/test_passage_corpus.cjs semantic-evidence/corpus-tests.json > semantic-evidence/corpus-tests.log
+          for suite in analysis clusters stability lsa partitions hdbscan nmf gmm mds reviewed_units; do
+            node "tools/test_browser_${suite}.cjs" > "semantic-evidence/regression-${suite}.log" 2>&1
+          done
+          node tools/test_speech_pilot.cjs > semantic-evidence/regression-speech.log 2>&1
+          node tools/test_passage_comparison.cjs > semantic-evidence/regression-passage.log 2>&1
+          node tools/test_latent.cjs > semantic-evidence/regression-latent.log 2>&1
+          node tools/test_meeting_picker.cjs > semantic-evidence/regression-meeting.log 2>&1
+          python tools/test_passage_types.py > semantic-evidence/regression-types.log 2>&1
+      - name: Record acceptance scope without transcript data
+        run: |
+          python - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          logs=Path('semantic-evidence')
+          assert 'Ran 47 tests' in (logs/'semantic-tests.log').read_text()
+          assert 'Ran 57 tests' in (logs/'machine-tests.log').read_text()
+          tests=json.loads((logs/'corpus-tests.json').read_text());assert tests['passed']==53 and tests['failed']==0
+          sources={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in Path('research/semantic_review').iterdir() if p.is_file()}
+          (logs/'source-hashes.json').write_text(json.dumps(sources,indent=2)+'\n')
+          (logs/'scope.json').write_text(json.dumps({'commit':os.environ['GITHUB_SHA'],'new_synthetic_tests':47,'machine_tests':57,'corpus_checks':53,'existing_suites':15,'real_corpus_used':False,'heldout_transcripts_requested':0,'human_choices_changed':False},indent=2)+'\n')
+          print('Pinned public model and synthetic fixtures only. No UN transcript collection or holdout evaluation.')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: semantic-comparison-validation
+          path: semantic-evidence/
+          retention-days: 30
