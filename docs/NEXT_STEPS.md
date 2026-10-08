@@ -26,17 +26,11 @@ The [comparison workspace](LATENT_COMPARISON.md), `site/latent.html`, adds:
   components and hard partitions are not interchangeable quantities. There is
   no composite best-method score or new publication producer.
 
-Version 1.1 completes separate saved-run A/B coverage charts, hard and overlapping
-component weighting summaries, dedicated CSVs and complete-cohort replay checks.
-The actual twelve-excerpt pilot now passes archive and browser acceptance;
-three-parent fits remain withheld. This is engineering acceptance, not evidence
-of a representative corpus or a substantive diplomatic finding. See the
-[validation record](comparison-refinement-validation.json) and
-[prioritized implementation sequence](DISCOVERY_PRIORITIES.md).
-
-Acceptance is also recorded by `Latent comparison acceptance` in GitHub Actions,
-including existing numerical/provenance regressions and synthetic browser checks.
-The implementation guide separates private-pilot, synthetic and deployed checks.
+Acceptance is recorded by `Latent comparison acceptance` in GitHub Actions,
+including existing numerical/provenance regressions and new synthetic browser
+checks. See the implementation guide for executable commands and the scope of
+validation. Engineering acceptance must not be described as a new analysis of
+the owner's private corpus or a substantive diplomatic finding.
 
 The earlier reviewed-unit import and separate correction ledger remain intact.
 All 24 owner decisions in the audio/boundary pilot are complete: twelve included
@@ -44,11 +38,9 @@ excerpts from three speeches; six supported audio outcomes, five discrepancy
 notes and one unclear outcome. Do not request that completed review again. Exact
 replacement-span editing and aligned corrected-text versions remain separate work.
 
-## B. Improve the observation — provisional machine review completed; human adjudication deferred
+## B. Improve the observation — corpus contract implemented; new-source review remains
 
 **Implementation:** [expanded corpus and weighting contract](PASSAGE_CORPUS.md) now freezes 21 development meetings (1–4 October 2026) and 37 reserved comparison meetings (5–6 October), preserves complete source-segment partitions and original bytes, and supplies explicit descriptive weights. Speech/country weights remain withheld until new-source boundaries and attribution support them. The reserved text has not been collected or evaluated; this is not yet independent replication. Existing weighted model fitting remains disabled.
-
-**Owner-directed machine path:** [the automated batch and lexical exploration](MACHINE_REVIEW.md) now covers all 1,293 development source segments, retaining all 2,596 passage partitions. The strict provisional population contains 1,641 passages from 523 observed parents in 16 meetings. Six clustering fits, two NMF decompositions and 16 leave-one-development-meeting-out refits completed. Machine proposals remain separate from human confirmations; human adjudication is deferred and must not block further provisional engineering or exploration. The 37 reserved transcripts remain unopened.
 
 Expand beyond purposive windows to a declared sample of complete or near-complete
 speech partitions, preserving meeting → speech → passage lineage. Select sources
@@ -69,9 +61,7 @@ source groups; inspection of protocol, length, transcription and genre effects.
 The existing three-speech pilot remains an engineering example. Its full-parent
 clustering is correctly withheld by the current four-observation minimum.
 
-## C. Semantic representation — first pinned comparison implemented
-
-See [SEMANTIC_COMPARISON.md](SEMANTIC_COMPARISON.md) for executed coverage, paired comparisons and limitations. The remaining criteria below govern later promotion, not an unimplemented encoder.
+## C. Test semantic representation alongside the lexical baseline
 
 Retain TF-IDF → PCA/LSA permanently as the transparent lexical baseline. Add one
 locally executed, version-pinned sentence/document encoder, with license and
@@ -163,49 +153,18 @@ forecasting, event-risk and causal diffusion models retain their own training,
 evaluation and data prerequisites. They are not prerequisites for transparent
 unsupervised source exploration, and their current safeguards are not bypassed.
 
-**Boundary-review packet:** [the source-linked development packet](BOUNDARY_REVIEW.md) remains available for later human adjudication. Its original pending decisions and the previously completed owner pilot are unchanged. Machine review is stored in a separate schema and does not complete that human packet.
+**Next implementation:** prepare the expanded development-source boundary review and freeze the eligible observation population, then add a pinned semantic-embedding comparison. Keep the reserved temporal frame unopened until a model-specific evaluation protocol is frozen. Establish null-reference and held-out-source validation before promoting discovered groups as nonrandom diplomatic structure.
 
-**Completed follow-on:** the pinned local semantic-embedding comparison now uses the same provisional development identities, retaining strict/inclusive selection sensitivity and machine-only status. See the executed record below. Internal split/correction cases stay unresolved rather than being promoted to complete speeches. Do not wait for human adjudication to continue this provisional path. Keep all 37 reserved temporal transcripts unopened until separately authorized under a frozen model-specific evaluation protocol. Establish null-reference and held-out-source validation before promoting discovered groups as nonrandom diplomatic structure.
+## Single-meeting quick-reader development validation — 8 October 2026
 
-
-## Pinned semantic comparison completed
-
-[The local semantic comparison](SEMANTIC_COMPARISON.md) is implemented on the unchanged provisional populations. Six fits and 16 development-meeting omission refits completed, with full token coverage and source-bound caches. Lexical/semantic agreement is partial; authored opposition probes and poor 2-D fidelity prohibit stance or coalition claims. Human adjudication remains deferred and does not block this provisional research path.
-
-**Current next step:** implement nuisance-preserving development reference tests and pre-register a model-specific evaluation protocol. Keep all 37 reserved meetings unopened until separately authorized. Do not add more encoders or promote consensus percentages as diplomatic agreement before these checks.
-
-
-## Development nuisance references and frozen held-out protocol — 8 October 2026
-
-The [executed conditional-reference assessment](NUISANCE_REFERENCE.md) adds parent-level blocked tests of (1) cross-meeting lexical/semantic neighbor agreement and (2) recorded-country semantic recurrence. Both exceed meeting/length shuffled development references but **do not establish** statistically nonrandom diplomatic coalitions, shared policy positions or independent reproducibility. Recorded country names and meeting agendas are potential confounds. The preserved 37-meeting temporal comparison remains **metadata-only and unopened**. A SHA256-sealed evaluation lock fixes future transforms, eligibility, source coverage, metrics, failure accounting, alpha adjustment and a one-shot replication heuristic, without implementing or authorizing holdout acquisition.
-
-**Next recommended phase:** build synthetic nuisance-only and known-structure controls for the declared reference questions, audit the sensitivity to recorded country names and genre, and prepare a separately authorized, fail-closed held-out evaluator. Do not open reserved content until the owner explicitly authorizes that independent evaluation. Human attribution/boundary adjudication remains deferred and must precede policy-facing coalition interpretations.
-
-## Development confound controls and synthetic evaluator — 8 October 2026
-
-[The nuisance-only controls and country-name masking comparison](DEVELOPMENT_CONTROLS.md) are complete without reopening any reserved source. Source metadata *without diplomatic text* crossed the earlier conditional overlap threshold, and an artificial country-identity signal reproduced country-neighbor enrichment. Masking 3,330 country-name occurrences in 1,243 strict development passages reduced the raw semantic same-country neighbor share from 9.1% to 3.8%, while lexical/semantic neighbor overlap remained above its conditional reference. This exposes substantial entity/metadata confounding; do not present the remaining associations as evidence of coalitions, stance or nonrandom geopolitics.
-
-The held-out evaluator now has a **synthetic-only** dry-run mode covering all 37 fictitious meeting-status rows, passing/nonpassing and insufficient-coverage branches, and SHA256-verified frozen transformation/centroid prediction smoke tests. These do not authorize real reserved source access or validate real out-of-period accuracy. The original sealed evaluation lock remains unchanged. Human adjudication remains deferred. **Next:** an independent scientific review of null/reference adequacy, recurring-speaker/agenda confounding, masked/unmasked source examples and holdout reliability; only after that and separate explicit owner approval should any real held-out evaluation be considered. Until then all 37 reserved transcripts must remain unopened.
-
-
-## Independent nuisance and reserved-source readiness audit — 8 October 2026
-
-[Independent read-only audit](INDEPENDENT_NUISANCE_AUDIT.md) verifies every saved development text slice and the sealed source/model lock, reproduces the key lexical/semantic and country-masking figures without using the original scoring helper, and measures genre/role and meeting concentration. Agenda and country self-reference remain major explanations; person-level speaker recurrence is unidentifiable from the saved metadata. The existing 37-meeting evaluation lock is unchanged; no reserved transcript was accessed. **Readiness = HOLD**, not an authorized release. Before requesting separate authorization, validate a production-shaped, wholly synthetic raw-transcript/coverage/eligibility/frozen-inference pipeline and declare additional source-overlap, agenda, role and speaker-proxy handling without choosing new thresholds from the reserved period.
-
-
-## Current implementation checkpoint — 8 October 2026
-
-PR #9 (`ab7273d`) already implements the production-shaped synthetic raw-source
-pipeline and versioned masking/genre/proxy checks. The [roster-adapter follow-up](ROSTER_ADAPTER_REVIEW.md)
-adds exact metadata-roster commitments, offline request/response validation,
-adversarial transport tests, guarded frozen inference, narrower institutional-series
-controls, complete affiliation/function proxies, same-query baselines and
-candidate-pool accounting. Local acceptance is recorded in
-[the validation receipt](ROSTER_ADAPTER_VALIDATION.json); GitHub CI must be run
-when this patch is applied. Older “next step” labels above are historical.
-
-No live collection mode or reserved-source authorization is introduced. All 37
-reserved transcripts stay unopened. After repository synchronization, strengthen
-source-verified agenda-item and distinct-speaker metadata using development
-sources only. Do not treat affiliation/function or series as verified identities,
-retune the sealed evaluation, or restart the completed owner pilot review.
+The [seven-stratum sample audit](MEETING_QUICK_READER_SAMPLE_AUDIT.md) checked
+370 cached development source segments, with all 37 reserved meetings unopened.
+It found 108 long statements missed by courtesy-prefix filtering and two
+collective-group statements misleadingly attributed as national positions.
+The quick reader now restores that material, adds source-linked procedural
+agenda cues (including the Haiti/Cambodia transition), describes decolonization
+and justice explicitly, and narrows direct-object country-expression rules.
+The three remaining sampled country entries are descriptive source-linked
+expressions, not verified government-wide positions. Continue independent
+speaker-boundary and exact-proposition work on development only. Do not release
+the frozen holdout without separate authorization.

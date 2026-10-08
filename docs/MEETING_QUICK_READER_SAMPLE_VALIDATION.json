@@ -1,0 +1,54 @@
+{
+  "schema": "un.meeting-quick-reader-sample-validation.v1",
+  "date": "2026-10-08",
+  "status": "development_audit_and_local_tests_passed_CI_separate",
+  "source_base_commit": "a2f0a3f40f616c3fece5a90c8a3dc41402be2962",
+  "dev_corpus_sha256": "e8fb980cf638e2aef39d0ca3564836c6120201a059e806ccaaee3fd5cc4f593e",
+  "sample": {
+    "selection_seed": "quick-reader-check-2026-10-08-pre-output",
+    "source_meetings": 7,
+    "source_segments": 370,
+    "strata": [
+      "ga_plenary",
+      "ga_third",
+      "ga_fourth",
+      "human_rights_council",
+      "press",
+      "conferences",
+      "treaty_body"
+    ],
+    "long_courtesy_segments_recovered": 108,
+    "prior_country_issue_entries": 9,
+    "post_repair_country_issue_entries": 3,
+    "observed_false_single_country_collective_entries": 2,
+    "observed_narrower_target_expressions_promoted_to_broad_issues": 6,
+    "prior_defensible_direct_expression": 1,
+    "audit_type": "assistant_review_of_cached_development_sources_not_owner_human_confirmation"
+  },
+  "tests": {
+    "new_context": 25,
+    "prior_quick_reader": 25,
+    "attribution": 11,
+    "meeting_picker": 12,
+    "browser_analysis": 31,
+    "in_memory_desktop_mobile": 8,
+    "total_synthetic_and_regression_checks": 112,
+    "local_failures": 0,
+    "interactive_browser_local": "blocked_by_administrator_localhost",
+    "static_chromium": "PASS_144.0.7559.96_no_network"
+  },
+  "claims": {
+    "agenda_introductions_source_linked_not_official_verification": true,
+    "country_expressions_not_official_positions": true,
+    "country_mixed_labels_not_same_proposition_adjudication": true,
+    "no_external_genai": true
+  },
+  "preserved": {
+    "frozen_temporal_holdout_metadata_count": 37,
+    "holdout_transcript_requests": 0,
+    "source_text_modified": false,
+    "evaluation_lock_modified": false,
+    "D1_publication_gates_changed": false,
+    "human_owner_pilot_changed": false
+  }
+}

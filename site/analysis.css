@@ -75,3 +75,13 @@ body>main>header:first-child a{display:inline-block;text-underline-offset:.2em}
  .report-document .meeting-quick-read .position-table td{display:block;max-width:none!important;border:0;padding:4px 6px;overflow-wrap:anywhere;font-size:13px}
  .report-document .meeting-quick-read .position-table td::before{content:attr(data-label);display:block;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:#687787;font-weight:700;margin-bottom:2px}
 }
+
+/* Source-linked subject evidence remains readable as stacked rows on narrow screens. */
+@media(max-width:720px){
+ .report-document .meeting-quick-read .quick-topic-table{overflow:visible}
+ .report-document .meeting-quick-read .quick-topic-table table,.report-document .meeting-quick-read .quick-topic-table tbody{display:block;width:100%}
+ .report-document .meeting-quick-read .quick-topic-table thead{display:none}
+ .report-document .meeting-quick-read .quick-topic-table tr{display:block;border-top:1px solid #bdcad5;padding:9px 0}
+ .report-document .meeting-quick-read .quick-topic-table td{display:block;max-width:none!important;border:0;padding:3px 6px;overflow-wrap:anywhere;font-size:13px}
+ .report-document .meeting-quick-read .quick-topic-table td::before{content:attr(data-label);display:block;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:#687787;font-weight:700;margin-bottom:2px}
+}

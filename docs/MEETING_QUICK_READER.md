@@ -55,3 +55,17 @@ Public validation contains aggregate coverage only.  Private evidence ledgers
 contain original source IDs and remain in the local checkpoint, not in GitHub.
 The frozen 37-meeting evaluation roster, original source bytes, and all D1
 publication controls are unaffected.
+
+## Source-linked development QA (8 October 2026)
+
+The [seven-meeting sample audit](MEETING_QUICK_READER_SAMPLE_AUDIT.md) found that a
+courtesy prefix could hide an entire substantive speech and that broadly matched
+issue words could overstate a particular country's policy. The corrected quick
+reader retains long courteous introductions, shows up to two **source-recorded**
+procedural agenda cues (not independently verified formal agenda items), adds
+separate decolonization and justice families, and withholds inferred single-country
+positions from recorded group spokespeople. Subject proximity, distinct opposing
+objects and conditional wording now receive stricter treatment. The original
+transcript, original evaluation lock, pilot owner decisions and daily gates are
+unchanged. The offline rules still require human contextual review for diplomatic
+use. See the locked development selection and private source-linked QA packet.
