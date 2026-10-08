@@ -44,7 +44,8 @@ def make_panel(*, motion=False, roster=True, fit_policy='full_refit', unavailabl
                 cluster = (1 if actor in ('A0', 'A1', 'A2', 'T0', 'T1', 'D0', 'D1') else 2) if period == 'p0' else (
                     9 if actor in ('T0', 'T1') and motion else 7 if actor in ('A0', 'A1', 'A2', 'A3', 'A4', 'T0', 'T1') else 8 if actor in ('A5', 'T2') else 10)
                 rows.append({'id': ident, 'period': period, 'date': day, 'actor_id': actor,
-                    'actor_kind': 'synthetic', 'speaker_id': None, 'country': None,
+                    'actor_kind': 'synthetic', 'speaker_id': None, 'speech_id': None,
+                    'review_status': 'unreviewed', 'unit': 'source_segment', 'country': None,
                     'genre': 'fictional_intervention', 'meeting_id': f'fictional-meeting-{period}-{family}',
                     'source_family_id': f'fictional-series-{family}', 'parent_id': None,
                     'parent_text_sha256': None, 'start': None, 'end': None, 'source_url': None,
@@ -56,7 +57,10 @@ def make_panel(*, motion=False, roster=True, fit_policy='full_refit', unavailabl
                     'missing_reason': 'fictional_missing_meeting' if missing else None,
                     'vector': None if missing else vec.tolist(), 'map': None if missing else display.tolist(),
                     'map_fit_id': None if missing else ('fictional-refit-' + period if fit_policy == 'full_refit'
-                        else 'fictional-frozen-map'), 'cluster': None if missing else cluster})
+                        else 'fictional-frozen-map'), 'cluster': None if missing else cluster,
+                    'cluster_fit_id': None if missing else 'fictional-imported-partition-' + period,
+                    'cluster_parameters_sha256': None if missing else sha('partition-parameters-' + period),
+                    'cluster_training_selection_sha256': None if missing else sha('partition-training-selection-' + period)})
     return {'schema': 'un.longitudinal-panel.v1', 'split': 'synthetic',
             'periods': [{'id': 'p0', 'start': '2026-01-01', 'end': '2026-01-31'},
                         {'id': 'p1', 'start': '2026-02-01', 'end': '2026-02-28'}],
