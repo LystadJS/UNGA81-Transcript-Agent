@@ -1,0 +1,130 @@
+{
+  "schema": "un.w4.preregistered.synthetic-coverage.aggregate.v1",
+  "date": "2026-10-08",
+  "preregistered_before_original_PV_expansion_commit": "4d0e498b50e491b04f28ecc4e07089fc0bc4dcc7",
+  "true_effect": 0.2,
+  "nominal_coverage": 0.9,
+  "MonteCarlo_R": 600,
+  "inner_year_block_bootstrap_draws_per_simulation": 199,
+  "seed": 20261008,
+  "simulation_models": {
+    "source_country_intercept_sd": 0.4,
+    "source_year_shock_sd": 0.2,
+    "source_meeting_shock_sd": 0.12,
+    "source_speech_residual_sd": 0.25,
+    "source_year_AR1_rho_in_correlated_world": 0.65,
+    "covariance_interpretation": "hypothetical source/year dependence, not fitted to observed UN speeches"
+  },
+  "selection_masks": {
+    "initial_source_verified_523": {
+      "observed": 523,
+      "iid_year": {
+        "naive_actor_t": {
+          "coverage": 0.21333333333333335,
+          "n": 600
+        },
+        "year_welch_t": {
+          "coverage": 0.92,
+          "n": 600,
+          "Wilson95": [
+            0.8955253260858944,
+            0.9391308450625973
+          ],
+          "passes_preregistered_synthetic_criterion": true
+        },
+        "year_bootstrap": {
+          "coverage": null,
+          "n": 0,
+          "failed_simulations": 600,
+          "inner_draws_rejected": 63729
+        }
+      },
+      "serial_year": {
+        "naive_actor_t": {
+          "coverage": 0.18333333333333332,
+          "n": 600
+        },
+        "year_welch_t": {
+          "coverage": 0.7016666666666667,
+          "n": 600
+        },
+        "year_bootstrap": {
+          "coverage": null,
+          "n": 0,
+          "failed_simulations": 600,
+          "inner_draws_rejected": 63474
+        }
+      }
+    },
+    "expanded_verified_790": {
+      "observed": 790,
+      "iid_year": {
+        "naive_actor_t": {
+          "coverage": 0.185,
+          "n": 600
+        },
+        "year_welch_t": {
+          "coverage": 0.92,
+          "n": 600,
+          "Wilson95": [
+            0.8955253260858944,
+            0.9391308450625973
+          ],
+          "passes_preregistered_synthetic_criterion": true
+        },
+        "year_bootstrap": {
+          "coverage": 0.7883333333333333,
+          "n": 600,
+          "Wilson95": [
+            0.7538661945067914,
+            0.8191318912419746
+          ],
+          "failed_simulations": 0,
+          "inner_draws_rejected": 936
+        }
+      },
+      "serial_year": {
+        "naive_actor_t": {
+          "coverage": 0.14333333333333334,
+          "n": 600
+        },
+        "year_welch_t": {
+          "coverage": 0.7016666666666667,
+          "n": 600,
+          "Wilson95": [
+            0.6638687356059785,
+            0.7368987116518291
+          ]
+        },
+        "year_bootstrap": {
+          "coverage": 0.5333333333333333,
+          "n": 600,
+          "Wilson95": [
+            0.4933292967275313,
+            0.572913256538222
+          ],
+          "failed_simulations": 0,
+          "inner_draws_rejected": 917
+        }
+      }
+    }
+  },
+  "decision": {
+    "calibrated_under_iid_year_synthetic_Welch_only": true,
+    "AR1_serial_year_undercoverage_for_all_methods": true,
+    "naive_country_paired_t_undercoverage_in_all_worlds": true,
+    "population_inference_from_actual_2016_2023_General_Debate": "WITHHELD",
+    "confidence_intervals_on_actual_W4_distances": "WITHHELD",
+    "real_world_missingness_mechanism_modeled": false,
+    "actual_year_blocks_each_comparison_era": 4,
+    "public_release_eligible": false
+  },
+  "limitations": [
+    "Monte Carlo truth is known only for the simulation, not for any UN language-based estimand.",
+    "Selection masks are fixed from source audit and may be nonrandom with respect to text and role.",
+    "Year AR1 dependence violates the independence assumptions of the Welch design.",
+    "The bootstrap may exclude replicates lacking a country in one comparison era; failures are counted.",
+    "Period and source effects are shared; no independent speaker/country/meeting iid inference.",
+    "A year-Welch 90% synthetic pass does not justify empirical year-cluster inference with four years per era."
+  ]
+}
