@@ -118,7 +118,7 @@
         representation:entry.method === 'clusters' ? fit.representation : 'tfidf-nonnegative',
         representation_version:restored.result.engine,
         fit_version:restored.result.engine,
-        settings_hash:null, unit:entry.unit, execution:'browser_existing',
+        settings_hash:null, settings:fit.parameters || null, unit:entry.unit, execution:'browser_existing',
         coverage:{
           eligible:matched.size,
           assigned:rows.filter(r => r.status === 'assigned' || r.status === 'mixture').length,
@@ -157,14 +157,18 @@
       const identical = compareLegacyPopulations(left, right, a, b);
       const sameGeometry = a.representation === b.representation &&
         a.representation_version === b.representation_version;
+      const sameProtocol = sameGeometry && a.family === b.family &&
+        a.method === b.method && a.fit_version === b.fit_version &&
+        JSON.stringify(a.settings) === JSON.stringify(b.settings);
       comparison = {
         identical_population:identical, same_representation:sameGeometry,
-        numerical_comparison_permitted:identical && sameGeometry,
+        same_fit_protocol:sameProtocol, numerical_comparison_permitted:identical && sameProtocol,
         paired_count:identical ? a.rows.length : 0,
         assigned_both:null,
         reason:!identical ? 'Legacy source, selection, unit, or observation identities differ.' :
-          !sameGeometry ? 'Same observations, different geometry. Only separate descriptive views are supported.' :
-          'Source-paired descriptive preview; inferential comparison is not supported.'
+          !sameGeometry ? 'Same observations, different geometry. Separate descriptive views only.' :
+          !sameProtocol ? 'Same observations and representation, but different algorithm/settings; no paired numeric metric.' :
+          'Matched fit protocol, descriptive preview only; no inferential claim.'
       };
     } else if (left.kind === 'parallel' && right.kind === 'parallel') {
       comparison = C.compare(left, right, a.id, b.id);
