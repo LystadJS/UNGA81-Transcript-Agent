@@ -3,6 +3,7 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const { createHash } = require('node:crypto');
 const { makeSyntheticFrame } = require('./synthetic_fixture.cjs');
 const core = require('./position_core.cjs');
 const codebook = JSON.parse(fs.readFileSync(path.join(__dirname, 'propositions.v1.json'), 'utf8'));
@@ -85,6 +86,7 @@ check('within-family conflicting statements withheld', () => {
   const q = 'Invented contradiction: opposition to this policy object.';
   const start = Array.from(s.text).length;
   s.text += q + '\n';
+  s.text_sha256 = createHash('sha256').update(s.text, 'utf8').digest('hex');
   f.observations.push({
     observation_id: 'synthetic-contradiction', passage_id: 'synthetic-contradiction-p',
     source_id: s.source_id, proposition_id: row.proposition_id, stance:'oppose',
