@@ -5,6 +5,7 @@ on:
     paths:
       - 'docs/parallel-work/source-inventory-v1.cjs'
       - 'docs/parallel-work/test-source-inventory-v1.cjs'
+      - 'docs/parallel-work/export-source-inventory-v1.cjs'
       - 'docs/parallel-work/source-inventory-v1.schema.json'
       - 'docs/parallel-work/SOURCE_INVENTORY_COMPANION_V1.md'
       - '.github/workflows/longitudinal-source-inventory-v1.yml'
@@ -12,6 +13,7 @@ on:
     paths:
       - 'docs/parallel-work/source-inventory-v1.cjs'
       - 'docs/parallel-work/test-source-inventory-v1.cjs'
+      - 'docs/parallel-work/export-source-inventory-v1.cjs'
       - 'docs/parallel-work/source-inventory-v1.schema.json'
       - 'docs/parallel-work/SOURCE_INVENTORY_COMPANION_V1.md'
       - '.github/workflows/longitudinal-source-inventory-v1.yml'
@@ -33,6 +35,7 @@ jobs:
         run: |
           node --check docs/parallel-work/source-inventory-v1.cjs
           node --check docs/parallel-work/test-source-inventory-v1.cjs
+          node --check docs/parallel-work/export-source-inventory-v1.cjs
           node docs/parallel-work/test-source-inventory-v1.cjs
       - name: Unmodified legacy v1 contract, structural and relational tests
         run: node docs/parallel-work/validate-contract.cjs
@@ -53,3 +56,15 @@ jobs:
           assert schema['properties']['schema']['const']=='un.parallel-source-inventory.v1'
           print('PASS: new companion schema and unchanged legacy analytics contract')
           PY
+
+      - name: Export exact source-only contract for private local P2 test
+        uses: actions/upload-artifact@v4
+        with:
+          name: w4-source-inventory-v1-source-only
+          path: |
+            docs/parallel-work/source-inventory-v1.cjs
+            docs/parallel-work/export-source-inventory-v1.cjs
+            docs/parallel-work/source-inventory-v1.schema.json
+            docs/parallel-work/test-source-inventory-v1.cjs
+          if-no-files-found: error
+          retention-days: 1
