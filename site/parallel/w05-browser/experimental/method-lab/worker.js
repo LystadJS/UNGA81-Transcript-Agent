@@ -55,9 +55,22 @@ self.onmessage = async event => {
   const started = clock();
   try {
     if (!Number.isSafeInteger(id) || id <= 0) throw new Error('Missing task identity.');
-    if (!['open', 'run_local', 'save_parallel'].includes(data.action)) throw new Error('Unknown lab operation.');
+    if (!['open', 'run_local', 'save_parallel', 'numeric_probe'].includes(data.action)) throw new Error('Unknown lab operation.');
     send(id, 'progress', {phase:'validation', message:'Validating input and provenance.'});
-    if (data.action === 'open') {
+    if (data.action === 'numeric_probe') {
+      // Synthetic-only parity check; no transcription data or published fit.
+      await loadEngine(id);
+      const vectors=[
+        new Map([['alpha',1],['beta',.4]]),
+        new Map([['alpha',.8],['beta',.3]]),
+        new Map([['gamma',1],['delta',.4]]),
+        new Map([['gamma',.8],['delta',.3]])
+      ];
+      const pca=self.UNClusters.pca(vectors,2);
+      const lsa=self.UNLSA.lsa(vectors,2);
+      send(id,'result',{kind:'numeric_probe',scores:{pca:pca.scores,lsa:lsa.scores},
+        elapsed_ms:clock()-started,retained_observations:4});
+    } else if (data.action === 'open') {
       const doc=parse(data.text);
       if (doc.schema === lab.SCHEMA) {
         const view=lab.fromParallel(doc);
