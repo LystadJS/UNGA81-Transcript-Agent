@@ -166,7 +166,7 @@ async function run(frame,settings,{saved=null,group_units=['meeting','affiliatio
       }
     }
   }
-  return {schema:'un.source-aware-validation.v1',evaluation_role:'engineering_only',publication_eligible:false,
+  const output={schema:'un.source-aware-validation.v1',evaluation_role:'engineering_only',publication_eligible:false,
     frame:{source_schema:frame.source_schema,source_engine:frame.source_engine,source_hash_basis:frame.source_hash_basis,
       source_sha256:frame.source_sha256,selection_sha256:cohort.selection_sha256,population_hash:cohort.population_hash,
       split:frame.split,unit:frame.unit??'passage',inventory_meetings:cohort.inventory_meetings,observations_total:cohort.rows.length,
@@ -178,7 +178,9 @@ async function run(frame,settings,{saved=null,group_units=['meeting','affiliatio
       'Country/affiliation metadata is not an authenticated speaker or vote.',
       'Lexical group refits rebuild vocabulary/IDF; pinned MiniLM vectors remain fixed, with PCA recomputed.',
       'No UMAP or MDS display coordinates are used for fitting or validation.'],
-    _internal_frame:cohort.rows};
+    };
+  Object.defineProperty(output,'_internal_frame',{value:cohort.rows,enumerable:false,writable:false});
+  return output;
 }
 function publicAggregate(out){
   assert(out.frame.split==='synthetic','Public export refused: private development observations and evidence must not be published.');
