@@ -1,40 +1,43 @@
-# Synthetic engineering validation and release gate
+# Supervised country positions — engineering validation
 
-**Implementation:** feat/supervised-country-positions  
-**Scope:** new files under research/supervised_country_positions only.  
-**Decision:** ENGINEERING PROTOTYPE — empirical inference and public publication WITHHELD.
+**Decision (8 October 2026):** PASS for native **synthetic engineering** checks; empirical eligibility and public release remain WITHHELD.
 
-## Checks completed in this development session
+**Evidence run:** [GitHub Actions 37832756972](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37832756972).  All three jobs succeeded at exact source head ecdcb1747d45061fe8b6783e648d0aa33477a9eb. The recorded successful head is the source-code baseline; subsequent documentation-only changes require latest-head rechecks.
 
-| Check | Status | Evidence / limitation |
+| Gate / executable test | Actual status | Evidence |
 | --- | --- | --- |
-| JavaScript syntax and logical fixture suite | **PASS (V8 harness)** | 17 checks ran against the committed source after loading CommonJS modules in a V8 adapter with mocked Node filesystem and cryptographic modules; all 17 completed without recorded failures. This is **not** native Node 22 execution and does not independently verify the mock hash against actual bytes. |
-| Synthetic frame schema and source identities | **PASS (V8 harness)** | Unknown propositions, mismatched codebook version, forbidden real/publication flags, forged quotes and missing hash identities rejected. |
-| Country × year × proposition accounting | **PASS (V8 harness)** | 72 fictional matrix cells; missing observations remain missing; collective and unverified observations excluded; duplicated source families do not receive duplicate votes; within-speech contradiction withheld. |
-| Matched-proposition pair accounting | **PASS (V8 harness)** | Each included pair requires two shared substantive propositions, explicit agreement/disagreement counts and a common denominator; conditionals/descriptive positions excluded from edges. |
-| Offline page script parsing | **PASS (V8 syntax)** | Both annotation and viewer inline scripts parsed. No remote script, stylesheet import, fetch request, or innerHTML assignment found in the inspected sources. |
-| Original-source SHA-256 verification in Node | **NOT RUN natively** | The source code calls Node crypto on each entire synthetic parent text. The V8 test double checks the interface and rejection behavior, not cryptographic replay. |
-| Native Node 22 regression suite | **NOT RUN** | Use the committed test_positions.cjs file; there is no dedicated workflow created under the currently coordinator-owned GitHub Actions namespace. |
-| Python 3 private-packet tests | **NOT RUN** | Six standard-library tests committed in test_prepare_review.py: source offsets/hashes, sealed dates, private paths, draft integrity and label consistency. |
-| Native R M12/M17 source and synthetic fitting tests | **NOT RUN** | Test file committed; requires R, glmnet and the original I6 research dependencies. No new real classifier fitted. |
-| Actual desktop/mobile browser interaction | **NOT RUN** | Syntax/source review does not establish keyboard operation, responsive layout, export fidelity or source-link navigation in a browser. |
-| Independent reviewer gold labels and calibration | **NOT APPLICABLE / NOT RUN** | No owner or other human policy stance labels were supplied or fabricated. |
-| Held-out diplomatic source evaluation | **NOT RUN** | No sealed reserved meeting, private historical corpus, or actual national stance was inspected. |
-| D1/publication website integration | **NOT APPLICABLE** | No daily adapter, O1–O5 change, browser loader, public manifest or mirrored website assets were changed. |
+| Native Node.js 22, proposition validation, source and position accounting | **PASS** | 17/17 checks, including invalid-input refusal, real-data and release blocks, Unicode quote offsets, source-family counting, conflicting/insufficient/conditional positions and matched-proposition denominators. |
+| Native Python 3.11, blind private annotation workflow | **PASS** | 6/6 tests; verifies source digests and offsets, closed reserved dates, private output/overwrite controls, draft identity and no auto-gold fabrication. |
+| Native R 4.6.1, existing M12/M17 | **PASS** | Four logged assertions: unchanged M12 fit on synthetic input; unchanged M17 fit on synthetic input; empirical inputs rejected; country leakage rejected. The adapter handles the original source-file import explicitly without editing research/engines.R or engines_more.R. |
+| Real Chromium 154 via Playwright 1.55.0 | **PASS** | Desktop 1440px and mobile 390px, each for the viewer and annotation page (4 scenarios). Source evidence, accessible keyboard selection, year changes, source-linked inspection, draft export/import, incompatible draft refusal, rejection of publication-eligible reports, and no outbound HTTP requests. |
+| Reproducible fictional report builder | **PASS** | Native Node produced fictional JSON; Python asserted dataset_kind synthetic_engineering, publication_eligible=false, daily_adapter_integrated=false, model_fitted=false, and each evidence record synthetic_only. |
+| CI workflow privilege/scope | **PASS at runtime; coordinator ownership exception required** | New *isolated* .github/workflows/supervised-country-positions.yml runs solely on this research subtree, with contents:read. No existing workflow or publication pathway was changed. |
+| Source/label independent empirical validation | **NOT RUN** | No real corpus labels, speaker adjudication, probability calibration, source-modality control or country alignment accuracy was evaluated. |
+| D1/publication website integration | **NOT RUN / WITHHELD** | No O1–O5 flag, D1 daily adapter, production browser entry point, site release manifest or portfolio mirror changed. |
 
-## How to reproduce locally
+## Diagnosed and corrected failures (not silently reclassified)
+
+1. Run 37832116139: Playwright module unavailable because the CI NODE_PATH expression was accidentally escaped. Corrected workflow interpolation.
+2. Run 37832227474: Real browser found that author CSS overrode the viewer's HTML hidden state before importing a report. Corrected with an explicit [hidden] style; the prior failed browser assertion remains recorded.
+3. Run 37832614488: Native R exposed the original I6 script's assumption that sys.frame(1)$ofile is present during source(). Corrected the **new adapter only**, parsing original research/engines.R expressions and explicitly loading the exact existing engines_more.R companion. Original M12/M17 computations and guards remain unchanged.
+4. Run 37832756972: Full successful native Node/Python/R/Chromium acceptance on the corrected source commit.
+
+## Exact reproduction commands
+
+From the repository root on supported native runtimes:
 
     node research/supervised_country_positions/test_positions.cjs
     python3 research/supervised_country_positions/test_prepare_review.py
     Rscript research/supervised_country_positions/test_m12_m17_adapter.R
-    node research/supervised_country_positions/build_synthetic.cjs /tmp/fictional-positions.json
 
-Then open annotation.html with a **private** source-reviewed packet or viewer.html with the **fictional** generated JSON. Keep all source text, review drafts, original bytes, private fitted models and real country-level results off public Git.
+For browser interaction QA, install a separate Playwright 1.55.0 runtime and Chrome/Chromium and run:
 
-## Outstanding acceptance requirements
+    node research/supervised_country_positions/test_browser.cjs
 
-A coordinator must run native Node/Python/R tests and a genuine browser QA; compare base/head SHAs; verify source/fixture hashes; evaluate privacy and integration compatibility; and review the proposition codebook before any merge decision.
+The precise GitHub Actions dependency setup, environment controls and test invocations are in the dedicated PR workflow. Its only source text is invented engineering-fixture language, never the user's private review material.
 
-Empirical eligibility additionally requires independent source and role verification, completed and attributable human review, frozen train/calibration/test policy, model calibration and abstention, and examination of differing text modalities, missingness, source-group dependence and reference-actor sensitivity.
+## Engineering limits and release policy
 
-**Publication gate is unconditional in this branch:** only explicitly synthetic_engineering inputs are accepted by the numerical prototype, and both generated reports and original M12/M17 wrappers force publication_eligible=false. This report does not authorize weakening any existing source, review, held-out, or D1 gate.
+This validation does **not** establish any substantive U.S., China or third-country policy alignment. The six propositions are draft examples, no owner-confirmed human stance gold was supplied, and no real-data classification model was trained. Source-family agreement counts are descriptive; no diplomatic confidence intervals, political-affiliation scores or causal influence claims are authorized.
+
+Original UN/source checksums, private transcripts, the 37 reserved October 5–6 meeting texts, prior owner human decisions, W1–W7 analytical gates, and D1 O1–O5 publication controls remain untouched. PR #36 must undergo coordinator ownership and latest-main reconciliation; successful synthetic CI is engineering readiness, not permission to merge or publish automatically.
