@@ -27,6 +27,8 @@ jobs:
           python-version: '3.11'
       - name: Install pinned PDF extractor
         run: python -m pip install pymupdf==1.26.7
+      - name: Verify original-PV to W1 authenticated adapter on synthetic negative cases
+        run: python -m unittest discover -s research/source_acquisition/general_debate -p 'test_p2_w1_authenticated.py' -v
       - name: Read public official source bytes into memory; aggregate evidence only
         run: python research/source_acquisition/general_debate/p2_expansion_probe.py
       - name: Ensure no source rows or full texts in uploaded receipt
