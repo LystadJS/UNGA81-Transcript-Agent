@@ -143,6 +143,33 @@ def source_edges(manifest: dict, graph) -> list[dict]:
     } for a, b in zip(i, j)]
 
 
+def source_concentration(rows: list[dict], graph) -> dict:
+    """Edge assortativity audit by *recorded* source attributes, never inferred speech."""
+    a, b = np.where(np.triu(graph.weights, 1) > 0)
+    out: dict[str, Any] = {
+        "edge_count": int(len(a)), "observations": len(rows),
+        "duplicate_text_hash_observations": len(rows) - len(set(
+            r.get("text_sha256") for r in rows)),
+        "recorded_group_fields": {},
+    }
+    for field in ("meeting_id", "parent_id", "source_family_id", "country", "genre", "role"):
+        groups = [r.get(field) for r in rows]
+        eligible = [(int(i), int(j)) for i, j in zip(a, b)
+                    if groups[i] is not None and groups[j] is not None]
+        same = sum(groups[i] == groups[j] for i, j in eligible)
+        out["recorded_group_fields"][field] = {
+            "known_node_count": sum(g is not None for g in groups),
+            "known_edge_opportunities": len(eligible),
+            "within_group_edges": same,
+            "within_group_share": same / len(eligible) if eligible else None,
+        }
+    out["interpretation"] = (
+        "Observed graph concentration is descriptive and depends on the source "
+        "selection and similarity threshold; not evidence of coordination."
+    )
+    return out
+
+
 def fit_or_record(method: str, graph, policy) -> dict:
     try:
         return spectral_clustering(graph, policy) if method == "spectral" else diffusion_map(graph, policy)
@@ -230,6 +257,7 @@ def run(manifest: dict, x: np.ndarray, output: Path, seed: int = 81,
     spectral_policy = SpectralPolicy(n_clusters=3, seed=seed)
     diffusion_policy = DiffusionPolicy(alpha=0.5, time=2, dimensions=2)
     graph = build_affinity(x, graph_policy)
+    concentration = source_concentration(manifest["observations"], graph)
     spectral = fit_or_record("spectral", graph, spectral_policy)
     diffusion = fit_or_record("diffusion_map", graph, diffusion_policy)
     baseline = None
@@ -279,6 +307,7 @@ def run(manifest: dict, x: np.ndarray, output: Path, seed: int = 81,
     )
     write_json(output / "interchange-v1.json", envelope)
     write_json(output / "source-linked-edges.json", source_edges(manifest, graph))
+    write_json(output / "source-concentration.json", concentration)
     write_json(output / "fit-geometry.json", {
         name: {
             "status": fit["status"], "source_ordered_ids": [r["id"] for r in manifest["observations"]],
@@ -301,7 +330,7 @@ def run(manifest: dict, x: np.ndarray, output: Path, seed: int = 81,
         "source_hash_basis": manifest["upstream"]["source_hash_basis"],
         "observation_join_sha256": manifest["observation_join_sha256"],
         "representation": manifest["representation"],
-        "graph": graph.summary(),
+        "graph": graph.summary(), "source_concentration": concentration,
         "spectral": {key: value for key, value in spectral.items() if key not in {"labels", "coordinates"}},
         "diffusion": {key: value for key, value in diffusion.items() if key != "coordinates"},
         "fidelity": geometry, "baselines": baseline,
