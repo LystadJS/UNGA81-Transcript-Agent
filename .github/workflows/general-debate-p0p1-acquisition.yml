@@ -1,0 +1,95 @@
+name: P0-P1 historical General Debate source acquisition
+on:
+  push:
+    branches: ['coord/general-debate-p0-p1']
+    paths:
+      - 'research/source_acquisition/general_debate/**'
+      - '.github/workflows/general-debate-p0p1-acquisition.yml'
+  pull_request:
+    paths:
+      - 'research/source_acquisition/general_debate/**'
+      - '.github/workflows/general-debate-p0p1-acquisition.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned country-code reference
+        run: python -m pip install pycountry==24.6.1
+      - name: Offline fictional source provenance and held-out scope tests
+        run: python -m unittest discover -s research/source_acquisition/general_debate -p 'test_*.py' -v
+      - name: Existing parallel-source interchange contract
+        run: node docs/parallel-work/validate-contract.cjs
+  external-acquisition:
+    needs: synthetic-contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned country-code reference
+        run: python -m pip install pycountry==24.6.1
+      - name: Download pinned public 2016-2025 sources to private ephemeral temp only
+        id: download
+        continue-on-error: true
+        run: |
+          python research/source_acquisition/general_debate/acquire.py \
+            --download --start-year 2016 --end-year 2025 \
+            --out /tmp/unga81-general-debate-p0p1
+      - name: Verify public aggregate contains no text or person-level rows
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('/tmp/unga81-general-debate-p0p1/public_aggregate')
+          assert p.exists(), 'No acquisition receipt was generated'
+          receipt=json.loads((p/'acquisition_receipt.json').read_text(encoding='utf-8'))
+          assert receipt['publication_eligible'] is False and receipt['holdout_access'] is False
+          assert receipt['independent_text_verification_complete'] is False
+          assert receipt['schema']=='un.p0p1.general-debate-acquisition.v1'
+          body=(p/'acquisition_receipt.json').read_text(encoding='utf-8')
+          assert not any(v in body for v in ['recorded_speaker_name', 'tar_member', 'original_member_state', 'source_url', 'text_bytes'])
+          assert not any(v.name.endswith('.txt') for v in p.iterdir())
+          assert all(v.name in ('acquisition_receipt.json', 'per_year_aggregate.csv') for v in p.iterdir())
+          print('ACQUISITION_STATUS:',receipt['status'])
+          print('SOURCE_FAILURES:',receipt['failures'])
+          print('SOURCE_DIGEST_RECEIPTS:', receipt['source_digest_receipts'])
+          print('P0P1_AGGREGATES:', receipt['crosswalk_aggregate']['status_counts']
+                if receipt['crosswalk_aggregate'] else 'unavailable')
+          print('PRIVACY_GUARD: pass; holdout_access: false; publication_eligible: false')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: p0p1-general-debate-aggregate-receipt
+          path: /tmp/unga81-general-debate-p0p1/public_aggregate/
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Enforce independent-source acquisition status
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('/tmp/unga81-general-debate-p0p1/public_aggregate/acquisition_receipt.json')
+          if not p.exists():
+              raise SystemExit('BLOCKED: No download or reconciliation receipt was generated')
+          receipt=json.loads(p.read_text(encoding='utf-8'))
+          if receipt['status']!='both_sources_indexed_not_originally_verified':
+              raise SystemExit('BLOCKED/PARTIAL: independent two-source index reconciliation not completed; check receipt')
+          print('PASS: Both actual public source files were indexed. Original UN transcript verification remains NOT RUN.')
+          PY
