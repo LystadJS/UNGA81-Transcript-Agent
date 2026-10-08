@@ -1,0 +1,107 @@
+{
+  "schema": "un.w4.p2.indexed_metadata_independent_audit.v1",
+  "date": "2026-10-08",
+  "scope": "historical_source_provenance_metadata_only",
+  "source_description": "Previously supplied P2 original-source review workbook, indexed extraction of eight sheets; original workbook bytes not locally materializable on this turn",
+  "workbook_reference_name": "UNGA81_W4_P2_Original_Source_Review_Dashboard.xlsx",
+  "original_pdf_bytes_rechecked_this_turn": false,
+  "user_private_pdf_archive_opened_this_turn": false,
+  "workbook_original_file_sha256_recomputed": false,
+  "harvard_original_speech_bytes_rechecked_this_turn": false,
+  "independent_indexed_workbook_metadata_checks": {
+    "passed": 24,
+    "attempted": 24,
+    "failed": 0,
+    "mechanisms": [
+      "cardinality",
+      "original_pv_symbol_and_sha_shape",
+      "year_and_inventory",
+      "candidate_slot_missingness_complement",
+      "epoch_minimums",
+      "negative_wrong_pv_controls",
+      "priority_flags",
+      "stratified_sample",
+      "modality_exclusions",
+      "gated_model_eligibility"
+    ]
+  },
+  "worksheet_tabs": 8,
+  "original_pdf_manifest": {
+    "records": 63,
+    "distinct_official_symbols": 63,
+    "distinct_local_sha256_shapes": 63,
+    "distinct_local_sha256_strings": 63,
+    "https_documents_un_org_references": 63,
+    "pages_claimed": 3370,
+    "pdf_bytes_claimed": 53218960,
+    "year_counts": {
+      "2016": 7,
+      "2017": 9,
+      "2018": 6,
+      "2019": 7,
+      "2020": 7,
+      "2021": 7,
+      "2022": 7,
+      "2023": 5,
+      "2024": 8
+    },
+    "original_un_publisher_signed_sha256": false
+  },
+  "historical_speech_correspondence": {
+    "strong_2016_2023": 840,
+    "partial_or_variant_2024": 94,
+    "insufficient_2024": 50,
+    "unreviewed_original_pv_candidate_rows": 752,
+    "strong_2024": 0
+  },
+  "candidate_panel": {
+    "recorded_affiliations": 99,
+    "distinct_affiliation_labels": 99,
+    "prior_epoch_2016_2019_verified_cells": 252,
+    "later_epoch_2020_2023_verified_cells": 271,
+    "year_cells_total": 792,
+    "source_strong_verified_year_cells": 523,
+    "unverified_year_cells": 269,
+    "unverified_coded_zero": false,
+    "both_epochs_at_least_2_verified_each": true,
+    "year_partition_disjoint_and_exhaustive": true,
+    "w4_empirically_eligible_labels": 0,
+    "source_declared_selection_sha256": "3ebec834635e4d493e8035aeede3321efb951aa22f2f61d81f6ac7a0f65a4c89",
+    "declared_selection_sha_independently_recomputed": false
+  },
+  "priority_flags": {
+    "total": 24,
+    "source_correspondence_country_speaker_corrob": 14,
+    "index_omissions_corrob": 3,
+    "corpus_speech_omission_corrob": 1,
+    "remaining_unresolved": 6
+  },
+  "risk_stratified_sample": {
+    "total": 120,
+    "strong_correspondence": 69,
+    "partial_or_insufficient": 12,
+    "harvard_corpus_absent": 1,
+    "original_pdf_not_acquired": 38
+  },
+  "wrong_pv_controls": {
+    "count": 96,
+    "wrong_meeting_max_seven_shingle_overlap": 0.02793,
+    "wrong_meetings_passing_90_percent_gate": 0,
+    "random_null_significance_test": false
+  },
+  "unresolved_requirements": [
+    "private original UN PV PDF bytes supplied to independent validator for SHA replay",
+    "original full-speech text SHA and boundary/role provenance available per country-year cell",
+    "W1 whole-meeting/source-family non-independence checks on selected real observations",
+    "frozen lexical or pinned semantic representation with cohort/training and version hashes",
+    "no 2024/2025 cross-modality pool until measurement-invariance audit",
+    "W4 null-source adapter and nonrandom source selection explicitly calibrated"
+  ],
+  "real_W1_source_frame_executable": false,
+  "W4_real_fit_eligible": false,
+  "W4_calibrated_inference_eligible": false,
+  "publication_eligible": false,
+  "reserved_meetings_2026_oct_5_6_opened": 0,
+  "raw_source_or_person_row_data_committed": false,
+  "limitations": "Indexed workbook metadata and published aggregate reconciliation do not authenticate user-private original PDF bytes, speaker identity, speech content, measurement invariance, or a statistical source-group null. Counts describe a purposively selected historical source sample, not population coverage."
+}
