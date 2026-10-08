@@ -16,15 +16,18 @@ import platform
 import sys
 from typing import Any
 
+os.environ.setdefault("SOURCE_DATE_EPOCH", "0")
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+matplotlib.rcParams["svg.hashsalt"] = "un-graph-research-v1"
 import numpy as np
 from sklearn.datasets import make_blobs
 
 from .algorithms import (
     DiffusionPolicy, SpectralPolicy, baseline_comparison, diffusion_map,
     fidelity, grouped_leave_one_out, parameter_sensitivity, spectral_clustering,
+    diffusion_policy_sensitivity,
 )
 from .core import GraphError, GraphPolicy, build_affinity, digest, matrix_digest, validate_input
 from .interchange import code_digest, paired_representations, to_interchange_v1
@@ -244,6 +247,19 @@ def run(manifest: dict, x: np.ndarray, output: Path, seed: int = 81,
         else:
             grouped[method] = {"status": "withheld", "reason": fit["reason"]}
             sensitivity[method] = {"status": "withheld", "reason": fit["reason"]}
+    diffusion_settings = {"status": "withheld", "reason": "Diffusion fit unavailable"}
+    if diffusion["status"] == "fitted":
+        diffusion_settings = diffusion_policy_sensitivity(
+            x, graph, diffusion,
+            [
+                DiffusionPolicy(alpha=0, time=2, dimensions=2),
+                DiffusionPolicy(alpha=1, time=2, dimensions=2),
+                DiffusionPolicy(alpha=0.5, time=1, dimensions=2),
+                DiffusionPolicy(alpha=0.5, time=4, dimensions=2),
+                DiffusionPolicy(alpha=0.5, time=2, dimensions=1),
+                DiffusionPolicy(alpha=0.5, time=2, dimensions=3),
+            ],
+        )
     if spectral["status"] == "fitted":
         baseline = baseline_comparison(x, graph, spectral, seed)
     geometry = {}
@@ -274,6 +290,7 @@ def run(manifest: dict, x: np.ndarray, output: Path, seed: int = 81,
     })
     write_json(output / "source-group-sensitivity.json", grouped)
     write_json(output / "graph-policy-sensitivity.json", sensitivity)
+    write_json(output / "diffusion-policy-sensitivity.json", diffusion_settings)
     if paired is not None:
         write_json(output / "paired-representations.json", paired)
     plot_paths = make_plots(output, x, synthetic_labels, graph, spectral, diffusion,
@@ -293,6 +310,9 @@ def run(manifest: dict, x: np.ndarray, output: Path, seed: int = 81,
         },
         "parameter_sensitivity": {
             key: {k: v for k, v in obj.items() if k != "attempts"} for key, obj in sensitivity.items()
+        },
+        "diffusion_parameter_sensitivity": {
+            k: v for k, v in diffusion_settings.items() if k != "attempts"
         },
         "attempts": {"planned_primary": 2,
                      "successful_primary": sum(
