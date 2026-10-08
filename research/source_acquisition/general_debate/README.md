@@ -63,6 +63,18 @@ A separately pinned, **lower-trust** open GitHub RDS from Jihyeonbae/UNGDC may p
 
 This produces ONLY a partial third-party-derived 2016–2022 private index and non-identifying aggregate receipts; 2023–2025 cells explicitly say **outside the documented mirror release**, never no speech. Git identity checks provenance **to that mirror**, not fidelity to original UN documents or equivalence to Harvard v14. Do not merge the mirror text fingerprint with the original Harvard/UN byte basis or promote mirror results into W4 inference. This branch's CI may run the mirror independently of the two-source acquisition gate; failure of either primary source remains unresolved.
 
+## Actual 8 October 2026 execution receipt
+
+**Executed, not hypothetical.** The public Dataverse metadata API returned **dataset version 14.0**, a named file ID 13591895, file size **71,280,312 bytes**, and archive MD5 **81bdd06086d9e7c4e67026acb7325df3**. These are publisher-supplied metadata; archive bytes and SHA-256 have NOT been acquired or verified. The direct Harvard file endpoint returned HTTP 400. The UN index HEAD returned HTTP 202 and text/html rather than downloadable CSV. Both primary-file acquisition attempts were blocked, and official two-source reconciliation remains NOT RUN.
+
+The independent GitHub mirror job **did succeed**: pinned source blob SHA1 1325ee6b0d6ff2d8a85b11807a514b9fb7d86871, computed RDS SHA-256 d7d9c74c1ad8a5f107bffd296ff035e2efa3deedb2f7c0870e564be5664428b1, **1,354** retained country/session observations from 2016–2022. It excluded **seven invalid/unresolved ISO3 rows**, retained in a private exception ledger for future adjudication. The 2023–2025 gap is **release noncoverage**, not verified absence.
+
+Permanent text-free aggregate source receipts:
+- receipts/2026-10-08-pinned-mirror-aggregate.json
+- receipts/2026-10-08-primary-source-metadata.json
+
+**Required private owner handoff if HTTP barriers persist:** download from the two official source landing pages using their normal authorized browser/download interface, satisfy any Dataverse terms or guestbook, and provide (1) UNGDC_1946-2025.tar.gz (Harvard v14 file ID 13591895) and (2) GA_debate_speech_dataset_20260129.csv (UN speaker index) through an approved private channel. Never upload original texts or row-level identity ledgers into this public GitHub repository. The CLI will hash the supplied files and use the original source URLs for provenance. Keep source-data licensing and reuse restrictions.
+
 ## Outstanding P0–P1 gates
 
 1. Obtain both actual source files, verify file ID, version, SHA-256 and year/session coverage; if the endpoint blocks automated requests, use authorized offline download rather than bypassing controls.
