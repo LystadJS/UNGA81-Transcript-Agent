@@ -7,6 +7,7 @@
 Node 22; no npm install. Run:
 
     node research/validation_framework/tests/test_framework.cjs
+    node research/validation_framework/tests/test_schema.cjs
     node research/validation_framework/cli.cjs --synthetic > synthetic-aggregate.json
     node research/validation_framework/cli.cjs --synthetic --interchange > synthetic-interchange.json
     node docs/parallel-work/validate-contract.cjs
@@ -40,7 +41,7 @@ A possible future null reference asks whether apparent thematic structure is exp
 
 The input schema is un.source-validation.frame.v1. It carries the upstream schema, source SHA-256 and hash basis, split (synthetic or authorized development), immutable original IDs/text digests, meeting and parent lineage, source status and exclusion reasons. Optional source text is validated against its UTF-8 SHA-256 when supplied, used only in process memory for lexical fitting, and never serialized to the published output. Original raw-byte vs decoded UTF-8 source hash bases are explicitly distinct. Saved vectors require a representation identity/version, an immutable model transformation hash, exactly matching IDs/text hashes and finite common-dimensional vectors.
 
-The internal result schema is un.source-aware-validation.v1; records contain settings, fit/seed, representation identity, source/selection hashes, status, membership type, failure and convergence information. The interchange adapter produces un.parallel-analysis.v1 per docs/parallel-work/INTERCHANGE_V1.md, with model–observation results, exclusion reasons, source-linked evidence pointers, complete fit accounting and methodological limitations. Its relational validator checks cross-field invariants. Public aggregate output contains no transcript text or source-level evidence. All 37 October 5–6 reserved holdout transcripts remain unopened.
+The internal result schema is un.source-aware-validation.v1; records contain settings, fit/seed, representation identity, source/selection hashes, status, membership type, failure and convergence information. The interchange exporter maps invented synthetic frames to the contract's synthetic.v1 upstream enum, preserves supported real upstream schema and hash-basis values exactly, and refuses upstream schemas that the coordinator has not yet added to the v1 enum (including un.passage-frame.v1). It never disguises an unsupported source by silently relabeling it. The interchange adapter produces un.parallel-analysis.v1 per docs/parallel-work/INTERCHANGE_V1.md, with model–observation results, exclusion reasons, source-linked evidence pointers, complete fit accounting and methodological limitations. Its relational validator checks cross-field invariants. Public aggregate output contains no transcript text or source-level evidence. All 37 October 5–6 reserved holdout transcripts remain unopened.
 
 ## Explicit non-delivery accounting
 
