@@ -22,6 +22,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+          fetch-depth: 2
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -43,8 +44,9 @@ jobs:
         run: |
           python - <<'PY'
           import pathlib,subprocess
-          baseline='21c1d5298a1a83b27a98f0e7b50113765bc023d0'
-          files=subprocess.check_output(['git','diff','--name-only',baseline,'HEAD'],text=True).splitlines()
+          # On pull_request, HEAD is the test merge; HEAD^ is the latest base.
+          # Compare the whole proposed tree, not a historical shallow-clone SHA.
+          files=subprocess.check_output(['git','diff','--name-only','HEAD^','HEAD'],text=True).splitlines()
           protected=['research/reference_tests/evaluation-lock.json','site/release.json',
                      'site/numerics-manifest.json','AGENTS.md','docs/NEXT_STEPS.md']
           assert not any(p in files for p in protected),files
