@@ -61,6 +61,47 @@
     assert(unique(env.observations.map(o => o.id)), 'Duplicate observation IDs.');
     assert(unique(env.models.map(m => m.model_id)), 'Duplicate model IDs.');
     assert(env.observations.length <= 600, 'Render prototype limits synthetic observations to 600.');
+    assert(hex64(env.upstream.source_sha256) && hex64(env.upstream.selection_sha256) &&
+      typeof env.upstream.source_hash_basis === 'string', 'Source and selection SHA-256 required.');
+    assert(env.coverage && Array.isArray(env.coverage.models) &&
+      Array.isArray(env.results) && Array.isArray(env.evidence), 'Fit and coverage ledgers required.');
+    assert(env.coverage.observations_total === env.observations.length &&
+      env.coverage.eligible === env.cohort.eligible &&
+      env.cohort.eligible + env.coverage.excluded === env.observations.length,
+      'Frame/eligibility accounting mismatch.');
+    const eligible=env.observations.filter(o => o.source_status === 'available' &&
+      Array.isArray(o.exclusion_reasons) && !o.exclusion_reasons.length);
+    assert(eligible.length === env.cohort.eligible, 'Eligible source identities do not match the ledger.');
+    const observationIDs=new Set(env.observations.map(o => o.id));
+    const seenResults=new Set();
+    for(const r of env.results){
+      const m=env.models.find(x => x.model_id === r.model_id);
+      assert(m && observationIDs.has(r.observation_id) &&
+        r.representation_basis_id === m.representation_id, 'Unknown model, source or representation in result.');
+      const key=r.model_id+'\u001f'+r.observation_id;
+      assert(!seenResults.has(key),'Duplicate model-observation fit record.');
+      seenResults.add(key);
+      assert(r.status === 'assigned' && Number.isInteger(r.cluster) && r.cluster>0 ||
+        r.status === 'unassigned' && r.cluster===0 ||
+        ['not_fitted','excluded'].includes(r.status) && r.cluster===null && !!r.reason,
+        'Incoherent assignment, abstention or fit-failure status.');
+      if(['gmm_responsibility','nmf_share'].includes(r.membership_kind))
+        assert(Array.isArray(r.memberships) && r.memberships.every(range) &&
+          Math.abs(r.memberships.reduce((a,b)=>a+b,0)-1)<1e-6,'Invalid soft membership normalization.');
+    }
+    for(const m of env.models){
+      const c=env.coverage.models.find(x => x.model_id === m.model_id);
+      assert(c && c.eligible===env.cohort.eligible &&
+        c.assigned+c.unassigned+c.not_fitted===c.eligible &&
+        c.attempted_fits===c.successful_fits+c.failed_fits,'Incorrect per-model coverage.');
+      const r=env.results.filter(x=>x.model_id===m.model_id);
+      assert(r.length===c.eligible &&
+        r.filter(x=>x.status==='assigned').length===c.assigned &&
+        r.filter(x=>x.status==='unassigned').length===c.unassigned,
+        'Result row counts do not reconcile.');
+    }
+    assert(env.evidence.every(x=>observationIDs.has(x.observation_id)),
+      'Evidence references an unknown source identity.');
     return new Map(env.observations.map(o => [o.id, o]));
   }
 
@@ -91,8 +132,13 @@
     assert(Array.isArray(panel.warnings), 'Warnings array required.');
     if (panel.status !== 'ready') assert(typeof panel.reason === 'string' && panel.reason.length,
       'Withheld, failed, and empty states require a reason.');
-    if (panel.status === 'ready') assert(b.representation_id && b.representation_version,
-      'Representation and version required.');
+    if (panel.status === 'ready') {
+      assert(b.representation_id && b.representation_version,
+        'Representation and version required.');
+      assert(env.models.some(m => m.representation_id===b.representation_id &&
+        m.representation_version===b.representation_version),
+        'Unknown representation and version for declared model population.');
+    }
     const index = new Set(b.observation_refs.map(r => r.id));
     const checkIds = ids => {
       assert(Array.isArray(ids) && ids.every(id => index.has(id)), 'Unrecognized evidence observation ID.');
@@ -223,6 +269,10 @@
       unique(p.components.map(x=>x.id)) && p.components.length<=12,'Component identities invalid.');
     assert(Array.isArray(p.cells) && Number.isInteger(p.unattributed_count) &&
       p.unattributed_count>=0,'Country cells / unattributed count required.');
+    const knownUnattributed=env.observations.filter(o => o.country===null &&
+      o.source_status==='available' && !o.exclusion_reasons.length).length;
+    assert(p.unattributed_count===knownUnattributed,
+      'Unattributed source population count mismatch.');
     const matrix = new Map(),inspect = {};
     for (let i=0;i<p.cells.length;i++) {
       const c=p.cells[i],key=c.country+'\u001f'+c.component;
@@ -230,6 +280,14 @@
         'Unknown or duplicate country/component.');
       assert(['observed','missing','withheld'].includes(c.status),'Country cell status invalid.');
       checkIds(c.observation_ids);
+      assert(c.observation_ids.every(id=>obs.get(id).country===c.country),
+        'Country attribution mismatch for source observation.');
+      if(c.status==='observed') {
+        assert(c.evidence_count===c.observation_ids.length,
+          'Evidence count must match source-linked observation count.');
+        if(env.cohort.weighting==='equal_passage')
+          assert(c.weight_total===c.observation_ids.length,'Equal-passage denominator mismatch.');
+      }
       if(c.status==='observed') assert(isNumber(c.weighted_sum) && isNumber(c.weight_total) &&
         c.weighted_sum>=0 && c.weight_total>0 && c.weighted_sum<=c.weight_total+1e-9 &&
         Number.isInteger(c.evidence_count) && c.evidence_count>=0, 'Invalid prevalence numerator/denominator.');
@@ -316,6 +374,10 @@
         ['stable','sensitive','not_assessed'].includes(e.agenda_sensitivity),
         'Explicit duplicate and agenda sensitivity needed.');
       checkIds(e.observation_ids);
+      const left=p.nodes.find(n=>n.id===e.from),right=p.nodes.find(n=>n.id===e.to);
+      assert(left.observation_ids.some(id=>e.observation_ids.includes(id)) &&
+        right.observation_ids.some(id=>e.observation_ids.includes(id)),
+        'Network edge must link evidence from each endpoint.');
       edgeKey.add(key);
       inspect['edge-'+i]={ids:e.observation_ids,summary:
         'Strength '+decimal(e.strength)+' ('+p.graph.metric+'), '+e.eligible_pairs+
@@ -367,7 +429,7 @@
     for(const a of p.alignments) {
       assert(p.periods.includes(a.from) && p.periods.includes(a.to) &&
         Number.isInteger(a.anchors) && a.anchors>=0 &&
-        typeof a.reference_basis==='string' && typeof a.selection_comparability==='string' &&
+        a.reference_basis===p.identity.representation_id && typeof a.selection_comparability==='string' &&
         ['passed','failed','not_assessed'].includes(a.status) &&
         typeof a.rank_ok==='boolean' && typeof a.degeneracy_ok==='boolean' &&
         typeof a.uncertainty_status==='string', 'Alignment ledger incomplete.');
@@ -395,6 +457,9 @@
           Array.isArray(q.observation_ids) && Number.isInteger(q.n) && q.n>=0 &&
           ['observed','missing','withheld'].includes(q.status), 'Actor-period row invalid.');
         checkIds(q.observation_ids);
+        assert(q.n===q.observation_ids.length,'Actor-period source count mismatch.');
+        assert(q.observation_ids.every(id=>obs.get(id).date.slice(0,4)===String(q.period)),
+          'Actor-period source date mismatch.');
         if(q.status==='observed')assert(Array.isArray(q.xy) && q.xy.length===2 &&
           q.xy.every(x=>isNumber(x)&&Math.abs(x)<=lim) &&
           (q.radius===null || (isNumber(q.radius)&&q.radius>=0)), 'Invalid aligned score/radius.');
