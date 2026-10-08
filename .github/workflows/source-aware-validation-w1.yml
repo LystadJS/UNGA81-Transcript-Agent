@@ -1,0 +1,83 @@
+name: Source-Aware Validation W1
+on:
+  push:
+    branches:
+      - feat/source-aware-validation
+    paths:
+      - 'research/validation_framework/**'
+      - '.github/workflows/source-aware-validation-w1.yml'
+  pull_request:
+    paths:
+      - 'research/validation_framework/**'
+      - '.github/workflows/source-aware-validation-w1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: source-aware-w1-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  synthetic-validation:
+    name: Source-bound numerical and privacy regressions
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: New method, negative and lineage controls
+        run: node research/validation_framework/tests/test_framework.cjs
+      - name: Direct structural validation against coordinator v1 JSON Schema
+        run: node research/validation_framework/tests/test_schema.cjs
+      - name: Existing parallel contract
+        run: node docs/parallel-work/validate-contract.cjs
+      - name: Existing browser and research regressions (unchanged)
+        shell: bash
+        run: |
+          set -euo pipefail
+          node tools/test_browser_clusters.cjs
+          node tools/test_browser_lsa.cjs
+          node tools/test_browser_partitions.cjs
+          node tools/test_browser_hdbscan.cjs
+          node tools/test_browser_gmm.cjs
+          node tools/test_browser_stability.cjs
+          node tools/test_latent.cjs
+          node tools/test_passage_corpus.cjs
+          node tools/test_browser_reviewed_units.cjs
+      - name: Generate aggregate-only engineering comparison
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/source-validation"
+          node research/validation_framework/cli.cjs --synthetic > "$RUNNER_TEMP/source-validation/synthetic-aggregate.json"
+          node research/validation_framework/cli.cjs --synthetic --interchange > "$RUNNER_TEMP/source-validation/synthetic-interchange.json"
+          python3 - "$RUNNER_TEMP/source-validation" <<'PY'
+          import json, pathlib, sys
+          dest=pathlib.Path(sys.argv[1])
+          report=json.loads((dest/'synthetic-aggregate.json').read_text())
+          envelope=json.loads((dest/'synthetic-interchange.json').read_text())
+          assert report['fixture_kind']=='synthetic' and report['publication_eligible'] is False
+          assert envelope['schema']=='un.parallel-analysis.v1'
+          assert envelope['producer']['fixture_kind']=='synthetic'
+          assert envelope['evaluation_role']=='engineering_only'
+          assert envelope['coverage']['eligible']==report['eligible']
+          assert len(envelope['results'])==len(report['models'])*envelope['coverage']['observations_total']
+          for file in dest.glob('*.json'):
+              t=file.read_text()
+              assert 'Harbor ferry cargo' not in t, 'Leaked fixture raw text'
+              assert 'private_development' not in t
+          print('PASS generated synthetic public contract & non-text-only artifact gate')
+          print('PUBLIC_COMPARISON_SUMMARY',json.dumps({'models':report['models'],'comparisons':[{'left':r['left'],'right':r['right'],'status':r['status'],'ari':r.get('metrics',{}).get('ari') if r.get('metrics') else None,'ami':r.get('metrics',{}).get('adjusted_mutual_information') if r.get('metrics') else None,'shared_assigned':r.get('metrics',{}).get('assigned_both') if r.get('metrics') else None} for r in report['comparisons']],'failures':report['failure_count'],'cases':report['cases_count']}))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: w1-source-aware-synthetic-reports
+          path: ${{ runner.temp }}/source-validation/*.json
+          if-no-files-found: error
+          retention-days: 14

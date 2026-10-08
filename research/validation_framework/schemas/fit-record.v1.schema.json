@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Standardized source-bound fit record v1",
+  "type": "object",
+  "required": [
+    "model_id",
+    "method",
+    "parameters",
+    "seed",
+    "representation_id",
+    "representation_version",
+    "representation_identity_sha256",
+    "population_hash",
+    "selection_sha256",
+    "source_sha256",
+    "observation_ids",
+    "observation_hashes",
+    "status",
+    "assignments",
+    "memberships",
+    "strengths",
+    "warnings",
+    "convergence",
+    "diagnostics",
+    "reason",
+    "attempted_fit",
+    "successful_fit",
+    "failed_fit"
+  ],
+  "properties": {
+    "model_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "method": {
+      "enum": [
+        "kmeans",
+        "pam",
+        "hierarchical",
+        "hdbscan",
+        "gmm"
+      ]
+    },
+    "parameters": {
+      "type": "object"
+    },
+    "seed": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "representation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "representation_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "representation_identity_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "population_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "selection_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "source_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "observation_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "observation_hashes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      }
+    },
+    "status": {
+      "enum": [
+        "fitted",
+        "failed",
+        "skipped"
+      ]
+    },
+    "assignments": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "memberships": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "strengths": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "convergence": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "diagnostics": {
+      "type": "object"
+    },
+    "reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "attempted_fit": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "successful_fit": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "failed_fit": {
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}
