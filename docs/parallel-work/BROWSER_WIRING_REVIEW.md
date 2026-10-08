@@ -28,7 +28,7 @@ python tools/build_pages.py /tmp/research-site-new
 python tools/test_research_browser_ui.py --site /tmp/research-site-new --browser-path /usr/bin/google-chrome --outdir /tmp/research-qa
 ```
 
-The path-scoped `.github/workflows/coord-research-browser-wiring.yml` executes the same native contract checks, relevant existing browser regressions, fresh static build verification, W5 Worker/numerical browser regression and real 1440×900 and 390×844 Chromium checks. It tests original source-link inspector, local SVG export, private-source refusal, stale-result clearing, absence of external requests, nested route availability and mobile page overflow. A **green current-head run** is required before coordinator integration acceptance; prior W5/W6 evidence alone is not sufficient.
+The path-scoped `.github/workflows/coord-research-browser-wiring.yml` executes the same native contract checks, relevant existing browser regressions, fresh static build verification, an independent packaged W5 Worker PCA/LSA numeric probe, and real 1440×900 and 390×844 Chromium checks. The upstream W5 standalone test runner was observed to emit a passing numerical/browser receipt but fail during Chromium temporary-profile deletion on this runner (ENOTEMPTY). The coordinator instead tests its unchanged production Worker directly in a clean Playwright context; no upstream test errors are waived. It tests original source-link inspector, local SVG export, private-source refusal, stale-result clearing, absence of external requests, nested route availability and mobile page overflow. A **green current-head run** is required before coordinator integration acceptance; prior W5/W6 evidence alone is not sufficient.
 
 ## Withheld after engineering acceptance
 
