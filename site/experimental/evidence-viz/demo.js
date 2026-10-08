@@ -20,7 +20,10 @@
 
   function draw(){
     const mode=selector.value;
-    const panels=mode==='normal'?data.panels:data.panels.map(p=>({
+    const source=mode==='empty'?UNEvidenceFixture.scenario('consensus','empty'):data;
+    const panels=mode==='normal'?data.panels:mode==='empty'?[
+      source.panels[0],...['country-theme','network','longitudinal'].map(k=>UNEvidenceFixture.scenario(k,'empty').panels[0])
+    ]:data.panels.map(p=>({
       ...p,status:mode,
       reason:mode==='empty'?'No eligible observations in the source selection':
         mode==='withheld'?'Upstream statistical evidence not approved':
@@ -28,7 +31,7 @@
       coverage:{...p.coverage,included:0}
     }));
     try {
-      views=UNEvidenceViz.mount(target,data.envelope,panels);
+      views=UNEvidenceViz.mount(target,source.envelope,panels);
       for(const section of target.querySelectorAll('.ev-panel')){
         const box=document.createElement('div');
         box.className='ev-panel-actions';
