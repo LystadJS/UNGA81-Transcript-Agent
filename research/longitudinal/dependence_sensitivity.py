@@ -78,7 +78,7 @@ def audit_meeting_year_dependence(panel, before, after):
             'Only saved reference transforms accepted; no automatic refitting')
     require(before != after and before in meta['periods'] and after in meta['periods'],
             'Two valid different periods are required')
-    by_period = {r['period']: r for r in panel['periods']}
+    by_period = {r['id']: r for r in panel['periods']}
     require(by_period[before]['start'] < by_period[after]['start'],
             'Periods must be in forward chronological order')
     rows = [r for r in panel['observations'] if r['period'] in (before, after)]
