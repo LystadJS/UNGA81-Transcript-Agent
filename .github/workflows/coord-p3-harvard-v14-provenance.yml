@@ -8,6 +8,8 @@ on:
       - research/integration/test_p3_harvard_archive_audit.py
       - research/integration/p4_historical_w1_preflight.cjs
       - research/integration/test_p4_historical_w1_preflight.cjs
+      - research/integration/p4_official_PV_date_supplement.cjs
+      - research/integration/test_p4_official_PV_date_supplement.cjs
       - .github/workflows/coord-p3-harvard-v14-provenance.yml
   pull_request:
     paths:
@@ -15,6 +17,8 @@ on:
       - research/integration/test_p3_harvard_archive_audit.py
       - research/integration/p4_historical_w1_preflight.cjs
       - research/integration/test_p4_historical_w1_preflight.cjs
+      - research/integration/p4_official_PV_date_supplement.cjs
+      - research/integration/test_p4_official_PV_date_supplement.cjs
       - .github/workflows/coord-p3-harvard-v14-provenance.yml
 
 permissions:
@@ -36,6 +40,7 @@ jobs:
         with:
           node-version: '22'
       - run: node research/integration/test_p4_historical_w1_preflight.cjs
+      - run: node research/integration/test_p4_official_PV_date_supplement.cjs
       - run: node research/validation_framework/tests/test_framework.cjs
       - run: node docs/parallel-work/validate-contract.cjs
 
