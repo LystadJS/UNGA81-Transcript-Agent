@@ -34,12 +34,13 @@ class MirrorFallbackTests(unittest.TestCase):
             self.assertEqual(years[2016]["duplicate_country_session"], 1)
             self.assertEqual(years[2017]["mirror_rows"], 1)
             self.assertEqual(years[2022]["mirror_rows"], 1)
-            self.assertEqual(years[2023]["mirror_rows"], 1)
+            self.assertEqual(years[2023]["mirror_rows"], 0)
             self.assertEqual(years[2025]["mirror_rows"], 0)
             self.assertEqual(years[2025]["mirror_scope"],
                              "outside_mirror_release_not_missing_speech")
             self.assertEqual(report["coverage"]["quality"]["session_year_mismatch"], 1)
-            self.assertEqual(report["coverage"]["selected_rows"], 5)
+            self.assertEqual(report["coverage"]["selected_rows"], 4)
+            self.assertEqual(report["coverage"]["quality"]["outside_documented_2022_release"], 1)
             public = folder / "private_output" / "public_aggregate"
             receipt = (public / "mirror_receipt.json").read_text()
             self.assertNotIn("synthetic phrase", receipt)
