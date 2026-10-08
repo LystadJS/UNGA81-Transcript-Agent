@@ -1,0 +1,58 @@
+name: Offline meeting quick reader
+on:
+  push:
+    branches: [main, feat/meeting-quick-reader]
+    paths:
+      - 'site/meeting-quick-reader.js'
+      - 'site/analysis-ui.js'
+      - 'site/analysis-core.js'
+      - 'site/collector.js'
+      - 'site/index.html'
+      - 'site/analysis.css'
+      - 'tools/test_meeting_quick_reader*'
+      - 'research/reference_tests/meeting_attribution_audit.cjs'
+      - 'research/reference_tests/test_meeting_attribution.cjs'
+      - '.github/workflows/meeting-quick-reader.yml'
+  pull_request:
+    paths:
+      - 'site/meeting-quick-reader.js'
+      - 'site/analysis-ui.js'
+      - 'site/analysis-core.js'
+      - 'site/collector.js'
+      - 'tools/test_meeting_quick_reader*'
+      - 'research/reference_tests/meeting_attribution_audit.cjs'
+      - 'research/reference_tests/test_meeting_attribution.cjs'
+      - '.github/workflows/meeting-quick-reader.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Verify offline quick reader, meeting selection and attribution
+        run: |
+          node tools/test_meeting_quick_reader.cjs
+          node research/reference_tests/test_meeting_attribution.cjs
+          node tools/test_meeting_picker.cjs
+          node tools/test_browser_analysis.cjs
+      - name: Install browser harness only
+        run: python -m pip install --disable-pip-version-check playwright==1.55.0
+      - name: Browser acceptance against artificial UN source responses
+        run: |
+          google-chrome --version
+          CHROME_BINARY="$(command -v google-chrome)" python tools/test_meeting_quick_reader_ui.py quick-reader-browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: meeting-quick-reader-synthetic-browser
+          path: quick-reader-browser/
+          retention-days: 14

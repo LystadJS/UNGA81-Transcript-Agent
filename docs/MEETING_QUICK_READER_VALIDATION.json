@@ -1,0 +1,85 @@
+{
+  "schema": "un.meeting-quick-reader-validation.v1",
+  "status": "local_unit_and_static_browser_pass_remote_CI_pending",
+  "baseline_commit": "7232ef8df857060e257626c962293153ca3bf314",
+  "implementation": {
+    "static_site_module": "site/meeting-quick-reader.js",
+    "offline_only": true,
+    "external_genai_api_calls": 0,
+    "no_new_model_training": true,
+    "single_meeting_only": true,
+    "preserves_topic_independent_summary": true,
+    "explicit_first_person_country_rule": true
+  },
+  "development_audit": {
+    "schema": "un.development-speaker-agenda-audit.v1",
+    "source_corpus_sha256": "e8fb980cf638e2aef39d0ca3564836c6120201a059e806ccaaee3fd5cc4f593e",
+    "source_segments": 1293,
+    "source_passages": 2596,
+    "meetings": 20,
+    "known_country_segments": 468,
+    "unknown_country_segments": 825,
+    "attribution": {
+      "explicit_speaker_identifiers": 0,
+      "affiliation_recorded": 1186,
+      "function_recorded": 809,
+      "complete_affiliation_function_proxies": 720,
+      "proxy_values_crossing_meetings": 10,
+      "verified_distinct_persons": null
+    },
+    "agenda": {
+      "canonical_series_segments": 1062,
+      "unknown_series_segments": 231,
+      "series_counts": {
+        "ga:c2": 3,
+        "ga:c3": 196,
+        "ga:c4": 86,
+        "ga:plenary": 69,
+        "hrc:63": 708
+      },
+      "limitation": "Institutional series is a source-path proxy, not an independently verified formal agenda."
+    },
+    "role_counts": {
+      "country_affiliated": 396,
+      "presiding_or_official": 649,
+      "press": 51,
+      "unresolved": 197
+    },
+    "inference": "No person identification, official country policy or agenda classification inferred from co-occurrence.",
+    "temporal_holdout_accessed": 0,
+    "network_requests": 0
+  },
+  "validation": {
+    "new_quickreader_synthetic_checks_passed": 25,
+    "new_development_attribution_checks_passed": 11,
+    "existing_meeting_picker_checks_passed": 12,
+    "existing_browser_analysis_checks_passed": 31,
+    "static_render_desktop_and_mobile_passed": true,
+    "static_render_page_overflow": false,
+    "full_live_meeting_requested": false,
+    "full_browser_interaction_locally_blocked": "Administrator restricted localhost navigation; GitHub CI will exercise browser interaction."
+  },
+  "safety": {
+    "reserved_holdout_meetings": 37,
+    "reserved_holdout_transcripts_opened": 0,
+    "original_frozen_evaluation_protocol_mutated": false,
+    "D1_publication_gates_changed": false
+  },
+  "changed_files_sha256": {
+    "site/meeting-quick-reader.js": "1258be628fba0605335952efce9182d259d45fc8110a2b7b88eb4e1bd24315df",
+    "site/collector.js": "b703ab976c6f3c93cc4e2984582a4129e6b27de84b03a283ac5283a00a88f7ae",
+    "site/analysis-core.js": "2eb3a56df5559364b9acd5933da3e8c6b54ac184922d293ca4d69b19af6b4845",
+    "site/analysis-ui.js": "b36c69b6348bb0a45ca5c09ded66a68ac32f69c59bb649649c27f7670dc79b2d",
+    "site/index.html": "216b68a91a24e529b2dd65b980ea2a4587f1e9bf0ae773b56aca1d1340fd4d12",
+    "site/analysis.css": "291b17fcde4c33457ba7e1f1b9db6ad9aadaaa234ecd2a0f4e71aab123121081",
+    "site/release.json": "9ac3fa8e271701033119af4c9314b59469b1f123955ae17ee986840abacf0a43",
+    "tools/test_meeting_quick_reader.cjs": "398933122edb468b9883d5659f2563efe97d6c3584b45e2afe57ff5e9c4b45e7",
+    "tools/test_meeting_quick_reader_ui.py": "1a4c9e55f63d72f2e71217798fd41144ddac0e72f147a70ca4fd0a3a4577ed79",
+    "research/reference_tests/meeting_attribution_audit.cjs": "2748dd62f2bcb458a68817e569a9144edc5b3c9ace15c8756c0195f96f1e1953",
+    "research/reference_tests/test_meeting_attribution.cjs": "54f6c124c66ef642e992654feb5a2c3cee6d1c42134aea0db9a22f646611958d",
+    "docs/MEETING_QUICK_READER.md": "42df99204007d27cbd16d2c26426dbf5aaacc936307dc925f0d0842d89b783ad",
+    "docs/INDIVIDUAL_MEETINGS.md": "5c530a48db5df6b281e06e6ef4788c4bf92315302ff349b7fa335aae6f3dc67b",
+    ".github/workflows/meeting-quick-reader.yml": "6cac5f4d14cbbd46cdb6571dbe70a7c6691184f8b3e3a13795fdaf19e26f7a71",
+    "AGENTS.md": "1c8e3a9b08c29255efab947041b7cdf766ce85c8e084f3614a7b295cc101c47f"
+  }
+}

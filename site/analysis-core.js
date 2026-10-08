@@ -14,7 +14,9 @@
     ? require('./passage-selection.js') : root.UNPassageSelection;
   const ReviewedUnits = typeof module !== 'undefined' && module.exports
     ? require('./reviewed-units.js') : root.UNReviewedUnits;
-  const VERSION = 'browser-descriptive-1.12.1';
+  const MeetingQuickReader = typeof module !== 'undefined' && module.exports
+    ? require('./meeting-quick-reader.js') : root.UNMeetingQuickReader;
+  const VERSION = 'browser-descriptive-1.12.2';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters', 'nmf'];
 
@@ -302,6 +304,14 @@
       matched,
       methods: {}
     };
+    if(corpus.collection?.selection_mode==='single_meeting'&&p.meeting_slug){
+      // The quick read covers the whole recorded meeting, not just query matches.
+      // In particular a topic query must not redefine the opening meeting synopsis.
+      result.quick_reader=MeetingQuickReader.build(beforeTypes,{
+        meeting_slug:p.meeting_slug,meeting_date:p.meeting_date,
+        title:corpus.collection.selected_meeting_title
+      });
+    }
     if(selection){const {selected,...audit}=selection;result.passage_selection={...audit,eligible_before_type_filter:beforeTypes.length,eligible_after_type_filter:eligible.length,excluded_within_filters:beforeTypes.filter(r=>!selected.has(r.id)).map(r=>r.id)};}
     if(corpus.reviewed_units)result.reviewed_units={...corpus.reviewed_units,
       eligible_before_dedup:ReviewedUnits.count(eligible),eligible:ReviewedUnits.count(records),included:ReviewedUnits.count(matched)};
