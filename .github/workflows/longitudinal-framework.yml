@@ -34,6 +34,16 @@ jobs:
         run: |
           node docs/parallel-work/validate-contract.cjs
           python research/methods.py
+      - name: Merged W1 source-aware provenance and schema regression
+        run: |
+          node research/validation_framework/tests/test_framework.cjs
+          node research/validation_framework/tests/test_schema.cjs
+      - name: Existing source, latent and clustering consumer regressions
+        run: |
+          node tools/test_passage_corpus.cjs
+          node tools/test_latent.cjs
+          node tools/test_browser_clusters.cjs
+          node tools/test_browser_stability.cjs
       - name: Fictional no-motion and known-motion CLI exports
         run: |
           python research/longitudinal/run_demo.py --output "$RUNNER_TEMP/w4-roster"
