@@ -13,7 +13,8 @@ function validateFrame(frame){
   assert(['synthetic','development'].includes(frame.split),'Only synthetic or authorized development inputs are supported.');
   assert(SOURCE_SCHEMAS.has(frame.source_schema),'Unsupported source schema; provide a source-bound adapter.');
   assert(hasHash(frame.source_sha256),'Original upstream source SHA-256 required.');
-  assert(typeof frame.source_hash_basis==='string'&&frame.source_hash_basis.length>3,'Original source hash basis required.');
+  assert(['utf8_corpus_export','raw_response_bytes','utf8_response_text','canonical_source_text','source_text_file_bytes','synthetic'].includes(frame.source_hash_basis),'Exact supported upstream source hash basis required.');
+  assert(frame.split!=='development'||frame.source_hash_basis!=='synthetic','Development cannot masquerade as synthetic source hashes.');
   assert(typeof frame.source_engine==='string'&&frame.source_engine.length>0,'Source engine identity required.');
   assert(Array.isArray(frame.observations)&&frame.observations.length>0&&frame.observations.length<=600,'Frame requires 1–600 rows; no implicit sampling.');
   const seen=new Set(), eligible=[], excluded=[], rows=[];
