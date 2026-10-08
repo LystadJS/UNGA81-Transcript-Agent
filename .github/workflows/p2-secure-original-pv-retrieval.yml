@@ -25,10 +25,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install pinned authenticated encryption library
-        run: python -m pip install cryptography==44.0.3
-      - name: Check PDF extraction utilities
-        run: command -v pdftotext && command -v pdfinfo
+      - name: Install pinned encryption and PDF readers
+        run: python -m pip install cryptography==44.0.3 pymupdf==1.26.7
       - name: Test sealed envelope with synthetic bytes only
         run: python research/source_acquisition/general_debate/p2_secure_originals.py --selftest
       - name: Acquire publicly accessible official PV document bytes and encrypt
