@@ -1,0 +1,175 @@
+{
+  "schema": "un.w4.meeting-year-dependence-sensitivity.aggregate.v1",
+  "audit_date": "2026-10-08",
+  "population": {
+    "periods": [
+      "2016–2019",
+      "2020–2023"
+    ],
+    "original_candidate_cells": 792,
+    "verified_observations": 523,
+    "unverified_not_absent": 269,
+    "country_affiliation_actors": 99,
+    "source_meetings": 55,
+    "source_years": 8,
+    "calendar_years_each_period": 4,
+    "year_observations": {
+      "2016": 56,
+      "2017": 53,
+      "2018": 71,
+      "2019": 72,
+      "2020": 63,
+      "2021": 66,
+      "2022": 83,
+      "2023": 59
+    },
+    "year_meetings": {
+      "2016": 7,
+      "2017": 9,
+      "2018": 6,
+      "2019": 7,
+      "2020": 7,
+      "2021": 7,
+      "2022": 7,
+      "2023": 5
+    },
+    "source_status_by_period": {
+      "reference": {
+        "available": 252,
+        "unverified": 144
+      },
+      "comparison": {
+        "available": 271,
+        "unverified": 125
+      }
+    },
+    "frozen_feature_id": "frozen_lexical_lsa_64",
+    "frozen_feature_sha256": "8da03a179847a8fccb7e8123b8dd278f5edf5d22ad7e74489401a5f2d5cfa054",
+    "reference_only_preprocessing_training": true,
+    "refit_during_deletions": false,
+    "heldout_2026_meeting_accesses": 0
+  },
+  "stats": {
+    "mean_within_affiliation_distance": {
+      "point": 0.5397836547776217,
+      "meeting_deletion": {
+        "attempted": 55,
+        "successful": 55,
+        "matched_actors_min": 99,
+        "matched_actors_max": 99,
+        "min": 0.5381731782370911,
+        "max": 0.5538057017700075,
+        "max_abs_change": 0.01402204699238585
+      },
+      "year_deletion": {
+        "attempted": 8,
+        "successful": 8,
+        "matched_actors_min": 99,
+        "matched_actors_max": 99,
+        "min": 0.5418276887800779,
+        "max": 0.5990834257317312,
+        "max_abs_change": 0.05929977095410954
+      },
+      "year_pair_one_each_period": {
+        "attempted": 16,
+        "successful": 16,
+        "matched_actors_min": 99,
+        "matched_actors_max": 99,
+        "min": 0.568682143490894,
+        "max": 0.6238530851823846,
+        "max_abs_change": 0.08406943040476289
+      }
+    },
+    "common_actor_centroid_distance": {
+      "point": 0.27740712703920045,
+      "meeting_deletion": {
+        "attempted": 55,
+        "successful": 55,
+        "min": 0.27541371639671314,
+        "max": 0.2825281894165006,
+        "max_abs_change": 0.005121062377300145
+      },
+      "year_deletion": {
+        "attempted": 8,
+        "successful": 8,
+        "min": 0.2742780056740731,
+        "max": 0.2906096329256439,
+        "max_abs_change": 0.01320250588644345
+      },
+      "year_pair_one_each_period": {
+        "attempted": 16,
+        "successful": 16,
+        "min": 0.2738399368313735,
+        "max": 0.2983037608414391,
+        "max_abs_change": 0.020896633802238662
+      }
+    }
+  },
+  "year_delete_one_means": [
+    {
+      "deleted_year": 2016,
+      "distance": 0.568795
+    },
+    {
+      "deleted_year": 2017,
+      "distance": 0.566531
+    },
+    {
+      "deleted_year": 2018,
+      "distance": 0.574102
+    },
+    {
+      "deleted_year": 2019,
+      "distance": 0.599083
+    },
+    {
+      "deleted_year": 2020,
+      "distance": 0.567834
+    },
+    {
+      "deleted_year": 2021,
+      "distance": 0.55408
+    },
+    {
+      "deleted_year": 2022,
+      "distance": 0.545428
+    },
+    {
+      "deleted_year": 2023,
+      "distance": 0.541828
+    }
+  ],
+  "dependencies": {
+    "meeting_nested_in_year": true,
+    "actor_country_repeated_across_meeting_and_year": true,
+    "actor_meeting_graph_components": 1,
+    "component_nodes": 154,
+    "verified_meeting_source_families_paired_across_eras": 0,
+    "design": "purposively_verified_and_nonprobability_sample"
+  },
+  "assumptions": {
+    "sensitivity_conditional_on_frozen_reference": true,
+    "post_deletion_actor_country_population_same_99": true,
+    "within_actor_num_speeches_changes_under_deletion": true,
+    "year_blocks_per_era": 4,
+    "sampling_exchangeability_validated": false,
+    "independent_meeting_replicates": false
+  },
+  "gates": {
+    "deterministic_deletion_attempts": 79,
+    "deterministic_deletion_successes": 79,
+    "independent_bootstrap_attempts": 0,
+    "calibrated_confidence_intervals": null,
+    "year_cluster_robust_standard_errors": null,
+    "p_values": null,
+    "causal_policy_change_claims": false,
+    "population_generalizability": false,
+    "publication_eligible": false
+  },
+  "method": "Meeting/year omission of whole sources on fixed reference basis; numeric ranges are descriptive change under perturbation, never confidence intervals.",
+  "privacy": {
+    "real_country_and_meeting_level_rows_in_public_repo": false,
+    "raw_speech_text_or_embeddings_in_public_repo": false,
+    "heldout_37_2026_meetings_accessed": false
+  }
+}

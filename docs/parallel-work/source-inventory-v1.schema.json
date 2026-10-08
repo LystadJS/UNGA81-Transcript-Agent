@@ -1,0 +1,399 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/main/docs/parallel-work/source-inventory-v1.schema.json",
+  "title": "UNGA81 longitudinal source inventory companion v1.0.0",
+  "description": "Separate text-free sidecar for unverified and missing observation populations; NEVER embed in legacy un.parallel-analysis.v1 envelopes or release in public with real source-linked observations.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "contract_version",
+    "producer",
+    "upstream",
+    "population",
+    "periods",
+    "observations",
+    "coverage",
+    "inventory_sha256",
+    "legacy_v1_binding",
+    "limitations",
+    "publication_eligible",
+    "evaluation_role"
+  ],
+  "properties": {
+    "schema": {
+      "const": "un.parallel-source-inventory.v1"
+    },
+    "contract_version": {
+      "const": "1.0.0"
+    },
+    "producer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "workstream_id",
+        "adapter_version",
+        "fixture_kind"
+      ],
+      "properties": {
+        "workstream_id": {
+          "enum": [
+            "C0",
+            "W1",
+            "W4"
+          ]
+        },
+        "adapter_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fixture_kind": {
+          "enum": [
+            "synthetic",
+            "private_development"
+          ]
+        }
+      }
+    },
+    "upstream": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_schema",
+        "source_engine",
+        "source_hash_basis",
+        "source_sha256",
+        "selection_sha256"
+      ],
+      "properties": {
+        "source_schema": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_engine": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_hash_basis": {
+          "enum": [
+            "synthetic",
+            "raw_response_bytes",
+            "utf8_response_text",
+            "canonical_source_text",
+            "source_text_file_bytes",
+            "utf8_corpus_export"
+          ]
+        },
+        "source_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "selection_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "population": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "split",
+        "population_id",
+        "frame_unit",
+        "selection_policy",
+        "total_in_frame",
+        "available",
+        "unverified",
+        "other_missing"
+      ],
+      "properties": {
+        "split": {
+          "enum": [
+            "synthetic",
+            "development"
+          ]
+        },
+        "population_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "frame_unit": {
+          "enum": [
+            "synthetic",
+            "country_year",
+            "source_segment",
+            "passage",
+            "parent",
+            "reviewed_speech"
+          ]
+        },
+        "selection_policy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "total_in_frame": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "available": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unverified": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "other_missing": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "periods": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "start",
+          "end"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "start": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "end": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          }
+        }
+      }
+    },
+    "observations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "period_id",
+          "year",
+          "actor_kind",
+          "actor_id",
+          "genre",
+          "source_status",
+          "missing_reason",
+          "event_date",
+          "meeting_id",
+          "source_family_id",
+          "source_sha256",
+          "text_sha256",
+          "source_verification",
+          "review_status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "period_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "year": {
+            "type": "integer",
+            "minimum": 1945,
+            "maximum": 2100
+          },
+          "actor_kind": {
+            "enum": [
+              "recorded_affiliation",
+              "verified_speaker",
+              "unknown",
+              "synthetic"
+            ]
+          },
+          "actor_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "genre": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_status": {
+            "enum": [
+              "available",
+              "unverified",
+              "unavailable",
+              "failed",
+              "inventory_failed",
+              "empty_transcript",
+              "excluded_language"
+            ]
+          },
+          "missing_reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "event_date": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "meeting_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_family_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_sha256": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "text_sha256": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "source_verification": {
+            "enum": [
+              "synthetic",
+              "full_original_verified",
+              "provisional",
+              "unverified"
+            ]
+          },
+          "review_status": {
+            "enum": [
+              "confirmed",
+              "pending",
+              "provisional",
+              "unreviewed",
+              "not_applicable"
+            ]
+          }
+        }
+      }
+    },
+    "coverage": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "period_id",
+          "total",
+          "available",
+          "unverified",
+          "other_missing"
+        ],
+        "properties": {
+          "period_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "available": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "unverified": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "other_missing": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "inventory_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "legacy_v1_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "reason",
+        "legacy_selection_sha256",
+        "legacy_eligible"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "withheld",
+            "verified_subset_projection"
+          ]
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "legacy_selection_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "legacy_eligible": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "publication_eligible": {
+      "const": false
+    },
+    "evaluation_role": {
+      "const": "engineering_only"
+    }
+  }
+}
