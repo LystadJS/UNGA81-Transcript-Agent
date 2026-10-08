@@ -26,13 +26,13 @@ function send(id, type, details={}) {
 async function loadEngine(id) {
   if (engineLoaded) return;
   send(id, 'progress', {phase:'engine', message:'Loading existing same-origin numerical modules.'});
-  importScripts(...MODULES.map(name => '../../../' + name + '?v=w5-experimental-1'));
+  importScripts(...MODULES.map(name => '../../../../' + name + '?v=w5-experimental-1'));
   engineLoaded = true;
 }
 async function moduleHashes() {
   const entries = [];
   for (const name of MODULES) {
-    const response=await fetch('../../../' + name + '?v=w5-experimental-1', {cache:'no-store'});
+    const response=await fetch('../../../../' + name + '?v=w5-experimental-1', {cache:'no-store'});
     if (!response.ok || new URL(response.url).origin !== location.origin) {
       throw new Error('Same-origin numerical source unavailable: ' + name);
     }
