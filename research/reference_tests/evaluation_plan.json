@@ -1,0 +1,34 @@
+{
+  "schema": "un.heldout-evaluation-plan.v1",
+  "version": "1.0.0",
+  "state": "frozen_protocol_no_holdout_access_or_evaluation",
+  "authorization_required": "separate_explicit_authorization_to_access_reserved_content",
+  "holdout_dates": ["2026-10-05","2026-10-06"],
+  "holdout_count": 37,
+  "sampling_unit": "whole_meeting_within_date_not_assumed_independent",
+  "cohort": "all_frozen_metadata_frame_meetings_including_unavailable_and_failed_sources",
+  "source_contract": "original_un_json_hash_and_url_and_status_with_explicit_missingness; no_other_dates_or_substitute_meetings",
+  "machine_population": "frozen_deterministic_rules_with_no_new_human_or_context_overrides; source_segment_not_verified_speech",
+  "analysis_unit": "observed_source_segment_with_strict_passages_aggregated_with_token_count_weights",
+  "transforms": {
+    "lexical":"frozen_tfidf_vocabulary_idf_svd64_and_k10_centroid_prediction_no_refit",
+    "semantic":"pinned_minilm_and_frozen_semantic_pca64_center_components_and_k10_centroid_prediction_no_refit",
+    "retrieval":"crossmeeting_15_nearest_neighbors_in_holdout_high_dimensional_parent_vectors_only"
+  },
+  "primary_metric": "crossmeeting_lexical_semantic_neighborhood_overlap_minus_meeting_length_conditional_null_mean",
+  "null_reference":"999_fixed_seed_within_meeting_frozen_development_length_bin_semantic_parent_shuffles; no_new_method_selection",
+  "replication_gate": {
+    "min_eligible_parents":200,
+    "min_distinct_meetings":8,
+    "min_movable_fraction":0.70,
+    "min_crossmeeting_neighbors":15,
+    "max_familywise_alpha":0.05,
+    "effect_floor":"heldout_excess_overlap_at_least_one_half_of_saved_development_excess_and_positive",
+    "when_not_met":"inconclusive_or_not_replicated; never re-optimize_on_holdout"
+  },
+  "secondary_exploratory":"same_recorded_country_crossmeeting_neighbor_enrichment; unknown_attribution_and_repeat_requirements_fail_closed; Holm_two_tests",
+  "coverage_outputs":["inventory_37_full_accounting", "success_failure_unavailable_by_meeting", "eligible_passages_and_source_parents", "duplicate_and_training_overlap", "language_genre_length_actor_missingness", "no_source_substitution", "numerical_fit_and_abstention_rates"],
+  "freeze_rules":["report_all_unavailable_and_failed_records_in_denominators", "log_if_an_evaluation_unit_reuses_a_development_source_or_text_hash", "no_retraining_and_no_threshold_search", "keep_human_review_pending", "record_drift_without_overwriting_development_references", "report_both_successes_and_failures", "one_primary_evaluation_only", "no_significance_or_political_alignment_claim_from_development_p_values"],
+  "prohibited":["holdout_download_during_freeze","holdout_embedding_during_freeze","holdout_fit_during_freeze","tune_settings_on_holdout","treat_2d_plot_as_metric","claim_semantic_similarity_is_stance","suppress_unavailable_meetings"],
+  "review_status":"machine_only_provisional_not_policy_release"
+}

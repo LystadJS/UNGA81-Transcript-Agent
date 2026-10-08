@@ -1,0 +1,38 @@
+name: Nuisance reference contract
+on:
+  push:
+    paths:
+      - 'research/reference_tests/**'
+      - 'docs/NUISANCE_REFERENCE*'
+      - '.github/workflows/nuisance-reference.yml'
+  pull_request:
+    paths:
+      - 'research/reference_tests/**'
+      - 'docs/NUISANCE_REFERENCE*'
+      - '.github/workflows/nuisance-reference.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install pinned numerical runtime only
+        run: python -m pip install numpy==2.3.5 scipy==1.17.0 scikit-learn==1.8.0 threadpoolctl==3.6.0
+      - name: Verify frozen data-free contract
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+          OMP_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: |
+          python -m unittest discover -s research/reference_tests -p test_reference.py -v
+          python -m compileall -q research/reference_tests
+      - name: Preserve audit boundaries
+        run: |
+          git diff --exit-code HEAD -- site un
+          test ! -d research/reference_tests/holdout-data
