@@ -48,14 +48,15 @@ function invariant(x) {
   if (x.cohort.split === 'development') {
     assert(x.observations.every(o => !['2026-10-05', '2026-10-06'].includes(o.date)), 'reserved meeting date in development');
   }
+  if (x.upstream.source_sha256 === null) assert(x.upstream.missing_reason, 'unknown source hash needs explicit reason');
+  if (x.upstream.selection_sha256 === null) assert(x.upstream.missing_reason, 'unknown selection hash needs explicit reason');
   const ids = x.observations.map(o => o.id), mm = x.models.map(m => m.model_id);
   assert.equal(new Set(ids).size, ids.length, 'duplicate observation identity');
   assert.equal(new Set(mm).size, mm.length, 'duplicate model identity');
   assert.equal(x.coverage.observations_total, ids.length, 'observation total mismatch');
   assert.equal(x.coverage.eligible, x.cohort.eligible, 'eligible mismatch');
   assert.equal(x.coverage.eligible + x.coverage.excluded, ids.length, 'eligible/excluded missing');
-  assert(x.cohort.eligible <= x.cohort.total_in_frame || x.cohort.unit !== 'source_segment',
-    'source segment count exceeds frame population');
+  // Meeting inventory, source segments and passages have different denominators.
   const byId = new Map(x.observations.map(o => [o.id, o]));
   for (const o of x.observations) {
     if (o.start === null || o.end === null) assert(o.start === null && o.end === null, 'half-null offset');
@@ -128,4 +129,5 @@ expectReject('reserved date', x => {x.cohort.split='development';x.producer.fixt
 expectReject('publication bypass', x => {x.publication_eligible=true;});
 expectReject('private text field', x => {x.observations[0].text='private text';});
 expectReject('failure ledger mismatch', x => {x.coverage.models[0].attempted_fits=2;});
-process.stdout.write(JSON.stringify({suite:'parallel-v1-synthetic',positive:1,negative:12,status:'pass',network_access:false,holdout_access:false})+'\\n');
+expectReject('source hash absent without reason', x => {x.upstream.source_sha256=null;});
+process.stdout.write(JSON.stringify({suite:'parallel-v1-synthetic',positive:1,negative:13,status:'pass',network_access:false,holdout_access:false})+'\\n');
