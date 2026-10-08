@@ -31,6 +31,7 @@ from .algorithms import (
 )
 from .core import GraphError, GraphPolicy, build_affinity, digest, matrix_digest, validate_input
 from .interchange import code_digest, paired_representations, to_interchange_v1
+from .w1_bridge import availability as w1_availability, compare_w1_partition
 
 
 def fixture(seed: int = 81) -> tuple[dict, np.ndarray, np.ndarray]:
@@ -82,6 +83,9 @@ def fixture(seed: int = 81) -> tuple[dict, np.ndarray, np.ndarray]:
 
 def local_source(manifest_path: Path, vectors_path: Path) -> tuple[dict, np.ndarray]:
     """Allow only explicitly supplied files; no URL loading or transcript parsing."""
+    root = Path(__file__).resolve().parents[2]
+    if manifest_path.resolve().is_relative_to(root) or vectors_path.resolve().is_relative_to(root):
+        raise GraphError("Private development manifest/vectors must remain outside the public repository")
     if manifest_path.stat().st_size > 2_000_000 or vectors_path.stat().st_size > 32_000_000:
         raise GraphError("Local manifest/matrix exceeds bounded input size")
     manifest = json.loads(manifest_path.read_text(encoding="utf8"))
@@ -123,8 +127,11 @@ def jsonable(obj: Any) -> Any:
 
 
 def write_json(path: Path, value: Any) -> None:
-    path.write_text(json.dumps(jsonable(value), indent=2, sort_keys=True,
-                               allow_nan=False) + "\n", encoding="utf8")
+    # Exclusive creation prevents a replay from mutating an earlier evidence receipt.
+    payload = json.dumps(jsonable(value), indent=2, sort_keys=True, allow_nan=False) + "\n"
+    fd = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+    with os.fdopen(fd, "w", encoding="utf8") as output:
+        output.write(payload)
 
 
 def source_edges(manifest: dict, graph) -> list[dict]:
@@ -189,7 +196,7 @@ def make_plots(output: Path, x: np.ndarray, truth: np.ndarray | None, graph,
     paths = []
     fig, ax = plt.subplots(figsize=(6.5, 5.1))
     ax.imshow(graph.weights, cmap="viridis", interpolation="none", aspect="auto")
-    ax.set(title="Synthetic weighted kNN affinity", xlabel="Observation row", ylabel="Observation row")
+    ax.set(title="Weighted kNN affinity (feature-space geometry)", xlabel="Observation row", ylabel="Observation row")
     fig.tight_layout()
     fig.savefig(output / "affinity.svg")
     paths.append("affinity.svg")
@@ -201,7 +208,7 @@ def make_plots(output: Path, x: np.ndarray, truth: np.ndarray | None, graph,
         ax.scatter(z[:, 0], z[:, 1] if z.shape[1] > 1 else np.zeros(len(z)),
                    c=truth if truth is not None else np.arange(len(z)),
                    cmap="viridis", alpha=0.8, s=19)
-        ax.set(title="Synthetic geometric diffusion map",
+        ax.set(title="Geometric diffusion map (not policy influence)",
                xlabel="First diffusion coordinate",
                ylabel="Second diffusion coordinate")
         fig.tight_layout()
@@ -216,7 +223,7 @@ def make_plots(output: Path, x: np.ndarray, truth: np.ndarray | None, graph,
         ax.bar(names, scores, color=["#597EA5", "#B98C58"])
         ax.axhline(0, color="gray", linewidth=0.8)
         ax.set(ylim=(-1, 1), ylabel="ARI against spectral partition",
-               title="Source-matched algorithm agreement (synthetic)")
+               title="Source-matched descriptive algorithm agreement")
         fig.tight_layout()
         fig.savefig(output / "baselines.svg")
         paths.append("baselines.svg")
@@ -245,11 +252,20 @@ def make_plots(output: Path, x: np.ndarray, truth: np.ndarray | None, graph,
 
 def run(manifest: dict, x: np.ndarray, output: Path, seed: int = 81,
         synthetic_labels: np.ndarray | None = None,
-        peer: tuple[dict, np.ndarray] | None = None) -> dict:
+        peer: tuple[dict, np.ndarray] | None = None,
+        w1: tuple[dict, dict, str] | None = None) -> dict:
     validate_input(manifest, x)
+    if manifest["split"] == "development":
+        root = Path(__file__).resolve().parents[2]
+        if output.resolve().is_relative_to(root):
+            raise GraphError("Source-linked development output must remain outside Git checkout")
+        if output.is_symlink():
+            raise GraphError("Private development output cannot use a symlink")
+        if output.exists() and (output.stat().st_mode & 0o077):
+            raise GraphError("Private development output directory must be owner-only (0700)")
     if output.exists() and any(output.iterdir()):
         raise GraphError("Output directory must be empty; do not overwrite evidence")
-    output.mkdir(parents=True, exist_ok=True)
+    output.mkdir(parents=True, exist_ok=True, mode=0o700 if manifest["split"] == "development" else 0o755)
     n = len(x)
     graph_policy = GraphPolicy(n_neighbors=min(16, n - 1),
                                metric=manifest["representation"]["distance_geometry"],
@@ -300,6 +316,17 @@ def run(manifest: dict, x: np.ndarray, output: Path, seed: int = 81,
     if peer:
         paired = paired_representations(
             manifest, x, peer[0], peer[1], graph_policy, spectral_policy, diffusion_policy)
+    w1_status = w1_availability()
+    w1_result = None
+    if w1 is not None:
+        if manifest["split"] != "development":
+            raise GraphError("Accepted W1 integration is reserved for authorized private development")
+        if spectral["status"] != "fitted":
+            raise GraphError("W1 comparison cannot repair an incomplete spectral fit")
+        w1_result = compare_w1_partition(manifest, x, spectral, w1[0], w1[1],
+                                         w1_model_id=w1[2])
+        w1_status = {"status": "validated", "w1_code_sha256": w1_result["w1_code_sha256"],
+                     "basis": w1_result["w1_model_basis"]}
     # Metadata adapter has no raw source strings; row-level output remains local.
     envelope = to_interchange_v1(
         manifest, x, {"w3-spectral-v1": spectral, "w3-diffusion-v1": diffusion},
@@ -322,6 +349,8 @@ def run(manifest: dict, x: np.ndarray, output: Path, seed: int = 81,
     write_json(output / "diffusion-policy-sensitivity.json", diffusion_settings)
     if paired is not None:
         write_json(output / "paired-representations.json", paired)
+    if w1_result is not None:
+        write_json(output / "w1-source-aware-comparison.json", w1_result)
     plot_paths = make_plots(output, x, synthetic_labels, graph, spectral, diffusion,
                             baseline, sensitivity.get("spectral", {}))
     receipt = {
@@ -360,6 +389,7 @@ def run(manifest: dict, x: np.ndarray, output: Path, seed: int = 81,
             for p in ("numpy", "scipy", "scikit-learn", "matplotlib", "jsonschema")
         },
         "plot_files": plot_paths, "heldout_transcripts_opened": 0,
+        "w1_source_aware": w1_status,
         "publication_eligible": False,
         "limit": ("Statistical geometry only; no political influence/policy transmission. "
                   "Source-group refits are not independent evaluations."),
@@ -381,6 +411,9 @@ def main() -> None:
     ap.add_argument("--vectors", type=Path)
     ap.add_argument("--compare-manifest", type=Path)
     ap.add_argument("--compare-vectors", type=Path)
+    ap.add_argument("--w1-envelope", type=Path)
+    ap.add_argument("--w1-approval", type=Path)
+    ap.add_argument("--w1-model-id")
     ap.add_argument("--output", type=Path, required=True)
     ap.add_argument("--seed", type=int, default=81)
     args = ap.parse_args()
@@ -398,9 +431,22 @@ def main() -> None:
         if not args.compare_manifest or not args.compare_vectors or args.fixture:
             ap.error("Comparison requires two local authorized development representations")
         peer = local_source(args.compare_manifest, args.compare_vectors)
+    w1 = None
+    if args.w1_envelope or args.w1_approval or args.w1_model_id:
+        if not all((args.w1_envelope, args.w1_approval, args.w1_model_id)):
+            ap.error("--w1-envelope, --w1-approval and --w1-model-id must be provided together")
+        if args.fixture:
+            ap.error("W1 acceptance-gated comparisons are private development only")
+        if (args.w1_envelope.resolve().is_relative_to(Path(__file__).resolve().parents[2])
+                or args.w1_envelope.stat().st_size > 32_000_000):
+            raise GraphError("W1 private evidence must remain outside the checkout and inside file limits")
+        raw = json.loads(args.w1_envelope.read_text(encoding="utf8"))
+        envelope = raw["interchange"] if "interchange" in raw else raw
+        approval = json.loads(args.w1_approval.read_text(encoding="utf8"))
+        w1 = (envelope, approval, args.w1_model_id)
     from threadpoolctl import threadpool_limits
     with threadpool_limits(limits=1):
-        receipt = run(manifest, x, args.output, args.seed, known, peer)
+        receipt = run(manifest, x, args.output, args.seed, known, peer, w1)
     print(json.dumps({
         "receipt": str(args.output / "receipt.json"),
         "source_population": len(x),
