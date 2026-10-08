@@ -31,7 +31,7 @@ def _observation(row: dict, split: str, unit: str) -> dict:
         "parent_id": row.get("parent_id"), "parent_text_sha256": row.get("parent_text_sha256"),
         "meeting_id": row.get("meeting_id"), "speech_id": row.get("speech_id"),
         "source_family_id": row.get("source_family_id"),
-        "date": row.get("date", "2026-10-01"), "country": row.get("country"),
+        "date": row["date"], "country": row.get("country"),
         "source_url": row.get("source_url"), "json_pointer": row.get("json_pointer"),
         "start": row.get("start"), "end": row.get("end"),
         "unit": row.get("unit", unit),
@@ -243,7 +243,6 @@ def paired_representations(manifest_a: dict, xa: np.ndarray,
     sa, sb = spectral_clustering(ga, spectral_policy), spectral_clustering(gb, spectral_policy)
     da, db = diffusion_map(ga, diffusion_policy), diffusion_map(gb, diffusion_policy)
     q = min(8, (len(xa) - 2) // 2)
-    from .algorithms import _ranked_neighbors
     # Same neighbor ranking policy on original graph distances.
     knn_a = np.argsort(np.where(np.eye(len(xa), dtype=bool), np.inf, ga.distances),
                        axis=1, kind="stable")[:, :q]
