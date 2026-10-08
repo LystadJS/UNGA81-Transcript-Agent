@@ -45,6 +45,6 @@ jobs:
         if: always()
         with:
           name: consensus-w2-synthetic-reports
-          path: /tmp/consensus-synthetic/
+          path: ${{ runner.temp }}/consensus-synthetic/
           if-no-files-found: warn
           retention-days: 7
