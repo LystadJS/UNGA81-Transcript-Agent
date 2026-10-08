@@ -1,100 +1,46 @@
-# W3 → W5 → W6: coordinator integration and review record
+# W3 → W5 → W6: coordinator source-bound integration review
 
-**Decision:** stage a separate synthetic-only read adapter and real cross-branch
-consumer tests. Do not merge experimental W5/W6 worker PRs or publish the
-browser. Neither original UN transcript content, reserved Oct 5–6 transcripts,
-nor any existing source hash/review decision/publication gate is changed.
+**Decision:** accept the synthetic research interchange adapter as a separate
+engineering component. W5 and W6 were independently validated and merged;
+active browser deployment remains a separate coordinator change.
 
-## Provenance and tested branch pins
+## Versioned upstream provenance
 
-| Component | Verified source | Pin for this review | Acceptance |
-| --- | --- | --- | --- |
-| W1 source group and relational validator | merged main, research/validation_framework/ | PR #19 merge 87dedd6ee7b30fb7cd1e26e8ef26e30ee8e52329 | Engineering only |
-| W3 graph/diffusion method results | merged main, research/graph_methods/ | PR #16 merge 58ad3c25de97beea33325331b4b74fb784ca2e8f | Engineering only |
-| W5 browser method-lab | PR #21 feat/browser-research-engine | 2d78dd8b3bba60b61094179a8dea84f78f1f45ed | Draft, unmerged |
-| W6 visualization module | PR #20 feat/evidence-visualization-suite | 6a404992f34996b4e284a3bdac1f5c3496432478 | Draft, unmerged |
-| Coordinator structural/relational v1 | docs/parallel-work/INTERCHANGE_V1.md | Main at PR creation | Existing, unchanged |
+| Component | Reviewed revision | Status |
+| --- | --- | --- |
+| W1 source-aware validator | PR #19 merge `87dedd6ee7b30fb7cd1e26e8ef26e30ee8e52329` | Merged; engineering-only |
+| W3 spectral/diffusion methods | PR #16 merge `58ad3c25de97beea33325331b4b74fb784ca2e8f` | Merged; engineering-only |
+| W5 method lab | PR #21 head `2d78dd8b3bba60b61094179a8dea84f78f1f45ed`; merge `316f3b81cecc0bba0920277f5551bc8d0313764f` | Merged; native and browser QA passed |
+| W6 visualization | PR #20 repaired head `b86c90175e8c2f184062b02db996893319b3339c`; merge `16ad599cf88aa6b76e3c8ee45551f6e9c36f7503` | Merged; native/browser QA passed |
+| W5/W6 owner/coordinator ownership | PR #27 merge `6f94d7a09314991c0202eadaad3ac894e7553a61`; PR #28 merge `800fa499641ec8c814c079c4833ae162b98079d6` | Scope recorded |
 
-Coordinator CI checks out both unmerged worker sources at the exact pinned
-commit SHAs into separate scratch directories; this PR does not copy or modify
-their code. A changed upstream PR head requires a fresh review and repinning.
+## Source-bound compatibility findings
 
-## Cross-contract decisions
+| Surface | Validated treatment |
+| --- | --- |
+| W5 import | Native W3 `un.parallel-analysis.v1` remains unchanged, including every excluded, unavailable, failed and unassigned model result; no sampling or reattribution |
+| W6 graph view | Derive a separate panel from W3 original source-linked edges and Gaussian-kNN affinity, never mislabel as cosine distance or political alliance |
+| Missingness | The previous W6 eligible-only result-row defect is **fixed**: each W3 model now has exactly one result per all inventoried frame rows, including null-cluster excluded records |
+| Source identity | Original source/selection hashes, hash basis, observation ID+text SHA, parent/meeting/URL, graph policy and matrix integrity verified through W1 and original W3 receipts |
+| Sensitivity | W3 duplicate and meeting concentration is aggregate only; per-edge duplicate/agenda sensitivity remains explicitly `not_assessed` |
+| Graph size | W6 has 50-node display cap; 96-node W3 graph is `withheld` with intact 96-source denominator, not sampled |
+| Metrics and claims | Gaussian edge strength is a constructed affinity, not cosine similarity, diplomatic coordination, stance, policy transmission or inferred causal influence |
+| Privacy | Only invented synthetic source IDs accepted by this coordinator adapter; no authorized private development original-source results are exported into public browser |
 
-| Contract | W5 browser | W6 visualization | Coordinator integration |
-| --- | --- | --- | --- |
-| W3 un.parallel-analysis.v1 | validateParallel/fromParallel source-bound import | Narrower validateEnvelope | Preserve original envelope unchanged for W5 |
-| Missing/excluded observations | Requires explicit excluded model rows and fit ledgers | **Blocker:** tests model result count against eligible rows even when excluded frame rows exist | W6 must count full model-by-frame rows; bridge returns blocked_contract until fixed |
-| Graph representation | Spectral and diffusion are offline-only | Requires network-specific graph, node, edge, threshold, sensitivity and source references | Derive a W6 panel from W3's audited source-linked edge ledger only |
-| Link metric | Retains source model description | Draws a strength between 0 and 1 above a display threshold | W3 kernel weight is Gaussian affinity on kNN, **not cosine similarity**; display minimum 0 is not graph construction cutoff |
-| Duplicate/agenda sensitivity | W3 aggregate duplicate/source concentration | Requires per-edge stable/sensitive/not_assessed | All edges marked not_assessed; no fabricated stability |
-| Source provenance | Original ID, text SHA, hash basis, meeting, parent, source URL | identity.observation_refs and evidence-linked nodes/edges | Exact joined source hashes, parent/meeting/URL and matrix/representation identity |
-| Graph size | Up to 600 source observations | Maximum 50 nodes | Withhold >50, never silently subsample |
-| Failed/unassigned fits | Explicit status/counts per W3 model | Requires coherent coverage | No missing/error/noise-to-zero conversions |
-| Validation | W5 Node tests, browser/worker and replay acceptance pending | W6 Node tests and Chromium QA pending | Run authentic pinned Node consumer suites; current integration is offline-only |
-| Real source content | W1/W3 original source digest still needs private verification | Public W6 synthetic-only | Refuse any development/private inputs in this bridge |
+## Executed verification and confidence boundaries
 
-### Required W6 fix (do not silently apply in a worker-owned branch)
+- **W5/W6 real browser acceptance:** [CI 37815064508](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37815064508) passed original W5 20/20 and repaired W6 16/16 Node tests, merged W1 relational validation on W6 10+1 frame, W5 Chrome DevTools Worker/PCA/LSA numerical parity, Playwright 1440px/390px keyboard/source inspection, export, no external traffic, empty/failed/withheld states, and actual screenshots.
+- [Synthetic browser captures and QA receipts](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37815064508/artifacts/11566917078) are invented source examples, not UN evidence.
+- **W3/W5/W6 interchange:** coordinator CI uses native W3 numerical 24, 24+1 and 96 source scenarios, independently pins/loads actual W5/W6 modules, tests raw v1 W5 replay, W6 complete missing frame, graph integrity and over-cap withholding. See latest PR #26 run and test receipt for actual status; no test is claimed without executed CI.
+- Reproducibility commands, source snapshots, adapters and measured denominators are documented in `research/integration/w3_w5_w6/README.md`.
 
-In W6 evidence-viz.js validateEnvelope, replace the eligible-only result
-count with a complete, unique model × all observed frame row contract.
-For each model:
+## Scientific and operational holds
 
-1. Require result rows equal to the total number of frame observations.
-2. Check exactly one row for every eligible and excluded observation ID,
-   with excluded-source result status excluded, cluster null and explicit
-   exclusion reason.
-3. Verify model coverage assigned + unassigned + not_fitted equals eligible,
-   and the separately counted excluded results equal c.excluded.
-4. Preserve unavailable original text_sha256=null, missing reason, and
-   nonzero frame/excluded/missing counts. Never remove a record to make a
-   chart render.
-5. Update the W6 synthetic fixture to include excluded model result rows,
-   consistent c.excluded counters, and both positive and adversarial tests.
-   Run native Node and real desktop/mobile Chromium QA after any repair.
+- **PASS only for synthetic engineering:** provenance matching of supplied derived receipts, numerical graph/assignment consistency, browser accessibility and replay on invented fixtures.
+- **NOT RUN:** original-byte revalidation for real UN development transcripts, pinned MiniLM model inference, independent source-group/null-calibrated significance, 37 reserved October 5–6 held-out meetings, representative national source attribution or political interpretation.
+- **NOT APPROVED:** public browser deployment, release manifest changes, D1 O1–O5 gate changes, website mirror, or production exposure to private source text. User request is to *prepare* the follow-on active browser wiring PR, not deploy it.
+- Existing `tools/build_pages.py` copies only top-level site files, so isolated W5/W6 subdirectories merged under `site/` are not published until a separately reviewed build/release change explicitly includes them.
 
-This coordinator staging PR does not edit W6 source or change v1 schema.
-The fix requires the W6 worker/coordinator's separate ownership and release
-acceptance.
+## Coordinator next stage
 
-## Acceptance gate accounting
-
-PASS when demonstrated by current CI: native W3 source-linked generated output;
-SHA256 manifest verification; merged W1 relational validation; original W5
-fromParallel and SHA256 replay; original W6 small graph rendering; explicit
-W6 missing-source refusal; W6 >50 withheld state; Gaussian affinity and graph
-pair integrity checks; original W5 and W6 standalone Node regression suites.
-
-WITHHELD: rendering excluded/missing-source W3 envelope through unmodified W6.
-NOT RUN: authorized real development-source graph, pinned real MiniLM, original
-byte/UN-transcript revalidation, independent null/held-out inference,
-production browser/desktop/mobile/screenshots, D1 release or website mirror.
-Never call an unexecuted acceptance test a PASS.
-
-## Scientific limitations
-
-W3's kNN graph and kernel weighting are *constructed geometry* sensitive to
-vector representation, scale, duplicates, procedural language, source-group
-composition and meeting dependence. Edge strength is not diplomatic alliance,
-government stance, agreement, influence, policy transmission or causality.
-Diffusion maps describe a geometric Markov process, not geopolitical diffusion.
-No country attribution, inferential p-value or null calibration arises from
-the synthetic fixtures.
-
-## Integration and later release sequence
-
-1. Validate source/identity contracts on exact pinned W5/W6 snapshot commits.
-2. Keep this separate coordinator PR additive and unmerged unless it has
-   passing checks and independent coordinator acceptance.
-3. Review W5 PR #21 and W6 PR #20 independently; resolve W6's ownership
-   and model-by-frame defect before accepting its full graph viewer.
-4. After approval, adapt the modules into a coordinator-owned **experimental**
-   browser entry point, with explicit synthetic/private safeguards.
-5. Run actual browser keyboard/mobile/worker replay/exports, source lineage,
-   privacy, resource and memory bounds before considering release assets.
-6. Public deployment, D1 adapter promotion and portfolio mirroring are
-   separate decisions; preserve frozen 37 reserved meetings throughout.
-
-Reproduction commands: research/integration/w3_w5_w6/README.md. Read the
-CI test result and recorded SHAs rather than interpreting this planned
-acceptance table as a completed validation record.
+Review/merge the isolated coordinator adapter only with latest CI and exact SHA, then prepare a separate draft active browser wiring PR from current `main`. Gate links/scripts on accepted W5/W6 assets and real Chrome/mobile QA; do not change the canonical interchange schema or frozen research files. Keep all analytical outputs engineering-only and all deployment actions pending explicit release approval.
