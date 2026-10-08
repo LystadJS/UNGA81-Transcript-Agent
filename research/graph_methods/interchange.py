@@ -78,8 +78,9 @@ def to_interchange_v1(manifest: dict, values: np.ndarray, fits: dict[str, dict],
     upstream = manifest["upstream"]
     n = identity["n"]
     rows = manifest["observations"]
-    if not isinstance(manifest.get("total_in_frame"), int) or manifest["total_in_frame"] < n:
-        raise GraphError("Frame inventory denominator must be declared")
+    excluded_rows = manifest.get("excluded_observations", [])
+    if not isinstance(manifest.get("total_in_frame"), int) or manifest["total_in_frame"] != n + len(excluded_rows):
+        raise GraphError("Full observed frame must account for all eligible and excluded identities")
     if not isinstance(manifest.get("inventory_meetings"), int):
         raise GraphError("Meeting inventory count must be explicit")
     if not fits:
@@ -134,9 +135,17 @@ def to_interchange_v1(manifest: dict, values: np.ndarray, fits: dict[str, dict],
                 "reason": ("Coordinates only; no partition or policy stance" if fitted and labels is None else
                            str(record.get("reason", "Fit unavailable")) if not fitted else None),
             })
+        for row in excluded_rows:
+            results.append({
+                "model_id": model_id, "observation_id": row["id"],
+                "status": "excluded", "cluster": None,
+                "membership_kind": "none", "memberships": None, "membership_strength": None,
+                "representation_basis_id": manifest["representation"]["id"],
+                "reason": "; ".join(row["exclusion_reasons"]),
+            })
         coverage_models.append({
             "model_id": model_id, "eligible": n, "assigned": assigned,
-            "unassigned": unassigned, "not_fitted": not_fitted, "excluded": 0,
+            "unassigned": unassigned, "not_fitted": not_fitted, "excluded": len(excluded_rows),
             "attempted_fits": int(status != "skipped"),
             "successful_fits": int(fitted), "failed_fits": int(status == "failed"),
             "skipped_fits": int(status == "skipped"),
@@ -149,6 +158,15 @@ def to_interchange_v1(manifest: dict, values: np.ndarray, fits: dict[str, dict],
                 "seed": parameters.get("seed"), "source_group": None,
             })
         diagnostics.extend(_diagnostics(model_id, record))
+        if fitted:
+            fit_metrics = fidelity(values, record["coordinates"], manifest["representation"]["distance_geometry"])
+            for name in ("neighbor_overlap", "trustworthiness", "continuity"):
+                if name in fit_metrics:
+                    diagnostics.append({
+                        "model_id": model_id, "name": "geometry_" + name,
+                        "value": fit_metrics[name], "denominator": n,
+                        "unit": "proportion", "status": "descriptive", "reason": None,
+                    })
     envelope = {
         "schema": "un.parallel-analysis.v1", "contract_version": "1.0.0",
         "producer": {
@@ -176,12 +194,12 @@ def to_interchange_v1(manifest: dict, values: np.ndarray, fits: dict[str, dict],
             "total_in_frame": manifest["total_in_frame"], "eligible": n,
         },
         "observations": [_observation(row, split, manifest.get("unit", "synthetic"))
-                         for row in rows],
+                         for row in rows + excluded_rows],
         "models": models, "results": results,
         "coverage": {
             "inventory_meetings": manifest["inventory_meetings"],
             "observations_total": manifest["total_in_frame"],
-            "eligible": n, "excluded": manifest["total_in_frame"] - n,
+            "eligible": n, "excluded": len(excluded_rows),
             "unavailable_sources": manifest.get("unavailable_sources", 0),
             "models": coverage_models, "failure_ledger": ledger,
         },
@@ -202,9 +220,10 @@ def to_interchange_v1(manifest: dict, values: np.ndarray, fits: dict[str, dict],
         "evaluation_role": "engineering_only",
     }
     # Relational checks beyond structural JSON Schema.
-    assert len(envelope["results"]) == n * len(fits)
-    assert all(sum(x[k] for k in ("assigned", "unassigned", "not_fitted", "excluded")) ==
+    assert len(envelope["results"]) == (n + len(excluded_rows)) * len(fits)
+    assert all(sum(x[k] for k in ("assigned", "unassigned", "not_fitted")) ==
                x["eligible"] for x in coverage_models)
+    assert all(x["excluded"] == len(excluded_rows) for x in coverage_models)
     return envelope
 
 
