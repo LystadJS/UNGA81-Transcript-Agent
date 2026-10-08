@@ -548,7 +548,8 @@
       inspections[key]=v.inspections[key];
     }
     target.innerHTML=views.map(v=>v.html).join('');
-    target.addEventListener('click',event=>{
+    // Re-renders replace the inspection handler instead of stacking stale closures.
+    target.onclick=event=>{
       const button=event.target.closest('[data-ev-inspect]');
       if(!button || !target.contains(button))return;
       const entry=inspections[button.getAttribute('data-ev-inspect')];
@@ -556,7 +557,7 @@
       const host=button.closest('.ev-panel')?.querySelector('.ev-inspector');
       if(host)host.innerHTML='<strong>Selected evidence</strong><p>'+escape(entry.summary)+
         '</p>'+evidenceHTML(env,entry.ids,new Map(env.observations.map(o=>[o.id,o])));
-    });
+    };
     return views;
   }
   return Object.freeze({VERSION,COLORS,TYPES,validateEnvelope,validatePanel,
