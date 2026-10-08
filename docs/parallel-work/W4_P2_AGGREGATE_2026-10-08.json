@@ -1,0 +1,76 @@
+{
+  "schema": "un.w4.p2.public-aggregate.v1",
+  "audit_date": "2026-10-08",
+  "scope": "UN General Debate 2016–2025; restricted P0-P1 private source work",
+  "data_versions": {
+    "Harvard_v14_publisher_md5_checks_passed": 2,
+    "Harvard_archive_texts_in_scope": 1926,
+    "source_year_count": 10,
+    "UN_speaker_index_years": "2016–2024",
+    "reserved_2026_meeting_texts_read": 0
+  },
+  "priority": {
+    "critical_and_high_flags_triaged": 24,
+    "country_session_metadata_candidates_only": 14,
+    "missing_UN_index_cases_official_PV_short_excerpts_corroborated": 3,
+    "UN_documented_speech_missing_Harvard_text": 1,
+    "global_unresolved_representational_or_authentication_gates": 6,
+    "human_adjudications_completed": 0
+  },
+  "sample": {
+    "design": "deterministic risk-stratified review queue, not probability sample",
+    "country_session_candidate_cells_selected": 120,
+    "candidate_cells_with_Harvard_text": 96,
+    "candidate_cells_without_Harvard_text": 24,
+    "full_original_UN_PV_document_byte_hashes_checked": 0,
+    "UN_original_record_or_delegation_document_partial_checks": 11,
+    "short_original_opening_normalized_matches": 8,
+    "complete_original_UN_speech_to_archive_equivalence_checks": 0
+  },
+  "speaker_name_candidate": {
+    "evaluated": 1927,
+    "strong_name_string_candidate_not_authenticated": 1543,
+    "moderate_name_string_candidate_not_authenticated": 110,
+    "weak_candidate": 79,
+    "ambiguous_competing_candidates": 2,
+    "without_independent_UN_index_match": 193,
+    "verified_person_identities_from_name_scores": 0
+  },
+  "source_modality": {
+    "source_modes": "2016–2023 Harvard historical PV-derived; 2024 mixed PDFs/OCR/translation/audio; 2025 Whisper-1 English simultaneous-interpretation ASR",
+    "year_2025_available_texts": 190,
+    "year_2025_procedural_opening_cues_detected": 125,
+    "year_2016_through_2024_procedural_opening_cues_detected": 0,
+    "interpretation": "pattern count only, not a fidelity error rate or test of diplomatic change",
+    "measurement_invariance_2024_2025": "NOT_DEMONSTRATED"
+  },
+  "acceptance": {
+    "publisher_Harvard_v14_bytes": "PASS",
+    "candidate_country_session_metadata": "PASS_KEY_ONLY",
+    "original_UN_PV_complete_text_identity": "NOT_RUN",
+    "individual_speaker_person_authentication": "NOT_RUN",
+    "historical_UN_membership_census": "NOT_RUN",
+    "same_feature_representation_pinned": "NOT_RUN",
+    "real_source_dependent_bootstrap_calibration": "NOT_RUN",
+    "W4_empirical_analysis_eligible": false,
+    "W4_calibrated_inference_eligible": false,
+    "public_research_publication_eligible": false,
+    "production_browser_eligible": false
+  },
+  "privacy": {
+    "includes_transcript_text": false,
+    "includes_names_or_country_year_source_records": false,
+    "includes_private_review_records": false,
+    "includes_reserved_evaluation_data": false,
+    "original_source_and_private_discrepancy_files_location": "delivered outside public GitHub",
+    "evaluation_lock_modified": false
+  },
+  "limitations": [
+    "Twenty-four high/critical flags are triaged, not adjudicated by a human and not all resolved.",
+    "Eleven partial original-UN source checks and eight short opening matches do not authenticate entire original documents.",
+    "Source text, source URLs for named persons and source-linked individual cells remain private.",
+    "Mixed modality and 2025 procedural introductions prohibit assuming linguistic representation invariance.",
+    "The P2 120-cell sample contains 24 missing Harvard texts; no zeros or invented sources were imputed.",
+    "Full W4 eligibility requires separate source, representation, temporal-dependence and release acceptance."
+  ]
+}
