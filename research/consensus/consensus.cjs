@@ -62,7 +62,7 @@ function sourceGroup(row, mode) {
 function validateEnvelope(x) {
   schemaCheck(INTERCHANGE, x);
   check(x.schema === 'un.parallel-analysis.v1', 'interchange v1 required');
-  check(/^1\./.test(x.contract_version) && x.producer.workstream_id !== 'W2' || /^1\./.test(x.contract_version),
+  check(/^1\./.test(x.contract_version),
     'unsupported contract version');
   check(x.publication_eligible === false && x.evaluation_role === 'engineering_only', 'non-engineering input forbidden');
   check(x.cohort.split === x.producer.fixture_kind.replace('private_', '') || x.cohort.split === 'development' && x.producer.fixture_kind === 'private_development',
