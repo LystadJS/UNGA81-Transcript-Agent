@@ -112,7 +112,7 @@ async function main() {
   ];
   const records=texts.map((text,i)=>({
     id:'test-'+(i+1),date:'2026-09-22',country:'Synthetic '+(i+1),
-    region:'Synthetic',language:'English',scope:'general_debate',
+    region:'Synthetic',language:'en',scope:'general_debate',
     meeting:'Synthetic fixture (not an actual UN meeting)',
     source_url:'https://example.org/synthetic/'+(i+1),
     text,text_sha256:hash(text)
