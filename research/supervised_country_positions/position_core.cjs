@@ -233,20 +233,33 @@ function summarize(frame, codebook, options = {}) {
     for (const proposition of propositions.values()) {
       const cellKey = keyOf(actor.iso3, String(actor.year), proposition.proposition_id);
       const groups = byCell.get(cellKey) || [];
-      const aggregated = reduceStances(groups.map(group =>
-        group.stance === null ? 'conditional' : group.stance));
-      // Preserve the actual within-family reason if no substantive stance survives.
-      const reason = groups.length === 0 ? 'no_observed_statement' :
-        (groups.some(group => group.reason === 'conflicting_or_conditional_evidence') ?
-          'conflicting_or_conditional_evidence' :
-          aggregated.reason === 'conditional_only' &&
-          groups.every(group => group.reason === 'insufficient_evidence') ?
-            'insufficient_evidence' : aggregated.reason);
+      // A null family stance retains its specific absence/conflict reason;
+      // do not silently relabel descriptive-only or insufficient as conditional.
+      const positionStances = uniq(groups.map(group => group.stance).filter(Boolean));
+      const blockers = uniq(groups.map(group => group.reason).filter(Boolean));
+      let stance = null;
+      let reason = 'no_observed_statement';
+      if (groups.length > 0) {
+        if (blockers.includes('conflicting_or_conditional_evidence') ||
+            positionStances.length > 1 ||
+            (positionStances.length > 0 && blockers.includes('conditional_only'))) {
+          reason = 'conflicting_or_conditional_evidence';
+        } else if (positionStances.length === 1) {
+          stance = positionStances[0];
+          reason = null;
+        } else if (blockers.includes('conditional_only')) {
+          reason = 'conditional_only';
+        } else if (blockers.includes('descriptive_only')) {
+          reason = 'descriptive_only';
+        } else {
+          reason = 'insufficient_evidence';
+        }
+      }
       const observationIds = uniq(groups.flatMap(group => group.observation_ids));
       profiles.push({
         ...actor, proposition_id: proposition.proposition_id,
         issue_id: proposition.issue_id,
-        stance: aggregated.stance, reason: aggregated.stance === null ? reason : null,
+        stance, reason,
         source_family_count: groups.length, evidence_ids: observationIds
       });
     }
