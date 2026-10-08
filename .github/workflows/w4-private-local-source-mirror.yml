@@ -15,6 +15,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/longitudinal-latent-structure
+          path: w4-private-src
+          persist-credentials: false
       - name: Reject any reserved/private file paths in bundle
         run: |
           python - <<'PY'
@@ -40,5 +45,7 @@ jobs:
             site/hdbscan-core.js
             docs/parallel-work/validate-contract.cjs
             docs/parallel-work/interchange-v1.schema.json
+            w4-private-src/research/longitudinal/*.py
+            w4-private-src/research/longitudinal/requirements.txt
           retention-days: 1
           if-no-files-found: error
