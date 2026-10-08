@@ -1,0 +1,91 @@
+{
+  "schema": "un.independent-audit-public-aggregate.v1",
+  "audit_scope": "saved development corpus and frozen holdout metadata only",
+  "readiness": "HOLD_NOT_READY_TO_EXECUTE_REAL_HOLDOUT",
+  "holdout": {
+    "reserved_meetings": 37,
+    "transcript_requests_by_this_audit": 0,
+    "content_read_by_this_audit": 0,
+    "original_metadata_inventory_available": 33,
+    "original_metadata_inventory_unavailable": 4,
+    "genre_outside_strict_dev_available": 8,
+    "live_availability_not_rechecked": true
+  },
+  "integrity": {
+    "source_parent_hash_errors": 0,
+    "source_passage_span_errors": 0,
+    "source_parents": 1293,
+    "partitions": 2596,
+    "strict_passages": 1641,
+    "strict_parents": 523,
+    "strict_meetings": 16,
+    "reserved_metadata_meetings": 37,
+    "holdout_text_records_opened": 0
+  },
+  "parent_group_counts": {
+    "strict": 523,
+    "strict_meetings": 16,
+    "HRC_parents": 338,
+    "GA_parents": 169,
+    "top3_meeting_share": 0.4894837476099426,
+    "unknown_country": 152,
+    "known_country": 371,
+    "repeated_country_eligible_parents": 319,
+    "repeated_countries": 86,
+    "strict_cross_meeting_identical_source_text_families": 0,
+    "raw_corpus_cross_meeting_identical_source_text_families": 3,
+    "speaker_identifier_available": false
+  },
+  "diagnostics": {
+    "orig_cross_overlap": 0.3940089228808158,
+    "masked_cross_overlap": 0.40764818355640536,
+    "country_orig": 0.09111807732497387,
+    "country_mask": 0.03761755485893417,
+    "country_crossgenre": 0.058098223615464996,
+    "country_mask_crossgenre": 0.02089864158829676,
+    "genre_match": 0.6419375398342894,
+    "genre_random": 0.4673018911239991,
+    "role_match": 0.6710006373486297,
+    "role_random": 0.5709338534758793
+  },
+  "robustness": {
+    "parent_weighted_overlap": 0.3940089228808158,
+    "equal_meeting_overlap": 0.40352782852355185,
+    "leave_one_meeting_out_overlap_min": 0.37874015748031503,
+    "leave_one_meeting_out_overlap_max": 0.4233333333333333,
+    "per_meeting_overlap_range": [
+      0.1,
+      0.6622222222222223
+    ],
+    "country_cross_genre_queries": 319,
+    "country_cross_genre_pairs": 4785
+  },
+  "mask_dictionary_audit": {
+    "matched_island_as_alias": 32,
+    "matched_thai_as_alias": 6,
+    "policy": "overmask/under-mask sensitivity; do not revise frozen original result"
+  },
+  "validation": {
+    "independent_sampled_parser_and_offset_errors": 0,
+    "sealed_lock_file_checks": 11,
+    "adversarial_rejections": 6,
+    "new_synthetic_audit_metric_tests": 5,
+    "method": "independently reconstructed parent-aggregated cosine kNN with original saved numerical arrays"
+  },
+  "pre_access_release_blockers": [
+    "no actual 37-row roster ingestion/identity enforcing evaluator",
+    "no production-shape raw-source-to-eligibility-to-frozen-embedding integration tests",
+    "speaker identifiers and verified complete-speech boundaries unavailable",
+    "source-mix/genre/role dependence and agenda effects remain unmodeled as political null",
+    "strict population and expected held-out exchangeable coverage unknown until separately authorized access"
+  ],
+  "evidence_sha256": {
+    "development_corpus": "0543cc64998348f5a48e32329b54a5adf6079e7958016b024892745afb9df9e1",
+    "provisional_corpus": "5e8a40f4c2601941d4e9d9c4d8a1d246149c62bf9dbefe0706a4e233d9cb522d",
+    "saved_lexical_arrays": "024efddebaf2faff995f2bc6571d464d06087ee01e10856ee2a7cbf6d66bc548",
+    "saved_semantic_arrays": "fb17b40d52387f8c6441721a1c2cacc32232b899e49120748f5387d73628ebdb",
+    "masked_semantic_arrays": "882069cc942ea5caf8827c013457963dee643eb03373a076ee6378b93dc921cc",
+    "frozen_protocol": "d41ea138855d8cd5c03f1064f366031eb61d527a97778f662ce32e31cef5013a"
+  },
+  "note": "All transcript-hash and source-row checks are strictly for saved development. Frozen evaluation lock unchanged."
+}
