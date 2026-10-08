@@ -350,21 +350,30 @@ def display_stress(rows, period):
 
 
 def _actor_labels(rows, period):
-    labels = defaultdict(list)
+    """One vote per meeting within genre, then one vote per genre per actor.
+
+    Repeated passages in the same source cannot dominate a period assignment.
+    Ties and missing fits remain withheld; explicit noise is distinct from null.
+    """
+    def majority(values):
+        counts = Counter(v for v in values if v is not None and v > 0)
+        if not counts:
+            return 0 if 0 in values else None
+        top = max(counts.values())
+        winners = [k for k, n in counts.items() if n == top]
+        if len(winners) == 1 and top > len(values) / 2:
+            return winners[0]
+        return 0 if 0 in values else None
+
+    labels = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
     for r in rows:
         if r['period'] == period and r['source_status'] == 'available' and r.get('actor_id'):
-            labels[r['actor_id']].append(r['cluster'])
+            labels[r['actor_id']][r['genre']][r['meeting_id']].append(r['cluster'])
     out = {}
-    for actor, membership in labels.items():
-        counts = Counter(v for v in membership if v is not None and v > 0)
-        # Ties, noise, missing cluster and mixed assignment -> explicitly abstain.
-        if not counts:
-            out[actor] = 0 if 0 in membership else None
-        else:
-            top = max(counts.values())
-            winners = [k for k, n in counts.items() if n == top]
-            out[actor] = (winners[0] if len(winners) == 1 and top > len(membership) / 2
-                          else (0 if 0 in membership else None))
+    for actor, genres in labels.items():
+        genre_votes = [majority([majority(v) for v in meetings.values()])
+                       for meetings in genres.values()]
+        out[actor] = majority(genre_votes)
     return out
 
 
