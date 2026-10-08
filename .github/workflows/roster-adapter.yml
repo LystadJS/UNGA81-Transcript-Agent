@@ -1,0 +1,42 @@
+name: Roster adapter and dependency controls
+on:
+  push:
+    paths: ['research/reference_tests/**', 'research/corpus/**', '.github/workflows/roster-adapter.yml']
+  pull_request:
+    paths: ['research/reference_tests/**', 'research/corpus/**', '.github/workflows/roster-adapter.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m pip install -r research/semantic_review/requirements.txt
+      - name: Independent offline request and response oracles
+        run: |
+          set -euo pipefail
+          mkdir -p roster-evidence
+          node research/reference_tests/test_roster_adapter.cjs > roster-evidence/adapter-tests.json
+      - name: Synthetic dependency and inherited reference checks
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+        run: python -m unittest discover -s research/reference_tests -p 'test_*.py' -v
+      - name: Raw-response to machine-eligibility integration
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+        run: python research/reference_tests/roster_integration.py roster-evidence/parser-integration.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: roster-adapter-evidence
+          path: roster-evidence/
+# Full pinned-model inference requires the private saved development arrays.
+# The parser-only CI receipt explicitly says inference was NOT_RUN.

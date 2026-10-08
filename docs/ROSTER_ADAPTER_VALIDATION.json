@@ -1,0 +1,92 @@
+{
+  "schema": "un.roster-adapter-acceptance.v1",
+  "status": "VALIDATED_LOCALLY_NOT_PUSHED",
+  "base_main_commit": "ab7273d37f8fcff9870f257084cc8fd1dcda7876",
+  "publication": "No GitHub write action exposed in current tool set; git/CLI network unavailable. No new branch, commit, PR or GitHub CI run created.",
+  "independence": "Independent numerical/adversarial checks in this session; not a separate human or external organization review.",
+  "new_adapter_tests": {
+    "passed": 35,
+    "failed": 0
+  },
+  "new_dependency_tests": {
+    "passed": 13,
+    "failed": 0
+  },
+  "all_reference_python_tests": {
+    "collected": 69,
+    "passed": 69,
+    "failed": 0
+  },
+  "machine_tests": {
+    "passed": 57,
+    "failed": 0
+  },
+  "semantic_tests_with_pinned_local_model": {
+    "collected": 47,
+    "passed": 47,
+    "skipped": 0,
+    "failed": 0
+  },
+  "corpus_tests": {
+    "passed": 53,
+    "failed": 0
+  },
+  "additional_source_numerical_suites": {
+    "passed": 15,
+    "failed": 0
+  },
+  "full_final_integration_replays": 2,
+  "full_final_integration_byte_identical": true,
+  "dependency_replays_byte_identical": true,
+  "synthetic_source_status": {
+    "all_meetings": 37,
+    "statuses": {
+      "collected": 34,
+      "inventory_unavailable": 2,
+      "failed": 1
+    },
+    "missing_or_failed": 3,
+    "non_english_source_parents": 26,
+    "timestamp_flagged_source_parents": 78,
+    "unknown_country_source_parents": 170,
+    "genres": {
+      "General Assembly": 7,
+      "Human Rights Council": 6,
+      "Security Council": 6,
+      "Press Conferences": 6,
+      "High-level Meetings": 6,
+      "Events": 6
+    },
+    "all_observed_partitions_accounted": true,
+    "source_failure_count": 1
+  },
+  "strict_synthetic_passages": 220,
+  "synthetic_parent_count": 216,
+  "synthetic_replication_decision": "INCONCLUSIVE_SYNTHETIC",
+  "real_holdout_transcripts_requested": 0,
+  "real_holdout_transcripts_read": 0,
+  "fitting_methods_blocked_during_integration": true,
+  "heldout_access_policy": "No access without separate explicit authorization. This patch supplies no live HTTP client or real-source reader.",
+  "frozen_dependency_sha256": {
+    "research/reference_tests/evaluation-lock.json": "d41ea138855d8cd5c03f1064f366031eb61d527a97778f662ce32e31cef5013a",
+    "research/reference_tests/evaluation_plan.json": "a9241342bdf2567515399f13a8aa912bdac2845cb0e0f469e650ee8b010ba314",
+    "research/reference_tests/plan.json": "db9013da2f998eb60315b3c0cdcc04fb77269decc51e390a736f7e29229d66c4",
+    "research/reference_tests/reference.py": "ad3c04643a9b1a97b6b5c75cbe53dd36606ea5502a6d29917a2b67690f8f7f7d",
+    "research/corpus/contract.cjs": "99709efae36d361cce3d9a957c7a69612ee61f2e9104d86e1c7c51376adc9097",
+    "research/corpus/frame.json": "5797ef7ecde07a55cb11ba7379ebfe31f2950b7be1ab1c55da35b072e496bd38",
+    "research/semantic_review/encoder.py": "a3a2d09cf292ea31574f90d0163e338020636cc9729d109b8cc704a4a301879d",
+    "research/semantic_review/compare.py": "fa2af6842917ac970d92cdac5d47d5599b0e7cedede6e4999d50ffe4fc01ba56",
+    "research/machine_review/review.py": "e3efef592f3f4144989ed8f18f1560175d120df120e73501d6f12b772ed4699d"
+  },
+  "new_code_sha256": {
+    "research/reference_tests/roster_adapter.cjs": "555c452d8f810fedbfd03ca7e934d8c97b9ffe8928752905e318f6a3dd7f3517",
+    "research/reference_tests/test_roster_adapter.cjs": "5687e14688be0f8c1e94292ab17e8a77351a5ace96cd97d726bfd2d218a6abb0",
+    "research/reference_tests/roster_integration.py": "a379c7b1f868891939878c5e544e064b745e5e075ed96c805b2d6a3a854af6e9",
+    "research/reference_tests/dependency_controls.py": "888c02d2dc7b5b08c4c104b8765260f1085e4d3edf967b09fa9559034320c8eb",
+    "research/reference_tests/test_dependency_controls.py": "7201f492be022f64f83ceca3eff16ff02cb3f1e3d644d5ba37c0d4a4ed88a4d2"
+  },
+  "runtime": {
+    "python": "3.13.5",
+    "node": "v22.16.0"
+  }
+}
