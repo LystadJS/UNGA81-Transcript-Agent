@@ -1,7 +1,7 @@
 # Coordinator W3 → W5/W6 research integration (staging only)
 
 **Status:** experimental synthetic engineering review, not a public-site release.
-No unmerged W5/W6 source is copied into this coordinator branch. This directory
+No W5/W6 worker source is copied into this coordinator branch. W5 and W6 were independently accepted and merged as engineering-only modules; this directory
 is outside site/, so existing public-site packaging is unaffected.
 
 ## What is actually adapted
@@ -16,7 +16,7 @@ parent/meeting lineage and Gaussian kernel weights. It never refits or exports
 original source text.
 
 - **W5:** returns the complete authoritative W3 envelope. No unavailable,
-  excluded, failed or noise row is dropped. The pinned W5 draft must validate
+  excluded, failed or noise row is dropped. The pinned W5 module validates
   it and classify both methods as offline-only; numerical comparisons between
   spectral labels and diffusion coordinates must remain withheld.
 - **W6 network:** creates an independently derived graph panel with original
@@ -24,10 +24,10 @@ original source text.
   the declared kNN construction, and explicit not_assessed duplicate/agenda
   sensitivity. The displayed minimum 0 is not a graph-construction cutoff.
   Affinity is not cosine; no national alliance or policy influence is inferred.
-- **Missing source:** W6's draft validator accepts eligible-only result rows,
-  contrary to the source-complete authoritative W3/W1/W5 model-by-frame v1
-  contract. The bridge returns blocked_contract rather than stripping excluded
-  rows. The W6 owner or coordinator must correct the W6 consumer separately.
+- **Missing source:** Repaired W6 enforces complete model-by-frame results,
+  including explicit excluded rows for unavailable sources. The bridge now
+  renders source-complete W3 24 eligible + 1 unavailable data without editing
+  the authoritative W3 envelope or double-counting missing/excluded records.
 - **Over 50 graph nodes:** returns withheld with full inventory and no
   truncated/sampled graph. W3's 96-node native fixture is an explicit test.
 
@@ -35,10 +35,10 @@ This public prototype refuses private development input. Original source-byte
 validation still belongs to the upstream private source contract; SHA256.json
 verifies derived file bytes but does not authenticate original UN text.
 
-## Reproduction against the real draft consumer code
+## Reproduction against the accepted engineering consumer code
 
 Requirements: Python 3.13, Node 22, W3/W1 merged research dependencies, and
-read-only snapshots of W5 PR #21 and W6 PR #20 at pinned commits. Coordinator
+read-only snapshots of accepted W5 PR #21 and repaired W6 PR #20 at pinned commits. Coordinator
 CI checks those snapshots out into separate scratch directories, leaving
 worker branches unchanged.
 
@@ -54,8 +54,7 @@ node --test research/integration/w3_w5_w6/test-integration.cjs
 
 CI also runs the unmodified W5 and W6 original Node test suites from their
 immutable commit snapshots, alongside merged W1/W3 source and contract checks,
-and archives only synthetic integration evidence. Actual desktop/mobile
-Chromium screenshots and private source analyses are not claimed by these tests.
+and archives only synthetic integration evidence. Independent real Chromium 1440px/390px desktop/mobile W5/W6 browser QA is recorded in coordinator PR #27 (GitHub Actions 37815064508); the current W3 integration CI itself is offline Node/Python only. Real private source analyses remain NOT RUN.
 
 ## Scientific and release limits
 
@@ -65,11 +64,13 @@ political influence, policy transmission or causal diffusion. Affiliation
 metadata is not verified speaker identity, stance or a coalition. These are
 invented fixture datasets; the bridge does not measure diplomatic phenomena.
 
-W5 and W6 remain independent draft PRs. This integration PR does not merge
-them, modify site/, alter the D1 email/publication system, update release
-manifests, or mirror the site. W5/W6 must be independently approved, W6's
-excluded-row defect fixed, and browser/device/accessibility QA completed
-before any coordinator release or browser wiring.
+W5 and W6 passed independent native/real-browser engineering QA and were
+merged as isolated prototypes in PR #21 (316f3b81cecc0bba0920277f5551bc8d0313764f)
+and PR #20 (16ad599cf88aa6b76e3c8ee45551f6e9c36f7503). The source-frame
+bug is repaired. This coordinator PR remains a separate source-bound adapter,
+does not modify active site/, the D1 email/publication path, release manifests
+or website mirror. Production/browser wiring and any public release require
+a separate coordinator PR and distinct approval.
 
 See docs/parallel-work/W3_W5_W6_INTEGRATION_REVIEW.md for the decision matrix,
 pinned upstream SHAs, dependencies and withheld gates.
