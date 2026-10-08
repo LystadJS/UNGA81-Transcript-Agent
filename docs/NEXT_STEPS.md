@@ -191,3 +191,21 @@ The held-out evaluator now has a **synthetic-only** dry-run mode covering all 37
 ## Independent nuisance and reserved-source readiness audit — 8 October 2026
 
 [Independent read-only audit](INDEPENDENT_NUISANCE_AUDIT.md) verifies every saved development text slice and the sealed source/model lock, reproduces the key lexical/semantic and country-masking figures without using the original scoring helper, and measures genre/role and meeting concentration. Agenda and country self-reference remain major explanations; person-level speaker recurrence is unidentifiable from the saved metadata. The existing 37-meeting evaluation lock is unchanged; no reserved transcript was accessed. **Readiness = HOLD**, not an authorized release. Before requesting separate authorization, validate a production-shaped, wholly synthetic raw-transcript/coverage/eligibility/frozen-inference pipeline and declare additional source-overlap, agenda, role and speaker-proxy handling without choosing new thresholds from the reserved period.
+
+
+## Current implementation checkpoint — 8 October 2026
+
+PR #9 (`ab7273d`) already implements the production-shaped synthetic raw-source
+pipeline and versioned masking/genre/proxy checks. The [roster-adapter follow-up](ROSTER_ADAPTER_REVIEW.md)
+adds exact metadata-roster commitments, offline request/response validation,
+adversarial transport tests, guarded frozen inference, narrower institutional-series
+controls, complete affiliation/function proxies, same-query baselines and
+candidate-pool accounting. Local acceptance is recorded in
+[the validation receipt](ROSTER_ADAPTER_VALIDATION.json); GitHub CI must be run
+when this patch is applied. Older “next step” labels above are historical.
+
+No live collection mode or reserved-source authorization is introduced. All 37
+reserved transcripts stay unopened. After repository synchronization, strengthen
+source-verified agenda-item and distinct-speaker metadata using development
+sources only. Do not treat affiliation/function or series as verified identities,
+retune the sealed evaluation, or restart the completed owner pilot review.
