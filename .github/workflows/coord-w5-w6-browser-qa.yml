@@ -88,7 +88,29 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          BROWSER_BIN="$CHROME_BIN" node .coordinator-input/w5/site/parallel/w05-browser/experimental/method-lab/test-browser.cjs
+          # Chrome 154 can keep writing an ephemeral profile immediately after
+          # SIGTERM, causing the original W5 test's final rmSync to raise
+          # ENOTEMPTY *after its evidence assertions pass*. Preserve the
+          # pinned W5 source, all assertions and failure behavior. Only add
+          # bounded native Node cleanup retries for that exact temporary profile.
+          cat > "$RUNNER_TEMP/w5-chrome-profile-cleanup.cjs" <<'JS'
+          'use strict';
+          const fs = require('node:fs');
+          const os = require('node:os');
+          const path = require('node:path');
+          const remove = fs.rmSync;
+          const prefix = path.join(os.tmpdir(), 'un-method-lab-chromium-');
+          fs.rmSync = function checkedProfileRemoval(target, options) {
+            if (typeof target === 'string' && target.startsWith(prefix) &&
+                options && options.recursive === true && options.force === true) {
+              return remove.call(fs, target, {
+                ...options, maxRetries: 20, retryDelay: 250
+              });
+            }
+            return remove.apply(this, arguments);
+          };
+          JS
+          BROWSER_BIN="$CHROME_BIN" node --require "$RUNNER_TEMP/w5-chrome-profile-cleanup.cjs" .coordinator-input/w5/site/parallel/w05-browser/experimental/method-lab/test-browser.cjs
       - name: W5 independent Playwright desktop/mobile screenshots and keyboard/privacy
         shell: bash
         run: |
