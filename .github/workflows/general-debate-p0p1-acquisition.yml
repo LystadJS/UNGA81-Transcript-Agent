@@ -44,6 +44,8 @@ jobs:
           python-version: '3.11'
       - name: Install pinned country-code reference
         run: python -m pip install pycountry==24.6.1
+      - name: Probe public dataset version and download endpoint status (metadata only)
+        run: python research/source_acquisition/general_debate/probe_sources.py
       - name: Download pinned public 2016-2025 sources to private ephemeral temp only
         id: download
         continue-on-error: true
