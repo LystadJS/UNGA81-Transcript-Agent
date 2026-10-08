@@ -79,7 +79,8 @@ def inventory(source: Path, out: Path) -> dict:
     if not all(c in cols for c in required):
         raise MirrorError("RDS lacks expected country, session, year or transcript fields")
     counts = {year: {"year": year, "session": year - 1945, "mirror_rows": 0,
-                     "distinct_iso3": 0, "duplicate_country_session": 0,
+                     "distinct_iso3": 0, "invalid_country_code_rows": 0,
+                     "duplicate_country_session": 0,
                      "mirror_scope": "reported_release_1946_2022" if year <= 2022
                                      else "outside_mirror_release_not_missing_speech"}
               for year in YEARS}
@@ -88,8 +89,8 @@ def inventory(source: Path, out: Path) -> dict:
     errors = {"bad_numeric_year_or_session": 0, "session_year_mismatch": 0,
               "invalid_iso3": 0, "blank_text": 0, "outside_requested_2016_2025": 0,
               "outside_documented_2022_release": 0}
-    private_rows = []
-    for _, row in frame.iterrows():
+    private_rows, exceptions = [], []
+    for row_index, row in frame.iterrows():
         try:
             year, session = int(row[cols["year"]]), int(row[cols["session"]])
         except (ValueError, TypeError):
@@ -107,6 +108,9 @@ def inventory(source: Path, out: Path) -> dict:
         iso = str(row[cols["ccode_iso"]]).strip().upper()
         if not re.fullmatch(r"[A-Z]{3}", iso):
             errors["invalid_iso3"] += 1
+            counts[year]["invalid_country_code_rows"] += 1
+            exceptions.append({"year": year, "session": session, "source_row": str(row_index),
+                               "original_code": iso, "reason": "invalid_or_unresolved_iso3_format"})
             continue
         text = row[cols["text"]]
         if not isinstance(text, str) or not text.strip():
@@ -142,6 +146,11 @@ def inventory(source: Path, out: Path) -> dict:
         writer = csv.DictWriter(stream, fieldnames=names)
         writer.writeheader()
         writer.writerows(private_rows)
+    with (output / "mirror_code_exceptions_private.csv").open("x", newline="", encoding="utf-8") as stream:
+        writer = csv.DictWriter(stream, fieldnames=["year", "session", "source_row",
+                                                    "original_code", "reason"])
+        writer.writeheader()
+        writer.writerows(exceptions)
     public = out / "public_aggregate"
     public.mkdir()
     with (public / "mirror_per_year_aggregate.csv").open("x", newline="", encoding="utf-8") as stream:
@@ -151,6 +160,7 @@ def inventory(source: Path, out: Path) -> dict:
     return {"per_year": list(counts.values()), "quality": errors,
             "selected_rows": len(private_rows),
             "source_snapshot_rows": len(frame),
+            "excluded_invalid_code_rows": len(exceptions),
             "selected_distinct_country_session_pairs": len(seen)}
 
 
