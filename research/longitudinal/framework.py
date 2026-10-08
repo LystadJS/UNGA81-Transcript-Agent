@@ -504,7 +504,10 @@ def compare(panel, before, after, *, anchor_ids=(), bootstrap_reps=200, bootstra
                                'included_observation_ids': [r['id'] for r in rows]},
                 'coverage': {**metadata, 'compared_available': 0,
                     'unavailable_by_period': {p: sum(r['period'] == p and
-                        r['source_status'] != 'available' for r in rows) for p in (before, after)}},
+                        r['source_status'] != 'available' for r in rows) for p in (before, after)},
+                    'source_status_by_period': {p: dict(Counter(
+                        r['source_status'] for r in rows if r['period'] == p))
+                        for p in (before, after)}},
                 'high_dimensional': {'rows': [], 'matched_actor_count': 0},
                 'common_source': {'matched_source_families': [], 'actor_family_pairs': [],
                                   'pair_count': 0, 'mean_distance': None},
@@ -536,7 +539,10 @@ def compare(panel, before, after, *, anchor_ids=(), bootstrap_reps=200, bootstra
             'provenance': {'panel_sha256': digest(panel), 'included_observation_ids': [r['id'] for r in rows]},
             'coverage': {**metadata, 'compared_available': len(coords),
                          'unavailable_by_period': {p: sum(r['period'] == p and r['source_status'] != 'available'
-                                                         for r in rows) for p in (before, after)}},
+                                                         for r in rows) for p in (before, after)},
+                         'source_status_by_period': {p: dict(Counter(
+                             r['source_status'] for r in rows if r['period'] == p))
+                             for p in (before, after)}},
             'high_dimensional': high, 'common_source': matched_source,
             'alignment': transform, 'display': {'actor_distances': mapped['rows'],
                 'common_actor_centroid_distance': mapped['common_actor_centroid_distance'],
