@@ -27,7 +27,7 @@ The runner **refuses to overwrite** an existing output directory. All fixtures a
 | Common-source actor distances | Same actor and same source-family series across periods | Sensitivity to meeting series / coverage |
 | Rigid map alignment | Externally predeclared, full-rank, stable anchors on independent fitted maps | Display normalization; residual/conditioning/scale reported |
 | Saved-transform map | Exactly the same map fit reused across periods | Identity transform; no artificial Procrustes fitting |
-| Cluster correspondence | Shared actor membership, arbitrary labels, abstentions | Overlap counts, split/merge candidates and unmatched groups, not diplomatic coalitions |
+| Cluster correspondence | Shared actor membership, arbitrary labels, abstentions | Equal meeting votes within genre, then equal genre votes per actor; duplicate passages cannot dominate. Overlap counts, split/merge candidates and unmatched groups, not diplomatic coalitions |
 | Paired-source-family bootstrap | ≥6 complete repeated source families, source families resampled as whole trajectories | Descriptive percentile sensitivity; **not** a calibrated confidence interval |
 | Map stress | Pairwise 4D vs 2D distances (bounded sample, optimally rescaled only for diagnostic) | Display fidelity; never fit stability or inferential support |
 
