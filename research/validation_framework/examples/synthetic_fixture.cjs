@@ -33,7 +33,7 @@ function makeFixture(){
     missing_reason:'Fictional missing source; never code as zero mentions'});
   return {frame:{schema:'un.source-validation.frame.v1',split:'synthetic',
     source_schema:'un.source-validation.synthetic.v1',
-    source_engine:'synthetic-generated-only',source_hash_basis:'invented UTF-8 strings',
+    source_engine:'synthetic-generated-only',source_hash_basis:'synthetic',
     source_sha256:digest('fictional-source-record-v1'),unit:'synthetic',inventory_meetings:7,
     observations},saved:{id:'synthetic-minilm-control-v1',version:'1.0.0',
     kind:'synthetic-saved',identity_sha256:digest('synthetic-embedding-fixture'),
