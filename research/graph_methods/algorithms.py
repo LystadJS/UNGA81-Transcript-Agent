@@ -394,3 +394,40 @@ def parameter_sensitivity(values: np.ndarray, reference: dict,
             "successful": sum(x["status"] == "fitted" for x in attempts),
             "attempts": attempts,
             "limitation": "Parameter sensitivity is not a null-hypothesis test."}
+
+
+def diffusion_policy_sensitivity(
+    values: np.ndarray, graph: Affinity, reference: dict,
+    policies: list[DiffusionPolicy],
+) -> dict:
+    """Hold graph and observations fixed; report alpha/time/dimensional sensitivity.
+
+    Procrustes is defined only at equal retained dimension. Different dimension
+    counts are compared through their own source-space fidelity, not padded axes.
+    """
+    attempts = []
+    for policy in policies:
+        row: dict[str, Any] = {"policy": asdict(policy), "status": "failed"}
+        try:
+            fit = diffusion_map(graph, policy)
+            row["eigenvalues_retained"] = fit["eigenvalues"][:policy.dimensions + 1]
+            row["fidelity"] = fidelity(values, fit["coordinates"], graph.policy.metric)
+            if reference["coordinates"].shape[1] == policy.dimensions:
+                row["procrustes_disparity"] = procrustes_disparity(
+                    reference["coordinates"], fit["coordinates"]
+                )
+            else:
+                row["procrustes_disparity"] = None
+                row["reason"] = "Different retained dimension; alignment withheld"
+            row["status"] = "fitted"
+        except (GraphError, ValueError, np.linalg.LinAlgError) as exc:
+            row["reason"] = str(exc)
+            if isinstance(exc, GraphError):
+                row["diagnostics"] = exc.diagnostics
+        attempts.append(row)
+    return {
+        "status": "descriptive", "planned": len(attempts),
+        "successful": sum(r["status"] == "fitted" for r in attempts),
+        "attempts": attempts,
+        "limitation": "Alpha, time and retained-dimension changes are numerical sensitivity only.",
+    }
