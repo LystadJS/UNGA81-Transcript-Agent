@@ -1,0 +1,83 @@
+{
+  "schema": "un.country-positions.propositions.v1",
+  "version": "1.0.0",
+  "release_status": "draft",
+  "publication_eligible": false,
+  "model_training_authorized": false,
+  "description": "Draft policy-object propositions for review; no nation-level labels and no implied correct geopolitical position.",
+  "coding_rule": "Code the explicit position attributable to the speaker on the named proposition. A topic mention, quotation, third-party statement or political assumption does not establish endorsement.",
+  "issue_relevance_labels": [
+    "relevant",
+    "not_relevant",
+    "insufficient"
+  ],
+  "stance_labels": [
+    "support",
+    "oppose",
+    "conditional",
+    "descriptive",
+    "insufficient"
+  ],
+  "propositions": [
+    {
+      "proposition_id": "ukr_sovereignty",
+      "version": "1.0.0",
+      "issue_id": "ukraine",
+      "target": "Ukraine's internationally recognized sovereignty",
+      "proposition": "The speaker explicitly supports respect for Ukraine's sovereignty and territorial integrity.",
+      "scope": "UN speech passages concerning Ukraine's territorial integrity; support must be in the speaker's own voice.",
+      "exclusion_rule": "Naming Ukraine, referencing a negotiation, or quoting another delegation does not alone establish a position.",
+      "review_status": "draft"
+    },
+    {
+      "proposition_id": "ukr_force",
+      "version": "1.0.0",
+      "issue_id": "ukraine",
+      "target": "Use of force against Ukraine",
+      "proposition": "The speaker explicitly opposes the use of military force against Ukraine in violation of the UN Charter.",
+      "scope": "Statements about the use of force in Ukraine and its consistency with the Charter; record legal qualifications.",
+      "exclusion_rule": "General support for peace or concern over war does not alone indicate support for this proposition.",
+      "review_status": "draft"
+    },
+    {
+      "proposition_id": "cub_embargo",
+      "version": "1.0.0",
+      "issue_id": "cuba",
+      "target": "United States economic embargo against Cuba",
+      "proposition": "The speaker explicitly supports ending the United States economic embargo against Cuba.",
+      "scope": "Expressed position on the named US embargo; distinguish wider sanctions discussion from Cuba-specific measures.",
+      "exclusion_rule": "Mentioning Cuba or sanctions without linking the actual policy object is insufficient.",
+      "review_status": "draft"
+    },
+    {
+      "proposition_id": "cub_extraterritorial",
+      "version": "1.0.0",
+      "issue_id": "cuba",
+      "target": "Extraterritorial application of Cuba-related restrictions",
+      "proposition": "The speaker explicitly opposes extraterritorial enforcement of Cuba-related economic restrictions.",
+      "scope": "Positions on Cuba-related secondary, financial, trade or extraterritorial restrictions; verify the specific object.",
+      "exclusion_rule": "General objections to unilateral sanctions do not establish a Cuba-specific stance.",
+      "review_status": "draft"
+    },
+    {
+      "proposition_id": "ai_binding",
+      "version": "1.0.0",
+      "issue_id": "ai_governance",
+      "target": "Legally binding international AI governance obligations",
+      "proposition": "The speaker explicitly supports legally binding international obligations governing artificial intelligence.",
+      "scope": "Formal international AI governance obligations as distinct from voluntary norms, declarations and capacity-building.",
+      "exclusion_rule": "Support for AI cooperation, UN discussion or AI capacity-building is not endorsement of binding rules.",
+      "review_status": "draft"
+    },
+    {
+      "proposition_id": "ai_military",
+      "version": "1.0.0",
+      "issue_id": "ai_governance",
+      "target": "Binding limits on autonomous weapons",
+      "proposition": "The speaker explicitly supports legally binding international limits on autonomous weapons systems.",
+      "scope": "Statements specifying binding limits on military autonomous weapons; distinguish development controls from a categorical ban.",
+      "exclusion_rule": "Generic concern about military AI or endorsement of nonbinding principles does not establish support.",
+      "review_status": "draft"
+    }
+  ]
+}

@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Country Positions | Synthetic Evidence Explorer</title>
+  <style>
+    :root { color-scheme: light; font-family: "Segoe UI", Arial, sans-serif;
+      --navy:#0a2e4b; --gold:#ab8f61; --ink:#18334d; --line:#cdd7e1;
+      --blue:#d9ebf5; --red:#f5dcdd; --gray:#edf0f2; }
+    body { max-width: 1300px; margin: auto; padding: 24px 24px 60px;
+      color: var(--ink); line-height: 1.48; background:#fbfcfd; }
+    header { border-top:6px solid var(--navy); border-bottom:1px solid var(--gold);
+      padding:16px 0 20px; margin-bottom:16px; }
+    h1 { color:var(--navy); font-size:1.75rem; margin:0; }
+    h2 { font-size:1.16rem; color:var(--navy); }
+    h3 { font-size:1rem; }
+    p { margin:.55rem 0; }
+    .muted { color:#56697b; font-size:.91rem; }
+    .warning { background:#f6f1e7; border-left:4px solid var(--gold); padding:12px; }
+    .controls { display:flex; flex-wrap:wrap; gap:16px; margin:18px 0; align-items:end; }
+    .controls label { display:grid; gap:5px; font-weight:600; }
+    input, select, button { font:inherit; }
+    input[type=file], select { border:1px solid #829eaf; background:white;
+      border-radius:4px; padding:7px; max-width:100%; }
+    button { cursor:pointer; border:1px solid #7490a5; background:white;
+      border-radius:4px; color:var(--navy); padding:7px 9px; }
+    button:hover { background:#edf5fa; }
+    [hidden] { display:none !important; }
+    .grid { display:grid; grid-template-columns:minmax(0, 1fr) minmax(0,1fr); gap:18px; }
+    .panel { border:1px solid var(--line); background:white; border-radius:5px;
+      padding:16px; min-width:0; overflow:auto; }
+    .wide { grid-column:1/-1; }
+    .chart { width:100%; height:auto; display:block; max-height:500px; }
+    .tablebox { overflow:auto; }
+    table { width:100%; border-collapse:collapse; font-size:.83rem; }
+    th, td { padding:7px; border:1px solid var(--line); text-align:center; white-space:nowrap; }
+    th:first-child { text-align:left; position:sticky; left:0; background:white; z-index:1; }
+    .s-support { background:#dcecf5; }
+    .s-oppose { background:#f5dedc; }
+    .s-unknown { background:#f0f2f4; }
+    .cell { border:0; background:transparent; padding:3px; color:#17354b; text-decoration:underline; }
+    .pair-list { display:flex; gap:7px; flex-wrap:wrap; margin-top:12px; }
+    .pair-list button { font-size:.85rem; }
+    blockquote { font-family:Georgia, serif; padding:6px 12px; margin:8px 0;
+      border-left:3px solid #aac3d6; white-space:pre-wrap; }
+    .evidence { border-top:1px solid var(--line); padding:10px 0; }
+    .evidence p { font-size:.84rem; overflow-wrap:anywhere; }
+    a { color:#075b95; }
+    .axis { stroke:#8c9ea8; stroke-width:1.2; }
+    .edge-support { stroke:#417b9c; }
+    .edge-contrast { stroke:#bc7171; stroke-dasharray:6 3; }
+    .focus-node { cursor:pointer; }
+    :focus-visible { outline:3px solid var(--gold); outline-offset:3px; }
+    @media(max-width:860px) { .grid { grid-template-columns:1fr; } body{padding:12px;} }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Country Position & Alignment Research</h1>
+    <p class="muted">Synthetic-only evidence explorer · Draft proposition ontology · Unpublished research</p>
+  </header>
+  <div class="warning">
+    <strong>Engineering illustration, not diplomatic intelligence.</strong>
+    All displayed country names and quoted positions are fictional. Models M12/M17 have
+    not been trained or evaluated for this report. Network edges measure agreement on
+    comparable explicit propositions, not alliances, influence, or general orientation.
+  </div>
+  <div class="controls">
+    <label>Open synthetic report (.json)
+      <input type="file" accept=".json,application/json" id="file">
+    </label>
+    <label>Year
+      <select id="year" disabled aria-label="Select synthetic observation year"></select>
+    </label>
+  </div>
+  <p id="status" role="status" aria-live="polite">Generate fictional JSON with build_synthetic.cjs, then select the file to begin.</p>
+  <div class="grid" id="results" hidden>
+    <section class="panel wide">
+      <h2>Country × proposition matrix</h2>
+      <p class="muted">Support and opposition are explicit; conditional, descriptive,
+        insufficient, and unobserved positions remain separate. Select a cell for evidence.</p>
+      <div class="tablebox" id="matrix"></div>
+    </section>
+    <section class="panel">
+      <h2>Issue-specific agreement network</h2>
+      <p class="muted">Schematic circular layout, not an embedding. Solid edges:
+        more agreements than disagreements. Dashed edges: disagreement at least as frequent.
+        Edge width reflects the count of comparable propositions.</p>
+      <svg id="network" class="chart" viewBox="0 0 640 460" role="img"
+        aria-label="Fictional country agreement network"></svg>
+      <div class="pair-list" id="pairs" aria-label="Inspect pairwise agreements"></div>
+    </section>
+    <section class="panel">
+      <h2>Reference-actor agreement</h2>
+      <p class="muted">Independent shares of matched propositions agreeing with
+        each fictional reference. Not a zero-sum US-versus-China political axis.
+        Actors without two comparable propositions are omitted.</p>
+      <svg id="scatter" class="chart" viewBox="0 0 640 460" role="img"
+        aria-label="Fictional reference agreement scatter plot"></svg>
+    </section>
+    <section class="panel wide" id="inspection" aria-live="polite">
+      <h2>Inspect source evidence</h2>
+      <p>Select a matrix cell or country pair. Fictional quotations, source IDs,
+        original text digests, and Unicode offsets will appear here.</p>
+    </section>
+  </div>
+  <script>
+    'use strict';
+    const $ = id => document.getElementById(id);
+    const svgNS = 'http://www.w3.org/2000/svg';
+    let report = null;
+    const mk = (tag, parent, text, className) => {
+      const el = document.createElement(tag);
+      if (text !== undefined) el.textContent = String(text);
+      if (className) el.className = className;
+      if (parent) parent.append(el);
+      return el;
+    };
+    const svg = (tag, parent, attrs, label) => {
+      const el = document.createElementNS(svgNS, tag);
+      for (const [k, v] of Object.entries(attrs || {})) el.setAttribute(k, String(v));
+      if (label !== undefined) el.textContent = String(label);
+      if (parent) parent.append(el);
+      return el;
+    };
+    const status = s => { $('status').textContent = s; };
+    const profile = (iso, year, prop) =>
+      report.profiles.find(x => x.iso3 === iso && x.year === year && x.proposition_id === prop);
+    const actor = (iso, year) =>
+      report.countries.find(x => x.iso3 === iso && x.year === year);
+    const evidenceOf = ids => {
+      const found = new Set(ids);
+      return report.evidence.filter(row => found.has(row.observation_id));
+    };
+    const svgButton = (node, action) => {
+      node.setAttribute('tabindex', '0'); node.setAttribute('role', 'button');
+      node.addEventListener('click', action);
+      node.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); action(); }
+      });
+    };
+    function inspect(ids, title) {
+      const panel = $('inspection');
+      panel.replaceChildren();
+      mk('h2', panel, title);
+      const rows = evidenceOf(ids);
+      if (!rows.length) {
+        mk('p', panel, 'No retained individually attributed evidence for this selection.');
+        return;
+      }
+      for (const row of rows.slice(0, 40)) {
+        const item = mk('div', panel, undefined, 'evidence');
+        mk('h3', item, row.iso3 + ' · ' + row.proposition_id + ' · ' + row.stance);
+        mk('blockquote', item, row.quote);
+        mk('p', item, 'Source: ' + row.source_id + ' / ' + row.passage_id +
+          ' | SHA-256 ' + row.text_sha256 + ' | offsets [' +
+          row.start + ', ' + row.end + ')', 'muted');
+        if (typeof row.source_url === 'string' && row.source_url.startsWith('https://')) {
+          const link = mk('a', item, 'Open original source');
+          link.href = row.source_url; link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+        }
+      }
+      if (rows.length > 40) mk('p', panel, 'Showing first 40 of ' + rows.length + ' evidence units.');
+    }
+    function validate(r) {
+      if (!r || r.schema !== 'un.country-positions.report.v1' ||
+          r.dataset_kind !== 'synthetic_engineering' ||
+          r.evaluation_role !== 'engineering_only' ||
+          r.publication_eligible !== false ||
+          r.daily_adapter_integrated !== false || r.model_fitted !== false ||
+          !Array.isArray(r.countries) || !Array.isArray(r.profiles) ||
+          !Array.isArray(r.edges) || !Array.isArray(r.evidence) ||
+          !Array.isArray(r.propositions) || r.profiles.length > 10000 ||
+          r.edges.length > 10000 || r.evidence.length > 10000) {
+        throw new Error('Only bounded, unpublished synthetic research reports can be viewed.');
+      }
+      for (const edge of r.edges) {
+        if (edge.comparable_propositions < 2 ||
+            edge.agreement_count + edge.disagreement_count !== edge.comparable_propositions ||
+            Math.abs(edge.agreement_share -
+              edge.agreement_count / edge.comparable_propositions) > 1e-8) {
+          throw new Error('Invalid pairwise agreement denominator.');
+        }
+      }
+    }
+    function renderMatrix(year, countries) {
+      const root = $('matrix'); root.replaceChildren();
+      const table = mk('table', root);
+      const thead = mk('thead', table);
+      const header = mk('tr', thead);
+      mk('th', header, 'Recorded affiliation');
+      for (const prop of report.propositions) {
+        const th = mk('th', header, prop.proposition_id);
+        th.title = prop.proposition;
+      }
+      const tbody = mk('tbody', table);
+      for (const country of countries) {
+        const row = mk('tr', tbody);
+        mk('th', row, country.name);
+        for (const prop of report.propositions) {
+          const cell = profile(country.iso3, year, prop.proposition_id);
+          const td = mk('td', row, undefined, cell.stance === 'support' ?
+            's-support' : cell.stance === 'oppose' ? 's-oppose' : 's-unknown');
+          const label = cell.stance || cell.reason.replaceAll('_', ' ');
+          const button = mk('button', td, label, 'cell');
+          button.type = 'button';
+          button.setAttribute('aria-label', country.name + ', ' +
+            prop.proposition_id + ': ' + label);
+          button.addEventListener('click', () => {
+            inspect(cell.evidence_ids, country.name + ' — ' + prop.proposition_id);
+          });
+        }
+      }
+    }
+    function renderNetwork(year, countries, edges) {
+      const root = $('network'); root.replaceChildren();
+      const host = $('pairs'); host.replaceChildren();
+      const coords = new Map();
+      countries.forEach((actor, i) => {
+        const a = 2 * Math.PI * i / countries.length - Math.PI / 2;
+        coords.set(actor.iso3, [320 + 210 * Math.cos(a), 220 + 175 * Math.sin(a)]);
+      });
+      for (const edge of edges) {
+        const a = coords.get(edge.country_a), b = coords.get(edge.country_b);
+        if (!a || !b) continue;
+        const positive = edge.agreement_count > edge.disagreement_count;
+        const line = svg('line', root, {
+          x1:a[0], y1:a[1], x2:b[0], y2:b[1],
+          'stroke-width':1.2 + Math.min(5, edge.comparable_propositions) * .65,
+          opacity:.24 + .52 * Math.abs(edge.agreement_balance),
+          class:positive ? 'edge-support' : 'edge-contrast'
+        });
+        svg('title', line, {}, edge.country_a + ' / ' + edge.country_b + ': ' +
+          edge.agreement_count + ' agreements / ' + edge.comparable_propositions +
+          ' comparable propositions');
+        const btn = mk('button', host, edge.country_a + ' – ' + edge.country_b +
+          ': ' + edge.agreement_count + '/' + edge.comparable_propositions);
+        btn.type = 'button';
+        btn.addEventListener('click', () => inspect(edge.evidence_ids,
+          edge.country_a + ' / ' + edge.country_b + ' — matched propositions'));
+      }
+      for (const country of countries) {
+        const [x, y] = coords.get(country.iso3);
+        const group = svg('g', root, {}, undefined);
+        group.setAttribute('aria-label', 'Inspect ' + country.name);
+        group.classList.add('focus-node');
+        svg('circle', group, {cx:x,cy:y,r:26,fill:'#0a2e4b',stroke:'#a58c5f','stroke-width':2});
+        svg('text', group, {x,y:y+5,'text-anchor':'middle',fill:'white',
+          'font-size':15,'font-weight':600}, country.iso3);
+        svgButton(group, () => {
+          const ids = report.profiles.filter(p => p.iso3 === country.iso3 && p.year === year)
+            .flatMap(p => p.evidence_ids);
+          inspect(ids, country.name + ' — retained proposition evidence');
+        });
+      }
+    }
+    function renderScatter(year, countries, edges) {
+      const chart = $('scatter'); chart.replaceChildren();
+      const left = 78, bottom = 380, width = 480, height = 305;
+      svg('line', chart, { x1:left, y1:bottom, x2:left+width, y2:bottom, class:'axis' });
+      svg('line', chart, { x1:left, y1:bottom, x2:left, y2:bottom-height, class:'axis' });
+      svg('text', chart, {x:left+width/2,y:426,'text-anchor':'middle','font-size':14},
+        'Agreement with fictional U.S. reference');
+      svg('text', chart, {x:12,y:58,'font-size':14},
+        'Fictional China reference agreement (vertical)');
+      for (const k of [0, .25, .5, .75, 1]) {
+        const x = left + width*k, y = bottom - height*k;
+        svg('line', chart, {x1:x,y1:bottom,x2:x,y2:bottom-height,
+          stroke:'#e9eef1','stroke-width':1});
+        svg('line', chart, {x1:left,y1:y,x2:left+width,y2:y,
+          stroke:'#e9eef1','stroke-width':1});
+        svg('text', chart, {x,y:bottom+18,'text-anchor':'middle','font-size':12}, k.toFixed(2));
+        svg('text', chart, {x:left-10,y:y+4,'text-anchor':'end','font-size':12}, k.toFixed(2));
+      }
+      const find = (a,b) => edges.find(e =>
+        (e.country_a === a && e.country_b === b) ||
+        (e.country_a === b && e.country_b === a));
+      for (const country of countries) {
+        if (['USX','CNX'].includes(country.iso3)) continue;
+        const ux = find(country.iso3, 'USX');
+        const cx = find(country.iso3, 'CNX');
+        if (!ux || !cx) continue;
+        const x = left + width * ux.agreement_share;
+        const y = bottom - height * cx.agreement_share;
+        const node = svg('g', chart);
+        node.setAttribute('aria-label', country.name + ', US comparison ' +
+          ux.agreement_count + '/' + ux.comparable_propositions +
+          ', China comparison ' + cx.agreement_count + '/' + cx.comparable_propositions);
+        svg('circle', node, {cx:x,cy:y,r:7,fill:'#0a2e4b',stroke:'#a58c5f','stroke-width':1.5});
+        svg('text', node, {x:x+12,y:y+4,'font-size':14}, country.iso3);
+        svgButton(node, () => inspect([...ux.evidence_ids,...cx.evidence_ids],
+          country.name + ' — reference comparison evidence'));
+      }
+    }
+    function render() {
+      if (!report) return;
+      const year = Number($('year').value);
+      const countries = report.countries.filter(row => row.year === year)
+        .sort((a,b) => a.iso3.localeCompare(b.iso3));
+      const edges = report.edges.filter(edge => edge.year === year);
+      renderMatrix(year, countries);
+      renderNetwork(year, countries, edges);
+      renderScatter(year, countries, edges);
+      $('inspection').replaceChildren();
+      mk('h2', $('inspection'), 'Inspect source evidence');
+      mk('p', $('inspection'),
+        'Select a matrix cell, network country, pair button, or plotted point.');
+      status('Fictional ' + year + ': ' + countries.length + ' actors, ' +
+        edges.length + ' pairs with at least ' + report.min_shared_propositions +
+        ' comparable propositions; ' + report.coverage.excluded_observations +
+        ' excluded source-observation rows across the fixture.');
+    }
+    $('file').addEventListener('change', async () => {
+      try {
+        const file = $('file').files[0];
+        if (!file || file.size > 4_000_000) throw new Error('Choose JSON under 4 MB.');
+        const candidate = JSON.parse(await file.text());
+        validate(candidate);
+        report = candidate;
+        const select = $('year'); select.replaceChildren();
+        for (const year of [...new Set(report.countries.map(row => row.year))].sort()) {
+          const item = mk('option', select, year); item.value = String(year);
+        }
+        select.disabled = false; $('results').hidden = false;
+        render();
+      } catch (error) {
+        report = null; $('results').hidden = true; $('year').disabled = true;
+        status('Report rejected: ' + error.message);
+      }
+    });
+    $('year').addEventListener('change', render);
+  </script>
+</body>
+</html>
