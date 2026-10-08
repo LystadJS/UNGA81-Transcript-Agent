@@ -76,8 +76,10 @@ def _require_approval(approval: dict, code_sha: str) -> None:
             approval.get("w1_producer_code_sha256") != code_sha or
             not is_sha(code_sha)):
         raise GraphError("W1 approved adapter version / executable hash mismatch")
-    if not is_sha(approval.get("w1_merged_commit_sha256")):
-        raise GraphError("W1 merged commit SHA is required for coordinator provenance")
+    merged_sha = approval.get("w1_merged_commit_sha")
+    if not (isinstance(merged_sha, str) and len(merged_sha) == 40 and
+            all(char in "0123456789abcdef" for char in merged_sha)):
+        raise GraphError("W1 merged commit SHA-1 (40 hexadecimal characters) required")
     if approval.get("accepted") is not True:
         raise GraphError("W1 acceptance not granted")
     # This is an explicit local trust input, not a signature or proof the commit is
@@ -186,15 +188,15 @@ def compare_w1_partition(manifest: dict, values: np.ndarray, spectral: dict,
     if s_labels.shape != (len(values),) or not np.issubdtype(s_labels.dtype, np.integer):
         raise GraphError("Spectral row labels invalid")
     w1_labels, ref_model = _load_w1_model(w1_envelope, w1_model_id, manifest)
-    if not set(s_labels).issubset(set(range(1, len(values) + 1))):
-        raise GraphError("Spectral cluster IDs invalid")
+    if np.any(s_labels < 1) or len(np.unique(s_labels)) < 2:
+        raise GraphError("Spectral cluster IDs invalid or degenerate")
     try:
         from jsonschema import Draft202012Validator, FormatChecker
         schema_file = repo_root / "docs/parallel-work/interchange-v1.schema.json"
         schema = json.loads(schema_file.read_text(encoding="utf8"))
         Draft202012Validator(schema, format_checker=FormatChecker()).validate(w1_envelope)
-    except (OSError, ValueError, ImportError) as exc:
-        raise GraphError("W1 v1 structural schema verification unavailable") from exc
+    except Exception as exc:
+        raise GraphError("W1 v1 structural schema verification refused") from exc
     payload = {"envelope": w1_envelope, "left": w1_labels, "right": s_labels.tolist()}
     try:
         result = subprocess.run(
@@ -217,7 +219,7 @@ def compare_w1_partition(manifest: dict, values: np.ndarray, spectral: dict,
         "schema": "un.w1-w3-comparison.v1", "status": "descriptive",
         "w1_model_id": w1_model_id, "w1_model_basis": ref_model["representation_id"],
         "w1_version": ALLOWED_W1_ADAPTER, "w1_code_sha256": code_sha,
-        "w1_accepted_commit_sha256": approval["w1_merged_commit_sha256"],
+        "w1_accepted_commit_sha": approval["w1_merged_commit_sha"],
         "source_sha256": manifest["upstream"]["source_sha256"],
         "selection_sha256": manifest["upstream"]["selection_sha256"],
         "observation_count": len(values),
