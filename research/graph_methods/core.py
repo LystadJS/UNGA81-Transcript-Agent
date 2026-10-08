@@ -97,17 +97,33 @@ def validate_input(manifest: dict, values: np.ndarray) -> dict:
         raise GraphError("Excluded observation frame must be an explicit metadata list")
     if manifest.get("total_in_frame") != len(rows) + len(extras):
         raise GraphError("Frame denominator differs from included plus explicitly excluded rows")
+    if len(rows) + len(extras) > MAX_OBSERVATIONS:
+        raise GraphError("Whole frame exceeds the 600-observation limit")
     ids: set[str] = set()
-    for row in rows + extras:
+    for idx, row in enumerate(rows + extras):
+        is_excluded = idx >= len(rows)
         if not isinstance(row, dict) or not isinstance(row.get("id"), str) or not row["id"]:
             raise GraphError("Every observation needs an explicit unique ID")
         if row["id"] in ids:
             raise GraphError("Duplicate observation ID")
         ids.add(row["id"])
-        if not is_sha(row.get("text_sha256")):
-            raise GraphError("Missing source-linked observation text hash")
-        if row in extras and not row.get("exclusion_reasons"):
-            raise GraphError("Excluded observations require explicit exclusion reasons")
+        status = row.get("source_status")
+        if status not in {"available", "unavailable", "failed", "excluded_language", "empty_transcript", "inventory_failed"}:
+            raise GraphError("Missing or unsupported source availability status")
+        if not is_excluded and (status != "available" or row.get("exclusion_reasons")):
+            raise GraphError("Fitted observations must be available and eligible")
+        if is_excluded and status == "available" and not row.get("exclusion_reasons"):
+            raise GraphError("Excluded available observations require explicit exclusion reasons")
+        if status != "available" and not isinstance(row.get("missing_reason"), str):
+            raise GraphError("Unavailable sources need an explicit missing reason")
+        if not is_sha(row.get("text_sha256")) and not (
+            is_excluded and status != "available" and row.get("text_sha256") is None
+        ):
+            raise GraphError("Available observations require original text hash; only unavailable frame rows may be null")
+        if row.get("parent_id") is not None and not is_sha(row.get("parent_text_sha256")):
+            raise GraphError("Original parent identity requires a verified parent hash")
+        if row.get("speech_id") is not None and row.get("review_status") != "confirmed":
+            raise GraphError("Unreviewed speech identity is not verified")
         stamp = row.get("date")
         if not isinstance(stamp, str) or len(stamp) != 10:
             raise GraphError("Missing complete observation date; do not impute one")
@@ -116,8 +132,12 @@ def validate_input(manifest: dict, values: np.ndarray) -> dict:
                 raise ValueError("Noncanonical date")
         except ValueError as exc:
             raise GraphError("Invalid canonical ISO observation date") from exc
-        if stamp in RESERVED_DATES or row.get("split", manifest["split"]) != manifest["split"]:
-            raise GraphError("Reserved 5–6 October observations and cross-split rows prohibited")
+        if stamp in RESERVED_DATES or (manifest["split"] == "development" and stamp > "2026-10-04"):
+            raise GraphError("Reserved/future development dates prohibited; held-out frame unopened")
+        if row.get("split", manifest["split"]) != manifest["split"]:
+            raise GraphError("Cross-split source rows prohibited")
+        if manifest["split"] == "development" and not is_excluded and not row.get("meeting_id"):
+            raise GraphError("Development fitting requires verified source meeting IDs")
         if any(field in row for field in ("text", "transcript", "quote")):
             raise GraphError("Graph manifests must contain metadata only, never source text")
         if row.get("source_url") is not None and not (
@@ -239,7 +259,7 @@ def build_affinity(values: np.ndarray, policy: GraphPolicy) -> Affinity:
         "degree_gini": degree_gini,
         "max_binary_degree": int(binary_degree.max()),
         "min_binary_degree": int(binary_degree.min()),
-        "knn_tie_policy": "distance then input row ID order",
+        "knn_tie_policy": "distance then original input row order",
         "diagonal_self_loops": False,
         "eigensolver": "scipy.linalg.eigh dense symmetric",
     }
