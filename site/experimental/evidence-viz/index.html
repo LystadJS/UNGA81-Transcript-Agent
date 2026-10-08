@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Evidence Visualizations · Synthetic research prototype</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body class="ev-demo">
+  <a class="ev-skip" href="#visualizations">Skip to evidence figures</a>
+  <header class="ev-masthead">
+    <div class="ev-brand">
+      <div class="ev-monogram" aria-hidden="true">UN</div>
+      <div>
+        <p class="ev-overline">UN transcript research · Experimental</p>
+        <h1>Evidence visualization suite</h1>
+      </div>
+    </div>
+    <p class="ev-byline">Method-led research displays. Source identity, missingness, and limits remain visible. No findings about countries are presented.</p>
+  </header>
+  <main class="ev-wrap" id="visualizations">
+    <div class="ev-summary">
+      <div>
+        <h2>Four ways to examine latent language structure</h2>
+        <p>These charts use invented source IDs and deliberately simulated diagnostics. Values demonstrate interpretation safeguards, not results from the UN corpus.</p>
+      </div>
+      <span class="ev-flag">SYNTHETIC / NOT FOR PUBLICATION</span>
+    </div>
+    <div class="ev-toolbar">
+      <label for="scenario">Evidence state</label>
+      <select id="scenario">
+        <option value="normal">Complete synthetic demo</option>
+        <option value="empty">Empty source population</option>
+        <option value="withheld">Withheld analytical evidence</option>
+        <option value="failed">Failed upstream computation</option>
+      </select>
+      <p>Keyboard: Tab to evidence cells; Enter or Space to inspect. SVG and static HTML export are offline.</p>
+    </div>
+    <div id="ev-status" role="status" aria-live="polite"></div>
+    <div id="ev-panels"></div>
+    <p class="ev-method-footer">Engineering preview only. Upstream models are neither recomputed nor upgraded by this renderer. All data are local; no network model calls.</p>
+  </main>
+  <script src="./fixture.js"></script>
+  <script src="./evidence-viz.js"></script>
+  <script src="./demo.js"></script>
+</body>
+</html>
