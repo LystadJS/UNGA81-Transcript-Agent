@@ -92,8 +92,13 @@ def validate_input(manifest: dict, values: np.ndarray) -> dict:
     rows = manifest.get("observations")
     if not isinstance(rows, list) or not rows or len(rows) > MAX_OBSERVATIONS:
         raise GraphError("Observation population empty or exceeds bounded research limit")
+    extras = manifest.get("excluded_observations", [])
+    if not isinstance(extras, list):
+        raise GraphError("Excluded observation frame must be an explicit metadata list")
+    if manifest.get("total_in_frame") != len(rows) + len(extras):
+        raise GraphError("Frame denominator differs from included plus explicitly excluded rows")
     ids: set[str] = set()
-    for row in rows:
+    for row in rows + extras:
         if not isinstance(row, dict) or not isinstance(row.get("id"), str) or not row["id"]:
             raise GraphError("Every observation needs an explicit unique ID")
         if row["id"] in ids:
@@ -101,6 +106,8 @@ def validate_input(manifest: dict, values: np.ndarray) -> dict:
         ids.add(row["id"])
         if not is_sha(row.get("text_sha256")):
             raise GraphError("Missing source-linked observation text hash")
+        if row in extras and not row.get("exclusion_reasons"):
+            raise GraphError("Excluded observations require explicit exclusion reasons")
         stamp = row.get("date")
         if not isinstance(stamp, str) or len(stamp) != 10:
             raise GraphError("Missing complete observation date; do not impute one")
@@ -126,6 +133,10 @@ def validate_input(manifest: dict, values: np.ndarray) -> dict:
     joins = [[r["id"], r["text_sha256"]] for r in rows]
     if digest(joins) != manifest.get("observation_join_sha256"):
         raise GraphError("Observation ID/text-hash/order join differs from pinned manifest")
+    if extras:
+        frame_join = [[r["id"], r["text_sha256"]] for r in rows + extras]
+        if digest(frame_join) != manifest.get("frame_join_sha256"):
+            raise GraphError("Full frame/exclusion identity differs from pinned frame digest")
     x = np.asarray(values)
     if x.ndim != 2 or x.shape[0] != len(rows) or x.shape[1] < 1 or x.size > 2_000_000:
         raise GraphError("Matrix shape/row count or cell budget invalid")
