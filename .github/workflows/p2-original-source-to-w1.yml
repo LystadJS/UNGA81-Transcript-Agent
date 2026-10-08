@@ -5,6 +5,7 @@ on:
     paths:
       - 'research/source_acquisition/p2_expansion/p2_to_w1_source_adapter.cjs'
       - 'research/source_acquisition/p2_expansion/test_p2_to_w1.cjs'
+      - 'research/source_acquisition/p2_expansion/synthetic_calibration.py'
       - 'research/validation_framework/frame.cjs'
       - 'research/validation_framework/schemas/input-frame.v1.schema.json'
       - '.github/workflows/p2-original-source-to-w1.yml'
@@ -12,6 +13,7 @@ on:
     paths:
       - 'research/source_acquisition/p2_expansion/p2_to_w1_source_adapter.cjs'
       - 'research/source_acquisition/p2_expansion/test_p2_to_w1.cjs'
+      - 'research/source_acquisition/p2_expansion/synthetic_calibration.py'
       - 'research/validation_framework/frame.cjs'
       - 'research/validation_framework/schemas/input-frame.v1.schema.json'
       - '.github/workflows/p2-original-source-to-w1.yml'
@@ -53,3 +55,20 @@ jobs:
           assert 'un.p2.original-pv-reconciled.v1' not in frozen['properties']['upstream']['properties']['source_schema']['enum']
           print('PASS: source-only input added, legacy analytical interchange unchanged')
           PY
+
+  preregistered-calibration-code:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install explicit fixed simulation dependencies
+        run: python -m pip install numpy==2.2.6 scipy==1.15.3
+      - name: Test calendar-year and source-meeting simulated calibration engine
+        run: |
+          python -m py_compile research/source_acquisition/p2_expansion/synthetic_calibration.py
+          python research/source_acquisition/p2_expansion/synthetic_calibration.py --selftest
