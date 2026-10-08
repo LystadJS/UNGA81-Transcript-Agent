@@ -98,6 +98,38 @@ jobs:
           assert report['attempts']['failed_primary']==0
           print('Synthetic-only graph v1 receipt validated')
           PY
+      - name: Independently validate W3 v1 envelope with merged W1 relational API
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'JS'
+          const assert = require('node:assert/strict');
+          const fs = require('node:fs');
+          const path = require('node:path');
+          const {validateRelational} = require('./research/validation_framework/interchange.cjs');
+          const file = path.join(process.env.RUNNER_TEMP, 'graph-benchmark', 'interchange-v1.json');
+          const full = JSON.parse(fs.readFileSync(file, 'utf8'));
+          assert.equal(validateRelational(full), true);
+          assert.equal(full.coverage.models.length, 2);
+          assert.equal(full.coverage.eligible, 96);
+          assert.equal(full.results.length, 192);
+          // Invalid source/model mapping, missing pair, duplicate result and
+          // forged coverage must fail; W3's own assertions are not sufficient.
+          const wrongBasis = structuredClone(full);
+          wrongBasis.results[0].representation_basis_id = 'forged-other-basis';
+          assert.throws(() => validateRelational(wrongBasis));
+          const missingResult = structuredClone(full);
+          missingResult.results.pop();
+          assert.throws(() => validateRelational(missingResult));
+          const badLedger = structuredClone(full);
+          badLedger.coverage.models[0].assigned += 1;
+          assert.throws(() => validateRelational(badLedger));
+          const duplicateId = structuredClone(full);
+          duplicateId.results[1].observation_id = duplicateId.results[0].observation_id;
+          assert.throws(() => validateRelational(duplicateId));
+          console.log('PASS: accepted W1 relational validator checked generated W3 v1 envelope and four negative cases.');
+          JS
       - name: Archive W1-W3 synthetic interoperability receipt (PR only)
         if: github.event_name == 'pull_request'
         shell: bash
