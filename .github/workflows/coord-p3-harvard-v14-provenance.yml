@@ -6,11 +6,15 @@ on:
     paths:
       - research/integration/p3_harvard_archive_audit.py
       - research/integration/test_p3_harvard_archive_audit.py
+      - research/integration/p4_historical_w1_preflight.cjs
+      - research/integration/test_p4_historical_w1_preflight.cjs
       - .github/workflows/coord-p3-harvard-v14-provenance.yml
   pull_request:
     paths:
       - research/integration/p3_harvard_archive_audit.py
       - research/integration/test_p3_harvard_archive_audit.py
+      - research/integration/p4_historical_w1_preflight.cjs
+      - research/integration/test_p4_historical_w1_preflight.cjs
       - .github/workflows/coord-p3-harvard-v14-provenance.yml
 
 permissions:
@@ -28,6 +32,11 @@ jobs:
         with:
           python-version: '3.13'
       - run: python -m unittest discover -s research/integration -p test_p3_harvard_archive_audit.py -v
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node research/integration/test_p4_historical_w1_preflight.cjs
+      - run: node research/validation_framework/tests/test_framework.cjs
       - run: node docs/parallel-work/validate-contract.cjs
 
   source-metadata-download:
