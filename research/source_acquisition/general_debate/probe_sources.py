@@ -44,8 +44,17 @@ def probe(label: str, url: str) -> dict:
                         result["metadata_status"] = "nonconforming_json"
             return result
     except urllib.error.HTTPError as e:
-        return {"label": label, "http_status": e.code,
-                "reason": "endpoint_returned_error_no_content_read"}
+        error = {"label": label, "http_status": e.code,
+                 "reason": "endpoint_returned_error"}
+        if label.startswith("harvard") and "json" in e.headers.get("Content-Type", "").lower():
+            try:
+                detail = json.loads(e.read(2048))
+                message = detail.get("message")
+                if isinstance(message, str):
+                    error["public_api_message"] = message[:240]
+            except (ValueError, TypeError):
+                pass
+        return error
     except (OSError, urllib.error.URLError) as e:
         return {"label": label, "http_status": None,
                 "reason": "network_or_TLS_error_" + type(e).__name__}
