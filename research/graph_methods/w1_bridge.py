@@ -158,7 +158,8 @@ def _compare_identities(manifest: dict, envelope: dict) -> None:
                       manifest["observations"] + manifest.get("excluded_observations", [])):
         for key in ("parent_id", "parent_text_sha256", "meeting_id", "source_family_id",
                     "speech_id", "date", "source_status", "source_url", "json_pointer",
-                    "start", "end", "country"):
+                    "start", "end", "country", "missing_reason",
+                    "review_status", "exclusion_reasons"):
             if w1.get(key) != w3.get(key):
                 raise GraphError("W1/W3 source identity/attribution mismatch: " + key)
     if (envelope["coverage"]["eligible"] != len(included) or
