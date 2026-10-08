@@ -74,13 +74,37 @@ def main():
         args=['--no-sandbox','--disable-dev-shm-usage'])
       try:
         views=[check(b,url,p.outdir,n) for n in ('desktop','mobile')]
-        page=b.new_page()
+        page=b.new_page(viewport={'width':1440,'height':900})
         try:
           for link in ('/parallel/w05-browser/experimental/method-lab/index.html',
                        '/parallel/w05-browser/experimental/method-lab/worker.js',
                        '/experimental/evidence-viz/index.html'):
             response=page.goto(url+link)
             assert response and response.status==200,link
+          # Independent real-browser W5 Worker check on the packaged static
+          # site; avoids the upstream test runner's temporary Chrome-profile
+          # cleanup race without modifying its numerical or provenance code.
+          page.goto(url+'/parallel/w05-browser/experimental/method-lab/index.html')
+          page.locator('#example').click()
+          page.locator('#results:not([hidden])').wait_for(timeout=15000)
+          assert page.locator('#observations').inner_text()
+          assert page.locator('#left-result').inner_text()
+          probe=page.evaluate("""async () => {
+            const w=new Worker('worker.js');
+            return await new Promise((resolve,reject)=>{
+              const timer=setTimeout(()=>{w.terminate();reject(Error('W5 numeric Worker timeout'));},15000);
+              w.onerror=e=>{clearTimeout(timer);w.terminate();reject(Error(e.message||'Worker failure'));};
+              w.onmessage=e=>{
+                if(e.data?.id!==911 || e.data.type==='progress')return;
+                clearTimeout(timer);w.terminate();
+                if(e.data.type==='error')reject(Error(e.data.message));
+                else resolve(e.data);
+              };
+              w.postMessage({id:911,action:'numeric_probe'});
+            });
+          }""")
+          assert probe['type']=='result'
+          assert len(probe['scores']['pca'])==4 and len(probe['scores']['lsa'])==4
           page.goto(url+'/experimental/evidence-viz/index.html')
           assert page.locator('.ev-panel').count()==4
         finally:page.close()
