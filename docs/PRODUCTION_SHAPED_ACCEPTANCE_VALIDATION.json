@@ -52,7 +52,7 @@
         "min_candidate_pool": 185,
         "lexical_semantic_overlap": 0.3464627151051625,
         "lexical_masked_semantic_overlap": 0.3762906309751434,
-        "source_genre_share": 0.0,
+        "source_genre_share": 0,
         "source_role_share": 0.5937539834289356
       },
       "exclude_shared_role": {
@@ -63,7 +63,7 @@
         "lexical_semantic_overlap": 0.4286806883365201,
         "lexical_masked_semantic_overlap": 0.4049713193116635,
         "source_genre_share": 0.49318036966220524,
-        "source_role_share": 0.0
+        "source_role_share": 0
       },
       "exclude_shared_genre_role": {
         "queries": 326,
@@ -72,8 +72,8 @@
         "min_candidate_pool": 12,
         "lexical_semantic_overlap": 0.39468302658486715,
         "lexical_masked_semantic_overlap": 0.3820040899795501,
-        "source_genre_share": 0.0,
-        "source_role_share": 0.0
+        "source_genre_share": 0,
+        "source_role_share": 0
       }
     },
     "speaker_proxy": {
@@ -138,7 +138,7 @@
   },
   "new_source_hashes": {
     "synthetic_un_fixture.cjs": "70097d7c444f7d35ce09f2cc17fa88d26ed142ad2c325681fd2b9b405d9ef402",
-    "production_synthetic.py": "48c72c22bbfe70a443b3edc38dfcf13052d37d80fe7be654ba641c6f756921e1",
+    "production_synthetic.py": "5ec96c23baa61dcaa763a6fb68c1bc742ec8c9590c786b53ebeae36a207fed3b",
     "nuisance_stress.py": "99886bae6e9038d555d7b0c807ab5f4718891beb9f64334a70e332b97e7b63c6",
     "test_production_shaped.py": "5a15a528b61fc5b15d7cc0c0b4216ad14225aa603c78dd90153c660634b334a2"
   },
