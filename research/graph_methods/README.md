@@ -75,8 +75,9 @@ partition is not evidence of politically meaningful or nonrandom clusters.
 The shared 8 October OWNERSHIP.md reserves
 research/parallel/w03-spectral-diffusion/** and coordinator-only
 .github/workflows/**. This PR uses research/graph_methods/** and a distinct
-workflow because the owner's explicit later request specified them. **The
-coordinator must approve or reconcile that namespace exception before merge.**
+workflow because the owner's explicit later request specified them. **The owner-approved exception was recorded and merged through
+[coordinator PR #23](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/23)
+at commit `74bc2c70d0f7a79b8cf319d50b4d8d18f0978875`.**
 No files under un/, site/, research/reference_tests/, research/corpus/,
 shared release records or the original contract are modified.
 
@@ -134,5 +135,22 @@ not an aligned latent coordinate comparison.
 For the merge-review gates, required local approval shape, W1 source-schema
 limitations and scientific caveats, see `COORDINATOR_REVIEW.md`. Real
 development-source interoperability and independent/null-calibrated
-diplomatic conclusions remain **NOT RUN**. The W3 file-ownership exception
-still needs a coordinator decision before merging PR #16.
+diplomatic conclusions remain **NOT RUN**. The W3 file-ownership exception is now documented and approved. PR #16
+still requires exact-head CI and coordinator acceptance before engineering-only merge.
+
+## Accepted W1 interoperability and merge path
+
+The accepted W1 source implementation has been merged into main; the W3
+interoperability bridge exercises W1's native source-frame validator, whole-
+meeting sampling schedule, source audit, versioned relational validator and
+assignment metrics on the PR merged tree. Independent scikit-learn references
+verify the synthetic ARI/AMI; generated W3 v1 envelopes are also checked with
+the accepted W1 relational API, including negative model/source-ledger cases.
+The uniquely named CI now runs after relevant changes to main, so post-merge
+regressions can be verified without opening private sources. No result is
+eligible for publication or inference from synthetic engineering evidence alone.
+
+The owner authorized coordinator merge of PR #16 after validation. The
+remaining operations are verifying the latest full file list, per-head
+passing checks, merge commit on main and post-merge CI. No active
+browser, D1 email or website deployment is part of PR #16.
