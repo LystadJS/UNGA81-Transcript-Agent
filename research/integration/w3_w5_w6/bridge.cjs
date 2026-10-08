@@ -208,14 +208,8 @@ function forW6Network(bundle) {
   const x = validate(bundle);
   const e = x.envelope, r=x.receipt, rows=e.observations.filter(o =>
     o.source_status === 'available' && o.exclusion_reasons.length === 0);
-  // W6 draft validateEnvelope incorrectly requires per-model results only for
-  // eligible rows, contrary to the complete W3/W1 v1 model×frame contract.
-  // Do not strip excluded rows or mark a missing source as observed to bypass.
-  if (x.population.excluded > 0) return {
-    status:'blocked_contract',panel:null,
-    reason:'W6 draft result-row validator excludes required excluded/model rows; full v1 W3 missing-source frame must remain intact.',
-    coverage:x.population
-  };
+  // W6 now validates the same complete model × frame records as W1/W3/W5,
+  // including unavailable/excluded model rows. Never trim or synthesize rows.
   const identity=panelIdentity(e,r.representation);
   const common={
     kind:'network',measure:'Observed W3 exact kNN graph edges weighted by declared Gaussian affinity in full fitted feature geometry; NOT policy ties, cosine similarity, or display-UMAP distances.',
