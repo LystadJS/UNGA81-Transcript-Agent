@@ -16,8 +16,9 @@ python -m research.graph_methods.reproduce --fixture blobs --seed 81 --output /t
 The fixture creates 96 invented points, fictional observation/parent/meeting
 IDs and hashes; **no transcript text, country label, private vector or held-out
 meeting is read**. The output directory must be empty. Local output includes
-receipt.json, interchange-v1.json, source-linked-edges.json, fit-geometry.json,
-source-group-sensitivity.json, graph-policy-sensitivity.json, SHA256.json, and
+receipt.json, interchange-v1.json, source-linked-edges.json, source-concentration.json,
+fit-geometry.json, source-group-sensitivity.json, graph-policy-sensitivity.json,
+diffusion-policy-sensitivity.json, SHA256.json, and
 synthetic affinity.svg, diffusion.svg, baselines.svg and sensitivity.svg.
 
 For an **already authorized** local development corpus, substitute
@@ -26,7 +27,11 @@ array, no pickled content. The metadata-only manifest schema
 un.graph-input.v1 carries split, upstream source/selection hashes and their
 hash basis, a pinned matrix and representation identity, declared population
 denominators and ordered observation ID/text-hash/parent/meeting/source linkage.
-All rows must be development, never 5–6 October 2026. No original speech text
+All rows must be development, never 5–6 October 2026. If the frame contains
+excluded observations, list them under excluded_observations with explicit
+exclusion reasons and define frame_join_sha256 for the joined eligible/excluded
+ordered ID/hash sequence; total_in_frame must count both. Unavailable meeting
+inventory remains separately counted. No original speech text
 belongs in a manifest or public PR.
 
 The SHA of the ordered [id,text_sha256] JSON pairs is
