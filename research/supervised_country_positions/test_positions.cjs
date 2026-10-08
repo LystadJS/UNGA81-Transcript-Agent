@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const { createHash } = require('node:crypto');
+const { Script } = require('node:vm');
 const { makeSyntheticFrame } = require('./synthetic_fixture.cjs');
 const core = require('./position_core.cjs');
 const codebook = JSON.parse(fs.readFileSync(path.join(__dirname, 'propositions.v1.json'), 'utf8'));
@@ -123,5 +124,17 @@ check('no model output or confidence interval is fabricated', () => {
   assert.equal(r.model_fitted, false);
   assert.equal(r.publication_eligible, false);
   assert.ok(r.edges.every(e => e.confidence_interval === undefined));
+});
+check('both offline HTML interfaces have executable JavaScript and no remote scripts', () => {
+  for (const name of ['annotation.html', 'viewer.html']) {
+    const html = fs.readFileSync(path.join(__dirname, name), 'utf8');
+    const embedded = html.match(/<script>\s*([\s\S]*?)\s*<\/script>/);
+    assert.ok(embedded && embedded[1]);
+    new Script(embedded[1], { filename: name });
+    assert.ok(!/<script[^>]+src=|@import|fetch\s*\(/i.test(html));
+    assert.ok(!html.includes('innerHTML'));
+    assert.ok(html.includes('publication_eligible'));
+    assert.ok(html.includes('source_url'));
+  }
 });
 process.stdout.write('Tests passed: ' + tests + '; failures: ' + (process.exitCode ? 1 : 0) + '\n');
