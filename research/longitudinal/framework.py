@@ -91,7 +91,7 @@ def validate_panel(panel):
         seen.add(r['id'])
         require(r.get('period') in by_period, f"{r['id']}: unknown period")
         available_row = r.get('source_status') == 'available'
-        require(r.get('source_status') in ('available', 'unavailable', 'failed', 'empty_transcript',
+        require(r.get('source_status') in ('available', 'unavailable', 'unverified', 'failed', 'empty_transcript',
                 'inventory_failed', 'excluded_language'), f"{r['id']}: missing source status")
         when = None
         if r.get('date') is not None:
@@ -561,6 +561,10 @@ def to_interchange_v1(panel, comparison, *, upstream=None):
     validate_panel(panel)
     require(comparison['provenance']['panel_sha256'] == digest(panel), 'Comparison belongs to another panel')
     rows = [r for r in panel['observations'] if r['period'] in (comparison['before'], comparison['after'])]
+    if any(r.get('source_status') == 'unverified' for r in rows):
+        raise ContractError('Interchange v1 source_status enum has no unverified value; '
+                            'retain P2 unverified inventory privately until a coordinator-approved '
+                            'source-status contract extension is available')
     synthetic = panel['split'] == 'synthetic'
     if not synthetic:
         require(isinstance(upstream, dict) and upstream.get('source_schema') in
