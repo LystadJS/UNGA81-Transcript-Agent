@@ -6,9 +6,11 @@ const assert = require('node:assert/strict');
 const root = __dirname;
 const schema = JSON.parse(fs.readFileSync(path.join(root, 'interchange-v1.schema.json'), 'utf8'));
 const doc = fs.readFileSync(path.join(root, 'INTERCHANGE_V1.md'), 'utf8');
-const match = doc.match(/## 4\\. Mapping example[^]*?\`\`\`json\s*([^]*?)\`\`\`/);
-assert(match, 'No synthetic example in INTERCHANGE_V1.md');
-const example = JSON.parse(match[1]);
+const exampleStart = doc.indexOf('```json', doc.indexOf('## 4. Mapping example'));
+assert(exampleStart >= 0, 'No synthetic example in INTERCHANGE_V1.md');
+const exampleEnd = doc.indexOf('```', exampleStart + 7);
+assert(exampleEnd > exampleStart, 'Unclosed synthetic example');
+const example = JSON.parse(doc.slice(exampleStart + 7, exampleEnd).trim());
 const isObject = x => !!x && typeof x === 'object' && !Array.isArray(x);
 function structural(def, val, at='$') {
   if (def.const !== undefined) assert.deepEqual(val, def.const, at + ': wrong const');
