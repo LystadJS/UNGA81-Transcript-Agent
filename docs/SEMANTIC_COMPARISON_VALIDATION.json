@@ -1,0 +1,148 @@
+{
+  "schema": "un.semantic-release-validation.v1",
+  "model_provision_run": 37719212377,
+  "model_artifact": 11524997955,
+  "model_artifact_zip_sha256": "80130d6e58a19ebaf58f5bcc510bf47276e45bfce6d244b2bcb843f4fdba3382",
+  "new_synthetic_and_encoder_tests": 47,
+  "previous_machine_tests": 57,
+  "corpus_checks": 53,
+  "previous_regression_suites": 15,
+  "executed_summary": {
+    "schema": "un.semantic-comparison-result.v1",
+    "machine_only": true,
+    "human_confirmations": 0,
+    "holdout_transcripts_opened": 0,
+    "source_corpus_sha256": "e8fb980cf638e2aef39d0ca3564836c6120201a059e806ccaaee3fd5cc4f593e",
+    "model_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "cache_audit": {
+      "passages": 2057,
+      "chunks": 2059,
+      "wordpieces": 318447,
+      "long_passages": 2,
+      "max_wordpieces": 260,
+      "truncated_wordpieces": 0,
+      "pooling": "attention-mask mean incl. CLS/SEP; normalize each chunk; content-token-count weighted mean; normalize passage",
+      "tokenizer_normalization": "Pinned upstream uncased WordPiece normalization; original text and Unicode offsets retained",
+      "dropped_passages": 0,
+      "batch_size": 16,
+      "dimensions": 384
+    },
+    "population_counts": {
+      "strict": 1641,
+      "inclusive": 1910,
+      "baseline": 2057
+    },
+    "fits_planned": 6,
+    "fits_successful": 6,
+    "refits_planned": 16,
+    "refits_successful": 16,
+    "embedding_seconds": null,
+    "semantic_refit_median_ari": 0.609197281690254,
+    "elapsed_seconds": 16.188960124999994,
+    "peak_process_rss_mib": 660.6796875,
+    "implementation_hashes": {
+      "compare.py": "fa2af6842917ac970d92cdac5d47d5599b0e7cedede6e4999d50ffe4fc01ba56",
+      "probes.json": "2c76930bd702307c209354a624785046e8f57c6f827c0b7a9f067b2a7d87abed",
+      "download_model.py": "190128337adb9e2f825d5f93f28a2a8142fed97923769483bcefe4977595f62a",
+      "export_html.py": "05122d5712e077af74fd2782c42655ee17434245cd8d3e5d74113a9658592a03",
+      "plan.json": "9f7855aaeddf9977c09595128dde432a1eb5983dec3250c80806bd2a4d5b0b42",
+      "encoder.py": "a3a2d09cf292ea31574f90d0163e338020636cc9729d109b8cc704a4a301879d",
+      "model-lock.json": "d12d9c008ae9e4e63fd4ac6edfb4728b3f381baab02d49233ed19680b4f28af7",
+      "make_notebook.py": "ff3438a5eb0697983c56e6cf7d803ab23537412cc11d78817720be2bf0dab24c",
+      "requirements-report.txt": "78f86243464aa9fe708e119e1f5dcc723471fe1cecc95e9b70feb25bd10939a1",
+      "requirements.txt": "d7def97d60eeab8f57b8051c5c172e942c4a4a5fc506030770eb4b55fad2ccdc"
+    },
+    "python": "3.13.5",
+    "packages": {
+      "numpy": "2.3.5",
+      "scipy": "1.17.0",
+      "scikit-learn": "1.8.0",
+      "onnxruntime": "1.23.0",
+      "tokenizers": "0.22.1",
+      "threadpoolctl": "3.6.0"
+    },
+    "limits": "Research comparison only. No stance, coalition, weighted refit, formal null test, or held-out replication."
+  },
+  "repeatability": {
+    "status": "PASS",
+    "full_embedding_inference_executions": 2,
+    "same_runtime_only": true,
+    "checks": [
+      {
+        "archive": "baseline_semantic_pca64_k10.npz",
+        "arrays_equal": true,
+        "arrays": 10
+      },
+      {
+        "archive": "inclusive_semantic_pca64_k10.npz",
+        "arrays_equal": true,
+        "arrays": 10
+      },
+      {
+        "archive": "probe-embeddings.npz",
+        "arrays_equal": true,
+        "arrays": 3
+      },
+      {
+        "archive": "strict_semantic_pca32_k10.npz",
+        "arrays_equal": true,
+        "arrays": 10
+      },
+      {
+        "archive": "strict_semantic_pca64_k10.npz",
+        "arrays_equal": true,
+        "arrays": 10
+      },
+      {
+        "archive": "strict_semantic_pca64_ward10.npz",
+        "arrays_equal": true,
+        "arrays": 8
+      },
+      {
+        "archive": "strict_semantic_raw384_k10.npz",
+        "arrays_equal": true,
+        "arrays": 7
+      },
+      {
+        "archive": "all embeddings",
+        "arrays_equal": true,
+        "arrays": 1
+      }
+    ],
+    "note": "Second run tightens cache implementation checks and pairs matching lexical dimension/algorithm; no fit parameters, sources or inference operations changed.",
+    "cache_replay_full_comparison_equal": true
+  },
+  "independent_validation": {
+    "status": "PASS",
+    "all_input_checkpoint_hashes_rechecked": true,
+    "raw_source_rederivation_passed": true,
+    "passages": 2057,
+    "chunks": 2059,
+    "original_text_and_chunk_hashes_preserved": true,
+    "frozen_lexical_projection_max_abs_error": 4.440892098500626e-16,
+    "independent_primary_ari": 0.4050090625265732,
+    "independent_crossmeeting_neighbor_overlap15": 0.2792606134470851,
+    "source_linked_pairs_checked": 1641,
+    "human_confirmations": 0,
+    "holdout_transcripts_opened": 0,
+    "network_attempts": 0
+  },
+  "browser_validation": {
+    "status": "PASS",
+    "mode": "in_memory_render_of_saved_HTML",
+    "desktop_width": 1440,
+    "mobile_width": 390,
+    "figures": 5,
+    "page_overflow": false,
+    "external_requests": [],
+    "javascript_errors": [],
+    "browser": "144.0.7559.96",
+    "direct_file_navigation_tested": false
+  },
+  "holdout_transcripts_opened": 0,
+  "human_confirmations": 0,
+  "source_text_publicly_committed": false,
+  "production_site_and_publication_gates_changed": false,
+  "corrections": "Initial local environment import and notebook quoting errors were repaired. Final cache checks bind encoder code. The raw-model contrast differs in dimension; reduced and Ward contrasts pair matching saved lexical settings.",
+  "ci_scope": "Local real-corpus execution and separate repository CI must not be conflated."
+}

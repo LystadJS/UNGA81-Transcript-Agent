@@ -1,0 +1,74 @@
+{
+  "schema": "un.semantic-comparison-plan.v1",
+  "split": "development",
+  "human_status": "machine_only_provisional",
+  "holdout_access": false,
+  "seed": 271828,
+  "fit_weighting": "equal_passage",
+  "primary": "strict_semantic_pca64_k10",
+  "lexical_reference": "strict_lsa64_k10",
+  "embedding_population": "baseline",
+  "model_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+  "max_observations": 5000,
+  "chunk_policy": "nonoverlapping 254 content WordPieces plus CLS/SEP; all tokens and code-point intervals accounted",
+  "settings": [
+    {
+      "id": "strict_semantic_raw384_k10",
+      "population": "strict",
+      "dimensions": null,
+      "method": "kmeans",
+      "k": 10
+    },
+    {
+      "id": "strict_semantic_pca32_k10",
+      "population": "strict",
+      "dimensions": 32,
+      "method": "kmeans",
+      "k": 10
+    },
+    {
+      "id": "strict_semantic_pca64_k10",
+      "population": "strict",
+      "dimensions": 64,
+      "method": "kmeans",
+      "k": 10
+    },
+    {
+      "id": "strict_semantic_pca64_ward10",
+      "population": "strict",
+      "dimensions": 64,
+      "method": "ward",
+      "k": 10
+    },
+    {
+      "id": "inclusive_semantic_pca64_k10",
+      "population": "inclusive",
+      "dimensions": 64,
+      "method": "kmeans",
+      "k": 10
+    },
+    {
+      "id": "baseline_semantic_pca64_k10",
+      "population": "baseline",
+      "dimensions": 64,
+      "method": "kmeans",
+      "k": 10
+    }
+  ],
+  "neighbors": [
+    5,
+    15,
+    30
+  ],
+  "refits": "Leave each strict-development meeting out; refit PCA and k-means only; fixed pretrained encoder; overlap-training ARI, not held-out prediction",
+  "pairwise": "Exact identical usable IDs/order and source hashes only. Compare strict raw384/PCA32/PCA64, matched PCA64 versus saved LSA64, and exact same-population inclusive/baseline fits. No winning-model score.",
+  "probes": "Eight authored synthetic anchor/paraphrase/opposite/boilerplate contrasts; development diagnostics, not an independent benchmark",
+  "summary_weights": [
+    "equal_passage",
+    "equal_observed_parent",
+    "equal_meeting"
+  ],
+  "display": "First two PCs of normalized fitted geometry; display-only neighborhood and distance preservation checks; never cluster on 2D coordinates",
+  "matching_note": "Each PCA32/PCA64 or Ward semantic fit is paired with the saved lexical fit of matching dimension and method. Unreduced 384-dimensional embeddings are compared with the saved primary LSA64 as an explicitly different-dimensional contrast.",
+  "additional_diagnostics": "Same-meeting and same-observed-parent shares among 15 nearest neighbors; descriptive dependence checks, not null-calibrated tests."
+}

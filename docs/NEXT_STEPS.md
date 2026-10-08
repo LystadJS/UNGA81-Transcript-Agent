@@ -69,7 +69,9 @@ source groups; inspection of protocol, length, transcription and genre effects.
 The existing three-speech pilot remains an engineering example. Its full-parent
 clustering is correctly withheld by the current four-observation minimum.
 
-## C. Test semantic representation alongside the lexical baseline
+## C. Semantic representation — first pinned comparison implemented
+
+See [SEMANTIC_COMPARISON.md](SEMANTIC_COMPARISON.md) for executed coverage, paired comparisons and limitations. The remaining criteria below govern later promotion, not an unimplemented encoder.
 
 Retain TF-IDF → PCA/LSA permanently as the transparent lexical baseline. Add one
 locally executed, version-pinned sentence/document encoder, with license and
@@ -163,4 +165,11 @@ unsupervised source exploration, and their current safeguards are not bypassed.
 
 **Boundary-review packet:** [the source-linked development packet](BOUNDARY_REVIEW.md) remains available for later human adjudication. Its original pending decisions and the previously completed owner pilot are unchanged. Machine review is stored in a separate schema and does not complete that human packet.
 
-**Next step:** add a pinned local semantic-embedding comparison on the same provisional development identities, retaining strict/inclusive selection sensitivity and machine-only status. Internal split/correction cases stay unresolved rather than being promoted to complete speeches. Do not wait for human adjudication to continue this provisional path. Keep all 37 reserved temporal transcripts unopened until separately authorized under a frozen model-specific evaluation protocol. Establish null-reference and held-out-source validation before promoting discovered groups as nonrandom diplomatic structure.
+**Completed follow-on:** the pinned local semantic-embedding comparison now uses the same provisional development identities, retaining strict/inclusive selection sensitivity and machine-only status. See the executed record below. Internal split/correction cases stay unresolved rather than being promoted to complete speeches. Do not wait for human adjudication to continue this provisional path. Keep all 37 reserved temporal transcripts unopened until separately authorized under a frozen model-specific evaluation protocol. Establish null-reference and held-out-source validation before promoting discovered groups as nonrandom diplomatic structure.
+
+
+## Pinned semantic comparison completed
+
+[The local semantic comparison](SEMANTIC_COMPARISON.md) is implemented on the unchanged provisional populations. Six fits and 16 development-meeting omission refits completed, with full token coverage and source-bound caches. Lexical/semantic agreement is partial; authored opposition probes and poor 2-D fidelity prohibit stance or coalition claims. Human adjudication remains deferred and does not block this provisional research path.
+
+**Current next step:** implement nuisance-preserving development reference tests and pre-register a model-specific evaluation protocol. Keep all 37 reserved meetings unopened until separately authorized. Do not add more encoders or promote consensus percentages as diplomatic agreement before these checks.

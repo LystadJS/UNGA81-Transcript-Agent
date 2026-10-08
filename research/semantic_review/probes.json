@@ -1,0 +1,58 @@
+[
+  {
+    "id": "sanctions",
+    "anchor": "We support ending unilateral economic sanctions.",
+    "paraphrase": "Our delegation favors removing one-sided financial restrictions.",
+    "opposite": "We oppose ending unilateral economic sanctions.",
+    "boilerplate": "Thank you, Chair. Our delegation supports improving access to primary education."
+  },
+  {
+    "id": "ceasefire",
+    "anchor": "We call for an immediate ceasefire to protect civilians.",
+    "paraphrase": "Hostilities must stop now so that noncombatants are safe.",
+    "opposite": "We reject an immediate ceasefire to protect civilians.",
+    "boilerplate": "Thank you, Chair. We call for wider access to affordable clean energy."
+  },
+  {
+    "id": "nuclear",
+    "anchor": "We support independent inspections of nuclear facilities.",
+    "paraphrase": "Our delegation endorses impartial monitoring of atomic sites.",
+    "opposite": "We do not support independent inspections of nuclear facilities.",
+    "boilerplate": "Thank you, Chair. We support the right to inclusive social protection."
+  },
+  {
+    "id": "climate",
+    "anchor": "We urge wealthy countries to fund climate adaptation in vulnerable states.",
+    "paraphrase": "Rich nations should finance resilience to global warming in exposed countries.",
+    "opposite": "We oppose wealthy countries funding climate adaptation in vulnerable states.",
+    "boilerplate": "Thank you, Chair. We urge all delegations to respect human rights."
+  },
+  {
+    "id": "colonial",
+    "anchor": "We support the right of peoples to self-determination.",
+    "paraphrase": "Communities should be free to choose their own political status.",
+    "opposite": "We reject the right of peoples to self-determination.",
+    "boilerplate": "Thank you, Chair. We support strengthening technical assistance for customs services."
+  },
+  {
+    "id": "technology",
+    "anchor": "Artificial intelligence must remain under meaningful human control.",
+    "paraphrase": "People should retain real oversight of automated intelligent systems.",
+    "opposite": "Artificial intelligence should operate without meaningful human control.",
+    "boilerplate": "Thank you, Chair. Our delegation calls for protection of the marine environment."
+  },
+  {
+    "id": "aid",
+    "anchor": "Humanitarian assistance must reach civilians without obstruction.",
+    "paraphrase": "Relief supplies need unhindered access to people affected by conflict.",
+    "opposite": "Humanitarian assistance should not reach civilians without obstruction.",
+    "boilerplate": "Thank you, Chair. Our delegation favors financing sustainable development."
+  },
+  {
+    "id": "racism",
+    "anchor": "We condemn racial discrimination and support equal rights.",
+    "paraphrase": "Our delegation rejects unequal treatment based on race and favors equality.",
+    "opposite": "We do not condemn racial discrimination or support equal rights.",
+    "boilerplate": "Thank you, Chair. We condemn attacks on critical infrastructure."
+  }
+]
