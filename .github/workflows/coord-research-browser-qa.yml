@@ -10,6 +10,7 @@ on:
       - "site/latent.html"
       - "tools/build_pages.py"
       - "research/integration/wiring_browser_smoke.py"
+      - "docs/parallel-work/BROWSER_RESEARCH_WIRING_REVIEW.md"
       - ".github/workflows/coord-research-browser-qa.yml"
   workflow_dispatch:
 
