@@ -31,6 +31,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+          # The accepted W1 merge is a genuine ancestor; a depth-1 PR checkout
+          # cannot validate that ancestry, so fetch history without opening data.
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
