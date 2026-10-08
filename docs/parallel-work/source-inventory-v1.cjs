@@ -173,6 +173,23 @@ function fromPanel(panel, upstream, {legacy=null, legacyWithheldReason=null,
     HEX.test(upstream.source_sha256??'')&&HEX.test(upstream.selection_sha256??''),
     'Upstream original source and selection digests required');
   const periods=panel.periods.map(p=>({id:p.id,start:p.start,end:p.end}));
+  // An observed P2 speech is verified by the original-PV evidence ledger,
+  // never merely because a caller set its status to "available".
+  if(panel.split==='development'){
+    for(const r of panel.observations.filter(v=>v.source_status==='available')){
+      assert(r.source_hash_basis===upstream.source_hash_basis,
+        'Observed source hash basis differs from the original upstream source');
+      if(upstream.source_schema==='un.p2.original-pv-reconciled.v1'){
+        assert(r.observed_p2_strong_match===true &&
+          r.source_original_pdf_sha256===r.source_sha256 &&
+          ['independent_UN_index','official_UN_PV_header'].includes(r.date_basis),
+          'P2 original document byte, full-speech and date-basis verification required');
+      }else{
+        assert(r.source_verification==='full_original_verified',
+          'Non-P2 development source requires explicit original verification status');
+      }
+    }
+  }
   const observations=panel.observations.map(r=>({
     id:r.id,period_id:r.period,year:Number(r.year??r.date?.slice(0,4)),
     actor_kind:r.actor_kind,actor_id:r.actor_id??null,genre:r.genre,
