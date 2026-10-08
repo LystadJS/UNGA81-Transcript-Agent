@@ -180,7 +180,7 @@ def run(checkpoint:Path,results:Path,model:Path|None=None)->dict:
     with tempfile.TemporaryDirectory(prefix='un_synthetic_source_') as directory:
         dest=Path(directory)/'fixture'
         subprocess.run(['node',str(HERE/'synthetic_un_fixture.cjs'),str(dest)],check=True,stdout=subprocess.DEVNULL,
-                       env={'PATH':'/usr/bin:/bin:/opt/nvm/versions/node/v22.16.0/bin'})
+                       env=None)
         corpus=json.loads((dest/'corpus.json').read_text())
         validate_artificial_corpus(corpus)
         # Invoke the unchanged production re-derivation (not a mocked parser).
