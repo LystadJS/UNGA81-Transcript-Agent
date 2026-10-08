@@ -61,3 +61,15 @@ GenAI API. Retain original source links and distinguish source text from officia
 agenda, actual votes, verified person identities, and government positions.
 Never infer stance from mere topic mentions. Preserve the existing publication
 gates and all 37 unopened reserved meetings.
+
+## Single-meeting quick-reader validation
+
+Preserve `site/meeting-quick-reader.js` as an offline, deterministic orientation
+only. A courteous opening never suffices to discard a long substantive source
+segment. Never assign an expressly collective statement to one country simply
+because that speaker has a national registry affiliation. Require a local
+first-person action/object match, preserve original wording and source pointers,
+and do not treat different policy objects as contradictory government stances.
+Agenda cues are transcript-procedural introductions, not verified agenda adoption.
+The exact October 1–4 development source may be audited privately; never open
+the 37 reserved October 5–6 transcripts without separate authorization.
