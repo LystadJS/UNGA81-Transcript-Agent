@@ -7,10 +7,12 @@ the PR-checkout merge CI has a separate gate requiring their execution.
 from __future__ import annotations
 
 import copy
+from dataclasses import asdict
 import hashlib
 import json
 from pathlib import Path
 import subprocess
+import sys
 import unittest
 
 import numpy as np
@@ -242,5 +244,67 @@ class AcceptedW1InteropTests(unittest.TestCase):
                 w1_model_id=MODEL_ID, repo_root=ROOT)
 
 
+def synthetic_receipt(destination: Path) -> dict:
+    """Aggregate-only SHA-verifiable W1-W3 evidence; never export source rows."""
+    manifest, x, envelope = paired_fixture()
+    policy = GraphPolicy(n_neighbors=len(x)-1, metric="euclidean", bandwidth=5.0)
+    fit = spectral_clustering(
+        build_affinity(x, policy), SpectralPolicy(n_clusters=3, seed=81))
+    comparison = compare_w1_partition(
+        manifest, x, fit, envelope, actual_approval(),
+        w1_model_id=MODEL_ID, repo_root=ROOT)
+    index = {r["observation_id"]: r for r in envelope["results"]
+             if r["model_id"] == MODEL_ID}
+    w1_labels = [index[r["id"]]["cluster"] for r in manifest["observations"]]
+    references = {
+        "independent_sklearn_ari": float(adjusted_rand_score(w1_labels, fit["labels"])),
+        "independent_sklearn_ami": float(adjusted_mutual_info_score(
+            w1_labels, fit["labels"])),
+    }
+    if not np.isclose(comparison["metrics"]["ari"], references["independent_sklearn_ari"],
+                      rtol=0, atol=1e-9):
+        raise RuntimeError("W1-W3 ARI disagrees with independent reference")
+    if not np.isclose(
+        comparison["metrics"]["adjusted_mutual_information"],
+        references["independent_sklearn_ami"], rtol=0, atol=1e-9
+    ):
+        raise RuntimeError("W1-W3 AMI disagrees with independent reference")
+    receipt = {
+        "schema": "un.w1-w3-synthetic-interoperability-receipt.v1",
+        "fixture_kind": "synthetic", "source_schema": manifest["upstream"]["source_schema"],
+        "source_sha256": manifest["upstream"]["source_sha256"],
+        "source_hash_basis": manifest["upstream"]["source_hash_basis"],
+        "selection_sha256": manifest["upstream"]["selection_sha256"],
+        "w1": {
+            "adapter_version": envelope["producer"]["adapter_version"],
+            "merged_commit_sha": W1_MERGED_SHA,
+            "producer_code_sha256": envelope["producer"]["code_sha256"],
+            "model_id": MODEL_ID, "representation_id": manifest["representation"]["id"],
+            "representation_version": manifest["representation"]["version"],
+        },
+        "w3": {
+            "graph_policy": asdict(policy), "spectral_policy": asdict(
+                SpectralPolicy(n_clusters=3, seed=81)),
+            "matrix_sha256": manifest["representation"]["matrix_sha256"],
+        },
+        "frame": {"eligible": len(manifest["observations"]),
+                  "excluded": len(manifest["excluded_observations"]),
+                  "unavailable_sources": manifest["unavailable_sources"]},
+        "comparison": comparison, "reference": references,
+        "heldout_transcripts_opened": 0,
+        "publication_eligible": False,
+        "evaluation_role": "engineering_only",
+    }
+    # No invented fixture ID, row-level assignment, passage, or original text is
+    # included in the public aggregate artifact.
+    destination.write_text(json.dumps(receipt, sort_keys=True, indent=2,
+                                      allow_nan=False) + "\n", encoding="utf8")
+    return receipt
+
+
 if __name__ == "__main__":
-    unittest.main()
+    if len(sys.argv) == 3 and sys.argv[1] == "--receipt":
+        synthetic_receipt(Path(sys.argv[2]))
+        print("Synthetic W1-W3 aggregate interoperability receipt generated")
+    else:
+        unittest.main()
