@@ -5,6 +5,7 @@
  */
 const {createHash} = require('node:crypto');
 const INTERCHANGE = require('../../docs/parallel-work/interchange-v1.schema.json');
+const CONSENSUS_SCHEMA = require('./consensus-v1.schema.json');
 const VERSION = '0.1.0';
 const SHA = /^[0-9a-f]{64}$/;
 const TYPES = new Set(['baseline', 'leave_group_out', 'group_bootstrap']);
@@ -406,7 +407,7 @@ function runConsensus(envelopes, options = {}) {
   const uncertaintyRows = sourceResamples ? pairs.filter(p => p.observation_a !== p.observation_b)
     .map(p => ({observation_a:p.observation_a,observation_b:p.observation_b,...uncertainty(p.observation_a,p.observation_b,fits)})) : [];
   const unassigned = ids.filter(id => !groups.membership.has(id));
-  return {
+  const output = {
     schema:'un.consensus.v1', version:VERSION, contract_schema:'un.parallel-analysis.v1',
     evaluation_role:'engineering_only', publication_eligible:false,
     source:{...base.upstream, cohort:base.cohort, observation_keys:ids.map(id => ({id,
@@ -438,6 +439,8 @@ function runConsensus(envelopes, options = {}) {
       'Stable nuisance-driven partitions may persist; no null significance or universal best-model claim is made.',
       'Selection, source-genre, representation, and configuration-search effects remain potential confounders.'
     ]};
+  validateConsensus(output);
+  return output;
 }
 function toInterchangeV1(input, consensus, options = {}) {
   validateEnvelope(input);
@@ -482,4 +485,72 @@ function toInterchangeV1(input, consensus, options = {}) {
   validateEnvelope(output);
   return output;
 }
-module.exports = {VERSION, validateEnvelope, extract, weightsFor, pairFor, ari, runConsensus, toInterchangeV1};
+
+/** Verify the saved sidecar separately from the original fit records. */
+function validateConsensus(out) {
+  schemaCheck(CONSENSUS_SCHEMA, out);
+  const ids = out.observation_ids;
+  check(ids.length > 0 && ids.length <= 256 && new Set(ids).size === ids.length,
+    'sidecar observation identities must be distinct');
+  check(out.source.observation_keys.length === ids.length &&
+    ids.every((id, i) => out.source.observation_keys[i].id === id &&
+      SHA.test(out.source.observation_keys[i].text_sha256)), 'source links/hashes are not aligned');
+  const n = ids.length, cols = Object.keys(out.matrix), key = new Map();
+  check(out.pairs.length === n * (n + 1) / 2, 'sidecar pair count is incomplete');
+  for (const p of out.pairs) {
+    const k = stable([p.observation_a, p.observation_b]);
+    check(!key.has(k) && ids.includes(p.observation_a) && ids.includes(p.observation_b) &&
+      p.observation_a <= p.observation_b, 'duplicate, missing, or unsorted pair identity');
+    key.set(k, p);
+    check(p.coassigned_count <= p.assigned_both_count && p.assigned_both_count <= p.planned_count &&
+      p.planned_count === p.assigned_both_count + p.missing_pair_count + p.noise_pair_count,
+      'raw pair-opportunity accounting mismatch');
+    check(p.coassigned_weight <= p.assigned_both_weight + 1e-9 &&
+      p.assigned_both_weight <= p.planned_weight + 1e-9, 'weighted opportunity accounting mismatch');
+    check((p.assigned_both_count === 0) === (p.association === null), 'null association/denominator mismatch');
+    if (p.association !== null) check(Math.abs(p.association -
+      p.coassigned_weight / p.assigned_both_weight) <= 1e-8, 'weighted association differs from numerator/denominator');
+    if (p.planned_weight > 0) check(Math.abs(p.assignment_coverage -
+      p.assigned_both_weight / p.planned_weight) <= 1e-8, 'pair coverage differs from denominator');
+  }
+  for (const col of cols) {
+    check(out.matrix[col].length === n, 'bad matrix row count');
+    for (let i = 0; i < n; i++) {
+      check(out.matrix[col][i].length === n, 'bad matrix column count');
+      for (let j = 0; j < n; j++) {
+        const p = key.get(stable(i <= j ? [ids[i], ids[j]] : [ids[j], ids[i]]));
+        check(p && out.matrix[col][i][j] === p[col], 'matrix/pair ledger mismatch at ' + col);
+      }
+    }
+  }
+  check(Math.abs(out.family_weight_audit.reduce((s, f) => s + f.total_weight, 0) - 1) < 1e-9,
+    'method-family weights must sum to one');
+  for (const f of out.family_weight_audit) {
+    check(Math.abs(f.records.reduce((s, x) => s + x.planned_weight, 0) - f.total_weight) < 1e-9,
+      'per-model weight audit mismatch');
+    check(f.internal_attempts >= f.internal_failures, 'failed attempts exceed planned attempts');
+  }
+  const seen = new Set();
+  for (const g of out.reproducible_groups) {
+    check(g.members.length >= 2 && g.source_group_count >= out.thresholds.min_source_groups,
+      'invalid descriptive reproducible group');
+    for (const a of g.members) {
+      check(ids.includes(a) && !seen.has(a), 'observation belongs to multiple groups');
+      seen.add(a);
+      for (const b of g.members) {
+        if (a >= b) continue;
+        const p = key.get(stable([a, b]));
+        check(p && p.association >= out.thresholds.min_association &&
+          p.assignment_coverage >= out.thresholds.min_coverage &&
+          p.contributing_families.length >= out.thresholds.min_families,
+          'complete-link group contains unsupported pair');
+      }
+    }
+  }
+  check(out.ungrouped_observations.length + seen.size === n &&
+    out.ungrouped_observations.every(id => ids.includes(id) && !seen.has(id)),
+    'ungrouped and grouped membership ledger incompatible');
+  return true;
+}
+
+module.exports = {VERSION, validateEnvelope, validateConsensus, extract, weightsFor, pairFor, ari, runConsensus, toInterchangeV1};
