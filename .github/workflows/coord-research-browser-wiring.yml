@@ -1,0 +1,96 @@
+name: Coordinator research browser wiring (synthetic only)
+on:
+  pull_request:
+    paths:
+      - 'site/research.html'
+      - 'site/research.css'
+      - 'site/research-browser.js'
+      - 'site/index.html'
+      - 'site/latent.html'
+      - 'tools/build_pages.py'
+      - 'tools/test_research_browser_*'
+      - 'docs/parallel-work/BROWSER_WIRING_REVIEW.md'
+      - '.github/workflows/coord-research-browser-wiring.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  contract-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: W5/W6 shared preview source-contract and negative checks
+        run: |
+          node --test tools/test_research_browser_wiring.cjs
+          node docs/parallel-work/validate-contract.cjs
+          node --test site/experimental/evidence-viz/tests.cjs
+          node site/parallel/w05-browser/experimental/method-lab/test-method-lab.cjs
+      - name: Static asset allowlist and existing browser regression
+        run: |
+          python tools/test_research_browser_build.py
+          node tools/test_latent.cjs
+          node tools/test_browser_analysis.cjs
+      - name: Verify frozen evaluation and public manifest not modified
+        run: |
+          python - <<'PY'
+          import pathlib,subprocess
+          baseline='21c1d5298a1a83b27a98f0e7b50113765bc023d0'
+          files=subprocess.check_output(['git','diff','--name-only',baseline,'HEAD'],text=True).splitlines()
+          protected=['research/reference_tests/evaluation-lock.json','site/release.json',
+                     'site/numerics-manifest.json','AGENTS.md','docs/NEXT_STEPS.md']
+          assert not any(p in files for p in protected),files
+          assert not any(x.startswith(('un/','research/corpus/','research/reference_tests/')) for x in files),files
+          assert not any(x.startswith('site/experimental/evidence-viz/') or
+                         x.startswith('site/parallel/w05-browser/') for x in files),files
+          print('PASS: protected source and source/worker namespaces unchanged')
+          PY
+  chromium:
+    needs: contract-and-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install local-browser QA harness
+        run: |
+          python -m pip install playwright==1.55.0
+          (command -v google-chrome || command -v chromium)
+      - name: Build allowlisted static browser in an isolated output directory
+        run: python tools/build_pages.py "$RUNNER_TEMP/research-site"
+      - name: Real Chromium desktop/mobile and source-safety checks
+        shell: bash
+        run: |
+          BROWSER="$(command -v google-chrome || command -v chromium)"
+          python tools/test_research_browser_ui.py \
+            --site "$RUNNER_TEMP/research-site" \
+            --outdir "$RUNNER_TEMP/research-browser-qa" \
+            --browser-path "$BROWSER"
+      - name: W5 existing real-Chromium local execution regression
+        shell: bash
+        run: |
+          BROWSER_BIN="$(command -v google-chrome || command -v chromium)" \
+            node site/parallel/w05-browser/experimental/method-lab/test-browser.cjs
+      - name: Upload synthetic-only browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coordinator-research-wiring-synthetic-qa
+          path: ${{ runner.temp }}/research-browser-qa/
+          retention-days: 7
+          if-no-files-found: warn
