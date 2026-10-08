@@ -11,10 +11,10 @@ const os=require('node:os');
 const path=require('node:path');
 const http=require('node:http');
 const {setTimeout:delay}=require('node:timers/promises');
-const UNClusters=require('../../../cluster-core.js');
-const UNLSA=require('../../../lsa-core.js');
+const UNClusters=require('../../../../cluster-core.js');
+const UNLSA=require('../../../../lsa-core.js');
 
-const SITE=path.resolve(__dirname,'../../../');
+const SITE=path.resolve(__dirname,'../../../../');
 const PREFIX='/parallel/w05-browser/experimental/method-lab/';
 const MIME={'.js':'text/javascript','.json':'application/json','.html':'text/html','.css':'text/css'};
 const server=http.createServer((req,res)=>{
