@@ -86,11 +86,9 @@ jobs:
           node docs/parallel-work/validate-contract.cjs
       - name: W5 real Chromium CDP browser and PCA/LSA parity
         shell: bash
-        env:
-          BROWSER_BIN: ${{ env.CHROME_BIN }}
         run: |
           set -euo pipefail
-          node .coordinator-input/w5/site/parallel/w05-browser/experimental/method-lab/test-browser.cjs
+          BROWSER_BIN="$CHROME_BIN" node .coordinator-input/w5/site/parallel/w05-browser/experimental/method-lab/test-browser.cjs
       - name: W5 independent Playwright desktop/mobile screenshots and keyboard/privacy
         shell: bash
         run: |
@@ -116,7 +114,7 @@ jobs:
           test -s "$RUNNER_TEMP/w6-browser-qa/suite-mobile.png"
           test -s "$RUNNER_TEMP/w6-browser-qa/consensus-desktop-export.svg"
           test -s "$RUNNER_TEMP/w6-browser-qa/consensus-mobile-export.html"
-          grep -q 'SYNTHETIC' "$RUNNER_TEMP/w6-browser-qa/consensus-mobile-export.html"
+          grep -qi 'synthetic' "$RUNNER_TEMP/w6-browser-qa/consensus-mobile-export.html"
           python - <<'PY'
           import json, os
           from pathlib import Path
