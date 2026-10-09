@@ -287,7 +287,7 @@ class SourceSeparatedPilotTests(unittest.TestCase):
         expected = [{"source_id": r["source_id"], "split": r["split"]}
                     for r in plan["assignment"] if r["split"] in PILOT.SPLITS]
         write_rows(self.ws / "splits.csv",
-                   PILOT.review.SCHEMAS["splits"].split(), expected)
+                   PILOT.REVIEW_TABLE_HEADERS["splits"], expected)
         (self.ws / "bundle.json").write_text(json.dumps({
             "schema": "un.review.v1",
             "dataset_kind": "real",
@@ -319,9 +319,9 @@ class SourceSeparatedPilotTests(unittest.TestCase):
                 "rationale": "Invented self-finalization solely for CI.",
             })
         write_rows(self.ws / "annotations.csv",
-                   PILOT.review.SCHEMAS["annotations"].split(), rows)
+                   PILOT.REVIEW_TABLE_HEADERS["annotations"], rows)
         write_rows(self.ws / "adjudications.csv",
-                   PILOT.review.SCHEMAS["adjudications"].split(), resolved)
+                   PILOT.REVIEW_TABLE_HEADERS["adjudications"], resolved)
         return plan, location
 
     def test_synthetic_owner_finalized_status_not_independent_gold(self) -> None:
@@ -340,7 +340,7 @@ class SourceSeparatedPilotTests(unittest.TestCase):
             encoding="utf-8", newline="")))
         rows[0]["split"] = ("test" if rows[0]["split"] != "test" else "train")
         write_rows(self.ws / "splits.csv",
-                   PILOT.review.SCHEMAS["splits"].split(), rows)
+                   PILOT.REVIEW_TABLE_HEADERS["splits"], rows)
         with self.assertRaisesRegex(ValueError, "does not match frozen source plan"):
             PILOT.reviewed_label_status(self.ws, location, self.codebook)
 
