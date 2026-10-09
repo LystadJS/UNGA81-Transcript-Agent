@@ -167,6 +167,17 @@ async function checkAnnotation(browser, temporary, width) {
     assert.match(await page.locator('article textarea').inputValue(), /entirely invented/);
     assert.equal(await page.locator('#attest').isChecked(), true);
 
+    // A duplicated ID inside the imported draft remains invalid, even though
+    // a legitimate one-item replay over existing local state is now allowed.
+    const duplicated = { ...downloaded,
+      decisions: [...downloaded.decisions, downloaded.decisions[0]] };
+    const duplicatePath = path.join(temporary, 'duplicate-draft-' + width + '.json');
+    fs.writeFileSync(duplicatePath, JSON.stringify(duplicated), { flag: 'wx' });
+    await page.locator('#resume').setInputFiles(duplicatePath);
+    await page.waitForFunction(() => document.getElementById('status')
+      .textContent.includes('Unknown/duplicate draft item'));
+    assert.match(await page.locator('#status').innerText(), /duplicate/);
+
     // Incompatible packet digests must fail closed, not restore another review.
     const wrong = { ...downloaded, packet_sha256: 'b'.repeat(64) };
     const wrongPath = path.join(temporary, 'wrong-draft-' + width + '.json');
