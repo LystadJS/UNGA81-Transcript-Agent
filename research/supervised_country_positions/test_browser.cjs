@@ -119,6 +119,8 @@ async function checkAnnotation(browser, temporary, width) {
         scope: 'Fictional AI governance policy object.',
         exclusion_rule: 'Generic AI mentions cannot establish a stance.',
         quote: 'Invented example supports a fictional binding AI rule.',
+        context_before: 'Invented preceding context only.',
+        context_after: 'Invented following context only.',
         source_url: 'https://example.org/fictional-original',
         start: 0, end: 52
       }]
@@ -129,9 +131,13 @@ async function checkAnnotation(browser, temporary, width) {
     await page.waitForFunction(() => !document.getElementById('save').disabled);
     assert.equal(await page.locator('#items article').count(), 1);
     assert.equal(await page.locator('#items a').count(), 1);
+    assert.equal(await page.locator('article details').count(), 1);
+    await page.locator('article summary').click();
+    assert.match(await page.locator('article details').innerText(), /Invented preceding context/);
     assert.equal(await page.locator('#items a').first().getAttribute('rel'), 'noopener noreferrer');
 
     await page.locator('#reviewer').fill('reviewer-test');
+    await page.locator('#attest').check();
     const selects = page.locator('article .answers select');
     await selects.nth(0).selectOption('relevant');
     await selects.nth(1).selectOption('support');
@@ -146,6 +152,7 @@ async function checkAnnotation(browser, temporary, width) {
     const downloaded = JSON.parse(fs.readFileSync(await download.path(), 'utf8'));
     assert.equal(downloaded.finalized, false);
     assert.equal(downloaded.human_gold, false);
+    assert.equal(downloaded.human_confirmation, true);
     assert.equal(downloaded.publication_eligible, false);
     assert.equal(downloaded.decisions.length, 1);
     assert.equal(downloaded.decisions[0].issue_label, 'relevant');
@@ -158,12 +165,26 @@ async function checkAnnotation(browser, temporary, width) {
     assert.equal(await selects.nth(0).inputValue(), 'relevant');
     assert.equal(await selects.nth(1).inputValue(), 'support');
     assert.match(await page.locator('article textarea').inputValue(), /entirely invented/);
+    assert.equal(await page.locator('#attest').isChecked(), true);
+
+    // A duplicated ID inside the imported draft remains invalid, even though
+    // a legitimate one-item replay over existing local state is now allowed.
+    const duplicated = { ...downloaded,
+      decisions: [...downloaded.decisions, downloaded.decisions[0]] };
+    const duplicatePath = path.join(temporary, 'duplicate-draft-' + width + '.json');
+    fs.writeFileSync(duplicatePath, JSON.stringify(duplicated), { flag: 'wx' });
+    await page.locator('#resume').setInputFiles(duplicatePath);
+    await page.waitForFunction(() => document.getElementById('status')
+      .textContent.includes('Unknown/duplicate draft item'));
+    assert.match(await page.locator('#status').innerText(), /duplicate/);
 
     // Incompatible packet digests must fail closed, not restore another review.
     const wrong = { ...downloaded, packet_sha256: 'b'.repeat(64) };
     const wrongPath = path.join(temporary, 'wrong-draft-' + width + '.json');
     fs.writeFileSync(wrongPath, JSON.stringify(wrong), { flag: 'wx' });
     await page.locator('#resume').setInputFiles(wrongPath);
+    await page.waitForFunction(() => document.getElementById('status')
+      .textContent.includes('mismatch'));
     assert.match(await page.locator('#status').innerText(), /mismatch/);
     await assertNoOverflow(page);
     assert.equal(getExternalRequests(), 0);

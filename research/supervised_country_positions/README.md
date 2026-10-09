@@ -81,3 +81,64 @@ The packet records sources without retrievable original evidence, checks exact p
 5. Obtain separate coordinator integration acceptance before any shared browser, publication gate, daily pipeline, public asset or website mirror change.
 
 **Frozen protections:** no actual transcript bytes, private annotation rows, real scores or country assignments are committed; the 37 reserved October 5–6 meeting texts remain unopened; original hashes, human choices and D1 O1–O5 gates remain unchanged.
+
+
+## First real-source annotation pilot (planning and intake only)
+
+The protocol is frozen in **pilot_protocol.v1.json**.  Read **ANNOTATION_CODEBOOK.md** before assigning a label.  The new *pilot_pipeline.py* builds a **private** original-PV-quality-gated source roster, deterministic source-disjoint train/calibration/test allocations, and split-specific blind review packets.  No source-linked row data or real model output is committed to GitHub.
+
+This is a different deliverable from the fictional synthetic network.  The pre-existing owner-reviewed AI **issue relevance** pilot contains 24 decisions but **no two-proposition human stance gold**.  The prior historical corpus analysis described an original-PV-strong candidate subset; its **private source/PDF bytes and source-row quality manifest are not accessible from this conversation**.  Thus no real stance labels, actual country group assignments, or empirical score can be claimed yet.
+
+### Required private input
+
+Place the original reviewed speech text bytes and exact **un.review.v1** CSVs in a private workspace **outside this public Git checkout**.  For each canonical source ID, also fill a private **source_quality.csv**, using **source_quality.template.csv** as the required header.  It must reflect an actual P2 or later original-UN-PV audit, not an invented verification.
+
+- Source entries must record genuine official UN HTTPS URLs, canonical text SHA-256, ISO3, English General Debate date, and source family.
+- Source quality must include official A/session/PV.meeting symbol, **previously checked** original PDF digest, strong full-speech correspondence, official-PV method, individual recorded country capacity and verification basis.
+- The planner **rechecks canonical text bytes and offsets**, but does **not independently replay PDF bytes or certify a real speaker's identity**.  Missing or contradictory quality records are withheld.
+- Only **2016–2023** comparable sources can enter the split; 2024–2025 modality discontinuities and all reserved October 5–6, 2026 meeting texts are ineligible.
+
+### Reproducible private CLI
+
+From the repository root (use actual absolute private paths, not literal placeholders):
+
+    python3 research/supervised_country_positions/pilot_pipeline.py plan \
+      --workspace PRIVATE_UN_REVIEW_WORKSPACE \
+      --outdir PRIVATE_PILOT_OUTPUT \
+      --seed 20261009
+
+This creates a digest-locked private pilot_plan.json and un.review.v1-compatible splits.csv, plus a **complete disposition ledger** for missing/ineligible source rows.  Assignment uses 2016–2019 train, 2020–2021 calibration and 2022–2023 test windows, with *country-disjoint* groups and frozen family/full-text hashes.  It does not generate new interviews, speaker identities, transcripts, or labels.
+
+Then produce the first **development-only** packet:
+
+    python3 research/supervised_country_positions/pilot_pipeline.py packet \
+      --workspace PRIVATE_UN_REVIEW_WORKSPACE \
+      --plan PRIVATE_PILOT_OUTPUT/pilot_plan.json \
+      --split train --count-per-proposition 48 \
+      --output PRIVATE_PILOT_OUTPUT/train-review.json
+
+Open **annotation.html** locally and import the train packet.  Review the two named propositions using original source context, then export the private draft.  For the owner-approved single-reviewer pilot, check the explicit first-person attestation only after personally completing the selected decisions.  The unreviewed/backup draft remains a draft; **it is never rebranded as gold automatically**.
+
+Verify a genuinely owner-attested draft (private, aggregate report only):
+
+    python3 research/supervised_country_positions/pilot_pipeline.py audit \
+      --packet PRIVATE_PILOT_OUTPUT/train-review.json \
+      --draft PRIVATE_PILOT_OUTPUT/country-position-private-draft.json \
+      --output PRIVATE_PILOT_OUTPUT/train-review-audit.json
+
+After actual owner finalization, copy the frozen splits.csv into the private reviewed workspace, fill the original un.review.v1 annotations and adjudications tables, and explicitly attest review completion in the private bundle.json.  Use this separate status audit to count only the named proposition stances backed by matching split IDs, source hashes, passage offsets, reviewer records and finalized choices:
+
+    python3 research/supervised_country_positions/pilot_pipeline.py status \
+      --workspace PRIVATE_UN_REVIEW_WORKSPACE \
+      --plan PRIVATE_PILOT_OUTPUT/pilot_plan.json \
+      --output PRIVATE_PILOT_OUTPUT/owner-label-status.json
+
+Before actual human review, the status is **zero owner-attested stance labels**.  The status command does not call existing model fitting, claim independent annotator agreement, or unlock empirical outputs.  Do not mark human_review_complete before the owner has genuinely reviewed and finalized the records.
+
+After full human review, use the original un.review.v1 exporter/finalization and validator.  Calibration may receive its own separately sourced review packet later.  The **test packet cannot be generated without an explicit --authorize-test-review flag** and must not inform codebook, feature, threshold or model selection.  There is no live real-data training adapter in this phase.
+
+Pilot planning targets **96 development, 32 calibration and 32 held-out test proposition–passage pairs**, equally divided between the two propositions.  These are **targets**, not achieved sample sizes; shortages are surfaced.  Roughly 70% of targets use predeclared lexical screens and 30% unfiltered random controls, both **unlabeled**.  The source-frame is purposively verified and cannot establish corpus-wide rates.
+
+Native synthetic acceptance includes **test_pilot_pipeline.py**, invoked through the original read-only CI workflow via test_prepare_review.py.  All unchanged M12/M17 and publication gates remain intact.
+
+**Current empirical gate:** NO HUMAN PROPOSITION-STANCE GOLD; NO VERIFIED PRIVATE SOURCE INPUT IN THIS TURN; NO REAL TRAIN/CALIBRATION/TEST ALLOCATION GENERATED; NOT PUBLICATION ELIGIBLE.
