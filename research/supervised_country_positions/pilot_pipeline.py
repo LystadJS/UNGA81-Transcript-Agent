@@ -575,6 +575,11 @@ def reviewed_label_status(workspace: Path, plan_path: Path,
     require(bundle.get("review_mode") == "single_reviewer_pilot" and
             bundle.get("validation_scheme") == "time_and_country",
             "Only the owner-approved, country-separated pilot is supported")
+    try:
+        cutoff = datetime.fromisoformat(bundle["cutoff"].replace("Z", "+00:00"))
+        require(cutoff.tzinfo is not None, "Human review cutoff requires UTC offset")
+    except (ValueError, KeyError, TypeError) as exc:
+        raise ValueError("A valid owner review cutoff timestamp is required") from exc
     expected_splits = {
         r["source_id"]: r["split"] for r in plan["assignment"] if r["split"] in SPLITS
     }
@@ -642,6 +647,17 @@ def reviewed_label_status(workspace: Path, plan_path: Path,
         allowed = review.LABELS[a["task"]]
         require(label in allowed and single[0]["label"] in allowed,
                 "Invalid reviewed/final label")
+        try:
+            reviewed_at = datetime.fromisoformat(
+                single[0]["reviewed_at"].replace("Z", "+00:00"))
+            finalized_at = datetime.fromisoformat(
+                a["adjudicated_at"].replace("Z", "+00:00"))
+            require(reviewed_at.tzinfo is not None and
+                    finalized_at.tzinfo is not None and
+                    reviewed_at <= finalized_at <= cutoff,
+                    "Invalid reviewed/finalized chronology or cutoff")
+        except (ValueError, TypeError) as exc:
+            raise ValueError("Invalid human reviewed/finalized UTC timestamp") from exc
         final[key] = (sid, label)
     require(set(reviews) == set(final),
             "Unfinalized owner annotations remain in the selected proposition tasks")
