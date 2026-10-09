@@ -154,7 +154,8 @@ def classify_source(src: dict, quality: dict | None) -> str | None:
             quality["verification_basis"] != "original_pv_full_speech" or
             quality["country_capacity"] != "individual"):
         return "original_source_or_attribution_not_eligible"
-    if not PV.fullmatch(quality["official_document_symbol"]):
+    if (not PV.fullmatch(quality["official_document_symbol"]) or
+            int(quality["official_document_symbol"].split("/")[1]) != year - 1945):
         return "official_document_symbol_unverified"
     if (not HEX.fullmatch(quality["original_pdf_sha256"]) or
             not quality["source_family_id"]):
@@ -372,6 +373,10 @@ def make_packet(workspace: Path, plan_path: Path, codebook_path: Path,
                         if r["split"] == split}
     require(bool(eligible_sources), "No eligible source group in requested split")
     all_sources, _, _ = load_source_frame(workspace)
+    # Refuse even opening a shared passage CSV if it could include the 37
+    # reserved October 5–6 meeting passages (regardless of the planned split).
+    require(not any(src["event_date"] in RESERVED for src in all_sources),
+            "Workspace contains reserved meeting metadata; never open its passage table")
     source_index = {r["source_id"]: r for r in all_sources}
     excerpts = load_table(workspace / "passages.csv",
                           review.FIELDS["passages"].split())
