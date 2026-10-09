@@ -24,6 +24,11 @@ QUALITY_HEADERS = (
     "source_id official_document_symbol original_pdf_sha256 match_status "
     "source_method country_capacity source_family_id verification_basis"
 ).split()
+REVIEW_TABLE_HEADERS = {
+    "splits": "source_id split".split(),
+    "annotations": "annotation_id passage_id task proposition_id label reviewer_id reviewed_at rationale".split(),
+    "adjudications": "passage_id task proposition_id final_label adjudicator_id adjudicated_at rationale".split(),
+}
 SPLITS = ("train", "calibration", "test")
 YEARS = {"train": (2016, 2019), "calibration": (2020, 2021), "test": (2022, 2023)}
 SHARES = (0.60, 0.20, 0.20)
@@ -584,7 +589,7 @@ def reviewed_label_status(workspace: Path, plan_path: Path,
         r["source_id"]: r["split"] for r in plan["assignment"] if r["split"] in SPLITS
     }
     actual_splits = load_table(
-        workspace / "splits.csv", review.SCHEMAS["splits"].split())
+        workspace / "splits.csv", REVIEW_TABLE_HEADERS["splits"])
     require(len(actual_splits) == len(expected_splits) and
             {r["source_id"]: r["split"] for r in actual_splits} == expected_splits,
             "Working review split CSV does not match frozen source plan")
@@ -592,9 +597,9 @@ def reviewed_label_status(workspace: Path, plan_path: Path,
     require(not any(r["event_date"] in RESERVED for r in source_rows),
             "Reserved-meeting passage rows may not be read")
     annotations = load_table(
-        workspace / "annotations.csv", review.SCHEMAS["annotations"].split())
+        workspace / "annotations.csv", REVIEW_TABLE_HEADERS["annotations"])
     adjudications = load_table(
-        workspace / "adjudications.csv", review.SCHEMAS["adjudications"].split())
+        workspace / "adjudications.csv", REVIEW_TABLE_HEADERS["adjudications"])
     passages = load_table(
         workspace / "passages.csv", review.FIELDS["passages"].split())
     passage_to_source = {}
@@ -644,7 +649,8 @@ def reviewed_label_status(workspace: Path, plan_path: Path,
                 len(single[0]["rationale"].strip()) >= 8,
                 "Missing actual owner review and same-owner finalization")
         label = a["final_label"]
-        allowed = review.LABELS[a["task"]]
+        allowed = (review.ISSUE_LABELS if a["task"] == "issue" else
+                   review.STANCE_LABELS)
         require(label in allowed and single[0]["label"] in allowed,
                 "Invalid reviewed/final label")
         try:
