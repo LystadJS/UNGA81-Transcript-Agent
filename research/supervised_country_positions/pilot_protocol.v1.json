@@ -1,0 +1,136 @@
+{
+  "schema": "un.country-positions.pilot-protocol.v1",
+  "version": "1.0.0",
+  "status": "source_and_sampling_protocol_frozen_before_annotation",
+  "review_role": "owner_single_reviewer_pilot",
+  "intended_questions": [
+    {
+      "issue": "Cuba",
+      "proposition_id": "cub_embargo",
+      "target": "Ending the US economic embargo against Cuba"
+    },
+    {
+      "issue": "Ukraine",
+      "proposition_id": "ukr_sovereignty",
+      "target": "Respect for Ukraine's sovereignty and territorial integrity"
+    }
+  ],
+  "source_requirements": {
+    "years": [
+      2016,
+      2023
+    ],
+    "periods": {
+      "train": [
+        2016,
+        2019
+      ],
+      "calibration": [
+        2020,
+        2021
+      ],
+      "test": [
+        2022,
+        2023
+      ]
+    },
+    "genre": "general_debate",
+    "language": "en",
+    "source_method": "official_pv",
+    "text_match": "strong",
+    "country_capacity": "individual",
+    "verified_original_pdf_sha256": "required_as_qc_attestation",
+    "canonical_text_sha256": "verified_by_code",
+    "source_urls": "official_UN_https_only",
+    "excluded_periods": [
+      "2024-2025 measurement-modality discontinuity",
+      "2026 reserved October 5-6 meeting texts"
+    ]
+  },
+  "frozen_split": {
+    "seed": 20261009,
+    "method": "country-affiliation SHA256 ranking; 60% train, 20% calibration, 20% test; only matching year window records retained",
+    "dependencies": [
+      "country",
+      "source_family",
+      "full_text_sha256",
+      "event_date"
+    ],
+    "disjointness": [
+      "country between splits",
+      "original source family between splits",
+      "canonical full text digest between splits"
+    ],
+    "withholds": [
+      "outside period",
+      "unverified source QC",
+      "collective or unresolved capacity",
+      "cross-country duplicated source",
+      "other years for allocated country"
+    ],
+    "no_review_outcomes_looked_at": true
+  },
+  "annotation_design": {
+    "intended_pairs": {
+      "train": 96,
+      "calibration": 32,
+      "test": 32
+    },
+    "per_proposition": {
+      "train": 48,
+      "calibration": 16,
+      "test": 16
+    },
+    "sampling_routes": {
+      "lexical_screen": 0.7,
+      "unfiltered_controls": 0.3
+    },
+    "source_family_cap_per_route": 2,
+    "source_context_codepoints_before_after": 220,
+    "labels_issue": [
+      "relevant",
+      "not_relevant",
+      "insufficient"
+    ],
+    "labels_stance": [
+      "support",
+      "oppose",
+      "conditional",
+      "descriptive",
+      "insufficient"
+    ],
+    "source_reviewer_binding": "each item contains original source ID text SHA and exact Unicode offsets",
+    "owner_attestation_required": true,
+    "label_origin": "owner-confirmed only; never assistant-provisional or invented",
+    "sample_sufficiency": "pilot quotas are targets, not achieved counts; missing quota reported"
+  },
+  "evaluation": {
+    "train": "initial human review and codebook errors only",
+    "calibration": "independent source and country groups; thresholds/calibration only after training",
+    "test": "frozen and withheld from modeling/tuning; producing test review packet requires explicit flag",
+    "prerequisites": [
+      "real source manifest and private original bytes",
+      "source quality attestation",
+      "human decisions",
+      "source separated heldout validity"
+    ],
+    "performance_metrics": [
+      "issue recall and precision by class",
+      "per-class stance precision/recall",
+      "macro F1",
+      "coverage-versus-abstention",
+      "multiclass calibration",
+      "source and country error audit"
+    ],
+    "scientific_status": "withheld",
+    "daily_publication_eligible": false,
+    "country_alignment_output_eligible": false
+  },
+  "record_provenance": {
+    "historical_source_reconciliation": "restricted nonrandom P2 verified sample; does not establish population representativeness",
+    "source_pdf_checks": "QC manifest attests prior private verification; pilot planner checks canonical text bytes only",
+    "real_labels_confirmed_at_creation": 0,
+    "known_owner_ai_relevance_reviews_from_separate_pilot": 24,
+    "usable_prior_position_stance_gold": 0
+  }
+}
