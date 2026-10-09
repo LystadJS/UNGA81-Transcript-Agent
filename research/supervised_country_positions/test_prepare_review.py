@@ -167,5 +167,9 @@ class ReviewPacketTest(unittest.TestCase):
             self.prepare(output=ROOT / "forbidden-private-packet.json")
 
 
+# Native CI already invokes this legacy entry point. Include the independently
+# defined grouped/split pilot tests without editing coordinator-owned CI.
+from test_pilot_pipeline import SourceSeparatedPilotTests  # noqa: E402
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
