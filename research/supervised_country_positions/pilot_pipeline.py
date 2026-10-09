@@ -109,6 +109,8 @@ def verified_plan(data: dict) -> dict:
     body = {key: val for key, val in data.items() if key != "plan_sha256"}
     require(digest(stable(body)) == claimed, "Frozen pilot-plan digest mismatch")
     require(data.get("publication_eligible") is False and
+            data.get("model_fitted") is False and
+            data.get("gold_stance_labels") == 0 and
             data.get("human_stance_labels") == 0 and
             data.get("evaluation_role") == "allocation_only",
             "Pilot plan is not a fitted or reviewed model")
@@ -417,7 +419,9 @@ def make_packet(workspace: Path, plan_path: Path, codebook_path: Path,
         prop = prop_map[prop_id]
         screen = [row for row in candidates if any(
             cue in row["quote"].casefold() for cue in CUES[prop_id])]
-        control = [row for row in candidates if row not in screen]
+        matched = {(row["source_id"], row["passage_id"]) for row in screen}
+        control = [row for row in candidates if
+                   (row["source_id"], row["passage_id"]) not in matched]
         primary_target = round(count_per_proposition * .70)
         primary = chosen(screen, primary_target, seed, prop_id + "|screen")
         controls = chosen(control, count_per_proposition - len(primary),
