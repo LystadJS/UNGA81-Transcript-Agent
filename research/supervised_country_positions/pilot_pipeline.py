@@ -541,6 +541,101 @@ def inspect_draft(packet: dict, draft: dict) -> dict:
     }
 
 
+def reviewed_label_status(workspace: Path, plan_path: Path,
+                          codebook_path: Path) -> dict:
+    """Read *only* attested private review tables; never promote provisional labels.
+
+    This is a ledger/status tool, not an independent validation of reviewer
+    identity, PDF bytes, classification accuracy or training eligibility.
+    """
+    workspace = private_workspace(workspace)
+    plan = check_plan_against_sources(
+        review.load_json(plan_path), workspace, codebook_path)
+    included = {r["source_id"]: r for r in plan["assignment"]
+                if r["split"] in SPLITS}
+    result = {
+        "schema": "un.country-positions.reviewed-label-status.v1",
+        "plan_sha256": plan["plan_sha256"],
+        "human_review_attested": False,
+        "independent_gold": False,
+        "model_training_eligible": False,
+        "publication_eligible": False,
+        "reviewed_stance_labels": 0,
+        "reviewed_issue_labels": 0,
+        "stance_by_split": {s: 0 for s in SPLITS},
+        "issue_by_split": {s: 0 for s in SPLITS},
+        "status": "AWAITING_OWNER_FINALIZATION",
+    }
+    bundle = review.load_json(workspace / "bundle.json")
+    require(bundle.get("schema") == "un.review.v1", "Invalid reviewed bundle")
+    if bundle.get("dataset_kind") != "real" or \
+            bundle.get("human_review_complete") is not True:
+        # An annotation row or draft is NOT human gold merely by existing.
+        return result
+    require(bundle.get("review_mode") == "single_reviewer_pilot",
+            "Only the owner-approved single-reviewer pilot is supported here")
+    source_rows, _, _ = load_source_frame(workspace)
+    require(not any(r["event_date"] in RESERVED for r in source_rows),
+            "Reserved-meeting passage rows may not be read")
+    annotations = load_table(
+        workspace / "annotations.csv", review.SCHEMAS["annotations"].split())
+    adjudications = load_table(
+        workspace / "adjudications.csv", review.SCHEMAS["adjudications"].split())
+    passages = load_table(
+        workspace / "passages.csv", review.FIELDS["passages"].split())
+    passage_to_source = {}
+    for p in passages:
+        require(p["passage_id"] not in passage_to_source,
+                "Duplicate reviewed passage ID")
+        passage_to_source[p["passage_id"]] = p["source_id"]
+    reviews = defaultdict(list)
+    valid_propositions = set(PLAN_PROP_IDS)
+    for a in annotations:
+        if a["task"] not in ("issue", "stance") or \
+                a["proposition_id"] not in valid_propositions:
+            continue
+        key = (a["passage_id"], a["task"], a["proposition_id"])
+        reviews[key].append(a)
+    final = {}
+    for a in adjudications:
+        if a["task"] not in ("issue", "stance") or \
+                a["proposition_id"] not in valid_propositions:
+            continue
+        key = (a["passage_id"], a["task"], a["proposition_id"])
+        require(key not in final, "Duplicate finalized issue/stance task")
+        sid = passage_to_source.get(a["passage_id"])
+        require(sid in included, "Reviewed label crosses frozen excluded source")
+        single = reviews.get(key, [])
+        require(len(single) == 1 and
+                single[0]["reviewer_id"] == a["adjudicator_id"] and
+                a["adjudicator_id"] and
+                len(a["rationale"].strip()) >= 8 and
+                len(single[0]["rationale"].strip()) >= 8,
+                "Missing actual owner review and same-owner finalization")
+        label = a["final_label"]
+        allowed = review.LABELS[a["task"]]
+        require(label in allowed and single[0]["label"] in allowed,
+                "Invalid reviewed/final label")
+        final[key] = (sid, label)
+    require(set(reviews) == set(final),
+            "Unfinalized owner annotations remain in the selected proposition tasks")
+    for key, (sid, label) in final.items():
+        kind = key[1]
+        if kind == "stance":
+            issue_key = (key[0], "issue", key[2])
+            require(issue_key in final and final[issue_key][1] == "relevant",
+                    "Stance label requires finalized relevant issue on same proposition")
+        result["stance_by_split" if kind == "stance" else "issue_by_split"][
+            included[sid]["split"]] += 1
+    result["human_review_attested"] = bool(final)
+    result["reviewed_stance_labels"] = sum(result["stance_by_split"].values())
+    result["reviewed_issue_labels"] = sum(result["issue_by_split"].values())
+    result["status"] = ("OWNER_ATTESTED_PILOT_LABELS_NOT_INDEPENDENT_GOLD"
+                        if result["human_review_attested"]
+                        else "NO_FINALIZED_PILOT_PROPOSITION_LABELS")
+    return result
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     subs = parser.add_subparsers(dest="command", required=True)
@@ -564,6 +659,12 @@ def main() -> int:
     a.add_argument("--packet", type=Path, required=True)
     a.add_argument("--draft", type=Path, required=True)
     a.add_argument("--output", type=Path, required=True)
+    z = subs.add_parser("status", help="Count genuinely finalized private owner stance labels")
+    z.add_argument("--workspace", type=Path, required=True)
+    z.add_argument("--plan", type=Path, required=True)
+    z.add_argument("--codebook", type=Path,
+                   default=Path(__file__).with_name("propositions.v1.json"))
+    z.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     try:
         if args.command == "plan":
@@ -580,11 +681,15 @@ def main() -> int:
                 "sampling": packet["sampling"],
                 "status": "UNREVIEWED; EMPIRICAL PUBLICATION WITHHELD",
             }
-        else:
+        elif args.command == "audit":
             audit = inspect_draft(review.load_json(args.packet),
                                   review.load_json(args.draft))
             write_new(args.output, json.dumps(audit, indent=2).encode() + b"\n")
             result = audit
+        else:
+            status = reviewed_label_status(args.workspace, args.plan, args.codebook)
+            write_new(args.output, json.dumps(status, indent=2).encode() + b"\n")
+            result = status
     except (OSError, ValueError, KeyError, TypeError, json.JSONDecodeError) as exc:
         print("ERROR: " + str(exc), file=sys.stderr)
         return 2
