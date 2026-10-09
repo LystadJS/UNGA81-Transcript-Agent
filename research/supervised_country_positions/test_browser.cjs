@@ -183,6 +183,8 @@ async function checkAnnotation(browser, temporary, width) {
     const wrongPath = path.join(temporary, 'wrong-draft-' + width + '.json');
     fs.writeFileSync(wrongPath, JSON.stringify(wrong), { flag: 'wx' });
     await page.locator('#resume').setInputFiles(wrongPath);
+    await page.waitForFunction(() => document.getElementById('status')
+      .textContent.includes('mismatch'));
     assert.match(await page.locator('#status').innerText(), /mismatch/);
     await assertNoOverflow(page);
     assert.equal(getExternalRequests(), 0);
