@@ -572,8 +572,17 @@ def reviewed_label_status(workspace: Path, plan_path: Path,
             bundle.get("human_review_complete") is not True:
         # An annotation row or draft is NOT human gold merely by existing.
         return result
-    require(bundle.get("review_mode") == "single_reviewer_pilot",
-            "Only the owner-approved single-reviewer pilot is supported here")
+    require(bundle.get("review_mode") == "single_reviewer_pilot" and
+            bundle.get("validation_scheme") == "time_and_country",
+            "Only the owner-approved, country-separated pilot is supported")
+    expected_splits = {
+        r["source_id"]: r["split"] for r in plan["assignment"] if r["split"] in SPLITS
+    }
+    actual_splits = load_table(
+        workspace / "splits.csv", review.SCHEMAS["splits"].split())
+    require(len(actual_splits) == len(expected_splits) and
+            {r["source_id"]: r["split"] for r in actual_splits} == expected_splits,
+            "Working review split CSV does not match frozen source plan")
     source_rows, _, _ = load_source_frame(workspace)
     require(not any(r["event_date"] in RESERVED for r in source_rows),
             "Reserved-meeting passage rows may not be read")
@@ -584,10 +593,27 @@ def reviewed_label_status(workspace: Path, plan_path: Path,
     passages = load_table(
         workspace / "passages.csv", review.FIELDS["passages"].split())
     passage_to_source = {}
+    source_idx = {r["source_id"]: r for r in source_rows}
+    relevant_parents = {}
     for p in passages:
         require(p["passage_id"] not in passage_to_source,
                 "Duplicate reviewed passage ID")
         passage_to_source[p["passage_id"]] = p["source_id"]
+        if p["source_id"] not in included:
+            continue
+        sid = p["source_id"]
+        src = source_idx[sid]
+        if sid not in relevant_parents:
+            relevant_parents[sid] = review.safe_source_text(
+                workspace, src["text_path"], src["text_sha256"])
+        try:
+            start, end = int(p["start"]), int(p["end"])
+        except (TypeError, ValueError) as exc:
+            raise ValueError("Invalid reviewed source passage offset") from exc
+        text = relevant_parents[sid]
+        require(0 <= start < end <= len(text) and
+                p["quote"] == text[start:end],
+                "Reviewed passage text/offset differs from original canonical source")
     reviews = defaultdict(list)
     valid_propositions = set(PLAN_PROP_IDS)
     for a in annotations:
