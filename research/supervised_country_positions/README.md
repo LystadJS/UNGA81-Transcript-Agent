@@ -126,6 +126,15 @@ Verify a genuinely owner-attested draft (private, aggregate report only):
       --draft PRIVATE_PILOT_OUTPUT/country-position-private-draft.json \
       --output PRIVATE_PILOT_OUTPUT/train-review-audit.json
 
+After actual owner finalization, copy the frozen splits.csv into the private reviewed workspace, fill the original un.review.v1 annotations and adjudications tables, and explicitly attest review completion in the private bundle.json.  Use this separate status audit to count only the named proposition stances backed by matching split IDs, source hashes, passage offsets, reviewer records and finalized choices:
+
+    python3 research/supervised_country_positions/pilot_pipeline.py status \
+      --workspace PRIVATE_UN_REVIEW_WORKSPACE \
+      --plan PRIVATE_PILOT_OUTPUT/pilot_plan.json \
+      --output PRIVATE_PILOT_OUTPUT/owner-label-status.json
+
+Before actual human review, the status is **zero owner-attested stance labels**.  The status command does not call existing model fitting, claim independent annotator agreement, or unlock empirical outputs.  Do not mark human_review_complete before the owner has genuinely reviewed and finalized the records.
+
 After full human review, use the original un.review.v1 exporter/finalization and validator.  Calibration may receive its own separately sourced review packet later.  The **test packet cannot be generated without an explicit --authorize-test-review flag** and must not inform codebook, feature, threshold or model selection.  There is no live real-data training adapter in this phase.
 
 Pilot planning targets **96 development, 32 calibration and 32 held-out test proposition–passage pairs**, equally divided between the two propositions.  These are **targets**, not achieved sample sizes; shortages are surfaced.  Roughly 70% of targets use predeclared lexical screens and 30% unfiltered random controls, both **unlabeled**.  The source-frame is purposively verified and cannot establish corpus-wide rates.
