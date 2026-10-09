@@ -268,6 +268,82 @@ class SourceSeparatedPilotTests(unittest.TestCase):
         self.assertEqual(audit["reviewed_items"], 1)
         self.assertEqual(audit["counts"]["stance_support"], 1)
 
+    def test_no_genuine_owner_stance_labels_is_reported_as_zero(self) -> None:
+        plan = self.plan()
+        location = self.root / "plan_for_packet.json"
+        location.write_text(json.dumps(plan), encoding="utf-8")
+        result = PILOT.reviewed_label_status(self.ws, location, self.codebook)
+        self.assertEqual(result["reviewed_stance_labels"], 0)
+        self.assertEqual(result["reviewed_issue_labels"], 0)
+        self.assertFalse(result["human_review_attested"])
+        self.assertFalse(result["model_training_eligible"])
+
+    def attested_synthetic_review(self) -> tuple[dict, Path]:
+        plan = self.plan()
+        location = self.root / "plan_for_packet.json"
+        location.write_text(json.dumps(plan), encoding="utf-8")
+        packet = self.packet(plan)
+        item = packet["items"][0]
+        expected = [{"source_id": r["source_id"], "split": r["split"]}
+                    for r in plan["assignment"] if r["split"] in PILOT.SPLITS]
+        write_rows(self.ws / "splits.csv",
+                   PILOT.review.SCHEMAS["splits"].split(), expected)
+        (self.ws / "bundle.json").write_text(json.dumps({
+            "schema": "un.review.v1",
+            "dataset_kind": "real",
+            "review_mode": "single_reviewer_pilot",
+            "validation_scheme": "time_and_country",
+            "human_review_complete": True,
+            "cutoff": "2026-10-09T22:00:00Z"
+        }), encoding="utf-8")
+        when = "2026-10-09T20:00:00Z"
+        final = "2026-10-09T21:00:00Z"
+        rows = []
+        resolved = []
+        for task, label in [("issue", "relevant"), ("stance", "support")]:
+            rows.append({
+                "annotation_id": "synthetic-" + task,
+                "passage_id": item["passage_id"], "task": task,
+                "proposition_id": item["proposition_id"],
+                "label": label,
+                "reviewer_id": "synthetic-owner-fixture",
+                "reviewed_at": when,
+                "rationale": "Invented owner decision solely for the synthetic test.",
+            })
+            resolved.append({
+                "passage_id": item["passage_id"], "task": task,
+                "proposition_id": item["proposition_id"],
+                "final_label": label,
+                "adjudicator_id": "synthetic-owner-fixture",
+                "adjudicated_at": final,
+                "rationale": "Invented self-finalization solely for CI.",
+            })
+        write_rows(self.ws / "annotations.csv",
+                   PILOT.review.SCHEMAS["annotations"].split(), rows)
+        write_rows(self.ws / "adjudications.csv",
+                   PILOT.review.SCHEMAS["adjudications"].split(), resolved)
+        return plan, location
+
+    def test_synthetic_owner_finalized_status_not_independent_gold(self) -> None:
+        _, location = self.attested_synthetic_review()
+        audited = PILOT.reviewed_label_status(self.ws, location, self.codebook)
+        self.assertTrue(audited["human_review_attested"])
+        self.assertFalse(audited["independent_gold"])
+        self.assertFalse(audited["model_training_eligible"])
+        self.assertEqual(audited["stance_by_split"]["train"], 1)
+        self.assertEqual(audited["reviewed_stance_labels"], 1)
+        self.assertEqual(audited["reviewed_issue_labels"], 1)
+
+    def test_mismatched_source_split_in_owner_review_is_withheld(self) -> None:
+        _, location = self.attested_synthetic_review()
+        rows = list(csv.DictReader((self.ws / "splits.csv").open(
+            encoding="utf-8", newline="")))
+        rows[0]["split"] = ("test" if rows[0]["split"] != "test" else "train")
+        write_rows(self.ws / "splits.csv",
+                   PILOT.review.SCHEMAS["splits"].split(), rows)
+        with self.assertRaisesRegex(ValueError, "does not match frozen source plan"):
+            PILOT.reviewed_label_status(self.ws, location, self.codebook)
+
     def test_too_few_groups_fail_without_allocations(self) -> None:
         self.source_rows = [s for s in self.source_rows if s["iso3"] in {"AAZ", "ABZ"}]
         ids = {s["source_id"] for s in self.source_rows}
