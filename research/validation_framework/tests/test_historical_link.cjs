@@ -5,6 +5,7 @@ const assert=require('node:assert/strict');
 const {makeFixture,SETTINGS}=require('../examples/synthetic_fixture.cjs');
 const {run}=require('../runner.cjs');
 const F=require('../frame.cjs');
+const C=require('../../../site/cluster-core.js');
 const {linkW1Inventory}=require('../historical_link.cjs');
 const I=require('../../../docs/parallel-work/source-inventory-v1.cjs');
 
@@ -191,8 +192,55 @@ async function main(){
   badLedger.failure_ledger.push({model_id:'nonexistent',attempt:1,status:'skipped',reason:'invented',source_group:'meeting'});
   refuse(()=>linkW1Inventory(badLedger,inventory),'malformed or unattributed W1 failure ledger');
 
+
+  // Verify completed non-delivery, rather than only malformed ledger rejections.
+  const kernel=C.fitPartition;
+  let failedOutput;
+  C.fitPartition=async()=>({skipped:'Invented numerical optimizer could not converge'});
+  try{
+    failedOutput=await run(frame,modelSettings.slice(0,1),{saved,replicates:2,group_seed:83});
+  }finally{C.fitPartition=kernel;}
+  const failedLink=linkW1Inventory(failedOutput,inventory);
+  assert.equal(failedLink.models[0].status,'failed');
+  assert.equal(failedLink.models[0].assigned,0);
+  assert.equal(failedLink.models[0].selected_but_not_fitted,24);
+  assert(failedLink.group_refits.every(g=>g.not_executed===2&&g.executed===0));
+  assert.equal(failedLink.failure_ledger_count,3);
+
+  // All-density-noise is a fitted, assessable-coverage outcome with zero assigned
+  // and null partition ARI; it is not a failed source or missing transcript.
+  C.fitPartition=async x=>({labels:x.map(()=>-1),strengths:x.map(()=>0),
+    converged:true,diagnostics:{assigned_count:0,unassigned_count:x.length}});
+  let allNoise;
+  try{
+    allNoise=await run(frame,SETTINGS.filter(x=>x.algorithm==='hdbscan'),
+      {saved,replicates:2,group_seed:83});
+  }finally{C.fitPartition=kernel;}
+  const noiseLink=linkW1Inventory(allNoise,inventory);
+  assert.equal(noiseLink.models.length,1);
+  assert.equal(noiseLink.models[0].status,'fitted');
+  assert.equal(noiseLink.models[0].assigned,0);
+  assert.equal(noiseLink.models[0].unassigned_noise,24);
+  assert(noiseLink.group_refits.every(g=>g.assessable_ari===0));
+
+  // A forced FAILED group refit must remain represented as an attempted fit.
+  let calls=0,partial;
+  C.fitPartition=async (...args)=>{
+    calls++;
+    return calls===2?{skipped:'Invented grouped fit failure'}:kernel(...args);
+  };
+  try{
+    partial=await run(frame,modelSettings.slice(0,1),{saved,replicates:3,group_seed:83});
+  }finally{C.fitPartition=kernel;}
+  const linkedPartial=linkW1Inventory(partial,inventory);
+  assert(linkedPartial.group_refits.some(g=>g.failed===1),'A group fit failure vanished');
+  const erasedFailure=cloneRun(partial);
+  erasedFailure.failure_ledger.length=0;
+  refuse(()=>linkW1Inventory(erasedFailure,inventory),
+    'skipped/failed grouped attempt missing from failure ledger');
+
   process.stdout.write(JSON.stringify({suite:'w1-historical-inventory-link-synthetic',
-    positive:1,negative:29,failed:0,
+    positive:4,negative:30,failed:0,
     observations:28,source_verified:25,selected:24,unverified:2,
     reserved_2026_text_accessed:0,public_development_rows_exported:0,
     legacy_v1_modified:false,source_rows_serialized:false})+'\n');
