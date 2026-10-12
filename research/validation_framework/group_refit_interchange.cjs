@@ -116,8 +116,12 @@ function fromNative(native, v1, {allow_private_development=false}={}) {
   const coverage=new Map(v1.coverage.models.map(c=>[c.model_id,c]));
   const records=new Map();
   for(const x of native._internal_group_refits){
-    ok(x && x.group_unit==='meeting' && Number.isSafeInteger(x.attempt) &&
-      x.attempt>0, 'unknown/non-meeting grouped refit');
+    ok(x && ['meeting','affiliation'].includes(x.group_unit) &&
+      Number.isSafeInteger(x.attempt) && x.attempt>0,
+      'unknown grouped refit provenance');
+    // The current W2 producer is meeting-specific. Do not reinterpret W1's
+    // affiliation/parent transitive closure as a meeting-independent sample.
+    if(x.group_unit!=='meeting')continue;
     const key=JSON.stringify([x.model_id,x.attempt]);
     ok(!records.has(key), 'duplicate child-fit model/attempt');
     records.set(key,x);
@@ -242,6 +246,7 @@ function fromNative(native, v1, {allow_private_development=false}={}) {
       source_group_count:groupNames.length,
       grouping_components:grouped.groups.length,
       source_group_ids:groupNames,
+      not_exported_group_units:Object.keys(native.schedules).filter(x=>x!=='meeting').sort(),
       resampling_policy:'W1 whole-source-group without-replacement subsampling; no bootstrap or independent-replication claim'},
     observations,models:v1.models.map(m=>({...m})),schedules,refits,
     limitations:[
