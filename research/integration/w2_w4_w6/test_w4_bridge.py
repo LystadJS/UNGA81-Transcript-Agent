@@ -14,7 +14,7 @@ def inputs(*, motion=False, fit_policy="full_refit", missing=None, roster=True):
     raw = make_panel(motion=motion, fit_policy=fit_policy,
                      unavailable_family=missing, roster=roster)
     comparison = compare(raw, "p0", "p1", anchor_ids=ANCHORS,
-                         bootstrap_reps=12, bootstrap_seed=30092026)
+                         bootstrap_reps=50, bootstrap_seed=30092026)
     envelope = to_interchange_v1(raw, comparison)
     return raw, comparison, envelope
 
