@@ -154,6 +154,16 @@ test('reject unsupported source split before any W2 release or browser presentat
   assert.equal(joined.consensus.publication_eligible,false);
   assert.equal(joined.interchange.publication_eligible,false);
 });
+
+test('reject W1 invented fixture masquerading with incomplete inventory, original links or reserved dates',()=>{
+  const bad=clone(w1);bad.cohort.total_in_frame=20;
+  assert.throws(()=>Bridge.fromW1(native,bad),/full frame must be complete/);
+  const link=clone(w1);link.observations[0].source_url='https://transcripts.un.org/fictional';
+  assert.throws(()=>Bridge.fromW1(native,link),/no original links|full frame must be complete/);
+  const date=clone(w1);date.observations[0].date='2026-10-05';
+  assert.throws(()=>Bridge.fromW1(native,date),/reserved dates/);
+});
+
 test('W6 withholds mismatched raw family rates instead of displaying incorrect weighted consensus',()=>{
   const f=W2Fixture.fixtureKnown(false);
   for(const e of f.envelopes){
