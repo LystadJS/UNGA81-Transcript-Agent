@@ -16,7 +16,7 @@ const clone=value=>structuredClone(value);
 // source-complete, unchanged input to the accepted W1→W2 coordinator bridge.
 // The standalone W2 fixture counts six meetings in a different inventory grain
 // and must not be rewritten just to appease a renderer.
-let passed=0;
+let passed=0,env,report;
 async function test(name,fn){
   await fn();
   passed++;
@@ -35,7 +35,7 @@ async function main(){
   });
   const original=sourceV1(native);
   const joined=fromW1(native,original);
-  const report=joined.consensus,env=joined.interchange;
+  report=joined.consensus;env=joined.interchange;
   await test('native W2 sidecar schema, W1/W5/W6 interoperable source frame',async()=>{
     validateConsensus(report);
     C.validateParallel(env);V.validateEnvelope(env);
