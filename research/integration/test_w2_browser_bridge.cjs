@@ -2,15 +2,20 @@
 /* Native W2 producer -> un.parallel-analysis.v1 -> coordinator browser read model.
  * Synthetic-only; no transcript data, model fitting, or held-out material. */
 const assert=require('node:assert/strict');
-const {fixtureKnown,fixtureNuisance}=require('../consensus/fixtures.cjs');
-const {runConsensus,toInterchangeV1,validateConsensus}=require('../consensus/consensus.cjs');
+const {fixtureNuisance}=require('../consensus/fixtures.cjs');
+const {makeFixture,SETTINGS}=require('../validation_framework/examples/synthetic_fixture.cjs');
+const {run}=require('../validation_framework/runner.cjs');
+const {toInterchangeV1:sourceV1}=require('../validation_framework/interchange.cjs');
+const {fromW1}=require('./w1_w2/bridge.cjs');
+const {runConsensus,validateConsensus}=require('../consensus/consensus.cjs');
 const B=require('../../site/research-consensus.js');
 const C=require('../../site/parallel/w05-browser/experimental/method-lab/contracts.js');
 const V=require('../../site/experimental/evidence-viz/evidence-viz.js');
 const clone=value=>structuredClone(value);
-const fixture=fixtureKnown(true);
-const report=runConsensus(fixture.envelopes,{fit_plan:fixture.fit_plan,min_coverage:0.2});
-const env=toInterchangeV1(fixture.envelopes[0],report,{generated_at:'2026-10-08T00:00:00Z'});
+// W1's original 25-observation frame (24 eligible, 1 unavailable) is the
+// source-complete, unchanged input to the accepted W1→W2 coordinator bridge.
+// The standalone W2 fixture counts six meetings in a different inventory grain
+// and must not be rewritten just to appease a renderer.
 let passed=0;
 async function test(name,fn){
   await fn();
@@ -24,6 +29,13 @@ async function rejected(name,change,pattern){
   });
 }
 async function main(){
+  const fixture=makeFixture();
+  const native=await run(fixture.frame,SETTINGS,{
+    saved:fixture.saved,group_units:['meeting'],replicates:3,group_seed:31
+  });
+  const original=sourceV1(native);
+  const joined=fromW1(native,original);
+  const report=joined.consensus,env=joined.interchange;
   await test('native W2 sidecar schema, W1/W5/W6 interoperable source frame',async()=>{
     validateConsensus(report);
     C.validateParallel(env);V.validateEnvelope(env);
