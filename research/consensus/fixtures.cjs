@@ -26,7 +26,7 @@ function envelope(spec) {
     cohort:{split:'synthetic',population:'fictional paired topics by synthetic meeting',
       unit:'synthetic',selection_policy:'every synthetic observation',
       weighting:'equal_passage',source_group_unit:'meeting',duplicate_policy:'retain_and_audit',
-      total_in_frame:observations.length,eligible:observations.length},
+      total_in_frame:6,eligible:observations.length},
     observations:structuredClone(observations),
     models:[{model_id:spec.id,method_family:spec.family,method:spec.method,
       representation_id:spec.representation || 'synthetic-lsa-locked-v1',
