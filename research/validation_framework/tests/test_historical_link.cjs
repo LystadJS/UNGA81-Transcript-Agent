@@ -159,8 +159,40 @@ async function main(){
   invInvalid.observations[0].text_sha256='not-a-digest';
   refuse(()=>linkW1Inventory(out,invInvalid),'pattern');
 
+
+  const alteredText=cloneRun(out);
+  alteredText._internal_frame[0].text+=' changed after W1 fit';
+  refuse(()=>linkW1Inventory(alteredText,inventory),'changed in-memory source text SHA-256');
+  const badSeed=cloneRun(out);
+  badSeed.fit_records[0].seed=-1;
+  refuse(()=>linkW1Inventory(badSeed,inventory),'method/representation transformation/seed');
+  const badRep=cloneRun(out);
+  badRep.fit_records[0].representation_identity_sha256='corrupted';
+  refuse(()=>linkW1Inventory(badRep,inventory),'method/representation transformation/seed');
+  const badPlanned=cloneRun(out);
+  badPlanned.model_reports[0].group_stability.meeting.planned=1;
+  refuse(()=>linkW1Inventory(badPlanned,inventory),'denominators inconsistent');
+  const badSkipped=cloneRun(out);
+  badSkipped.model_reports[0].group_stability.meeting.skipped++;
+  refuse(()=>linkW1Inventory(badSkipped,inventory),'denominators inconsistent');
+  const badAri=cloneRun(out);
+  badAri.model_reports[0].group_stability.meeting.assessable_ari++;
+  refuse(()=>linkW1Inventory(badAri,inventory),'denominators inconsistent');
+  const badDuplicateAttempts=cloneRun(out);
+  badDuplicateAttempts.model_reports[0].group_stability.meeting.runs[1].attempt=1;
+  refuse(()=>linkW1Inventory(badDuplicateAttempts,inventory),'duplicate or invalid grouped-refit');
+  const badModelReport=cloneRun(out);
+  badModelReport.model_reports[1].model_id=badModelReport.model_reports[0].model_id;
+  refuse(()=>linkW1Inventory(badModelReport,inventory),'unknown or repeated model');
+  const badPair=cloneRun(out);
+  badPair.comparisons.pop();
+  refuse(()=>linkW1Inventory(badPair,inventory),'incomplete model-pair');
+  const badLedger=cloneRun(out);
+  badLedger.failure_ledger.push({model_id:'nonexistent',attempt:1,status:'skipped',reason:'invented',source_group:'meeting'});
+  refuse(()=>linkW1Inventory(badLedger,inventory),'malformed or unattributed W1 failure ledger');
+
   process.stdout.write(JSON.stringify({suite:'w1-historical-inventory-link-synthetic',
-    positive:1,negative:19,failed:0,
+    positive:1,negative:29,failed:0,
     observations:28,source_verified:25,selected:24,unverified:2,
     reserved_2026_text_accessed:0,public_development_rows_exported:0,
     legacy_v1_modified:false,source_rows_serialized:false})+'\n');
