@@ -49,7 +49,7 @@ test('W2 exposed planned-fit failures, missingness and ambiguity remain descript
   assert.ok(p.warnings.some(w=>w.includes('NOT confidence')));
   assert.ok(p.warnings.some(w=>w.includes('withheld')));
   const v=V.renderPanel(envelope,p);
-  assert.match(v.html,/failed fits/);
+  assert.ok(Object.values(v.inspections).some(x=>x.summary.includes('failed fits')));
   assert.match(v.html,/assignment|source group/i);
   assert.doesNotMatch(v.html,/<script/i);
   assert.match(V.htmlDocument(v),/Static export/);
@@ -98,6 +98,6 @@ test('Original W6 illustrative equal-family mode remains unchanged',()=>{
   const F=require('../../../site/experimental/evidence-viz/fixture.js');
   const fixture=F.fixture(),p=fixture.panels[0],v=V.renderPanel(fixture.envelope,p);
   assert.equal(p.pair_mode,undefined);
-  assert.match(v.html,/Equal-family average/);
+  assert.match(v.inspections['cons-0'].summary,/Equal-family average/);
   assert.equal(v.inspections['cons-0'].summary.includes('4/5'),true);
 });
