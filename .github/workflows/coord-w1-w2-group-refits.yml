@@ -7,7 +7,7 @@ on:
       - 'research/integration/w1_w2/**'
       - '.github/workflows/coord-w1-w2-group-refits.yml'
   push:
-    branches: ['coord/w1-w2-grouped-refit-uncertainty-v1']
+    branches: ['coord/w1-w2-grouped-refits-on-main']
     paths:
       - 'research/validation_framework/**'
       - 'research/consensus/**'
