@@ -35,11 +35,11 @@ jobs:
           from pathlib import Path
           import os,re
           p=Path('research/source_acquisition/p2_expansion/official_pv_2016_2023_105_20261012.txt')
-          all=[x.strip() for x in p.read_text().splitlines() if x.strip() and not x.startswith('#')]
-          assert len(all)==105 and len(set(all))==105
-          assert all(re.fullmatch(r'A/7[1-8]/PV\.[1-9]\d*',x) for x in all)
+          symbols=[x.strip() for x in p.read_text().splitlines() if x.strip() and not x.startswith('#')]
+          assert len(symbols)==105 and len(set(symbols))==105
+          assert all(re.fullmatch(r'A/7[1-8]/PV\.[1-9]\d*',x) for x in symbols)
           b=int(os.environ['SOURCE_BATCH'])
-          chosen=all[:55] if b==0 else all[55:]
+          chosen=symbols[:55] if b==0 else symbols[55:]
           assert len(chosen)==(55 if b==0 else 50)
           (Path(os.environ['RUNNER_TEMP'])/'approved-symbols.txt').write_text('\n'.join(chosen)+'\n')
           print('Approved original PV documents in batch:',len(chosen))
