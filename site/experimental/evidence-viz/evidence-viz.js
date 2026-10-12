@@ -200,7 +200,11 @@
   }
 
   function frame(env, panel) {
-    return 'Inventory ' + panel.coverage.frame + ' ' + (env.cohort.source_group_unit==='meeting'?'meetings':'frame units') + ' · eligible '+panel.coverage.eligible+' '+env.cohort.unit+' observations' +
+    const mixed=env.cohort.eligible>env.cohort.total_in_frame;
+    return (mixed?'Inventory '+panel.coverage.frame+' '+
+      (env.cohort.source_group_unit==='meeting'?'meetings':'frame units')+
+      ' · eligible '+panel.coverage.eligible+' '+env.cohort.unit+' observations':
+      'Frame '+panel.coverage.frame+' · eligible '+panel.coverage.eligible) +
       ' · displayed ' + panel.coverage.included + ' · excluded ' + panel.coverage.excluded +
       ' · missing ' + panel.coverage.missing + ' · ' + env.cohort.weighting.replace(/_/g,' ') + '.';
   }
