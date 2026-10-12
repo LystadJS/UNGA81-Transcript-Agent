@@ -52,6 +52,7 @@ jobs:
           set -euo pipefail
           node --check site/research-consensus.js
           node research/integration/test_w2_browser_bridge.cjs
+          node --test research/integration/w1_w2/test-integration.cjs
           node research/consensus/test_consensus.cjs
           node docs/parallel-work/validate-contract.cjs
           node site/parallel/w05-browser/experimental/method-lab/test-method-lab.cjs
@@ -71,9 +72,9 @@ jobs:
           test -s "$RUNNER_TEMP/w2-pages-preview/research-consensus.js"
           test ! -e "$RUNNER_TEMP/w2-pages-preview/research/integration/test_w2_browser_bridge.cjs"
           test ! -e "$RUNNER_TEMP/w2-pages-preview/research/consensus/consensus.cjs"
-          node research/consensus/run_synthetic.cjs "$RUNNER_TEMP/w2-native-synthetic" > "$RUNNER_TEMP/w2-generator-receipt.json"
-          test -s "$RUNNER_TEMP/w2-native-synthetic/consensus-v1.json"
-          test -s "$RUNNER_TEMP/w2-native-synthetic/standardized-interchange-v1.json"
+          node research/integration/w1_w2/make-synthetic.cjs "$RUNNER_TEMP/w2-native-synthetic" > "$RUNNER_TEMP/w2-generator-receipt.json"
+          test -s "$RUNNER_TEMP/w2-native-synthetic/w2-consensus.json"
+          test -s "$RUNNER_TEMP/w2-native-synthetic/w2-v1-interchange.json"
       - name: Real Chromium desktop/mobile, tamper, same-origin acceptance
         shell: bash
         run: |
@@ -91,6 +92,7 @@ jobs:
           path: |
             ${{ runner.temp }}/w2-browser-qa
             ${{ runner.temp }}/w2-generator-receipt.json
-            ${{ runner.temp }}/w2-native-synthetic/validation-receipt.json
+            ${{ runner.temp }}/w2-native-synthetic/receipt.json
+            ${{ runner.temp }}/w2-native-synthetic/SHA256.json
           if-no-files-found: warn
           retention-days: 7
