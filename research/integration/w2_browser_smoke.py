@@ -99,7 +99,7 @@ def verify(browser, base, fixture, out, name, width, height):
             "() => document.getElementById('research-w2-status').textContent.includes('verified in this browser')",
             timeout=15000)
         assert page.locator("#research-w2-matrix .research-w2-pair").count() > 0
-        assert "W4's mixed historical inventory" in page.locator("#restrictions").locator("..").inner_text()
+        assert "W4's mixed historical inventory" in page.locator("#restrictions").locator("xpath=..").inner_text()
         assert page.evaluate("document.documentElement.scrollWidth") <= width + 2
         assert not errors, f"Uncaught browser exceptions: {errors}"
         assert not external, f"Unexpected third-party requests: {external}"
