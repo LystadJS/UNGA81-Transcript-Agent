@@ -49,6 +49,7 @@ jobs:
             research/source_acquisition/p2_expansion/p2_to_w1_source_adapter.cjs
             research/source_acquisition/p2_expansion/test_p2_to_w1.cjs
             research/validation_framework/*.cjs
+            research/validation_framework/examples/*.cjs
             research/validation_framework/schemas/*.json
             site/*.js
             docs/parallel-work/interchange-v1.schema.json
