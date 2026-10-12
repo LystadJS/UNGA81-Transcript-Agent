@@ -146,6 +146,18 @@ test('default W1 affiliation refits are retained privately but not misclassified
   assert.equal(GROUP.validateSidecar(g,e),true);
 });
 
+test('meeting-level refit export refuses source parent/family identities crossing meetings',async()=>{
+  const fixture=makeFixture();
+  fixture.frame.observations[4].source_family_id=
+    fixture.frame.observations[0].source_family_id;
+  const n=await W1.run(fixture.frame,[SETTINGS[0]],{
+    group_units:['meeting'],replicates:3,group_seed:31,
+    retain_group_assignments:true
+  });
+  const e=V1.toInterchangeV1(n);
+  assert.throws(()=>GROUP.fromNative(n,e),/spans multiple meeting groups/);
+});
+
 test('seeded independent restart reproduces the same source-bound W1 child assignments',async()=>{
   const f=makeFixture();
   const a=await W1.run(f.frame,[SETTINGS[0]],{
