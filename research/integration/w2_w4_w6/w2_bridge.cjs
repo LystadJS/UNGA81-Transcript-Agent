@@ -45,8 +45,12 @@ function validateSource(report, envelope) {
   for(const o of report.source.observation_keys){
     const from=actual.get(o.id);
     check(from&&key(from)===key(o),'W2 sidecar source link or SHA mismatch: '+o.id);
-    check(from.source_url===null&&!Object.hasOwn(from,'text'),
-      'Synthetic adapter rejects real source URL or embedded source text.');
+    // W2's own invented fixture uses the reserved example.invalid host.
+    // Retain original source URL identity; never navigate it from the demo.
+    const fictitiousURL=from.source_url===null||
+      /^https:\/\/example\.invalid\/synthetic\//.test(from.source_url);
+    check(fictitiousURL&&!Object.hasOwn(from,'text'),
+      'Synthetic adapter rejects non-fictional URL or embedded source text.');
   }
   check(report.source.cohort.unit===envelope.cohort.unit &&
     report.source.cohort.weighting===envelope.cohort.weighting &&
