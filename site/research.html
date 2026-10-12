@@ -12,6 +12,7 @@
   <script defer src="parallel/w05-browser/experimental/method-lab/contracts.js"></script>
   <script defer src="experimental/evidence-viz/evidence-viz.js"></script>
   <script defer src="research-wiring.js"></script>
+  <script defer src="research-consensus.js"></script>
 </head>
 <body class="research-shell">
   <a class="research-skip" href="#research-main">Skip to research methods</a>
@@ -28,6 +29,7 @@
   <nav class="research-nav" aria-label="Research navigation">
     <a href="index.html">Transcript workspace</a>
     <a href="latent.html">Latent comparison</a>
+    <a href="#w2">Consensus evidence</a>
     <a href="#w3">Graph source inspection</a>
     <a href="#w5">Method lab</a>
     <a href="#w6">Evidence visualizations</a>
@@ -38,6 +40,23 @@
       <h2 id="research-title">Methods, source identity, and analytical limits</h2>
       <p>The statistical modules are separate from the daily reporting pipeline. This page never collects transcripts, infers a national position, or runs remote AI. A visible graph represents constructed text-similarity geometry, not diplomatic ties or policy diffusion.</p>
       <div class="research-hold" role="note">Engineering research preview. No original source text, frozen held-out evaluation, or public analytical findings are available through this import.</div>
+    </section>
+    <section id="w2" class="research-panel" aria-labelledby="w2-heading">
+      <span class="research-index">SOURCE-BOUND CONSENSUS · OFFLINE FITS</span>
+      <h2 id="w2-heading">Inspect native W2 weighted consensus</h2>
+      <p>Import the two original synthetic JSON results from the native W2 exporter. The source and observation hashes, complete source frame, fit assignments, method-family weights, conditional co-assignment numerators, denominators and pair matrix are verified before display. The original W2 statistic is shown without recomputing it using the illustrative W6 averaging rule.</p>
+      <div class="research-w2-files">
+        <div><label class="research-field-label" for="research-w2-sidecar">W2 consensus-v1.json</label>
+          <input id="research-w2-sidecar" type="file" accept=".json,application/json"></div>
+        <div><label class="research-field-label" for="research-w2-v1">W2 standardized-interchange-v1.json</label>
+          <input id="research-w2-v1" type="file" accept=".json,application/json"></div>
+      </div>
+      <div class="research-input-row"><button type="button" id="research-w2-import">Verify and inspect weighted pairs</button></div>
+      <p id="research-w2-status" role="status" aria-live="polite">No native W2 output imported. Only fictional synthetic sources are accepted.</p>
+      <div id="research-w2-summary" class="research-help">No source-validated W2 consensus displayed.</div>
+      <div id="research-w2-matrix" aria-label="Original W2 source-bound weighted consensus"></div>
+      <div id="research-w2-inspection" aria-live="polite" aria-label="Selected pair denominator and source provenance"></div>
+      <p class="research-help">W2 co-assignment is descriptive cross-fit agreement, not calibrated significance, probability of political alignment, or a diplomatic relationship. A 35-observation display limit never truncates the underlying validated pair ledger. Files remain local to the browser.</p>
     </section>
     <section id="w3" class="research-panel" aria-labelledby="w3-heading">
       <span class="research-index">01 · SOURCE-LINKED GRAPH</span>
@@ -79,6 +98,7 @@
       <span class="research-index">METHOD AND EVIDENCE CONTRACT</span>
       <h2 id="restrictions">Limits of interpretation</h2>
       <p>Stability is not significance. Language similarities and cluster labels do not establish government positions, alliances, or causal influence. Recorded source affiliations are not verified speaker identities. W3 diffusion coordinates describe geometric random walks on a constructed graph, not policy transmission.</p>
+      <p>Native W2 weighted pair results require their original sidecar and compatible interchange envelope; W6's demonstration heatmap uses a different averaging definition and is not a substitute. W4's mixed historical inventory includes unverified sources and nullable dates that cannot be encoded in interchange v1, so those real longitudinal records remain withheld. This prototype does not reinterpret missing dates or imported fit attempts as successful browser fits.</p>
       <p>Private development-source evaluation, held-out validation, source-byte independent checks, and model-weight downloads are not part of this public synthetic browser preview.</p>
     </section>
   </main>
