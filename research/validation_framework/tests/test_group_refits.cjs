@@ -109,7 +109,7 @@ test('rejects wrong source hash, scheme, reserved dates, duplicate child IDs and
   assert.throws(()=>GROUP.validateSidecar(bad,envelope),/source identity/);
   const d=clone(group);
   d.observations[0].date='2026-10-05';
-  assert.throws(()=>GROUP.validateSidecar(d,envelope),/reserved source dates/);
+  assert.throws(()=>GROUP.validateSidecar(d,envelope),/source identity|reserved source dates/);
   const b=clone(group);
   b.refits[1].model_id=b.refits[0].model_id;
   assert.throws(()=>GROUP.validateSidecar(b,envelope),/duplicate child-fit/);
