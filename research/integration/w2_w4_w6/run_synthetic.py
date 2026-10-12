@@ -18,7 +18,7 @@ def generate(folder: Path, *, fit_policy: str = "full_refit") -> dict:
     source = make_panel(motion=True, fit_policy=fit_policy)
     comparison = compare(source, "p0", "p1",
                          anchor_ids=[f"A{i}" for i in range(6)],
-                         bootstrap_reps=12, bootstrap_seed=30092026)
+                         bootstrap_reps=50, bootstrap_seed=30092026)
     envelope = to_interchange_v1(source, comparison)
     result = to_w6_longitudinal(source, comparison, envelope,
                                selection_checked=True)
