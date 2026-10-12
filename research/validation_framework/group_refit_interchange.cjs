@@ -52,6 +52,14 @@ function structural(spec,v,loc='$'){
   }
 }
 
+function sourcePointer(o){
+  return {id:o.id,text_sha256:o.text_sha256,parent_id:o.parent_id,
+    parent_text_sha256:o.parent_text_sha256,meeting_id:o.meeting_id,
+    source_family_id:o.source_family_id,date:o.date,
+    source_url:o.source_url,json_pointer:o.json_pointer,start:o.start,end:o.end,
+    source_status:o.source_status,exclusion_reasons:o.exclusion_reasons.slice()};
+}
+
 function fromNative(native, v1, {allow_private_development=false}={}) {
   ok(native?.schema==='un.source-aware-validation.v1' &&
     native.evaluation_role==='engineering_only' &&
@@ -79,13 +87,7 @@ function fromNative(native, v1, {allow_private_development=false}={}) {
     'run W1 with retain_group_assignments:true; summary-only refits are insufficient');
   ok(!Object.keys(native).includes('_internal_group_refits'),
     'raw child-fit labels may not be enumerable in public W1 outputs');
-  const observations=v1.observations.map(o=>({
-    id:o.id,text_sha256:o.text_sha256,parent_id:o.parent_id,
-    parent_text_sha256:o.parent_text_sha256,meeting_id:o.meeting_id,
-    source_family_id:o.source_family_id,date:o.date,
-    source_url:o.source_url,json_pointer:o.json_pointer,start:o.start,end:o.end,
-    source_status:o.source_status,exclusion_reasons:o.exclusion_reasons.slice()
-  }));
+  const observations=v1.observations.map(sourcePointer);
   ok(observations.every(x=>!['2026-10-05','2026-10-06'].includes(x.date)),
     'reserved transcript dates never enter grouped refit sidecar');
   if(split==='synthetic')ok(observations.every(o=>o.source_url===null),
@@ -273,8 +275,7 @@ function validateSidecar(sidecar,original){
     s.cohort.unit===original.cohort.unit &&
     s.cohort.split===original.cohort.split &&
     s.cohort.source_group_unit==='meeting' &&
-    equal(s.observations.map(x=>[x.id,x.text_sha256,x.meeting_id,x.parent_id,x.source_family_id,x.source_url,x.start,x.end]),
-      original.observations.map(x=>[x.id,x.text_sha256,x.meeting_id,x.parent_id,x.source_family_id,x.source_url,x.start,x.end])),
+    equal(s.observations,original.observations.map(sourcePointer)),
     'sidecar source identity or observation lineage was altered');
   ok(s.producer.code_sha256===original.producer.code_sha256,
     'producer/runner provenance differs');
