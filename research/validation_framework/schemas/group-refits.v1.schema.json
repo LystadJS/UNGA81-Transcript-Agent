@@ -114,7 +114,8 @@
         "source_group_count",
         "grouping_components",
         "source_group_ids",
-        "resampling_policy"
+        "resampling_policy",
+        "not_exported_group_units"
       ],
       "properties": {
         "split": {
@@ -156,6 +157,15 @@
         "resampling_policy": {
           "type": "string",
           "minLength": 1
+        },
+        "not_exported_group_units": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "affiliation"
+            ]
+          },
+          "description": "Other W1 source/group designs explicitly retained by W1 but not interpreted as whole-meeting W2 refits."
         }
       },
       "additionalProperties": false
