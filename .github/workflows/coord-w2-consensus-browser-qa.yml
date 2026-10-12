@@ -1,0 +1,96 @@
+name: Coordinator W2 source-weighted synthetic browser QA
+
+on:
+  pull_request:
+    paths:
+      - "site/research-consensus.js"
+      - "site/research.html"
+      - "site/research-wiring.css"
+      - "research/integration/test_w2_browser_bridge.cjs"
+      - "research/integration/w2_browser_smoke.py"
+      - "docs/parallel-work/BROWSER_W2_CONSENSUS_REVIEW.md"
+      - ".github/workflows/coord-w2-consensus-browser-qa.yml"
+  push:
+    branches: ["main"]
+    paths:
+      - "site/research-consensus.js"
+      - "site/research.html"
+      - "site/research-wiring.css"
+      - "research/integration/test_w2_browser_bridge.cjs"
+      - "research/integration/w2_browser_smoke.py"
+      - ".github/workflows/coord-w2-consensus-browser-qa.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-w2-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONHASHSEED: "0"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - name: Check out source without persisted credentials
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Native Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Native Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Source, W2 native and v1/consumer acceptance
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check site/research-consensus.js
+          node research/integration/test_w2_browser_bridge.cjs
+          node research/consensus/test_consensus.cjs
+          node docs/parallel-work/validate-contract.cjs
+          node site/parallel/w05-browser/experimental/method-lab/test-method-lab.cjs
+          node --test site/experimental/evidence-viz/tests.cjs
+      - name: Install pinned offline Chromium test binding
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium)" >> "$GITHUB_ENV"
+          python -m pip install playwright==1.55.0
+      - name: Prepare disposable reviewed-site build and original W2 synthetic files
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/build_pages.py "$RUNNER_TEMP/w2-pages-preview"
+          test -s "$RUNNER_TEMP/w2-pages-preview/research.html"
+          test -s "$RUNNER_TEMP/w2-pages-preview/research-consensus.js"
+          test ! -e "$RUNNER_TEMP/w2-pages-preview/research/integration/test_w2_browser_bridge.cjs"
+          test ! -e "$RUNNER_TEMP/w2-pages-preview/research/consensus/consensus.cjs"
+          node research/consensus/run_synthetic.cjs "$RUNNER_TEMP/w2-native-synthetic" > "$RUNNER_TEMP/w2-generator-receipt.json"
+          test -s "$RUNNER_TEMP/w2-native-synthetic/consensus-v1.json"
+          test -s "$RUNNER_TEMP/w2-native-synthetic/standardized-interchange-v1.json"
+      - name: Real Chromium desktop/mobile, tamper, same-origin acceptance
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/integration/w2_browser_smoke.py \
+            --site "$RUNNER_TEMP/w2-pages-preview" \
+            --fixtures "$RUNNER_TEMP/w2-native-synthetic" \
+            --browser "$CHROME_BIN" \
+            --output "$RUNNER_TEMP/w2-browser-qa"
+      - name: Preserve only synthetic screenshots and receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coordinator-w2-browser-synthetic-qa
+          path: |
+            ${{ runner.temp }}/w2-browser-qa
+            ${{ runner.temp }}/w2-generator-receipt.json
+            ${{ runner.temp }}/w2-native-synthetic/validation-receipt.json
+          if-no-files-found: warn
+          retention-days: 7
