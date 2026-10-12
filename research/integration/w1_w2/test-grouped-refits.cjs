@@ -34,7 +34,7 @@ test('W1 exports authentic source-hash-linked child labels after original numeri
   assert.equal(Source.validateSidecar(sidecar,original),true);
 });
 test('W2 receives complete original eligible frame including every omitted child pair',()=>{
-  assert.equal(W2.validateEnvelope(merged.refits).eligible,undefined);
+  assert.equal(W2.validateEnvelope(merged.refits).eligible.size,24);
   assert.equal(merged.refits.models.length,90);
   assert.equal(merged.refits.coverage.models.length,90);
   assert.equal(merged.refits.results.length,90*25);
@@ -140,6 +140,7 @@ test('W1 group subsampling of several source groups is never mislabeled bootstra
     f.frame.observations.push(row);
   }
   f.frame.inventory_meetings=11;
+  f.frame.source_sha256=F.digest('extended-fictional-source-frame-v1');
   const out=await W1.run(f.frame,[SETTINGS[0],SETTINGS[2]],{
     group_units:['meeting'],replicates:16,fraction:0.7,group_seed:47,
     retain_group_assignments:true});
@@ -167,7 +168,7 @@ test('failure/skip child model stays in the planned denominator and has no fabri
   coverage.successful_fits=0;coverage.failed_fits=1;
   c.coverage.failure_ledger.push({model_id:id,attempt:1,status:'failed',
     reason:'Synthetic forced unavailable refit',seed:777,source_group:'meeting'});
-  assert.equal(W2.validateEnvelope(c).eligible,undefined);
+  assert.equal(W2.validateEnvelope(c).eligible.size,24);
   const sample=merged.refits.results.filter(x=>x.model_id===id&&x.status==='assigned').length;
   assert(sample>0);
   const w=W2.runConsensus([merged.baseline,c],{
