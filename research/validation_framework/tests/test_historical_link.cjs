@@ -154,7 +154,7 @@ async function main(){
     const row=x.observations.find(o=>o.source_status==='unverified');
     row.source_status='available';
   });
-  refuse(()=>linkW1Inventory(out,invStatus),'Verified rows require');
+  refuse(()=>linkW1Inventory(out,invStatus),'Available source has a missingness reason');
   const invInvalid=structuredClone(inventory);
   invInvalid.observations[0].text_sha256='not-a-digest';
   refuse(()=>linkW1Inventory(out,invInvalid),'pattern');
