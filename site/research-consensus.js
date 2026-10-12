@@ -23,6 +23,14 @@
       '{'+Object.keys(x).filter(k=>x[k]!==undefined).sort().map(k=>JSON.stringify(k)+':'+stable(x[k])).join(',')+'}':
       JSON.stringify(x);
   const key=(a,b)=>[a,b].sort().join('\u0000');
+  function syntheticLink(value) {
+    if(value===null)return true;
+    try {
+      const u=new URL(value);
+      return u.protocol==='https:' && u.hostname==='example.invalid' &&
+        !u.username && !u.password;
+    } catch(_) { return false; }
+  }
 
   async function sha256(text){
     const subtle=root.crypto&&root.crypto.subtle ||
@@ -46,9 +54,9 @@
       env.cohort.split==='synthetic' && env.evaluation_role==='engineering_only' &&
       env.publication_eligible===false && env.contract_version==='1.0.0',
       'Public research import requires engineering-only synthetic W2 v1.');
-    assert(env.observations.every(o=>o.source_url===null &&
+    assert(env.observations.every(o=>syntheticLink(o.source_url) &&
       !['text','quote','source_text','transcript'].some(k=>Object.hasOwn(o,k))),
-      'Public preview refuses source-bearing observations.');
+      'Public preview refuses real source URLs or text-bearing observations.');
     assert(sidecar && sidecar.schema==='un.consensus.v1' &&
       sidecar.version==='0.1.0' && sidecar.contract_schema==='un.parallel-analysis.v1' &&
       sidecar.publication_eligible===false && sidecar.evaluation_role==='engineering_only',
@@ -81,7 +89,7 @@
     assert(env.models[0].parameters_sha256===await sha256(stable(sidecar.thresholds)),
       'W2 threshold parameter SHA-256 does not match the original sidecar.');
     const eligible=env.observations.filter(o=>o.source_status==='available'&&!o.exclusion_reasons.length)
-      .sort((a,b)=>a.id.localeCompare(b.id));
+      .sort((a,b)=>a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
     const ids=eligible.map(o=>o.id), observed=new Map(eligible.map(o=>[o.id,o]));
     assert(ids.length>0&&ids.length<=256 && allIDsEqual(ids,sidecar.observation_ids),
       'W2 eligible observation IDs/order are incomplete or exceed producer bounds.');
@@ -93,8 +101,9 @@
         ['text_sha256','parent_id','meeting_id','source_url','json_pointer','start','end']
           .every(k=>(original[k]??null)===(row[k]??null)),
         'W2 original observation ID/hash/source-offset lineage changed.');
-      assert(!['text','quote','source_text','transcript'].some(k=>Object.hasOwn(original,k)),
-        'W2 sidecar may not include public source text.');
+      assert(syntheticLink(original.source_url) &&
+        !['text','quote','source_text','transcript'].some(k=>Object.hasOwn(original,k)),
+        'W2 sidecar refuses real source URLs or public source text.');
     }
     const pairMap=new Map(),n=ids.length;
     assert(sidecar.pairs.length===n*(n+1)/2,
