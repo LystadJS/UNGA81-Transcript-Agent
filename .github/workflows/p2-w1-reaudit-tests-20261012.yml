@@ -6,6 +6,7 @@ on:
       - '.github/workflows/p2-w1-reaudit-tests-20261012.yml'
       - 'research/source_acquisition/p2_expansion/p2_to_w1_source_adapter.cjs'
       - 'research/source_acquisition/p2_expansion/test_p2_to_w1.cjs'
+      - 'research/source_acquisition/p2_expansion/test_tar_source_binding.cjs'
   workflow_dispatch:
 permissions:
   contents: read
@@ -26,6 +27,7 @@ jobs:
       - name: Verify P2 original source authentication synthetic controls
         run: |
           node research/source_acquisition/p2_expansion/test_p2_to_w1.cjs
+          node research/source_acquisition/p2_expansion/test_tar_source_binding.cjs
           python -m unittest discover -s research/source_acquisition/general_debate -p 'test_p2_w1_authenticated.py' -v
       - name: Verify canonical W1, old v1 compatibility and source inventory regression
         run: |
@@ -48,6 +50,7 @@ jobs:
           path: |
             research/source_acquisition/p2_expansion/p2_to_w1_source_adapter.cjs
             research/source_acquisition/p2_expansion/test_p2_to_w1.cjs
+            research/source_acquisition/p2_expansion/test_tar_source_binding.cjs
             research/validation_framework/*.cjs
             research/validation_framework/examples/*.cjs
             research/validation_framework/schemas/*.json
