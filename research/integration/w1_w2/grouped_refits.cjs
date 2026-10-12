@@ -50,6 +50,7 @@ function buildChildEnvelope(parent,sidecar,baseline) {
       representation_version:baseModel.representation_version+'+W1-group-refit-v1',
       fit_version:'source-validation-group-refit-1.0.0',
       parameters_sha256:refit.refit_parameters_sha256,
+      training_selection_sha256:refit.refit_training_selection_sha256,
       diagnostic_basis:'Native W1 hard assignments; source-group-subset refit, source/seed replay key, NOT saved geometry'
     };
     models.push(childModel);
