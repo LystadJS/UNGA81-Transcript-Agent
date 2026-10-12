@@ -44,11 +44,11 @@
     <section id="w2" class="research-panel" aria-labelledby="w2-heading">
       <span class="research-index">SOURCE-BOUND CONSENSUS · OFFLINE FITS</span>
       <h2 id="w2-heading">Inspect native W2 weighted consensus</h2>
-      <p>Import the two original synthetic JSON results from the native W2 exporter. The source and observation hashes, complete source frame, fit assignments, method-family weights, conditional co-assignment numerators, denominators and pair matrix are verified before display. The original W2 statistic is shown without recomputing it using the illustrative W6 averaging rule.</p>
+      <p>Import the original weighted W2 consensus produced by the accepted W1→W2 coordinator bridge, preserving the 25-item observation frame (24 eligible and one unavailable). The standalone W2 six-meeting fixture is not rewritten to satisfy this browser contract. The source and observation hashes, complete source frame, fit assignments, method-family weights, conditional co-assignment numerators, denominators and pair matrix are verified before display. The original W2 statistic is shown without recomputing it using the illustrative W6 averaging rule.</p>
       <div class="research-w2-files">
-        <div><label class="research-field-label" for="research-w2-sidecar">W2 consensus-v1.json</label>
+        <div><label class="research-field-label" for="research-w2-sidecar">W1→W2 w2-consensus.json</label>
           <input id="research-w2-sidecar" type="file" accept=".json,application/json"></div>
-        <div><label class="research-field-label" for="research-w2-v1">W2 standardized-interchange-v1.json</label>
+        <div><label class="research-field-label" for="research-w2-v1">W1→W2 w2-v1-interchange.json</label>
           <input id="research-w2-v1" type="file" accept=".json,application/json"></div>
       </div>
       <div class="research-input-row"><button type="button" id="research-w2-import">Verify and inspect weighted pairs</button></div>
