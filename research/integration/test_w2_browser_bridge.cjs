@@ -101,7 +101,7 @@ async function main(){
   },/provenance|synthetic/);
   await rejected('reject fabricated source text',(e,r)=>{
     e.observations[0].text='invented test string';return [e,r];
-  },/source-bearing/);
+  },/text-bearing observations/);
   await rejected('reject unsupported W2 sidecar version',(e,r)=>{
     r.version='1.0.0';return [e,r];
   },/sidecar schema/);
