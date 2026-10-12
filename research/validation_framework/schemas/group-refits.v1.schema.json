@@ -1,0 +1,521 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lystadjs.github.io/un/transcript-agent/research/group-refits-v1.schema.json",
+  "title": "Source-bound W1 grouped child-fit assignment export",
+  "description": "Private-by-default source-bound hard partitions, conditional sampling diagnostics only; not a bootstrap or diplomatic inference.",
+  "type": "object",
+  "required": [
+    "schema",
+    "contract_version",
+    "evaluation_role",
+    "publication_eligible",
+    "producer",
+    "upstream",
+    "cohort",
+    "observations",
+    "models",
+    "schedules",
+    "refits",
+    "limitations"
+  ],
+  "properties": {
+    "schema": {
+      "const": "un.source-aware.group-refits.v1"
+    },
+    "contract_version": {
+      "const": "1.0.0"
+    },
+    "evaluation_role": {
+      "const": "engineering_only"
+    },
+    "publication_eligible": {
+      "const": false
+    },
+    "producer": {
+      "type": "object",
+      "required": [
+        "workstream_id",
+        "runtime",
+        "code_sha256",
+        "artifact_kind"
+      ],
+      "properties": {
+        "workstream_id": {
+          "const": "W1"
+        },
+        "runtime": {
+          "type": "string",
+          "minLength": 1
+        },
+        "code_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "artifact_kind": {
+          "enum": [
+            "synthetic",
+            "private_development"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "upstream": {
+      "type": "object",
+      "required": [
+        "source_schema",
+        "source_hash_basis",
+        "source_sha256",
+        "selection_sha256",
+        "population_hash",
+        "observations_sha256",
+        "original_w1_interchange_code_sha256"
+      ],
+      "properties": {
+        "source_schema": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_hash_basis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "selection_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "population_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "observations_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "original_w1_interchange_code_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "cohort": {
+      "type": "object",
+      "required": [
+        "split",
+        "unit",
+        "eligible",
+        "inventory_meetings",
+        "source_group_unit",
+        "source_group_count",
+        "grouping_components",
+        "source_group_ids",
+        "resampling_policy"
+      ],
+      "properties": {
+        "split": {
+          "enum": [
+            "synthetic",
+            "development"
+          ]
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "eligible": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "inventory_meetings": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source_group_unit": {
+          "const": "meeting"
+        },
+        "source_group_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "grouping_components": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source_group_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "resampling_policy": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "observations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "text_sha256",
+          "parent_id",
+          "parent_text_sha256",
+          "meeting_id",
+          "source_family_id",
+          "date",
+          "source_url",
+          "json_pointer",
+          "start",
+          "end",
+          "source_status",
+          "exclusion_reasons"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "text_sha256": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "parent_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "parent_text_sha256": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "meeting_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_family_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "date": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_url": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "json_pointer": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "start": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "end": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "source_status": {
+            "type": "string",
+            "minLength": 1
+          },
+          "exclusion_reasons": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "models": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "schedules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "base_model_id",
+          "group_unit",
+          "schedule_sha256",
+          "status",
+          "planned",
+          "executed",
+          "successful",
+          "failed",
+          "skipped",
+          "distinct_group_samples",
+          "reason"
+        ],
+        "properties": {
+          "base_model_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "group_unit": {
+            "const": "meeting"
+          },
+          "schedule_sha256": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "enum": [
+              "scheduled",
+              "skipped"
+            ]
+          },
+          "planned": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "executed": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "successful": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "failed": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "skipped": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "distinct_group_samples": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "refits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "model_id",
+          "base_model_id",
+          "method",
+          "representation_id",
+          "representation_version",
+          "original_parameters_sha256",
+          "refit_parameters_sha256",
+          "fit_replay_key_sha256",
+          "source_group_unit",
+          "resample_type",
+          "resample_id",
+          "schedule_sha256",
+          "attempt",
+          "seed",
+          "selected_groups",
+          "omitted_groups",
+          "status",
+          "attempted_fits",
+          "successful_fits",
+          "failed_fits",
+          "skipped_fits",
+          "reason",
+          "selected_rows"
+        ],
+        "properties": {
+          "model_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "base_model_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "method": {
+            "type": "string",
+            "minLength": 1
+          },
+          "representation_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "representation_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "original_parameters_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "refit_parameters_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "fit_replay_key_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "source_group_unit": {
+            "const": "meeting"
+          },
+          "resample_type": {
+            "enum": [
+              "leave_group_out",
+              "group_subsample"
+            ]
+          },
+          "resample_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "schedule_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "attempt": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "seed": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "selected_groups": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "omitted_groups": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "status": {
+            "enum": [
+              "fitted",
+              "failed",
+              "skipped"
+            ]
+          },
+          "attempted_fits": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "successful_fits": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "failed_fits": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "skipped_fits": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "selected_rows": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "observation_id",
+                "text_sha256",
+                "status",
+                "cluster"
+              ],
+              "properties": {
+                "observation_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "text_sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "status": {
+                  "enum": [
+                    "assigned",
+                    "unassigned",
+                    "not_fitted"
+                  ]
+                },
+                "cluster": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 0
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "additionalProperties": false
+}
