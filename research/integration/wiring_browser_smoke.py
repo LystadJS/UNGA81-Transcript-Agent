@@ -70,6 +70,9 @@ def verify(browser, base: str, fixtures: Path, folder: Path,
         page.locator("#w6 details").evaluate("(el)=>el.open=true")
         assert "Research Method Lab" in page.frame_locator(
             '#w5 iframe').locator("h1").inner_text(timeout=15000)
+        # The extra W2 section moves this lazy iframe below the viewport.
+        # Scroll it into view rather than assuming eager iframe loading.
+        page.locator("#w6 iframe").scroll_into_view_if_needed()
         assert "Evidence visualization suite" in page.frame_locator(
             '#w6 iframe').locator("h1").inner_text(timeout=15000)
         for scenario,expected,assertions in [
