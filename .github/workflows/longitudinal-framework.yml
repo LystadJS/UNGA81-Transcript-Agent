@@ -1,0 +1,75 @@
+name: W4 longitudinal synthetic and interchange checks
+on:
+  pull_request:
+    paths:
+      - 'research/longitudinal/**'
+      - '.github/workflows/longitudinal-framework.yml'
+  push:
+    branches: [main, 'feat/longitudinal-latent-structure']
+    paths:
+      - 'research/longitudinal/**'
+      - '.github/workflows/longitudinal-framework.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-longitudinal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install bounded scientific dependencies
+        run: python -m pip install -r research/longitudinal/requirements.txt
+      - name: Source-only synthetic method unit tests
+        run: python -m unittest discover -s research/longitudinal -p 'test_*.py' -v
+      - name: Existing interchange and methods regression
+        run: |
+          node docs/parallel-work/validate-contract.cjs
+          python research/methods.py
+      - name: Merged W1 source-aware provenance and schema regression
+        run: |
+          node research/validation_framework/tests/test_framework.cjs
+          node research/validation_framework/tests/test_schema.cjs
+      - name: Existing source, latent and clustering consumer regressions
+        run: |
+          node tools/test_passage_corpus.cjs
+          node tools/test_latent.cjs
+          node tools/test_browser_clusters.cjs
+          node tools/test_browser_stability.cjs
+      - name: Fictional no-motion and known-motion CLI exports
+        run: |
+          python research/longitudinal/run_demo.py --output "$RUNNER_TEMP/w4-roster"
+          python research/longitudinal/run_demo.py --motion --output "$RUNNER_TEMP/w4-motion"
+      - name: W1 relational interchange validator on actual W4 exports
+        run: |
+          node - "$RUNNER_TEMP/w4-roster/interchange-v1.json" "$RUNNER_TEMP/w4-motion/interchange-v1.json" <<'NODE'
+          'use strict';
+          const fs = require('node:fs');
+          const { validateRelational } = require('./research/validation_framework/interchange.cjs');
+          for (const file of process.argv.slice(2)) {
+            const output = JSON.parse(fs.readFileSync(file, 'utf8'));
+            if (!validateRelational(output)) throw new Error('W4 interchange rejected by W1');
+          }
+          console.log('PASS W1 relational validation: both W4 generated envelopes');
+          NODE
+
+      - name: Publish source-code-only local replay artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: w4-source-only-dependence-audit
+          path: |
+            research/longitudinal/framework.py
+            research/longitudinal/dependence_sensitivity.py
+            research/longitudinal/fixtures.py
+            research/longitudinal/test_dependence_sensitivity.py
+            research/longitudinal/requirements.txt
+          retention-days: 1
+          if-no-files-found: error
