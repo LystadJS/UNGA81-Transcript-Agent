@@ -35,8 +35,8 @@ def serve(directory):
 
 
 def upload(page, folder):
-    page.locator("#research-w2-sidecar").set_input_files(str(folder / "consensus-v1.json"))
-    page.locator("#research-w2-v1").set_input_files(str(folder / "standardized-interchange-v1.json"))
+    page.locator("#research-w2-sidecar").set_input_files(str(folder / "w2-consensus.json"))
+    page.locator("#research-w2-v1").set_input_files(str(folder / "w2-v1-interchange.json"))
     page.locator("#research-w2-import").click()
 
 
@@ -59,7 +59,7 @@ def verify(browser, base, fixture, out, name, width, height):
             "() => document.getElementById('research-w2-status').textContent.includes('verified in this browser')",
             timeout=15000)
         summary=page.locator("#research-w2-summary").inner_text()
-        report=json.loads((fixture/"consensus-v1.json").read_text())
+        report=json.loads((fixture/"w2-consensus.json").read_text())
         assert str(len(report["observation_ids"])) in summary
         assert "planned-weight" in summary.lower()
         n=len(report["observation_ids"])
@@ -81,12 +81,12 @@ def verify(browser, base, fixture, out, name, width, height):
 
         with tempfile.TemporaryDirectory() as td:
             directory=Path(td)
-            bad=json.loads((fixture/"consensus-v1.json").read_text())
+            bad=json.loads((fixture/"w2-consensus.json").read_text())
             changed=next(p for p in bad["pairs"] if p["association"] is not None
                          and p["observation_a"] != p["observation_b"])
             changed["association"]=1.0 if changed["association"] == 0 else 0.0
-            (directory/"consensus-v1.json").write_text(json.dumps(bad)+"\n")
-            page.locator("#research-w2-sidecar").set_input_files(str(directory/"consensus-v1.json"))
+            (directory/"w2-consensus.json").write_text(json.dumps(bad)+"\n")
+            page.locator("#research-w2-sidecar").set_input_files(str(directory/"w2-consensus.json"))
             page.locator("#research-w2-import").click()
             page.wait_for_function(
                 "() => document.getElementById('research-w2-status').textContent.includes('W2 import refused')",
@@ -122,7 +122,7 @@ def main():
     p.add_argument("--output",type=Path,required=True)
     args=p.parse_args()
     assert args.site.is_dir() and args.browser.is_file()
-    for filename in ["consensus-v1.json","standardized-interchange-v1.json"]:
+    for filename in ["w2-consensus.json","w2-v1-interchange.json"]:
         assert (args.fixtures / filename).is_file()
     args.output.mkdir(parents=True,exist_ok=False)
     with serve(args.site) as base,sync_playwright() as pw:
