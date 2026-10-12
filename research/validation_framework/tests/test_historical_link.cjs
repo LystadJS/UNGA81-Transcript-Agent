@@ -9,7 +9,31 @@ const {linkW1Inventory}=require('../historical_link.cjs');
 const I=require('../../../docs/parallel-work/source-inventory-v1.cjs');
 
 const schema=require('../schemas/historical-link.candidate.v0.schema.json');
-function strictShape(rule,value,at='
+function strictShape(rule,value,at='root'){
+  if(Object.hasOwn(rule,'const'))assert.deepEqual(value,rule.const,at+' const');
+  if(rule.enum)assert(rule.enum.includes(value),at+' enum');
+  if(rule.type){
+    const ts=Array.isArray(rule.type)?rule.type:[rule.type];
+    assert(ts.some(t=>t==='null'?value===null:t==='object'?value!==null&&typeof value==='object'&&!Array.isArray(value):
+      t==='array'?Array.isArray(value):t==='integer'?Number.isSafeInteger(value):typeof value===t),at+' type');
+  }
+  if(typeof value==='string'){
+    if(rule.minLength!==undefined)assert(value.length>=rule.minLength,at+' minimum length');
+    if(rule.pattern)assert(new RegExp(rule.pattern).test(value),at+' pattern');
+  }
+  if(Array.isArray(value)){
+    if(rule.minItems!==undefined)assert(value.length>=rule.minItems,at+' minimum items');
+    if(rule.items)value.forEach((v,i)=>strictShape(rule.items,v,at+'['+i+']'));
+  }
+  if(value!==null&&typeof value==='object'&&!Array.isArray(value)){
+    for(const k of rule.required||[])assert(Object.hasOwn(value,k),at+' missing '+k);
+    for(const [k,v] of Object.entries(value)){
+      if(rule.properties&&Object.hasOwn(rule.properties,k))strictShape(rule.properties[k],v,at+'.'+k);
+      else if(rule.additionalProperties===false)assert.fail(at+' unexpected '+k);
+    }
+  }
+  return true;
+}
 
 function makePair(){
   const {frame,saved}=makeFixture();
