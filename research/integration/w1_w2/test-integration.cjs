@@ -5,7 +5,6 @@ const W1Run=require('../../validation_framework/runner.cjs');
 const W1Export=require('../../validation_framework/interchange.cjs');
 const {makeFixture,SETTINGS}=require('../../validation_framework/examples/synthetic_fixture.cjs');
 const W2=require('../../consensus/consensus.cjs');
-const W2Fixture=require('../../consensus/fixtures.cjs');
 const Bridge=require('./bridge.cjs');
 const W6Panel=require('./w6_panel.cjs');
 const W5=require('../../../site/parallel/w05-browser/experimental/method-lab/contracts.js');
@@ -165,28 +164,34 @@ test('reject W1 invented fixture masquerading with incomplete inventory, origina
 });
 
 test('W6 withholds mismatched raw family rates instead of displaying incorrect weighted consensus',()=>{
-  const f=W2Fixture.fixtureKnown(false);
-  for(const e of f.envelopes){
-    e.observations.forEach(o=>o.source_url=null);
-    e.cohort.total_in_frame=e.observations.length;
-  }
-  const first=f.envelopes[0].results.find(r=>r.observation_id==='fictional-unit-1-a');
-  first.cluster=first.cluster===1?2:1;
-  const out=W2.runConsensus(f.envelopes,{fit_plan:f.fit_plan});
-  const e=W2.toInterchangeV1(f.envelopes[0],out,{generated_at:'2026-10-08T00:00:00Z'});
-  const synthetic={projected_envelope:f.envelopes[0],consensus:out,interchange:e,
+  // Create an extra synthetic k-means seed from the actual W1 fitted baseline
+  // without changing the source population or reinterpretating inventory grain.
+  const projected=clone(joined.projected_envelope);
+  const original=projected.models.find(x=>x.method==='kmeans');
+  const newId=original.model_id+'-independent-seed';
+  const extra=clone(original);
+  extra.model_id=newId;
+  projected.models.push(extra);
+  const baselineRows=projected.results.filter(x=>x.model_id===original.model_id).map(clone);
+  baselineRows.forEach(x=>x.model_id=newId);
+  baselineRows.find(x=>x.status==='assigned').cluster=50;
+  projected.results.push(...baselineRows);
+  const ledger=clone(projected.coverage.models.find(x=>x.model_id===original.model_id));
+  ledger.model_id=newId;
+  projected.coverage.models.push(ledger);
+  W2.validateEnvelope(projected);
+  const plan=Object.fromEntries(joined.audit.models.map(x=>
+    [x.model_id,{configuration_id:x.configuration_id,seed:x.seed}]));
+  plan[newId]={configuration_id:joined.audit.models.find(x=>x.model_id===original.model_id).configuration_id,seed:999};
+  const out=W2.runConsensus([projected],{
+    fit_plan:plan,cross_basis_protocol:'identity_join_hard_partition_v1'});
+  const derived=W2.toInterchangeV1(projected,out,{generated_at:'2026-10-08T00:00:00Z'});
+  const synthetic={projected_envelope:projected,consensus:out,interchange:derived,
     audit:{schema:'un.w1-w2-consensus-bridge.v1',publication_eligible:false,source_split:'synthetic'}};
-  // Put all original model records into a compatible multi-model projection.
-  synthetic.projected_envelope=clone(f.envelopes[0]);
-  synthetic.projected_envelope.models=f.envelopes.map(x=>x.models[0]);
-  synthetic.projected_envelope.results=f.envelopes.flatMap(x=>x.results);
-  synthetic.projected_envelope.coverage.models=f.envelopes.map(x=>x.coverage.models[0]);
-  synthetic.projected_envelope.coverage.failure_ledger=f.envelopes.flatMap(x=>x.coverage.failure_ledger);
-  W2.validateEnvelope(synthetic.projected_envelope);
   const view=W6Panel.panelForW6(synthetic);
   assert.equal(view.status,'withheld');
   assert.match(view.panel.reason,/not equivalent/);
   assert.equal(view.panel.coverage.included,0);
   assert.deepEqual(view.panel.observation_ids,[]);
-  assert.equal(W6.renderPanel(e,view.panel).status,'withheld');
+  assert.equal(W6.renderPanel(derived,view.panel).status,'withheld');
 });
