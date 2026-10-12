@@ -52,6 +52,8 @@ jobs:
         run: |
           set -euo pipefail
           node research/consensus/test_consensus.cjs
+          node --test research/integration/w1_w2/test-integration.cjs
+          node --test research/integration/w3_w5_w6/test-integration.cjs
           node --test research/integration/w2_w4_w6/test_w2_bridge.cjs
           python -m unittest discover -s research/longitudinal -p 'test_*.py' -v
           python -m unittest research.integration.w2_w4_w6.test_w4_bridge -v
