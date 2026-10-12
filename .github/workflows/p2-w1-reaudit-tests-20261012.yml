@@ -1,0 +1,58 @@
+name: P2-W1 authenticated source contract and source-only replay
+on:
+  push:
+    branches: ['coord/p2-w1-reaudit-20261012']
+    paths:
+      - '.github/workflows/p2-w1-reaudit-tests-20261012.yml'
+      - 'research/source_acquisition/p2_expansion/p2_to_w1_source_adapter.cjs'
+      - 'research/source_acquisition/p2_expansion/test_p2_to_w1.cjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-numerical-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify P2 original source authentication synthetic controls
+        run: |
+          node research/source_acquisition/p2_expansion/test_p2_to_w1.cjs
+          python -m unittest discover -s research/source_acquisition/general_debate -p 'test_p2_w1_authenticated.py' -v
+      - name: Verify canonical W1, old v1 compatibility and source inventory regression
+        run: |
+          node research/validation_framework/tests/test_framework.cjs
+          node research/validation_framework/tests/test_schema.cjs
+          node docs/parallel-work/validate-contract.cjs
+          node docs/parallel-work/test-source-inventory-v1.cjs
+      - name: Verify source-only delivery paths
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          roots=[Path('research/source_acquisition/p2_expansion'),
+                 Path('research/validation_framework'),Path('site')]
+          assert all(r.is_dir() for r in roots)
+          print('PASS: source-code-only QA; no original PDF, private vectors, speaker records, or heldout files')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2-w1-20261012-source-only-code
+          path: |
+            research/source_acquisition/p2_expansion/p2_to_w1_source_adapter.cjs
+            research/source_acquisition/p2_expansion/test_p2_to_w1.cjs
+            research/validation_framework/*.cjs
+            research/validation_framework/schemas/*.json
+            site/*.js
+            docs/parallel-work/interchange-v1.schema.json
+            docs/parallel-work/source-inventory-v1.schema.json
+            docs/parallel-work/source-inventory-v1.cjs
+          if-no-files-found: error
+          retention-days: 1
