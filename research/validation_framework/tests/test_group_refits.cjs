@@ -132,6 +132,20 @@ test('W1 explicitly withholds source-group uncertainty when fewer than three mee
   assert.equal(g.refits.length,0);
   assert.equal(g.schedules[0].planned,0);
 });
+test('default W1 affiliation refits are retained privately but not misclassified as meeting samples',async()=>{
+  const f=makeFixture();
+  const n=await W1.run(f.frame,[SETTINGS[0]],{
+    replicates:3,group_seed:31,retain_group_assignments:true
+  });
+  const e=V1.toInterchangeV1(n),g=GROUP.fromNative(n,e);
+  assert(n._internal_group_refits.some(x=>x.group_unit==='affiliation'));
+  assert(n._internal_group_refits.some(x=>x.group_unit==='meeting'));
+  assert.equal(g.refits.length,3);
+  assert.deepEqual(g.cohort.not_exported_group_units,['affiliation']);
+  assert(g.refits.every(x=>x.source_group_unit==='meeting'));
+  assert.equal(GROUP.validateSidecar(g,e),true);
+});
+
 test('seeded independent restart reproduces the same source-bound W1 child assignments',async()=>{
   const f=makeFixture();
   const a=await W1.run(f.frame,[SETTINGS[0]],{
