@@ -95,7 +95,10 @@ function validateEnvelope(x) {
     check(!models.has(m.model_id), 'duplicate model ID');
     models.set(m.model_id, m);
     check(m.fit_split === x.cohort.split, 'model split mismatch');
-    check(m.training_selection_sha256 === x.upstream.selection_sha256, 'model training selection mismatch');
+    check(m.training_selection_sha256 === x.upstream.selection_sha256 ||
+      m.fit_version === 'source-validation-group-refit-1.0.0' &&
+      SHA.test(m.training_selection_sha256 || ''),
+      'model training selection mismatch; only authenticated source-group child fits may use a subset digest');
     const c = ledgers.get(m.model_id), rows = results.get(m.model_id) || [];
     check(c && c.eligible === eligible.size && c.assigned + c.unassigned + c.not_fitted === c.eligible,
       'model coverage incompatible: ' + m.model_id);
@@ -166,6 +169,18 @@ function extract(envelopes, opts = {}) {
         'group subsampling requires distinct complete source groups drawn without replacement; not a bootstrap');
       if (type === 'baseline') check(sampled.length === included.size,
         'baseline must include each source group exactly once');
+      if (m.fit_version === 'source-validation-group-refit-1.0.0') {
+        check(['leave_group_out','group_subsample'].includes(type),
+          'W1 child source-group model must use a declared without-replacement resampling design');
+        const selectedSourceKeys = ids.filter(id=>included.has(
+          sourceGroup(baseline.eligible.get(id),base.cohort.source_group_unit)))
+          .map(id=>[id,baseline.eligible.get(id).text_sha256]);
+        check(m.training_selection_sha256 === digest(selectedSourceKeys),
+          'child training-selection SHA differs from actual source-group sample IDs and text hashes');
+      } else {
+        check(m.training_selection_sha256 === x.upstream.selection_sha256,
+          'non-grouped numerical model training selection differs from declared source population');
+      }
       const rows = new Map((v.results.get(m.model_id) || []).map(r => [r.observation_id, r]));
       for (const id of ids) if (!included.has(sourceGroup(baseline.eligible.get(id), base.cohort.source_group_unit)))
         check(rows.get(id).status === 'not_fitted', 'omitted source group cannot have a fitted/noise label');
