@@ -205,6 +205,8 @@ function fromNative(native, v1, {allow_private_development=false}={}) {
       const model_id='w1-child-'+hash([f.model_id,sample.attempt,meta.seed,
         plan.schedule_sha256,sampleHash]).slice(0,32);
       const parameters={...f.parameters,seed:meta.seed};
+      const scopedSelectionSHA=hash(selectedRows.map(r=>
+        [r.observation_id,r.text_sha256]).sort((a,b)=>a[0].localeCompare(b[0])));
       const fitReplayIdentity=hash({
         runner_sha256:RUNNER_SHA(),source_sha256:native.frame.source_sha256,
         selection_sha256:native.frame.selection_sha256,
@@ -217,7 +219,9 @@ function fromNative(native, v1, {allow_private_development=false}={}) {
         method:f.method,representation_id:f.representation_id,
         representation_version:f.representation_version,
         original_parameters_sha256:m.parameters_sha256,
-        refit_parameters_sha256:hash(parameters),fit_replay_key_sha256:fitReplayIdentity,
+        refit_parameters_sha256:hash(parameters),
+        refit_training_selection_sha256:scopedSelectionSHA,
+        fit_replay_key_sha256:fitReplayIdentity,
         source_group_unit:'meeting',resample_type:kind,resample_id,
         schedule_sha256:plan.schedule_sha256,attempt:sample.attempt,
         seed:meta.seed,selected_groups:selectedGroups,omitted_groups:omittedGroups,
@@ -308,7 +312,8 @@ function validateSidecar(sidecar,original){
       ref.representation_id===x.representation_id &&
       ref.representation_version===x.representation_version &&
       ref.parameters_sha256===x.original_parameters_sha256 &&
-      SHA.test(x.refit_parameters_sha256) && SHA.test(x.fit_replay_key_sha256) &&
+      SHA.test(x.refit_parameters_sha256) &&
+      SHA.test(x.refit_training_selection_sha256) && SHA.test(x.fit_replay_key_sha256) &&
       x.source_group_unit==='meeting' &&
       Number.isInteger(x.seed)&&Number.isInteger(x.attempt)&&x.attempt>=1,
       'child numerical model and original parameters mismatch');
@@ -349,6 +354,9 @@ function validateSidecar(sidecar,original){
     }
     ok(matched.size===([...eligible.values()].filter(o=>x.selected_groups.includes(o.meeting_id))).length,
       'selected whole source groups lack complete original child labels');
+    ok(x.refit_training_selection_sha256===hash(x.selected_rows.map(r=>
+      [r.observation_id,r.text_sha256]).sort((a,b)=>a[0].localeCompare(b[0]))),
+      'child model training-selection SHA does not match sampled ID/text hashes');
   }
   for(const schedule of s.schedules){
     ok(base.has(schedule.base_model_id) &&
