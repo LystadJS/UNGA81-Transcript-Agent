@@ -60,10 +60,10 @@ test('network audits selected graph and distinguishes sensitivity from alliance'
 
 test('failed cross-period alignment withholds even otherwise present 2027 points',()=>{
   const v=draw(get(),'longitudinal');
-  assert.match(v.svg,/Actor A 25/);
-  assert.match(v.svg,/Actor A 26/);
-  assert.doesNotMatch(v.svg,/Actor A 27/);
-  assert.doesNotMatch(v.svg,/Actor C 27/);
+  assert.match(v.svg,/Actor A 2025/);
+  assert.match(v.svg,/Actor A 2026/);
+  assert.doesNotMatch(v.svg,/Actor A 2027/);
+  assert.doesNotMatch(v.svg,/Actor C 2027/);
   assert.match(v.html,/2026 → 2027/);
   assert.match(v.html,/Withheld/);
   assert.match(v.html,/Unaligned-period coordinates are entirely withheld/);
