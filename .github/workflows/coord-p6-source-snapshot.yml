@@ -1,0 +1,55 @@
+name: Coordinator P6 accepted W1/P2 native source code snapshot (source only)
+on:
+  push:
+    branches: [coord/p6-sealed-UN-PV-reacquisition-20261012]
+    paths: [.github/workflows/coord-p6-source-snapshot.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-only-native-toolkit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: coord/p6-sealed-UN-PV-reacquisition-20261012
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run original committed synthetic W1 and strict P2 adapter regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          node research/validation_framework/tests/test_framework.cjs
+          node research/validation_framework/tests/test_schema.cjs
+          node research/source_acquisition/p2_expansion/test_p2_to_w1.cjs
+          node docs/parallel-work/validate-contract.cjs
+      - name: Archive *only* accepted public implementation source, never private data
+        shell: bash
+        run: |
+          set -euo pipefail
+          find site -maxdepth 1 -type f -name '*.js' -print0 |
+            sort -z | xargs -0 echo > "$RUNNER_TEMP/p6-site-files.list"
+          python - <<'PY'
+          from pathlib import Path
+          items=Path(__import__('os').environ['RUNNER_TEMP'],'p6-site-files.list').read_text().split()
+          assert len(items)>15 and all(p.startswith('site/') and p.endswith('.js') for p in items)
+          print('Native accepted core JS dependency count:',len(items))
+          PY
+          tar -czf "$RUNNER_TEMP/p6-accepted-source-code.tgz" \
+            $(cat "$RUNNER_TEMP/p6-site-files.list") \
+            research/validation_framework \
+            research/source_acquisition/p2_expansion \
+            research/source_acquisition/general_debate/p2_w1_authenticated.py \
+            docs/parallel-work/validate-contract.cjs \
+            docs/parallel-work/interchange-v1.schema.json
+          sha256sum "$RUNNER_TEMP/p6-accepted-source-code.tgz"
+          echo "PUBLIC_IMPLEMENTATION_HEAD_SHA=$(git rev-parse HEAD)"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p6-accepted-W1-and-P2-public-source-toolkit
+          path: ${{ runner.temp }}/p6-accepted-source-code.tgz
+          if-no-files-found: error
+          retention-days: 2
