@@ -4,7 +4,7 @@
 
 | ID | Reserved worker branch | Exclusive new implementation namespace | Allowed public tests and documentation |
 | --- | --- | --- | --- |
-| W1 | `feat/parallel-w01-source-validation` | `research/parallel/w01-source-validation/**` | Only inside that subtree |
+| W1 | `feat/source-aware-validation` (merged PR #19); follow-up `feat/w1-historical-inventory-link` (PR #44) | `research/validation_framework/**` | This exclusive W1 namespace only. Original W1 workflow from PR #19 is coordinator-owned thereafter; no worker workflow edits. |
 | W2 | `feat/parallel-w02-consensus` | `research/parallel/w02-consensus/**` | Only inside that subtree |
 | W3 | `feat/graph-based-learning` | `research/graph_methods/**` | Within that subtree, plus **only** `.github/workflows/graph-based-learning-research.yml` under the 8 October 2026 owner-approved exception |
 | W4 | `feat/longitudinal-latent-structure` | `research/longitudinal/**` | Within this subtree, **plus only** the new `.github/workflows/longitudinal-framework.yml` under the 8 October 2026 owner-approved exception |
@@ -22,6 +22,16 @@ Worker code may **import** existing production APIs and the read-only v1 schema,
 - `LystadJS/LystadJS.github.io` mirror, workflow, portfolio pages and live verification.
 
 **Immutables even for the coordinator (unless a separate explicit authorized protocol is provided):** frozen held-out lock and protocol; the 37 October 5–6 transcript contents; original corpus/source hash records; 24 completed owner review decisions; D1 O1–O5 gates. Do not touch these as part of the seven-workstream integration.
+
+### Coordinator W1 ownership reconciliation — 12 October 2026
+
+The user explicitly requested review of [W1 follow-up PR #44](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/44), resolution of ownership/contract compatibility and merge **only after coordinator acceptance**. W1's initial worker [PR #19](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/19) was previously merged to `main` on 8 October 2026 (merge commit `87dedd6ee7b30fb7cd1e26e8ef26e30ee8e52329`) using the owner's specifically requested `feat/source-aware-validation` branch and `research/validation_framework/**` implementation namespace. The reservation `feat/parallel-w01-source-validation` / `research/parallel/w01-source-validation/**` is superseded by that actual accepted W1 implementation; no duplicate W1 implementation branch is authorized.
+
+For **PR #44 only**, the new `feat/w1-historical-inventory-link` worker branch may add/update code, schema drafts, synthetic tests and documentation **solely inside the existing W1 `research/validation_framework/**` subtree**. This is an engineering-only source-inventory linkage candidate, not permission to publish historical fits or create an authoritative new analytical interchange schema. Original and unverified source inventory metadata remain separately typed and legacy `un.parallel-analysis.v1` binding remains forbidden for original P2. No worker may edit `docs/parallel-work/**`, other research workstream namespaces, `site/**`, `un/**` or shared workflows.
+
+The previously merged **new** `.github/workflows/source-aware-validation-w1.yml` file introduced by PR #19 is registered as an existing **coordinator-owned** workflow. A coordinator may maintain it for source-safe validation, including main-branch post-merge regression execution; PR #44 does **not** own or modify workflow files. No changes to frozen source hashes, D1 O1–O5, original evaluation lock, 24 human decisions, 37 unopened October 5–6 meeting transcripts or portfolio site are authorized by this reconciliation.
+
+This is an ownership/CI clarification, not a separate claim of empirical validity. The PR acceptance checklist, latest-head CI and private-original-source eligibility restrictions still govern merging and release. See the separate PR #44 coordinator acceptance record for gate-by-gate decisions.
 
 ### Owner-approved W3 exception — 8 October 2026
 
