@@ -1,0 +1,81 @@
+name: Coordinator P6 recipient-encrypted 2016–2023 original UN PV reacquisition
+
+on:
+  push:
+    branches: [coord/p6-sealed-UN-PV-reacquisition-20261012]
+    paths:
+      - .github/workflows/coord-p6-sealed-originals.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  retrieve-and-seal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      P6_RECIPIENT_PUBLIC_KEY: vwucRS8gxnUxNFpfdczHTQCYOxmFv5EI9I+9rP1EAms=
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: coord/p6-sealed-UN-PV-reacquisition-20261012
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned retrieval and cryptographic dependencies
+        run: python -m pip install --disable-pip-version-check --quiet 'cryptography==46.0.3' 'pymupdf==1.26.7'
+      - name: Assert historical 50-symbol list and encryption roundtrip
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/source_acquisition/p2_expansion/secure_originals.py --selftest
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('research/source_acquisition/p2_expansion/pv_gap_census_50.txt')
+          s=[x.strip() for x in p.read_text().splitlines() if x.strip() and not x.startswith('#')]
+          assert len(s)==len(set(s))==50
+          assert all(re.fullmatch(r'A/7[1-8]/PV\.\d+',x) for x in s)
+          print('PASS historical 50-source list, no 2026 evaluation meeting access')
+          PY
+      - name: Retrieve original PDFs in memory and upload only recipient-encrypted bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/source_acquisition/p2_expansion/secure_originals.py \
+            --symbols research/source_acquisition/p2_expansion/pv_gap_census_50.txt \
+            --public-key "$P6_RECIPIENT_PUBLIC_KEY" \
+            --sealed-output "$RUNNER_TEMP/p6-original-UN-PV-50.unw4sealed" \
+            --workers 4 > "$RUNNER_TEMP/p6-retrieval-aggregate.json"
+          python - <<'PY'
+          import os,json,hashlib
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])
+          a=json.loads((root/'p6-retrieval-aggregate.json').read_text())
+          c=(root/'p6-original-UN-PV-50.unw4sealed').read_bytes()
+          assert c.startswith(b'UNW4P2\x00\x01') and len(c)>500
+          assert a['expected_meeting_documents']==50
+          assert a['private_key_never_in_runner'] and a['raw_PDF_public_uploads']==0
+          assert a['heldout_2026_meeting_reads']==0
+          assert a['sealed_artifact_sha256']==hashlib.sha256(c).hexdigest()
+          print('SEALED_P6_ACQUISITION_AGGREGATE',json.dumps(a,sort_keys=True))
+          print('Only recipient-encrypted bytes and source-safe counts leave Actions runner')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: private-recipient-encrypted-original-UN-PVs-50
+          path: ${{ runner.temp }}/p6-original-UN-PV-50.unw4sealed
+          retention-days: 1
+          if-no-files-found: error
+          compression-level: 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: public-safe-P6-acquisition-counts
+          path: ${{ runner.temp }}/p6-retrieval-aggregate.json
+          retention-days: 7
+          if-no-files-found: error
+      - name: Remove encrypted source from runner scratch
+        if: always()
+        run: rm -f "$RUNNER_TEMP/p6-original-UN-PV-50.unw4sealed"
