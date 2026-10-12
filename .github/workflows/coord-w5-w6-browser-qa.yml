@@ -127,9 +127,20 @@ jobs:
           fs.rmSync = function checkedProfileRemoval(target, options) {
             if (typeof target === 'string' && target.startsWith(prefix) &&
                 options && options.recursive === true && options.force === true) {
-              return remove.call(fs, target, {
-                ...options, maxRetries: 12, retryDelay: 100
-              });
+              try {
+                return remove.call(fs, target, {
+                  ...options, maxRetries: 12, retryDelay: 100
+                });
+              } catch (error) {
+                // The original browser checks assert and print PASS before this
+                // cleanup. An already-stopping Chrome may still create profile
+                // files on the disposable runner after all assertions pass.
+                // Do not mask any error except this exact temporary-profile
+                // cleanup race; preserve the original test's failure behavior.
+                if (error.code !== 'ENOTEMPTY') throw error;
+                process.stderr.write('WARNING: synthetic Chrome temp profile still busy during teardown (ENOTEMPTY); isolated runner handles cleanup.\\n');
+                return;
+              }
             }
             return remove.apply(this, arguments);
           };

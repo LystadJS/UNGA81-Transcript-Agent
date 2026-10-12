@@ -2,6 +2,7 @@ name: Source-Aware Validation W1
 on:
   push:
     branches:
+      - main
       - feat/source-aware-validation
     paths:
       - 'research/validation_framework/**'

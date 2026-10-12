@@ -1,0 +1,52 @@
+name: Coordinator W1 to W2 consensus interoperability
+on:
+  pull_request:
+    paths:
+      - 'research/integration/w1_w2/**'
+      - '.github/workflows/coord-w1-w2-consensus-interop.yml'
+  push:
+    branches: ['coord/w1-w2-consensus-interop']
+    paths:
+      - 'research/integration/w1_w2/**'
+      - '.github/workflows/coord-w1-w2-consensus-interop.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-bound-consensus:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Native W1 fitted results through W2, W5 and W6
+        run: node --test research/integration/w1_w2/test-integration.cjs
+      - name: Source-aware contract and baseline consumer regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          node research/validation_framework/tests/test_framework.cjs
+          node research/validation_framework/tests/test_schema.cjs
+          node research/consensus/test_consensus.cjs
+          node docs/parallel-work/validate-contract.cjs
+          node --test site/parallel/w05-browser/experimental/method-lab/test-method-lab.cjs
+          node --test site/experimental/evidence-viz/tests.cjs
+          node tools/test_latent.cjs
+          node tools/test_passage_corpus.cjs
+      - name: Export text-free source-verified synthetic integration receipts
+        shell: bash
+        run: |
+          set -euo pipefail
+          node research/integration/w1_w2/make-synthetic.cjs "$RUNNER_TEMP/w1-w2-consensus"
+          node -e 'const r=require(process.env.RUNNER_TEMP+"/w1-w2-consensus/receipt.json");if(r.publication_eligible!==false||r.heldout_transcripts_opened!==0||r.eligible!==24||r.method_families!==4||r.uncertainty!=="not_estimated")process.exit(1);'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w1-w2-w5-w6-synthetic-evidence
+          path: ${{ runner.temp }}/w1-w2-consensus/
+          if-no-files-found: error
+          retention-days: 14
