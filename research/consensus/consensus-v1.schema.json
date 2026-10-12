@@ -1,0 +1,858 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/un-consensus-v1",
+  "title": "Source-bound hard-assignment consensus sidecar v1",
+  "description": "Synthetic/development-only. Association is descriptive conditional co-assignment, never diplomatic agreement or inferential significance.",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "contract_schema",
+    "evaluation_role",
+    "publication_eligible",
+    "source",
+    "observation_ids",
+    "matrix",
+    "pairs",
+    "family_weight_audit",
+    "uncertainty",
+    "reproducible_groups",
+    "source_restricted_groups",
+    "ambiguous_members",
+    "ungrouped_observations",
+    "unsupported_pair_ledger",
+    "thresholds",
+    "sensitivity_report",
+    "individual_method_comparisons",
+    "limitations"
+  ],
+  "properties": {
+    "schema": {
+      "const": "un.consensus.v1"
+    },
+    "version": {
+      "const": "0.1.0"
+    },
+    "contract_schema": {
+      "const": "un.parallel-analysis.v1"
+    },
+    "evaluation_role": {
+      "const": "engineering_only"
+    },
+    "publication_eligible": {
+      "const": false
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "source_schema",
+        "source_engine",
+        "source_hash_basis",
+        "source_sha256",
+        "frame_sha256",
+        "corpus_sha256",
+        "selection_sha256",
+        "review_sha256",
+        "missing_reason",
+        "cohort",
+        "observation_keys",
+        "representation_versions",
+        "cross_basis_protocol"
+      ],
+      "properties": {
+        "source_schema": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_engine": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_hash_basis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_sha256": {
+          "type": "string",
+          "minLength": 1
+        },
+        "frame_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "corpus_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "selection_sha256": {
+          "type": "string",
+          "minLength": 1
+        },
+        "review_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "missing_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "cohort": {
+          "type": "object"
+        },
+        "observation_keys": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "text_sha256",
+              "parent_id",
+              "meeting_id",
+              "source_url",
+              "json_pointer",
+              "start",
+              "end"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text_sha256": {
+                "type": "string",
+                "minLength": 1
+              },
+              "parent_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "meeting_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "source_url": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "json_pointer": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "start": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "end": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "representation_versions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "cross_basis_protocol": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "observation_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "matrix": {
+      "type": "object",
+      "required": [
+        "association",
+        "coassigned_count",
+        "assigned_both_count",
+        "planned_count",
+        "coassigned_weight",
+        "assigned_both_weight",
+        "planned_weight",
+        "assignment_coverage"
+      ],
+      "properties": {
+        "association": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        },
+        "coassigned_count": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "assigned_both_count": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "planned_count": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "coassigned_weight": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "assigned_both_weight": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "planned_weight": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "assignment_coverage": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "pairs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "observation_a",
+          "observation_b",
+          "coassigned_count",
+          "assigned_both_count",
+          "planned_count",
+          "missing_pair_count",
+          "noise_pair_count",
+          "different_cluster_count",
+          "failed_fit_count",
+          "coassigned_weight",
+          "assigned_both_weight",
+          "planned_weight",
+          "association",
+          "assignment_coverage",
+          "contributing_families"
+        ],
+        "properties": {
+          "observation_a": {
+            "type": "string",
+            "minLength": 1
+          },
+          "observation_b": {
+            "type": "string",
+            "minLength": 1
+          },
+          "coassigned_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "assigned_both_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "planned_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "missing_pair_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "noise_pair_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "different_cluster_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "failed_fit_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "coassigned_weight": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "assigned_both_weight": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "planned_weight": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "association": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "assignment_coverage": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "contributing_families": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "family_weight_audit": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "method_family",
+          "total_weight",
+          "methods",
+          "configurations",
+          "models",
+          "successful_fit_records",
+          "completely_failed_fit_records",
+          "internal_attempts",
+          "internal_failures",
+          "records"
+        ],
+        "properties": {
+          "method_family": {
+            "type": "string",
+            "minLength": 1
+          },
+          "total_weight": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "methods": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "configurations": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "models": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "successful_fit_records": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "completely_failed_fit_records": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "internal_attempts": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "internal_failures": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "records": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "model_id",
+                "method",
+                "configuration_id",
+                "resample_type",
+                "resample_id",
+                "seed",
+                "planned_weight",
+                "fitted_observations",
+                "source_group_sample",
+                "fitting_success"
+              ],
+              "properties": {
+                "model_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "method": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "configuration_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "resample_type": {
+                  "enum": [
+                    "baseline",
+                    "leave_group_out",
+                    "group_bootstrap"
+                  ]
+                },
+                "resample_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "seed": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "planned_weight": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "fitted_observations": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "source_group_sample": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "fitting_success": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "uncertainty": {
+      "type": "object",
+      "required": [
+        "unit",
+        "source_groups",
+        "design",
+        "pairwise"
+      ],
+      "properties": {
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_groups": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "design": {
+          "enum": [
+            "grouped_refits_descriptive_spread",
+            "not_estimated"
+          ]
+        },
+        "pairwise": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "observation_a",
+              "observation_b",
+              "leave_group_out",
+              "group_bootstrap"
+            ],
+            "properties": {
+              "observation_a": {
+                "type": "string",
+                "minLength": 1
+              },
+              "observation_b": {
+                "type": "string",
+                "minLength": 1
+              },
+              "leave_group_out": {
+                "type": "object"
+              },
+              "group_bootstrap": {
+                "type": "object"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "reproducible_groups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "group_id",
+          "status",
+          "members",
+          "source_group_count",
+          "max_source_group_share",
+          "minimum_pair_association"
+        ],
+        "properties": {
+          "group_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "const": "descriptive_reproducible"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "source_group_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "max_source_group_share": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "minimum_pair_association": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "source_restricted_groups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "members",
+          "source_group_count",
+          "max_source_group_share",
+          "minimum_pair_association",
+          "reason"
+        ],
+        "properties": {
+          "members": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "source_group_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "max_source_group_share": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "minimum_pair_association": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "reason": {
+            "const": "source_concentration"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "ambiguous_members": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "observation_id",
+          "assigned_group",
+          "reason",
+          "cross_group_links",
+          "supported_neighbor_count"
+        ],
+        "properties": {
+          "observation_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "assigned_group": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "cross_group_links": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "supported_neighbor_count": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "ungrouped_observations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "unsupported_pair_ledger": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "observation_a",
+          "observation_b",
+          "reason",
+          "association",
+          "assigned_both_count",
+          "planned_count"
+        ],
+        "properties": {
+          "observation_a": {
+            "type": "string",
+            "minLength": 1
+          },
+          "observation_b": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "association": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "assigned_both_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "planned_count": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "thresholds": {
+      "type": "object",
+      "required": [
+        "min_association",
+        "min_coverage",
+        "min_families",
+        "min_source_groups"
+      ],
+      "properties": {
+        "min_association": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "min_coverage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "min_families": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "min_source_groups": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "sensitivity_report": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "individual_method_comparisons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "model_id",
+          "method_family",
+          "method",
+          "assigned_n",
+          "compared_to_consensus_n",
+          "ari_conditional_on_both_assigned",
+          "note"
+        ],
+        "properties": {
+          "model_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "method_family": {
+            "type": "string",
+            "minLength": 1
+          },
+          "method": {
+            "type": "string",
+            "minLength": 1
+          },
+          "assigned_n": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "compared_to_consensus_n": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "ari_conditional_on_both_assigned": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": -1,
+            "maximum": 1
+          },
+          "note": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "additionalProperties": false
+}
