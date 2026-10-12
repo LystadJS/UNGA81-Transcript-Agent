@@ -17,7 +17,7 @@ W2 bounds the eligible population at 256 observations. This inspector validates 
 
 ## Privacy and reproducibility
 
-Only synthetic engineering output is allowed: W2 producer, synthetic.v1 source schema, synthetic SHA basis and split, publication_eligible false, evaluation_role engineering_only, null original source URLs and no transcript text fields. User-selected files are parsed locally; same-origin CSP remains. Cross-file hashes confirm consistency but do not authenticate actual UN originals. The display never claims government stance, alliance, political influence, null significance or policy diffusion.
+Only synthetic engineering output is allowed: W2 producer, synthetic.v1 source schema, synthetic SHA basis and split, publication_eligible false, evaluation_role engineering_only, null original source URLs or reserved HTTPS example.invalid fictional fixture pointers (never navigated), and no transcript text fields. User-selected files are parsed locally; same-origin CSP remains. Cross-file hashes confirm consistency but do not authenticate actual UN originals. W2's synthetic producer originally mislabeled 12 observations as six total frame units; this PR corrects only that fictional fixture denominator while keeping its six distinct meeting groups, model fits and weighting unchanged. The display never claims government stance, alliance, political influence, null significance or policy diffusion.
 
 Native checks:
 
@@ -39,7 +39,7 @@ The new path-filtered coordinator workflow generates W2 files with its **actual 
 
 The newly merged W4 interchange adapter correctly describes previously **imported** cluster labels, not fresh W4 fits. It sets attempted_fits:0, successful_fits:0, failed_fits:0 even if source-bound imported positive-cluster assignments are present. W5's current relational validator refuses assigned observations without a successful fit. W1 accepting W4's source/model bookkeeping is not evidence that W5 can consume it. Do not manufacture successful W4 fits or conflate a display-map fit identity with an actual clustering fit identity.
 
-The historical W4 P2 source frame additionally retains 269 unverified country-year cells with unknown dates/identities. Coordinator interchange v1 does not represent a source_status of unverified or a null date. W4 properly withholds that export rather than inventing timestamps, absences or vectors. A separately accepted backward-compatible missing-source sidecar / v2 contract, source-dependent calibration and explicit validation are prerequisites. No private W4 positions or source-bearing output are imported by this change. W6's older fictional longitudinal example remains a demonstration only.
+The historical W4 P2 source frame additionally retains 269 unverified country-year cells with unknown dates/identities. Coordinator interchange v1 does not represent a source_status of unverified or a null date. An existing, separately typed and backward-compatible source-inventory sidecar (docs/parallel-work/source-inventory-v1.cjs) preserves that missingness, but its P2-to-v1 legacy binding is explicitly WITHHELD. W4 properly refuses the incompatible direct export rather than inventing timestamps, absences or vectors. A new approved fit-provenance/imported-label consumer contract, authenticated eligible subset binding, source-dependent calibration and explicit validation are prerequisites. No private W4 positions or source-bearing output are imported by this change. W6's older fictional longitudinal example remains a demonstration only.
 
 ## Pending acceptance
 
