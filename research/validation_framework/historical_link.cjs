@@ -29,6 +29,8 @@ function compatibleSource(run,inventory){
     'P2 requires privately verified original-source inventory');
 }
 function matchRow(observed,entry,split){
+  if(observed.text!==undefined)ensure(typeof observed.text==='string'&&F.digest(observed.text)===observed.text_sha256,
+    'changed in-memory source text SHA-256; link requires intact original fitted text');
   ensure(entry&&entry.id===observed.id,'source ID absent from independently inventoried source states');
   ensure(entry.source_status===observed.source_status,'availability changed after source authentication');
   ensure(entry.text_sha256===observed.text_sha256,'original observed-text digest mismatch');
@@ -48,8 +50,13 @@ function matchRow(observed,entry,split){
       ensure(isHash(observed.p2_original_pdf_sha256) &&
         entry.source_sha256===observed.p2_original_pdf_sha256,
         'original PV PDF byte hash mismatch');
-      ensure(observed.p2_full_speech_verified===true,
-        'full-original-PV speech corroboration missing');
+      ensure(observed.p2_full_speech_verified===true &&
+        observed.p2_original_source_hash_basis==='raw_response_bytes' &&
+        observed.p2_verification_method==='original_UN_PV_full_speech_7gram_10decile_v1' &&
+        ['independent_UN_index','official_UN_PV_header'].includes(observed.p2_date_basis) &&
+        /^A\/7[1-8]\/PV\.\d+$/.test(observed.meeting_id) &&
+        observed.source_family_id===observed.meeting_id,
+        'full-original-PV speech, original bytes and date authority corroboration missing');
     }else{
       ensure(entry.actor_kind==='synthetic' && entry.source_verification==='synthetic',
         'invented fixture cannot claim original source authentication');
@@ -78,6 +85,12 @@ function checkFit(f,run,eligible,modelIds){
     f.observation_hashes[i]===eligible[i].text_sha256,
     'model population/order changed');
   ensure(['fitted','skipped','failed'].includes(f.status),'unrecognized numerical fit status');
+  ensure(['kmeans','pam','hierarchical','gmm','hdbscan'].includes(f.method) &&
+    typeof f.representation_id==='string'&&f.representation_id.length>0 &&
+    typeof f.representation_version==='string'&&f.representation_version.length>0 &&
+    isHash(f.representation_identity_sha256)&&
+    Number.isSafeInteger(f.seed)&&f.seed>=0&&f.seed<=4294967295,
+    'model method/representation transformation/seed identity invalid');
   ensure(Number.isSafeInteger(f.attempted_fit) && Number.isSafeInteger(f.successful_fit) &&
     Number.isSafeInteger(f.failed_fit) && f.attempted_fit===f.successful_fit+f.failed_fit,
     'full-fit attempts not completely accounted for');
@@ -89,8 +102,10 @@ function checkFit(f,run,eligible,modelIds){
   }else ensure(f.assignments===null&&typeof f.reason==='string'&&f.reason,
     'skipped/failed fit must retain reason and cannot return hard assignments');
   return {
-    model_id:f.model_id,method:f.method,
+    model_id:f.model_id,method:f.method,seed:f.seed,
+    parameters_sha256:F.digest(f.parameters),
     representation_id:f.representation_id,representation_version:f.representation_version,
+    representation_identity_sha256:f.representation_identity_sha256,
     status:f.status,full_attempted:f.attempted_fit,full_successful:f.successful_fit,
     full_failed:f.failed_fit,
     assigned:f.assignments?.filter(x=>x>0).length??0,
@@ -137,23 +152,69 @@ function linkW1Inventory(run,inventory){
   const models=run.fit_records.map(f=>checkFit(f,run,eligible,modelIds));
   ensure(run.model_reports.length===models.length,'model stability ledger incomplete');
   const grouping=[];
+  const reportIds=new Set();
+  ensure(Array.isArray(run.failure_ledger),'W1 failure ledger absent');
+  ensure(run.failure_ledger.every(f=>modelIds.has(f.model_id)&&
+    ['failed','skipped','timed_out','nonconverged'].includes(f.status) &&
+    Number.isSafeInteger(f.attempt)&&f.attempt>=0&&
+    typeof f.reason==='string'&&f.reason.length>0),
+    'malformed or unattributed W1 failure ledger');
+  for(const f of run.fit_records.filter(f=>f.status!=='fitted'))
+    ensure(run.failure_ledger.some(e=>e.model_id===f.model_id&&e.attempt===0&&
+      e.status===f.status&&e.source_group==null),
+      'non-delivered full fit missing from failure ledger');
   for(const row of run.model_reports){
-    ensure(modelIds.has(row.model_id),'unknown model in grouped-refit ledger');
+    ensure(modelIds.has(row.model_id)&&!reportIds.has(row.model_id),
+      'unknown or repeated model in grouped-refit ledger');
+    reportIds.add(row.model_id);
     const records=run.fit_records.find(f=>f.model_id===row.model_id);
     for(const [unit,s] of Object.entries(row.group_stability||{})){
       ensure(['meeting','affiliation'].includes(unit)&&Array.isArray(s.runs),
         'unknown group-dependence unit or refit ledger');
+      for(const k of ['planned','attempted','successful','failed','skipped','assessable_ari'])
+        ensure(Number.isSafeInteger(s[k])&&s[k]>=0,'non-integer grouped-refit accounting: '+k);
       const attempted=s.runs.filter(x=>x.attempted_fit===1).length;
       const successful=s.runs.filter(x=>x.status==='fitted').length;
       const failed=s.runs.filter(x=>x.status==='failed').length;
+      const skipped=s.runs.filter(x=>x.status==='skipped').length;
+      const assessable=s.runs.filter(x=>x.status==='fitted'&&x.comparison?.ari!==null).length;
       ensure(s.attempted===s.runs.length&&s.successful===successful&&s.failed===failed &&
-        s.attempted<=s.planned && successful<=attempted,
-        'refit attempt/success/failed denominators inconsistent');
-      ensure(s.runs.every(x=>x.selected+x.out_of_sample===eligible.length),
-        'source-group refit changed denominator');
-      ensure(!s.runs.some(x=>x.status==='fitted' && x.comparison==null),
-        'unreported comparison on successful group refit');
+        s.skipped===skipped&&s.assessable_ari===assessable &&
+        s.attempted<=s.planned&&successful<=attempted,
+        'refit attempt/success/failed/skipped/assessable denominators inconsistent');
+      const seenAttempts=new Set();
+      for(const attempt of s.runs){
+        ensure(Number.isSafeInteger(attempt.attempt)&&attempt.attempt>=1&&
+          attempt.attempt<=s.planned&&!seenAttempts.has(attempt.attempt),
+          'duplicate or invalid grouped-refit attempt identity');
+        seenAttempts.add(attempt.attempt);
+        ensure(['fitted','skipped','failed'].includes(attempt.status)&&
+          [0,1].includes(attempt.attempted_fit)&&
+          [0,1].includes(attempt.successful_fit)&&
+          [0,1].includes(attempt.failed_fit)&&
+          attempt.attempted_fit===attempt.successful_fit+attempt.failed_fit&&
+          (attempt.status!=='fitted'||attempt.successful_fit===1)&&
+          (attempt.status==='fitted'||attempt.successful_fit===0),
+          'grouped-refit fit status and attempted numerical-fit denominator conflict');
+        ensure(attempt.selected+attempt.out_of_sample===eligible.length,
+          'source-group refit changed denominator');
+        if(attempt.status==='fitted'){
+          ensure(attempt.comparison!==null&&attempt.comparison!==undefined,
+            'unreported comparison on successful group refit');
+        }else{
+          ensure(attempt.comparison===null&&typeof attempt.reason==='string'&&attempt.reason.length>0,
+            'skipped/failed group fit cannot return comparison or omit refusal reason');
+          ensure(run.failure_ledger.some(f=>f.model_id===row.model_id&&
+            f.attempt===attempt.attempt&&f.source_group===unit&&f.status===attempt.status),
+            'skipped/failed grouped attempt missing from failure ledger');
+        }
+      }
+      if(s.attempted===0 && (s.planned===0||records.status!=='fitted'))
+        ensure(run.failure_ledger.some(f=>f.model_id===row.model_id&&
+          f.attempt===0&&f.source_group===unit&&f.status==='skipped'),
+          'skipped group schedule missing from failure ledger');
       grouping.push({model_id:row.model_id,unit,planned:s.planned,executed:s.attempted,
+        not_executed:s.planned-s.attempted,numerical_fit_attempts:attempted,
         successful:s.successful,failed:s.failed,
         skipped:s.skipped,assessable_ari:s.assessable_ari,
         independent_source_replication:false,
@@ -173,8 +234,17 @@ function linkW1Inventory(run,inventory){
   // W1 fit subset need not exhaust the historical inventory. Unselected
   // original verified cells are never assigned model labels or missing/zero topics.
   const modelPairs=run.comparisons||[];
-  ensure(modelPairs.every(p=>modelIds.has(p.left)&&modelIds.has(p.right)),
-    'unrecognized model in pairwise comparisons');
+  ensure(Array.isArray(modelPairs)&&
+    modelPairs.length===models.length*(models.length-1)/2,
+    'incomplete model-pair comparison ledger');
+  const seenPairs=new Set();
+  for(const p of modelPairs){
+    ensure(modelIds.has(p.left)&&modelIds.has(p.right)&&p.left!==p.right,
+      'unrecognized or self-referential model in pairwise comparisons');
+    const key=[p.left,p.right].sort().join('|');
+    ensure(!seenPairs.has(key),'duplicated method-comparison record');
+    seenPairs.add(key);
+  }
   const document={
     schema:'un.w1-historical-inventory-link.candidate.v0',adapter_version:'0.1.0',
     fixture_kind:run.frame.split==='synthetic'?'synthetic':'private_development',
