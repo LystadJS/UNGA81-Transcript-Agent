@@ -8,7 +8,7 @@ const INTERCHANGE = require('../../docs/parallel-work/interchange-v1.schema.json
 const CONSENSUS_SCHEMA = require('./consensus-v1.schema.json');
 const VERSION = '0.1.0';
 const SHA = /^[0-9a-f]{64}$/;
-const TYPES = new Set(['baseline', 'leave_group_out', 'group_bootstrap']);
+const TYPES = new Set(['baseline', 'leave_group_out', 'group_bootstrap', 'group_subsample']);
 const fail = message => { throw new Error('consensus: ' + message); };
 const check = (ok, message) => { if (!ok) fail(message); };
 const stable = x => Array.isArray(x) ? '[' + x.map(stable).join(',') + ']' :
@@ -160,6 +160,12 @@ function extract(envelopes, opts = {}) {
         'leave-group-out must omit exactly one whole group');
       if (type === 'group_bootstrap') check(sampled.length === sourceGroups.length && sourceGroups.length >= 3,
         'group bootstrap must sample source groups with replacement');
+      if (type === 'group_subsample') check(
+        sourceGroups.length >= 3 && sampled.length >= 2 &&
+        sampled.length < sourceGroups.length && sampled.length === included.size,
+        'group subsampling requires distinct complete source groups drawn without replacement; not a bootstrap');
+      if (type === 'baseline') check(sampled.length === included.size,
+        'baseline must include each source group exactly once');
       const rows = new Map((v.results.get(m.model_id) || []).map(r => [r.observation_id, r]));
       for (const id of ids) if (!included.has(sourceGroup(baseline.eligible.get(id), base.cohort.source_group_unit)))
         check(rows.get(id).status === 'not_fitted', 'omitted source group cannot have a fitted/noise label');
@@ -245,7 +251,7 @@ function quantile(xs, p) {
 }
 function uncertainty(a, b, fits) {
   const designs = {};
-  for (const type of ['leave_group_out', 'group_bootstrap']) {
+  for (const type of ['leave_group_out', 'group_bootstrap', 'group_subsample']) {
     const resamples = groupBy(fits.filter(f => f.resample_type === type), f => f.resample_id);
     const values = [], eligibleN = [], familyCounts = [];
     for (const rows of resamples.values()) {
@@ -254,13 +260,16 @@ function uncertainty(a, b, fits) {
       eligibleN.push(p.assigned_both_count);
       familyCounts.push(p.contributing_families.length);
     }
-    const target = type === 'group_bootstrap' ? 5 : 3;
+    const target = type === 'leave_group_out' ? 3 : 5;
     designs[type] = {status: resamples.size >= target && values.length >= target ? 'descriptive' : 'withheld',
       total_resamples:resamples.size, assessable_resamples:values.length, 
       p05:values.length >= target ? quantile(values, 0.05) : null,
       p95:values.length >= target ? quantile(values, 0.95) : null,
       minimum_assigned_fits:eligibleN.length ? Math.min(...eligibleN) : null,
       minimum_method_families:familyCounts.length ? Math.min(...familyCounts) : null,
+      distinct_group_samples:resamples.size,
+      reference_policy:type === 'group_subsample' ? 'without_replacement' :
+        type === 'leave_group_out' ? 'omit_exactly_one_source_group' : 'with_replacement',
       reason:resamples.size >= target && values.length >= target ? null : 'Insufficient source-group refits with this pair assigned in both rows; not a confidence interval.'};
   }
   return designs;
@@ -435,7 +444,7 @@ function runConsensus(envelopes, options = {}) {
     limitations:[
       'Co-assignment frequencies are conditional descriptive fit agreement, not calibrated probabilities of diplomacy, country positions, alliances, or coalitions.',
       'Noise/unassigned and failed/missing pairs do not enter assigned-both denominators; planned weight and omitted counts remain visible.',
-      'Grouped refit percentiles measure resampling sensitivity, not confidence or independent external replication.',
+      'Grouped refit percentiles measure distinct source-group selection sensitivity, not confidence, independence or external replication. Subsampling without replacement is not bootstrap.',
       'Stable nuisance-driven partitions may persist; no null significance or universal best-model claim is made.',
       'Selection, source-genre, representation, and configuration-search effects remain potential confounders.'
     ]};
