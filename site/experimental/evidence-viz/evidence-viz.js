@@ -226,6 +226,8 @@
     checkIds(names);
     assert(names.length <= 35, 'Individual-pair table limited to 35 IDs; provide upstream grouping before rendering.');
     assert(Array.isArray(p.pairs), 'Explicit pair exposures required.');
+    const weighted=p.pair_mode==='w2_weighted_conditional';
+    assert(p.pair_mode===undefined||weighted,'Unknown consensus pair statistic.');
     const lookup = new Map(), inspector = {};
     const index = new Map(names.map((id,i) => [id,i]));
     for (let z = 0; z < p.pairs.length; z++) {
@@ -233,6 +235,49 @@
       assert(index.has(a.a) && index.has(a.b) && a.a !== a.b, 'Unknown or self pair.');
       const key = [a.a,a.b].sort().join('\u001f');
       assert(!lookup.has(key), 'Duplicate unordered pair.');
+      if(weighted) {
+        // W2 allocates planned weights across family, method, configuration,
+        // resample and seed. Its conditional ratio is NOT the mean of raw
+        // per-family rates used by the original W6 demonstration.
+        const ints=['coassigned_count','assigned_both_count','planned_count',
+          'missing_pair_count','noise_pair_count','different_cluster_count','failed_fit_count'];
+        assert(ints.every(k=>Number.isSafeInteger(a[k])&&a[k]>=0),
+          'Invalid W2 pair counts.');
+        assert(a.coassigned_count+a.different_cluster_count===a.assigned_both_count &&
+          a.assigned_both_count+a.missing_pair_count+a.noise_pair_count===a.planned_count &&
+          a.failed_fit_count<=a.missing_pair_count,'W2 planned pair accounting mismatch.');
+        assert(['coassigned_weight','assigned_both_weight','planned_weight'].every(k=>
+          isNumber(a[k])&&a[k]>=0)&&
+          a.coassigned_weight<=a.assigned_both_weight+1e-9 &&
+          a.assigned_both_weight<=a.planned_weight+1e-9 &&
+          a.planned_weight>0,'W2 pair weights invalid.');
+        assert(Array.isArray(a.contributing_families)&&unique(a.contributing_families) &&
+          a.contributing_families.every(k=>typeof k==='string'&&k),
+          'W2 family contribution identities invalid.');
+        assert((a.assigned_both_count===0)===(a.association===null) &&
+          (a.association===null ? !!a.missing_reason :
+            range(a.association)&&a.assigned_both_weight>0&&
+            Math.abs(a.association-a.coassigned_weight/a.assigned_both_weight)<1e-8),
+          'W2 weighted association mismatch.');
+        assert(range(a.assignment_coverage)&&
+          Math.abs(a.assignment_coverage-a.assigned_both_weight/a.planned_weight)<1e-8,
+          'W2 planned-weight coverage mismatch.');
+        const q={value:a.association,eligible:a.assigned_both_count,
+          together:a.coassigned_count,failure:a.failed_fit_count,weighted:true,
+          unstable:!!a.unstable,key:'cons-'+z,raw:a};
+        lookup.set(key,q);
+        inspector[q.key]={ids:[a.a,a.b],summary:
+          'W2 weighted conditional association '+pct(a.association)+'. Weighted co-assignment '+
+          decimal(a.coassigned_weight)+' / '+decimal(a.assigned_both_weight)+
+          ' assigned-both weight; '+decimal(a.planned_weight)+' planned weight. '+
+          'Coverage '+pct(a.assignment_coverage)+'. Raw '+a.coassigned_count+'/'+
+          a.assigned_both_count+' jointly assigned of '+a.planned_count+' planned; '+
+          a.noise_pair_count+' noise, '+a.missing_pair_count+' missing, '+
+          a.failed_fit_count+' failed fits (subset of missing). Families: '+
+          (a.contributing_families.join(', ')||'none')+'. '+
+          (a.unstable?'Upstream ambiguous membership. ':'')+(a.missing_reason||'')};
+        continue;
+      }
       assert(Array.isArray(a.families) && unique(a.families.map(f=>f.family)),
         'Families must be distinct for equal-family balancing.');
       let rates = [], eligible = 0, together = 0, failure = 0;
@@ -261,7 +306,7 @@
     }
     const cell = 70, sx = 146, sy = 92;
     const w = sx + Math.max(1,names.length)*cell + 22, h = sy + Math.max(1,names.length)*cell + 68;
-    let marks = svgText(10,20,'OBSERVATION PAIRS · FAMILY-BALANCED', 'font-size="13" font-weight="700" fill="'+COLORS.blue+'"');
+    let marks = svgText(10,20,weighted?'OBSERVATION PAIRS · W2 WEIGHTED':'OBSERVATION PAIRS · FAMILY-BALANCED', 'font-size="13" font-weight="700" fill="'+COLORS.blue+'"');
     const body = [];
     for (let i=0;i<names.length;i++) {
       marks += svgText(sx+i*cell+cell/2,sy-13,names[i],'text-anchor="middle" font-size="10"');
@@ -280,19 +325,25 @@
           '" fill="'+fill(v)+'" stroke="'+COLORS.grid+'"/>' +
           svgText(sx+j*cell+cell/2,sy+i*cell+cell/2+4,v === null?'N/A':pct(v),
             'text-anchor="middle" font-size="11" fill="'+COLORS.ink+'"');
-        const desc = !a ? 'No pair record (missing)' : v === null ? 'No eligible pair exposures' :
+        const desc=!a?'No pair record (missing)':v===null?'No eligible pair exposures':
+          weighted?pct(v)+' · weighted '+decimal(a.raw.coassigned_weight)+'/'+
+            decimal(a.raw.assigned_both_weight)+'; planned '+decimal(a.raw.planned_weight)+
+            '; raw '+a.together+'/'+a.eligible+(a.unstable?' · ambiguous':''):
           pct(v)+' · '+a.together+'/'+a.eligible+' pooled opportunities'+(a.unstable?' · unstable':'');
         cells.push(a ? hit(a.key,desc) : '<span class="ev-missing">Missing pair record</span>');
       }
       body.push('<tr><th scope="row">'+escape(names[i])+'</th>'+cells.map(td).join('')+'</tr>');
     }
     const table = rows(['ID',...names],body);
-    const desc = 'Colors summarize equal-family mean co-assignment, not pooled successes / attempts. ' +
-      'Cells label values and expose numerator, denominator and family counts. Diagonal omitted.';
+    const desc=weighted?
+      'Exact W2 weighted conditional association; click for eligible and planned denominators, failures and omitted pairs. Diagonal omitted.':
+      'Colors summarize equal-family mean co-assignment, not pooled successes / attempts. Cells show numerator, denominator and family counts. Diagonal omitted.';
     const svg = svgWrap('Consensus stability, synthetic pairs',desc,w,h,marks +
       svgText(sx,h-17,'N/A = missing or zero eligible exposure. Diagonal undefined.','font-size="11"'));
-    const content = '<p class="ev-note">Each family has equal influence if eligible; pooled pair counts are shown only as exposure audit. ' +
-      'A missing pair, zero opportunities, and 0% co-assignment are different outcomes. Flags denote supplied instability, not significance.</p>' +
+    const content='<p class="ev-note">'+(weighted?
+      'W2 planned family/method/configuration/resample/seed weighting is preserved exactly; the plot uses the authoritative conditional weighted numerator / assigned-both weight, never a new family mean. Missing/failed/noise fits remain in the planned denominator. ':
+      'Each family has equal influence if eligible; pooled pair counts are shown only as exposure audit. ')+
+      'Missing pairs, zero opportunities and observed zero differ. Ambiguity is not significance.</p>' +
       '<div class="ev-figure">'+svg+'</div>'+table;
     return panelShell(env,p,'01 / Consensus and stability',content,svg,inspector,obs);
   }
@@ -467,13 +518,25 @@
         ['passed','failed','not_assessed'].includes(a.status) &&
         typeof a.rank_ok==='boolean' && typeof a.degeneracy_ok==='boolean' &&
         typeof a.uncertainty_status==='string', 'Alignment ledger incomplete.');
-      if(a.status==='passed' && a.rank_ok && a.degeneracy_ok && a.anchors>=3 &&
-        a.selection_comparability==='checked')validEdges.add(a.from+'\u001f'+a.to);
+      const pinned=a.mode==='identity_pinned_transform'&&a.anchors===0;
+      const refit=a.mode==='rigid_full_refit'&&a.anchors>=Math.max(4,(a.map_dimension||2)+2);
+      const legacy=a.mode===undefined&&a.anchors>=3;
+      if(a.status==='passed'&&a.rank_ok&&a.degeneracy_ok&&
+        a.selection_comparability==='checked'&&(pinned||refit||legacy))
+        validEdges.add(a.from+'\u001f'+a.to);
     }
     const inspect={},lines=[],actors=p.actors, nodeKeys=new Set();
     assert(unique(actors.map(a=>a.id)) && actors.length<=30,'Actor IDs duplicate or too numerous.');
     const w=900,h=470,x0=100,y0=55,xs=660,ys=330;
-    const lim=1.5,px=x=>x0+(x+lim)/(2*lim)*xs,py=y=>y0+(lim-y)/(2*lim)*ys;
+    const shown=p.actors.flatMap(a=>(a.positions||[]).filter(q=>{
+      const j=p.periods.indexOf(q.period);
+      return q.status==='observed'&&Array.isArray(q.xy)&&q.xy.length===2&&
+        q.xy.every(isNumber)&&(j===0||validEdges.has(p.periods[j-1]+'\u001f'+q.period));
+    }).map(q=>q.xy));
+    const lim=Math.max(1.5,...shown.flat().map(v=>Math.abs(v)*1.15));
+    assert(isNumber(lim)&&lim<=1e6,'Aligned score magnitude unsupported.');
+    const scale=Math.min(xs,ys)/(2*lim);
+    const px=x=>x0+xs/2+x*scale,py=y=>y0+ys/2-y*scale;
     let marks='<rect x="'+x0+'" y="'+y0+'" width="'+xs+'" height="'+ys+
       '" fill="'+COLORS.pale+'" stroke="'+COLORS.grid+'"/>'+
       '<path d="M '+px(0)+' '+y0+' V '+(y0+ys)+' M '+x0+' '+py(0)+' H '+(x0+xs)+
@@ -492,10 +555,16 @@
           ['observed','missing','withheld'].includes(q.status), 'Actor-period row invalid.');
         checkIds(q.observation_ids);
         assert(q.n===q.observation_ids.length,'Actor-period source count mismatch.');
-        assert(q.observation_ids.every(id=>obs.get(id).date.slice(0,4)===String(q.period)),
+        const bounds=p.period_bounds&&p.period_bounds[q.period];
+        assert(bounds?
+          /^\d{4}-\d{2}-\d{2}$/.test(bounds.start)&&
+          /^\d{4}-\d{2}-\d{2}$/.test(bounds.end)&&bounds.start<=bounds.end&&
+          q.observation_ids.every(id=>obs.get(id).date>=bounds.start&&obs.get(id).date<=bounds.end):
+          /^\d{4}$/.test(String(q.period))&&
+          q.observation_ids.every(id=>obs.get(id).date.slice(0,4)===String(q.period)),
           'Actor-period source date mismatch.');
         if(q.status==='observed')assert(Array.isArray(q.xy) && q.xy.length===2 &&
-          q.xy.every(x=>isNumber(x)&&Math.abs(x)<=lim) &&
+          q.xy.every(x=>isNumber(x)&&Math.abs(x)<=1e6) &&
           (q.radius===null || (isNumber(q.radius)&&q.radius>=0)), 'Invalid aligned score/radius.');
         else assert(q.xy===null && typeof q.reason==='string' && q.reason.length,
           'Missing actor-period coordinates must be null with reason.');
@@ -520,23 +589,23 @@
           displayed.push(previous.period+'→'+q.period);
         }
         if(q.radius!==null)marks+='<circle cx="'+px(q.xy[0])+'" cy="'+py(q.xy[1])+
-          '" r="'+(q.radius*xs/(2*lim))+'" fill="'+color+'" opacity=".12" stroke="'+color+'" stroke-dasharray="3 3"/>';
+          '" r="'+(q.radius*scale)+'" fill="'+color+'" opacity=".12" stroke="'+color+'" stroke-dasharray="3 3"/>';
         marks+='<circle cx="'+px(q.xy[0])+'" cy="'+py(q.xy[1])+'" r="6" fill="'+color+
           '" stroke="'+COLORS.navy+'" stroke-width="1.2"><title>'+escape(a.label+' '+q.period)+'</title></circle>'+
-          svgText(px(q.xy[0])+10,py(q.xy[1])-8,a.label+' '+q.period.slice(2),
+          svgText(px(q.xy[0])+10,py(q.xy[1])-8,a.label+' '+q.period,
             'font-size="10" font-weight="700"');
       }
       lines.push(tr([escape(a.label),escape(a.roster_status),escape(a.attribution_status),
         displayed.length?escape(displayed.join(', ')):'<strong>Withheld</strong>',
         a.positions.map(q=>hit('track-'+a.id+'-'+q.period,q.period+': '+q.status)).join(' · ')]));
     }
-    marks+=svgText(x0,453,'Only adjacent, verified aligned periods are joined; unknown intervals are not interpolated.','font-size="11"');
+    marks+=svgText(x0,453,'Equal axis scale ±'+decimal(lim)+' fitted units; unmatched or failed alignment not interpolated.','font-size="11"');
     const svg=svgWrap('Longitudinal latent positions','Only successfully aligned adjacent periods are connected. Roster and uncertainty are reported.',w,h,marks);
     const alignmentRows=p.alignments.map(a=>tr([escape(a.from+' → '+a.to),
       escape(a.status),escape(String(a.anchors)),escape(a.reference_basis),
       escape(a.selection_comparability),escape(a.uncertainty_status)]));
     const content='<p class="ev-note">Coordinates are supplied aligned latent scores, not diplomatic positions. '+
-      'A connecting line requires passing rank/degeneracy checks, ≥3 anchors, checked source-selection comparability, '+
+      'A connecting line requires a pinned transform or adequate full-rank stable external anchors, checked source-selection comparability, '+
       'and matched actor observations in adjacent periods. Unaligned-period coordinates are entirely withheld from this shared axis. Gaps, arrivals and departures remain unconnected.</p>'+
       '<div class="ev-figure">'+svg+'</div>'+
       rows(['Actor / source grouping','Roster','Attribution','Comparable transitions','Inspect periods'],lines)+
