@@ -1,10 +1,5 @@
 name: P2 2026-10-12 private UN original PV revalidation
 on:
-  push:
-    branches: ['coord/p2-w1-reaudit-20261012']
-    paths:
-      - 'research/source_acquisition/p2_expansion/official_pv_2016_2023_105_20261012.txt'
-      - '.github/workflows/p2-private-pv-replay-20261012.yml'
   workflow_dispatch:
 permissions:
   contents: read
