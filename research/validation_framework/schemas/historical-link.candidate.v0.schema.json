@@ -173,7 +173,10 @@
           "full_failed",
           "assigned",
           "unassigned_noise",
-          "selected_but_not_fitted"
+          "selected_but_not_fitted",
+          "seed",
+          "parameters_sha256",
+          "representation_identity_sha256"
         ],
         "properties": {
           "model_id": {
@@ -227,6 +230,19 @@
           "selected_but_not_fitted": {
             "type": "integer",
             "minimum": 0
+          },
+          "seed": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4294967295
+          },
+          "parameters_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "representation_identity_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
           }
         }
       }
@@ -246,7 +262,9 @@
           "skipped",
           "assessable_ari",
           "independent_source_replication",
-          "inferential_uncertainty"
+          "inferential_uncertainty",
+          "not_executed",
+          "numerical_fit_attempts"
         ],
         "properties": {
           "model_id": {
@@ -288,6 +306,14 @@
           },
           "inferential_uncertainty": {
             "const": "withheld"
+          },
+          "not_executed": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "numerical_fit_attempts": {
+            "type": "integer",
+            "minimum": 0
           }
         }
       }
