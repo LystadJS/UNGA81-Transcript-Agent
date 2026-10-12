@@ -102,6 +102,28 @@ test('source-separated baseline comparison and W5 export retain original provena
   assert.equal(merged.interchange.publication_eligible,false);
   assert.equal(merged.audit.opened_reserved_transcripts,0);
 });
+test('child training-selection SHA covers exactly sampled ID/text hashes, not the parent selection',()=>{
+  for(const refit of sidecar.refits.slice(0,10)){
+    const model=merged.refits.models.find(m=>m.model_id===refit.model_id);
+    assert.equal(model.training_selection_sha256,refit.refit_training_selection_sha256);
+    assert.notEqual(model.training_selection_sha256,original.upstream.selection_sha256);
+    assert.equal(model.training_selection_sha256,F.digest(refit.selected_rows.map(r=>
+      [r.observation_id,r.text_sha256]).sort((a,b)=>a[0].localeCompare(b[0]))));
+  }
+  const tampered=clone(merged.refits);
+  tampered.models[0].training_selection_sha256='f'.repeat(64);
+  assert.equal(W2.validateEnvelope(tampered).eligible.size,24);
+  const plan={...Bridge.recordAudit(native,original).fit_plan,
+    ...Object.fromEntries(sidecar.refits.map(x=>[x.model_id,{
+      configuration_id:Bridge.configIdentity(native.fit_records.find(f=>f.model_id===x.base_model_id)),
+      seed:x.seed,resample_type:x.resample_type,resample_id:x.resample_id,
+      sampled_groups:x.selected_groups
+    }]))};
+  assert.throws(()=>W2.runConsensus([merged.baseline,tampered],{
+    fit_plan:plan,cross_basis_protocol:'identity_join_hard_partition_v1'
+  }),/child training-selection SHA differs/);
+});
+
 test('source-hash, sample-selection or child-label corruption is refused before W2 computation',()=>{
   const a=clone(sidecar);
   a.refits[0].selected_rows[0].cluster=a.refits[0].selected_rows[0].cluster===1?2:1;
