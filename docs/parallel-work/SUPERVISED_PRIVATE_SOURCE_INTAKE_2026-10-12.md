@@ -40,7 +40,7 @@ The private source workspace retains **5,200 exact parent-text Unicode-codepoint
 ## Source/run identity and acceptance limits
 
 - Unchanged public draft proposition codebook (six propositions, two sampled): SHA-256 `794e67a741952139c31c009d41af6914113651ead46a041fde4811475fca026e`.
-- Private frozen source-plan SHA-256: `2c6359c8a8827a19473b4b1f8aa006378ecefb68d6b9cef4df4f6d500278e8`.
+- Private frozen source-plan SHA-256: `2c6359c8a8827a19473b4b1f8aa006378ecefb68d6b9cef4df4f4d6b500278e8`.
 - Private train-packet SHA-256: `436f0d0528bd7994ddb26a8452195922ace5cafca1ae6d327d143c91aa42c960`.
 - The private package's independent validation checked all 316 selected canonical text hashes, **5,200 exact original-offset spans**, 96 review items, all source/speech/meeting/country overlaps, and **zero real human labels**. Desktop and mobile offline Chromium interface smoke checks passed; no external source requests were made by the reviewer UI.
 - The full PDF archive remains held privately by the owner and is not redistributed through GitHub.
