@@ -171,6 +171,14 @@ function rejection(fn,fragment){assert.throws(fn,e=>String(e.message).includes(f
     const object={frame:{split:'development'}};rejection(()=>publicAggregate(object),'Public export refused');
     assert(cohort.population_hash);
   });
+  await test('W1 inventory link: schema, source joins and non-publication negative controls',()=>{
+    const {execFileSync}=require('node:child_process');
+    const path=require('node:path');
+    const log=execFileSync(process.execPath,[path.join(__dirname,'test_historical_link.cjs')],{
+      encoding:'utf8',timeout:120000,maxBuffer:1024*1024});
+    assert(log.includes('"suite":"w1-historical-inventory-link-synthetic"'));
+    process.stdout.write(log);
+  });
   process.stdout.write(JSON.stringify({suite:'source-aware-validation-synthetic',tests,failed:0,
     held_out_opened:0,private_transcript_text_published:0})+'\n');
 })().catch(e=>{process.stderr.write('FAIL '+(e.stack||e)+'\n');process.exitCode=1;});
