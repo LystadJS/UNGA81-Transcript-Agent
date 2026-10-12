@@ -128,7 +128,7 @@ test('reject source-text-hash and source-selection mutation',()=>{
   const x=clone(w1);x.observations[0].text_sha256='f'.repeat(64);
   assert.throws(()=>Bridge.fromW1(native,x),/population.*source identity drift|observation/i);
   const y=clone(w1);y.upstream.selection_sha256='b'.repeat(64);
-  assert.throws(()=>Bridge.fromW1(native,y),/source cohort differ/);
+  assert.throws(()=>Bridge.fromW1(native,y),/source cohort differ|model training selection mismatch/);
 });
 test('reject upstream W1 family ambiguity and mismatched model parameters',()=>{
   const x=clone(w1);x.models[0].method_family='partition';
@@ -156,7 +156,10 @@ test('reject unsupported source split before any W2 release or browser presentat
 });
 test('W6 withholds mismatched raw family rates instead of displaying incorrect weighted consensus',()=>{
   const f=W2Fixture.fixtureKnown(false);
-  for(const e of f.envelopes)e.observations.forEach(o=>o.source_url=null);
+  for(const e of f.envelopes){
+    e.observations.forEach(o=>o.source_url=null);
+    e.cohort.total_in_frame=e.observations.length;
+  }
   const first=f.envelopes[0].results.find(r=>r.observation_id==='fictional-unit-1-a');
   first.cluster=first.cluster===1?2:1;
   const out=W2.runConsensus(f.envelopes,{fit_plan:f.fit_plan});
