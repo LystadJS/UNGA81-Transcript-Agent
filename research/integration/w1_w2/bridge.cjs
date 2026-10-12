@@ -55,6 +55,10 @@ function recordAudit(out,e){
     'only W1 synthetic, engineering-only interchange may be projected');
   check(e.upstream?.source_schema==='synthetic.v1'&&
     e.upstream?.source_hash_basis==='synthetic', 'synthetic source schema/hash basis required');
+  check(e.cohort.total_in_frame===e.observations.length &&
+    e.observations.every(o=>o.source_url===null &&
+      !['2026-10-05','2026-10-06'].includes(o.date)),
+    'synthetic full frame must be complete and contain no original links or reserved dates');
   check(e.producer.code_sha256===W1_RUNNER_SHA(),
     'W1 numerical runner differs from the declared producer code hash');
   W2.validateEnvelope(e);
