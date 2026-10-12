@@ -55,7 +55,7 @@
     // In the v1 contract, the inventory denominator may count meetings,
     // while eligible units are source passages. Never invent extra meetings.
     if(env.cohort.eligible > env.cohort.total_in_frame)
-      assert(env.cohort.source_group_unit==='meeting' &&
+      assert(env.producer.workstream_id==='W2' && env.cohort.source_group_unit==='meeting' &&
         env.coverage?.inventory_meetings===env.cohort.total_in_frame,
         'Inventory frame and observation denominators incompatible.');
     assert(env.observations.every(o => o && typeof o.id === 'string' && o.id.length &&
