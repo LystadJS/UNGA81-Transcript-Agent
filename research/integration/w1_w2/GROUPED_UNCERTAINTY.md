@@ -4,7 +4,7 @@
 
 ## Method
 
-The W1 native runner has an explicit retained-child option. Source-bound records are exported under **un.source-aware.group-refits.v1** and verified against the original W1 interchange envelope and actual native per-run labels. The producer stores every original observation ID/text SHA and a complete selected-source-group ledger; the adapter fills omitted eligible rows as not_fitted and retains source-unavailable/excluded inventory rows separately.
+The W1 native runner has an explicit retained-child option. Any parent/source-family identity spanning multiple meetings blocks meeting-only refit export, because the existing W1 meeting schedule would split that dependence grouping. Source-bound records are exported under **un.source-aware.group-refits.v1** and verified against the original W1 interchange envelope and actual native per-run labels. The producer stores every original observation ID/text SHA and a complete selected-source-group ledger; the adapter fills omitted eligible rows as not_fitted and retains source-unavailable/excluded inventory rows separately.
 
 The coordinator grouped bridge derives sample-specific W2 hard-assignment models with immutable model/representation/seed replay identities. It keeps the original five baseline fits and includes every successful, skipped or failed child model as a **planned** fit record; zero hard labels are noise, not a genuine common cluster. The W1 family mapping is unchanged: k-means/PAM partition, Ward hierarchical, GMM mixture, HDBSCAN density. Each family retains equal planned weight, and repeated numerical seeds cannot buy another family vote.
 
