@@ -53,7 +53,6 @@ jobs:
           set -euo pipefail
           node research/consensus/test_consensus.cjs
           node --test research/integration/w1_w2/test-integration.cjs
-          node --test research/integration/w3_w5_w6/test-integration.cjs
           node --test research/integration/w2_w4_w6/test_w2_bridge.cjs
           python -m unittest discover -s research/longitudinal -p 'test_*.py' -v
           python -m unittest research.integration.w2_w4_w6.test_w4_bridge -v
@@ -98,6 +97,17 @@ jobs:
           assert a['holdout_transcripts_opened'] == b['holdout_transcripts_opened'] == 0
           print('PASS: W2/W4 source-linked synthetic execution receipts.')
           PY
+      - name: Verify accepted W3/W5/W6 regression with original generated W3 fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install -r research/graph_methods/requirements.txt
+          python -m research.integration.w3_w5_w6.make_synthetic --output "$RUNNER_TEMP/w3-original-fixtures"
+          COORD_W3_FIXTURES="$RUNNER_TEMP/w3-original-fixtures" \
+          COORD_W5_CONTRACTS="$GITHUB_WORKSPACE/site/parallel/w05-browser/experimental/method-lab/contracts.js" \
+          COORD_W5_ADAPTERS="$GITHUB_WORKSPACE/site/parallel/w05-browser/experimental/method-lab/adapters.js" \
+          COORD_W6_RENDERER="$GITHUB_WORKSPACE/site/experimental/evidence-viz/evidence-viz.js" \
+          node --test research/integration/w3_w5_w6/test-integration.cjs
       - name: Archive only fictional browser screenshots and aggregate QA
         if: always()
         uses: actions/upload-artifact@v4
