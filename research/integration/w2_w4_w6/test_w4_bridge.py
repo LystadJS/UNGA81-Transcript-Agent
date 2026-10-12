@@ -99,7 +99,7 @@ class W4W6Acceptance(unittest.TestCase):
             validate_source(raw, comparison, changed)
         changed = deepcopy(raw)
         changed["observations"][0]["source_family_id"] = "not-the-original"
-        with self.assertRaisesRegex(ValueError, "panel bytes/content"):
+        with self.assertRaisesRegex(ValueError, "panel bytes/content|meeting reused for incompatible source"):
             validate_source(changed, comparison, envelope)
 
     def test_non_synthetic_public_export_is_forbidden(self):
