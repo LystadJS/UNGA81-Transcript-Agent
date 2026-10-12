@@ -60,6 +60,20 @@ function sourcePointer(o){
     source_status:o.source_status,exclusion_reasons:o.exclusion_reasons.slice()};
 }
 
+function assertMeetingSeparation(rows){
+  const seen=new Map();
+  for(const o of rows){
+    for(const field of ['parent_id','source_family_id']){
+      if(!o[field])continue;
+      const key=field+':'+o[field];
+      if(seen.has(key))
+        ok(seen.get(key)===o.meeting_id,
+          'source parent/family identity spans multiple meeting groups; W1 meeting-only resampling would split dependent source records');
+      else seen.set(key,o.meeting_id);
+    }
+  }
+}
+
 function fromNative(native, v1, {allow_private_development=false}={}) {
   ok(native?.schema==='un.source-aware-validation.v1' &&
     native.evaluation_role==='engineering_only' &&
@@ -99,6 +113,7 @@ function fromNative(native, v1, {allow_private_development=false}={}) {
   ok(equal(eligible.map(x=>[x.id,x.text_sha256]),
     original.map(x=>[x.id,x.text_sha256])) &&
     eligible.length<=600 && eligible.length>=1, 'original ordered ID/text-hash population differs');
+  assertMeetingSeparation(eligible);
   const groupById=new Map(eligible.map(x=>[x.id,x.meeting_id]));
   ok(eligible.every(x=>typeof x.meeting_id==='string'&&x.meeting_id.length>0 &&
     SHA.test(x.text_sha256)), 'verified meeting and text hash required');
@@ -296,6 +311,7 @@ function validateSidecar(sidecar,original){
     'fictional source only; reserved source dates and source URLs forbidden');
   const eligible=new Map(s.observations.filter(o=>o.source_status==='available' &&
     o.exclusion_reasons.length===0).map(o=>[o.id,o]));
+  assertMeetingSeparation([...eligible.values()]);
   const groups=[...new Set([...eligible.values()].map(o=>o.meeting_id))].sort();
   ok(groups.length>=1 && equal(groups,s.cohort.source_group_ids) &&
     s.cohort.source_group_count===groups.length,
