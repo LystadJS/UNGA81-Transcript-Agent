@@ -52,7 +52,12 @@
     assert(env.upstream && env.cohort && Array.isArray(env.observations) && Array.isArray(env.models),
       'Missing upstream identity, cohort, observations, or models.');
     assert(env.cohort.split === 'synthetic', 'Synthetic-only split required.');
-    assert(env.cohort.eligible <= env.cohort.total_in_frame, 'Eligible exceeds total in frame.');
+    // In the v1 contract, the inventory denominator may count meetings,
+    // while eligible units are source passages. Never invent extra meetings.
+    if(env.cohort.eligible > env.cohort.total_in_frame)
+      assert(env.cohort.source_group_unit==='meeting' &&
+        env.coverage?.inventory_meetings===env.cohort.total_in_frame,
+        'Inventory frame and observation denominators incompatible.');
     assert(env.observations.every(o => o && typeof o.id === 'string' && o.id.length &&
       (o.text_sha256 === null || hex64(o.text_sha256)) &&
       typeof o.source_status === 'string' && typeof o.review_status === 'string' &&
@@ -195,7 +200,7 @@
   }
 
   function frame(env, panel) {
-    return 'Frame ' + panel.coverage.frame + ' · eligible ' + panel.coverage.eligible +
+    return 'Inventory ' + panel.coverage.frame + ' ' + (env.cohort.source_group_unit==='meeting'?'meetings':'frame units') + ' · eligible '+panel.coverage.eligible+' '+env.cohort.unit+' observations' +
       ' · displayed ' + panel.coverage.included + ' · excluded ' + panel.coverage.excluded +
       ' · missing ' + panel.coverage.missing + ' · ' + env.cohort.weighting.replace(/_/g,' ') + '.';
   }
