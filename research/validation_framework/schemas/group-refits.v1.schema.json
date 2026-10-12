@@ -375,7 +375,8 @@
           "failed_fits",
           "skipped_fits",
           "reason",
-          "selected_rows"
+          "selected_rows",
+          "refit_training_selection_sha256"
         ],
         "properties": {
           "model_id": {
@@ -514,6 +515,11 @@
               },
               "additionalProperties": false
             }
+          },
+          "refit_training_selection_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "SHA-256 over sorted actually sampled [observation_id,text_sha256] keys, distinct from full source selection."
           }
         },
         "additionalProperties": false
