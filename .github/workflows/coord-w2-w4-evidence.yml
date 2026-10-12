@@ -1,0 +1,109 @@
+name: Coordinator W2/W4 evidence integration (synthetic only)
+
+on:
+  pull_request:
+    paths:
+      - "research/integration/w2_w4_w6/**"
+      - "site/experimental/evidence-viz/evidence-viz.js"
+      - ".github/workflows/coord-w2-w4-evidence.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-method-to-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYTHONHASHSEED: "0"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Verify source syntax and Chromium
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check site/experimental/evidence-viz/evidence-viz.js
+          node --check research/integration/w2_w4_w6/w2_bridge.cjs
+          node --check research/integration/w2_w4_w6/build_preview.cjs
+          node --check research/integration/w2_w4_w6/run_synthetic.cjs
+          python -m py_compile research/integration/w2_w4_w6/w4_bridge.py
+          python -m py_compile research/integration/w2_w4_w6/browser_smoke.py
+          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium)" >> "$GITHUB_ENV"
+      - name: Install Python numerical and Chromium test libraries
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install -r research/longitudinal/requirements.txt
+          python -m pip install playwright==1.55.0
+      - name: Native source, statistical, adapter, and W6 regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          node research/consensus/test_consensus.cjs
+          node --test research/integration/w2_w4_w6/test_w2_bridge.cjs
+          python -m unittest discover -s research/longitudinal -p 'test_*.py' -v
+          python -m unittest research.integration.w2_w4_w6.test_w4_bridge -v
+          node --test site/experimental/evidence-viz/tests.cjs
+          node docs/parallel-work/validate-contract.cjs
+      - name: Build original native synthetic read models and disposable preview
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/w2w4-evidence-inputs"
+          node research/integration/w2_w4_w6/run_synthetic.cjs "$RUNNER_TEMP/w2w4-evidence-inputs"
+          python -m research.integration.w2_w4_w6.run_synthetic \
+            --output "$RUNNER_TEMP/w2w4-evidence-py"
+          cp "$RUNNER_TEMP/w2w4-evidence-py/w4-"*.json "$RUNNER_TEMP/w2w4-evidence-inputs/"
+          node research/integration/w2_w4_w6/build_preview.cjs \
+            "$RUNNER_TEMP/w2w4-evidence-inputs" "$RUNNER_TEMP/w2w4-browser-preview"
+          test -s "$RUNNER_TEMP/w2w4-browser-preview/index.html"
+          test -s "$RUNNER_TEMP/w2w4-browser-preview/data.js"
+      - name: Chromium desktop/mobile, keyboard, export, and no-network QA
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/integration/w2_w4_w6/browser_smoke.py \
+            --preview "$RUNNER_TEMP/w2w4-browser-preview" \
+            --outdir "$RUNNER_TEMP/w2w4-browser-qa" --browser "$CHROME_BIN"
+      - name: Confirm screenshots and receipts are invented synthetic data only
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s "$RUNNER_TEMP/w2w4-browser-qa/integrated-desktop.png"
+          test -s "$RUNNER_TEMP/w2w4-browser-qa/integrated-mobile.png"
+          test -s "$RUNNER_TEMP/w2w4-browser-qa/w2-desktop.svg"
+          test -s "$RUNNER_TEMP/w2w4-browser-qa/w4-mobile.html"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP'])
+          a = json.loads((root/'w2w4-evidence-inputs/w2-receipt.json').read_text())
+          b = json.loads((root/'w2w4-evidence-py/w4-receipt.json').read_text())
+          assert a['result'] == b['result'] == 'synthetic_only'
+          assert a['publication_eligible'] is b['publication_eligible'] is False
+          assert a['holdout_transcripts_opened'] == b['holdout_transcripts_opened'] == 0
+          print('PASS: W2/W4 source-linked synthetic execution receipts.')
+          PY
+      - name: Archive only fictional browser screenshots and aggregate QA
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coord-w2-w4-w6-synthetic-qa
+          path: |
+            ${{ runner.temp }}/w2w4-browser-qa
+            ${{ runner.temp }}/w2w4-evidence-inputs/w2-receipt.json
+            ${{ runner.temp }}/w2w4-evidence-py/w4-receipt.json
+          if-no-files-found: warn
+          retention-days: 7
