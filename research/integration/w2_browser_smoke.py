@@ -61,7 +61,7 @@ def verify(browser, base, fixture, out, name, width, height):
         summary=page.locator("#research-w2-summary").inner_text()
         report=json.loads((fixture/"consensus-v1.json").read_text())
         assert str(len(report["observation_ids"])) in summary
-        assert "weighted" in summary.lower()
+        assert "planned-weight" in summary.lower()
         n=len(report["observation_ids"])
         assert page.locator("#research-w2-matrix tbody tr").count() == n
         assert page.locator("#research-w2-matrix .research-w2-pair").count() == n*(n-1)
