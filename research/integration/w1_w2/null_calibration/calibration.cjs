@@ -212,7 +212,7 @@ async function calibration({mode='smoke',scenarioIds=null,outerStart=0,
      let observed;
      try{observed=await fitDraw(scenario,seed,p,{nullReference:false});}
      catch(e){records.push({
-       status:'WITHHELD_OBSERVED_FIT_FAILURE',world_index:i,
+       status:'WITHHELD_OBSERVED_FIT_FAILURE',world_index:i,observed_seed:seed,
        reason:String(e.message||e).slice(0,260),
        observed_statistic:null,reference_attempted:0,reference_completed:0,reference_failed:0,
        corrected_tail_p:null
