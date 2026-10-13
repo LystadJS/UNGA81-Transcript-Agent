@@ -223,6 +223,36 @@ test('G01–G13 remain NOT_RUN after successful and withheld synthetic nuisance 
  assert.throws(()=>Ready.assess(corrupted),/refuses nonfrozen/);
 });
 
+test('future full-budget shards require unique frozen world indices and cannot declare G09 pass early',()=>{
+ const Aggregate=require('./aggregate.cjs');
+ const shard={
+  schema:'un.w1-w2.synthetic-null.calibration-audit.v1',
+  protocol_sha256:sha,mode:'full_shard',source_split:'synthetic',
+  inferential_eligible:false,publication_eligible:false,
+  empirical_evaluation_authorized:false,reserved_transcripts_opened:0,
+  scenarios:[{scenario_id:'N1_independent',reference_draws_per_world:1999}],
+  detail:[{scenario_id:'N1_independent',worlds:[{
+   world_index:0,observed_seed:Crypto.deriveSeed(sha,'N1_independent',0,-1,'observed'),
+   status:'ORACLE_REFERENCE_PILOT',
+   reference_attempted:1999,reference_completed:1999,reference_failed:0,
+   corrected_tail_p:0.037
+  }]}]
+ };
+ const result=Aggregate.aggregate([shard]);
+ assert.equal(result.total_shards,1);
+ assert.equal(result.statuses[0].missing_outer_worlds,999);
+ assert.equal(result.statuses[0].scientific_status,'NOT_RUN');
+ assert.equal(result.all_null_regimes_complete,false);
+ assert.equal(result.all_scientific_gates_NOT_RUN,true);
+ assert.equal(result.empirical_inference_eligible,false);
+ assert.throws(()=>Aggregate.aggregate([shard,shard]),/duplicate world index/);
+ const bogus=structuredClone(shard);
+ bogus.detail[0].worlds[0].observed_seed=1;
+ assert.throws(()=>Aggregate.aggregate([bogus]),/world seed disagrees/);
+ const published=structuredClone(shard);published.publication_eligible=true;
+ assert.throws(()=>Aggregate.aggregate([published]),/frozen source-free/);
+});
+
 test('no synthetic summary path can modify frozen source repository or silently overwrite outputs',()=>{
  const root=path.resolve(__dirname,'../../../..');
  assert.throws(()=>Run.outputSafe(root),/inside the source repository/);
