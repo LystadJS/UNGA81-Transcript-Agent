@@ -35,6 +35,7 @@ jobs:
         run: |
           set -euo pipefail
           node --check site/experimental/evidence-viz/evidence-viz.js
+          node --check research/integration/w2_w4_w6/evidence_renderer.cjs
           node --check research/integration/w2_w4_w6/w2_bridge.cjs
           node --check research/integration/w2_w4_w6/build_preview.cjs
           node --check research/integration/w2_w4_w6/run_synthetic.cjs
@@ -54,6 +55,7 @@ jobs:
           node research/consensus/test_consensus.cjs
           node --test research/integration/w1_w2/test-integration.cjs
           node --test research/integration/w2_w4_w6/test_w2_bridge.cjs
+          node --test research/integration/w2_w4_w6/test_evidence_renderer.cjs
           python -m unittest discover -s research/longitudinal -p 'test_*.py' -v
           python -m unittest research.integration.w2_w4_w6.test_w4_bridge -v
           node --test site/experimental/evidence-viz/tests.cjs
@@ -81,7 +83,7 @@ jobs:
           const fs=require('node:fs');
           const path=require('node:path');
           const assert=require('node:assert/strict');
-          const V=require('./site/experimental/evidence-viz/evidence-viz.js');
+          const V=require('./research/integration/w2_w4_w6/evidence_renderer.cjs');
           const root=process.env.W4_MISSING_DIR;
           const envelope=JSON.parse(fs.readFileSync(path.join(root,'w4-envelope.json'),'utf8'));
           const panel=JSON.parse(fs.readFileSync(path.join(root,'w4-panel.json'),'utf8'));
@@ -131,7 +133,7 @@ jobs:
           COORD_W3_FIXTURES="$RUNNER_TEMP/w3-original-fixtures" \
           COORD_W5_CONTRACTS="$GITHUB_WORKSPACE/site/parallel/w05-browser/experimental/method-lab/contracts.js" \
           COORD_W5_ADAPTERS="$GITHUB_WORKSPACE/site/parallel/w05-browser/experimental/method-lab/adapters.js" \
-          COORD_W6_RENDERER="$GITHUB_WORKSPACE/site/experimental/evidence-viz/evidence-viz.js" \
+          COORD_W6_RENDERER="$GITHUB_WORKSPACE/research/integration/w2_w4_w6/evidence_renderer.cjs" \
           node --test research/integration/w3_w5_w6/test-integration.cjs
       - name: Archive only fictional browser screenshots and aggregate QA
         if: always()
