@@ -9,6 +9,7 @@ const path=require('node:path');
 const crypto=require('node:crypto');
 const {lock}=require('./lock.cjs');
 const {calibration}=require('./calibration.cjs');
+const {assess}=require('./readiness.cjs');
 const ROOT=path.resolve(__dirname,'../../../..');
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 const field=(args,key)=>{const i=args.indexOf(key);return i<0?null:args[i+1];};
@@ -32,6 +33,7 @@ async function main(args){
    opts.outerCount=1;opts.referenceDraws=1999;
  }
  const result=await calibration(opts);
+ const assessment=assess(result);
  if(result.protocol_sha256!==frozen.protocol_sha256||
    result.inferential_eligible!==false||result.reserved_transcripts_opened!==0||
    result.g01_g13_all_not_run!==true)
@@ -66,6 +68,7 @@ async function main(args){
  fs.mkdirSync(output,{recursive:false,mode:0o700});
  const contents={
    'receipt.json':JSON.stringify(totals,null,2)+'\n',
+   'g01-g13-assessment.json':JSON.stringify(assessment,null,2)+'\n',
    'scenario-aggregates.json':JSON.stringify(aggregates,null,2)+'\n',
    'synthetic-pilot-diagnostics.json':JSON.stringify(result,null,2)+'\n'
  };
@@ -80,6 +83,13 @@ async function main(args){
  fs.writeFileSync(path.join(output,'SHA256.json'),JSON.stringify(sha,null,2)+'\n',
    {encoding:'utf8',flag:'wx',mode:0o600});
  process.stdout.write(JSON.stringify(totals)+'\n');
+ process.stdout.write(JSON.stringify({schema:'un.w1-w2.synthetic-null.scenario-summary.v1',
+   mode:result.mode,scenarios:result.scenarios.map(x=>({id:x.scenario_id,
+    truth:x.truth,status:x.status,worlds_delivered:x.worlds_delivered,
+    worlds_failed_or_withheld:x.worlds_failed_or_withheld,
+    reference_completed:x.reference_draws_completed,
+    uncalibrated_type1_rate:x.null_rejection_rate,upper_wilson:x.upper_wilson_null_false_rejection_rate
+   })),scientific_gates_passed:0})+'\n');
 }
 if(require.main===module)main(process.argv.slice(2))
  .catch(e=>{process.stderr.write('WITHHELD: '+String(e.message||e).slice(0,700)+'\n');process.exitCode=1;});
