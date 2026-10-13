@@ -1,0 +1,100 @@
+name: Coordinator W1 W2 synthetic nuisance-null calibration (engineering only)
+on:
+  push:
+    branches: ['coord/w1-w2-synthetic-null-v1']
+    paths:
+      - 'research/integration/w1_w2/null_calibration/**'
+      - '.github/workflows/coord-w1-w2-synthetic-null.yml'
+  pull_request:
+    paths:
+      - 'research/integration/w1_w2/null_calibration/**'
+      - '.github/workflows/coord-w1-w2-synthetic-null.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-synthetic-nuisance-stress:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PYTHONNOUSERSITE: '1'
+      HF_HUB_OFFLINE: '1'
+      TRANSFORMERS_OFFLINE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify pre-simulation frozen design and all 13 withheld source gates
+        run: node research/integration/w1_w2/null_calibration/lock.cjs
+      - name: Actual W1/W2 numerical, dependence, AR1 and tampering tests
+        run: node --test research/integration/w1_w2/null_calibration/test-null.cjs
+      - name: Independent complete-pipeline oracle smoke (all six invented regimes)
+        run: node research/integration/w1_w2/null_calibration/run.cjs --mode smoke --output "$RUNNER_TEMP/w1-w2-null-smoke"
+      - name: Confirm zero inferential authorization, all draws reconciled
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs=require('node:fs'),path=require('node:path');
+          const dir=path.join(process.env.RUNNER_TEMP,'w1-w2-null-smoke');
+          const r=JSON.parse(fs.readFileSync(path.join(dir,'receipt.json'),'utf8'));
+          const a=JSON.parse(fs.readFileSync(path.join(dir,'scenario-aggregates.json'),'utf8'));
+          if(r.status!=='SYNTHETIC_ENGINEERING_PILOT_ONLY'||r.empirical_inference_eligible!==false||
+            r.public_release_eligible!==false||r.reserved_transcripts_opened!==0||
+            r.gates_passed!==0||r.gates_not_run!==13||r.scenarios!==6||r.attempted_worlds!==12||
+            r.successful_reference_draws+r.failed_reference_draws!==r.attempted_reference_draws||
+            a.scenarios.length!==6||a.scenarios.some(x=>x.inferential_eligible!==false))process.exit(1);
+          const sha=JSON.parse(fs.readFileSync(path.join(dir,'SHA256.json'),'utf8'));
+          const crypto=require('node:crypto');
+          for(const [name,digest] of Object.entries(sha))
+            if(crypto.createHash('sha256').update(fs.readFileSync(path.join(dir,name))).digest('hex')!==digest)process.exit(2);
+          process.stdout.write(JSON.stringify({status:'PASS',kind:'synthetic_only',
+            attempts:r.attempted_reference_draws,success:r.successful_reference_draws,
+            failed:r.failed_reference_draws,gates_passed:0})+'\n');
+          NODE
+      - name: Larger fictional-only oracle pilot (four outer worlds and nineteen references)
+        run: node research/integration/w1_w2/null_calibration/run.cjs --mode pilot --output "$RUNNER_TEMP/w1-w2-null-pilot"
+      - name: Verify pilot denominators and all scientific G01-G13 gates NOT_RUN
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs=require('node:fs'),path=require('node:path');
+          const root=path.join(process.env.RUNNER_TEMP,'w1-w2-null-pilot');
+          const r=JSON.parse(fs.readFileSync(path.join(root,'receipt.json'),'utf8'));
+          const a=JSON.parse(fs.readFileSync(path.join(root,'g01-g13-assessment.json'),'utf8'));
+          if(r.mode!=='pilot'||r.attempted_worlds!==24||r.scenarios!==6||
+            r.successful_reference_draws+r.failed_reference_draws!==r.attempted_reference_draws||
+            r.empirical_inference_eligible!==false||r.public_release_eligible!==false||
+            a.scientific_gates_passed!==0||a.scientific_gates_not_run!==13||
+            a.gates.some(g=>g.scientific_status!=='NOT_RUN')||
+            !a.nuisance_withheld_regimes.includes('N3_cross_classified'))process.exit(1);
+          process.stdout.write(JSON.stringify({status:'PASS_PILOT_ONLY',
+            attempted_worlds:r.attempted_worlds,delivered_worlds:r.delivered_worlds,
+            attempted_references:r.attempted_reference_draws,
+            failed_references:r.failed_reference_draws,
+            inferential_gates_passed:0})+'\n');
+          NODE
+      - name: Existing W1, W2, coordinator and frozen interchange regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          node research/validation_framework/tests/test_framework.cjs
+          node research/validation_framework/tests/test_schema.cjs
+          node research/consensus/test_consensus.cjs
+          node --test research/integration/w1_w2/test-integration.cjs
+          node --test research/integration/w1_w2/test-grouped-refits.cjs
+          node docs/parallel-work/validate-contract.cjs
+          node --test docs/parallel-work/test-w1-w2-inference-readiness.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w1-w2-synthetic-null-oracle-diagnostic-only
+          path: |
+            ${{ runner.temp }}/w1-w2-null-smoke/
+            ${{ runner.temp }}/w1-w2-null-pilot/
+          retention-days: 14
+          if-no-files-found: warn
