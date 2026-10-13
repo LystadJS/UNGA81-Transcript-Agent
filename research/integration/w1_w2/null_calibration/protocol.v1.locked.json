@@ -1,0 +1,359 @@
+{
+  "schema": "un.w1-w2.synthetic-null.protocol.v1",
+  "version": "1.0.0",
+  "frozen_at_date": "2026-10-13",
+  "status": "frozen_for_fictional_synthetic_simulation_only",
+  "eligible_for_real_inference": false,
+  "baseline_main_sha256": null,
+  "repository": "LystadJS/UNGA81-Transcript-Agent",
+  "source_inputs": {
+    "fixture_kind": "synthetic",
+    "upstream_schema": "un.source-validation.synthetic.v1",
+    "source_hash_basis": "synthetic",
+    "access_network": false,
+    "read_original_UN_documents": false,
+    "read_private_historical_sources": false,
+    "access_reserved_october_5_6_2026": false,
+    "units": "source_bound_fictional_passage",
+    "max_eligible_observations": 64,
+    "missing_source_policy": "explicit_unavailable_never_zero"
+  },
+  "hypothesis": {
+    "null": "No planted cross-meeting latent component beyond fixed nuisance meeting/agenda/genre/language/role/affiliation/year, token length, duplicates, and attendance.",
+    "alternative": "A planted cross-meeting component produces additional co-assignment under otherwise identical nuisance structure.",
+    "target": "fictional synthetic language only",
+    "source_dependence_assumed_known_for_oracle_simulation": true,
+    "source_dependence_estimated_from_real_data": false
+  },
+  "fixed_method_grid": [
+    {
+      "id": "null-lsa-kmeans",
+      "representation": "lsa",
+      "algorithm": "kmeans",
+      "components": 4,
+      "k": 3,
+      "seed": 17
+    },
+    {
+      "id": "null-pca-pam",
+      "representation": "pca",
+      "algorithm": "pam",
+      "components": 4,
+      "k": 3,
+      "seed": 17
+    },
+    {
+      "id": "null-lsa-ward",
+      "representation": "lsa",
+      "algorithm": "hierarchical",
+      "linkage": "ward",
+      "components": 4,
+      "k": 3,
+      "seed": 17
+    },
+    {
+      "id": "null-pca-gmm",
+      "representation": "pca",
+      "algorithm": "gmm",
+      "components": 4,
+      "k": 3,
+      "seed": 17,
+      "gmm": {
+        "starts": 2,
+        "maxIterations": 60,
+        "regularization": 0.001,
+        "tolerance": 0.0001
+      }
+    },
+    {
+      "id": "null-lsa-hdbscan",
+      "representation": "lsa",
+      "algorithm": "hdbscan",
+      "components": 4,
+      "seed": 17,
+      "hdbscan": {
+        "minClusterSize": 3,
+        "minSamples": 2,
+        "selection": "eom"
+      }
+    }
+  ],
+  "grouped_refits": {
+    "unit": "meeting",
+    "sampling": "without_replacement",
+    "fraction": 0.8,
+    "replicates": 3,
+    "seed": 31,
+    "retain_original_child_labels": true,
+    "all_group_omissions_recorded": true,
+    "source_family_cross_meeting": "withhold_if_present"
+  },
+  "statistic": {
+    "id": "cross_meeting_max_strata_consensus_fraction_v1",
+    "eligible_pairs": "original eligible observations in different source meetings only",
+    "exclude_same_parent_or_source_family": true,
+    "unassigned_zero_as_pair_evidence": false,
+    "not_fitted_as_zero_association": false,
+    "association_cutoff": 0.75,
+    "assignment_coverage_cutoff": 0.45,
+    "min_contributing_families": 2,
+    "strata": [
+      "all_cross_meeting",
+      "different_genre_cross_meeting",
+      "different_language_cross_meeting"
+    ],
+    "minimum_pairs_per_stratum": 8,
+    "definition": "T=max_s [(qualifying cross-source pairs in s / all eligible cross-source pairs in s) * sqrt(eligible cross-source pairs in s / eligible cross-source pairs in all)]",
+    "selection_multiplicity": "max statistic across all three searched strata",
+    "test_tail": "greater_or_equal",
+    "pvalue": "(1 + number of null draws with T_reference >= T_observed) / (B + 1)",
+    "zero_opportunity": "null_association_separate_from_zero_and_ineligible_for_threshold",
+    "full_search_refit_required": true
+  },
+  "seeds": {
+    "global": 20261013,
+    "derivation": "sha256 protocol lock identity + regime ID + independent world index + reference index + draw domain, take first 32 bits unsigned",
+    "common_reference_noise_across_regimes": false,
+    "allow_nondeterministic_randomness": false
+  },
+  "nuisance_worlds": [
+    {
+      "id": "N1_independent",
+      "truth": "null",
+      "meetings": 6,
+      "group_sizes": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "affiliations": 6,
+      "agenda_categories": 3,
+      "year_count": 6,
+      "year_start": 2000,
+      "year_rho": 0,
+      "year_strength": 0.2,
+      "meeting_strength": 0.2,
+      "affiliation_strength": 0.1,
+      "agenda_strength": 0.5,
+      "duplicate_pairs_within_meeting": 0,
+      "source_family_cross_meeting": false,
+      "unavailable_rows": 1,
+      "nonrandom_attendance": false,
+      "signal_strength": 0,
+      "interpretation": "independent group count with token length and language nuisance"
+    },
+    {
+      "id": "N2_meeting_dominant",
+      "truth": "null",
+      "meetings": 6,
+      "group_sizes": [
+        2,
+        3,
+        5,
+        6,
+        4,
+        4
+      ],
+      "affiliations": 6,
+      "agenda_categories": 2,
+      "year_count": 6,
+      "year_start": 2000,
+      "year_rho": 0,
+      "year_strength": 0.1,
+      "meeting_strength": 1.6,
+      "affiliation_strength": 0.3,
+      "agenda_strength": 1.2,
+      "duplicate_pairs_within_meeting": 3,
+      "source_family_cross_meeting": false,
+      "unavailable_rows": 1,
+      "nonrandom_attendance": false,
+      "signal_strength": 0,
+      "interpretation": "long/short and duplicate-heavy meeting/agenda blocks without a planted cross-source topic"
+    },
+    {
+      "id": "N3_cross_classified",
+      "truth": "null",
+      "meetings": 8,
+      "group_sizes": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "affiliations": 4,
+      "agenda_categories": 3,
+      "year_count": 8,
+      "year_start": 2000,
+      "year_rho": 0,
+      "year_strength": 0.25,
+      "meeting_strength": 1,
+      "affiliation_strength": 1.2,
+      "agenda_strength": 0.7,
+      "duplicate_pairs_within_meeting": 2,
+      "source_family_cross_meeting": true,
+      "unavailable_rows": 1,
+      "nonrandom_attendance": false,
+      "signal_strength": 0,
+      "interpretation": "recurring affiliations and a cross-meeting source-family closure; independence is not justified"
+    },
+    {
+      "id": "N4_year_independent",
+      "truth": "null",
+      "meetings": 8,
+      "group_sizes": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "affiliations": 3,
+      "agenda_categories": 2,
+      "year_count": 8,
+      "year_start": 2000,
+      "year_rho": 0,
+      "year_strength": 1,
+      "meeting_strength": 0.4,
+      "affiliation_strength": 0.65,
+      "agenda_strength": 0.5,
+      "duplicate_pairs_within_meeting": 0,
+      "source_family_cross_meeting": false,
+      "unavailable_rows": 1,
+      "nonrandom_attendance": true,
+      "signal_strength": 0,
+      "interpretation": "four fictional years per era, source-attendance selected by year and affiliation; no population-level SE"
+    },
+    {
+      "id": "N5_year_serial_ar1",
+      "truth": "null",
+      "meetings": 8,
+      "group_sizes": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "affiliations": 3,
+      "agenda_categories": 2,
+      "year_count": 8,
+      "year_start": 2000,
+      "year_rho": 0.65,
+      "year_strength": 1,
+      "meeting_strength": 0.4,
+      "affiliation_strength": 0.65,
+      "agenda_strength": 0.5,
+      "duplicate_pairs_within_meeting": 0,
+      "source_family_cross_meeting": false,
+      "unavailable_rows": 1,
+      "nonrandom_attendance": true,
+      "signal_strength": 0,
+      "interpretation": "serially correlated year shocks, four years per era, same frozen attendance pattern as N4"
+    },
+    {
+      "id": "P1_cross_meeting_theme",
+      "truth": "positive",
+      "meetings": 6,
+      "group_sizes": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "affiliations": 6,
+      "agenda_categories": 3,
+      "year_count": 6,
+      "year_start": 2000,
+      "year_rho": 0,
+      "year_strength": 0.2,
+      "meeting_strength": 0.3,
+      "affiliation_strength": 0.1,
+      "agenda_strength": 0.5,
+      "duplicate_pairs_within_meeting": 0,
+      "source_family_cross_meeting": false,
+      "unavailable_rows": 1,
+      "nonrandom_attendance": false,
+      "signal_strength": 1.5,
+      "interpretation": "three planted fictional cross-meeting themes with known truth, not observed diplomacy"
+    }
+  ],
+  "reference_generator": {
+    "kind": "oracle_parametric_nuisance_draw_v1",
+    "conditioning": [
+      "complete observation inventory and unavailable source positions",
+      "meeting and source parent/segment assignments",
+      "affiliation recurrence",
+      "year sequence and AR(1) rho for N5",
+      "meeting agenda, genre, language and role",
+      "specified length and within-meeting duplicate pattern"
+    ],
+    "randomized": [
+      "fictional common vocabulary tokens",
+      "synthetic meeting/year/affiliation lexical nuisance shocks",
+      "token emission conditional on frozen covariates",
+      "global latent component only in positive observed worlds"
+    ],
+    "null_reference_signal_strength": 0,
+    "fits_nuisance_parameters_from_heldout": false,
+    "oracle_nuisance_is_empirically_verified": false,
+    "limitations": [
+      "Known scenario nuisance parameters, not reestimated from observed synthetic or original-source records.",
+      "No claim that this oracle matches real source exchangeability or observed lexical/genre selection.",
+      "Negative N3 cross-meeting family and N4/N5 few-year dependence remain scientific WITHHELD even if numerical draws succeed."
+    ]
+  },
+  "calibration": {
+    "alpha_global": 0.05,
+    "corrected_reference_draws_min": 1999,
+    "outer_worlds_per_null_regime_min": 1000,
+    "nominal_type1_upper_wilson_confidence": 0.95,
+    "nominal_type1_upper_wilson_threshold": 0.075,
+    "full_acceptance_requires_all_null_regimes": true,
+    "full_acceptance_requires_zero_unreported_draws": true,
+    "requires_independently_reviewed_nuisance_estimation": true,
+    "requires_approved_effective_group_design": true,
+    "ci_smoke": {
+      "outer_worlds": 2,
+      "reference_draws": 7,
+      "positive_worlds": 2
+    },
+    "pilot": {
+      "outer_worlds": 4,
+      "reference_draws": 19,
+      "positive_worlds": 4
+    },
+    "smoke_must_remain_inferentially_withheld": true,
+    "pilot_must_remain_inferentially_withheld": true
+  },
+  "resource_envelope": {
+    "node_major": 22,
+    "per_fit_timeout_ms": 120000,
+    "ci_timeout_minutes": 25,
+    "per_world_max_obs": 64,
+    "run_rejected_if_missing_provenance": true,
+    "fully_calibrated_runs_not_required_by_ci": true
+  },
+  "confidentiality": {
+    "no_network": true,
+    "no_private_corpus": true,
+    "no_historical_source_text": true,
+    "holdout_37_sealed": true,
+    "no_raw_synthetic_text_published": true,
+    "outputs_source_free_aggregates_only": true
+  }
+}
