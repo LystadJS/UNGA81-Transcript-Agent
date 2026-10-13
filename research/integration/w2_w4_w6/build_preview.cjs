@@ -2,7 +2,7 @@
 /* Offline disposable browser acceptance page. Never copied by build_pages. */
 const fs=require('node:fs'),path=require('node:path');
 const B=require('./w2_bridge.cjs');
-const V=require('../../../site/experimental/evidence-viz/evidence-viz.js');
+const V=require('./evidence_renderer.cjs');
 const root=path.resolve(__dirname,'../../..');
 function preview(input,out){
   if(!input||!out)throw Error('Provide synthetic fixture and empty output directories.');
@@ -14,8 +14,12 @@ function preview(input,out){
     V.renderPanel(e,p);
   fs.mkdirSync(out,{recursive:true});
   if(fs.readdirSync(out).length)throw Error('Preview destination is not empty.');
-  for(const file of ['evidence-viz.js','styles.css'])
-    fs.copyFileSync(path.join(root,'site/experimental/evidence-viz',file),path.join(out,file));
+  // Preview uses the coordinator-only extension. The published W6 renderer
+  // and browser Pages allowlist are unchanged by this engineering PR.
+  fs.copyFileSync(path.join(__dirname,'evidence_renderer.cjs'),
+    path.join(out,'evidence-viz.js'));
+  fs.copyFileSync(path.join(root,'site/experimental/evidence-viz/styles.css'),
+    path.join(out,'styles.css'));
   const pack=value=>JSON.stringify(value).replace(/</g,'\\u003c');
   fs.writeFileSync(path.join(out,'data.js'),
     'window.W2Bundle='+pack({envelope:w2Envelope,panel:w2Panel})+';\n'+
