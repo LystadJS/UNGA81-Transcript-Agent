@@ -11,6 +11,8 @@ from collections import defaultdict
 from copy import deepcopy
 import math
 
+import numpy as np
+
 from research.longitudinal import framework as w4
 
 MAX_ACTORS = 30
@@ -82,6 +84,68 @@ def validate_source(source: dict, comparison: dict, envelope: dict) -> None:
     require(envelope["cohort"]["weighting"] == "equal_meeting",
             "W4's declared per-meeting weighting was changed")
     expected = {r["id"]: r for r in ordered if _eligible(r)}
+    transform = comparison["alignment"]
+    mode = transform.get("mode")
+    before, after = comparison["before"], comparison["after"]
+    dim = source["map_space"]["dimension"]
+    rotation = translation = None
+    if comparison.get("comparison_status") != "withheld":
+        require(mode == ("identity_pinned_transform"
+                         if source["feature_space"]["fit_policy"] == "transformed_reference"
+                         else "rigid_full_refit"),
+                "W4 alignment mode does not match the pinned/refit source policy")
+        if mode == "identity_pinned_transform":
+            require(transform.get("anchor_count") == 0 and
+                    len({r["map_fit_id"] for r in expected.values()}) == 1,
+                    "Pinned source-map identity or zero-anchor contract invalid")
+        else:
+            try:
+                rotation = np.asarray(transform["rotation"], dtype=float)
+                translation = np.asarray(transform["translation"], dtype=float)
+            except (KeyError, ValueError, TypeError) as error:
+                raise ValueError("W4/W6: Missing saved rigid alignment parameters") from error
+            require(rotation.shape == (dim, dim) and translation.shape == (dim,) and
+                    np.isfinite(rotation).all() and np.isfinite(translation).all() and
+                    np.max(np.abs(rotation.T @ rotation - np.eye(dim))) < 1e-8 and
+                    abs(float(np.linalg.det(rotation)) - 1) < 1e-8 and
+                    transform.get("scaling_applied") is False,
+                    "Saved rigid transform is nonorthogonal, reflected, or rescaled")
+            anchors = transform.get("anchor_ids", [])
+            require(isinstance(anchors, list) and
+                    len(anchors) == len(set(anchors)) ==
+                    transform.get("anchor_count") and len(anchors) >= dim + 2,
+                    "Saved full-refit anchor identities or denominator inconsistent")
+            genres = w4.matched_genres(ordered, before, after)
+            left = w4._actor_map(ordered, before, vector_key="map",
+                                 allowed_genres=genres)
+            right = w4._actor_map(ordered, after, vector_key="map",
+                                  allowed_genres=genres)
+            require(all(a in left and a in right and genres.get(a) for a in anchors),
+                    "Saved anchors lack matched source/genre identities")
+            aa = np.asarray([left[a] for a in anchors])
+            bb = np.asarray([right[a] for a in anchors])
+            aaa, bbb = aa - aa.mean(axis=0), bb - bb.mean(axis=0)
+            singular_a, singular_b = (np.linalg.svd(x, compute_uv=False)
+                                      for x in (aaa, bbb))
+            require(singular_a[-1] > 1e-8 * singular_a[0] and
+                    singular_b[-1] > 1e-8 * singular_b[0],
+                    "Saved anchor geometry is rank-deficient")
+            cross = np.linalg.svd(bbb.T @ aaa, compute_uv=False)
+            measured_condition = float(cross[0] / cross[-1]) if cross[-1] > 0 else float("inf")
+            require(np.isfinite(measured_condition) and measured_condition <= 1e7 and
+                    abs(measured_condition - transform["condition_number"]) <=
+                    max(1e-7, measured_condition * 1e-7),
+                    "Saved cross-anchor condition number differs from the source")
+            fitted = bb @ rotation + translation
+            rmse = float(np.sqrt(np.mean(np.sum((fitted - aa) ** 2, axis=1))))
+            radius = float(np.sqrt(np.mean(np.sum(aaa ** 2, axis=1))))
+            relative = rmse / max(radius, 1e-12)
+            require(relative <= .15 and
+                    abs(relative - transform["anchor_relative_rmse"]) < 1e-7,
+                    "Saved alignment residual is not reproduced by original anchors")
+    else:
+        require(mode == "withheld_no_comparable_period",
+                "Withheld comparison cannot claim valid map alignment")
     coordinate_rows = comparison.get("aligned_coordinates", [])
     by_id = {}
     for row in coordinate_rows:
@@ -96,10 +160,16 @@ def validate_source(source: dict, comparison: dict, envelope: dict) -> None:
                 row["coordinate_kind"] == "aligned_display_only",
                 "W4 aligned point lost actor, meeting, map or source lineage")
         coords = row["coordinates"]
-        require(isinstance(coords, list) and len(coords) == source["map_space"]["dimension"] and
+        require(isinstance(coords, list) and len(coords) == dim and
                 all(isinstance(v, (float, int)) and math.isfinite(v) and
                     abs(v) <= SCORE_BOUND for v in coords),
                 "W4 aligned coordinates are nonfinite or incompatible")
+        raw_map = np.asarray(original["map"], dtype=float)
+        reconstructed = raw_map @ rotation + translation if (
+            mode == "rigid_full_refit" and original["period"] == after
+        ) else raw_map
+        require(np.allclose(coords, reconstructed, rtol=1e-8, atol=1e-8),
+                "Saved W4 aligned coordinates do not reproduce the original pinned/rigid map")
         by_id[row["observation_id"]] = row
     if comparison.get("comparison_status") != "withheld":
         require(set(by_id) == set(expected),
