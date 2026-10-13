@@ -4,7 +4,7 @@
   'use strict';
   const api = factory();
   if (typeof module === 'object' && module.exports) module.exports = api;
-  else root.UNEvidenceViz = api;
+  else root.UNResearchEvidenceRenderer = api;
 })(typeof globalThis === 'object' ? globalThis : this, function () {
   'use strict';
 
