@@ -3,7 +3,7 @@
  * Entirely invented lexical nuisance worlds. Original text never enters.
  * Source metadata belongs to a fictional design, never a UN speaker.
  */
-const {digest,validateFrame}=require('../../../../validation_framework/frame.cjs');
+const {digest,validateFrame}=require('../../../validation_framework/frame.cjs');
 const {rng,normal}=require('./lock.cjs');
 const check=(x,m)=>{if(!x)throw Error('synthetic-null-world: '+m);};
 const group=(name,key,n=10)=>Array.from({length:n},(_,i)=>
@@ -162,7 +162,7 @@ function generate(scenario,seed,{nullReference=false}={}){
  check(validated.eligible.length===blueprint.eligible&&
    validated.rows.length===blueprint.planned_total,
    'eligible/unavailable source ledger differs from frozen design');
- return {frame,design:blueprint,truth:signals,receipt:{
+ return {frame,design:blueprint,truth:signals,year_shocks:years.slice(),receipt:{
    schema:'un.w1-w2.synthetic-null.world.v1',scenario_id:scenario.id,
    source_hash_basis:'synthetic',source_sha256:sourceHash,
    selection_sha256:validated.selection_sha256,
