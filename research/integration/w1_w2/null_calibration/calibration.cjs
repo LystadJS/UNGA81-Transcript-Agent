@@ -14,12 +14,32 @@ const Grouped=require('../grouped_refits.cjs');
 const W2=require('../../../consensus/consensus.cjs');
 const check=(v,m)=>{if(!v)throw Error('synthetic-null-calibration: '+m);};
 const round=x=>Number.isFinite(x)?Math.round(x*1e9)/1e9:null;
-function statistic(consensus,original,policy){
+function statistic(consensus,original,policy,{syntheticSourceFrame}={}){
  check(consensus?.schema==='un.consensus.v1'&&consensus.publication_eligible===false &&
    original?.producer?.fixture_kind==='synthetic' &&
-   original.cohort.split==='synthetic',
-   'synthetic W2 pair ledger and original source frame required');
- const rows=new Map(original.observations.map(x=>[x.id,x]));
+   original.cohort.split==='synthetic' &&
+   syntheticSourceFrame?.schema==='un.source-validation.frame.v1' &&
+   syntheticSourceFrame.split==='synthetic' &&
+   syntheticSourceFrame.source_schema==='un.source-validation.synthetic.v1' &&
+   syntheticSourceFrame.source_sha256===original.upstream.source_sha256,
+   'synthetic W2 pair ledger and original source-bound nuisance frame required');
+ // The canonical W1 v1 exporter carries ID/hash/meeting but intentionally
+ // does NOT carry language/genre. A separately validated, private-in-memory
+ // synthetic design companion is required before computing stratum values.
+ const rows=new Map(syntheticSourceFrame.observations.map(x=>[x.id,x]));
+ check(rows.size===original.observations.length &&
+   original.observations.every(x=>{
+     const o=rows.get(x.id);
+     return o&&o.text_sha256===x.text_sha256 &&
+       o.meeting_id===x.meeting_id &&
+       o.parent_id===x.parent_id &&
+       o.source_family_id===x.source_family_id &&
+       o.source_status===x.source_status &&
+       JSON.stringify(o.exclusion_reasons)===JSON.stringify(x.exclusion_reasons);
+   }),'synthetic nuisance covariates do not join the authenticated v1 original source identity');
+ check([...rows.values()].filter(x=>x.source_status==='available').every(x=>
+   typeof x.genre==='string'&&typeof x.language==='string'),
+   'verified nuisance genre/language metadata required, never imputed');
  const strata=Object.fromEntries(policy.strata.map(k=>[k,{
    name:k,eligible_cross_source_pairs:0,
    observed_jointly_assigned_pairs:0,missing_or_null_pairs:0,
@@ -103,7 +123,7 @@ async function fitDraw(scenario,seed,protocol,{nullReference=false}={}){
  check(checkSource.source_sha256===world.receipt.source_sha256 &&
    checkSource.selection_sha256===world.receipt.selection_sha256,
    'W2 result/source selection mismatch');
- const scored=statistic(joined.consensus,original,protocol.statistic);
+ const scored=statistic(joined.consensus,original,protocol.statistic,{syntheticSourceFrame:world.frame});
  const full=originalNative.fit_records.map(f=>({id:f.model_id,status:f.status,
    attempted:f.attempted_fit,successful:f.successful_fit,failed:f.failed_fit,
    unassigned:f.assignments?.filter(x=>x===0).length??0}));
