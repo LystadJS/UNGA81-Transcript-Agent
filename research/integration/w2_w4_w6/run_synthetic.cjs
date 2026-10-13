@@ -5,7 +5,7 @@ const path=require('node:path');
 const {fixtureKnown}=require('../../consensus/fixtures.cjs');
 const {runConsensus,toInterchangeV1}=require('../../consensus/consensus.cjs');
 const B=require('./w2_bridge.cjs');
-const V=require('../../../site/experimental/evidence-viz/evidence-viz.js');
+const V=require('./evidence_renderer.cjs');
 
 function generate(folder) {
   if(!folder)throw Error('Provide an empty destination directory.');
