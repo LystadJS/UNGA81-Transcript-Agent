@@ -1,0 +1,78 @@
+{
+  "schema": "un.w1.p5.independent-harvard-original-PV-replay.aggregate.v1",
+  "audit_date": "2026-10-13",
+  "task": "independent original speech/PV source authentication and PR51 real-source tar member function review",
+  "harvard_v14": {
+    "exact_archive_sha256": "55077dccf7242cdf544aa95c4797c68e443b0c37344c9c112a2e2392ddfcf8e5",
+    "exact_archive_md5": "81bdd06086d9e7c4e67026acb7325df3",
+    "archive_bytes": 71280312,
+    "original_member_count_2016_2025": 1926,
+    "duplicate_historical_member_keys": 0
+  },
+  "private_restricted_country_year_frame": {
+    "country_affiliations": 99,
+    "expected_year_cells": 792,
+    "original_UN_PV_corroborated": 523,
+    "original_UN_PV_not_verified": 269,
+    "original_harvard_raw_member_present": 791,
+    "harvard_original_absent": 1,
+    "original_harvard_file_available_without_PV_authentication": 268,
+    "previously_PV_corroborated_original_harvard_SHA_matches": 523,
+    "previously_PV_corroborated_harvard_SHA_mismatches": 0,
+    "PV_verification_promotions_from_Harvard_only": 0
+  },
+  "actual_unmodified_PR51_tar_member_authenticator": {
+    "source_adapter_git_blob_sha": "2295c725e64f035ce0cd1b7feece84aa141b8534",
+    "github_PR": 51,
+    "CI_code_artifact_id": 11777783231,
+    "original_harvard_tar_members_authenticated": 791,
+    "cross_language_Python_Node_member_sha_discrepancies": 0,
+    "full_original_105_PV_P2_adapter_executed_during_this_audit": false
+  },
+  "complete_original_UN_PV_and_speech_replay": {
+    "original_PDF_documents_SHA_pages_fulltext_verified": 63,
+    "original_PDF_bytes": 53218960,
+    "original_PDF_pages": 3370,
+    "whole_meeting_extracted_characters": 14471233,
+    "country_year_original_PV_speech_match_comparisons": 985,
+    "original_unreviewed_PV_candidate_rows": 752,
+    "strong_2016_2023": 840,
+    "partial_variant_2024": 94,
+    "insufficient_2024": 50,
+    "original_speech_missing_for_one_record": 1,
+    "full_speech_hash_or_7gram_deciles_opening_ending_or_classification_discrepancies": 0,
+    "completed_independent_full_replays": 1,
+    "later_attempted_second_run": "INCOMPLETE_NOT_COUNTED"
+  },
+  "pr51_expanded_scope_comparability": {
+    "PR51_original_PV_target_documents_2016_2023": 105,
+    "original_PV_document_scope_from_mounted_archive_2016_2023": 55,
+    "additional_original_PV_documents_not_in_current_private_inputs": 50,
+    "mounted_original_PV_documents_from_2024_not_part_of_expanded_sample": 8,
+    "all_prior_55_2016_2023_documents_are_in_PR51_manifest": true,
+    "claimed_790_original_PV_corroborated_cohort_replayed_this_turn": false,
+    "claimed_600_observation_W1_real_fit_replayed_this_turn": false,
+    "previous_PR51_105_PV_and_790_source_results": "PR51_PRIOR_PRIVATE_EVIDENCE_NOT_NEWLY_REAUTHENTICATED_HERE"
+  },
+  "confidence_and_release": {
+    "speaker_identity_authenticated": false,
+    "source_sample_probability_design_verified": false,
+    "year_serial_dependence_calibrated": false,
+    "synthetic_year_AR1_coverage_from_PR51_preregistered_study": "FAILED_ALL_SERIAL_DEPENDENCE_SCENARIOS_PREVIOUS_REPORT",
+    "W1_new_real_numerical_fit_runs": 0,
+    "W4_new_real_descriptive_or_inferential_fits": 0,
+    "publication_eligible": false,
+    "reserved_37_october_5_6_2026_transcripts_opened": 0,
+    "original_evaluation_lock_altered": false,
+    "human_owner_review_labels_altered": false,
+    "D1_O1_O5_gates_altered": false,
+    "private_PV_or_country_source_rows_committed": false
+  },
+  "independent_private_reproducibility_package": "UNGA81_P5_Independent_Harvard_Original_PV_Validation_Private_20261013.zip",
+  "caveats": [
+    "All source PDFs and raw Harvard file hashes were compared against the independent previously supplied private original-byte manifests; no UN publisher-signed PDF SHA256 exists.",
+    "Harvard source text presence is not source-correspondence proof against an original UN PV; 268 historical records remain PV-unverified in the restricted older 63-PV cohort.",
+    "The PR51 105-PV expanded cohort has 50 official PV source PDFs not mounted here, so the 790-PV accepted population and native W1 600 fit were not independently replayed in this turn.",
+    "Actual speech/PV similarities are text provenance evidence, not authenticated individual speakers, national political alignment, or calibrated causal/inferential movement."
+  ]
+}
