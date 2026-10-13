@@ -6,6 +6,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const {generate}=require('./synthetic.cjs');
 const R=require('./reml.cjs');
+const Guard=require('./design_guard.cjs');
 const design=JSON.parse(fs.readFileSync(path.join(__dirname,'design.candidate.v0.json'),'utf8'));
 const scenarios=new Map(design.proposed_synthetic_scenarios.map(x=>[x.id,x]));
 const rowcopy=x=>structuredClone(x);
@@ -17,6 +18,13 @@ test.before(()=>{
  c=gen('E3_ar1_24y',1001);
  d=gen('E8_declared_x_selection',1001);
 });
+test('pre-estimation candidate source and scientific refusals are immutable',()=>{
+ const d=Guard.locked();
+ assert.equal(d.sha256,Guard.ORIGINAL_SHA256);
+ assert.equal(d.git_blob_sha1,Guard.ORIGINAL_GIT_BLOB);
+ assert.equal(d.scientific_gates_passed,0);
+});
+
 test('candidate protocol identifies source-free numeric proxy, not real null or release',()=>{
  assert.equal(design.status,'candidate_for_independent_statistical_review_not_frozen_empirical_protocol');
  assert.equal(design.scope.empirical_sources_permitted,false);
