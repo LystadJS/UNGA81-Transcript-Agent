@@ -6,10 +6,11 @@ const path=require('node:path');
 const crypto=require('node:crypto');
 const {generate}=require('./synthetic.cjs');
 const {fit}=require('./reml.cjs');
+const {locked}=require('./design_guard.cjs');
 const ROOT=path.resolve(__dirname,'../../../..');
 const hash=x=>crypto.createHash('sha256').update(x).digest('hex');
 const plan=fs.readFileSync(path.join(__dirname,'design.candidate.v0.json'));
-const design=JSON.parse(plan);
+const design=locked().plan;
 function exportTo(dir){
  const target=path.resolve(dir||'');
  if(!dir||target===ROOT||target.startsWith(ROOT+path.sep)||fs.existsSync(target))
