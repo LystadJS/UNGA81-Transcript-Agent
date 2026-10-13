@@ -212,13 +212,14 @@ async function calibration({mode='smoke',scenarioIds=null,outerStart=0,
      let observed;
      try{observed=await fitDraw(scenario,seed,p,{nullReference:false});}
      catch(e){records.push({
-       status:'WITHHELD_OBSERVED_FIT_FAILURE',reason:String(e.message||e).slice(0,260),
+       status:'WITHHELD_OBSERVED_FIT_FAILURE',world_index:i,
+       reason:String(e.message||e).slice(0,260),
        observed_statistic:null,reference_attempted:0,reference_completed:0,reference_failed:0,
        corrected_tail_p:null
      });continue;}
      const record={
        status:observed.status==='SYNTHETIC_DESCRIPTIVE'?'ORACLE_REFERENCE_PILOT':observed.status,
-       world_index:i,
+       world_index:i,observed_seed:seed,
        observed_statistic:observed.test_statistic?.value??null,
        observed_stratum:observed.test_statistic?.selected_stratum??null,
        source_group_count:observed.dependence?.distinct_meeting_labels??null,
