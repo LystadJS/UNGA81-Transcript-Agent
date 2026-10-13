@@ -1,0 +1,264 @@
+{
+  "schema": "un.w1-w2.inference-readiness.v1",
+  "requirements_version": "1.0.0",
+  "record_date": "2026-10-13",
+  "baseline_repository": "LystadJS/UNGA81-Transcript-Agent",
+  "baseline_main_commit_sha": "13120efbc271b5bcd733ad3711f2f2a18ecbce3b",
+  "requirements_document": "docs/parallel-work/W1_W2_INFERENCE_READINESS_REQUIREMENTS_2026-10-13.md",
+  "document_status": "prospective_requirements_not_frozen_test_protocol",
+  "proposal_frozen": false,
+  "empirical_evaluation_authorized": false,
+  "inferential_eligible": false,
+  "public_release_eligible": false,
+  "reserved_october_2026_holdout_sealed": true,
+  "current_evaluation_role": "engineering_only",
+  "statistics_policy": {
+    "global_familywise_alpha_proposed": 0.05,
+    "inner_reference_draws_min_proposed": 1999,
+    "outer_independent_null_worlds_min_proposed": 1000,
+    "upper_confidence_level": 0.95,
+    "max_one_sided_wilson_upper_null_false_discovery_rate_proposed": 0.075,
+    "threshold_status": "prospective_requirements_not_statistically_calibrated",
+    "random_row_permutation_is_cluster_significance_test": false,
+    "source_group_loo_is_confidence_interval": false,
+    "source_group_subsampling_is_bootstrap": false,
+    "historical_four_year_per_era_asymptotic_inference_allowed": false,
+    "minimum_effective_independent_groups": null,
+    "group_exchangeability_verified": false,
+    "selected_global_statistic_id": null,
+    "null_generator_version_sha256": null,
+    "frozen_future_evaluation_manifest_sha256": null
+  },
+  "gates": [
+    {
+      "id": "G01",
+      "title": "Original source-byte authentication",
+      "category": "source_dependence",
+      "dependencies": [],
+      "required_for_empirical_inference": true,
+      "required_for_publication": true,
+      "status": "NOT_RUN",
+      "evidence_sha256": null,
+      "evidence_url": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "acceptance_criterion": "Eligible source rows have independent original-byte/PDF/TAR-member hashes, text-hash basis, source URLs, reviewed modality and false-source forgery refusals.",
+      "unresolved_reason": "No approved source-dependent, null-calibrated inferential evidence recorded for this gate."
+    },
+    {
+      "id": "G02",
+      "title": "Full source-frame and selection identity",
+      "category": "source_dependence",
+      "dependencies": [
+        "G01"
+      ],
+      "required_for_empirical_inference": true,
+      "required_for_publication": true,
+      "status": "NOT_RUN",
+      "evidence_sha256": null,
+      "evidence_url": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "acceptance_criterion": "Inventory-vs-observation denominators, all missing/unverified cases, exact selection manifests and representation identities reconcile without sampling or invented zeros.",
+      "unresolved_reason": "No approved source-dependent, null-calibrated inferential evidence recorded for this gate."
+    },
+    {
+      "id": "G03",
+      "title": "Typed source/affiliation/year dependence graph",
+      "category": "source_dependence",
+      "dependencies": [
+        "G02"
+      ],
+      "required_for_empirical_inference": true,
+      "required_for_publication": true,
+      "status": "NOT_RUN",
+      "evidence_sha256": null,
+      "evidence_url": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "acceptance_criterion": "Private typed graph and summary disclose duplicated/parent/speech/meeting/affiliation/year/agenda links, closure components, concentration and graph uncertainty.",
+      "unresolved_reason": "No approved source-dependent, null-calibrated inferential evidence recorded for this gate."
+    },
+    {
+      "id": "G04",
+      "title": "Defensible resampling or stochastic dependence model",
+      "category": "source_dependence",
+      "dependencies": [
+        "G03"
+      ],
+      "required_for_empirical_inference": true,
+      "required_for_publication": true,
+      "status": "NOT_RUN",
+      "evidence_sha256": null,
+      "evidence_url": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "acceptance_criterion": "Independence/exchangeability is justified under a frozen sampling design or calibrated nuisance model, not merely the number of meeting, country or year labels.",
+      "unresolved_reason": "No approved source-dependent, null-calibrated inferential evidence recorded for this gate."
+    },
+    {
+      "id": "G05",
+      "title": "Frozen target estimand and global test statistic",
+      "category": "null_calibration",
+      "dependencies": [
+        "G02",
+        "G04"
+      ],
+      "required_for_empirical_inference": true,
+      "required_for_publication": true,
+      "status": "NOT_RUN",
+      "evidence_sha256": null,
+      "evidence_url": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "acceptance_criterion": "Specify source population, unit, direction, weights, pair eligibility, statistic, null estimand and rejection rule before access to any new confirmatory target observations.",
+      "unresolved_reason": "No approved source-dependent, null-calibrated inferential evidence recorded for this gate."
+    },
+    {
+      "id": "G06",
+      "title": "Frozen method search and multiplicity family",
+      "category": "null_calibration",
+      "dependencies": [
+        "G05"
+      ],
+      "required_for_empirical_inference": true,
+      "required_for_publication": true,
+      "status": "NOT_RUN",
+      "evidence_sha256": null,
+      "evidence_url": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "acceptance_criterion": "Declare representation, clustering grid, thresholds, source exclusions, model-family balancing and family-wise multiplicity handling before confirmatory testing.",
+      "unresolved_reason": "No approved source-dependent, null-calibrated inferential evidence recorded for this gate."
+    },
+    {
+      "id": "G07",
+      "title": "Dependence/selection-preserving nuisance reference",
+      "category": "null_calibration",
+      "dependencies": [
+        "G03",
+        "G06"
+      ],
+      "required_for_empirical_inference": true,
+      "required_for_publication": true,
+      "status": "NOT_RUN",
+      "evidence_sha256": null,
+      "evidence_url": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "acceptance_criterion": "Validated reference preserves nuisance source grouping, genre/agenda/language, length/token marginals, duplicate/modality and year/affiliation dependence; no row-only permutation.",
+      "unresolved_reason": "No approved source-dependent, null-calibrated inferential evidence recorded for this gate."
+    },
+    {
+      "id": "G08",
+      "title": "Full numerical-pipeline null resampling",
+      "category": "null_calibration",
+      "dependencies": [
+        "G06",
+        "G07"
+      ],
+      "required_for_empirical_inference": true,
+      "required_for_publication": true,
+      "status": "NOT_RUN",
+      "evidence_sha256": null,
+      "evidence_url": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "acceptance_criterion": "Every valid reference draw reruns selected source grouping, transformations, model fits/refits, failure/noise accounting, W2 consensus and full max selection statistic.",
+      "unresolved_reason": "No approved source-dependent, null-calibrated inferential evidence recorded for this gate."
+    },
+    {
+      "id": "G09",
+      "title": "Known-truth type-I and Monte Carlo calibration",
+      "category": "null_calibration",
+      "dependencies": [
+        "G08"
+      ],
+      "required_for_empirical_inference": true,
+      "required_for_publication": true,
+      "status": "NOT_RUN",
+      "evidence_sha256": null,
+      "evidence_url": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "acceptance_criterion": "All preregistered nuisance regimes meet prespecified Monte Carlo false-positive precision and full search-family FWER limits with failures/non-delivery included.",
+      "unresolved_reason": "No approved source-dependent, null-calibrated inferential evidence recorded for this gate."
+    },
+    {
+      "id": "G10",
+      "title": "Known-structure, nuisance-only and misspecification stress",
+      "category": "null_calibration",
+      "dependencies": [
+        "G08",
+        "G09"
+      ],
+      "required_for_empirical_inference": true,
+      "required_for_publication": true,
+      "status": "NOT_RUN",
+      "evidence_sha256": null,
+      "evidence_url": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "acceptance_criterion": "Independent positive controls recover planted cross-source structure; negative controls reject spurious nuisance clusters, malformed hashes, leakage and nonconvergence.",
+      "unresolved_reason": "No approved source-dependent, null-calibrated inferential evidence recorded for this gate."
+    },
+    {
+      "id": "G11",
+      "title": "Independent prospective validation and leakage authorization",
+      "category": "evaluation_release",
+      "dependencies": [
+        "G02",
+        "G05",
+        "G09",
+        "G10"
+      ],
+      "required_for_empirical_inference": true,
+      "required_for_publication": true,
+      "status": "NOT_RUN",
+      "evidence_sha256": null,
+      "evidence_url": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "acceptance_criterion": "Confirmed independent source groups/years and no cross-split source parents, duplicate families, feature training or time leakage; owner explicitly authorizes evaluation inputs/holdout.",
+      "unresolved_reason": "No approved source-dependent, null-calibrated inferential evidence recorded for this gate."
+    },
+    {
+      "id": "G12",
+      "title": "Provenance, noninference limitations and reproducibility",
+      "category": "evaluation_release",
+      "dependencies": [
+        "G01",
+        "G02",
+        "G08",
+        "G11"
+      ],
+      "required_for_empirical_inference": true,
+      "required_for_publication": true,
+      "status": "NOT_RUN",
+      "evidence_sha256": null,
+      "evidence_url": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "acceptance_criterion": "Source-safe receipts include exact code/input hashes, attempted/successful/skipped/failed denominators, resource/seeds, null-vs-descriptive separation and withheld politics.",
+      "unresolved_reason": "No approved source-dependent, null-calibrated inferential evidence recorded for this gate."
+    },
+    {
+      "id": "G13",
+      "title": "Separate human publication and interpretation approval",
+      "category": "evaluation_release",
+      "dependencies": [
+        "G11",
+        "G12"
+      ],
+      "required_for_empirical_inference": false,
+      "required_for_publication": true,
+      "status": "NOT_RUN",
+      "evidence_sha256": null,
+      "evidence_url": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "acceptance_criterion": "Owner/coordinator explicitly approves any publication, claim scope and website/site manifest after source, statistical, browser, privacy and O1–O5 gate review.",
+      "unresolved_reason": "Separate explicit owner/coordinator release decision not sought."
+    }
+  ]
+}
