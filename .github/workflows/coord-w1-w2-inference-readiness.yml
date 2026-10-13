@@ -8,7 +8,7 @@ on:
       - 'docs/parallel-work/test-w1-w2-inference-readiness.cjs'
       - '.github/workflows/coord-w1-w2-inference-readiness.yml'
   push:
-    branches: ['coord/w1-w2-inference-readiness-20261013']
+    branches: ['coord/w1-w2-inference-readiness-on-main']
     paths:
       - 'docs/parallel-work/**'
       - '.github/workflows/coord-w1-w2-inference-readiness.yml'
