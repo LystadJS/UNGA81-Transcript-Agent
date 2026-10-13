@@ -1,7 +1,7 @@
 name: Coordinator W1 W2 synthetic nuisance-null calibration (engineering only)
 on:
   push:
-    branches: ['coord/w1-w2-synthetic-null-v1']
+    branches: ['coord/w1-w2-null-calibration-on-main']
     paths:
       - 'research/integration/w1_w2/null_calibration/**'
       - '.github/workflows/coord-w1-w2-synthetic-null.yml'
