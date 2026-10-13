@@ -154,7 +154,9 @@ test('global statistic excludes self/within-meeting pairs and audits distinct re
  const included=x.frame.observations.filter(o=>o.source_status==='available');
  const original={
    producer:{fixture_kind:'synthetic'},
-   cohort:{split:'synthetic'},observations:included
+   cohort:{split:'synthetic'},
+   upstream:{source_sha256:x.frame.source_sha256},
+   observations:x.frame.observations
  };
  const keys=included.map(o=>o.id).sort();
  const pairs=[];
@@ -164,7 +166,7 @@ test('global statistic excludes self/within-meeting pairs and audits distinct re
   assigned_both_count:2,failed_fit_count:0,
   contributing_families:['partition','mixture']
  });
- const z=Cal.statistic({schema:'un.consensus.v1',publication_eligible:false,pairs},original,p.statistic);
+ const z=Cal.statistic({schema:'un.consensus.v1',publication_eligible:false,pairs},original,p.statistic,{syntheticSourceFrame:x.frame});
  assert(z.total_cross_meeting_pairs>0);
  assert(z.total_cross_meeting_pairs<keys.length*(keys.length-1)/2);
  assert.equal(z.searched_strata,3);
