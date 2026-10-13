@@ -47,8 +47,11 @@ def _design_joint(frame):
         raise FitFailure("Unapproved affiliation/year population")
     if any(z.shape!=yy.shape for z in (selected,meeting_pi,response,audited)):
         raise FitFailure("Different source-frame or selection dimensions")
-    if not np.all(np.isfinite(yy)) or np.any(meeting_pi<=0) or np.any(meeting_pi>1):
-        raise FitFailure("Invalid source probability or nonfinite hidden outcome")
+    observable=selected&(response|audited)
+    if (not np.all(np.isfinite(yy[observable])) or
+        not np.all(np.isnan(yy[~observable])) or
+        np.any(meeting_pi<=0) or np.any(meeting_pi>1)):
+        raise FitFailure("Observed outcomes invalid or unavailable outcome was leaked into estimator")
     if np.any(response&~selected) or np.any(audited&(~selected|response)):
         raise FitFailure("Invalid transcript/audit nesting")
     if q==0:
