@@ -1,0 +1,188 @@
+{
+  "schema": "un.w4.extended-2008-2023.temporal-covariance-aggregate.v1",
+  "audit_date": "2026-10-13",
+  "preregistration": "docs/parallel-work/W4_2008_2023_COVARIANCE_PREREG_2026-10-13.md",
+  "early_historical_source": {
+    "years": "2008–2015",
+    "original_UN_GA_sessions": "63–70",
+    "UN_index_full_SHA256": "841ae22d6485a7e3c0bce84830f09c43d75421ce9b3a58408d20dfec3cbbaf43",
+    "meeting_frame": 118,
+    "meeting_sampling_first_stage": "2 random PVs without replacement in each chronological quartile per year",
+    "meeting_sample": 64,
+    "meeting_sample_design_SHA256": "e90e4b0182154ce367d6b1db55ea7f0d4047e3badcf5fcc9b1c9c3c01c612f2b",
+    "source_frame_SHA256": "70373a36d240cbd0403f3d5d6c7f8df2049a09122de34fc4863ec2af8766ad9d",
+    "selected_original_PV_PDFs_complete_and_local_SHA256_pass": 64,
+    "source_UN_publisher_signed_checksum": "NOT_AVAILABLE",
+    "original_PDF_pages": 2435,
+    "original_PDF_bytes": 29118824,
+    "source_index_speaker_rows_in_selected_meetings": 858,
+    "ISO3_resolved_rows": 855,
+    "full_seven_word_speech_matches": 832,
+    "unambiguous_distinct_source_corresponding_country_years": 828,
+    "ambiguous_multi_meeting_matched_country_years": 2,
+    "source_index_non_member_observer_PLO_rows_unassigned_to_countries": 3,
+    "official_country_name_historical_aliases": {
+      "Cape_Verde_to_CPV": 3,
+      "Libyan_Arab_Jamahiriya_to_LBY": 2
+    },
+    "Harvard_v14_tar_md5_publisher_match": true,
+    "speech_text_is_original_source_version_exactly": "NOT_ESTABLISHED",
+    "person_identity_authenticated": 0,
+    "UN_member_state_census_completeness": "NOT_ESTABLISHED",
+    "observational_sampling_inclusion_meeting_known": true,
+    "text_fidelity_response_ignorable": "NOT_ESTABLISHED",
+    "index_speaker_total_HT_mean_absolute_relative_error": 0.06429246672451466,
+    "worst_single_year_index_count_relative_error": {
+      "year": 2015,
+      "relative_error": -0.19371727748691103
+    },
+    "yearly_verified_unique_country_years": [
+      125,
+      138,
+      125,
+      79,
+      92,
+      87,
+      105,
+      77
+    ],
+    "yearly_meetings_selected": [
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8
+    ]
+  },
+  "existing_authenticated_2016_2023": {
+    "original_PVs": 105,
+    "strong_speech_matches": 1543,
+    "historical_source": "Previous 8 October 2026 original-PV audit receipts; NOT new acquisition in this run",
+    "years": "2016–2023",
+    "combined_early_late_corroborated_speech_year_candidate_sum": 2371,
+    "complete_biased_population_16yr": "NOT_AUTHORIZED",
+    "shared_representation_frozen_for_2008_2023": false
+  },
+  "covariance_model": {
+    "method": "discretized profile REML for rho, nugget and year shock variance on inverse-known-meeting-p inclusion weighted year means",
+    "covariance": "sigma2 * ((1-lambda)*AR1(rho)+lambda*diag(99/year_n_eff))",
+    "nuisance_true_values_provided_to_estimator": false,
+    "rho_grid": [
+      -0.15,
+      0,
+      0.15,
+      0.3,
+      0.45,
+      0.6,
+      0.65,
+      0.75,
+      0.85,
+      0.9
+    ],
+    "nugget_grid": [
+      0,
+      0.1,
+      0.25,
+      0.5,
+      0.75,
+      1
+    ],
+    "source_meeting_response_nonignorability_modeled_in_real_data": false,
+    "simulation_R_per_scenario": 300,
+    "scenarios": 18,
+    "panels_attempted": 5400,
+    "interval_method_attempts": 16200,
+    "simulation_failures": 0,
+    "horizons": [
+      8,
+      16,
+      24
+    ],
+    "worlds": [
+      "iid_year",
+      "serial_year_AR1_0.65",
+      "outcome_dependent_source_response"
+    ],
+    "fixed_masks": [
+      "near_census",
+      "two_stage_original_PV_like"
+    ],
+    "known_true_signed_beta": 0.2,
+    "nominal_coverage": 0.9,
+    "methods": [
+      "unweighted_Welch_year_t",
+      "feasible_AR1_REML_t_Tminus3",
+      "prespecified_full_family_CI_hull"
+    ],
+    "calibrated_scenario_count_by_world": {
+      "iid_year": {
+        "year_Welch": 6,
+        "estimated_AR1_REML": 6,
+        "covariance_grid_envelope": 0
+      },
+      "serial_year": {
+        "year_Welch": 0,
+        "estimated_AR1_REML": 0,
+        "covariance_grid_envelope": 0
+      },
+      "informative_selection": {
+        "year_Welch": 0,
+        "estimated_AR1_REML": 0,
+        "covariance_grid_envelope": 0
+      }
+    },
+    "reliable_point_rho_scenarios": 0,
+    "rho_reliability_definition": "abs mean bias <= .1, RMSE <= .25, bound selection <5%, >=285 delivered",
+    "serial_year_two_stage_coverages": [
+      {
+        "years": 8,
+        "Welch": 0.69,
+        "estimated_AR1_REML": 0.8,
+        "covariance_envelope": 0.94
+      },
+      {
+        "years": 16,
+        "Welch": 0.61,
+        "estimated_AR1_REML": 0.7966666667,
+        "covariance_envelope": 0.9733333333
+      },
+      {
+        "years": 24,
+        "Welch": 0.5566666667,
+        "estimated_AR1_REML": 0.83,
+        "covariance_envelope": 0.9566666667
+      }
+    ],
+    "rho_serial_two_stage_rmse": [
+      0.4746489931,
+      0.3333291666,
+      0.262297541
+    ],
+    "covariance_grid_envelope_bias": "Consistent_overcoverage_not_nominal_calibration; interval can be over-broad",
+    "independent_numerical_method_verification": "Cholesky reimplementation of GLS REML and CI hull; 72 synthetic test fixtures",
+    "underlying_annual_year_effects_unmeasured_for_real_speeches": true
+  },
+  "decision": {
+    "source_sampling_instrument": "PASS; conditional on official UN speaker-index meeting frame",
+    "source_PV_byte_integrity": "PASS_selected_64",
+    "source_speech_correspondence": "PASS_828_unambiguous_selected_country_years",
+    "independent_temporal_covariance_reliability": "FAIL_all_18_scenarios",
+    "estimated_covariance_CI_nominal_coverage_serial_dependence": "FAIL",
+    "unignorable_missingness_adjustment": "NOT_VALIDATED",
+    "real_2008_2023_longitudinal_estimand_defined": false,
+    "real_population_CI": "WITHHELD",
+    "year_cluster_p_values": "WITHHELD",
+    "country_policy_or_political_position_inference": false,
+    "public_browser_or_research_release_eligible": false
+  },
+  "privacy": {
+    "source_pdf_bytes_private": true,
+    "source_linked_speaker_rows_private": true,
+    "raw_harvard_corpus_text_private": true,
+    "original_heldout_october_2026_meeting_accesses": 0,
+    "frozen_W1_W4_D1_release_gates_changed": false
+  }
+}
