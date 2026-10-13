@@ -138,6 +138,21 @@ test('cross-panel source, model and temporal identity contradictions fail closed
   assert.throws(()=>draw(f,'network'),/Unknown representation and version/);
 });
 
+test('W6 synthetic gate rejects original-source URLs and embedded text regardless of producer label',()=>{
+  const f=get();
+  f.envelope.observations[0].source_url='https://docs.un.org/some-original';
+  assert.throws(()=>draw(f,'network'),/nonfictional source URL/);
+  const g=get();
+  g.envelope.observations[0].text='private original passage';
+  assert.throws(()=>draw(g,'network'),/contains text/);
+  const h=get();
+  h.envelope.evidence[0].source_url='https://example.org/nonfiction';
+  assert.throws(()=>draw(h,'network'),/nonfictional source URL/);
+  const i=get();
+  i.envelope.upstream.source_hash_basis='raw_response_bytes';
+  assert.throws(()=>draw(i,'network'),/fictional synthetic source identity/);
+});
+
 test('no remote data or automatic political inference in prototype sources',()=>{
   const fs=require('node:fs');
   const src=fs.readFileSync(require('node:path').join(__dirname,'evidence-viz.js'),'utf8');
