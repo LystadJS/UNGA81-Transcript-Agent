@@ -157,6 +157,25 @@ test('positive definiteness of fitted covariance is checked by the actual Choles
  assert(Number.isFinite(changed.nll));
  assert.notEqual(changed.nll,baseline.nll);
 });
+test('restricted Gaussian objective agrees with an independently derived iid-intercept closed form',()=>{
+ const n=5,p=1,yy=new Float64Array([1,2,3,4,5]);
+ const sameM=new Uint8Array(n*n),sameA=new Uint8Array(n*n),
+   gap=new Uint8Array(n*n);
+ for(let i=0;i<n;i++)for(let j=0;j<n;j++){
+   sameM[i*n+j]=sameA[i*n+j]=Number(i===j);
+   gap[i*n+j]=Math.abs(i-j);
+ }
+ const data={n,p,x:new Float64Array([1,1,1,1,1]),
+   y:yy,sameM,sameA,gap,scale:1};
+ // rho=0: all four components contribute to V=I on diagonal only.
+ const vals=[.15,.15,.15,.55].map(Math.log).concat([0]);
+ const computed=R.objective(data,vals);
+ const mean=3,sse=[1,2,3,4,5].reduce((x,y)=>x+(y-mean)**2,0);
+ const known=.5*(Math.log(n)+sse+(n-p)*Math.log(2*Math.PI));
+ assert(Math.abs(computed.nll-known)<1e-8,
+   'REML numerical objective differs from exact iid intercept restricted likelihood');
+});
+
 test('no empirical evidence, source text, p-values or intervals are written by candidate',()=>{
  const fitted=R.fit(a.panel,{maximum_evaluations:250});
  const json=JSON.stringify(fitted);
