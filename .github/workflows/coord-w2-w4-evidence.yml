@@ -67,6 +67,7 @@ jobs:
           node tools/test_browser_reviewed_units.cjs
           node tools/test_passage_corpus.cjs
           node docs/parallel-work/validate-contract.cjs
+          node docs/parallel-work/test-w1-w2-inference-readiness.cjs
       - name: Build original native synthetic read models and disposable preview
         shell: bash
         run: |
