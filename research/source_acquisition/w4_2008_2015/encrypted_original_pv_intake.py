@@ -87,7 +87,7 @@ def fetch_document(item):
 
 def seal(payload,public_key_b64):
     pubbytes=base64.b64decode(public_key_b64,validate=True)
-    if len(pubytes)!=32:raise ValueError("Invalid recipient public X25519 key length")
+    if len(pubbytes)!=32:raise ValueError("Invalid recipient public X25519 key length")
     pub=X25519PublicKey.from_public_bytes(pubytes)
     ephemeral=X25519PrivateKey.generate()
     salt=os.urandom(16); nonce=os.urandom(12)
