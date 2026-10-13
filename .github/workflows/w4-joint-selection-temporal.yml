@@ -30,6 +30,7 @@ jobs:
         run: |
           python -m py_compile research/longitudinal/joint_selection_temporal/*.py
           python -m unittest discover -s research/longitudinal/joint_selection_temporal -p 'test_*.py' -v
+          python research/longitudinal/joint_selection_temporal/source_comparability_preflight.py --help
       - name: Validate old W4 synthetic structural and W1 source contracts
         run: |
           python -m unittest discover -s research/longitudinal -p 'test_*.py' -v
