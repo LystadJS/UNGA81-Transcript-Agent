@@ -93,7 +93,19 @@ function exportTo(dir){
 }
 if(require.main===module){
  const dir=process.argv[2];
- try{process.stdout.write(JSON.stringify(exportTo(dir))+'\n');}
+ try{
+   const receipt=exportTo(dir);
+   process.stdout.write(JSON.stringify(receipt)+'\n');
+   const reports=JSON.parse(fs.readFileSync(path.join(path.resolve(dir),'synthetic-estimator-diagnostics.json'),'utf8'));
+   process.stdout.write(JSON.stringify({schema:'un.w1w2.nuisance-estimation.synthetic-fit-summary.v0',
+     scientific_gates_passed:0,
+     rows:reports.simulated_scenarios.map(r=>({
+       id:r.scenario_id,status:r.status,truth_rho:r.comparison_from_oracle_after_fit_only?.truth_year_rho??null,
+       estimated_rho:r.comparison_from_oracle_after_fit_only?.estimated_year_rho??null,
+       absolute_rho_error:r.comparison_from_oracle_after_fit_only?.absolute_year_rho_error??null,
+       optimizer_evaluations:r.optimizer_evaluations,warnings:r.estimation_warnings
+     }))})+'\n');
+ }
  catch(e){process.stderr.write('Nuisance preflight refused: '+String(e.message||e)+'\n');process.exitCode=1;}
 }
 module.exports={exportTo};
