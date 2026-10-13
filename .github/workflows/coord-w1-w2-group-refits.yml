@@ -1,0 +1,57 @@
+name: Coordinator W1 source-group refits and W2 descriptive uncertainty
+on:
+  pull_request:
+    paths:
+      - 'research/validation_framework/**'
+      - 'research/consensus/**'
+      - 'research/integration/w1_w2/**'
+      - '.github/workflows/coord-w1-w2-group-refits.yml'
+  push:
+    branches: ['coord/w1-w2-grouped-refits-on-main']
+    paths:
+      - 'research/validation_framework/**'
+      - 'research/consensus/**'
+      - 'research/integration/w1_w2/**'
+      - '.github/workflows/coord-w1-w2-group-refits.yml'
+permissions:
+  contents: read
+jobs:
+  grouped-source-calibration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Native W1 retained child assignments and source privacy/refusal tests
+        run: node --test research/validation_framework/tests/test_group_refits.cjs
+      - name: W1 fitted refits into W2 grouped LOO/subsample calculations
+        run: node --test research/integration/w1_w2/test-grouped-refits.cjs
+      - name: Original source-aware W1, W2 and bridge regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          node research/validation_framework/tests/test_framework.cjs
+          node research/validation_framework/tests/test_schema.cjs
+          node research/consensus/test_consensus.cjs
+          node --test research/integration/w1_w2/test-integration.cjs
+          node docs/parallel-work/validate-contract.cjs
+          node tools/test_latent.cjs
+          node tools/test_passage_corpus.cjs
+          node --test site/experimental/evidence-viz/tests.cjs
+      - name: Reproduce source-safe synthetic child-fit and grouped uncertainty artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          node research/integration/w1_w2/make_grouped_synthetic.cjs "$RUNNER_TEMP/real-w1-grouped-synthetic"
+          node -e 'const r=require(process.env.RUNNER_TEMP+"/real-w1-grouped-synthetic/receipt.json");if(r.heldout_transcripts_opened!==0||r.publication_eligible!==false||r.grouped_fit_records!==90||r.pairwise_descriptive<1||r.inferential_evidence!=="withheld")process.exit(1);'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w1-w2-source-group-refit-synthetic
+          path: ${{ runner.temp }}/real-w1-grouped-synthetic/
+          if-no-files-found: warn
+          retention-days: 14

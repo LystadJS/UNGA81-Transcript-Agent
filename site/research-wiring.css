@@ -72,3 +72,38 @@ body.research-shell { margin:0; color:var(--res-ink); background:var(--res-wash)
   .research-panel h2 { font-size:24px }
   .research-embed iframe { min-height:680px }
 }
+
+/* W2 source-complete weighted-pair inspection (no W6 consensus reaveraging). */
+.research-w2-files { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.research-w2-files input { margin-top:6px; width:100%; min-width:0; padding:9px;
+  border:1px solid var(--res-line); background:#fff; min-height:44px; }
+#research-w2-status { border-left:3px solid var(--res-gold); padding:10px 12px;
+  background:#f6f8fa; margin:16px 0; overflow-wrap:anywhere; }
+#research-w2-summary { line-height:1.6; margin:12px 0; }
+.research-w2-scroll { max-width:100%; overflow:auto; border:1px solid var(--res-line);
+  max-height:650px; }
+.research-w2-table { border-collapse:collapse; text-align:center;
+  white-space:nowrap; font-variant-numeric:tabular-nums; font-size:11px; }
+.research-w2-table th,.research-w2-table td { border:1px solid var(--res-line);
+  padding:2px; min-width:52px; background:#fff; }
+.research-w2-table thead th { position:sticky; top:0; background:#eef2f5; z-index:2; }
+.research-w2-table tbody th { position:sticky; left:0; background:#eef2f5; z-index:1; }
+.research-w2-pair { display:block; width:100%; min-height:35px; padding:5px;
+  border:1px solid #c9d6e1; border-radius:2px; background:#eaf0f6;
+  color:var(--res-navy); cursor:pointer; font:600 11px Arial,Helvetica,sans-serif; }
+.research-w2-pair:hover,.research-w2-pair:focus-visible { background:#cbdce9; }
+#research-w2-inspection:not(:empty) { background:#f4f7fa; border:1px solid var(--res-line);
+  padding:16px; margin:14px 0; overflow-wrap:anywhere; }
+#research-w2-inspection h3 { font:normal 20px Georgia,serif; margin:4px 0 12px; }
+#research-w2-inspection dl { display:grid; grid-template-columns:minmax(150px,260px) 1fr;
+  gap:8px 14px; font-size:13px; }
+#research-w2-inspection dt { font-weight:bold; }
+#research-w2-inspection dd { margin:0; overflow-wrap:anywhere; }
+.research-w2-pre { max-width:100%; overflow:auto; white-space:pre-wrap;
+  overflow-wrap:anywhere; padding:12px; background:#edf2f5; font-size:12px; }
+#research-w2-matrix details { margin-top:16px; }
+#research-w2-matrix summary { padding:8px 2px; cursor:pointer; font-weight:bold; }
+@media(max-width:680px) {
+  .research-w2-files { grid-template-columns:1fr; }
+  #research-w2-inspection dl { grid-template-columns:1fr; }
+}
