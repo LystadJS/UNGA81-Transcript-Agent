@@ -487,7 +487,8 @@
                   "enum": [
                     "baseline",
                     "leave_group_out",
-                    "group_bootstrap"
+                    "group_bootstrap",
+                    "group_subsample"
                   ]
                 },
                 "resample_id": {
@@ -574,6 +575,10 @@
               },
               "group_bootstrap": {
                 "type": "object"
+              },
+              "group_subsample": {
+                "type": "object",
+                "description": "Optional distinct-group without-replacement descriptive percentile spread; not a bootstrap or confidence interval."
               }
             },
             "additionalProperties": false

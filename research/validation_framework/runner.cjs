@@ -86,11 +86,15 @@ function representationRecord(cohort,spec,saved){
     model_identity:F.digest([cohort.selection_sha256,spec.representation_requested,spec.components]),
     basis:'Refit TF-IDF vocabulary and '+spec.representation_requested.toUpperCase()+' on eligible selected text'};
 }
-async function run(frame,settings,{saved=null,group_units=['meeting','affiliation'],replicates=20,fraction=0.8,group_seed=31415}={}){
+async function run(frame,settings,{saved=null,group_units=['meeting','affiliation'],replicates=20,fraction=0.8,group_seed=31415,retain_group_assignments=false}={}){
   const cohort=F.validateFrame(frame);
   cohort.split=frame.split;
   assert(Array.isArray(settings)&&settings.length>0&&settings.length<=20,'Specify 1–20 model settings.');
+  assert(typeof retain_group_assignments==='boolean','Explicit boolean retain_group_assignments required.');
   const specs=settings.map(options);
+  // Opt-in hard-label audit only. No text or vectors are retained in the sidecar.
+  if(retain_group_assignments)assert(cohort.eligible.length*specs.length*replicates*group_units.length<=120000,
+    'Grouped assignment retention exceeds 120,000 source-bound fit opportunities; reject without sampling.');
   assert(new Set(specs.map(x=>x.id)).size===specs.length,'Duplicate model identity.');
   if(saved){F.alignScores(cohort,saved);
     if(frame.split==='development')assert(saved.kind==='pinned-minilm'&&saved.verified_pinned_cache===true,'Development vectors must come from the pinned-cache bridge.');
@@ -98,7 +102,7 @@ async function run(frame,settings,{saved=null,group_units=['meeting','affiliatio
   for(const s of specs)if(s.representation_requested==='minilm_pca')assert(saved,'MiniLM model requested without loaded pinned vectors.');
   assert(Array.isArray(group_units)&&group_units.every(u=>['meeting','affiliation'].includes(u)),'Unknown resampling grouping.');
   const schedules=Object.fromEntries([...new Set(group_units)].map(u=>[u,F.schedule(cohort.eligible,u,replicates,fraction,group_seed)]));
-  const fitRecords=[],failureLedger=[],modelReports=[];
+  const fitRecords=[],failureLedger=[],modelReports=[],internalGroupRefits=[];
   for(const spec of specs){
     const rep=representationRecord(cohort,spec,saved),main=await fitOne(cohort.eligible,spec,saved);
     const record={model_id:spec.id,method:spec.algorithm,parameters:spec,seed:spec.seed,
@@ -139,6 +143,19 @@ async function run(frame,settings,{saved=null,group_units=['meeting','affiliatio
         }
         if(child.status!=='fitted')failureLedger.push({model_id:spec.id,attempt:sample.attempt,
           status:child.status==='failed'?'failed':'skipped',reason:unit+': '+child.reason,seed:meta.seed,source_group:unit});
+        // Preserve the actual child-fit labels under an opt-in NONENUMERABLE field.
+        // W1's existing public/native summaries remain unchanged by default.
+        // These labels are never descriptions of official political positions.
+        if(retain_group_assignments)internalGroupRefits.push({
+          model_id:spec.id,group_unit:unit,attempt:sample.attempt,
+          schedule_sha256:plan.schedule_sha256,group_indices:sample.group_indices.slice(),
+          observation_ids:observationIds.slice(),
+          observation_text_sha256:rows.map(x=>x.text_sha256),
+          assignments:child.status==='fitted'?child.assignments.slice():null,
+          status:child.status,seed:meta.seed,attempted_fit:child.attempted_fit,
+          successful_fit:child.successful_fit,failed_fit:child.failed_fit,
+          reason:child.reason
+        });
         runs.push(meta);
       }else{
         failureLedger.push({model_id:spec.id,attempt:0,status:'skipped',reason:unit+': full fit unavailable',seed:group_seed,source_group:unit});
@@ -193,6 +210,9 @@ async function run(frame,settings,{saved=null,group_units=['meeting','affiliatio
       'No UMAP or MDS display coordinates are used for fitting or validation.'],
     };
   Object.defineProperty(output,'_internal_frame',{value:cohort.rows,enumerable:false,writable:false});
+  if(retain_group_assignments)Object.defineProperty(output,'_internal_group_refits',{
+    value:internalGroupRefits,enumerable:false,writable:false
+  });
   return output;
 }
 function publicAggregate(out){
