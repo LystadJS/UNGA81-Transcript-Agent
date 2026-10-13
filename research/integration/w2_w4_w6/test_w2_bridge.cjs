@@ -4,7 +4,7 @@ const assert=require('node:assert/strict');
 const {fixtureKnown,fixtureNuisance}=require('../../consensus/fixtures.cjs');
 const {runConsensus,toInterchangeV1}=require('../../consensus/consensus.cjs');
 const B=require('./w2_bridge.cjs');
-const V=require('../../../site/experimental/evidence-viz/evidence-viz.js');
+const V=require('./evidence_renderer.cjs');
 
 function ready(){
   const f=fixtureKnown(true);
