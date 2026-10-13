@@ -11,8 +11,10 @@
   <link rel="stylesheet" href="experimental/evidence-viz/styles.css">
   <script defer src="parallel/w05-browser/experimental/method-lab/contracts.js"></script>
   <script defer src="experimental/evidence-viz/evidence-viz.js"></script>
+  <script defer src="research-evidence-renderer.js"></script>
   <script defer src="research-wiring.js"></script>
   <script defer src="research-consensus.js"></script>
+  <script defer src="research-evidence.js"></script>
 </head>
 <body class="research-shell">
   <a class="research-skip" href="#research-main">Skip to research methods</a>
@@ -30,6 +32,7 @@
     <a href="index.html">Transcript workspace</a>
     <a href="latent.html">Latent comparison</a>
     <a href="#w2">Consensus evidence</a>
+    <a href="#w4">Longitudinal evidence</a>
     <a href="#w3">Graph source inspection</a>
     <a href="#w5">Method lab</a>
     <a href="#w6">Evidence visualizations</a>
@@ -56,7 +59,28 @@
       <div id="research-w2-summary" class="research-help">No source-validated W2 consensus displayed.</div>
       <div id="research-w2-matrix" aria-label="Original W2 source-bound weighted consensus"></div>
       <div id="research-w2-inspection" aria-live="polite" aria-label="Selected pair denominator and source provenance"></div>
+      <details id="research-w2-evidence" class="research-c5-details">
+        <summary>View accepted W2 weighted-consensus heatmap with W6 source evidence</summary>
+        <p class="research-help">This additional visualization uses the exact original W2 weighted conditional association, not the W6 illustration's mean of family rates. Only a previously validated original synthetic W2 import is accepted. No statistical inference or refitting is performed.</p>
+        <p id="research-w2-evidence-status" role="status" aria-live="polite">Import original synthetic W2 files above to inspect their source-bound heatmap.</p>
+        <div id="research-w2-evidence-chart" aria-label="W2 source-linked weighted agreement and stability evidence"></div>
+      </details>
       <p class="research-help">W2 co-assignment is descriptive cross-fit agreement, not calibrated significance, probability of political alignment, or a diplomatic relationship. A 35-observation display limit never truncates the underlying validated pair ledger. Files remain local to the browser.</p>
+    </section>
+    <section id="w4" class="research-panel" aria-labelledby="w4-heading">
+      <span class="research-index">C5 · SOURCE-AUTHENTICATED SYNTHETIC TRAJECTORY DISPLAY</span>
+      <h2 id="w4-heading">Inspect a source-bound W4 longitudinal comparison</h2>
+      <p>Import the five original synthetic W4 files produced by the accepted offline W4-to-W6 adapter. SHA-256 protects the exact imported file bytes; the browser independently reconciles source IDs, dates, imported partitions, saved alignment transforms, actor/meeting/genre weights and missingness before displaying a two-period language-map comparison. This does not authenticate UN originals.</p>
+      <label class="research-field-label" for="research-w4-files">W4 original source, analysis, interchange, panel and SHA256.json (five JSON files)</label>
+      <div class="research-input-row">
+        <input id="research-w4-files" type="file" accept=".json,application/json" multiple
+          aria-describedby="research-w4-help">
+        <button type="button" id="research-w4-import">Verify source and inspect W4 positions</button>
+      </div>
+      <p id="research-w4-help" class="research-help">Expected: SHA256.json, w4-source-panel.json, w4-analysis.json, w4-envelope.json and w4-panel.json. Generate with the offline synthetic W4 producer; only invented synthetic actors are accepted. Files stay in this browser tab. No unsupported period movement, missing source, or imported fit is converted into observed evidence.</p>
+      <p id="research-w4-status" role="status" aria-live="polite">No original W4 source and aligned synthetic output verified.</p>
+      <div id="research-w4-chart" aria-label="W4 frozen-reference longitudinal language geometry evidence"></div>
+      <p class="research-help">Saved 2D positions are descriptive language-map coordinates, not national or political trajectories. Paired source-family sensitivity is not a confidence interval. Unverified historical inventory and the 37 reserved October 5–6 meeting transcripts are not eligible inputs.</p>
     </section>
     <section id="w3" class="research-panel" aria-labelledby="w3-heading">
       <span class="research-index">01 · SOURCE-LINKED GRAPH</span>
@@ -98,7 +122,7 @@
       <span class="research-index">METHOD AND EVIDENCE CONTRACT</span>
       <h2 id="restrictions">Limits of interpretation</h2>
       <p>Stability is not significance. Language similarities and cluster labels do not establish government positions, alliances, or causal influence. Recorded source affiliations are not verified speaker identities. W3 diffusion coordinates describe geometric random walks on a constructed graph, not policy transmission.</p>
-      <p>Native W2 weighted pair results require their original sidecar and compatible interchange envelope; W6's demonstration heatmap uses a different averaging definition and is not a substitute. W4's mixed historical inventory includes unverified sources and nullable dates that cannot be encoded in interchange v1, so those real longitudinal records remain withheld. This prototype does not reinterpret missing dates or imported fit attempts as successful browser fits.</p>
+      <p>Native W2 weighted pair results require their original sidecar and compatible interchange envelope; W6's demonstration heatmap uses a different averaging definition and is not a substitute. W4's mixed historical inventory includes unverified sources and nullable dates that cannot be encoded in interchange v1, so those real longitudinal records remain withheld. This synthetic preview verifies W4's actual imported original source and map records without inventing fit success or interpreting language-map movement as diplomatic change.</p>
       <p>Private development-source evaluation, held-out validation, source-byte independent checks, and model-weight downloads are not part of this public synthetic browser preview.</p>
     </section>
   </main>
