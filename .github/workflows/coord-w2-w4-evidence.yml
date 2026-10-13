@@ -71,6 +71,31 @@ jobs:
             "$RUNNER_TEMP/w2w4-evidence-inputs" "$RUNNER_TEMP/w2w4-browser-preview"
           test -s "$RUNNER_TEMP/w2w4-browser-preview/index.html"
           test -s "$RUNNER_TEMP/w2w4-browser-preview/data.js"
+      - name: Reconcile W4 unavailable source-family versus source-observation counts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m research.integration.w2_w4_w6.run_synthetic \
+            --output "$RUNNER_TEMP/w4-family-missing" --missing-late-family
+          W4_MISSING_DIR="$RUNNER_TEMP/w4-family-missing" node - <<'JS'
+          const fs=require('node:fs');
+          const path=require('node:path');
+          const assert=require('node:assert/strict');
+          const V=require('./site/experimental/evidence-viz/evidence-viz.js');
+          const root=process.env.W4_MISSING_DIR;
+          const envelope=JSON.parse(fs.readFileSync(path.join(root,'w4-envelope.json'),'utf8'));
+          const panel=JSON.parse(fs.readFileSync(path.join(root,'w4-panel.json'),'utf8'));
+          const unavailable=envelope.observations.filter(o=>o.source_status!=='available');
+          assert.equal(unavailable.length,11);
+          assert.equal(envelope.coverage.excluded,11);
+          assert.equal(envelope.coverage.unavailable_sources,1);
+          assert.equal(panel.coverage.missing,1);
+          const view=V.renderPanel(envelope,panel);
+          assert.equal(view.status,'ready');
+          assert.match(view.html,/missing 1/);
+          assert.match(view.html,/descriptive|Synthetic/i);
+          console.log('PASS: 11 missing W4 source rows from one unavailable source family; no invented rows.');
+          JS
       - name: Chromium desktop/mobile, keyboard, export, and no-network QA
         shell: bash
         run: |
