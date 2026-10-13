@@ -15,11 +15,32 @@ This independent change adds strict read-only compatibility from:
   needed to retain W4's prescribed grouping weights).
 
 The bridge does **not** accept private development outputs or open sources.
-The W2, W4 and W6 method kernels, contract identifiers, model provenance,
-frozen D1 gates and reserved evaluation remain unchanged. The only W6 change
-is additive rendering support for both native validated semantics.
+The W2, W4 and released W6 method kernels, contract identifiers, model
+provenance, frozen D1 gates and reserved evaluation remain unchanged.
+
+**Public release boundary:** The accepted W6 runtime is already included in
+the site's Pages allowlist, so editing its existing site/experimental asset
+would trigger public deployment and website-mirror divergence. This PR instead
+keeps a clearly labeled **coordinator-only derived W6 renderer** in
+evidence_renderer.cjs under this nonpublished research/integration subtree.
+It preserves the original W6 demos while adding W2/W4 read-model modes.
+No existing site/** file, Pages allowlist, live release manifest or portfolio
+mirror is changed. A future separately approved public C5 integration must
+reconcile the changes with the accepted W6 runtime and rerun deployment QA.
 
 ## Statistical identity and non-interchangeability
+
+**W2:** The integrated view now also exposes original W2 per-family
+planned weights, configurations, model/failure counts, and original fit ledger.
+These are displayed without redistributing failed or absent opportunities.
+
+**W4:** The coordinator independently replays saved transform coefficients
+against the original frozen source maps and external anchors; it rejects
+coordinate tampering, nonorthogonal rotations, drift in imported cluster-fit
+IDs/labels, and manufactured W4 refit attempts. The W4 unavailable source
+ledger counts *unique source-family series*, distinct from unavailable
+observation rows; the synthetic regression explicitly tests 11 missing
+observation rows belonging to one unavailable family.
 
 **W2:** Original W6 synthetic example computes an average of separate
 method-family co-assignment rates. W2 instead computes a **preplanned,
@@ -61,6 +82,7 @@ comparability and independent anchor stationarity remain unverified.
 From the repository root:
 
     node --test research/integration/w2_w4_w6/test_w2_bridge.cjs
+    node --test research/integration/w2_w4_w6/test_evidence_renderer.cjs
     python -m unittest research.integration.w2_w4_w6.test_w4_bridge -v
     node --test site/experimental/evidence-viz/tests.cjs
 
