@@ -26,6 +26,9 @@ test('Native W2 weighted pair reaches W6 without recomputing method balance',()=
   assert.match(view.html,/Inventory 6 meetings · eligible 12 synthetic observations/);
   assert.match(view.html,/preplanned|allocated|preserved exactly/i);
   assert.ok(view.svg.includes('W2 WEIGHTED'));
+  assert.match(view.html,/Method-family planned-weight audit/);
+  assert.match(view.html,/Planned weight/);
+  assert.match(view.html,/Internal failed attempts/);
   for(const a of p.pairs){
     const original=report.pairs.find(r=>r.observation_a===a.a&&r.observation_b===a.b);
     assert.ok(original);
@@ -84,6 +87,18 @@ test('W2 tampered pair ratio and incorrect noise/planned counts are rejected',()
   const bad2=copy(panel);
   bad2.pairs[0].assigned_both_weight=1.5;
   assert.throws(()=>V.renderPanel(source.envelope,bad2),/weights|association|coverage/i);
+});
+
+test('W2 planned family weights fail closed on missing, duplicate or inflated audit',()=>{
+  const source=ready(),panel=B.toW6Consensus(source.report,source.envelope);
+  const missing=copy(panel);delete missing.family_weight_audit;
+  assert.throws(()=>V.renderPanel(source.envelope,missing),/planned-weight audit/);
+  const duplicate=copy(panel);
+  duplicate.family_weight_audit[1].family=duplicate.family_weight_audit[0].family;
+  assert.throws(()=>V.renderPanel(source.envelope,duplicate),/planned-weight audit/);
+  const inflated=copy(panel);
+  inflated.family_weight_audit[0].planned_weight=.99;
+  assert.throws(()=>V.renderPanel(source.envelope,inflated),/planned-weight audit/);
 });
 
 test('W2 nuisance-only control does not turn source clusters into findings',()=>{
