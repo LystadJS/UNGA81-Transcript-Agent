@@ -90,10 +90,17 @@
     const excluded=env.observations.filter(o => o.source_status !== 'available' ||
       Array.isArray(o.exclusion_reasons) && o.exclusion_reasons.length > 0);
     const unavailable=env.observations.filter(o => o.source_status !== 'available');
+    // W4 counts missing *source families* in its authoritative v1 producer
+    // while the other accepted W6/W3 fixtures count individual missing
+    // records. Preserve the producer's declared unit, never invent records.
+    const unavailableUnits=env.producer.workstream_id==='W4' &&
+      env.cohort.source_group_unit==='source_family'
+      ? new Set(unavailable.map(o=>o.source_family_id||o.meeting_id||o.id)).size
+      : unavailable.length;
     assert(eligible.length === env.cohort.eligible &&
       excluded.length === env.coverage.excluded &&
-      unavailable.length === env.coverage.unavailable_sources,
-      'Eligible, excluded, and unavailable identities do not match the frame ledger.');
+      unavailableUnits === env.coverage.unavailable_sources,
+      'Eligible, excluded, and unavailable identities do not match their declared source units.');
     assert(env.observations.every(o => Array.isArray(o.exclusion_reasons) &&
       (o.source_status === 'available' || o.exclusion_reasons.length > 0 && !!o.missing_reason)),
       'Unavailable source requires an explicit exclusion and missing reason.');
