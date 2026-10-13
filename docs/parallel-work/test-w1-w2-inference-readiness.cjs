@@ -122,7 +122,7 @@ test('the requirements document explicitly distinguishes original-source, depend
  const doc=fs.readFileSync(path.join(__dirname,
   'W1_W2_INFERENCE_READINESS_REQUIREMENTS_2026-10-13.md'),'utf8');
  for(const phrase of ['original TAR member', 'no additional cross-source latent-discourse association',
-   'without replacement','year shocks','conditional coassignment',
+   'without-replacement','year shocks','conditional coassignment',
    'no unapproved holdout','not a cluster-significance test']){
   const match=doc.toLowerCase().includes(phrase.toLowerCase());
   assert(match,'Missing documented inferential limit: '+phrase);
