@@ -1,0 +1,63 @@
+name: Coordinator W1 W2 nuisance covariance estimation design (synthetic-only)
+on:
+  push:
+    branches: ['coord/w1-w2-estimated-nuisance-design']
+    paths:
+      - 'research/integration/w1_w2/nuisance_estimation/**'
+      - '.github/workflows/coord-w1-w2-nuisance-estimation.yml'
+  pull_request:
+    paths:
+      - 'research/integration/w1_w2/nuisance_estimation/**'
+      - '.github/workflows/coord-w1-w2-nuisance-estimation.yml'
+permissions:
+  contents: read
+jobs:
+  feasible-nuisance-estimation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Estimate all five nuisance parameters only from invented scalar panels
+        run: node --test research/integration/w1_w2/nuisance_estimation/test_estimator.cjs
+      - name: Execute all eight fixed feasible and refused scenarios
+        run: node research/integration/w1_w2/nuisance_estimation/run_prototype.cjs "$RUNNER_TEMP/w1-w2-nuisance-estimator"
+      - name: Verify no empirical inference, source text or unknown-response imputation
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const path=require('node:path'),fs=require('node:fs'),crypto=require('node:crypto');
+          const dir=path.join(process.env.RUNNER_TEMP,'w1-w2-nuisance-estimator');
+          const x=JSON.parse(fs.readFileSync(path.join(dir,'receipt.json'),'utf8'));
+          const y=JSON.parse(fs.readFileSync(path.join(dir,'synthetic-estimator-diagnostics.json'),'utf8'));
+          if(x.mode!=='synthetic_numeric_proxy_only'||x.scenarios!==8||
+             x.estimation_attempts!==4||x.correctly_withheld_scenarios!==4||
+             x.calibrated_error_rate!==false||x.g01_g13_scientific_gates_passed!==0||
+             x.scientific_evaluation_authorized!==false||x.public_release_eligible!==false||
+             x.original_UN_source_bytes_opened!==0||x.reserved_37_transcripts_opened!==0||
+             y.source_text_exported!==false||y.simulated_scenarios.length!==8)process.exit(1);
+          const sha=JSON.parse(fs.readFileSync(path.join(dir,'SHA256.json'),'utf8'));
+          for(const [name,value] of Object.entries(sha))
+            if(crypto.createHash('sha256').update(fs.readFileSync(path.join(dir,name))).digest('hex')!==value)process.exit(2);
+          console.log(JSON.stringify({status:'PASS_SYNTHETIC_ONLY',estimated:4,withheld:4,gates_passed:0}));
+          NODE
+      - name: Preserve frozen W1 W2 and G01-G13 source/release contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          node research/integration/w1_w2/null_calibration/lock.cjs
+          node docs/parallel-work/inference-readiness-v1.cjs
+          node docs/parallel-work/validate-contract.cjs
+          node research/consensus/test_consensus.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w1-w2-synthetic-nuisance-covariance-preflight
+          path: ${{ runner.temp }}/w1-w2-nuisance-estimator/
+          retention-days: 14
+          if-no-files-found: warn
