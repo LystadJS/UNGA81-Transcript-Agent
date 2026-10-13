@@ -55,6 +55,29 @@ jobs:
             attempts:r.attempted_reference_draws,success:r.successful_reference_draws,
             failed:r.failed_reference_draws,gates_passed:0})+'\n');
           NODE
+      - name: Larger fictional-only oracle pilot (four outer worlds and nineteen references)
+        run: node research/integration/w1_w2/null_calibration/run.cjs --mode pilot --output "$RUNNER_TEMP/w1-w2-null-pilot"
+      - name: Verify pilot denominators and all scientific G01-G13 gates NOT_RUN
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs=require('node:fs'),path=require('node:path');
+          const root=path.join(process.env.RUNNER_TEMP,'w1-w2-null-pilot');
+          const r=JSON.parse(fs.readFileSync(path.join(root,'receipt.json'),'utf8'));
+          const a=JSON.parse(fs.readFileSync(path.join(root,'g01-g13-assessment.json'),'utf8'));
+          if(r.mode!=='pilot'||r.attempted_worlds!==24||r.scenarios!==6||
+            r.successful_reference_draws+r.failed_reference_draws!==r.attempted_reference_draws||
+            r.empirical_inference_eligible!==false||r.public_release_eligible!==false||
+            a.scientific_gates_passed!==0||a.scientific_gates_not_run!==13||
+            a.gates.some(g=>g.scientific_status!=='NOT_RUN')||
+            !a.nuisance_withheld_regimes.includes('N3_cross_classified'))process.exit(1);
+          process.stdout.write(JSON.stringify({status:'PASS_PILOT_ONLY',
+            attempted_worlds:r.attempted_worlds,delivered_worlds:r.delivered_worlds,
+            attempted_references:r.attempted_reference_draws,
+            failed_references:r.failed_reference_draws,
+            inferential_gates_passed:0})+'\n');
+          NODE
       - name: Existing W1, W2, coordinator and frozen interchange regressions
         shell: bash
         run: |
@@ -70,6 +93,8 @@ jobs:
         if: always()
         with:
           name: w1-w2-synthetic-null-oracle-diagnostic-only
-          path: ${{ runner.temp }}/w1-w2-null-smoke/
+          path: |
+            ${{ runner.temp }}/w1-w2-null-smoke/
+            ${{ runner.temp }}/w1-w2-null-pilot/
           retention-days: 14
           if-no-files-found: warn
