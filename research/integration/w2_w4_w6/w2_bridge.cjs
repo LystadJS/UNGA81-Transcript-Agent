@@ -6,7 +6,7 @@
  */
 const {validateConsensus} = require('../../consensus/consensus.cjs');
 const {validateRelational} = require('../../validation_framework/interchange.cjs');
-const V = require('../../../site/experimental/evidence-viz/evidence-viz.js');
+const V = require('./evidence_renderer.cjs');
 
 const check = (ok,msg)=>{if(!ok)throw Error('W2/W6: '+msg);};
 const SHA = /^[a-f0-9]{64}$/;
