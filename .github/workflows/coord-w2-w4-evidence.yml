@@ -6,6 +6,11 @@ on:
       - "research/integration/w2_w4_w6/**"
       - "site/experimental/evidence-viz/evidence-viz.js"
       - ".github/workflows/coord-w2-w4-evidence.yml"
+  push:
+    branches: [main]
+    paths:
+      - "research/integration/w2_w4_w6/**"
+      - ".github/workflows/coord-w2-w4-evidence.yml"
   workflow_dispatch:
 
 permissions:
