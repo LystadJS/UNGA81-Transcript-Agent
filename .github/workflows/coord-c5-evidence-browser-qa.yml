@@ -1,0 +1,163 @@
+name: Coordinator C5 source-bound W2/W4 browser integration (synthetic only)
+
+on:
+  pull_request:
+    paths:
+      - "site/research.html"
+      - "site/research-consensus.js"
+      - "site/research-evidence.js"
+      - "site/research-wiring.css"
+      - "tools/build_pages.py"
+      - "research/integration/w2_w4_w6/evidence_renderer.cjs"
+      - "research/integration/w2_w4_w6/run_synthetic.py"
+      - "research/integration/test_c5_browser_bridge.cjs"
+      - "research/integration/c5_browser_smoke.py"
+      - "docs/parallel-work/C5_W2_W4_BROWSER_INTEGRATION_REVIEW.md"
+      - ".github/workflows/coord-c5-evidence-browser-qa.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-c5-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      PYTHONHASHSEED: "0"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Assert local JavaScript/Python source integrity and source-only scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check site/research-consensus.js
+          node --check site/research-evidence.js
+          node --check research/integration/w2_w4_w6/evidence_renderer.cjs
+          python -m py_compile research/integration/w2_w4_w6/run_synthetic.py
+          python -m py_compile research/integration/c5_browser_smoke.py
+          test ! -e site/research-evidence-renderer.js
+          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium)" >> "$GITHUB_ENV"
+      - name: Install pinned W4 source numerical and real Chromium bindings
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install -r research/longitudinal/requirements.txt
+          python -m pip install playwright==1.55.0
+      - name: Produce original native W1-W2 and W4 synthetic source files
+        shell: bash
+        run: |
+          set -euo pipefail
+          node research/integration/w1_w2/make-synthetic.cjs "$RUNNER_TEMP/c5-w2"
+          python -m research.integration.w2_w4_w6.run_synthetic --output "$RUNNER_TEMP/c5-w4"
+          python -m research.integration.w2_w4_w6.run_synthetic --pinned --output "$RUNNER_TEMP/c5-w4-pinned"
+          python -m research.integration.w2_w4_w6.run_synthetic --missing-late-family --output "$RUNNER_TEMP/c5-w4-missing"
+          for name in SHA256.json w4-source-panel.json w4-analysis.json w4-envelope.json w4-panel.json; do
+            test -s "$RUNNER_TEMP/c5-w4/$name"
+          done
+      - name: Native source, weighted numerators, historical representation and refusal tests
+        shell: bash
+        env:
+          C5_W2_FIXTURES: "${{ runner.temp }}/c5-w2"
+          C5_W4_FIXTURES: "${{ runner.temp }}/c5-w4"
+          C5_W4_PINNED: "${{ runner.temp }}/c5-w4-pinned"
+          C5_W4_MISSING: "${{ runner.temp }}/c5-w4-missing"
+        run: |
+          set -euo pipefail
+          node --test research/integration/test_c5_browser_bridge.cjs
+          node research/integration/test_w2_browser_bridge.cjs
+          node --test research/integration/w2_w4_w6/test_evidence_renderer.cjs
+          node --test research/integration/w2_w4_w6/test_w2_bridge.cjs
+          python -m unittest research.integration.w2_w4_w6.test_w4_bridge -v
+          node --test site/experimental/evidence-viz/tests.cjs
+          node docs/parallel-work/validate-contract.cjs
+          node docs/parallel-work/test-w1-w2-inference-readiness.cjs
+      - name: Build a disposable Pages preview from an explicit asset allowlist
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/build_pages.py "$RUNNER_TEMP/c5-site"
+          test -s "$RUNNER_TEMP/c5-site/research.html"
+          test -s "$RUNNER_TEMP/c5-site/research-evidence.js"
+          test -s "$RUNNER_TEMP/c5-site/research-evidence-renderer.js"
+          test -s "$RUNNER_TEMP/c5-site/research-consensus.js"
+          cmp research/integration/w2_w4_w6/evidence_renderer.cjs \
+            "$RUNNER_TEMP/c5-site/research-evidence-renderer.js"
+          grep -q 'C5 · SOURCE-AUTHENTICATED SYNTHETIC' "$RUNNER_TEMP/c5-site/research.html"
+          test ! -e "$RUNNER_TEMP/c5-site/research/integration/w2_w4_w6/w4_bridge.py"
+          test ! -e "$RUNNER_TEMP/c5-site/research/integration/w2_w4_w6/run_synthetic.py"
+          test ! -e "$RUNNER_TEMP/c5-site/w4-source-panel.json"
+          test ! -e "$RUNNER_TEMP/c5-site/SHA256.json"
+          test ! -e "$RUNNER_TEMP/c5-site/research/integration/test_c5_browser_bridge.cjs"
+      - name: Real desktop/mobile Chromium, source inspector, SVG/HTML, tamper and no-network QA
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/integration/c5_browser_smoke.py \
+            --site "$RUNNER_TEMP/c5-site" \
+            --w2 "$RUNNER_TEMP/c5-w2" \
+            --w4 "$RUNNER_TEMP/c5-w4" \
+            --pinned "$RUNNER_TEMP/c5-w4-pinned" \
+            --missing "$RUNNER_TEMP/c5-w4-missing" \
+            --browser "$CHROME_BIN" \
+            --output "$RUNNER_TEMP/c5-browser-qa"
+      - name: Confirm W2 and W4 are still source-safe, synthetic-only and unpublished
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s "$RUNNER_TEMP/c5-browser-qa/c5-desktop-full.png"
+          test -s "$RUNNER_TEMP/c5-browser-qa/c5-mobile-full.png"
+          test -s "$RUNNER_TEMP/c5-browser-qa/w2-desktop.svg"
+          test -s "$RUNNER_TEMP/c5-browser-qa/w4-mobile.html"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ["RUNNER_TEMP"])
+          receipt = json.loads((root/"c5-browser-qa/receipt.json").read_text())
+          assert receipt["publication_eligible"] is False
+          assert receipt["heldout_transcripts_opened"] == 0
+          assert len(receipt["viewports"]) == 2
+          assert all(r["external_requests"] == r["page_errors"] == 0 and
+                     r["page_overflow"] is False for r in receipt["viewports"])
+          w4 = json.loads((root/"c5-w4/w4-receipt.json").read_text())
+          assert w4["publication_eligible"] is False
+          assert w4["holdout_transcripts_opened"] == 0
+          print("PASS: source-locked C5 synthetic browser eligibility.")
+          PY
+      - name: Reproduce original W3/W5/W6 browser/source regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install -r research/graph_methods/requirements.txt
+          python -m research.integration.w3_w5_w6.make_synthetic --output "$RUNNER_TEMP/c5-w3"
+          python research/integration/wiring_browser_smoke.py \
+            --site "$RUNNER_TEMP/c5-site" --fixtures "$RUNNER_TEMP/c5-w3" \
+            --browser "$CHROME_BIN" --output "$RUNNER_TEMP/c5-w3-browser-qa"
+          node tools/test_latent.cjs
+          node tools/test_browser_lsa.cjs
+          node tools/test_browser_partitions.cjs
+          node tools/test_browser_reviewed_units.cjs
+          node tools/test_passage_corpus.cjs
+      - name: Upload ONLY synthetic browser QA and aggregate receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: c5-w2-w4-source-bound-synthetic-qa
+          path: |
+            ${{ runner.temp }}/c5-browser-qa
+            ${{ runner.temp }}/c5-w3-browser-qa
+            ${{ runner.temp }}/c5-w2/receipt.json
+            ${{ runner.temp }}/c5-w4/w4-receipt.json
+          if-no-files-found: warn
+          retention-days: 7
