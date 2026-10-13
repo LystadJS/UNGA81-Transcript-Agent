@@ -53,12 +53,19 @@ jobs:
         run: |
           set -euo pipefail
           node research/consensus/test_consensus.cjs
+          node --test research/validation_framework/tests/test_group_refits.cjs
+          node --test research/integration/w1_w2/test-grouped-refits.cjs
           node --test research/integration/w1_w2/test-integration.cjs
+          node research/integration/test_w2_browser_bridge.cjs
           node --test research/integration/w2_w4_w6/test_w2_bridge.cjs
           node --test research/integration/w2_w4_w6/test_evidence_renderer.cjs
           python -m unittest discover -s research/longitudinal -p 'test_*.py' -v
           python -m unittest research.integration.w2_w4_w6.test_w4_bridge -v
           node --test site/experimental/evidence-viz/tests.cjs
+          node site/parallel/w05-browser/experimental/method-lab/test-method-lab.cjs
+          node tools/test_latent.cjs
+          node tools/test_browser_reviewed_units.cjs
+          node tools/test_passage_corpus.cjs
           node docs/parallel-work/validate-contract.cjs
       - name: Build original native synthetic read models and disposable preview
         shell: bash
