@@ -51,7 +51,10 @@
       'Public visualization prototype accepts synthetic fixtures only; no private development observations.');
     assert(env.upstream && env.cohort && Array.isArray(env.observations) && Array.isArray(env.models),
       'Missing upstream identity, cohort, observations, or models.');
-    assert(env.cohort.split === 'synthetic', 'Synthetic-only split required.');
+    assert(env.cohort.split === 'synthetic' &&
+      env.upstream.source_schema === 'synthetic.v1' &&
+      env.upstream.source_hash_basis === 'synthetic',
+      'Public evidence rendering requires fictional synthetic source identity and hash basis.');
     // In the v1 contract, the inventory denominator may count meetings,
     // while eligible units are source passages. Never invent extra meetings.
     if(env.cohort.eligible > env.cohort.total_in_frame)
@@ -63,6 +66,14 @@
       typeof o.source_status === 'string' && typeof o.review_status === 'string' &&
       (o.source_url === null || /^https:\/\//.test(o.source_url))),
       'Observation identity, hash, source status, or URL invalid.');
+    // Synthetic status alone cannot make pasted real source text or live
+    // original-source URLs safe for this experimental public consumer.
+    const fictionalURL=url=>url===null||
+      /^https:\/\/example\.invalid(?:\/|$)/.test(url);
+    assert(env.observations.every(o=>!own(o,'text')&&fictionalURL(o.source_url)) &&
+      Array.isArray(env.evidence) &&
+      env.evidence.every(e=>!own(e,'text')&&fictionalURL(e.source_url)),
+      'Synthetic read model contains text or a nonfictional source URL.');
     assert(unique(env.observations.map(o => o.id)), 'Duplicate observation IDs.');
     assert(unique(env.models.map(m => m.model_id)), 'Duplicate model IDs.');
     assert(env.observations.length <= 600, 'Render prototype limits synthetic observations to 600.');
@@ -237,6 +248,26 @@
     assert(Array.isArray(p.pairs), 'Explicit pair exposures required.');
     const weighted=p.pair_mode==='w2_weighted_conditional';
     assert(p.pair_mode===undefined||weighted,'Unknown consensus pair statistic.');
+    let audit='';
+    if(weighted){
+      const families=p.family_weight_audit;
+      assert(Array.isArray(families)&&families.length>0&&
+        unique(families.map(f=>f.family))&&
+        families.every(f=>typeof f.family==='string'&&f.family.length&&
+          range(f.planned_weight)&&['configurations','models',
+          'failed_fit_records','internal_failures'].every(k=>Number.isSafeInteger(f[k])&&f[k]>=0))&&
+        Math.abs(families.reduce((n,f)=>n+f.planned_weight,0)-1)<1e-8,
+        'W2 method-family planned-weight audit missing or inconsistent.');
+      const items=families.map(f=>tr([escape(f.family),
+        escape(String(f.planned_weight)),escape(String(f.models)),
+        escape(String(f.configurations)),escape(String(f.failed_fit_records)),
+        escape(String(f.internal_failures))]));
+      audit='<details class="ev-ledger"><summary>Method-family planned-weight audit ('+
+        families.length+')</summary><p class="ev-note">Original W2 planned shares; these '+
+        'are not reassigned after failed or unassigned fits.</p>'+
+        rows(['Family','Planned weight','Fits','Configurations','Failed fits',
+          'Internal failed attempts'],items)+'</details>';
+    }
     const lookup = new Map(), inspector = {};
     const index = new Map(names.map((id,i) => [id,i]));
     for (let z = 0; z < p.pairs.length; z++) {
@@ -353,7 +384,7 @@
       'W2 planned family/method/configuration/resample/seed weighting is preserved exactly; the plot uses the authoritative conditional weighted numerator / assigned-both weight, never a new family mean. Missing/failed/noise fits remain in the planned denominator. ':
       'Each family has equal influence if eligible; pooled pair counts are shown only as exposure audit. ')+
       'Missing pairs, zero opportunities and observed zero differ. Ambiguity is not significance.</p>' +
-      '<div class="ev-figure">'+svg+'</div>'+table;
+      '<div class="ev-figure">'+svg+'</div>'+table+audit;
     return panelShell(env,p,'01 / Consensus and stability',content,svg,inspector,obs);
   }
 
