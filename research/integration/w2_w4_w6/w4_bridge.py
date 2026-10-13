@@ -174,14 +174,64 @@ def validate_source(source: dict, comparison: dict, envelope: dict) -> None:
     if comparison.get("comparison_status") != "withheld":
         require(set(by_id) == set(expected),
                 "W4 source-linked coordinate coverage is incomplete")
+    require(len(envelope["results"]) == 2 * len(ordered) and
+            envelope["coverage"]["observations_total"] == len(ordered) and
+            envelope["coverage"]["eligible"] == len(expected) and
+            not envelope["coverage"]["failure_ledger"],
+            "W4 full-model result and import-failure ledgers inconsistent")
     for m in envelope["models"]:
         require(m["representation_id"] == source["feature_space"]["id"] and
                 m["representation_version"] == source["feature_space"]["version"],
                 "Frozen input representation does not match the imported fit")
+        period = m["model_id"].removeprefix("W4-imported-")
+        require(period in (before, after) and
+                m["method_family"] == "imported_partition" and
+                m["method"] == "saved_source_linked_cluster_assignment" and
+                m["fit_split"] == "synthetic",
+                "W4 imported model identity or fit semantics were altered")
+        reference = next((r for r in ordered if _eligible(r) and
+                          r["period"] == period and r["cluster"] is not None), None)
+        require(m["fit_version"] == (reference["cluster_fit_id"] if reference else
+                    "no_imported_fit") and
+                m["parameters_sha256"] == (reference["cluster_parameters_sha256"]
+                    if reference else w4.digest({"period": period, "kind": "no_imported_fit"})) and
+                m["training_selection_sha256"] == (
+                    reference["cluster_training_selection_sha256"] if reference else
+                    envelope["upstream"]["selection_sha256"]),
+                "Imported cluster-fit version, parameters or training selection drifted")
         fit_rows = [r for r in envelope["results"] if r["model_id"] == m["model_id"]]
         require(len(fit_rows) == len(ordered) and
                 {r["observation_id"] for r in fit_rows} == {r["id"] for r in ordered},
                 "A W4 imported fit silently dropped source/missing records")
+        actual = {r["observation_id"]: r for r in fit_rows}
+        status_counts = {"assigned": 0, "unassigned": 0,
+                         "not_fitted": 0, "excluded": 0}
+        for source_row in ordered:
+            fitted = actual[source_row["id"]]
+            valid = _eligible(source_row)
+            if not valid:
+                status, label = "excluded", None
+            elif source_row["period"] != period or source_row["cluster"] is None:
+                status, label = "not_fitted", None
+            elif source_row["cluster"] == 0:
+                status, label = "unassigned", 0
+            else:
+                status, label = "assigned", source_row["cluster"]
+            require(fitted["status"] == status and fitted["cluster"] == label and
+                    fitted["representation_basis_id"] == m["representation_id"] and
+                    fitted["membership_kind"] == "none" and
+                    fitted["memberships"] is None and fitted["membership_strength"] is None and
+                    (status in ("assigned", "unassigned") or bool(fitted["reason"])),
+                    "W4 original imported labels, abstentions or source skips changed")
+            status_counts[status] += 1
+        ledgers = [x for x in envelope["coverage"]["models"]
+                   if x["model_id"] == m["model_id"]]
+        require(len(ledgers) == 1 and
+                ledgers[0]["eligible"] == len(expected) and
+                all(ledgers[0][k] == n for k, n in status_counts.items()) and
+                all(ledgers[0][k] == 0 for k in
+                    ("attempted_fits", "successful_fits", "failed_fits")),
+                "Imported W4 has inconsistent status ledger or manufactured fit attempts")
 
 
 def to_w6_longitudinal(source: dict, comparison: dict, envelope: dict,
