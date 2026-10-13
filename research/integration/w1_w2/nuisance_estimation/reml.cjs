@@ -69,11 +69,12 @@ function verify(panel,{minimumYears=12}={}){
    all.filter(x=>x.selection_status==='available_not_selected').length===
    panel.available_not_selected &&
    all.every(r=>r.source_hash_basis==='synthetic' &&
-     typeof r.id==='string'&&r.id.startsWith('fictitious-')||
-     r.id.startsWith('fictional-unavailable-')),
+     typeof r.id==='string' &&
+     (r.id.startsWith('fictitious-')||r.id.startsWith('fictional-unavailable-'))),
    'unavailable source/selection provenance inconsistent');
  check(all.every(x=>x.response===null||
    x.selection_status==='selected_eligible'&&
+   Number.isFinite(x.response)&&
    x.response_sha256===crypto.createHash('sha256')
      .update(x.response.toPrecision(17)).digest('hex')) &&
    all.filter(x=>x.selection_status!=='selected_eligible').every(x=>
@@ -308,4 +309,4 @@ function fit(panel,options={}){
    publication_eligible:false
  };
 }
-module.exports={fit,verify,objective,preprocess,wilson:null};
+module.exports={fit,verify,objective,preprocess};
