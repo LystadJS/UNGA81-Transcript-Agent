@@ -1,0 +1,77 @@
+name: W4 preregistered 2008–2015 historical UN PV source acquisition
+on:
+  push:
+    branches: ['coord/w4-extended-year-covariance-20261013']
+    paths:
+      - 'research/longitudinal/temporal_covariance/selected_official_pvs_2008_2015.txt'
+      - '.github/workflows/w4-temporal-source-2008-2015.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  encrypted-original-PV-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        batch: [0, 1]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Pin PDF and authenticated-encryption tooling
+        run: python -m pip install cryptography==44.0.3 pymupdf==1.26.7
+      - name: Synthetic-only encrypted-envelope selftest
+        run: python research/longitudinal/temporal_covariance/secure_historical_pvs.py --selftest
+      - name: Validate preregistered 64 documents and split safely into two batches
+        env:
+          BATCH_INDEX: '${{ matrix.batch }}'
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import os,re
+          path=Path('research/longitudinal/temporal_covariance/selected_official_pvs_2008_2015.txt')
+          symbols=[x.strip() for x in path.read_text().splitlines()
+                   if x.strip() and not x.startswith('#')]
+          assert len(symbols)==64 and len(set(symbols))==64
+          assert all(re.fullmatch(r'A/(6[3-9]|70)/PV\.[1-9]\d*',s) for s in symbols)
+          assert all(sum(s.startswith(f'A/{y-1945}/PV.') for s in symbols)==8
+                     for y in range(2008,2016))
+          idx=int(os.environ['BATCH_INDEX'])
+          subset=symbols[idx*32:(idx+1)*32]
+          assert len(subset)==32
+          (Path(os.environ['RUNNER_TEMP'])/'historical_approved.txt').write_text(
+             '\n'.join(subset)+'\n')
+          print('Source years 2008–2015 only, batch',idx,'meeting count',len(subset))
+          PY
+      - name: Acquire original PDF bytes into recipient-encrypted artifact
+        env:
+          PUBLIC_RECEIVER_KEY: 'bI+5bdwcXP/R4mSs3Kf9zH245PVojTBYzuRWGzPRr1k='
+          BATCH_INDEX: '${{ matrix.batch }}'
+        run: |
+          python research/longitudinal/temporal_covariance/secure_historical_pvs.py \
+            --symbols "$RUNNER_TEMP/historical_approved.txt" \
+            --public-key "$PUBLIC_RECEIVER_KEY" \
+            --sealed-output "$RUNNER_TEMP/historical_PV_2008_2015/originals-${BATCH_INDEX}.sealed" \
+            --workers 4
+      - name: Refuse original PDF/text and key disclosure
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])/'historical_PV_2008_2015'
+          files=list(root.iterdir())
+          assert len(files)==1 and files[0].suffix=='.sealed'
+          assert files[0].read_bytes()[:8]==b'UNW4P2\x00\x01'
+          print('PASS ciphertext only; no private key, original text or PDF in artifact')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: w4-2008-2015-recipient-encrypted-batch-${{ matrix.batch }}
+          path: ${{ runner.temp }}/historical_PV_2008_2015/*.sealed
+          if-no-files-found: error
+          retention-days: 1
