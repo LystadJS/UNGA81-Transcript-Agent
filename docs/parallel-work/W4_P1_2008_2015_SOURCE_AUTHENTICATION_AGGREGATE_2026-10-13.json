@@ -1,0 +1,150 @@
+{
+  "schema": "un.w4.p1.original-UN-PV-Harvard-2008-2015.aggregate-acceptance.v1",
+  "date": "2026-10-13",
+  "preregistered_before_new_originals_commit": "e698629266914929a33e832e8b0df32bd5e59187",
+  "index_freeze_commit": "755ad1e5224a93a13763a8932f6275198f78c9f4",
+  "official_guide": "https://research.un.org/en/docs/ga/generaldebate",
+  "frozen_source_symbol_split_sha256": "9f82613e7057a66f9ca7ccb550fade49797d4457fd67ada2443ef6a00edb9ef5",
+  "index_meeting_symbol_population": 118,
+  "index_speaker_rows": 1563,
+  "source_quality_holdout_meetings_unopened": 28,
+  "development_original_PV_target": 90,
+  "acquisition": {
+    "encrypted_CI_run": 38457300153,
+    "attempted": 90,
+    "acquired": 90,
+    "failed": 0,
+    "recipient_only_sealed_sha256": "688e8456a2571c2eea643f5fa44c47dca8fb7f2546e101ab78b0dfac95ada005",
+    "original_PDFs_published": 0
+  },
+  "independent_local_PDF_recheck": {
+    "attempted": 90,
+    "original_raw_pdf_SHA256_matches_manifest": 90,
+    "pdf_header_EOF_complete": 90,
+    "original_firstpage_official_meeting_symbol": 90,
+    "original_firstpage_date_agrees_with_index": 90,
+    "all_pages_extractable": 90,
+    "original_pdf_pages": 3407,
+    "original_pdf_total_bytes": 43696584,
+    "independent_publisher_signed_sha256_available": false
+  },
+  "Harvard": {
+    "original_tar_sha256": "55077dccf7242cdf544aa95c4797c68e443b0c37344c9c112a2e2392ddfcf8e5",
+    "original_member_2008_2015_total": 1538,
+    "member_UTF8_decoding_pass": 1538,
+    "frozen99_preera_original_member_present": 785,
+    "frozen99_preera_original_member_missing": 7,
+    "original_member_full_SHA256_rechecked_against_eligible_rows": 601
+  },
+  "source_index_country_mapping": {
+    "exact_normalized": 697,
+    "predeclared_alias_metadata": 82,
+    "no_unique_index_name": 13,
+    "development_source_correspondence_candidates": 601,
+    "quality_holdout_associated_cells": 178
+  },
+  "new_full_speech_correspondence": {
+    "full_original_PV_strong_rule": "normalized 7-token >=.90, >=8/10 deciles with >=.80, opening/ending >=.40",
+    "attempted": 601,
+    "accepted": 600,
+    "below_threshold": 1,
+    "unverified_breakdown": {
+      "reserved_quality_audit_association": 178,
+      "original_Harvard_member_missing": 7,
+      "index_identity_unresolved": 6,
+      "full_speech_match_failed": 1
+    }
+  },
+  "periods": [
+    {
+      "year": 2008,
+      "verified_original_PV_development_meetings": 9,
+      "verified_frozen99_country_year_cells": 76,
+      "unverified_frozen99_country_year_cells": 23
+    },
+    {
+      "year": 2009,
+      "verified_original_PV_development_meetings": 8,
+      "verified_frozen99_country_year_cells": 66,
+      "unverified_frozen99_country_year_cells": 33
+    },
+    {
+      "year": 2010,
+      "verified_original_PV_development_meetings": 9,
+      "verified_frozen99_country_year_cells": 71,
+      "unverified_frozen99_country_year_cells": 28
+    },
+    {
+      "year": 2011,
+      "verified_original_PV_development_meetings": 14,
+      "verified_frozen99_country_year_cells": 76,
+      "unverified_frozen99_country_year_cells": 23
+    },
+    {
+      "year": 2012,
+      "verified_original_PV_development_meetings": 12,
+      "verified_frozen99_country_year_cells": 77,
+      "unverified_frozen99_country_year_cells": 22
+    },
+    {
+      "year": 2013,
+      "verified_original_PV_development_meetings": 14,
+      "verified_frozen99_country_year_cells": 79,
+      "unverified_frozen99_country_year_cells": 20
+    },
+    {
+      "year": 2014,
+      "verified_original_PV_development_meetings": 12,
+      "verified_frozen99_country_year_cells": 80,
+      "unverified_frozen99_country_year_cells": 19
+    },
+    {
+      "year": 2015,
+      "verified_original_PV_development_meetings": 12,
+      "verified_frozen99_country_year_cells": 75,
+      "unverified_frozen99_country_year_cells": 24
+    }
+  ],
+  "expected_99_by_16_cells": 1584,
+  "new_pre2016_source_verified": 600,
+  "new_pre2016_unverified": 192,
+  "previous_2016_2023_source_verified": 790,
+  "previous_2016_2023_unverified": 2,
+  "combined_16year_source_verified": 1390,
+  "combined_16year_unverified": 194,
+  "new_preera_actor_with_at_least_six_verified_years": 69,
+  "preera_actor_with_all_eight_verified_years": 11,
+  "new_original_PV_distinct_source_family_used_in_frozen99": 88,
+  "private_evidence_hashes": {
+    "source_PDF_full_recheck": "bccdb19358d531f40f471f6b8cdf0b3230a8666b7ca002f746f9b2733be72795",
+    "full_correspondence_private": "4ce1f55e395296ae1e52f9ef7ced51ef648a2528f02313fb7ec23475bb201b92",
+    "derived_99x16_private": "d46a9d737c967288d6447621eec718986245c6f831e117ea1095048178e569d5"
+  },
+  "unrun": {
+    "independent_meeting_quality_audit": 28,
+    "post2016_original_archive_this_turn": "NOT_RERUN_INHERITED_ONLY",
+    "new_2008_2015_lexical_reference": "NOT_RUN",
+    "W1_on_expanded_16year": "NOT_RUN",
+    "new_36cell_calibration": "NOT_RUN",
+    "human_person_authentication": "NOT_RUN"
+  },
+  "privacy": {
+    "original_PDF_bytes_public": false,
+    "original_speech_text_public": false,
+    "source_linked_country_rows_public": false,
+    "private_vectors_public": false,
+    "reserved_oct_5_6_2026_transcripts_opened": 0,
+    "evaluation_lock_modified": false,
+    "original_P2_hash_records_modified": false
+  },
+  "gates": {
+    "new_2008_2015_development_document_authentication": "PASS",
+    "new_2008_2015_development_full_speech_corroboration": "PASS_ON_600_RESTRICTED",
+    "full_16year_census_coverage": "FAIL_BELOW_95_PERCENT",
+    "each_pre2016_year_coverage": "FAIL_BELOW_90_PERCENT",
+    "at_least_90_country_affiliations_6_years_per_era": "FAIL_69_ONLY",
+    "new_full_year_empirical_description": "WITHHELD_P0_P1_ONLY",
+    "calibrated_longitudinal_inference": "FAIL",
+    "public_empirical_release": "FAIL"
+  }
+}
