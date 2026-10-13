@@ -143,7 +143,7 @@ def transform(toy: Toy, ref:LexicalFit) -> np.ndarray:
 
 def distance(toy:Toy, scores:np.ndarray, probs:np.ndarray,
              min_per_era:int=1) -> dict:
-    if scores.shape!=(len(toy.years),scores.shape[1]) or len(probs)!=len(toy.years):
+    if np.ndim(scores)!=2 or scores.shape[0]!=len(toy.years) or len(probs)!=len(toy.years):
         raise ValueError("Malformed scores or source inclusion probabilities")
     if np.any((probs<=0)|(probs>1)) or not np.isfinite(scores).all():
         raise ValueError("Invalid propensity or feature matrix")
@@ -162,7 +162,8 @@ def distance(toy:Toy, scores:np.ndarray, probs:np.ndarray,
         if len(pair)==2:
             distances.append(float(np.linalg.norm(pair[1]-pair[0])))
     return {"eligible_actors":len(distances),"missing_actor_periods":missing_actor_periods,
-            "mean_distance":float(np.mean(distances)) if distances else None,
+            "mean_distance":float(np.mean(distances)) if len(distances)==N_ACTORS else None,
+            "denominator_preserved":len(distances)==N_ACTORS,
             "max_inverse_weight":float(raw_weight.max()),
             "weight_clipped_fraction":float(np.mean(raw_weight[toy.observed]>10)) if toy.observed.any() else None}
 
@@ -205,6 +206,22 @@ class Controls(unittest.TestCase):
         q=crossfit_probabilities(t)
         self.assertTrue((q>0).all() and (q<1).all())
         self.assertIs(summary('MNAR')['mnar_identified_inference_allowed'],False)
+
+    def test_roster_only_source_loss_withholds_instead_of_shrinking(self):
+        t=make_toy('complete',effect=0)
+        for actor in range(N_ACTORS):
+            idx=np.flatnonzero(t.actors==actor)
+            t.counts[idx]=t.counts[idx[0]]
+        f=fit_training_reference(t,np.flatnonzero(t.years<=2015))
+        z=transform(t,f)
+        complete=distance(t,z,np.ones(len(z)))
+        self.assertTrue(complete['denominator_preserved'])
+        self.assertLess(complete['mean_distance'],1e-10)
+        t.observed[(t.actors==0)&(t.years>=2016)]=False
+        withheld=distance(t,z,np.ones(len(z)))
+        self.assertFalse(withheld['denominator_preserved'])
+        self.assertIsNone(withheld['mean_distance'])
+        self.assertEqual(withheld['eligible_actors'],N_ACTORS-1)
 
     def test_training_only_no_comparison_leak(self):
         t=make_toy('complete')
