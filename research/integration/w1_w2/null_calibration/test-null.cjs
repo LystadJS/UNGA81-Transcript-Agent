@@ -207,6 +207,22 @@ test('unmodified source-aware W1 and W2 actually refit synthetic methods includi
  assert.equal(x.dependence.inferential_eligible,false);
 });
 
+test('G01–G13 remain NOT_RUN after successful and withheld synthetic nuisance worlds',async()=>{
+ const Ready=require('./readiness.cjs');
+ const result=await Cal.calibration({mode:'smoke',scenarioIds:['N3_cross_classified']});
+ const report=Ready.assess(result);
+ assert.equal(report.scientific_gates_passed,0);
+ assert.equal(report.scientific_gates_not_run,13);
+ assert(report.gates.every(g=>g.scientific_status==='NOT_RUN'));
+ assert.equal(report.actual_original_byte_authentication,false);
+ assert.equal(report.real_nuisance_parameters_estimated,false);
+ assert.equal(report.source_group_crossing_refusal_seen,true);
+ assert.deepEqual(report.nuisance_withheld_regimes,['N3_cross_classified']);
+ assert.equal(report.public_release_eligible,false);
+ const corrupted=structuredClone(result);corrupted.inferential_eligible=true;
+ assert.throws(()=>Ready.assess(corrupted),/refuses nonfrozen/);
+});
+
 test('no synthetic summary path can modify frozen source repository or silently overwrite outputs',()=>{
  const root=path.resolve(__dirname,'../../../..');
  assert.throws(()=>Run.outputSafe(root),/inside the source repository/);
