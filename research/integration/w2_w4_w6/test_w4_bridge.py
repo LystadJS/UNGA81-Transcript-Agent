@@ -102,6 +102,41 @@ class W4W6Acceptance(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "panel bytes/content|meeting reused for incompatible source"):
             validate_source(changed, comparison, envelope)
 
+    def test_original_aligned_coordinates_and_anchor_residuals_are_replayed(self):
+        raw, comparison, envelope = inputs()
+        altered = deepcopy(comparison)
+        altered["aligned_coordinates"][10]["coordinates"][0] += .75
+        with self.assertRaisesRegex(ValueError, "coordinates do not reproduce"):
+            validate_source(raw, altered, envelope)
+        altered = deepcopy(comparison)
+        altered["alignment"]["rotation"][0][0] += .12
+        with self.assertRaisesRegex(ValueError, "nonorthogonal"):
+            validate_source(raw, altered, envelope)
+        altered = deepcopy(comparison)
+        altered["alignment"]["anchor_relative_rmse"] = .9
+        with self.assertRaisesRegex(ValueError, "alignment residual"):
+            validate_source(raw, altered, envelope)
+        raw, comparison, envelope = inputs(fit_policy="transformed_reference")
+        altered = deepcopy(comparison)
+        altered["aligned_coordinates"][0]["coordinates"][1] += .5
+        with self.assertRaisesRegex(ValueError, "coordinates do not reproduce"):
+            validate_source(raw, altered, envelope)
+
+    def test_w4_imported_original_fit_labels_cannot_be_substituted(self):
+        raw, comparison, envelope = inputs()
+        altered = deepcopy(envelope)
+        altered["results"][0]["cluster"] = 99
+        with self.assertRaisesRegex(ValueError, "imported labels"):
+            validate_source(raw, comparison, altered)
+        altered = deepcopy(envelope)
+        altered["models"][0]["training_selection_sha256"] = "f" * 64
+        with self.assertRaisesRegex(ValueError, "training selection"):
+            validate_source(raw, comparison, altered)
+        altered = deepcopy(envelope)
+        altered["coverage"]["models"][0]["attempted_fits"] = 1
+        with self.assertRaisesRegex(ValueError, "manufactured fit attempts"):
+            validate_source(raw, comparison, altered)
+
     def test_non_synthetic_public_export_is_forbidden(self):
         raw, comparison, envelope = inputs()
         copy = deepcopy(envelope)
