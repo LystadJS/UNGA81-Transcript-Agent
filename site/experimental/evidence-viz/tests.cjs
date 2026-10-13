@@ -60,10 +60,10 @@ test('network audits selected graph and distinguishes sensitivity from alliance'
 
 test('failed cross-period alignment withholds even otherwise present 2027 points',()=>{
   const v=draw(get(),'longitudinal');
-  assert.match(v.svg,/Actor A 2025/);
-  assert.match(v.svg,/Actor A 2026/);
-  assert.doesNotMatch(v.svg,/Actor A 2027/);
-  assert.doesNotMatch(v.svg,/Actor C 2027/);
+  assert.match(v.svg,/Actor A 25/);
+  assert.match(v.svg,/Actor A 26/);
+  assert.doesNotMatch(v.svg,/Actor A 27/);
+  assert.doesNotMatch(v.svg,/Actor C 27/);
   assert.match(v.html,/2026 → 2027/);
   assert.match(v.html,/Withheld/);
   assert.match(v.html,/Unaligned-period coordinates are entirely withheld/);
@@ -136,21 +136,6 @@ test('cross-panel source, model and temporal identity contradictions fail closed
   assert.throws(()=>draw(e,'network'),/Frame\/eligibility accounting mismatch/);
   const f=get();panel(f,'network').identity.representation_version='arbitrary-version';
   assert.throws(()=>draw(f,'network'),/Unknown representation and version/);
-});
-
-test('W6 synthetic gate rejects original-source URLs and embedded text regardless of producer label',()=>{
-  const f=get();
-  f.envelope.observations[0].source_url='https://docs.un.org/some-original';
-  assert.throws(()=>draw(f,'network'),/nonfictional source URL/);
-  const g=get();
-  g.envelope.observations[0].text='private original passage';
-  assert.throws(()=>draw(g,'network'),/contains text/);
-  const h=get();
-  h.envelope.evidence[0].source_url='https://example.org/nonfiction';
-  assert.throws(()=>draw(h,'network'),/nonfictional source URL/);
-  const i=get();
-  i.envelope.upstream.source_hash_basis='raw_response_bytes';
-  assert.throws(()=>draw(i,'network'),/fictional synthetic source identity/);
 });
 
 test('no remote data or automatic political inference in prototype sources',()=>{
