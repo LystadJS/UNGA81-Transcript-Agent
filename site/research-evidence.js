@@ -371,15 +371,36 @@
       w4Input=doc.getElementById('research-w4-files'),
       w4Button=doc.getElementById('research-w4-import'),
       w4Host=doc.getElementById('research-w4-chart'),
-      w4Status=doc.getElementById('research-w4-status');
-    let w2Verified=null,w2Epoch=0,w4Epoch=0;
+      w4Status=doc.getElementById('research-w4-status'),
+      w2Svg=doc.getElementById('research-w2-evidence-svg'),
+      w2Html=doc.getElementById('research-w2-evidence-html'),
+      w4Svg=doc.getElementById('research-w4-svg'),
+      w4Html=doc.getElementById('research-w4-html');
+    let w2Verified=null,w2Epoch=0,w4Epoch=0,w2View=null,w4View=null;
+    function download(name,body,type){
+      check(body&&typeof body==='string','No verified source-linked chart available to export.');
+      const url=URL.createObjectURL(new Blob([body],{type}));
+      const a=doc.createElement('a');a.href=url;a.download=name;
+      doc.body.append(a);a.click();a.remove();
+      root.setTimeout(()=>URL.revokeObjectURL(url),1000);
+    }
+    const exportTo=(view,format,name)=>{
+      check(view,'Complete source-backed verification is required before export.');
+      if(format==='svg')download(name+'.svg',view.svg,'image/svg+xml;charset=utf-8');
+      else download(name+'.html',V.htmlDocument(view),'text/html;charset=utf-8');
+    };
+    w2Svg.addEventListener('click',()=>exportTo(w2View,'svg','w2-weighted-consensus-synthetic'));
+    w2Html.addEventListener('click',()=>exportTo(w2View,'html','w2-weighted-consensus-synthetic'));
+    w4Svg.addEventListener('click',()=>exportTo(w4View,'svg','w4-longitudinal-synthetic'));
+    w4Html.addEventListener('click',()=>exportTo(w4View,'html','w4-longitudinal-synthetic'));
     const clearW2=()=>{
-      w2Epoch++;w2Verified=null;w2Host.replaceChildren();
+      w2Epoch++;w2Verified=null;w2View=null;w2Host.replaceChildren();
+      w2Svg.disabled=true;w2Html.disabled=true;
       w2Status.textContent='Import original synthetic W2 results in the section above.';
     };
     async function showW2(){
       const ticket=++w2Epoch;
-      w2Host.replaceChildren();
+      w2Host.replaceChildren();w2View=null;w2Svg.disabled=true;w2Html.disabled=true;
       if(!w2Verified){w2Status.textContent='No validated W2 source available.';return;}
       w2Status.textContent='Independently checking weighted pair and source identities…';
       try{
@@ -388,7 +409,8 @@
         const verified=await C.validate(w2Verified.env,w2Verified.sidecar);
         if(ticket!==w2Epoch)return;
         const panel=toW2Panel(verified);
-        V.mount(w2Host,verified.env,[panel]);
+        w2View=V.mount(w2Host,verified.env,[panel])[0];
+        w2Svg.disabled=false;w2Html.disabled=false;
         w2Status.textContent=panel.status==='withheld'?panel.reason:
           'Original source-bound W2 conditional weighted heatmap verified. Inspect any pair; no refit or policy inference.';
       }catch(error){
@@ -409,19 +431,22 @@
       if(w2Details.open)void showW2();
     });
     const clearW4=()=>{
-      w4Epoch++;w4Host.replaceChildren();
+      w4Epoch++;w4Host.replaceChildren();w4View=null;
+      w4Svg.disabled=true;w4Html.disabled=true;
       w4Status.textContent='No original W4 source and aligned synthetic output verified.';
     };
     w4Input.addEventListener('change',clearW4);
     w4Button.addEventListener('click',async()=>{
       const ticket=++w4Epoch;
-      w4Host.replaceChildren();
+      w4Host.replaceChildren();w4View=null;
+      w4Svg.disabled=true;w4Html.disabled=true;
       w4Button.disabled=true;
       w4Status.textContent='Checking original W4 synthetic SHA256, source, imported fits, saved map alignment and actor weighting…';
       try{
         const result=await loadW4Files(w4Input.files);
         if(ticket!==w4Epoch)return;
-        V.mount(w4Host,result.envelope,[result.panel]);
+        w4View=V.mount(w4Host,result.envelope,[result.panel])[0];
+        w4Svg.disabled=false;w4Html.disabled=false;
         w4Status.textContent='Verified original W4 frozen basis and '+result.provenance.eligible+
           ' eligible synthetic observations; '+result.provenance.actors+
           ' source-linked actors; '+result.provenance.source_families_shared+
