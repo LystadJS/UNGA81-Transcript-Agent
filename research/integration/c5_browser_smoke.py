@@ -130,7 +130,7 @@ def verify(browser, base: str, w2: Path, w4: Path, pinned: Path,
             timeout=20000,
         )
         assert "W2 WEIGHTED" in page.locator(
-            "#research-w2-evidence-chart svg").first.inner_text()
+            "#research-w2-evidence-chart svg").first.text_content()
         assert "25" in page.locator(
             "#research-w2-evidence-chart .ev-provenance").inner_text()
         assert page.locator("#research-w2-evidence-chart [data-ev-inspect]").count() > 300
