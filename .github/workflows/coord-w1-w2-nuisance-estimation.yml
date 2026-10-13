@@ -36,7 +36,8 @@ jobs:
           const x=JSON.parse(fs.readFileSync(path.join(dir,'receipt.json'),'utf8'));
           const y=JSON.parse(fs.readFileSync(path.join(dir,'synthetic-estimator-diagnostics.json'),'utf8'));
           if(x.mode!=='synthetic_numeric_proxy_only'||x.scenarios!==8||
-             x.estimation_attempts!==4||x.correctly_withheld_scenarios!==4||
+             x.preflight_panels!==12||x.estimation_attempts!==8||x.correctly_withheld_scenarios!==4||
+             x.estimator_precision_accepted!==false||
              x.calibrated_error_rate!==false||x.g01_g13_scientific_gates_passed!==0||
              x.scientific_evaluation_authorized!==false||x.public_release_eligible!==false||
              x.original_UN_source_bytes_opened!==0||x.reserved_37_transcripts_opened!==0||
@@ -44,7 +45,7 @@ jobs:
           const sha=JSON.parse(fs.readFileSync(path.join(dir,'SHA256.json'),'utf8'));
           for(const [name,value] of Object.entries(sha))
             if(crypto.createHash('sha256').update(fs.readFileSync(path.join(dir,name))).digest('hex')!==value)process.exit(2);
-          console.log(JSON.stringify({status:'PASS_SYNTHETIC_ONLY',estimated:4,withheld:4,gates_passed:0}));
+          console.log(JSON.stringify({status:'PASS_SYNTHETIC_ONLY',estimated_numeric_panels:8,withheld_design_scenarios:4,gates_passed:0,reliability_red_flags:x.candidate_reliability_red_flags}));
           NODE
       - name: Preserve frozen W1 W2 and G01-G13 source/release contracts
         shell: bash
