@@ -1,6 +1,6 @@
 # Coordinator W2 browser inspection — engineering-only acceptance
 
-**Scope:** Follow-on to merged PR #21 (W5), PR #20 (W6), PR #29 (experimental browser release), PR #17 (W2), and the subsequently merged source-complete W1→W2 coordinator integration. Based on main 2a61a76c715bcef1c8603b230f3493b2a2af8298, which also contains W4 PR #18. **No substantive results or new public-site release are authorized by this draft.**
+**Scope:** Follow-on to merged PR #21 (W5), PR #20 (W6), PR #29 (experimental browser release), PR #17 (W2), and the subsequently merged source-complete W1→W2 coordinator integration. Originally based on main 2a61a76c715bcef1c8603b230f3493b2a2af8298; refreshed by a **non-force merge of main 13120efbc271b5bcd733ad3711f2f2a18ecbce3b** on 13 October 2026. Main now includes the accepted W1→W2 grouped-child-fit engineering work (#50). This coordinator PR authorizes **no substantive results, real-source import, D1 change or scientific publication**; the separate synthetic-only browser merge remains gated on final exact-head acceptance.
 
 ## Integration contract
 
@@ -41,17 +41,24 @@ The newly merged W4 interchange adapter correctly describes previously **importe
 
 The historical W4 P2 source frame additionally retains 269 unverified country-year cells with unknown dates/identities. Coordinator interchange v1 does not represent a source_status of unverified or a null date. An existing, separately typed and backward-compatible source-inventory sidecar (docs/parallel-work/source-inventory-v1.cjs) preserves that missingness, but its P2-to-v1 legacy binding is explicitly WITHHELD. W4 properly refuses the incompatible direct export rather than inventing timestamps, absences or vectors. A new approved fit-provenance/imported-label consumer contract, authenticated eligible subset binding, source-dependent calibration and explicit validation are prerequisites. No private W4 positions or source-bearing output are imported by this change. W6's older fictional longitudinal example remains a demonstration only.
 
-## Pending acceptance
+## Coordinator source and engineering acceptance — 13 October 2026
 
-| Check | Status at branch authoring |
-| --- | --- |
-| Fresh source and coordinator ownership review | PASS; final exact-head review pending |
-| W2 original producer ↔ browser validator and adversarial Node tests | NOT RUN natively |
-| Real Chromium desktop/mobile, keyboard, tamper and privacy | NOT RUN |
-| Existing W3/W5/W6 static build and browser regression | NOT RUN |
-| W4 imported-fit/source-status compatibility | BLOCKED — new contract necessary |
-| Private original UN source authentication and longitudinal significance | WITHHELD |
-| Reserved 37 October 5–6 meeting text | NOT ACCESSED |
-| New production/main/Pages deployment and website mirror | NOT AUTHORIZED |
+The eight reviewed paths on PR #45 are: a new same-origin W2 browser reader; a new dedicated coordinator QA workflow and source/method review ledger; two new synthetic-only Node/browser integration tests; plus narrowly scoped edits to the experimental research page, scoped CSS, and the existing browser smoke test's lazy-iframe assertion. No changes to source files under un/, production method kernels, original source or release manifests, frozen held-out evaluation, model checkpoints, or D1 O1–O5 gates.
 
-**Merge / release boundary:** Coordinator must inspect the exact changed paths and current main, obtain current-head CI PASS, and receive a separate explicit release decision before deployment or website mirroring. Engineering-only draft code is not empirical publication approval.
+| Gate | Status | Evidence |
+| --- | --- | --- |
+| Latest source and exclusive coordinator ownership | **PASS** | Non-force two-parent main integration, latest main 13120efbc271b5bcd733ad3711f2f2a18ecbce3b; 8 PR-diff files only; no collisions with newly accepted W1→W2 and W1 historical-source linkage or open W2/W4 visualization PR #47 |
+| Source, selection, identity, status and model constraints | **PASS (synthetic engineering)** | W5 and W6 original validators, W2 sidecar/threshold SHA/complete pair ledger, independently checked W1→W2 25-frame identity; invalid-source and numerically altered cases rejected |
+| Native W1→W2→W5/W6 and W2 adversarial tests | **PASS** | 20/20 new W2 browser validation/refusal cases; 16/16 accepted W1→W2 interoperability checks; original W2/W5/W6/v1 regression suites on [coordinator CI 38444210986](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/38444210986) |
+| Real browser, keyboard, mobile and privacy | **PASS** | Chromium desktop 1440×900 and mobile 390×844, local input-change invalidation, pair/source detail inspection, corrupted sidecar refusal, no horizontal overflow or external requests; same exact CI |
+| Existing W3/W5/W6 research browser regression and disposable Pages build | **PASS** | [CI 38444211088](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/38444211088), all steps successful, none failed/skipped |
+| Shared structural + relational interchange | **PASS** | [CI 38444211080](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/38444211080) |
+| Latent numerical and real Chromium acceptance | **PASS** | [CI 38444210980](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/38444210980) |
+| Newly merged W1 grouped child refit semantics | **SEPARATE / NOT PROMOTED** | Source-group sensitivity remains descriptive; the W2 browser displays the original association and clearly distinguishes grouped spread from confidence intervals. It neither refits child models nor fabricates pair opportunities |
+| P2/W4 imported label and nullable historical missing-source binding | **BLOCKED** | Existing un.parallel-source-inventory.v1 preserves verified/unverified sources; original-PV-to-legacy-v1 binding and imported-fit semantics remain withheld. No real actor trajectories or intervals imported |
+| Original transcript byte validation, reserved 37 October 5–6 meeting text, real MiniLM or scientific calibration | **NOT RUN / WITHHELD** | This PR touches only synthetic browser artifacts. Held-out text not accessed; no empirical findings or country/stance claims |
+| Production and website mirror | **SEPARATE VERIFICATION** | Conditional request to merge after final coordinator acceptance covers source integration of an explicitly synthetic browser feature. Postmerge main CI, Pages assets, and the separately owned portfolio mirror must be independently inspected; no private/public empirical data are publishable |
+
+The above workflow receipts were obtained at the **pre-ledger implementation head 06cf2a7051cedb8e3fbb78bc8dbeadf71c4511ce**. An acceptance-ledger-only commit changes the PR SHA, so the coordinator must obtain a new clean **exact-head** CI set and compare the eight-file diff to the latest main immediately before merging.
+
+**Scientific and release boundary:** W2's pair association is descriptive conditional model-fit agreement. A high value is not a probability of diplomacy, agreement, alliance, policy influence, statistical significance, calibrated uncertainty or independently authenticated country position. Real original source bytes, historical missingness, speaker identities and held-out evidence remain under separate authorization and release protocols. No external text transmission, silent sampling or inferred absent-source zeros are permitted.
