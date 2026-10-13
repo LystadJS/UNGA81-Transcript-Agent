@@ -1,0 +1,34 @@
+name: Coordinator W1 W2 inference-readiness requirements (no empirical fitting)
+on:
+  pull_request:
+    paths:
+      - 'docs/parallel-work/W1_W2_INFERENCE_READINESS_REQUIREMENTS_2026-10-13.md'
+      - 'docs/parallel-work/w1-w2-inference-readiness.v1.json'
+      - 'docs/parallel-work/inference-readiness-v1.cjs'
+      - 'docs/parallel-work/test-w1-w2-inference-readiness.cjs'
+      - '.github/workflows/coord-w1-w2-inference-readiness.yml'
+  push:
+    branches: ['coord/w1-w2-inference-readiness-20261013']
+    paths:
+      - 'docs/parallel-work/**'
+      - '.github/workflows/coord-w1-w2-inference-readiness.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-null-acceptance-metadata:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify only future, withheld science gates and no original-source reads
+        run: node docs/parallel-work/inference-readiness-v1.cjs
+      - name: Independent source-dependence and null-readiness metadata negative tests
+        run: node --test docs/parallel-work/test-w1-w2-inference-readiness.cjs
+      - name: Preserve accepted original parallel analytical contract
+        run: node docs/parallel-work/validate-contract.cjs
