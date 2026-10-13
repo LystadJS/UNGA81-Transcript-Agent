@@ -15,36 +15,58 @@ function exportTo(dir){
  if(!dir||target===ROOT||target.startsWith(ROOT+path.sep)||fs.existsSync(target))
    throw Error('New outside-repository output directory required; never overwrite a file.');
  const outcomes=[];
- for(const [i,s] of design.proposed_synthetic_scenarios.entries()){
-   const generated=generate(s,20261013+i);
-   const report=fit(generated.panel,{maximum_evaluations:800});
-   const canFit=/^SYNTHETIC_ESTIMATOR/.test(report.status);
-   if(s.intended_status==='candidate_feasible'||
-     s.intended_status==='candidate_conditional_only'){
-     if(!canFit)throw Error('Frozen fictional feasible estimator scenario withheld: '+s.id+' '+report.status);
-   }else if(report.status!==s.intended_status)
-     throw Error('Frozen expected refusal missing for '+s.id+': '+report.status);
+ for(const [i,scenario] of design.proposed_synthetic_scenarios.entries()){
+   const feasible=scenario.intended_status==='candidate_feasible'||
+     scenario.intended_status==='candidate_conditional_only';
+   const previews=feasible?design.plan_for_accuracy_calibration.preview_panels_per_feasible_scenario:1;
+   const panelResults=[];
+   for(let w=0;w<previews;w++){
+     const generated=generate(scenario,20261013+i+w*1000);
+     const report=fit(generated.panel,{maximum_evaluations:800});
+     const canFit=/^SYNTHETIC_ESTIMATOR/.test(report.status);
+     if(feasible){
+       if(!canFit)throw Error('Predeclared fictional numerically feasible scenario withheld: '+scenario.id+' '+report.status);
+     }else if(report.status!==scenario.intended_status)
+       throw Error('Predeclared expected source design refusal missing for '+scenario.id+': '+report.status);
+     panelResults.push({
+       preview_index:w,
+       status:report.status,
+       original_inventory:generated.panel.source_inventory_total,
+       selected:generated.panel.selected_eligible,
+       available_not_selected:generated.panel.available_not_selected,
+       unavailable:generated.panel.unavailable_sources,
+       comparison_from_oracle_after_fit_only:canFit?{
+         truth_year_rho:generated.truth.year_rho,
+         estimated_year_rho:report.estimated_year_rho,
+         absolute_year_rho_error:Math.abs(report.estimated_year_rho-generated.truth.year_rho),
+         estimated_variances:report.estimated_variances,
+         known_variances:generated.truth.variances
+       }:null,
+       optimizer_evaluations:report.optimizer_evaluations??0,
+       estimation_warnings:report.warnings??[report.reason],
+       nuisance_accepted_for_real_text:false
+     });
+   }
+   const errors=panelResults.flatMap(p=>p.comparison_from_oracle_after_fit_only?
+     [p.comparison_from_oracle_after_fit_only.absolute_year_rho_error]:[]);
    outcomes.push({
-     scenario_id:s.id,source_split:'synthetic',
-     status:report.status,expected_status:s.intended_status,
-     year_count:s.years,source_meetings:s.years*s.meetings_per_year,
-     original_inventory:generated.panel.source_inventory_total,
-     selected:generated.panel.selected_eligible,
-     available_not_selected:generated.panel.available_not_selected,
-     unavailable:generated.panel.unavailable_sources,
-     comparison_from_oracle_after_fit_only:canFit?{
-       truth_year_rho:generated.truth.year_rho,
-       estimated_year_rho:report.estimated_year_rho,
-       absolute_year_rho_error:Math.abs(report.estimated_year_rho-generated.truth.year_rho),
-       estimated_variances:report.estimated_variances,
-       known_variances:generated.truth.variances
-     }:null,
-     optimizer_evaluations:report.optimizer_evaluations??0,
-     estimation_warnings:report.warnings??[report.reason],
+     scenario_id:scenario.id,source_split:'synthetic',
+     expected_status:scenario.intended_status,
+     year_count:scenario.years,source_meetings:scenario.years*scenario.meetings_per_year,
+     preview_panels:panelResults.length,
+     numeric_fits_completed:errors.length,
+     estimated_year_rho_absolute_errors:errors,
+     maximum_absolute_rho_error:errors.length?Math.max(...errors):null,
+     candidate_design_unreliable:errors.some(e=>e>0.5) ||
+       panelResults.some(x=>x.estimation_warnings.some(w=>/bound|budget/.test(w))),
+     panels:panelResults,
      nuisance_accepted_for_real_text:false
    });
  }
- const complete=outcomes.filter(x=>x.comparison_from_oracle_after_fit_only).length;
+ const numeric=outcomes.reduce((n,x)=>n+x.numeric_fits_completed,0);
+ const panels=outcomes.reduce((n,x)=>n+x.preview_panels,0);
+ const refusals=outcomes.filter(x=>x.numeric_fits_completed===0).length;
+ const reliabilityFlags=outcomes.filter(x=>x.candidate_design_unreliable).map(x=>x.scenario_id);
  const receipt={
    schema:'un.w1w2.nuisance-estimation.synthetic-preflight.v0',
    recorded_date:'2026-10-13',
@@ -52,8 +74,10 @@ function exportTo(dir){
    mode:'synthetic_numeric_proxy_only',
    estimator_family:'restricted_likelihood_crossed_meeting_affiliation_AR1_year',
    fit_provided_true_nuisance_parameters:false,
-   scenarios:outcomes.length,estimation_attempts:complete,
-   correctly_withheld_scenarios:outcomes.length-complete,
+   scenarios:outcomes.length,preflight_panels:panels,estimation_attempts:numeric,
+   correctly_withheld_scenarios:refusals,
+   candidate_reliability_red_flags:reliabilityFlags,
+   estimator_precision_accepted:false,
    selection_mechanism_conditional_only:true,
    estimated_AR1_year_parameter:true,
    calibrated_error_rate:false,
@@ -100,10 +124,12 @@ if(require.main===module){
    process.stdout.write(JSON.stringify({schema:'un.w1w2.nuisance-estimation.synthetic-fit-summary.v0',
      scientific_gates_passed:0,
      rows:reports.simulated_scenarios.map(r=>({
-       id:r.scenario_id,status:r.status,truth_rho:r.comparison_from_oracle_after_fit_only?.truth_year_rho??null,
-       estimated_rho:r.comparison_from_oracle_after_fit_only?.estimated_year_rho??null,
-       absolute_rho_error:r.comparison_from_oracle_after_fit_only?.absolute_year_rho_error??null,
-       optimizer_evaluations:r.optimizer_evaluations,warnings:r.estimation_warnings
+       id:r.scenario_id,expected_status:r.expected_status,preview_panels:r.preview_panels,
+       estimated_rho:r.panels.map(p=>p.comparison_from_oracle_after_fit_only?.estimated_year_rho??null),
+       truth_rho:r.panels.map(p=>p.comparison_from_oracle_after_fit_only?.truth_year_rho??null),
+       absolute_rho_errors:r.estimated_year_rho_absolute_errors,
+       candidate_design_unreliable:r.candidate_design_unreliable,
+       warnings:r.panels.map(p=>p.estimation_warnings)
      }))})+'\n');
  }
  catch(e){process.stderr.write('Nuisance preflight refused: '+String(e.message||e)+'\n');process.exitCode=1;}
