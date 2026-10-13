@@ -11,7 +11,6 @@ function aggregate(shards){
  const {protocol:p,protocol_sha256:sha}=lock();
  check(Array.isArray(shards)&&shards.length>0,'source-free synthetic shard reports required');
  const all=new Map(p.nuisance_worlds.map(s=>[s.id,new Map()]));
- let repeated=0;
  for(const shard of shards){
    check(shard&&shard.schema==='un.w1-w2.synthetic-null.calibration-audit.v1' &&
      shard.protocol_sha256===sha && shard.mode==='full_shard' &&
@@ -29,9 +28,8 @@ function aggregate(shards){
    check(scenario&&Number.isInteger(world.world_index)&&
      world.world_index>=0&&world.world_index<1000,
      'world index or invented nuisance regime outside frozen plan');
-   if(world.observed_seed!==undefined)
-     check(world.observed_seed===deriveSeed(sha,id,world.world_index,-1,'observed'),
-       'world seed disagrees with immutable synthetic design');
+   check(world.observed_seed===deriveSeed(sha,id,world.world_index,-1,'observed'),
+     'world seed disagrees with immutable synthetic design');
    const byWorld=all.get(id);
    check(!byWorld.has(world.world_index),'duplicate world index/seed masquerading as independent replication');
    byWorld.set(world.world_index,world);
