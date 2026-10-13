@@ -142,7 +142,7 @@ test('unverified alternative source modality cannot pass as an invented source',
 test('invalid observation units, few affiliations and rank deficient X do not yield nuisance parameters',()=>{
  const o=rowcopy(a.panel);
  o.source_design_sha256='f'.repeat(64);
- assert.throws(()=>R.verify(o),/source identity/);
+ assert.throws(()=>R.verify(o),/design identity/);
  const b0=rowcopy(a.panel);
  b0.full_design_rows[0].fixed_covariates=null;
  assert.throws(()=>R.verify(b0),/design identity/);
