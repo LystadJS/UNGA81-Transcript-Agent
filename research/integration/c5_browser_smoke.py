@@ -119,6 +119,11 @@ def verify(browser, base: str, w2: Path, w4: Path, pinned: Path,
         page.goto(base + "/research.html", wait_until="load")
         assert page.locator("script[src='research-evidence-renderer.js']").count() == 1
         assert page.locator("script[src='research-evidence.js']").count() == 1
+        assert page.evaluate(
+            "() => window.UNResearchEvidenceRenderer !== window.UNEvidenceViz && "
+            "typeof window.UNResearchEvidenceRenderer?.renderPanel === 'function' && "
+            "typeof window.UNEvidenceViz?.renderPanel === 'function'"
+        ), "Existing W3/W6 source renderer must not be replaced"
         assert page.locator("#research-w2-evidence-chart .ev-panel").count() == 0
         assert page.locator("#research-w4-chart .ev-panel").count() == 0
         assert page.locator("#research-w2-evidence-svg").is_disabled()
