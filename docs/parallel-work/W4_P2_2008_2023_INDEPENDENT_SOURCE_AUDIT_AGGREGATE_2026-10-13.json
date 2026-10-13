@@ -1,0 +1,178 @@
+{
+  "schema": "un.w4.p2.pre2016.independent-source-quality-acceptance.aggregate.v1",
+  "audit_date": "2026-10-13",
+  "frozen_preregistration_commit": "e698629266914929a33e832e8b0df32bd5e59187",
+  "frozen_index_and_split_commit": "755ad1e5224a93a13763a8932f6275198f78c9f4",
+  "frozen_audit_split_sha256": "9f82613e7057a66f9ca7ccb550fade49797d4457fd67ada2443ef6a00edb9ef5",
+  "un_original_meeting_universe_2008_2015": 118,
+  "source_authentication": {
+    "prior_development_original_PVs": 90,
+    "fresh_independent_original_PV_audit_attempted": 28,
+    "fresh_original_PV_sha256_header_symbol_date_extraction_passed": 28,
+    "fresh_original_PV_total_pages": 1062,
+    "fresh_original_PV_total_raw_bytes": 13383589,
+    "full_pre2016_original_PV_meeting_universe_complete": 118,
+    "UN_publisher_signed_sha256_digest_available": false,
+    "original_Harvard_archive_sha256": "55077dccf7242cdf544aa95c4797c68e443b0c37344c9c112a2e2392ddfcf8e5"
+  },
+  "speech_quality_audit": {
+    "frozen_audit_associated_candidate_actor_years": 178,
+    "original_frozen_PV_mapping_full_speech_passes": 176,
+    "original_frozen_PV_mapping_full_speech_failures": 2,
+    "unchanged_strong_thresholds": "7-token overlap >=0.90; >=8/10 deciles >=0.80; opening and ending >=0.40",
+    "corrected_wrong_meeting_source_attributions": 2,
+    "corrected_missing_index_actor_source_attributions": 6,
+    "derived_corrections_with_explicit_original_PV_speaker_attribution": 8,
+    "new_unique_qualifying_full_year_PV_matches_total": 184,
+    "multiple_full_year_qualifying_PV_source_matches": 0,
+    "independent_audit_sources_used_for_model_tuning": false
+  },
+  "denominators": {
+    "fixed_country_affiliation_count": 99,
+    "fixed_calendar_year_count": 16,
+    "expected_country_year_opportunities": 1584,
+    "previous_2016_2023_source_verified_inherited_not_rerun": 790,
+    "prior_pre2016_source_verified_inherited_from_P1": 600,
+    "new_audit_source_corroborations": 176,
+    "new_direct_original_PV_source_reconciliations": 8,
+    "new_pre2016_source_verified_total": 784,
+    "all_16_year_source_verified": 1574,
+    "all_16_year_unverified_or_not_at_risk": 10,
+    "yearly": [
+      {
+        "year": 2008,
+        "verified": 98,
+        "unverified": 1,
+        "coverage_fraction": 0.98989898989899
+      },
+      {
+        "year": 2009,
+        "verified": 98,
+        "unverified": 1,
+        "coverage_fraction": 0.98989898989899
+      },
+      {
+        "year": 2010,
+        "verified": 96,
+        "unverified": 3,
+        "coverage_fraction": 0.9696969696969697
+      },
+      {
+        "year": 2011,
+        "verified": 98,
+        "unverified": 1,
+        "coverage_fraction": 0.98989898989899
+      },
+      {
+        "year": 2012,
+        "verified": 98,
+        "unverified": 1,
+        "coverage_fraction": 0.98989898989899
+      },
+      {
+        "year": 2013,
+        "verified": 98,
+        "unverified": 1,
+        "coverage_fraction": 0.98989898989899
+      },
+      {
+        "year": 2014,
+        "verified": 99,
+        "unverified": 0,
+        "coverage_fraction": 1
+      },
+      {
+        "year": 2015,
+        "verified": 99,
+        "unverified": 0,
+        "coverage_fraction": 1
+      },
+      {
+        "year": 2016,
+        "verified": 99,
+        "unverified": 0,
+        "coverage_fraction": 1
+      },
+      {
+        "year": 2017,
+        "verified": 99,
+        "unverified": 0,
+        "coverage_fraction": 1
+      },
+      {
+        "year": 2018,
+        "verified": 99,
+        "unverified": 0,
+        "coverage_fraction": 1
+      },
+      {
+        "year": 2019,
+        "verified": 99,
+        "unverified": 0,
+        "coverage_fraction": 1
+      },
+      {
+        "year": 2020,
+        "verified": 98,
+        "unverified": 1,
+        "coverage_fraction": 0.98989898989899
+      },
+      {
+        "year": 2021,
+        "verified": 98,
+        "unverified": 1,
+        "coverage_fraction": 0.98989898989899
+      },
+      {
+        "year": 2022,
+        "verified": 99,
+        "unverified": 0,
+        "coverage_fraction": 1
+      },
+      {
+        "year": 2023,
+        "verified": 99,
+        "unverified": 0,
+        "coverage_fraction": 1
+      }
+    ],
+    "source_verified_fraction_fixed_population": 0.9936868686868687,
+    "fixed_affiliations_at_least_6_verified_each_8year_era": 98
+  },
+  "remaining_not_source_authenticated": {
+    "original_Harvard_archive_member_absent": 7,
+    "of_which_UN_member_status_pre_admission_not_at_risk": 3,
+    "Harvard_speech_no_qualifying_full_PV_original_match": 1,
+    "prior_2016_2023_source_unverified_inherited": 2,
+    "total": 10,
+    "structural_unavailability_kept_in_fixed_denominator_not_zero": true
+  },
+  "predeclared_source_coverage_gates": {
+    "overall_95_percent": "PASS",
+    "each_year_at_least_90_percent": "PASS",
+    "minimum_90_affiliations_with_6_verified_years_each_era": "PASS",
+    "minimum_annual_verified": 96,
+    "minimum_annual_denominator": 99
+  },
+  "project_gates": {
+    "original_source_audit": "PASS",
+    "historical_2008_2023_source_coverage": "PASS",
+    "new_16year_64d_lexical_W4_fit": "NOT_RUN",
+    "source_selection_MAR_positivity_validation": "NOT_RUN",
+    "predeclared_36cell_21600world_synthetic_64D_calibration": "NOT_RUN",
+    "calibrated_real_world_inference": "FAIL",
+    "public_empirical_release": "FAIL",
+    "frozen_D1_O1_to_O5_modified": false,
+    "reserved_october_2026_meeting_transcripts_opened": 0
+  },
+  "reproducibility_private_ledger_sha256": {
+    "encrypted_28_original_UN_PV_audit_receipt": "4deb5291ddf09f559d8d17518d85d99d8417bb2d2b29e499252512eb061704ec",
+    "full_28_original_PV_byte_validation_ledger": "c852939732ef54bb08498eec2122cc551340369cedc71a1e29f9bdf7e9f5f74a",
+    "full_28_original_PV_speech_audit_ledger": "caccb88e7bbb2920f0abf64b81f37262bcfc82cb0cd558970b9cf74585ac3e0e",
+    "unique_full_year_source_matching_ledger": "10374a12d8895083226ff66f58a76375359c97f739c8078616b396a071999126",
+    "eight_direct_source_attribution_ledger": "fe65cf0a80b1162fee31e760fafeb33af839d67f168b57fa79d8b80cf557eb89",
+    "derived_complete_99x16_inventory": "87b9989b351e1f7ad59d73385ac228ed5a9c17e17d80618b4208a0f08323fcf9"
+  },
+  "private_row_level_source_data_committed_publicly": false,
+  "raw_original_source_PDFs_committed_publicly": false
+}
