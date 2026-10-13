@@ -22,6 +22,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Verify immutable pre-estimation candidate source and all held G01-G13 gates
+        run: node research/integration/w1_w2/nuisance_estimation/design_guard.cjs
       - name: Estimate all five nuisance parameters only from invented scalar panels
         run: node --test research/integration/w1_w2/nuisance_estimation/test_estimator.cjs
       - name: Execute all eight fixed feasible and refused scenarios
