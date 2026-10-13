@@ -1,0 +1,68 @@
+name: P2 prior 2016–2023 105-PV source reauthentication
+on:
+  push:
+    branches: ['coord/p2-2000-2015-original-PV-census']
+    paths:
+      - '.github/workflows/p2-prior-original-PV-source-replay.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  originals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        partition: [0, 1]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install cryptography==44.0.3 pymupdf==1.26.7
+      - run: python research/source_acquisition/p2_expansion/secure_originals.py --selftest
+      - name: Validate preregistered existing 105 PVs and form source-only partition
+        env:
+          BATCH: '${{ matrix.partition }}'
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re,os
+          p=Path('research/source_acquisition/p2_expansion/preregistered_original_PV_2016_2023_105.txt')
+          names=[x.strip() for x in p.read_text().splitlines() if x.strip() and not x.startswith('#')]
+          assert len(names)==105 and len(set(names))==105
+          assert all(re.fullmatch(r'A/7[1-8]/PV\.[1-9]\d*',x) for x in names)
+          b=int(os.environ['BATCH']);partition=names[:55] if b==0 else names[55:]
+          assert len(partition)==(55 if b==0 else 50)
+          (Path(os.environ['RUNNER_TEMP'])/'approved-originals.txt').write_text('\n'.join(partition)+'\n')
+          print('Former P2 source universe revalidation batch count',len(partition))
+          PY
+      - name: Acquire complete originals and privately seal PDF bytes
+        env:
+          P2_PRIVATE_RECIPIENT: 'pyHPGJgH5iUc8jPV7UKm0smAYa7yHhypj4IRv6Yd/BM='
+          BATCH: '${{ matrix.partition }}'
+        run: |
+          python research/source_acquisition/p2_expansion/secure_originals.py \
+            --symbols "$RUNNER_TEMP/approved-originals.txt" \
+            --public-key "$P2_PRIVATE_RECIPIENT" \
+            --sealed-output "$RUNNER_TEMP/prior-sealed/originals-$BATCH.sealed" \
+            --workers 4
+      - name: Reject any plaintext original PDF artifact
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import os
+          paths=list((Path(os.environ['RUNNER_TEMP'])/'prior-sealed').iterdir())
+          assert len(paths)==1 and paths[0].suffix=='.sealed'
+          assert paths[0].read_bytes()[:8]==b'UNW4P2\x00\x01'
+          print('PASS: ciphertext-only original source export')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2-reverify-prior-105-partition-${{ matrix.partition }}
+          path: ${{ runner.temp }}/prior-sealed/*.sealed
+          retention-days: 1
+          if-no-files-found: error
