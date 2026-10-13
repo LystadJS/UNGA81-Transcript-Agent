@@ -1,0 +1,75 @@
+name: P2 original General Debate 2000–2015 encrypted census
+on:
+  push:
+    branches: ['coord/p2-2000-2015-original-PV-census']
+    paths:
+      - 'research/source_acquisition/p2_expansion/secure_originals_2000_2015.py'
+      - 'research/source_acquisition/p2_expansion/preregistered_original_PV_2000_2015_239.txt'
+      - '.github/workflows/p2-historical-2000-2015-source-census.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-documents:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        source_batch: [0, 1, 2]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned PDF and authenticated encryption libraries
+        run: python -m pip install cryptography==44.0.3 pymupdf==1.26.7
+      - name: Test synthetic authenticated-encryption envelope
+        run: python research/source_acquisition/p2_expansion/secure_originals_2000_2015.py --selftest
+      - name: Check preregistered 239-symbol census and isolate batch
+        env:
+          PV_BATCH: '${{ matrix.source_batch }}'
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,os,re
+          src=Path('research/source_acquisition/p2_expansion/preregistered_original_PV_2000_2015_239.txt')
+          lines=[x.strip() for x in src.read_text().splitlines() if x.strip() and not x.startswith('#')]
+          assert len(lines)==239 and len(set(lines))==239
+          assert all(re.fullmatch(r'A/(5[5-9]|6[0-9]|70)/PV\.[1-9]\d*',x) for x in lines)
+          assert hashlib.sha256(('\n'.join(lines)+'\n').encode()).hexdigest()=='c98200566e639d90e7a9ca5750034f9b83446a1d0462e0b4d9b4d21da0e5de59'
+          idx=int(os.environ['PV_BATCH'])
+          selected=lines[idx*80:(idx+1)*80]
+          assert len(selected)==(79 if idx==2 else 80)
+          (Path(os.environ['RUNNER_TEMP'])/'preregistered_batch.txt').write_text('\n'.join(selected)+'\n')
+          print('PASS: official 2000–2015 PV symbol selection, documents in batch:',len(selected))
+          PY
+      - name: Fetch and encrypt complete original UN PV documents
+        env:
+          PRIVATE_RECIPIENT_PUBLIC_KEY: 'pyHPGJgH5iUc8jPV7UKm0smAYa7yHhypj4IRv6Yd/BM='
+          PV_BATCH: '${{ matrix.source_batch }}'
+        run: |
+          python research/source_acquisition/p2_expansion/secure_originals_2000_2015.py \
+            --symbols "$RUNNER_TEMP/preregistered_batch.txt" \
+            --public-key "$PRIVATE_RECIPIENT_PUBLIC_KEY" \
+            --sealed-output "$RUNNER_TEMP/historical-sealed/pv-originals-$PV_BATCH.sealed" \
+            --workers 4
+      - name: Ensure artifacts contain only recipient-encrypted source bytes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import os
+          p=Path(os.environ['RUNNER_TEMP'])/'historical-sealed'
+          files=list(p.iterdir())
+          assert len(files)==1 and files[0].suffix=='.sealed'
+          assert files[0].read_bytes()[:8]==b'UNW4P2\x00\x01'
+          print('PASS: no original PDF, extracted source text or decryption private key in artifact')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2-2000-2015-original-pv-census-${{ matrix.source_batch }}
+          path: ${{ runner.temp }}/historical-sealed/*.sealed
+          retention-days: 1
+          if-no-files-found: error
