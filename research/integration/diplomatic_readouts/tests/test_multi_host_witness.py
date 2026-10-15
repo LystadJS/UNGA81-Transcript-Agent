@@ -301,7 +301,7 @@ class MultiHostSyntheticTests(unittest.TestCase):
         resign_revocation(source)
         # Even though both signatures are now internally valid, independent
         # audit/revocation pins in observers and witness commitments are not.
-        self.withhold("witness_revocation_log_tip_mismatch")
+        self.withhold("revocation_same_sequence_rewrite")
 
     def test_27_full_compromise_of_pins_plus_quorum_is_undetectable_but_still_no_access(self):
         # If the attacker also rewrites both independent observer states and
