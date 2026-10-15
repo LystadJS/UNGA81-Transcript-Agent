@@ -1,0 +1,41 @@
+# Multi-host revocation witness and audit-log consistency — synthetic review v0
+
+**Status:** coordinator-only engineering candidate, **not a source authorization, cryptographic certification, scientific release, or publication gate**. PR #89 and pinned PR #70 remain unmerged. No original UN transcripts, metadata from actual private registries, protected 5–6 October meetings, human-review labels, D1 O1–O5 decisions, Outlook, Shiny, release manifest or website are touched.
+
+## Architecture and trust boundary
+
+The new [`multi_host_witness.py`](multi_host_witness.py) is a read-only, offline verifier of fictional audit metadata. It composes the *unchanged frozen* [`synthetic_signatures.py`](synthetic_signatures.py) verification result with a separate **four-witness Ed25519 committee**, a quorum of **three of four**, **two independently pinned observer checkpoints**, and a small append-only hash chain of synthetic witness events. No test signing key or observer pin corresponds to a real custodian. The quorum only attests to one specific invented checkpoint, not to the legal accuracy, completeness, or provenance of source records.
+
+The baseline `WitnessObserverPin` records independently retained, exact registry hash, revocation checkpoint hash/sequence, previous full-log canonical hash, tip hash, epoch and checkpoint digest. A subsequent signed checkpoint must strictly increase epoch by one, append at least one event, match the entire previous log prefix *byte-for-byte after canonicalization*, preserve registry source identity, and retain the prior digest. This is **full-prefix hash-chain verification with bounded synthetic log length (32)**, **not a production RFC 6962 Merkle consistency proof**. Every event has a unique synthetic ID, dense index, strictly typed source/checkpoint digests, ordered timestamp, and a domain-separated SHA-256 link to its predecessor.
+
+All attestations are signed over `UNGA81/SYNTHETIC/WITNESS/ATTEST/V0\0 || canonical_JSON({key_id,payload})`; the key ID is inside the signature, and the four public-key byte strings must be unique and disjoint from custody and revocation signer keys. Three **distinct** witness IDs are required. Each signed checkpoint binds audience, original registry/audit identity, independently pinned revocation digest, revocation sequence, old checkpoint digest, new epoch, log length/digest/tip, clock and expiry and an immutable `no_source_access_or_release` permission field. Invalid/malformed/misleading extra signatures are **refused**, not silently ignored. A separately supplied signed gossip attestation for a competing tip or epoch is refused as a fork.
+
+The two observer pins are supplied *from an independent trust plane*, never computed from the untrusted current checkpoint by the verifier. Missing or disagreeing observer checkpoints deny verification. Their **external authenticated distribution, monotonic storage, replay protection and availability are assumptions**, not features supplied by this simulation. `propose_observer_pins()` exists **for fictional fixtures only**. The synthetic test-suite verifies per-process restart of observer pin serialization but it does **not** turn an on-disk JSON document into a trusted external observer.
+
+### Quorum/security limitations
+
+A 3-of-4 quorum tolerates the **absence of one witness**. Quorum intersection is at least two witnesses. If **at most one witness** is Byzantine *and honest witnesses durably refuse equivocation*, any two independent quorums intersect in at least one honest non-equivocating witness. This is a **conditional protocol property, not a proof of production Byzantine safety**; signing responses alone cannot prove a witness persisted its decision. Two compromised witnesses alone cannot supply three signatures. A malicious signer who supplies a conflicting signed gossip record is detected *when that record is presented*, not while a partition withholds it.
+
+Both custodian/revocation private keys compromised with the independent source trust pins and witness quorum intact: **WITHHELD** on inconsistent revocation/log identity or signatures. Both upstream signers **plus a three-witness quorum and both observer pins compromised**: an entirely forged fictional prefix and checkpoint can appear **synthetically consistent**; this is an **explicitly demonstrated limitation**, never a security PASS. Public test keys, attacker-controlled original log, fabricated observer pins and untrusted keys must never be used operationally. Checkpoint gossip and consistency are not independent proof that the registry contains every source; an omission before all trusted observers' baseline cannot be detected from the invented receipts.
+
+No network, no permission mutation, no source fetch, no email, no background actions and no new access tokens exist in the module. The result is always an allowlisted `synthetic_quorum_consistent_no_authority` or `withheld`, with all **13** source/reviewer/privacy/statistical/holdout/D1 gates fixed to `NOT_RUN`, `authority:none`, `authorized:false`, `can_read_source:false`, `can_issue_review:false`, `statistical_eligible:false`, `publication_eligible:false`, `delivery_eligible:false`, `source_text_included:false`, and `source_rows_exported:false`. The 37 reserved meetings are unchanged and `transcripts_opened:0`.
+
+## Independent synthetic validation and stress protocol
+
+No frozen signature module, existing `SECURITY_REVIEW_FREEZE_CANDIDATE.md` or pinned blob is edited. New code and fixtures live exclusively in `research/integration/diplomatic_readouts/**` (plus the existing coordinator-owned read-only workflow). The preexisting freeze proposal stays `PROPOSED_NOT_APPROVED`. A subsequent source change must create a separately reviewed revision rather than silently mutating a frozen receipt.
+
+```sh
+python3 -m pip install -r research/integration/diplomatic_readouts/requirements-dev.txt
+python3 -m unittest discover -s research/integration/diplomatic_readouts/tests -v
+python3 research/integration/diplomatic_readouts/stress_multi_host.py --iterations 280 --seed 81081 --output /tmp/unga-witness-a
+python3 research/integration/diplomatic_readouts/stress_multi_host.py --iterations 280 --seed 81081 --output /tmp/unga-witness-b
+diff -rq /tmp/unga-witness-a /tmp/unga-witness-b
+```
+
+The stress suite includes 14 attack categories: valid 3/4 and 4/4 quorum, missing/duplicate host, two-observer disagreement, epoch replay, signed fork gossip, wrong audience, tampered witness signature, rewritten prefix, revocation substitution, expired clock, revoked-source replacement, and the **expected theoretical defeat when both source signers, quorum witnesses and both independent observer pins are controlled**. It must refuse all attacks in their declared negative categories; its single fully compromised case yields *verified synthetic consistency with no actual permission*, which is reported as a limitation. The deterministic receipt exposes only labels and integer counts, not signatures, raw source rows, private keys, custodian details or original source bytes.
+
+Run official `un.parallel-analysis.v1`, source-aware W1, passage-corpus, latent, pinned PR #70, readout adapter, source-registry/authorization and frozen previous red-team suites at exact head in GitHub Actions. Missing tests or a new failure must be reported, not marked PASS. No source review, statistical inference, real security performance or release claim follows from passing synthetic CI.
+
+## Independent coordinator disposition required
+
+A reviewer must distinguish **technical synthetic validation** from approval of an operational host service. Before a real implementation could be contemplated, require: independent witness key enrollment and custody, verified monotonic per-host signing state, honest-intersection assumptions, audited durable observer checkpoints outside both compromised domains, gossip availability and fork evidence retention, audit-log completeness/witnessed source inventory, secure time, key-rotation/revocation/compromise response, contractual source access, actual owner review, statistical identification and an entirely separate D1 release decision. Until each is independently authorized, **HOLD** private-source access, merge and deployment.
