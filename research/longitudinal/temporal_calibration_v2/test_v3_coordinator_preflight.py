@@ -15,6 +15,20 @@ class CoordinatorPreflightTests(unittest.TestCase):
                          "FAIL_NOT_IDENTIFIED")
         self.assertEqual(result["gates"]["year_process_nugget_external_identification"],
                          "FAIL_NOT_IDENTIFIED")
+    def test_integrated_conditional_gamma_freeze_holds(self):
+        result=audit.review_candidate()
+        self.assertEqual(result["gates"]["exact_finite_state_integrated_response_likelihood"],
+                         "DEVELOPMENT_PASS_NOT_GAUSSIAN_AR1")
+        self.assertEqual(result["gates"]["integrated_response_gamma_interval_T16"],
+                         "NOT_CALIBRATED")
+        self.assertEqual(result["gates"]["binomial_sharp_conditional_gamma_set"],
+                         "MATHEMATICAL_PASS_ASSUMPTION_CONDITIONAL")
+        self.assertEqual(result["gates"]["unaudited_missing_outcome_gamma"],
+                         "NO_FIT_UNRESTRICTED_MNAR")
+        self.assertEqual(result["gates"]["real_within_year_actor_meeting_iid_design"],
+                         "NOT_VERIFIED")
+        self.assertEqual(result["status"],"NOT_ACCEPTED_FOR_STATISTICAL_FREEZE")
+        self.assertFalse(result["v3_holdout_authorized"])
     def test_source_set_cannot_be_silently_incomplete(self):
         with patch.object(audit,"proposal_receipt") as p:
             p.return_value={"source_sha256":{}}
