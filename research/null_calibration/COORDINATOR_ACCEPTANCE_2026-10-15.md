@@ -98,3 +98,44 @@ python3 research/null_calibration/merge_tree_integration.py \
 ```
 
 Fail closed on any missing file, unsuccessful native suite, conflicting tree or unverified frozen identity. Review the actual command outputs and current coordinator ledger before engineering acceptance. Do not merge, publish, calibrate empirical text, or revise PR57 critical values.
+
+
+## Pinned-main Git-object reconstruction and executable test attempt — 2026-10-15 14:53Z+
+
+**Requested pinned reference:** `main` `964ba0899665bb03bbe4fc54b4c65426d7c4d35d`; PR #67 reviewed head `8c35cab796574ad9ac2a987383306001dfb06509`. This section records *new execution in the current turn* and supersedes older local-evidence caveats where indicated. Neither original empirical source text nor the 37 sealed evaluation meetings was opened.
+
+### Static effective merge-tree identity — PASS (not native regression execution)
+
+Queried GitHub's exact pinned main root tree `c1926a6660e2d45c82599f0c6bbc43a83fea9582`, its research tree `358ccfd6d6cc9c64cad3fc559e8f4ac2c0264f35`, and PR head's exclusive new `research/null_calibration` tree `410deb2b5be84b9d2d9d464dd7a3679f7f58ad66`. Main contains **no** preexisting `research/null_calibration` directory. The PR tree contains exactly **27 ordinary 100644 blobs**, with no symlinks, submodules, executable or outside-owned paths. No changed-path intersection exists with the five commits advancing main beyond the common merge base.
+
+Independently reserialized main's original root and research directories using Git canonical tree-object serialization and verified both recalculated SHA-1 values exactly matched GitHub's tree objects. Inserted the unchanged PR subtree into the pinned research directory and recomputed:
+
+- expected merged `research/` tree: `b78e97e13ab40f10f05eee4687b80a5693db2fc4`;
+- **expected merged root tree: `f9e7af82dc56d92cd187705a62695f1cc5037234`**.
+
+An independent native Git `git mktree --missing` replay produced both same original main tree IDs and both expected merged IDs. This is a **static object-accurate no-conflict merge-tree calculation**, not `git merge-tree` run against actual original commit objects and **not** a complete executable checkout. It is specific to PR head `8c35cab...`; any subsequent documentation commit changes the PR subtree, requiring recomputation. Local proof script SHA256 `89392cc8f57f1877248c047a84b07d4edb31d3b6d3c6b8104f32335a1598593b`; console receipt SHA256 `42b0d7e119e9048b391257f0a268203527dafd61a391b8ae5b90cc9171aeb6e9`.
+
+### Newly executed exact-blob Python regressions — PASS (owned suite only)
+
+Reconstructed all 19 Python files from the reviewed PR subtree, checked their local `git hash-object` identities against the 19 exact GitHub blob SHAs: **19/19 match**, zero mismatches. Executed:
+
+```bash
+cd /mnt/data/pr67_exact
+python3 -m unittest -v test_calibration.py test_extended.py test_study.py \
+  test_temporal_ar1.py test_profile_reml.py test_hierarchical_reml.py \
+  test_ci_integration.py test_merge_tree_integration.py
+```
+
+**40/40 PASS, zero errors/failures, 2.965 seconds**, Python 3.13.5, NumPy 2.3.5, SciPy 1.17.0, Node 22.16.0, Git 2.47.3. Fresh local log SHA256 `a145d9533c9ca3d0a9731cd94a283e454d3e72e6298b1a92aee4a5fa9103c7bf`. This is byte-exact PR-source *owned Python* evidence, not upstream Node W1/W2 integration; the reconstructed directory contains additional untracked local development files, but the explicitly named 40 tests came exclusively from the 19 verified PR Python files.
+
+### Actual full-checkout attempt — BLOCKED, expected fail-closed refusal
+
+Local `git ls-remote https://github.com/LystadJS/UNGA81-Transcript-Agent.git HEAD` returned exit **128**: `Could not resolve host: github.com`. The local directory has no `.git` and lacks full upstream source. The committed `merge_tree_integration.py` invoked with reviewed head and pinned main returned exit **1**, `blocker=no_full_git_checkout`, `merge_tree_sha:null`, `ready:false`, `suites:{}`, `scientific_eligible:false`, `publication_eligible:false`. Refusal JSON SHA256 `af5b8d5d690c6f0eb3eff52b7f1c70fec27564b2b6192e7305dafb5c0427db20`. This is correct withholding, not evidence of a native upstream run.
+
+**NOT RUN:** PR57 W1/W2 native null, PR60 native nuisance estimator, W1 original framework/schema, W2 consensus, W1→W2 bridge and grouped refits, coordinator interchange, W1/W2 scientific readiness and full-checkout effective merged-tree regressions. No current-head GitHub Actions or combined statuses were returned (both empty). There were **no eligible owned-path test failures** to repair. Do not claim native acceptance.
+
+### Coordinator status
+
+Owned namespace **PASS**; frozen PR57/PR60 Git blobs verified against the pinned GitHub tree **PASS**; static expected merge-tree identification **PASS**; exact-blob local Python suite **PASS**; full checkout acquisition **BLOCKED**; actual upstream native suites **NOT RUN**; hosted exact-head CI **NOT RUN**; covariance scientific identification **FAIL/WITHHELD** (previous hierarchical recovery 12/90 accepted); all G01–G13, original source/evaluation and publication restrictions **PRESERVED**. Keep PR draft and unmerged. The current public `main` may advance independently of the requested pinned SHA; recheck before any integration approval, without silently changing this test basis.
+
+**Next executable action:** in an execution-capable complete checkout holding pinned main and the latest reviewed PR head, run the committed `merge_tree_integration.py`, retain complete native job logs/results, validate exact source and frozen hashes, and independently inspect latest-head CI. No merge, empirical test, threshold change or deployment is authorized by this handoff.
