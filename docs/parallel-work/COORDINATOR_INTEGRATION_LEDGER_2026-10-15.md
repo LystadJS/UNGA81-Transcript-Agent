@@ -67,3 +67,15 @@ Eight new worker PRs (#64, #66–#71 plus an expected supervised workstream not 
 **Scientific holds unaffected:** private original-PV/Harvard bytes and source selection not independently reauthenticated here; no country-level response positivity or MAR/MNAR identification, source-translation/genre/roster bridge, calibrated temporal inference, model fit, publication or held-out transcript access. The 37 reserved Oct 2026 transcripts, human decisions, D1 O1–O5 and provenance locks are unchanged.
 
 **Next executable action:** arrange coordinator-owned exact-head check trigger or an accepted documented CI equivalence rule without worker workflow/ownership changes; inspect check logs and refresh main/head immediately before any possible protected exact-SHA merge. Continue draft hold until then.
+
+## Final PR #64 engineering acceptance and integration — 2026-10-15
+
+**Engineering-only ACCEPTED and MERGED.** The earlier PR64 CI hold entries are superseded by this final outcome.
+
+- Coordinator-owned workflow PR #77 merged as `5c69fd4518c35131c8f6ccbf4084c5c5848dab01`. Workflow `.github/workflows/source-comparability-acceptance.yml` runs native source-comparability, source inventory, interchange, W1 historical-link, P2 binding, W4 source aggregate, and P3/P5 Python regressions on relevant pull-request updates. Initial workflow-only PR self-check correctly skipped absent module tests; this run does **not** count as worker acceptance.
+- PR #64's newly updated exact worker head `e94a46f42a0cd56ff829ba8635c0ea58d03a8966` triggered **exact-head** Actions [run #38751742616](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/38751742616), job `116479620554`, conclusion SUCCESS, both native Node and Python steps PASS. Earlier independent complete effective-tree regression [#38749698104](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/38749698104) also PASS at integration SHA `0cc01b7462a243a9b8391997250aac1d0d32f911`.
+- Coordinator refreshed main `5c69fd4518c35131c8f6ccbf4084c5c5848dab01`, worker head, exclusive seven changed paths and exact-head CI; PR was moved out of draft following recorded engineering-only acceptance, then merged with `expected_head_sha` protection.
+- GitHub confirmed PR #64 merged as `81a2a1506a68a4f18a886a53a351beafce8c6c44`. Post-merge comparison confirms only seven `research/source_comparability/**` files changed on main. No post-merge Actions run was returned at time of this check; post-merge CI thus **NOT RUN/NOT YET REPORTED**, not PASS.
+- **Scientific/source/privacy gates unchanged:** original private UN PV/Harvard byte authentication and sampling-response inference NOT RUN/NOT IDENTIFIED; cross-era language, genre, roster and selection comparability NOT ESTABLISHED; empirical model fitting, calibrated inference, political stance interpretation and public empirical release WITHHELD. The 37 reserved Oct 2026 transcripts, D1 O1–O5, frozen evaluations, provenance hashes and completed owner decisions were not changed.
+
+This ledger update changes only coordinator documentation and is not itself empirical release authorization.
