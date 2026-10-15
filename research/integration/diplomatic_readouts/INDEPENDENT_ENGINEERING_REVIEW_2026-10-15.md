@@ -45,6 +45,11 @@ All test runs use GitHub Ubuntu, Node 22 and Python 3.13; `jsonschema` is develo
 - The adapter neither issues reviewer/stance decisions nor provides an accepted null/dependence test. No synthetic success is evidence of policy agreement, coordination or diplomatic realignment. Unavailable sources are unknown, not negative issue mentions.
 - Coordinator/owner must decide whether and when to merge the code; **this ledger is engineering review, not merge or release authorization**. PR #89 and PR #70 stay unmerged. The new private-source proposal is deliberately unusable as a public or operational authorization token.
 
+
+## Second coordinator-only main refresh
+
+While acceptance checks were running, `main` advanced again from `5f0a872cff0899819b21326e6c18b7af794556c5` to `da4ab9ed11dba3693d11aa12f5333963b1b85478`, changing only the same coordinator integration ledger (nine new lines). A second non-forced two-parent reconciliation commit `aaa0dc9107b852f168359bf1a976762c304052a0` retained this exact latest ledger and all PR #89 implementation bytes. This is no source-contract or publication-gate change. Rerun exact-head synthetic acceptance against the final documentation head; do not infer source authorization from merger ancestry.
+
 ## Next executable task
 
 Independent coordinator can inspect latest effective PR #89 merge tree and required CI checks, then design the future **private-host-only** custodian-signed source registry and reviewer-decision verification without reading reserved texts. A separate, explicitly authorized integration PR would be required to connect real accepted sources, R/Shiny/Outlook or D1 publication; revalidate original bytes, parent/child offsets, population and all O1–O5 gates at that time. No automatic merge or publication follows this record.
