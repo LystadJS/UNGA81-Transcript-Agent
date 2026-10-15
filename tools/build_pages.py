@@ -41,6 +41,13 @@ def build(output):
             if original.is_symlink() or not original.is_file():
                 raise ValueError(f'Missing or symlinked reviewed research asset: {relative}/{name}')
             shutil.copy2(original, target_dir/name)
+    # C5: explicitly stage only the reviewed, non-fitting W2/W4 read model,
+    # renamed for static-browser loading. Never recursively publish numerical
+    # adapters, synthetic producers, source panels, review inputs, or CI files.
+    c5_renderer=repo/'research/integration/w2_w4_w6/evidence_renderer.cjs'
+    if c5_renderer.is_symlink() or not c5_renderer.is_file():
+        raise ValueError('Missing/symlinked accepted source-bound C5 renderer')
+    shutil.copy2(c5_renderer, output/'research-evidence-renderer.js')
     (output/'.nojekyll').write_text('')
     return {'files':len(list(output.rglob('*'))),'private_review_work_included':False}
 

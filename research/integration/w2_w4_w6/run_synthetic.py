@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
@@ -24,11 +25,24 @@ def generate(folder: Path, *, fit_policy: str = "full_refit",
     envelope = to_interchange_v1(source, comparison)
     result = to_w6_longitudinal(source, comparison, envelope,
                                selection_checked=True)
-    for name, data in (
+    # Publishable *only as user-selected synthetic test inputs*. No real
+    # transcripts, private rows or model embeddings may enter this producer.
+    # The companion manifest binds exact file bytes, not original UN source
+    # provenance or a cryptographic signature. The browser verifies all four.
+    originals = (
+        ("w4-source-panel.json", source),
+        ("w4-analysis.json", comparison),
         ("w4-envelope.json", envelope),
         ("w4-panel.json", result),
-    ):
-        (folder / name).write_text(json.dumps(data, indent=2, allow_nan=False) + "\n")
+    )
+    checksums = {}
+    for name, data in originals:
+        payload = (json.dumps(data, indent=2, allow_nan=False) + "\n").encode("utf-8")
+        (folder / name).write_bytes(payload)
+        checksums[name] = hashlib.sha256(payload).hexdigest()
+    (folder / "SHA256.json").write_text(
+        json.dumps(checksums, indent=2) + "\n", encoding="utf-8"
+    )
     receipt = {
         "workstream": "W4", "result": "synthetic_only",
         "source_records": len(envelope["observations"]),

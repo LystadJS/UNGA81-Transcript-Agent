@@ -233,7 +233,10 @@
     let epoch=0;
     const n=(tag,label)=>{const e=doc.createElement(tag);if(label!==undefined)e.textContent=String(label);return e;};
     const set=(target,msg)=>{target.replaceChildren();if(msg)target.append(n('p',msg));};
-    const wipe=()=>{epoch++;set(info,'No source-validated W2 consensus displayed.');
+    const wipe=()=>{
+      // Independently staged C5 views must never outlive changed source files.
+      root.dispatchEvent(new CustomEvent('un:c5-w2-clear'));
+      epoch++;set(info,'No source-validated W2 consensus displayed.');
       chart.replaceChildren();inspection.replaceChildren();status.textContent='Choose original W2 synthetic output files.';};
     inputA.addEventListener('change',wipe);inputB.addEventListener('change',wipe);
     function recordPair(data,a,b){
@@ -319,6 +322,7 @@
     }
     button.addEventListener('click',async()=>{
       const ticket=++epoch;
+      root.dispatchEvent(new CustomEvent('un:c5-w2-clear'));
       chart.replaceChildren();inspection.replaceChildren();
       button.disabled=true;status.textContent='Checking synthetic source identity, v1 model and original W2 weighted pair accounting…';
       try{
@@ -328,6 +332,11 @@
         const data=await validate(envelope,sidecar);
         if(ticket!==epoch)return;
         display(data);
+        // C5 independently revalidates the exact original W2 sidecar/envelope
+        // before rendering. Synthetic engineering only; never a refit.
+        root.dispatchEvent(new CustomEvent('un:c5-w2-verified',{
+          detail:{env:data.env,sidecar:data.sidecar}
+        }));
       }catch(error){
         if(ticket===epoch){
           set(info,'No verified consensus is displayed.');chart.replaceChildren();inspection.replaceChildren();

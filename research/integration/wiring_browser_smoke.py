@@ -68,6 +68,9 @@ def verify(browser, base: str, fixtures: Path, folder: Path,
         # present in the allowlisted disposable build.
         page.locator("#w5 details").evaluate("(el)=>el.open=true")
         page.locator("#w6 details").evaluate("(el)=>el.open=true")
+        # C5's additional W4 section pushes both lazy-load iframes below the
+        # viewport; explicitly bring W5 into view as already done for W6.
+        page.locator("#w5 iframe").scroll_into_view_if_needed()
         assert "Research Method Lab" in page.frame_locator(
             '#w5 iframe').locator("h1").inner_text(timeout=15000)
         # The extra W2 section moves this lazy iframe below the viewport.
