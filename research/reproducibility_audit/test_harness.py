@@ -75,6 +75,22 @@ class QAIntegrationTests(unittest.TestCase):
             self.assertEqual(by_name['two-process_synthetic_numerical_replay'],'PASS')
             self.assertFalse(report['publication_authorized'])
 
+    def test_cli_withholds_when_inputs_not_run(self):
+        with tempfile.TemporaryDirectory() as td:
+            out=Path(td)/'qa.json'
+            code=run_qa.main(['--repo-root', td, '--output', str(out)])
+            self.assertEqual(code,3)
+            self.assertEqual(json.loads(out.read_text())['engineering_acceptance'],'WITHHELD')
+
+    def test_cli_failure_has_distinct_exit(self):
+        with tempfile.TemporaryDirectory() as td:
+            out=Path(td)/'qa.json'
+            code=run_qa.main(['--repo-root',td,'--public-root',str(Path(td)/'absent'),
+                              '--output',str(out)])
+            self.assertEqual(code,1)
+            self.assertEqual({c['name']:c['status'] for c in json.loads(out.read_text())['checks']}
+                              ['actual_public_build_privacy_scan'],'FAIL')
+
     def test_bad_public_root_fails_not_passes(self):
         with tempfile.TemporaryDirectory() as td:
             report=run_qa.build_summary(Path(td),public_root=Path(td)/'absent')
