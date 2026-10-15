@@ -17,7 +17,8 @@ def review_candidate():
         "test_v3_prototype.py","test_v3_nuisance.py",
         "v3_grouped_development.py","test_v3_grouped_development.py",
         "v3_dependence_benchmark.py","v3_dependence_study.py",
-        "test_v3_dependence_benchmark.py","DEVELOPMENT_DEPENDENCE_RESULTS_V3.md",
+        "test_v3_dependence_benchmark.py","test_v3_dependence_replay.py",
+        "DEVELOPMENT_DEPENDENCE_RESULTS_V3.md",
     }
     if set(candidate["source_sha256"]) != expected:
         raise ValueError("freeze candidate source completeness failed")
