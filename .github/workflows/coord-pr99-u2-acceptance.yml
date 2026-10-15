@@ -1,0 +1,68 @@
+name: Coordinator PR99 U2 source and consumer acceptance
+on:
+  pull_request:
+    paths: ['.github/workflows/coord-pr99-u2-acceptance.yml', 'research/integration/u2_acceptance/**']
+  push:
+    branches: ['coord/pr99-u2-acceptance-20261015']
+    paths: ['.github/workflows/coord-pr99-u2-acceptance.yml', 'research/integration/u2_acceptance/**']
+permissions:
+  contents: read
+concurrency:
+  group: coord-pr99-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  acceptance:
+    if: github.repository == 'LystadJS/UNGA81-Transcript-Agent'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [worker-head, effective-tree]
+    env:
+      U2_HEAD: ee89069532ff58da099f2366fbc68c66eeba3aad
+      U1_HEAD: afb92e82881dc11003170899aef9958682d61abe
+      C0_HEAD: 884097997f89b0040e4418480378f077e3b65434
+      MAIN_HEAD: da4ab9ed11dba3693d11aa12f5333963b1b85478
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: review
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: ee89069532ff58da099f2366fbc68c66eeba3aad
+          path: candidate
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install isolated test-only dependencies
+        run: |
+          python -m pip install jsonschema==4.23.0 playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Full-checkout native, independent and real served U1-U2 tests
+        env:
+          MODE: ${{ matrix.mode }}
+        run: |
+          set -euo pipefail
+          python review/research/integration/u2_acceptance/acceptance.py --root "$GITHUB_WORKSPACE/candidate" --output "$RUNNER_TEMP/u2-$MODE" --mode "$MODE"
+      - name: Preserve runtime and actual outcome
+        if: always()
+        env:
+          MODE: ${{ matrix.mode }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/u2-$MODE"
+          { node --version; python --version; python -m pip freeze; git --version; } > "$RUNNER_TEMP/u2-$MODE/runtime.txt"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pr99-u2-${{ matrix.mode }}
+          path: ${{ runner.temp }}/u2-${{ matrix.mode }}
+          retention-days: 14
+          if-no-files-found: error
