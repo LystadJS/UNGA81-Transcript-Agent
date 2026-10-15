@@ -5,7 +5,7 @@
 ## Contract and evidence states
 
 - **Schema:** `un.diplomatic-readout.v1`; see [`schema.v1.json`](schema.v1.json). `readout.py` enforces additional relational and trusted-evidence requirements that JSON Schema alone cannot express.
-- **Templates:** `emerging_themes`, `discourse_communities`, `changing_actor_profiles`, `boundary_cases`, and `source_backed_anomalies`. These are presentation categories, not tests of substantive political hypotheses.
+- **Templates:** `emerging_themes`, `discourse_communities`, `changing_actor_profiles`, `boundary_cases`, and `source_backed_anomalies`. Each supplies a distinct evidence question and interpretive warning. These are presentation categories, not tests of substantive political hypotheses.
 - **Separate finding fields:** `observation` (literal descriptive source claim), `pattern` (explicitly exploratory, requiring statistical fit gate), `reviewer_interpretation` (requires separate reviewer release). A finding contains **exactly one** observation or pattern, not both.
 - **Coverage disclosures:** population, period, unit, weighting, source-group unit, total inventory, eligible, excluded, missing, reasoned exclusion/missingness counts, planned/attempted/converged/failed/skipped fits, and unassigned/noise. Check: `total_in_frame = eligible + excluded + missing`; `planned_fits = attempted_fits + skipped_fits`; `attempted_fits = converged_fits + failed_fits`. These count partitions are explicit; they are **not** automatically verified against an upstream census.
 - **Sources:** stable source ID, raw-original SHA-256, text SHA-256, raw-hash basis, versioned Unicode text representation, parent, meeting/speech/source-family identifiers (nullable where unverified), optional verified HTTPS URL/JSON pointer, original text length in Unicode code points. Unverified speech/country cannot be invented.
@@ -45,7 +45,7 @@ html = render(report, "html", proofs=trusted_receipts, decision=review_decision)
 hashes = export(report, "/tmp/readout-001", proofs=trusted_receipts, decision=review_decision)
 ```
 
-`export()` is no-overwrite and creates a fresh output directory; the caller controls paths. HTML uses a local-only content-security policy and escapes authored material; Markdown escapes HTML-like content. JSON exports contain source IDs/hashes and bounded pointers, **not bytes or quoted passages**. Unknown nested fields fail closed; a conservative 32-code-point verbatim-source overlap check can withhold text. This is a defense in depth, not a substitute for upstream human privacy review (short excerpts, paraphrases and other sensitive information are not automatically detectable).
+`export()` is no-overwrite and creates a fresh output directory; the caller controls paths. HTML uses a local-only content-security policy and escapes authored material; Markdown escapes HTML-like content. JSON exports contain source IDs/hashes and bounded pointers, **not bytes or quoted passages**. Markdown and HTML retain the independently matched public original-source URL alongside the exact hash/offset reference; no network request is made. Unknown nested fields fail closed; a conservative 32-code-point verbatim-source overlap check can withhold text. This is a defense in depth, not a substitute for upstream human privacy review (short excerpts, paraphrases and other sensitive information are not automatically detectable).
 
 ## Limits and coordinator integration
 
