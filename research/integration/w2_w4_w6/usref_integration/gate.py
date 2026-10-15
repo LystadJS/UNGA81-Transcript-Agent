@@ -203,8 +203,9 @@ def materialize(repo, ref, dest, policy):
     """Write only test/code allowlist; no git checkout or transcript/corpus loader."""
     dest.mkdir(parents=True, exist_ok=False)
     selected = {}
+    explicit = set(policy['gate_paths']) | {p for x in policy['payloads'] for p in x['integration_paths']}
     for name, entry in listing(repo, ref).items():
-        if name in policy['gate_paths'] or (any(name.startswith(x) for x in policy['materialize_prefixes'])
+        if name in explicit or (any(name.startswith(x) for x in policy['materialize_prefixes'])
                 and Path(name).suffix in policy['materialize_suffixes']):
             need(entry[:2] == ['100644', 'blob'], 'Symlink, submodule or executable mode rejected: '+name)
             selected[name] = entry
@@ -295,7 +296,7 @@ def validate_final(event, results, needs):
 
 def required_suites(stage):
     need(stage in ('bootstrap', 'phase1', 'phase2', 'integrated'), 'Unknown stage')
-    s = {'gate-controls': 24, 'w4': 25, 'interchange': 14, 'guards': 11}
+    s = {'gate-controls': 30, 'w4': 25, 'interchange': 14, 'guards': 11}
     if stage != 'bootstrap':
         s.update(phase1=40, bridge=49, pr87=7)
     if stage in ('phase2', 'integrated'):

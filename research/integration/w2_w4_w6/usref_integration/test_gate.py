@@ -142,6 +142,24 @@ class ParserTests(unittest.TestCase):
         i={'freshness':{'base_ref':'refs/heads/main'},'head':'1'*40,'base':'2'*40}
         with patch.object(g,'git',return_value=('9'*40+'\trefs/heads/main\n').encode()),self.assertRaises(g.Rejected):g.check_fresh('.',i)
 
+    def runtime_probe(self, missing_browser=False, drift=False):
+        import types
+        policy=POLICY['runtime_baseline']
+        browser=types.SimpleNamespace(version=policy['chromium'],close=lambda:None)
+        chromium=types.SimpleNamespace(executable_path='/definitely/no/chromium' if missing_browser else __file__,launch=lambda **kw:browser)
+        class Context:
+            def __enter__(self):return types.SimpleNamespace(chromium=chromium)
+            def __exit__(self,*args):return None
+        module=types.SimpleNamespace(sync_playwright=Context)
+        outputs=[types.SimpleNamespace(returncode=0,stdout='4.3.4' if drift else policy['R']),
+                 types.SimpleNamespace(returncode=0,stdout='v'+policy['node'])]
+        with patch('shutil.which',return_value='/synthetic/runtime'),patch('platform.python_version',return_value=policy['python']),patch('subprocess.run',side_effect=outputs),patch('importlib.metadata.version',side_effect=lambda x:policy[x]),patch.dict('sys.modules',{'playwright.sync_api':module}):
+            return runtimes(POLICY)
+    def test_missing_native_browser_executable_is_fatal(self):
+        with self.assertRaisesRegex(g.Rejected,'Chromium missing'):self.runtime_probe(missing_browser=True)
+    def test_runtime_drift_requires_new_review_not_silent_substitution(self):
+        with self.assertRaisesRegex(g.Rejected,'Runtime drift'):self.runtime_probe(drift=True)
+
 
 class GitCompositionTests(unittest.TestCase):
     def setUp(self):
@@ -174,6 +192,15 @@ class GitCompositionTests(unittest.TestCase):
         self.assertEqual(g.git(self.repo,'show-ref'),before);self.assertEqual(g.git(self.repo,'write-tree'),index)
         self.assertNotIn('data/do-not-open.txt',r['materialized_paths'])
         self.assertEqual(g.listing(self.repo,r['tested_tree'])['data/do-not-open.txt'],g.listing(self.repo,self.base)['data/do-not-open.txt'])
+    def test_all_31_frozen_payloads_including_R_are_materialized(self):
+        r=g.prepare(self.repo,self.repo,self.home/'all-code','combined',self.e,self.p)
+        expected={n for p in self.p['payloads'] for n in p['integration_paths']}
+        self.assertEqual(len(expected),31)
+        self.assertTrue(expected <= set(r['materialized_paths']))
+        for name in expected:
+            blob=g.listing(self.repo,r['tested_tree'])[name][2]
+            self.assertEqual((self.home/'all-code/candidate'/name).read_bytes(),g.git(self.repo,'cat-file','blob',blob))
+        self.assertIn('research/integration/w2_w4_w6/waggoner/arithmetic.R',expected)
     def test_head_and_effective_bootstrap_are_not_combined_coverage(self):
         for mode in ('head','effective-tree'):
             r=g.prepare(self.repo,self.repo,self.home/mode,mode,self.e,self.p)
