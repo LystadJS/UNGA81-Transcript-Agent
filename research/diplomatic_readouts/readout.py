@@ -2,6 +2,7 @@
 import hashlib
 import html
 import json
+import re
 from pathlib import Path
 
 TEMPLATES = ("emerging_themes", "discourse_communities", "changing_actor_profiles", "boundary_cases", "source_backed_anomalies")
@@ -15,19 +16,36 @@ def validate(report):
     for key in REQUIRED:
         if key not in report or report[key] is None:
             errors.append("missing disclosure: " + key)
+    if not isinstance(report.get("findings", []), list) or not isinstance(report.get("sources", []), list):
+        return ["sources and findings must be arrays"]
+    for key in ("denominator", "exclusions", "missingness"):
+        value = report.get(key)
+        if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+            errors.append("invalid nonnegative count: " + key)
+    if isinstance(report.get("denominator"), int) and isinstance(report.get("exclusions"), int) and report["exclusions"] > report["denominator"]:
+        errors.append("exclusions exceed denominator")
     sources = report.get("sources", [])
     ids = [s.get("id") for s in sources]
     if len(ids) != len(set(ids)) or any(not x for x in ids):
         errors.append("duplicate or missing source identity")
-    accepted = {s["id"]: s for s in sources if s.get("accepted") is True and s.get("sha256") and len(s["sha256"]) == 64 and s.get("privacy") == "public"}
+    accepted = {s["id"]: s for s in sources if s.get("accepted") is True and s.get("sha256") and re.fullmatch(r"[0-9a-f]{64}", s["sha256"]) and s.get("privacy") == "public"}
     for s in sources:
         if "passage" in s or "text" in s:
             errors.append("embedded source passage forbidden")
     for finding in report.get("findings", []):
+        if not isinstance(finding, dict):
+            errors.append("invalid finding object")
+            continue
+        if not isinstance(finding.get("supporting", []), list) or not isinstance(finding.get("contrary", []), list):
+            errors.append("invalid evidence reference arrays")
+            continue
         refs = finding.get("supporting", []) + finding.get("contrary", [])
         if not refs:
             errors.append("finding lacks evidence references")
         for ref in refs:
+            if not isinstance(ref, dict):
+                errors.append("invalid evidence reference")
+                continue
             if ref.get("source_id") not in accepted or not isinstance(ref.get("start"), int) or not isinstance(ref.get("end"), int) or ref["start"] < 0 or ref["end"] <= ref["start"]:
                 errors.append("invalid or unaccepted source pointer")
         if finding.get("country_attribution") and not finding.get("country_attribution_verified"):
@@ -38,6 +56,8 @@ def validate(report):
 
 def normalize(report):
     r = json.loads(json.dumps(report))
+    if not isinstance(r, dict):
+        raise ValueError("readout must be an object")
     errors = validate(r)
     for source in r.get("sources", []):
         source.pop("text", None)
