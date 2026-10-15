@@ -8,6 +8,7 @@ from __future__ import annotations
 from collections import defaultdict
 import hashlib
 import json
+from pathlib import Path
 import unittest
 
 from .v3_hierarchical_external_study import (
@@ -83,6 +84,32 @@ class IndependentHierarchicalExternalReplay(unittest.TestCase):
             "statistical_freeze_accepted":False,
             "empirical_fit_authorized":False
         }
+        # Independent native replay of committed exact-head evidence. Every
+        # refused method/replicate identity is matched, not just its count.
+        root=Path(__file__).resolve().parent
+        committed=json.loads((root/"v3_hierarchical_external_development_receipt.json").read_text())
+        committed_masks=json.loads((root/"v3_hierarchical_external_failure_masks.json").read_text())
+        self.assertEqual(committed_masks["methods_and_scenarios"],masks)
+        self.assertEqual(committed_masks["retained_method_failures"],len(ledger))
+        self.assertEqual(committed_masks["full_failure_canonical_sha256"],canonical)
+        self.assertEqual(committed["failure_canonical_sha256"],canonical)
+        self.assertEqual(committed["v3_holdout_attempted"],0)
+        self.assertFalse(committed["statistical_freeze_accepted"])
+        for key in ("gamma_attempted","gamma_completed","gamma_refused",
+                    "cov_attempted","cov_completed","cov_refused","failure_count"):
+            self.assertEqual(committed[key],aggregate[key],key)
+        def compare_rows(got,expected):
+            self.assertEqual(len(got),len(expected))
+            for left,right in zip(got,expected):
+                self.assertEqual(left.keys(),right.keys())
+                for key in left:
+                    a,b=left[key],right[key]
+                    if isinstance(a,float) and isinstance(b,float):
+                        self.assertAlmostEqual(a,b,places=7,msg=key)
+                    else:
+                        self.assertEqual(a,b,key)
+        compare_rows(committed["gamma_scenarios"],aggregate["gamma_scenarios"])
+        compare_rows(committed["covariance_scenarios"],aggregate["covariance_scenarios"])
         print("V3_HIERARCHICAL_DEV_AGGREGATE="+json.dumps(
             aggregate,sort_keys=True,separators=(",",":")))
         print("V3_HIERARCHICAL_DEV_FAILURE_MASKS="+json.dumps(
