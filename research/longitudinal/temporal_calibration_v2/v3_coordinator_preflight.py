@@ -16,6 +16,8 @@ def review_candidate():
         "v3_prototype.py","v3_nuisance.py","v3_design_proposal.json",
         "test_v3_prototype.py","test_v3_nuisance.py",
         "v3_grouped_development.py","test_v3_grouped_development.py",
+        "v3_dependence_benchmark.py","v3_dependence_study.py",
+        "test_v3_dependence_benchmark.py","DEVELOPMENT_DEPENDENCE_RESULTS_V3.md",
     }
     if set(candidate["source_sha256"]) != expected:
         raise ValueError("freeze candidate source completeness failed")
@@ -34,7 +36,7 @@ def review_candidate():
         "holdout_execution_suppressed": "PASS",
         "v2_frozen_integrity": "NOT_INDEPENDENTLY_REHASHED_BY_THIS_MODULE",
         "year_serial_dependence_aware_gamma_interval": "FAIL_NOT_IDENTIFIED",
-        "gamma_model_misspecification_and_coverage": "NOT_RUN",
+        "gamma_model_misspecification_and_coverage": "DEVELOPMENT_FAIL_NOMINAL_90_DIAGNOSTICS",
         "year_process_nugget_external_identification": "FAIL_NOT_IDENTIFIED",
         "response_audit_real_source_independence": "NOT_VERIFIED",
         "source_design_era_comparability": "NOT_VERIFIED",
@@ -49,8 +51,8 @@ def review_candidate():
         "candidate_source_sha256":candidate["source_sha256"],
         "gates":gates,
         "methodological_resolution":{
-            "gamma":"year-cluster sandwich reported only as a diagnostic; year dependence remains unaccounted for",
-            "measurement":"replicate measurement error estimable under independent pairs, but calendar-year process nugget is not identified",
+            "gamma":"development-only score-HAC and circular-year-block bootstrap implemented and compared; model misspecification and T16 interval calibration unresolved",
+            "measurement":"external replicate-noise variance does not identify calendar process nugget; exact information rank deficiency and high finite-year moment refusal documented",
             "selection":"without randomized recovery of missing original outcomes, outcome-dependent transcript selection is not identified",
         },
         "approved":False,"v3_holdout_authorized":False,"real_fit_authorized":False,
