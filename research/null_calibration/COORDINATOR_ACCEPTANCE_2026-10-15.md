@@ -69,3 +69,32 @@ Pinned main requested by owner: `964ba0899665bb03bbe4fc54b4c65426d7c4d35d`. PR h
 **Coordinator acceptance outcome:** Ownership PASS, local module tests PASS (with exact-file caveat), complete checkout FAIL to obtain, actual upstream tests NOT RUN, hosted CI NOT RUN, scientific identification FAIL, empirical/release gates WITHHELD. Frozen PR57 thresholds, source/evaluation holds, and PR60 originals untouched. Leave PR #67 draft and unmerged.
 
 **Next:** Run the committed `ci_integration.py` in an actual full repository checkout at exact current head and pinned main ref; capture fixture/source hashes, node/python versions, stdout SHA and complete upstream result ledger; test the effective merge tree separately and review hosted exact-head CI before coordinator engineering acceptance.
+
+
+## Effective merge-tree runner and new verification — 15 October 2026, 14:29Z request
+
+**Pinned comparison:** main `964ba0899665bb03bbe4fc54b4c65426d7c4d35d`; source PR head before this extension `c5ec759903a9b628a71fe264269488b7ad6fc66a`. The new module and test changes are exclusively inside `research/null_calibration/**`; `main` remains five commits ahead of the branch merge base. GitHub static comparison verifies **27 owned paths, zero changed-path overlaps**. This is not an executed actual-repository merge tree.
+
+**Defect corrected:** the original `ci_integration.py` covers only four commands and cannot validate an effective merge tree. Newly added `merge_tree_integration.py` checks the exact HEAD/main commit objects and both frozen PR57/PR60 Git blobs, asks native Git to compute `merge-tree --write-tree`, checks merge conflicts, constructs an ephemeral local merge commit and detached worktree without updating any ref, runs all **12 declared native Python/Node tests**, records per-suite exit/status/stdout SHA256/duration, and removes its worktree. No remote merge, no threshold edits, and no private dataset reads are authorized. The first local development attempt hung because `git commit-tree` lacked `-m`; fixed before commit. The failure is retained in this report.
+
+**Comprehensive synthetic local validation:** `python3 -m unittest -v test_calibration.py test_extended.py test_study.py test_temporal_ar1.py test_profile_reml.py test_hierarchical_reml.py test_ci_integration.py test_merge_tree_integration.py` — **40/40 PASS**, Python **3.13.5**, NumPy **2.3.5**, SciPy **1.17.0**, Git **2.47.3**, Node **22.16.0**. Full test log SHA256: `ca3ba86d8acf80925d248da41a1df8b2094ceec9222d774c48f9730ea04f1fee`. Every imported production Python module in this test scope was byte-matched to a GitHub blob, including corrected `hierarchical_reml.py` `b6a94c52decaf959f8cb996f762009390f3ba18c`. New module Git blob `2e8e51b1c6c94cf2d9f634abf7066462328fd1c1`, new six-case test Git blob `7f5c5ff197d8ae5f62fe138df29c74cfe3a4b7dd`, both identical to locally executed files.
+
+**Six real local Git fixture tests:** (1) non-conflicting synthetic branches generate a real merged tree and run a positive smoke in a detached worktree; (2) a real conflicting merge is refused before test execution; (3) wrong head and altered frozen SHA are refused; (4) missing upstream test scripts remain NOT_RUN; (5) missing .git checkout refuses; (6) nonzero test subprocess refuses. **6/6 PASS.** None substitute for running the actual source repository tests.
+
+**Actual pinned integration attempt:** `git ls-remote https://github.com/LystadJS/UNGA81-Transcript-Agent.git HEAD` failed DNS (`Could not resolve host: github.com`); a real full repository checkout could not be obtained in this runtime. `python3 merge_tree_integration.py --root . --head f5b1136514c8f1f0b3161eff578bf84c63d79e38 --main 964ba0899665bb03bbe4fc54b4c65426d7c4d35d --receipt /mnt/data/pr67-merge-tree-refusal.json` on the partial local source directory correctly returned **exit 1, blocker=no_full_git_checkout, ready=false, suites={}**; refusal receipt SHA256 `9ebb741d09c7a8b4514149b25cdf7dcd01ce0adfb3050f4984dd05ca603ebf76`. GitHub Actions and commit status for last inspected head also returned zero runs/statuses. Native upstream W1/W2, PR60, consensus, grouped refits, interchange, and readiness tests remain **NOT RUN**; do not upgrade an owned-only PASS or a toy merged-tree PASS into an exact-head full-checkout PASS.
+
+**Coordinator suite inventory (full checkout only):** Python owned regression; PR57 frozen lock and numerical null; PR60 design guard and nuisance estimator; W1 framework and schema; W2 consensus; W1/W2 bridge and grouped source refits; v1 interchange; W1/W2 frozen readiness. All twelve must PASS with complete receipt and review of official CI jobs. Independent source hashes, adapted v1 relational invariants, real-data coverage and statistical nuisance identification are separate held gates.
+
+**Current acceptance:** file ownership PASS, locally byte-identical Python regression PASS, synthetic Git merge-fixture PASS; actual PR effective merge tree NOT RUN, twelve native upstream tests NOT RUN, GitHub exact-head CI NOT RUN, nuisance statistical identification FAIL, source/holdout/publication restrictions PRESERVED. This document is a worker handoff, **not coordinator authorization**, and PR #67 remains draft/unmerged.
+
+**Exact next command from a full checkout** (where HEAD is the final PR #67 commit and pinned main object is present):
+
+```bash
+python3 research/null_calibration/merge_tree_integration.py \
+  --root . \
+  --head <FINAL_PR67_FULL_SHA> \
+  --main 964ba0899665bb03bbe4fc54b4c65426d7c4d35d \
+  --receipt /tmp/pr67-native-effective-merge.json
+```
+
+Fail closed on any missing file, unsuccessful native suite, conflicting tree or unverified frozen identity. Review the actual command outputs and current coordinator ledger before engineering acceptance. Do not merge, publish, calibrate empirical text, or revise PR57 critical values.
