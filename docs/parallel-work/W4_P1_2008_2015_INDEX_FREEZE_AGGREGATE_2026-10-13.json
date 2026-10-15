@@ -1,0 +1,91 @@
+{
+  "schema": "un.w4.p1.source-index-freeze.aggregate.v1",
+  "date": "2026-10-13",
+  "preregistration_commit": "e698629266914929a33e832e8b0df32bd5e59187",
+  "official_guide": "https://research.un.org/en/docs/ga/generaldebate",
+  "source_index_raw_csv_sha256": "841ae22d6485a7e3c0bce84830f09c43d75421ce9b3a58408d20dfec3cbbaf43",
+  "meetings_match_official_guide": true,
+  "metadata_conflicts": 0,
+  "private_index_roster_sha256": "152597a8a5a0ec4387f565e5cfd76e253478347371301fb67f274333c203a7bc",
+  "private_99x16_expected_inventory_sha256": "193af9bf8759e8c58748ebcd2645d5305ea060d00868620e6ef5ddac2b3c4dbf",
+  "private_audit_split_sha256": "9f82613e7057a66f9ca7ccb550fade49797d4457fd67ada2443ef6a00edb9ef5",
+  "split_canonical": "year,symbol,phase JSON UTF8 sorted keys in increasing year/numeric PV; SHA256 on namespace + NUL + year + NUL + symbol; first ceil(20%) each year withheld",
+  "yearly": [
+    {
+      "year": 2008,
+      "session": 63,
+      "official_meeting_symbols": 12,
+      "speaker_index_rows": 192,
+      "independent_audit_reserved": 3
+    },
+    {
+      "year": 2009,
+      "session": 64,
+      "official_meeting_symbols": 11,
+      "speaker_index_rows": 194,
+      "independent_audit_reserved": 3
+    },
+    {
+      "year": 2010,
+      "session": 65,
+      "official_meeting_symbols": 12,
+      "speaker_index_rows": 208,
+      "independent_audit_reserved": 3
+    },
+    {
+      "year": 2011,
+      "session": 66,
+      "official_meeting_symbols": 18,
+      "speaker_index_rows": 197,
+      "independent_audit_reserved": 4
+    },
+    {
+      "year": 2012,
+      "session": 67,
+      "official_meeting_symbols": 16,
+      "speaker_index_rows": 194,
+      "independent_audit_reserved": 4
+    },
+    {
+      "year": 2013,
+      "session": 68,
+      "official_meeting_symbols": 18,
+      "speaker_index_rows": 191,
+      "independent_audit_reserved": 4
+    },
+    {
+      "year": 2014,
+      "session": 69,
+      "official_meeting_symbols": 15,
+      "speaker_index_rows": 196,
+      "independent_audit_reserved": 3
+    },
+    {
+      "year": 2015,
+      "session": 70,
+      "official_meeting_symbols": 16,
+      "speaker_index_rows": 191,
+      "independent_audit_reserved": 4
+    }
+  ],
+  "total_meetings": 118,
+  "total_index_rows": 1563,
+  "development_meetings": 90,
+  "reserved_audit_meetings": 28,
+  "original_Harvard_tar_sha256": "55077dccf7242cdf544aa95c4797c68e443b0c37344c9c112a2e2392ddfcf8e5",
+  "original_Harvard_tar_md5": "81bdd06086d9e7c4e67026acb7325df3",
+  "pre2016_original_Harvard_tar_members": 1538,
+  "strict_UTF8_member_decodes": 1538,
+  "candidate_original_Harvard_members_in_frozen99_year_grid": 785,
+  "frozen99_year_cells_without_Harvard_member": 7,
+  "expected_16_year_cells": 1584,
+  "expected_pre2016_new_cells": 792,
+  "inherited_prior_verified_2016_2023": 790,
+  "inherited_prior_unverified": 2,
+  "new_PV_original_documents_byte_checked": 0,
+  "new_full_speech_matched": 0,
+  "status": "INDEX_FROZEN_PV_AUTHENTICATION_NOT_RUN",
+  "private_row_data_in_public_repo": false,
+  "heldout_oct_5_6_2026_read": 0,
+  "public_empirical_release": false
+}
