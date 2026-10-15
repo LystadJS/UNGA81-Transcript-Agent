@@ -175,3 +175,12 @@ test('within-frame roster change withholds descriptive comparability',()=>{
   assert.equal(v.roster_composition_changed,true);
   assert.equal(v.matched_recorded_affiliations,0);
 });
+
+test('unknown frame with positive sampling probability is excluded without crashing',()=>{
+  const x=fixture();
+  x.observations[0].frame_id='nonexistent-frame';
+  const out=audit(x);
+  assert.equal(out.counts.unknown_frame,1);
+  assert.equal(out.totals.eligible_metadata,1);
+  assert.equal(out.inference_eligible,false);
+});
