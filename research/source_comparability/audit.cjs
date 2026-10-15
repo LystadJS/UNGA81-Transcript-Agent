@@ -11,6 +11,7 @@ const TEXT_BASES = new Set(['utf8_canonical_text', 'source_text_file_bytes', 'sy
 const MISSING = new Set(['unverified', 'unavailable', 'missing_transcript', 'not_sampled', 'structurally_not_at_risk']);
 const SENSITIVE_KEYS = new Set(['text', 'raw_text', 'quote', 'passage', 'original_bytes', 'canonical_text', 'vector', 'embedding', 'pdf_path', 'private_path', 'speaker_name']);
 const DIMENSIONS = ['meeting_design', 'genre', 'language', 'translation_modality', 'roster_definition', 'selection_design', 'sampling_unit', 'frame_unit'];
+const COMPARABILITY_EVIDENCE = ['genre_evidence_status', 'language_evidence_status', 'translation_evidence_status', 'roster_evidence_status'];
 const sha = data => crypto.createHash('sha256').update(data).digest('hex');
 const str = v => typeof v === 'string' && v.trim().length > 0;
 const hash = v => typeof v === 'string' && HEX.test(v);
@@ -99,10 +100,16 @@ function audit(m, { originals = null, canonicalTexts = null } = {}) {
         flagReceipt(r.document_id, 'unaccepted_source_verification');
       if (hash(r.source_sha256)) {
         const prev = sourceDigestOwners.get(r.source_sha256);
-        if (prev && prev !== r.document_id &&
-            (!str(r.duplicate_group) || r.duplicate_group !== receiptById.get(prev)?.duplicate_group)) {
-          flagReceipt(prev, 'duplicate_document_content_unresolved');
-          flagReceipt(r.document_id, 'duplicate_document_content_unresolved');
+        if (prev && prev !== r.document_id) {
+          const owner = receiptById.get(prev);
+          const sameDeclaredFamily = str(r.duplicate_group) && r.duplicate_group === owner?.duplicate_group;
+          const sameProvenance = owner?.meeting_id === r.meeting_id &&
+            owner?.year === r.year && owner?.source_family_id === r.source_family_id &&
+            owner?.source_hash_basis === r.source_hash_basis;
+          if (!sameDeclaredFamily || !sameProvenance) {
+            flagReceipt(prev, 'duplicate_document_content_unresolved');
+            flagReceipt(r.document_id, 'duplicate_document_content_unresolved');
+          }
         }
         sourceDigestOwners.set(r.source_sha256, r.document_id);
       }
@@ -188,8 +195,9 @@ function audit(m, { originals = null, canonicalTexts = null } = {}) {
     const s = summaries.get(o.frame_id);
     if (s) {
       s.total++;
-      s.years[o.year == null ? 'unknown' : String(o.year)] ||= {total:0, available:0, missing:0};
+      s.years[o.year == null ? 'unknown' : String(o.year)] ||= {total:0, available:0, missing:0, at_risk:0, structurally_not_at_risk:0, eligible_metadata:0, excluded:0};
       s.years[o.year == null ? 'unknown' : String(o.year)].total++;
+      s.years[o.year == null ? 'unknown' : String(o.year)][atRisk ? 'at_risk' : 'structurally_not_at_risk']++;
       if (o.source_status === 'available') {
         s.available++;s.years[o.year == null ? 'unknown' : String(o.year)].available++;
         if (str(o.country)) distinctCountries.get(o.frame_id).add(o.country);
@@ -206,7 +214,7 @@ function audit(m, { originals = null, canonicalTexts = null } = {}) {
       if (o.outcome_status === 'missing') s.missing_outcome++;
       if (o.attribution !== 'verified_recorded_affiliation') s.ambiguous_attribution++;
       if (o.inclusion_probability == null && atRisk) s.unknown_sampling++;
-      if (atRisk && f && Number.isFinite(o.inclusion_probability) && o.inclusion_probability > 0 && o.inclusion_probability <= 1 && o.probability_unit === f.sampling_unit)
+      if (atRisk && Number.isFinite(o.inclusion_probability) && o.inclusion_probability > 0 && o.inclusion_probability <= 1 && f && o.probability_unit === f.sampling_unit)
         s.positive_sampling_unit++;
     }
     rows.push({id:o.id, frame_id:o.frame_id, year:o.year, source_status:o.source_status, eligible_metadata:false,
@@ -217,7 +225,11 @@ function audit(m, { originals = null, canonicalTexts = null } = {}) {
     row.exclusions = [...(observationProblems.get(row.id) || [])];
     row.eligible_metadata = row.source_status === 'available' && row.exclusions.length === 0;
     const s = summaries.get(row.frame_id);
-    if (s) {if (row.eligible_metadata)s.eligible_metadata++;else s.excluded++;}
+    if (s) {
+      const k = row.eligible_metadata ? 'eligible_metadata' : 'excluded';
+      s[k]++;
+      s.years[row.year == null ? 'unknown' : String(row.year)][k]++;
+    }
   }
   for(const f of m.frames){
     const s=summaries.get(f.id);
@@ -242,7 +254,7 @@ function audit(m, { originals = null, canonicalTexts = null } = {}) {
       'Incompatible or unauthenticated sampling/source designs' :
       'Separate source populations; original-source, roster, translation and selection bridges not independently validated',
       mismatched_dimensions:mismatched,shared_document_id_count:shared,
-      source_populations_independent:true,
+      separate_source_populations:true,independent_sampling_assumed:false,
       comparison_population:[aa.length,bb.length],
       eligible_metadata:[summaries.get(a.id).eligible_metadata,summaries.get(b.id).eligible_metadata],
       speech_length_ranges:[extent(lens(aa)),extent(lens(bb))],
@@ -265,14 +277,25 @@ function audit(m, { originals = null, canonicalTexts = null } = {}) {
       const rosterA=actors(first),rosterB=actors(second);
       const matched=[...rosterA].filter(c=>rosterB.has(c)).length;
       const rosterStable=matched===rosterA.size && matched===rosterB.size && matched>0;
-      const ok=accepted(first)&&accepted(second)&&same('genre')&&same('translation_modality')&&same('language')&&rosterStable;
+      // Matching labels alone cannot establish delivered language, translated-version equivalence,
+      // a verified genre boundary, or a stable participation register (see W4 source-register audit).
+      // A declared source receipt is only a conditional metadata check, never an authenticity proof.
+      const documented = group => group.filter(o=>o.source_status==='available').every(o=>
+        str(o.comparability_receipt_id) && COMPARABILITY_EVIDENCE.every(k=>o[k]==='independently_verified'));
+      const metadataVerified = documented(first) && documented(second);
+      const complete = group => group.length>0 && group.every(o=>o.source_status==='available' &&
+        rows.some(r=>r.id===o.id && r.eligible_metadata));
+      const coverageComplete = complete(first) && complete(second);
+      const ok=accepted(first)&&accepted(second)&&same('genre')&&same('translation_modality')&&same('language')&&rosterStable&&metadataVerified&&coverageComplete;
       withinFrameComparisons.push({frame_id:f.id,years:[Number(yy[i]),Number(yy[j])],
         status:ok?'supported':'uncertain',scope:'within-frame descriptive metadata only',
         recorded_affiliations:[rosterA.size,rosterB.size],matched_recorded_affiliations:matched,
         roster_composition_changed:!rosterStable,
+        documentary_stratum_evidence_complete:metadataVerified,
+        full_observation_coverage:coverageComplete,
         eligible_metadata:[first.filter(o=>rows.some(r=>r.id===o.id && r.eligible_metadata)).length,
           second.filter(o=>rows.some(r=>r.id===o.id && r.eligible_metadata)).length],
-        reason:ok?'Both years include comparable eligible metadata and matched affiliations under one declared frame; no inference':'Coverage, roster composition, language, genre or translation may differ'});
+        reason:ok?'Both years have matching recorded affiliations and declared stratum verification receipts; conditional metadata only, no inference':'Incomplete source/eligible coverage or insufficient verified delivered-language, genre, translation or roster evidence'});
     }
   }
   const privateSourceValidation = checkedBytes===0 ? 'NOT RUN' :

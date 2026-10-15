@@ -50,7 +50,10 @@ function mutation(name, action, code, level='observation') {
 test('unmodified metadata is conditionally eligible; disjoint eras remain uncertain',()=>{
   const out=audit(fixture());assert.equal(out.totals.eligible_metadata,2);
   assert.equal(out.private_source_validation,'NOT RUN');assert.equal(out.text_validation,'NOT RUN');
-  assert.equal(out.comparisons[0].status,'uncertain');assert.equal(out.frames[0].years['2010'].total,1);
+  assert.equal(out.comparisons[0].status,'uncertain');
+  assert.equal(out.comparisons[0].independent_sampling_assumed,false);
+  assert.equal(out.comparisons[0].separate_source_populations,true);
+  assert.equal(out.frames[0].years['2010'].total,1);
   assert.equal(out.sampling_inference.startsWith('NOT IDENTIFIED'),true);
 });
 test('original and text digests are checked from supplied byte/text bases',()=>{
@@ -122,11 +125,22 @@ test('genre differences prevent cross-frame pooling',()=>{
   const x=fixture();x.frames[1].genre='committee';
   assert.equal(audit(x).comparisons[0].status,'inadmissible');
 });
-test('within-frame year comparisons have descriptive-only supported status',()=>{
+test('within-frame labels alone are uncertain; independent metadata receipts permit descriptive comparison only',()=>{
   const x=fixture();x.receipts.push(receipt('doc-c','A/66/PV.1',2011,repeat('f'),repeat('0')));
   x.observations.push(row('o-c','early','doc-c','A/66/PV.1',2011,repeat('0')));
-  const out=audit(x);assert.equal(out.within_frame_comparisons[0].status,'supported');
-  assert.equal(out.within_frame_comparisons[0].scope,'within-frame descriptive metadata only');
+  const initial=audit(x).within_frame_comparisons[0];
+  assert.equal(initial.status,'uncertain');
+  assert.equal(initial.documentary_stratum_evidence_complete,false);
+  for(const o of x.observations.filter(o=>o.frame_id==='early')) {
+    o.comparability_receipt_id='invented-synthetic-stratum-review-'+o.id;
+    for(const key of ['genre_evidence_status','language_evidence_status','translation_evidence_status','roster_evidence_status'])
+      o[key]='independently_verified';
+  }
+  const final=audit(x).within_frame_comparisons[0];
+  assert.equal(final.status,'supported');
+  assert.equal(final.documentary_stratum_evidence_complete,true);
+  assert.equal(final.scope,'within-frame descriptive metadata only');
+  assert.equal(audit(x).inference_eligible,false);
 });
 test('private fixtures never emit source-bearing row identities',()=>{
   const x=fixture();x.fixture_kind='private_development';
@@ -162,6 +176,11 @@ test('duplicate document content invalidates both receipts unless duplicate fami
   assert.equal(a.totals.eligible_metadata,0);
   x.receipts[1].duplicate_group='synthetic_same_original';
   x.receipts[0].duplicate_group='synthetic_same_original';
+  assert.equal(audit(x).counts.duplicate_document_content_unresolved,2,
+    'Declared family cannot excuse contradictory original meeting or year');
+  x.receipts[1].meeting_id=x.receipts[0].meeting_id;
+  x.receipts[1].year=x.receipts[0].year;
+  x.receipts[1].source_family_id=x.receipts[0].source_family_id;
   const b=audit(x);assert.equal(b.counts.duplicate_document_content_unresolved,undefined);
   x.receipts[0].duplicate_group='different_family';
   assert.equal(audit(x).counts.duplicate_document_content_unresolved,2);
@@ -176,11 +195,39 @@ test('within-frame roster change withholds descriptive comparability',()=>{
   assert.equal(v.matched_recorded_affiliations,0);
 });
 
-test('unknown frame with positive sampling probability is excluded without crashing',()=>{
-  const x=fixture();
-  x.observations[0].frame_id='nonexistent-frame';
+test('unknown source frame reports exclusions without dereferencing missing metadata',()=>{
+  const x=fixture();x.observations[0].frame_id='nonexistent';
   const out=audit(x);
   assert.equal(out.counts.unknown_frame,1);
   assert.equal(out.totals.eligible_metadata,1);
   assert.equal(out.inference_eligible,false);
+});
+test('year-specific denominators close for structural non-risk and available records',()=>{
+  const x=fixture();x.observations.push({...row('n','early',null,null,2010,null),
+    source_status:'structurally_not_at_risk',missing_reason:'not in sample risk set',inclusion_probability:null});
+  x.observations.push({...row('u','early',null,null,2010,null),
+    source_status:'unverified',missing_reason:'source not verified',inclusion_probability:null});
+  const out=audit(x),y=out.frames[0].years['2010'];
+  assert.deepEqual({total:y.total,at_risk:y.at_risk,structural:y.structurally_not_at_risk,
+    eligible:y.eligible_metadata,excluded:y.excluded},
+    {total:3,at_risk:2,structural:1,eligible:1,excluded:2});
+  assert.equal(y.eligible_metadata+y.excluded,y.total);
+});
+
+test('one unknown source cell withholds within-frame support even when visible roster is matched',()=>{
+  const x=fixture();x.receipts.push(receipt('doc-c','A/66/PV.1',2011,repeat('f'),repeat('0')));
+  x.observations.push(row('o-c','early','doc-c','A/66/PV.1',2011,repeat('0')));
+  for(const o of x.observations.filter(o=>o.frame_id==='early')) {
+    o.comparability_receipt_id='synthetic-stratum-receipt-'+o.id;
+    for(const k of ['genre_evidence_status','language_evidence_status','translation_evidence_status','roster_evidence_status'])
+      o[k]='independently_verified';
+  }
+  assert.equal(audit(x).within_frame_comparisons[0].status,'supported');
+  x.observations.push({...row('missing','early',null,null,2011,null),country:'BBB',
+    source_status:'unverified',missing_reason:'synthetic unavailable source',inclusion_probability:null});
+  const v=audit(x).within_frame_comparisons[0];
+  assert.equal(v.status,'uncertain');
+  assert.equal(v.full_observation_coverage,false);
+  assert.equal(v.documentary_stratum_evidence_complete,true);
+  assert.equal(audit(x).inference_eligible,false);
 });
