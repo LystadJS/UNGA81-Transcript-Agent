@@ -28,6 +28,6 @@ python site/experimental/research-validation-v2/browser_smoke.py \
 
 ## Engineering and release gates
 
-Before integration, independently inspect all eight (now expanded) worker paths, exact file SHA identities, original W2/W4 fixture contract regression, negative source/privacy tests, actual Chromium served-page results, CI run IDs/jobs/logs and output package contents. Resolve any semantic duplication with merged C5's existing W2/W4 renderers; never replace its weighted W2 statistic or original W4 transforms. Reject private originals, unverified historical W4 observations, held-out transcripts and unsupported scientific conclusions. Leave frozen D1 O1–O5, W1/W2 inference G01–G13, and all release/mirroring gates unchanged.
+Before integration, independently inspect all twelve worker paths, exact file SHA identities, original W2/W4 fixture contract regression, negative source/privacy tests, actual Chromium served-page results, CI run IDs/jobs/logs and output package contents. Resolve any semantic duplication with merged C5's existing W2/W4 renderers; never replace its weighted W2 statistic or original W4 transforms. Reject private originals, unverified historical W4 observations, held-out transcripts and unsupported scientific conclusions. Leave frozen D1 O1–O5, W1/W2 inference G01–G13, and all release/mirroring gates unchanged.
 
 **No source PR merge, workflow modification, Pages deployment, release metadata change, or portfolio mirroring is authorized by this proposal.**
