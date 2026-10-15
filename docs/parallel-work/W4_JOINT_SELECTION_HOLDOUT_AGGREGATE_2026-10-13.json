@@ -1,0 +1,146 @@
+{
+  "schema": "un.w4.joint_source_selection.temporal_holdout.aggregate.v1",
+  "protocol_date": "2026-10-13",
+  "research_scope": "known-truth synthetic selection and AR1 temporal covariance; source QA 2008–2023; real fitting gated",
+  "prereg": "docs/parallel-work/W4_JOINT_SELECTION_TEMPORAL_PREREG_2026-10-13.md",
+  "development": {
+    "seed_namespace": "UNGA81-JOINT-DEV-20261013",
+    "replications_per_identifiable_scenario": 120,
+    "identifiable_scenarios": 18,
+    "panels_attempted": 2160,
+    "panels_evaluable": 2120,
+    "panels_failed": 40,
+    "frozen_before_test": true,
+    "source_dev_receipt_sha256": "a9bda3652748cba980fe900317161a78be8f6fdaed91b5a2bb67b431e21b6639",
+    "frozen_studentized_critical_values": {
+      "16": 2.2084111046854917,
+      "24": 2.0038548655397146,
+      "32": 1.8409055024791958
+    }
+  },
+  "independent_holdout": {
+    "seed_namespace": "UNGA81-JOINT-HOLDOUT-20261014",
+    "aggregate_receipt_sha256": "0910e77d02b8fdd6d61defd64853fdc92b7b52702229fce80d2a1dbb805007d0",
+    "T_year_horizons": [
+      16,
+      24,
+      32
+    ],
+    "source_masks": [
+      "near_census",
+      "stratified_2_of_3"
+    ],
+    "year_worlds": [
+      "iid_MAR",
+      "AR1_MAR",
+      "AR1_MNAR_audited",
+      "AR1_MNAR_no_audit"
+    ],
+    "replications_per_scenario": 240,
+    "total_scenarios": 24,
+    "total_panels_attempted": 5760,
+    "identified_scenarios": 18,
+    "identified_attempted": 4320,
+    "identified_evaluable": 4260,
+    "identified_failures": 60,
+    "unaudited_MNAR_scenarios": 6,
+    "unaudited_MNAR_refusals_expected": 1440,
+    "unaudited_MNAR_refusals_observed": 1440,
+    "unsafe_no_audit_fits": 0,
+    "calibrated_coverage_scenarios_passed": 12,
+    "estimated_rho_point_reliability_scenarios_passed": 0,
+    "audited_MNAR_gamma_accuracy_scenarios_passed": 6,
+    "horizon_16_all_gates_passed": false,
+    "calibrated_coverage_pass_by_world": {
+      "iid_MAR": 3,
+      "AR1_MAR": 4,
+      "AR1_MNAR_audited": 5
+    },
+    "all_real_inferential_gates_frozen": true,
+    "sample_scenarios": [
+      {
+        "years": 16,
+        "mask": "near_census",
+        "world": "AR1_MNAR_audited",
+        "evaluable": 238,
+        "calibrated_coverage": 0.907563025210084,
+        "rho_RMSE": 0.3362896910440774,
+        "gamma_RMSE": 0.18848891684231306
+      },
+      {
+        "years": 16,
+        "mask": "stratified_2_of_3",
+        "world": "AR1_MNAR_audited",
+        "evaluable": 235,
+        "calibrated_coverage": 0.8808510638297873,
+        "rho_RMSE": 0.3669459928955863,
+        "gamma_RMSE": 0.21424341094893906
+      },
+      {
+        "years": 32,
+        "mask": "near_census",
+        "world": "AR1_MNAR_audited",
+        "evaluable": 239,
+        "calibrated_coverage": 0.8493723849372385,
+        "rho_RMSE": 0.20906046051472196,
+        "gamma_RMSE": 0.12457279759255613
+      }
+    ]
+  },
+  "model": {
+    "approach": "two-phase inverse-meeting-weight stratified response correction plus weighted logistic selection likelihood and profile REML AR1/nugget covariance; NOT a full joint likelihood",
+    "parameters_estimated": [
+      "selection_logit_intercept",
+      "outcome_dependent_response_gamma",
+      "response_period_effect",
+      "year_AR1_rho",
+      "year_nugget_lambda",
+      "temporal_variance_sigma2"
+    ],
+    "true_rho_given_to_estimator": false,
+    "true_gamma_given_to_estimator": false,
+    "phase2_random_audit_probability": 0.4,
+    "nuisance_parameter_grid_frozen_before_test": true,
+    "real_source_nonresponse_identifiable_without_random_audit": false,
+    "nonrespondent_text_outcome_leakage_blocked": true,
+    "calibration_level": 0.9,
+    "coverage_tolerance": 0.05,
+    "rho_bias_threshold": 0.12,
+    "rho_RMSE_threshold": 0.25,
+    "gamma_bias_threshold_MNAR": 0.2,
+    "gamma_RMSE_threshold_MNAR": 0.45,
+    "development_only_cutoff_fitted_once": true
+  },
+  "real_source_preflight": {
+    "original_UN_speaker_index_SHA256": "841ae22d6485a7e3c0bce84830f09c43d75421ce9b3a58408d20dfec3cbbaf43",
+    "early_years": "2008–2015",
+    "PV_meeting_frame": 118,
+    "PV_meetings_sampled": 64,
+    "source_resolved_index_speaker_rows": 855,
+    "original_source_full_speech_text_matches": 832,
+    "unambiguous_country_years": 828,
+    "randomized_second_stage_missing_text_audit_available": false,
+    "early_year_sampling_known_only_at_meeting_stage": true,
+    "late_years": "2016–2023",
+    "late_source_attestation": "previously approved P2 105 original-PV/1543 speech aggregate; per-row cross-period comparability NOT newly audited",
+    "shared_2008_2023_source_population_accepted": false,
+    "same_2008_2023_frozen_reference_fit_approved": false
+  },
+  "release_decision": {
+    "source_first_stage_2008_2015_accepted": "PASS",
+    "real_selection_MNAR_identification": "FAIL_NO_RANDOM_NONRESPONDER_AUDIT",
+    "heldout_nuisance_covariance_reliability": "FAIL_ZERO_OF_EIGHTEEN",
+    "heldout_nominal_CI_coverage": "PARTIAL_TWELVE_OF_EIGHTEEN",
+    "real_new_2008_2023_representation": "NOT_FIT_PREREGISTERED_STOP_RULE",
+    "real_W4_temporal_confidence_intervals": "WITHHELD",
+    "population_and_political_position_inference": false,
+    "public_empirical_or_browser_release": false,
+    "frozen_2016_2019_reference_modified": false,
+    "heldout_37_reserved_2026_meetings_accessed": 0
+  },
+  "privacy": {
+    "no_public_source_linked_country_rows": true,
+    "no_public_transcripts_or_vectors": true,
+    "source_and_simulation_row_level_outputs": "user-private artifact only"
+  }
+}

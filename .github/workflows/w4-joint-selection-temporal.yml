@@ -1,0 +1,45 @@
+name: W4 joint transcript selection and temporal covariance
+on:
+  push:
+    branches: ['coord/w4-joint-selection-temporal-20261013']
+    paths:
+      - 'research/longitudinal/joint_selection_temporal/**'
+      - 'docs/parallel-work/W4_JOINT_SELECTION_TEMPORAL_PREREG_2026-10-13.md'
+      - '.github/workflows/w4-joint-selection-temporal.yml'
+  pull_request:
+    paths:
+      - 'research/longitudinal/joint_selection_temporal/**'
+      - '.github/workflows/w4-joint-selection-temporal.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  joint-model-source-safe-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned numerical runtime
+        run: python -m pip install numpy==2.2.6 scipy==1.15.3 jsonschema==4.23.0
+      - name: Validate source-free model and adversarial selection tests
+        run: |
+          python -m py_compile research/longitudinal/joint_selection_temporal/*.py
+          python -m unittest discover -s research/longitudinal/joint_selection_temporal -p 'test_*.py' -v
+          python research/longitudinal/joint_selection_temporal/source_comparability_preflight.py --help
+      - name: Validate old W4 synthetic structural and W1 source contracts
+        run: |
+          python -m unittest discover -s research/longitudinal -p 'test_*.py' -v
+          node docs/parallel-work/validate-contract.cjs
+      - name: Export source code only for independently seeded private calibration
+        uses: actions/upload-artifact@v4
+        with:
+          name: w4-joint-temporal-source-only
+          path: |
+            research/longitudinal/joint_selection_temporal/*.py
+          retention-days: 1
+          if-no-files-found: error
