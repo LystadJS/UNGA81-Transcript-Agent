@@ -11,17 +11,17 @@
   },
   "code": {
     "path": "research/source_comparability/audit.cjs",
-    "git_blob_sha1": "9617160166a5e7b99307ff3deadf594867061e2c"
+    "git_blob_sha1": null
   },
   "tests": {
     "path": "research/source_comparability/audit.test.cjs",
-    "git_blob_sha1": "eb622a08ba45d623139624a5f57e43ec1b22b68f",
+    "git_blob_sha1": null,
     "command": "node --test research/source_comparability/audit.test.cjs",
-    "passed": 40,
-    "failed": 0,
-    "cancelled": 0,
-    "skipped": 0,
-    "run_kind": "executed_in_local_node_runtime"
+    "passed": null,
+    "failed": null,
+    "cancelled": null,
+    "skipped": null,
+    "run_kind": "NOT_RUN_AFTER_COORDINATOR_FIX"
   },
   "fixture": {
     "path": "research/source_comparability/fixtures/synthetic-manifest.v1.json",
@@ -33,8 +33,8 @@
     "inference_eligible": false
   },
   "acceptance": {
-    "synthetic_negative_controls": "PASS",
-    "exact_file_blob_match": "PENDING_REMOTE_VERIFICATION",
+    "synthetic_negative_controls": "NOT RUN AFTER COORDINATOR FIX",
+    "exact_file_blob_match": "NOT RUN AFTER COORDINATOR FIX",
     "coordinator_source_inventory_adapter_actual_upstream_validator": "NOT RUN",
     "existing_repository_regressions": "NOT RUN",
     "github_actions_exact_head": "NOT RUN",
@@ -48,6 +48,7 @@
     "No original private PDF or speech text was loaded.",
     "Current source eligibility describes manifest consistency only.",
     "No independent original-source SHA-256 or MAR/MNAR identification claim.",
-    "Engineering tests do not demonstrate scientific release eligibility."
+    "Engineering tests do not demonstrate scientific release eligibility.",
+    "Coordinator added unknown-frame refusal regression; prior 40-test evidence predates updated head and must not be represented as exact-head PASS."
   ]
 }
