@@ -80,3 +80,14 @@ Run any additional applicable latent/numerical tests after examining latest `mai
 - No upstream Node/browser/W1/corpus/reviewed tests could execute because their files and dependencies were unavailable. Original source authentication, semantic ONNX checkpoint, and empirical comparisons remain withheld.
 
 **Coordinator completion condition:** provide a trusted execution-capable full checkout or CI runner with repository access; verify `git rev-parse HEAD` equals the exact current PR head; run the official Node contract validator, browser/latent/numerical, W1/source/corpus/reviewed suites, and exact-head Python tests. Capture exit codes, logs, dependency versions, run URLs/IDs, and compare `main` again. Keep PR draft and unmerged in the meantime.
+
+
+## October 15, 09:50 EDT — renewed execution attempt
+
+- Exact implementation head before this record: `5dc74a10d4094c8518ca5b48a87bb2994c5ab6bc`; latest checked `main` `1af11061e3fa65d51b28d42a1b98bef250b6168b`. PR branch 25 ahead, 4 behind. GitHub Actions PR-head runs: none returned.
+- Full checkout command `git ls-remote https://github.com/LystadJS/UNGA81-Transcript-Agent.git HEAD` failed with `Could not resolve host: github.com` in this container. No project root checkout exists, so the official upstream Node suites cannot execute; **NOT RUN**, not PASS. This is external execution access, not a demonstrated upstream failure.
+- **Fresh execution** in the available partial source tree, Python 3.13.5: `python3 -m unittest discover -v -p 'test_*.py'`: 99 PASS, 0 FAIL, 0 ERROR, 1.863 sec; `python3 -m compileall -q .`: PASS (exit 0).
+- Git blob verification: `interchange.py` local and remote `329c8312cf1dec46c85d146d33cc34a0c8e18542`; `test_interchange_v1_compat.py` local and remote `4857f91c0606fa6d10d382992a6e44ed7f02c69a`. **Two discrepancies persist:** local `test_pipeline.py` `5f7ba60ce263ff347b99e9eb1cebd6753520397f` versus remote `b991b62365b1a18fb33b956d9d8e8dcf7fc91e8b`; local `official_v1_synthetic.json` `58b1c6648c15de4a5085ff626fb5964b9bbd1a8e` versus remote `d22dad05461dc34e1a41aa7a7c0c7dd6528da194`. The local 99 PASS cannot be promoted to exact-head suite PASS.
+- No eligible ownership-local regression fix was identified from an upstream test because upstream test execution was impossible. Do not merge, deploy, access reserved sources, or alter gates.
+
+**Next coordinator action:** provision a trusted full checkout/CI runner, verify the PR's exact SHA with `git rev-parse HEAD`, execute the official Node schema validator and named upstream suites from the prior section, reproduce Python tests from actual PR bytes, and attach run IDs, logs and exit statuses. Reconcile stale branch base only after coordinator-owned integration approval.
