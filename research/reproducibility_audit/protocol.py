@@ -251,6 +251,9 @@ def validate_envelope(doc: Any, schema: dict | None) -> list[str]:
         failures = [f for f in coverage['failure_ledger'] if f['model_id'] == c['model_id'] and f['status'] in ('failed', 'timed_out', 'nonconverged')]
         if c['failed_fits'] and len(failures) < c['failed_fits']:
             errs.append('missing failed-fit ledger')
+        skips = [f for f in coverage['failure_ledger'] if f['model_id'] == c['model_id'] and f['status'] == 'skipped']
+        if c.get('skipped_fits', 0) > len(skips):
+            errs.append('missing skipped-fit ledger')
     for evidence in doc['evidence']:
         if evidence['observation_id'] not in ob_by_id:
             errs.append('orphan evidence')
