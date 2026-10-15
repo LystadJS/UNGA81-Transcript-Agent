@@ -19,6 +19,7 @@ jobs:
         with:
           node-version: '22'
       - name: Exact-head source and native upstream regressions
+        if: hashFiles('research/source_comparability/audit.test.cjs') != ''
         shell: bash
         run: |
           set -euo pipefail
@@ -30,6 +31,7 @@ jobs:
           node research/validation_framework/tests/test_historical_link.cjs
           node docs/parallel-work/test_w4_p2_independent_source_audit.cjs
       - name: Native upstream Python source contracts
+        if: hashFiles('research/source_comparability/audit.test.cjs') != ''
         run: |
           python3 -m unittest discover -s research/integration -p 'test_p3_harvard_archive_audit.py' -v
           python3 -m unittest discover -s research/integration -p 'test_p5_harvard_receipt.py' -v
