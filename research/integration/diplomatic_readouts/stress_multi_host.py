@@ -27,6 +27,7 @@ ATTACKS = (
     "stale_epoch_replay", "fork_gossip", "wrong_audience", "tampered_attestation",
     "audit_prefix_rewrite", "source_checkpoint_substitution", "compromised_quorum_and_pins",
     "valid_four_host_quorum", "bad_clock", "revoked_source_checkpoint_replacement",
+    "same_sequence_revocation_fork",
 )
 POSITIVES = {"valid_quorum", "valid_four_host_quorum", "compromised_quorum_and_pins"}
 
@@ -97,6 +98,19 @@ def mutate(f: dict, kind: str) -> None:
                   log_sha256=log_digest(cloned),
                   log_tip_sha256=cloned[-1]["event_sha256"])
         resign_host(f)
+    elif kind == "same_sequence_revocation_fork":
+        src = f["source"]
+        from test_synthetic_signatures import resign_revocation
+        src["revocation"]["payload"]["observed_at"] = "2026-10-14T03:00:00Z"
+        resign_revocation(src)
+        new_rev = content_digest(REVOCATION_SCHEMA, src["revocation"]["payload"])
+        f["log"][-1] = new_log_event(f["log"][:2], "synthetic:event3",
+                                      "audit_observed", src["trust"].expected_registry_sha256,
+                                      new_rev, "2026-10-15T01:00:00Z")
+        cp.update(revocation_sha256=new_rev,
+                  log_sha256=log_digest(f["log"]),
+                  log_tip_sha256=f["log"][-1]["event_sha256"])
+        resign_host(f)
     elif kind == "bad_clock":
         cp["expires_at"] = "2026-10-15T02:01:00Z"
         resign_host(f)
@@ -108,9 +122,9 @@ def mutate(f: dict, kind: str) -> None:
         raise ValueError("unrecognized synthetic attack")
 
 
-def simulate(iterations: int = 280, seed: int = 81081) -> dict:
-    if type(iterations) is not int or not 28 <= iterations <= 2048:
-        raise ValueError("iterations must be an integer in [28,2048]")
+def simulate(iterations: int = 300, seed: int = 81081) -> dict:
+    if type(iterations) is not int or not 30 <= iterations <= 2048:
+        raise ValueError("iterations must be an integer in [30,2048]")
     if type(seed) is not int or seed < 0 or seed > 2**31:
         raise ValueError("synthetic deterministic seed invalid")
     rng = random.Random(seed)
@@ -142,7 +156,7 @@ def simulate(iterations: int = 280, seed: int = 81081) -> dict:
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--iterations", type=int, default=280)
+    parser.add_argument("--iterations", type=int, default=300)
     parser.add_argument("--seed", type=int, default=81081)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args(argv)
