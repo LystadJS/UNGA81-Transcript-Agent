@@ -155,3 +155,23 @@ test('readManifest provides versioned deterministic JSON replay',()=>{
     assert.equal(first,JSON.stringify(audit(readManifest(p))));}
   finally {fs.rmSync(path.dirname(p),{recursive:true,force:true});}
 });
+
+test('duplicate document content invalidates both receipts unless duplicate family is declared',()=>{
+  const x=fixture();x.receipts[1].source_sha256=x.receipts[0].source_sha256;
+  const a=audit(x);assert.equal(a.counts.duplicate_document_content_unresolved,2);
+  assert.equal(a.totals.eligible_metadata,0);
+  x.receipts[1].duplicate_group='synthetic_same_original';
+  x.receipts[0].duplicate_group='synthetic_same_original';
+  const b=audit(x);assert.equal(b.counts.duplicate_document_content_unresolved,undefined);
+  x.receipts[0].duplicate_group='different_family';
+  assert.equal(audit(x).counts.duplicate_document_content_unresolved,2);
+});
+test('within-frame roster change withholds descriptive comparability',()=>{
+  const x=fixture();x.receipts.push(receipt('doc-c','A/66/PV.1',2011,repeat('f'),repeat('0')));
+  const second=row('o-c','early','doc-c','A/66/PV.1',2011,repeat('0'));
+  second.country='BBB';x.observations.push(second);
+  const v=audit(x).within_frame_comparisons[0];
+  assert.equal(v.status,'uncertain');
+  assert.equal(v.roster_composition_changed,true);
+  assert.equal(v.matched_recorded_affiliations,0);
+});
