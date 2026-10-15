@@ -112,16 +112,36 @@
     return V.validate(data);
   }
 
-  // The injected function must be the accepted C5 UNResearchEvidence.validateW4,
-  // which authenticates the supplied synthetic files and saved alignment before returning.
+  // The injected function MUST be the C5 UNResearchEvidence.loadW4Files,
+  // not validateW4 on a pre-parsed JSON map: the loader checks the original
+  // five file names/sizes, exact byte SHA256 manifest and saved alignment.
   async function fromW4(files,validators){
-    need(validators && typeof validators.validateW4==='function',
-      'Accepted W4 original synthetic source/alignment validator required');
-    const result=await validators.validateW4(files);
+    need(validators && typeof validators.loadW4Files==='function',
+      'Accepted W4 original five-file byte/hash loader required');
+    const result=await validators.loadW4Files(files);
     need(result && result.envelope && result.panel && result.panel.kind==='longitudinal' &&
       result.provenance && result.source && result.analysis,
       'W4 validator did not return an original, source-bound panel');
     const env=result.envelope, p=result.panel, data=envelopeToFrame(env);
+    // W4's authoritative source period IDs are p0/p1, not the calendar year
+    // parsed from the interchange date. Never manufacture a period join from
+    // source date or actor label: use only the independently validated source
+    // panel returned by the accepted C5 original-file/alignment validator.
+    need(Array.isArray(result.source.observations) && Array.isArray(p.periods),
+      'Accepted W4 original source-period frame required');
+    const periodByID=new Map();
+    for(const row of result.source.observations){
+      need(row && typeof row.id==='string' && !periodByID.has(row.id) &&
+        typeof row.period==='string' && row.period.length>0,
+        'W4 original source contains duplicate ID or missing native period');
+      periodByID.set(row.id,row.period);
+    }
+    for(const item of data.sources){
+      const period=periodByID.get(item.id);
+      need(p.periods.includes(period),
+        'W4 original source ID lacks a validated comparable native period');
+      item.period=period;
+    }
     const model=env.models.find(m=>m.representation_id===p.identity.representation_id);
     need(model && model.representation_version===p.identity.representation_version &&
       p.identity.source_sha256===env.upstream.source_sha256 &&
