@@ -105,14 +105,18 @@ def check_parallel_v1(envelope: dict) -> dict:
     """
     _assert(isinstance(envelope,dict) and envelope.get("schema")=="un.parallel-analysis.v1" and
             envelope.get("publication_eligible") is False and envelope.get("evaluation_role")=="engineering_only", "unsafe upstream interchange")
-    _assert(envelope.get("contract_version") == "1.0.0", "v1 contract mismatch")
+    import re
+    _assert(isinstance(envelope.get("contract_version"),str) and re.fullmatch(r"1\.\d+\.\d+", envelope["contract_version"]) is not None, "v1 contract mismatch")
     producer=envelope.get("producer",{})
     _assert(producer.get("workstream_id") in {"W1","W2","W3","W4","W5","W6","W7"}, "unregistered workstream")
     upstream=envelope.get("upstream",{})
     _assert(upstream.get("source_schema") in {"synthetic.v1","un.browser.corpus.v1","un.latent-comparison.v1","un.passage-corpus.v1","un.review.v1"}, "upstream source schema")
     _nonempty(upstream.get("source_hash_basis"),"upstream hash basis")
-    _hash(upstream.get("selection_sha256"),"upstream selection")
-    _hash(upstream.get("source_sha256"),"upstream source")
+    for field in ("selection_sha256", "source_sha256"):
+        if upstream.get(field) is not None:
+            _hash(upstream[field], "upstream " + field)
+        else:
+            _nonempty(upstream.get("missing_reason"), "missing upstream " + field + " reason")
     cohort=envelope.get("cohort",{})
     _assert(cohort.get("split") in {"synthetic","development"}, "upstream holdout forbidden")
     observations=envelope.get("observations")
