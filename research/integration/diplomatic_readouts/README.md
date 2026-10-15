@@ -36,6 +36,19 @@ diff -rq /tmp/unga-bridge-a /tmp/unga-bridge-b
 
 Native upstream source/interchange regressions are run independently by the read-only coordinator CI workflow pinned to the current `main` source contract. These prove **synthetic interoperability**, not field-level provenance in any real UNGA transcript, temporal replication, statistical identification or authorization for government positions. No original-source, held-out, Shiny, Outlook, public browser or deployment test is claimed.
 
+## Metadata-only source registry preflight (synthetic v0; no authority)
+
+See [REGISTRY_PREFLIGHT.md](REGISTRY_PREFLIGHT.md), [registry_preflight.py](registry_preflight.py), and the portable input/output v0 schemas. This separate, standard-library-only preflight accepts a fictional source inventory snapshot, fictional custody-intent metadata, a checked-at UTC timestamp, an internally consistent synthetic audit chain, and the existing **unapproved** `un.private-source-authorization.proposal.v0`. It revalidates source and selection digests, exclusion/unavailable denominators and audit/custody scope; its digest chaining is **not** authentication of an actual custodian or revocation feed. It cannot read original bytes, issue reviewer or statistical decisions, grant access, or change the 37 reserved meeting lock.
+
+```sh
+python3 -m unittest discover -s research/integration/diplomatic_readouts/tests -v
+python3 research/integration/diplomatic_readouts/examples_registry.py --output /tmp/registry-preflight-a
+python3 research/integration/diplomatic_readouts/examples_registry.py --output /tmp/registry-preflight-b
+diff -rq /tmp/registry-preflight-a /tmp/registry-preflight-b
+```
+
+Seven invented scenarios include a consistent but **unauthorized** metadata packet and six withheld/refused cases. All **13** private-source, actual reviewer, statistical identification, protected holdout and D1 statuses remain `NOT_RUN`; output is aggregate-only and `publication_eligible=false`. No source URL, private passage or row-level UN data is included. Do not treat a synthetic-consistent receipt as a real-source permission token.
+
 ## Coordinator handoff, not part of this PR
 
 For a subsequent separate integration proposal, perform an official contract-version/schema pin, independently validate original byte/text and selection identities on an approved private host, join source groups and representation lineage against W1/W2/W4 accepted outputs, verify actual human labels and proposition-specific stance under the quick-reader rules, independently establish all applicable statistical and privacy gates, and regression-test D1 O1–O5, Shiny, non-send Outlook and browser replay before *any* operational use. Engineering validation must not change a frozen gate or be used as scientific or publication authority. **Do not merge or publish either PR automatically.**
