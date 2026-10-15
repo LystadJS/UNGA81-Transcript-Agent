@@ -1,0 +1,68 @@
+name: P2 2026-10-12 private UN original PV revalidation
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-only-encrypted:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        batch: [0, 1]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned cryptography and PDF extraction dependencies
+        run: python -m pip install cryptography==44.0.3 pymupdf==1.26.7
+      - name: Test synthetic authenticated envelope
+        run: python research/source_acquisition/p2_expansion/secure_originals.py --selftest
+      - name: Divide immutable 105 original UN PV symbols without adding a speech
+        env:
+          SOURCE_BATCH: "${{ matrix.batch }}"
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import os,re
+          p=Path('research/source_acquisition/p2_expansion/official_pv_2016_2023_105_20261012.txt')
+          symbols=[x.strip() for x in p.read_text().splitlines() if x.strip() and not x.startswith('#')]
+          assert len(symbols)==105 and len(set(symbols))==105
+          assert all(re.fullmatch(r'A/7[1-8]/PV\.[1-9]\d*',x) for x in symbols)
+          b=int(os.environ['SOURCE_BATCH'])
+          chosen=symbols[:55] if b==0 else symbols[55:]
+          assert len(chosen)==(55 if b==0 else 50)
+          (Path(os.environ['RUNNER_TEMP'])/'approved-symbols.txt').write_text('\n'.join(chosen)+'\n')
+          print('Approved original PV documents in batch:',len(chosen))
+          PY
+      - name: Fetch original official PDFs and encrypt with recipient-only key
+        env:
+          P2_PUBLIC_KEY: "9UsCfDPe91OhYLIOMoFK/y/PKehPGF0dRXH7Ev2H8mA="
+          SOURCE_BATCH: "${{ matrix.batch }}"
+        run: |
+          python research/source_acquisition/p2_expansion/secure_originals.py \
+            --symbols "$RUNNER_TEMP/approved-symbols.txt" \
+            --public-key "$P2_PUBLIC_KEY" \
+            --sealed-output "$RUNNER_TEMP/p2-private/originals-${SOURCE_BATCH}.sealed" \
+            --workers 4
+      - name: Refuse any plaintext artifact
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import os
+          p=Path(os.environ['RUNNER_TEMP'])/'p2-private'
+          files=list(p.iterdir())
+          assert len(files)==1 and files[0].suffix=='.sealed'
+          assert files[0].read_bytes()[:8]==b'UNW4P2\x00\x01'
+          print('PASS: uploaded artifact contains ciphertext only')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2-20261012-originals-batch-${{ matrix.batch }}
+          path: ${{ runner.temp }}/p2-private/*.sealed
+          retention-days: 1
+          if-no-files-found: error

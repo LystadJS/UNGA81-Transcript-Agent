@@ -2,7 +2,7 @@
 /* Private original-byte authenticated P2-to-W1 source-frame adapter.
  * No network, private transcript export, W1 numerical refits or legacy-v1 relabeling.
  */
-const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),zlib=require('node:zlib');
 const ARCHIVE_SHA='55077dccf7242cdf544aa95c4797c68e443b0c37344c9c112a2e2392ddfcf8e5';
 const P2='un.p2.original-pv-reconciled.v1';
 const HEX=/^[a-f0-9]{64}$/;
@@ -10,6 +10,45 @@ const PDF_SYMBOL=/^A\/7[1-8]\/PV\.\d+$/;
 function require_(ok,message){if(!ok)throw Error(message);}
 function digest(b){return crypto.createHash('sha256').update(b).digest('hex');}
 function parse(f){return JSON.parse(fs.readFileSync(f,'utf8'));}
+function originalHarvardSourceHashes(originalHarvardTar, expectedIds){
+  // Do not trust a caller-supplied text SHA merely because a distinct archive
+  // was authenticated. Read the exact pinned archive member for EACH row.
+  const zipBytes=fs.readFileSync(originalHarvardTar);
+  require_(digest(zipBytes)===ARCHIVE_SHA,'Harvard original archive bytes failed SHA-256 check');
+  return sourceMemberHashesFromGzip(zipBytes,expectedIds);
+}
+function sourceMemberHashesFromGzip(zipBytes,expectedIds){
+  const tar=zlib.gunzipSync(zipBytes,{maxOutputLength:512*1024*1024});
+  const actual=new Map();
+  let off=0;
+  while(off+512<=tar.length){
+    const header=tar.subarray(off,off+512);
+    if(header.every(v=>v===0))break;
+    const name=header.subarray(0,100).toString('utf8').replace(/\0.*$/,'');
+    const prefix=header.subarray(345,500).toString('utf8').replace(/\0.*$/,'');
+    const full=(prefix?prefix+'/':'')+name;
+    const basename=full.split('/').pop();
+    const sizeText=header.subarray(124,136).toString('ascii').replace(/\0.*$/,'').trim();
+    require_(/^[0-7]+$/.test(sizeText),'Malformed original Harvard tar member size');
+    const size=parseInt(sizeText,8),typ=header.subarray(156,157).toString('ascii');
+    const start=off+512,end=start+size;
+    require_(Number.isSafeInteger(size)&&size>=0&&end<=tar.length,
+      'Truncated original Harvard tar member');
+    if((typ==='0'||typ==='\0')&&!basename.startsWith('._')){
+      const match=/^([A-Z]{3})_(7[1-8])_(20\d\d)\.txt$/.exec(basename);
+      if(match&&Number(match[2])===Number(match[3])-1945){
+        const id='country-'+match[1]+'-'+match[3];
+        if(expectedIds.has(id)){
+          require_(!actual.has(id),'Duplicate Harvard tar member for verified country/year');
+          actual.set(id,digest(tar.subarray(start,end)));
+        }
+      }
+    }
+    off=start+512*Math.ceil(size/512);
+  }
+  require_(actual.size===expectedIds.size,'Original Harvard archive missing verified country-year speech members');
+  return actual;
+}
 function authenticatedFrame(attestation,originalTexts,originalHarvardTar,{cohortIds=null}={}){
   require_(attestation.schema==='un.p2.authenticated-corpus-PV-w1-input.v1',
     'Authentic P2 attestation contract required');
@@ -79,6 +118,12 @@ function authenticatedFrame(attestation,originalTexts,originalHarvardTar,{cohort
       o.opening>=.4&&o.ending>=.4,
       'Full original UN PV speech correspondence not independently supported');
     verified.push(o);
+  }
+  const originalTarDigest=originalHarvardSourceHashes(originalHarvardTar,
+    new Set(verified.map(o=>o.id)));
+  for(const row of verified){
+    require_(originalTarDigest.get(row.id)===row.harvard_speech_sha256,
+      'Exact Harvard tar member bytes do not match claimed source-row text SHA');
   }
   require_(counts.available===790&&counts.unverified===2&&
     Object.keys(originalTexts).length===790,'Whole original P2 population denominator changed');
@@ -151,4 +196,4 @@ if(require.main===module){
   catch(e){console.error('P2 original source authentication refused: '+
     String(e.message||e).slice(0,250));process.exitCode=2;}
 }
-module.exports={authenticatedFrame,digest};
+module.exports={authenticatedFrame,digest,sourceMemberHashesFromGzip};

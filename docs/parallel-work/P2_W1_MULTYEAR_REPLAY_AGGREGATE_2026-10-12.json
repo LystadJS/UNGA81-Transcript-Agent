@@ -1,0 +1,126 @@
+{
+  "schema": "un.p2-w1.multiyear-reaudit.20261012.aggregate.v1",
+  "audit_date": "2026-10-12",
+  "preregistration": "docs/parallel-work/P2_W1_MULTYEAR_FEASIBLE_COV_PREREG_2026-10-12.md",
+  "original_un_ga_pvs": {
+    "documents": 105,
+    "pages": 5184,
+    "bytes": 84661892,
+    "all_local_original_PV_SHA256_replayed": true,
+    "years": "2016–2023",
+    "UN_signed_original_SHA256_available": false,
+    "harvard_v14_sha256": "55077dccf7242cdf544aa95c4797c68e443b0c37344c9c112a2e2392ddfcf8e5",
+    "full_original_speech_texts_checked": 1545,
+    "strong_matches": 1543,
+    "below_threshold": 2,
+    "metric": "Seven token-shingles >=90%, eight/ten deciles >=80%, opening+ending >=40%",
+    "person_authenticated": 0
+  },
+  "source_99_country_panel": {
+    "candidate_cells": 792,
+    "verified": 790,
+    "unverified": 2,
+    "missing_cells_are_speeches_absent_from_UN": false,
+    "original_PV_sources": 105,
+    "archived_country_by_year_speaker_rows_are_private": true
+  },
+  "authenticated_P2_to_W1": {
+    "strict_frame_schema": "un.p2.original-pv-reconciled.v1",
+    "expected_pdf_count": 105,
+    "available_transcripts_SHA_of_exact_Harvard_tar_members_checked": 790,
+    "original_adaptor_claimed_text_hash_bypass_found": true,
+    "old_adapter_adversarial_with_claimed_SHA": "INCORRECTLY_ACCEPTED",
+    "corrected_adapter_adversarial_case": "REJECTED",
+    "tests_new_archived_member": 4,
+    "tests_existing_P2": 7,
+    "original_W1_clustering_kernel_edited": false,
+    "W1_native_verified_subset": 600,
+    "selection": "75 original-PV-verified speeches per year, SHA256 ordering, 2016–2023",
+    "full_fit_success": 2,
+    "meeting_group_refits_success": 4,
+    "affiliation_groups_skipped": 2,
+    "ARI": 0.5579651885094794,
+    "AMI": 0.5680776470516999,
+    "full_790_native_W1_one_run": "NOT_RUN_INPUT_CAP_600",
+    "old_analytical_v1_schema": "UNCHANGED_P2_UNSUPPORTED",
+    "publication_eligible": false
+  },
+  "synthetic_multiyear_calibration": {
+    "MonteCarlo_R_per_scenario": 400,
+    "scenarios": 16,
+    "attempted_panels": 6400,
+    "failed_panels": 0,
+    "years": [
+      8,
+      12,
+      16,
+      24
+    ],
+    "source_masks": [
+      "near_census",
+      "restricted_523_rate"
+    ],
+    "true_year_rhos": [
+      0,
+      0.65
+    ],
+    "known_true_beta": 0.2,
+    "nominal_interval": 0.9,
+    "estimated_year_correlation_from_observed_data": true,
+    "GLS_true_rho_or_true_variance_provided": false,
+    "methods": [
+      "naive_actor_t",
+      "year_welch_t",
+      "year_AR1_REML_feasible"
+    ],
+    "number_calibrated_scenarios_under_independent_years": {
+      "naive_actor_t": 0,
+      "year_welch_t": 8,
+      "year_AR1_REML_feasible": 2
+    },
+    "number_calibrated_scenarios_under_serial_years": {
+      "naive_actor_t": 0,
+      "year_welch_t": 0,
+      "year_AR1_REML_feasible": 0
+    },
+    "selected_near_census_serial_year_coverages": [
+      {
+        "years": 8,
+        "naive": 0.1375,
+        "welch": 0.685,
+        "feasible_AR1": 0.7525
+      },
+      {
+        "years": 12,
+        "naive": 0.1275,
+        "welch": 0.6325,
+        "feasible_AR1": 0.765
+      },
+      {
+        "years": 16,
+        "naive": 0.1075,
+        "welch": 0.6125,
+        "feasible_AR1": 0.78
+      },
+      {
+        "years": 24,
+        "naive": 0.09,
+        "welch": 0.61,
+        "feasible_AR1": 0.7975
+      }
+    ],
+    "underserial_coverages_not_calibrated": true,
+    "actual_UN_descriptive_effect_ci_eligible": false,
+    "note": "Known-truth scalar DGP, synthetic masks, not original UN speech embeddings or actual political positions"
+  },
+  "release": {
+    "source_replay": "PASS_PRIVATE",
+    "native_W1_600": "PASS_ENGINEERING",
+    "real_W4_calibrated_inference": "WITHHELD",
+    "actual_country_political_position_claims": false,
+    "public_W1_P2_analytic_v1_schema_export": "WITHHELD",
+    "browser_publication": false,
+    "reserved_37_meetings_oct_2026_accessed": 0,
+    "original_pdf_or_speaker_or_harvard_text_or_vectors_in_public_GitHub": false
+  }
+}
