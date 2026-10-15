@@ -82,6 +82,5 @@ class EffectiveMergeTests(unittest.TestCase):
             self.assertEqual(out["suites"]["fails"]["status"],"FAIL")
             self.assertFalse(out["ready"])
 
-
 if __name__ == "__main__":
     unittest.main()
