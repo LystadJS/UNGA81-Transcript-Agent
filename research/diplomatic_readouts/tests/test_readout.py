@@ -17,6 +17,16 @@ class Tests(unittest.TestCase):
   r=sample();r["findings"][0]["stance"]="support";self.assertEqual(normalize(r)["release_state"],"withheld")
  def test_private(self):
   r=sample();r["sources"][0]["text"]="SECRET";self.assertNotIn("SECRET",render(r,"json"))
+ def test_bad_hash(self):
+  r=sample();r["sources"][0]["sha256"]="z"*64;self.assertEqual(normalize(r)["release_state"],"withheld")
+ def test_duplicate_ids(self):
+  r=sample();r["sources"].append(dict(r["sources"][0]));self.assertEqual(normalize(r)["release_state"],"withheld")
+ def test_invalid_span(self):
+  r=sample();r["findings"][0]["supporting"][0]["end"]=0;self.assertEqual(normalize(r)["release_state"],"withheld")
+ def test_missing_denominator(self):
+  r=sample();r.pop("denominator");self.assertEqual(normalize(r)["release_state"],"withheld")
+ def test_contrary_only(self):
+  r=sample();r["findings"][0]["contrary"]=r["findings"][0]["supporting"];r["findings"][0]["supporting"]=[];self.assertEqual(normalize(r)["release_state"],"withheld")
  def test_formats(self):
   r=sample()
   for f in ("json","markdown","html"):self.assertEqual(render(r,f),render(r,f))
