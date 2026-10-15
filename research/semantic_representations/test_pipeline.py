@@ -14,6 +14,10 @@ class PipelineTests(unittest.TestCase):
             self.assertGreater(a["rows"][0]["passage_count"],1)
             tampered=[dict(r) for r in rows];tampered[0]["source_sha256"]="c"*64
             with self.assertRaises(ValueError): compare(a,encode(tampered,{"id":"fixture-semantic"},fixture_encoder,d))
+            altered=[dict(r) for r in rows];altered[0]["selection_sha256"]="d"*64
+            with self.assertRaises(ValueError): compare(a,encode(altered,{"id":"fixture-semantic"},fixture_encoder,d))
+            schema_changed=[dict(r) for r in rows];schema_changed[0]["source_schema"]="other.synthetic.v1"
+            with self.assertRaises(ValueError): compare(a,encode(schema_changed,{"id":"fixture-semantic"},fixture_encoder,d))
             with self.assertRaises(ValueError): encode(rows+[rows[0]],{"id":"fixture"},fixture_encoder,d)
             with self.assertRaises(ValueError): encode([dict(rows[0],text="wrong")],{"id":"fixture"},fixture_encoder,d)
             cache=next(__import__("pathlib").Path(d).glob("*.json"));cache.write_text("{}")
