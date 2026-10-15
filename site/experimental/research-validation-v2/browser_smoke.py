@@ -7,10 +7,13 @@ import contextlib
 import functools
 import http.server
 import json
+import os
 import pathlib
+import shutil
 import socketserver
 import threading
 import xml.etree.ElementTree as ET
+from urllib.request import urlopen
 
 from playwright.sync_api import sync_playwright
 
@@ -124,10 +127,21 @@ def test_size(browser, base_url, out, width, height, html=None):
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--output',default='/tmp/unga81-rv2-browser')
+    parser.add_argument('--browser',default=os.environ.get('CHROME_BIN') or
+                        shutil.which('chromium') or shutil.which('google-chrome'),
+                        help='Installed Chromium/Chrome path (defaults to CHROME_BIN or PATH)')
     args=parser.parse_args()
     out=pathlib.Path(args.output);out.mkdir(parents=True,exist_ok=True)
     with server() as base, sync_playwright() as p:
-        browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox'])
+        # Check actual local HTTP bytes before Chromium: navigation may be
+        # blocked by browser administrator policy, but the server must still
+        # deliver exactly the tested assets and no unexpected transformation.
+        for filename in ('index.html','style.css','renderer.js','fixture.json'):
+            with urlopen(base+filename, timeout=5) as response:
+                assert response.status == 200, filename
+                assert response.read() == (ROOT/filename).read_bytes(), filename
+        print('PASS HTTP served-page asset bytes: index, stylesheet, renderer, fixture')
+        browser=p.chromium.launch(executable_path=args.browser,headless=True,args=['--no-sandbox'])
         html=None
         probe=browser.new_page()
         try:
