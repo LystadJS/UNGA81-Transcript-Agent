@@ -1,0 +1,396 @@
+{
+  "schema": "un.coordinator-independent-synthetic-stance-holdout.v1",
+  "role": "engineering_only",
+  "publication_eligible": false,
+  "source_scope": "invented_english_only",
+  "authoring": "coordinator_separate_from_worker_dev",
+  "design_locked_before_execution": true,
+  "expected_counts": {
+    "families": 42,
+    "observations": 168,
+    "evaluable": 18,
+    "guard": 24,
+    "guard_pair_opportunities": 72
+  },
+  "labels_note": "evaluable: anchor/paraphrase same authored proposition-direction; opposite/protocol contradict; guard: no authorized speaker/proposition relation",
+  "families": [
+    {
+      "id": "H-D1",
+      "stratum": "direct",
+      "decision_role": "evaluable",
+      "anchor": "We support nighttime pedestrian crossings.",
+      "paraphrase": "Our delegation favors safer walking routes after dark.",
+      "opposite": "We oppose nighttime pedestrian crossings.",
+      "protocol": "Thank you Chair; we oppose nighttime pedestrian crossings."
+    },
+    {
+      "id": "H-D2",
+      "stratum": "direct",
+      "decision_role": "evaluable",
+      "anchor": "We support regional seed banks.",
+      "paraphrase": "Our delegation favors facilities that conserve crop varieties.",
+      "opposite": "We oppose regional seed banks.",
+      "protocol": "Thank you Chair; we oppose regional seed banks."
+    },
+    {
+      "id": "H-D3",
+      "stratum": "direct",
+      "decision_role": "evaluable",
+      "anchor": "We support wildlife migration corridors.",
+      "paraphrase": "Our delegation favors connected routes for moving animals.",
+      "opposite": "We oppose wildlife migration corridors.",
+      "protocol": "Thank you Chair; we oppose wildlife migration corridors."
+    },
+    {
+      "id": "H-D4",
+      "stratum": "direct",
+      "decision_role": "evaluable",
+      "anchor": "We support public bicycle repairs.",
+      "paraphrase": "Our delegation favors community services for maintaining bicycles.",
+      "opposite": "We oppose public bicycle repairs.",
+      "protocol": "Thank you Chair; we oppose public bicycle repairs."
+    },
+    {
+      "id": "H-D5",
+      "stratum": "direct",
+      "decision_role": "evaluable",
+      "anchor": "We support riverbank erosion monitoring.",
+      "paraphrase": "Our delegation favors tracking loss of soil along waterways.",
+      "opposite": "We oppose riverbank erosion monitoring.",
+      "protocol": "Thank you Chair; we oppose riverbank erosion monitoring."
+    },
+    {
+      "id": "H-D6",
+      "stratum": "direct",
+      "decision_role": "evaluable",
+      "anchor": "We support accessible museum signage.",
+      "paraphrase": "Our delegation favors clear exhibit information for visitors with disabilities.",
+      "opposite": "We oppose accessible museum signage.",
+      "protocol": "Thank you Chair; we oppose accessible museum signage."
+    },
+    {
+      "id": "H-I1",
+      "stratum": "indirect",
+      "decision_role": "evaluable",
+      "anchor": "Our delegation recommends that authorities restore public ferries during winter.",
+      "paraphrase": "We urge local agencies to restore winter ferry connections.",
+      "opposite": "Our delegation advises against the proposal to restore public ferries during winter.",
+      "protocol": "Thank you Chair; our delegation advises against the proposal to restore public ferries during winter."
+    },
+    {
+      "id": "H-I2",
+      "stratum": "indirect",
+      "decision_role": "evaluable",
+      "anchor": "Our delegation recommends that authorities publish more floodplain maps.",
+      "paraphrase": "We urge local agencies to publish updated maps of flood-prone areas.",
+      "opposite": "Our delegation advises against the proposal to publish more floodplain maps.",
+      "protocol": "Thank you Chair; our delegation advises against the proposal to publish more floodplain maps."
+    },
+    {
+      "id": "H-I3",
+      "stratum": "indirect",
+      "decision_role": "evaluable",
+      "anchor": "Our delegation recommends that authorities expand rural broadband connections.",
+      "paraphrase": "We urge local agencies to expand internet service in remote communities.",
+      "opposite": "Our delegation advises against the proposal to expand rural broadband connections.",
+      "protocol": "Thank you Chair; our delegation advises against the proposal to expand rural broadband connections."
+    },
+    {
+      "id": "H-I4",
+      "stratum": "indirect",
+      "decision_role": "evaluable",
+      "anchor": "Our delegation recommends that authorities commission independent bridge load assessments.",
+      "paraphrase": "We urge local agencies to commission outside reviews of structural capacity.",
+      "opposite": "Our delegation advises against the proposal to commission independent bridge load assessments.",
+      "protocol": "Thank you Chair; our delegation advises against the proposal to commission independent bridge load assessments."
+    },
+    {
+      "id": "H-I5",
+      "stratum": "indirect",
+      "decision_role": "evaluable",
+      "anchor": "Our delegation recommends that authorities extend local recycling pickup.",
+      "paraphrase": "We urge local agencies to extend collection of reusable household materials.",
+      "opposite": "Our delegation advises against the proposal to extend local recycling pickup.",
+      "protocol": "Thank you Chair; our delegation advises against the proposal to extend local recycling pickup."
+    },
+    {
+      "id": "H-I6",
+      "stratum": "indirect",
+      "decision_role": "evaluable",
+      "anchor": "Our delegation recommends that authorities deploy additional air quality sensors.",
+      "paraphrase": "We urge local agencies to deploy more devices to monitor airborne pollution.",
+      "opposite": "Our delegation advises against the proposal to deploy additional air quality sensors.",
+      "protocol": "Thank you Chair; our delegation advises against the proposal to deploy additional air quality sensors."
+    },
+    {
+      "id": "H-N1",
+      "stratum": "nested_negation",
+      "decision_role": "evaluable",
+      "anchor": "We cannot support banning nighttime freight deliveries.",
+      "paraphrase": "Our delegation rejects stopping freight vehicles after dark.",
+      "opposite": "We firmly endorse banning nighttime freight deliveries.",
+      "protocol": "Thank you Chair; we firmly endorse banning nighttime freight deliveries."
+    },
+    {
+      "id": "H-N2",
+      "stratum": "nested_negation",
+      "decision_role": "evaluable",
+      "anchor": "We cannot support limiting rural mobile clinics.",
+      "paraphrase": "Our delegation rejects restricting healthcare vehicles serving villages.",
+      "opposite": "We firmly endorse limiting rural mobile clinics.",
+      "protocol": "Thank you Chair; we firmly endorse limiting rural mobile clinics."
+    },
+    {
+      "id": "H-N3",
+      "stratum": "nested_negation",
+      "decision_role": "evaluable",
+      "anchor": "We cannot support closing public astronomy observatories.",
+      "paraphrase": "Our delegation rejects shutting facilities for community skywatching.",
+      "opposite": "We firmly endorse closing public astronomy observatories.",
+      "protocol": "Thank you Chair; we firmly endorse closing public astronomy observatories."
+    },
+    {
+      "id": "H-N4",
+      "stratum": "nested_negation",
+      "decision_role": "evaluable",
+      "anchor": "We cannot support ending accessible transit assistance.",
+      "paraphrase": "Our delegation rejects discontinuing support for passengers with disabilities.",
+      "opposite": "We firmly endorse ending accessible transit assistance.",
+      "protocol": "Thank you Chair; we firmly endorse ending accessible transit assistance."
+    },
+    {
+      "id": "H-N5",
+      "stratum": "nested_negation",
+      "decision_role": "evaluable",
+      "anchor": "We cannot support removing wildfire escape signage.",
+      "paraphrase": "Our delegation rejects taking down emergency evacuation signs.",
+      "opposite": "We firmly endorse removing wildfire escape signage.",
+      "protocol": "Thank you Chair; we firmly endorse removing wildfire escape signage."
+    },
+    {
+      "id": "H-N6",
+      "stratum": "nested_negation",
+      "decision_role": "evaluable",
+      "anchor": "We cannot support prohibiting multilingual emergency alerts.",
+      "paraphrase": "Our delegation rejects blocking warnings in multiple languages.",
+      "opposite": "We firmly endorse prohibiting multilingual emergency alerts.",
+      "protocol": "Thank you Chair; we firmly endorse prohibiting multilingual emergency alerts."
+    },
+    {
+      "id": "H-A1",
+      "stratum": "attributed",
+      "decision_role": "guard",
+      "anchor": "The visiting researcher reported, \"We support public lightning shelters.\"",
+      "paraphrase": "An external observer wrote, \"Our delegation favors facilities for refuge during electrical storms.\"",
+      "opposite": "The visiting researcher reported, \"We oppose public lightning shelters.\"",
+      "protocol": "Thank you Chair; the visiting researcher reported, \"We oppose public lightning shelters.\""
+    },
+    {
+      "id": "H-A2",
+      "stratum": "attributed",
+      "decision_role": "guard",
+      "anchor": "The visiting researcher reported, \"We support coral restoration surveys.\"",
+      "paraphrase": "An external observer wrote, \"Our delegation favors assessments of reef recovery.\"",
+      "opposite": "The visiting researcher reported, \"We oppose coral restoration surveys.\"",
+      "protocol": "Thank you Chair; the visiting researcher reported, \"We oppose coral restoration surveys.\""
+    },
+    {
+      "id": "H-A3",
+      "stratum": "attributed",
+      "decision_role": "guard",
+      "anchor": "The visiting researcher reported, \"We support free municipal art classes.\"",
+      "paraphrase": "An external observer wrote, \"Our delegation favors community-funded visual arts instruction.\"",
+      "opposite": "The visiting researcher reported, \"We oppose free municipal art classes.\"",
+      "protocol": "Thank you Chair; the visiting researcher reported, \"We oppose free municipal art classes.\""
+    },
+    {
+      "id": "H-A4",
+      "stratum": "attributed",
+      "decision_role": "guard",
+      "anchor": "The visiting researcher reported, \"We support high altitude weather balloons.\"",
+      "paraphrase": "An external observer wrote, \"Our delegation favors aerial atmospheric measurement programs.\"",
+      "opposite": "The visiting researcher reported, \"We oppose high altitude weather balloons.\"",
+      "protocol": "Thank you Chair; the visiting researcher reported, \"We oppose high altitude weather balloons.\""
+    },
+    {
+      "id": "H-A5",
+      "stratum": "attributed",
+      "decision_role": "guard",
+      "anchor": "The visiting researcher reported, \"We support wetland bird counts.\"",
+      "paraphrase": "An external observer wrote, \"Our delegation favors monitoring of marshland avian populations.\"",
+      "opposite": "The visiting researcher reported, \"We oppose wetland bird counts.\"",
+      "protocol": "Thank you Chair; the visiting researcher reported, \"We oppose wetland bird counts.\""
+    },
+    {
+      "id": "H-A6",
+      "stratum": "attributed",
+      "decision_role": "guard",
+      "anchor": "The visiting researcher reported, \"We support bus stop accessibility ramps.\"",
+      "paraphrase": "An external observer wrote, \"Our delegation favors step-free access to public transit stops.\"",
+      "opposite": "The visiting researcher reported, \"We oppose bus stop accessibility ramps.\"",
+      "protocol": "Thank you Chair; the visiting researcher reported, \"We oppose bus stop accessibility ramps.\""
+    },
+    {
+      "id": "H-C1",
+      "stratum": "conditional",
+      "decision_role": "guard",
+      "anchor": "We support a coastal soil database only if independent inspectors approve.",
+      "paraphrase": "Our delegation favors an inventory of shoreline sediment provided that safety tests pass.",
+      "opposite": "We oppose a coastal soil database unless a different review is completed.",
+      "protocol": "Thank you Chair; we oppose a coastal soil database unless a different review is completed."
+    },
+    {
+      "id": "H-C2",
+      "stratum": "conditional",
+      "decision_role": "guard",
+      "anchor": "We support freight rail electrification only if independent inspectors approve.",
+      "paraphrase": "Our delegation favors switching cargo trains to electric power provided that safety tests pass.",
+      "opposite": "We oppose freight rail electrification unless a different review is completed.",
+      "protocol": "Thank you Chair; we oppose freight rail electrification unless a different review is completed."
+    },
+    {
+      "id": "H-C3",
+      "stratum": "conditional",
+      "decision_role": "guard",
+      "anchor": "We support shared avalanche warnings only if independent inspectors approve.",
+      "paraphrase": "Our delegation favors regional mountain snow danger alerts provided that safety tests pass.",
+      "opposite": "We oppose shared avalanche warnings unless a different review is completed.",
+      "protocol": "Thank you Chair; we oppose shared avalanche warnings unless a different review is completed."
+    },
+    {
+      "id": "H-C4",
+      "stratum": "conditional",
+      "decision_role": "guard",
+      "anchor": "We support digitized local archives only if independent inspectors approve.",
+      "paraphrase": "Our delegation favors online access to historic community records provided that safety tests pass.",
+      "opposite": "We oppose digitized local archives unless a different review is completed.",
+      "protocol": "Thank you Chair; we oppose digitized local archives unless a different review is completed."
+    },
+    {
+      "id": "H-C5",
+      "stratum": "conditional",
+      "decision_role": "guard",
+      "anchor": "We support school ventilation upgrades only if independent inspectors approve.",
+      "paraphrase": "Our delegation favors better airflow in classroom buildings provided that safety tests pass.",
+      "opposite": "We oppose school ventilation upgrades unless a different review is completed.",
+      "protocol": "Thank you Chair; we oppose school ventilation upgrades unless a different review is completed."
+    },
+    {
+      "id": "H-C6",
+      "stratum": "conditional",
+      "decision_role": "guard",
+      "anchor": "We support community solar repairs only if independent inspectors approve.",
+      "paraphrase": "Our delegation favors maintenance of neighborhood photovoltaic arrays provided that safety tests pass.",
+      "opposite": "We oppose community solar repairs unless a different review is completed.",
+      "protocol": "Thank you Chair; we oppose community solar repairs unless a different review is completed."
+    },
+    {
+      "id": "H-S1",
+      "stratum": "scope_shift",
+      "decision_role": "guard",
+      "anchor": "We support restoring mountain footpaths.",
+      "paraphrase": "Our delegation favors expanding city parking permits.",
+      "opposite": "We oppose stopping private quarry permits.",
+      "protocol": "Thank you Chair; we oppose stopping private quarry permits."
+    },
+    {
+      "id": "H-S2",
+      "stratum": "scope_shift",
+      "decision_role": "guard",
+      "anchor": "We support protecting pollinator gardens.",
+      "paraphrase": "Our delegation favors building airport retail shops.",
+      "opposite": "We oppose removing ferry ticket booths.",
+      "protocol": "Thank you Chair; we oppose removing ferry ticket booths."
+    },
+    {
+      "id": "H-S3",
+      "stratum": "scope_shift",
+      "decision_role": "guard",
+      "anchor": "We support monitoring urban tree roots.",
+      "paraphrase": "Our delegation favors regulating delivery drone routes.",
+      "opposite": "We oppose closing railway freight depots.",
+      "protocol": "Thank you Chair; we oppose closing railway freight depots."
+    },
+    {
+      "id": "H-S4",
+      "stratum": "scope_shift",
+      "decision_role": "guard",
+      "anchor": "We support repairing village playgrounds.",
+      "paraphrase": "Our delegation favors expanding marine navigation charts.",
+      "opposite": "We oppose ending evening library hours.",
+      "protocol": "Thank you Chair; we oppose ending evening library hours."
+    },
+    {
+      "id": "H-S5",
+      "stratum": "scope_shift",
+      "decision_role": "guard",
+      "anchor": "We support funding low vision reading aids.",
+      "paraphrase": "Our delegation favors supporting hillside terracing.",
+      "opposite": "We oppose banning rooftop beekeeping.",
+      "protocol": "Thank you Chair; we oppose banning rooftop beekeeping."
+    },
+    {
+      "id": "H-S6",
+      "stratum": "scope_shift",
+      "decision_role": "guard",
+      "anchor": "We support improving stormwater drains.",
+      "paraphrase": "Our delegation favors opening municipal music venues.",
+      "opposite": "We oppose cutting funding to river ferries.",
+      "protocol": "Thank you Chair; we oppose cutting funding to river ferries."
+    },
+    {
+      "id": "H-U1",
+      "stratum": "cue_free",
+      "decision_role": "guard",
+      "anchor": "The plan for longer morning ferry routes appears beneficial.",
+      "paraphrase": "Several advantages follow from additional early passenger boat services.",
+      "opposite": "The plan for longer morning ferry routes appears harmful.",
+      "protocol": "Thank you Chair; the plan for longer morning ferry routes appears harmful."
+    },
+    {
+      "id": "H-U2",
+      "stratum": "cue_free",
+      "decision_role": "guard",
+      "anchor": "The plan for community meteorite exhibitions appears beneficial.",
+      "paraphrase": "Several advantages follow from local displays of recovered space rocks.",
+      "opposite": "The plan for community meteorite exhibitions appears harmful.",
+      "protocol": "Thank you Chair; the plan for community meteorite exhibitions appears harmful."
+    },
+    {
+      "id": "H-U3",
+      "stratum": "cue_free",
+      "decision_role": "guard",
+      "anchor": "The plan for restoring disused pedestrian tunnels appears beneficial.",
+      "paraphrase": "Several advantages follow from reopening closed underground walkways.",
+      "opposite": "The plan for restoring disused pedestrian tunnels appears harmful.",
+      "protocol": "Thank you Chair; the plan for restoring disused pedestrian tunnels appears harmful."
+    },
+    {
+      "id": "H-U4",
+      "stratum": "cue_free",
+      "decision_role": "guard",
+      "anchor": "The plan for additional orchard pest studies appears beneficial.",
+      "paraphrase": "Several advantages follow from more research into insects affecting fruit trees.",
+      "opposite": "The plan for additional orchard pest studies appears harmful.",
+      "protocol": "Thank you Chair; the plan for additional orchard pest studies appears harmful."
+    },
+    {
+      "id": "H-U5",
+      "stratum": "cue_free",
+      "decision_role": "guard",
+      "anchor": "The plan for preserving historic irrigation canals appears beneficial.",
+      "paraphrase": "Several advantages follow from keeping older farm water channels intact.",
+      "opposite": "The plan for preserving historic irrigation canals appears harmful.",
+      "protocol": "Thank you Chair; the plan for preserving historic irrigation canals appears harmful."
+    },
+    {
+      "id": "H-U6",
+      "stratum": "cue_free",
+      "decision_role": "guard",
+      "anchor": "The plan for mapping urban night lighting appears beneficial.",
+      "paraphrase": "Several advantages follow from examining the distribution of evening illumination.",
+      "opposite": "The plan for mapping urban night lighting appears harmful.",
+      "protocol": "Thank you Chair; the plan for mapping urban night lighting appears harmful."
+    }
+  ]
+}
