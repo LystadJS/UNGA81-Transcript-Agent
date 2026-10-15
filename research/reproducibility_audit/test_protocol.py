@@ -166,6 +166,11 @@ class ContractTests(unittest.TestCase):
         c=self.d['coverage']['models'][0];c['attempted_fits']=2;c['failed_fits']=1
         self.assertRejected('missing attempted-fit failures')
 
+    def test_skipped_fit_needs_ledger(self):
+        self.d['coverage']['models'][0]['skipped_fits']=1
+        self.schema['properties']['coverage']['properties']['models']['items']['properties']['skipped_fits']={}
+        self.assertRejected('unreported skipped fit')
+
     def test_unavailable_source_with_reason(self):
         o=self.d['observations'][1]
         o['source_status']='unavailable';o['missing_reason']='synthetic missing document';o['exclusion_reasons']=['unavailable']
