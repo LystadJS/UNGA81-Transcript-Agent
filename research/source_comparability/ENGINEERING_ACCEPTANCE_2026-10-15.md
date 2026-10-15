@@ -47,3 +47,7 @@ node docs/parallel-work/test_w4_p2_independent_source_audit.cjs
 Run applicable W4 Python regressions with installed/pinned dependencies and record any unavailable package or original-data gates distinctly. Reinspect all exact-head Actions jobs, run IDs and logs when a coordinator-approved CI path exists. Mark full engineering acceptance only after a complete checkout plus independent coordinator review; leave original-private-source authentication, causal/statistical identification and all publication gates **withheld** regardless.
 
 **Final disposition:** PR #64 remains draft and **unmerged**. This audit is metadata-only and not a claim about diplomatic positions, source response identification, model validity or scientific release.
+
+## Exact-head CI activation — coordinator, 15 October 2026
+
+Coordinator-owned native source-comparability CI workflow was introduced on main via PR #77 (merge `5c69fd4518c35131c8f6ccbf4084c5c5848dab01`). This documentation-only worker-namespace update requests a new PR synchronize event. **CI status is NOT RUN until the new exact-head Actions results are retrieved**. Prior coordinator effective-tree regression PASS is at `0cc01b7462a243a9b8391997250aac1d0d32f911` and does not substitute for a PR-head check. Original-source authentication, response identification, inferential calibration and publication remain withheld.
