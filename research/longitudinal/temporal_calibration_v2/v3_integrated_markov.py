@@ -58,7 +58,7 @@ def contract_counts(observed):
     counts=np.zeros((T,5),dtype=float) # respondent Y=0/1, audit Y=0/1, unrecovered
     for t in range(T):
         active=incl[t]
-        if not np.allclose(q[t][missing[t]],q[t][missing[t]][0]) if np.any(missing[t]) else False:
+        if np.any(missing[t]) and not np.allclose(q[t][missing[t]],q[t][missing[t]][0]):
             raise NoIdentifiedFit('audit probability varies within year contrary to state-only outcome model')
         counts[t,0]=int(np.sum(resp[t]&(y[t]==0)))
         counts[t,1]=int(np.sum(resp[t]&(y[t]==1)))
