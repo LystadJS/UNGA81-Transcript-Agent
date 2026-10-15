@@ -1,0 +1,123 @@
+{
+  "schema": "un.research-browser-v2-engineering-validation.v1",
+  "evaluation_role": "engineering_only",
+  "publication_eligible": false,
+  "as_of_utc": "2026-10-15",
+  "source": {
+    "repo": "LystadJS/UNGA81-Transcript-Agent",
+    "main_reviewed": "1af11061e3fa65d51b28d42a1b98bef250b6168b",
+    "c5_merge": "ecfc201ccfcd442c9f29e92777c1d9241beab4d9",
+    "inherited_c5_ci_run": 38458650819,
+    "native_w2_eligible": 24,
+    "native_w2_frame": 25,
+    "native_w2_unavailable": 1,
+    "native_w2_pair_records": 300,
+    "native_w2_offdiag": 276,
+    "native_w4_source_rows": 176,
+    "native_w4_actors": 13,
+    "native_w4_period_ids": [
+      "p0",
+      "p1"
+    ],
+    "original_private_source_byte_authentication": "NOT_RUN"
+  },
+  "local_execution": {
+    "node_version": "22.16.0",
+    "python_version": "3.13.5",
+    "chromium_version": "144.0.7559.96",
+    "native_v2_node_cases": 62,
+    "native_v2_node_passed": 62,
+    "native_v2_node_failed": 0,
+    "node_command": "node --test site/experimental/research-validation-v2/tests.cjs",
+    "chromium_browser_qa": "PASS_WITH_NAVIGATION_FALLBACK",
+    "browser_sizes": [
+      {
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "http_original_asset_parity": "PASS_4_OF_4",
+    "chromium_navigation": "BLOCKED_ERR_BLOCKED_BY_ADMINISTRATOR",
+    "native_c5_source_adapter_regression": "NOT_RUN_FULL_CHECKOUT_UNAVAILABLE",
+    "native_c5_regression_command": "C5_W2_FIXTURES=/tmp/c5-w2 C5_W4_FIXTURES=/tmp/c5-w4 node --test site/experimental/research-validation-v2/native-c5-regression.cjs",
+    "native_c5_regression_syntax": "PASS",
+    "c5_exported_read_model_audit": "PASS_EXPORT_ONLY_NOT_NATIVE_PRODUCER",
+    "coordinator_patch_synthetic_context_git_apply_check": "PASS",
+    "coordinator_patch_actual_main_git_apply_check": "NOT_RUN_FULL_CHECKOUT_UNAVAILABLE"
+  },
+  "immutable_gates": {
+    "37_reserved_october_meeting_texts_opened": 0,
+    "d1_O1_O5": "UNCHANGED",
+    "w1_w2_inference_G01_G13": "WITHHELD",
+    "historical_w4_inference": "WITHHELD",
+    "public_release": "WITHHELD",
+    "merge": "NOT_PERFORMED",
+    "deployment": "NOT_PERFORMED"
+  },
+  "tested_local_file_blobs": {
+    "renderer.js": {
+      "sha256_bytes": "788c0d54fcd77b83f5dced4447e9adfb0ce5bfec42ea6a3d5b987a8475f2821e",
+      "git_blob_sha1": "5a9798cbbb8e50f9efff1defcaee4b2ded63f8e1",
+      "bytes": 30562
+    },
+    "adapter.js": {
+      "sha256_bytes": "2d078128da1107f43293f44b4e40a9665bd45801d72cae456ee0a67c8c457e9f",
+      "git_blob_sha1": "ffd4deb294f802c8d6623db05d7c32c2cf4cda84",
+      "bytes": 13129
+    },
+    "tests.cjs": {
+      "sha256_bytes": "fd1c3022975fb28f26ae9c59999cd762c98b1a87a83dc86d04c10c752cf8fb1d",
+      "git_blob_sha1": "86106c282ce414ddb2394b508255be9622fa0fe1",
+      "bytes": 18503
+    },
+    "native-c5-regression.cjs": {
+      "sha256_bytes": "ea0a57d431c2fe18155314e5b5161c864064319997db129179b4ae923d1a0f90",
+      "git_blob_sha1": "37278996bed6db9bde7937286a4a0e51be385eac",
+      "bytes": 4780
+    },
+    "browser_smoke.py": {
+      "sha256_bytes": "6732531aa67edd104f05c95c358ba72fb5f17e00f683aaf1c9e38acac3fca90c",
+      "git_blob_sha1": "e9e7b4f5122c9ce67cd7b5fd3cc1ac2e61b7fd14",
+      "bytes": 8291
+    },
+    "fixture.json": {
+      "sha256_bytes": "29928c916c4b22740f80dfe6bd596d221437923eed30d550cb3e3b0d21c2e57e",
+      "git_blob_sha1": "0cd03f6e7b38cd41260f40d4e77cb64197b7e55a",
+      "bytes": 16698
+    },
+    "index.html": {
+      "sha256_bytes": "e5bda2fb8ed9abedc566eeee26feab21fa2ac1293ae397a1670825ec251d8e46",
+      "git_blob_sha1": "79b963ce1bb5b2ca1b0bee9ac53809cc7b13c5cb",
+      "bytes": 4581
+    },
+    "style.css": {
+      "sha256_bytes": "1658129cb972d059ffad42fb622eba29feb0b86ef1ce4f96cf3034d111385e9c",
+      "git_blob_sha1": "900df2c6471c711b77c8ecb1c84bcbf10984f501",
+      "bytes": 2361
+    },
+    "README.md": {
+      "sha256_bytes": "51a06293264d508d8be1583c0f583a03bbe48bee6eb1972c70eba35a4d5d6fd6",
+      "git_blob_sha1": "a48ffa7a1a1addac033f056a7db00610c9a314ef",
+      "bytes": 10777
+    },
+    "COORDINATOR_PATCH.md": {
+      "sha256_bytes": "9b8367ee1dc1ad0ef78380a8c6a977aaa5afb8072b3dd6a3b88051b051bcf9d8",
+      "git_blob_sha1": "d2d1c09ea9599d3aad7adbba4df8dcebf56ce8a4",
+      "bytes": 3765
+    },
+    "coordinator-integration.patch": {
+      "sha256_bytes": "11a6ee7f1117b02b762bb3ae981c78bbe467a324fe1699dc04baa64cbadf7fb7",
+      "git_blob_sha1": "d82ec15f341c97e11dc95a91b62f043350d6d0a3",
+      "bytes": 3811
+    }
+  },
+  "warnings": [
+    "Native C5 generator/validator execution on this head requires a full checkout not available to this container; accepted C5 CI receipt is inherited.",
+    "Browser navigation to localhost is blocked by administrator policy. Actual Chromium DOM QA uses exact injected local scripts; HTTP byte parity is independently checked.",
+    "No private original source file bytes were accessed; SHA-256 values in synthetic evidence are fixture commitments only."
+  ]
+}
