@@ -338,6 +338,24 @@ class SecurityTests(unittest.TestCase):
             (Path(td)/'summary.json').write_text(json.dumps({'metric':'synthetic','n':3}))
             self.assertEqual(security.scan_public(Path(td)),[])
 
+    def test_compressed_sentinel_archive_rejected(self):
+        import zipfile
+        with tempfile.TemporaryDirectory() as td:
+            p=Path(td)/'artifact.zip'
+            with zipfile.ZipFile(p,'w',zipfile.ZIP_DEFLATED) as archive:
+                archive.writestr('private.txt','SYNTHETIC_PRIVATE_TRANSCRIPT_SENTINEL')
+            self.assertTrue(security.scan_public(Path(td)))
+
+    def test_escaped_json_sentinel_rejected(self):
+        with tempfile.TemporaryDirectory() as td:
+            (Path(td)/'artifact.json').write_bytes(b'{"note":"\\u0053YNTHETIC_PRIVATE_TRANSCRIPT_SENTINEL"}')
+            self.assertTrue(security.scan_public(Path(td)))
+
+    def test_html_entity_sentinel_rejected(self):
+        with tempfile.TemporaryDirectory() as td:
+            (Path(td)/'artifact.html').write_text('&#83;YNTHETIC_PRIVATE_TRANSCRIPT_SENTINEL')
+            self.assertTrue(security.scan_public(Path(td)))
+
     def test_symlink_not_followed(self):
         with tempfile.TemporaryDirectory() as td:
             try:
