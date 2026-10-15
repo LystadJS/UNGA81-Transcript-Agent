@@ -1,21 +1,37 @@
-# Research browser validation v2
+# Research visualization/browser validation v2
 
-Standalone, synthetic-only, engineering-only browser prototype. It does not import private transcript content, refit numerical models, or authorize publication. The renderer preserves supplied family numerators/denominators without replacing the accepted W6 co-assignment formula. Missing/failed groups remain in the source ledger and frame coverage; eligibility is not silently imputed. Table-first display supports keyboard navigation, mobile horizontal scrolling, and JSON export/replay.
+**Status:** Draft PR #69; engineering-only; synthetic-only; no merge/deployment authorization. Every file is under `site/experimental/research-validation-v2/**`. No transcript material, actual UN actor/source relationships, refitting, public-manifest changes, or edits to accepted W5/W6 kernels.
 
-Run `node --test site/experimental/research-validation-v2/tests.cjs`. Serve the repository root with `python -m http.server 8000` and open `/site/experimental/research-validation-v2/`. File:// fetch may be blocked by browser security.
+## Accepted semantics and integration
 
-## Coordinator-only integration proposal
+- The source-of-truth contract is `docs/parallel-work/INTERCHANGE_V1.md`. The accepted source-bound W1/W2 frame and `site/research-consensus.js` supply **weighted conditional co-assignment** (coassigned weight / assigned-both weight) with separate planned, missing, noise and failed opportunities, not the older W6 equal-family illustrative mean. The renderer **does not recalculate** W2 association or fit any models.
+- C5 PR #56 (`coord/c5-w2-w4-research-browser`) remains a **draft, unmerged coordinator integration candidate**. Its accepted W4 five-file original-source receipt, saved rigid/pinned alignment and meeting/genre weights remain authoritative. Historical unverified/nullable-date W4 observations cannot be projected into legacy v1.
+- `adapter.js` provides `fromW2(env, sidecar, {validateW2})`, `fromW4(files, {validateW4})`, `fromW6Themes(env, panel, {validateEnvelope, validatePanel})`. Adapter calls the **independently accepted validator** supplied by the importing coordinator and checks source/selection/representation compatibility and synthetic-only status before building a display envelope. Mock validators in local tests do not authenticate real files. Never bypass the upstream originals/receipt check.
+- `renderer.js` accepts only the explicit `un.research-validation-v2.synthetic` fixture schema, `fixture_kind: synthetic`, `publication_eligible: false`, `evaluation_role: engineering_only`. The full source inventory is retained, including missing, failed, excluded and unattributed source groups. It fails closed on forged hashes, unknown/duplicate source IDs, missing pair opportunities, ill-typed or incorrect denominators, omitted family/failure ledgers, negative weighted prevalence, invalid period gates and inappropriate fit comparisons. Source/population IDs and observed zeros remain distinct from missing evidence.
+- Four SVG views with accessible corresponding numeric tables: consensus pair matrix (missing/unstable and method-family drilldown), country×latent-theme profile (not stance), longitudinal actor-period plot (uncertainty, missing periods and failed alignment withholding), and method comparison (all attempts, successful/failed/skipped/unassigned). Source identity, SHA-256, source hash basis, selection hash, representation, review and exclusion reasons are available via provenance inspection. Illustrative synthetic SVG geometry is not causal, positional or inferential.
+- Deterministic `exportJSON` and `htmlDocument`/SVG outputs and `index.html` saved-run replay do not require network storage. Changing an uploaded run clears the old result and invalidates export availability. Browser URLs and links are disabled for invented sources; never display private transcript/row-level material.
 
-After exact-head PR acceptance and source contract verification, add a navigation link from `site/research.html` (or approved shared entry point) to this isolated prototype. For accepted W1/W2/W4 outputs, coordinator must implement a **separate read-only source-bound adapter** mapping source IDs/hashes, selection/representation identities, family-balanced pair ledgers, country-theme weighting, temporal comparability, attempted/failed fits, and review statuses to a versioned validated envelope. Do not map empirical results into this synthetic-only schema or remove its synthetic gate. Keep PR #56 unmerged until separately accepted. No edits to shared entry points are included here.
+## Validation evidence (2026-10-15)
 
-## Limitations and pending acceptance
+Local pre-push run: `node --test site/experimental/research-validation-v2/tests.cjs`: **54/54 PASS** (Node 22.16.0). Fixture seed: none; all synthetic values fixed, deterministic. Browser: `python site/experimental/research-validation-v2/browser_smoke.py --output /tmp/rv2-browser-check`, Playwright/Chromium, 1440×900 desktop and 390×844 mobile: **PASS with fallback**. The execution environment blocks navigations to localhost, file and data URLs with `ERR_BLOCKED_BY_ADMINISTRATOR`; the QA script injects the actual project HTML scripts/CSS/fixture into Chromium using `page.set_content`, validating rendered SVG/tables, keyboard Enter inspection, export/replay, source provenance, stale/invalid data clearing and horizontal overflow without claiming a normal served-page navigation. No original sources accessed; no empirical fits executed.
 
-The current implementation is an accessible table-first baseline, a basic keyboard-accessible pair-eligibility heatmap, not a complete matrix or plotted movement interface. It does not yet implement an accepted v1 interchange adapter, hash lineage verification against upstream originals, source URL inspection, graphical exports, browser automation or saved-run persistence. Node tests are deterministic; browser QA must be run separately. Co-assignment is not policy agreement, thematic profile is not stance, stability is not significance, and observed movement is not causal influence.
+GitHub connector supports commit/push; execution environment cannot resolve `github.com` for native `git clone`. The browser fallback and upstream integration mean **full independent coordinator acceptance remains withheld**. Do not infer CI success for this worker from a generic latent numerical workflow.
 
-## Continuation audit — 15 October 2026
+## Deterministic commands
 
-- Verified main from commit search: `25ba1a7948c33188f21986af3cffbe73bbcafdba`.
-- Added keyboard-focusable consensus pair tiles showing **supplied** family numerator/eligible counts; zero opportunities are hatched, unstable assignments marked separately. No family aggregation or W6 numerical formula is recalculated.
-- Added checks for mandatory identity disclosures, malformed family ledgers, negative theme weights and inconsistent attempted/successful/failed fits; added four negative tests.
-- **NOT RUN:** Node test suite, actual Chromium/mobile/keyboard QA, CI for latest head, accepted interchange relational adapter, independent replay verification. The execution container could not resolve github.com to clone the repository; GitHub connector reads/writes succeeded. No pass claim is made from authored tests.
-- **Still required:** actual pairwise matrix heatmap, country/theme graphical profile, uncertainty-aware longitudinal chart, method comparison chart, source-hash bound v1 adapter, real browser screenshot/accessibility checks and source-population compatibility tests. Do not merge or deploy before independent coordinator acceptance.
+```bash
+node --test site/experimental/research-validation-v2/tests.cjs
+python site/experimental/research-validation-v2/browser_smoke.py --output /tmp/rv2-browser-check
+python -m http.server 8000
+# Open http://localhost:8000/site/experimental/research-validation-v2/ in an unrestricted browser
+```
+
+## Coordinator-only integration patch proposal (do not make these edits in worker PR)
+
+1. After exact-head review, add a **separate nav link** from `site/research.html` to the standalone v2 demo, and copy the new isolated assets under `site/experimental/research-validation-v2/**` in the approved build allowlist. No unbounded recursive publish.
+2. For actual validated synthetic W2 imports, call `UNResearchConsensus.validate(originalEnvelope, originalSidecar)`, then `UNResearchValidationV2Adapter.fromW2(envelope, sidecar, {validateW2: UNResearchConsensus.validate})`. Preserve source ID+text hash joins and original weighted ratio.
+3. For W4, call C5 original five-file reader/validator `UNResearchEvidence.loadW4Files(files)` (which checks exact SHA256 and saved alignment); only then `fromW4(files, {validateW4: ...})`. Refuse source or selection changes without a new reviewed fit. Do not convert real historical W4 inventories into synthetic.
+4. Reuse accepted W6 `validateEnvelope` and `validatePanel` before `fromW6Themes` and reject incompatible component/observation populations.
+5. Coordinator runs actual served-page desktop/mobile/keyboard QA, W1/W2/W4 original source and relational regression suites, checks asset privacy and latest-head CI, then separately assesses release/Pages/portfolio mirror authorization.
+
+**Protected:** 37 reserved October 5–6 transcripts, private originals, D1 O1–O5, frozen research null gates, 24 owner decisions, original SHA records, `site/release.json`, `tools/build_pages.py`, website mirror. No observed national positions, coalitions, issue absence, source-level independent replication, p-values or causal movement established.
