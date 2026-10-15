@@ -16,9 +16,11 @@ head=os.environ['U2_HEAD'];c0=os.environ['C0_HEAD'];main=os.environ['MAIN_HEAD']
 def git(*args):return subprocess.check_output(['git','-C',str(root),*args],text=True).strip()
 def require(ok,message):
     if not ok:raise RuntimeError(message)
+def temporary_commit(tree,left,right):
+    return git('-c','user.name=Synthetic coordinator QA','-c','user.email=qa@example.invalid','commit-tree',tree,'-p',left,'-p',right,'-m','Disposable acceptance tree; no branch mutation')
 require(git('rev-parse','HEAD')==head,'wrong U2 checkout')
 require(git('rev-parse','origin/main')==main,'refresh main pin before accepting')
-for base,tip in [(main,c0),(c0,head),(c0,u1)]:subprocess.run(['git','-C',str(root),'merge-base','--is-ancestor',base,tip],check=True)
+for tip in [head,u1]:subprocess.run(['git','-C',str(root),'merge-base','--is-ancestor',c0,tip],check=True)
 paths=git('diff','--name-only',c0,head).splitlines()
 require(paths and all(x.startswith('research/integration/question_router/') for x in paths),'U2 ownership violation')
 require(all(x.startswith('100644 blob ') for x in git('ls-tree','-r',head,'--','research/integration/question_router').splitlines()),'U2 nonordinary files')
@@ -27,12 +29,16 @@ consumer=out.parent/('u1-consumer-'+a.mode)
 subprocess.run(['git','-C',str(root),'worktree','add','--detach',str(consumer),u1],check=True)
 require(subprocess.check_output(['git','-C',str(consumer),'rev-parse','HEAD'],text=True).strip()==u1,'wrong consumer checkout')
 main_tree=git('merge-tree','--write-tree',main,head)
-combined_tree=git('merge-tree','--write-tree',u1,head)
+main_composition=temporary_commit(main_tree,main,head)
+combined_tree=git('merge-tree','--write-tree',main_composition,u1)
 if a.mode=='effective-tree':
-    commit=git('-c','user.name=Synthetic coordinator QA','-c','user.email=qa@example.invalid','commit-tree',combined_tree,'-p',u1,'-p',head,'-m','Disposable U1-U2 effective acceptance; no branch mutation')
+    commit=temporary_commit(combined_tree,main_composition,u1)
     subprocess.run(['git','-C',str(root),'checkout','--detach',commit],check=True)
     require(git('rev-parse','HEAD^{tree}')==combined_tree,'wrong composed tree')
     require(not git('diff',u1,'HEAD','--','site/parallel/w07-diplomat-ux'),'consumer was changed')
+    allowed=('research/integration/product_contracts/','research/integration/question_router/','site/parallel/w07-diplomat-ux/')
+    named={'docs/parallel-work/C0_PRODUCT_OWNERSHIP.md','docs/parallel-work/C0_WORKER_HANDOFFS.md','docs/parallel-work/C0_IMPLEMENTATION_ACCEPTANCE_2026-10-15.md','docs/parallel-work/c0-ownership.json','.github/workflows/c0-product-contracts.yml'}
+    require(all(x.startswith(allowed) or x in named for x in git('diff','--name-only',main,'HEAD').splitlines()),'unexpected effective-tree change')
     consumer=root
 require(not git('diff',c0,'HEAD','--','research/integration/product_contracts','docs/parallel-work/source-inventory-v1.cjs','docs/parallel-work/source-inventory-v1.schema.json'),'protected dependency changed')
 identities={'mode':a.mode,'worker':head,'c0':c0,'main':main,'consumer':u1,'actual_head':git('rev-parse','HEAD'),'actual_tree':git('rev-parse','HEAD^{tree}'),'main_u2_tree':main_tree,'u1_u2_effective_tree':combined_tree,'u2_changed_paths':paths,'synthetic_only':True,'publication_eligible':False}
