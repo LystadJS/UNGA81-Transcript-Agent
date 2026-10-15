@@ -1,0 +1,258 @@
+{
+  "schema": "un.w4.expanded-year.inference-prereg.v1",
+  "preregistered_utc_date": "2026-10-13",
+  "preregistration_commit_sha": "e698629266914929a33e832e8b0df32bd5e59187",
+  "preregistration_path": "docs/parallel-work/W4_EXPANDED_YEAR_SELECTION_REPRESENTATION_PREREG_2026-10-13.md",
+  "status": "PREREGISTERED_NOT_EMPIRICALLY_EVALUATED",
+  "data_access": {
+    "prior_observed_development_years": [
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "new_prospective_years": [
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015
+    ],
+    "new_year_original_PV_retrieval_executed": false,
+    "oct_5_6_2026_reserved_meetings_opened": 0,
+    "source_modality_primary": "original_UN_General_Debate_PV_delivered_text",
+    "exclude_modalities": [
+      "mixed_2024_OCR_translation",
+      "2025_interpretation_ASR",
+      "heldout_2026_meetings"
+    ]
+  },
+  "population": {
+    "unit": "recorded_country_affiliation_x_calendar_year",
+    "country_affiliations_frozen": 99,
+    "year_count": 16,
+    "candidate_cells": 1584,
+    "retained_statuses": [
+      "available",
+      "unverified",
+      "genuine_absence_with_verified_roster_evidence",
+      "excluded_with_reason"
+    ],
+    "interpretation": "linguistic_representation_only_not_human_identity_or_diplomatic_position"
+  },
+  "eras": {
+    "primary": {
+      "before": [
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015
+      ],
+      "after": [
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023
+      ]
+    },
+    "secondary_sensitivity": {
+      "before": [
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017
+      ],
+      "after": [
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023
+      ]
+    },
+    "legacy_descriptive_only": {
+      "before": [
+        2016,
+        2017,
+        2018,
+        2019
+      ],
+      "after": [
+        2020,
+        2021,
+        2022,
+        2023
+      ]
+    },
+    "causal_interpretation_allowed": false
+  },
+  "sources": {
+    "pdf_hash_basis": "raw_original_PDF_bytes_SHA256",
+    "text_hash_basis": "original_Harvard_archive_member_UTF8_bytes_SHA256",
+    "overlap_7gram_min": 0.9,
+    "speech_deciles_covered_min": 8,
+    "decile_coverage_min": 0.8,
+    "opening_coverage_min": 0.4,
+    "ending_coverage_min": 0.4,
+    "meeting_audit_holdout_fraction": 0.2,
+    "meeting_audit_sort_namespace": "W4-EXT-AUDIT-20261013",
+    "meeting_audit_min_per_year": 1,
+    "sampling_seed": 20261013,
+    "unknown_source_must_remain_null": true
+  },
+  "selection": {
+    "probability_model": "known_design_pi_times_crossfitted_verified_response_q_based_on_preoutcome_metadata_only",
+    "weight_cap_primary": 10,
+    "weight_cap_sensitivity": [
+      5,
+      20
+    ],
+    "source_support_min": 0.1,
+    "max_fraction_below_support": 0.05,
+    "max_fraction_clipped": 0.05,
+    "max_abs_standardized_preselection_metadata_imbalance": 0.1,
+    "mnar_delta_sd": [
+      -0.5,
+      -0.25,
+      0,
+      0.25,
+      0.5
+    ],
+    "claim_independent_from_outcome_under_mnar": false
+  },
+  "representation": {
+    "id": "prospective_reference_training_only_original_2008_2015_TFIDF_SVD64",
+    "dimension": 64,
+    "training_years": [
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015
+    ],
+    "comparison_years": [
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "no_comparison_text_training": true,
+    "minimum_training_svd_rank": 64,
+    "bootstrap_modes": [
+      "fixed_reference",
+      "refit_reference_from_whole_resampled_training_years_and_original_meetings"
+    ],
+    "truth_basis": "independently_constructed_synthetic_population_trained_reference_for_simulation",
+    "orthogonal_axis_matching_required_for_scalar_norm": false,
+    "original_2016_2019_frozen_64D_basis_is_legacy_only": true
+  },
+  "estimands": [
+    "mean_fixed_99_recorded_affiliation_within_actor_64D_Euclidean_era_distance",
+    "norm_fixed_99_country_centroid_64D_displacement"
+  ],
+  "time_model": {
+    "nesting": "year>original_PV_meeting>speech",
+    "repeats": "recorded_affiliation_across_year_and_meeting",
+    "estimated_covariance_models": [
+      "REML_AR1_hierarchical_year_meeting_actor",
+      "whole_calendar_year_stationary_block_with_nested_meetings",
+      "selection_and_rho_sensitivity_envelope"
+    ],
+    "within_era_block_lengths": [
+      2,
+      3
+    ],
+    "rho_sensitivity": [
+      0,
+      0.35,
+      0.65,
+      0.85
+    ],
+    "true_oracle_covariance_disallowed_in_feasible_candidate": true
+  },
+  "empirical_required": {
+    "all_sixteen_years_verified_source_blocks": true,
+    "overall_coverage_min": 0.95,
+    "annual_coverage_min": 0.9,
+    "affiliations_with_at_least_six_years_each_era_min": 90,
+    "new_2008_2015_original_PV_sources_present": false,
+    "source_coverage_sufficient_to_start_empirical_inference": false
+  },
+  "simulation": {
+    "status": "NOT_RUN",
+    "R_per_scenario": 600,
+    "B_per_replication": 199,
+    "seed": 20261013,
+    "null_and_motion": [
+      0,
+      0.2
+    ],
+    "rho": [
+      0,
+      0.65,
+      0.85
+    ],
+    "selection": [
+      "source_complete",
+      "MAR_85_percent",
+      "MNAR_85_percent_outcome_dependent"
+    ],
+    "reference_fit": [
+      "fixed_population_reference",
+      "train_only_refit"
+    ],
+    "core_scenarios": 36,
+    "core_worlds": 21600,
+    "synthetic_country_affiliations": 99,
+    "original_PV_sources_real": false,
+    "vocabulary_size": 1024,
+    "year_shock_sd": 0.2,
+    "meeting_shock_sd": 0.12,
+    "country_intercept_sd": 0.4,
+    "speech_residual_sd": 0.25,
+    "mnar_outcome_logodds_coefficient": -0.8,
+    "coverage_nominal": 0.9,
+    "coverage_acceptance_range": [
+      0.86,
+      0.94
+    ],
+    "wilson_95_must_include_nominal": true,
+    "minimum_valid_intervals_per_cell": 570,
+    "mnar_requires_inferential_abstention_or_valid_identification_bounds": true,
+    "legacy_4plus4_exploratory_control_excluded_from_8plus8_gate": true
+  },
+  "gates": {
+    "current_2016_2023_private_descriptive": "PASS_PRIOR_ACCEPTANCE",
+    "expanded_2008_2023_descriptive": "NOT_RUN",
+    "expanded_2008_2023_calibrated_inference": "NOT_RUN",
+    "current_empirical_inference": "FAIL",
+    "public_empirical_release": "FAIL",
+    "public_site": "UNCHANGED",
+    "frozen_gate_changes": false
+  }
+}

@@ -1,0 +1,55 @@
+name: W4 expanded-year preregistration synthetic preflight
+on:
+  pull_request:
+    paths:
+      - 'docs/parallel-work/W4_EXPANDED_YEAR_*2026-10-13*'
+      - 'docs/parallel-work/w4_expanded_year_engineering_smoke.py'
+      - '.github/workflows/w4-expanded-year-prereg.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-only-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Pin bounded Python numerical dependencies
+        run: python -m pip install numpy==2.2.6 scipy==1.15.3
+      - name: Check protocol registration and reject accidental empirical evidence
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          p=pathlib.Path('docs/parallel-work/W4_EXPANDED_YEAR_INFERENCE_REGISTER_2026-10-13.json')
+          d=json.loads(p.read_text())
+          assert d['schema']=='un.w4.expanded-year.inference-prereg.v1'
+          assert d['simulation']['status']=='NOT_RUN'
+          assert d['simulation']['core_scenarios']==36
+          assert d['population']['candidate_cells']==99*16
+          assert d['data_access']['new_year_original_PV_retrieval_executed'] is False
+          assert d['data_access']['oct_5_6_2026_reserved_meetings_opened']==0
+          assert d['gates']['public_empirical_release']=='FAIL'
+          assert d['gates']['frozen_gate_changes'] is False
+          assert pathlib.Path(d['preregistration_path']).is_file()
+          print('PASS preregistration registry: frozen design, no new empirical-data reads')
+          PY
+      - name: Synthetic-only fail-closed and representation controls
+        run: python docs/parallel-work/w4_expanded_year_engineering_smoke.py --selftest
+      - name: Preflight separately labeled as non-confirmatory
+        run: |
+          python docs/parallel-work/w4_expanded_year_engineering_smoke.py --smoke > "$RUNNER_TEMP/w4_preflight_aggregate.json"
+          python - "$RUNNER_TEMP/w4_preflight_aggregate.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1]))
+          assert d['empirical_inference_eligible'] is False
+          assert d['full_36_cell_calibration']=='NOT_RUN'
+          assert len(d['models'])==3
+          assert all(z['original_source_files_read']==0 and z['lexical_dimension']==6 for z in d['models'])
+          assert next(z for z in d['models'] if z['source_selection']=='MNAR')['mnar_identified_inference_allowed'] is False
+          print('PASS fictional preflight, no empirical source input or release claim')
+          PY
