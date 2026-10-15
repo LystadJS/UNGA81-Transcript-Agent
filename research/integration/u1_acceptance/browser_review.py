@@ -41,6 +41,7 @@ def main():
                 page = context.new_page()
                 page.set_default_timeout(6000)
                 errors, requests, downloads, held = [], [], [], []
+                pause = [True]
                 page.on('pageerror', lambda err: errors.append(str(err)))
                 page.on('request', lambda req: requests.append((req.method, req.url)))
                 page.on('download', lambda item: downloads.append(item))
@@ -61,11 +62,16 @@ def main():
                         while not held and time.monotonic() < limit:
                             page.wait_for_timeout(20)
                         assert held, 'real trust request was not intercepted'
+                    def hold(route):
+                        if pause[0]: held.append(route)
+                        else: route.continue_()
                     def release():
-                        page.unroute('**/__u1__/trust/*')
-                        for route in held:
+                        # Complete paused routes before unregistering the handler.
+                        pause[0] = False
+                        for route in list(held):
                             route.continue_()
                         held.clear()
+                        page.unroute('**/__u1__/trust/*', hold)
                         page.wait_for_load_state('networkidle')
                     if case == 'keyboard_form':
                         page.keyboard.press('Tab')
@@ -97,7 +103,7 @@ def main():
                         assert before == len([x for x in requests if x[1].endswith('/resolve')])
                     elif case == 'delayed_export_invalidated':
                         make()
-                        page.route('**/__u1__/trust/*', lambda route: held.append(route))
+                        page.route('**/__u1__/trust/*', hold)
                         page.get_by_role('button', name='Export read-only result').click()
                         await_held()
                         page.locator('#country').select_option('CAN')
@@ -110,7 +116,7 @@ def main():
                         bundle = api('/__u1__/resolve', {'page': 'explore', 'country': 'BRA', 'topic': None,
                             'period': {'start': '2024-09-23', 'end': '2024-09-23'}, 'meeting': None})
                         page.locator('#about > summary').click()
-                        page.route('**/__u1__/trust/*', lambda route: held.append(route))
+                        page.route('**/__u1__/trust/*', hold)
                         page.locator('#bundle-file').set_input_files({'name': 'synthetic.json',
                             'mimeType': 'application/json', 'buffer': json.dumps(bundle).encode()})
                         await_held()
@@ -125,7 +131,7 @@ def main():
                         expect(page.locator('#evidence-dialog')).to_be_visible()
                         expect(page.locator('#close-evidence')).to_be_focused()
                         page.keyboard.press('Tab')
-                        assert page.evaluate('document.activeElement.closest("dialog") !== null')
+                        assert page.evaluate('document.activeElement.closest("dialog") !== null'), 'Modal Tab lost visible focus: ' + page.evaluate('document.activeElement.tagName')
                         page.keyboard.press('Shift+Tab')
                         expect(page.locator('#close-evidence')).to_be_focused()
                         page.screenshot(path=str(args.output/'dialog.png'))
