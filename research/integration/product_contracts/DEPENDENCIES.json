@@ -1,0 +1,83 @@
+{
+  "snapshot_main": "da4ab9ed11dba3693d11aa12f5333963b1b85478",
+  "observed_date": "2026-10-15",
+  "runtime_authority": false,
+  "dependencies": [
+    {
+      "pr": 71,
+      "state": "merged",
+      "worker_sha": "8838ff1eb6717bde27265dd4ce8295a2d0ba28ac",
+      "merge_sha": "e25b61c6d03562a9f054be0412b6869198089fe4",
+      "engineering": "accepted_historical",
+      "run_ids": [
+        38764221760,
+        38764067792
+      ],
+      "new_product_acceptance": "not_run",
+      "publication_eligible": false
+    },
+    {
+      "pr": 82,
+      "state": "open_draft",
+      "worker_sha": "32112ff5793c1be763db709aa3ef536fb409428a",
+      "engineering": "hold",
+      "review_pr": 87,
+      "review_sha": "ec296c8df8ff7a7850a88d45fdb2dcbf3e084950",
+      "review_run": 38767398755,
+      "required_repairs": [
+        "R_identifier_coercion",
+        "derived_identifier_length"
+      ],
+      "hosted_R": "executed_in_independent_review",
+      "independent_probes": "4_pass_2_fail_1_error_per_job",
+      "publication_eligible": false
+    },
+    {
+      "pr": 66,
+      "state": "open_draft",
+      "worker_sha": "5c4aeb79107dc118cebff1761c70e5a9af021281",
+      "checkpoint_execution": "pass_recorded_by_coordinator",
+      "run_id": 38766093168,
+      "semantic_quality": "not_established",
+      "publication_eligible": false,
+      "worker_sha_is": "previous_checkpoint_execution_head_not_current_head",
+      "extended_benchmark": {
+        "worker_sha": "c7f88be34406ca88c95ab13ebd35fdfc7762b23b",
+        "run_id": 38769887728,
+        "families": 16,
+        "MiniLM_target_ordering_successes": 0,
+        "new_TFIDF_target_ordering_successes": 0,
+        "scope": "authored synthetic counterevidence, not a calibrated error rate or archived lexical-transform test"
+      }
+    },
+    {
+      "pr": 69,
+      "state": "open_draft",
+      "worker_sha": "c32399a305c01cb4859cd6db5aa554f4e5f5848d",
+      "baseline_main": "93b17c8779d959f5dd5559adb7f56381210f2f89",
+      "run_id": 38763071703,
+      "engineering": "accepted_synthetic_pinned_inputs",
+      "new_C0_integration": "not_run",
+      "publication_eligible": false
+    },
+    {
+      "pr": 70,
+      "state": "open_draft",
+      "worker_sha": "028e3d26f707401cbff498593ab27f64e2cc072a",
+      "run_id": 38747084068,
+      "engineering": "recorded_synthetic_pinned_inputs",
+      "new_C0_adapter": "not_run",
+      "publication_eligible": false
+    },
+    {
+      "pr": 68,
+      "state": "open_draft",
+      "worker_sha": "701cad8ac22e568a3f5eac0442c7f585caeeacff",
+      "v3_freeze": "not_accepted",
+      "v3_holdout": "not_run",
+      "publication_eligible": false
+    }
+  ],
+  "initial_main": "691f13bb53232f72a40461855c8e08a78b21befe",
+  "refresh_scope": "Two coordinator-ledger-only commits since initial_main; no implementation or ownership changes."
+}
