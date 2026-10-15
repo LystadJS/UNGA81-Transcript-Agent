@@ -39,6 +39,9 @@ def validate(report):
 def normalize(report):
     r = json.loads(json.dumps(report))
     errors = validate(r)
+    for source in r.get("sources", []):
+        source.pop("text", None)
+        source.pop("passage", None)
     gates = r.get("gates", {})
     permitted = bool(gates.get("source") and gates.get("statistical") and gates.get("review")) and not errors
     for f in r.get("findings", []):
