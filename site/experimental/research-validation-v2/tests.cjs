@@ -179,8 +179,112 @@ test('W2 adapter rejects non-synthetic envelope before rendering',async()=>{
   await assert.rejects(A.fromW2(x.env,x.sidecar,x.validators),/synthetic/);
 });
 test('W4 adapter requires accepted source and alignment validator',async()=>{
-  await assert.rejects(A.fromW4({},{}),/validator required/);
+  await assert.rejects(A.fromW4({},{}),/loader required/);
 });
 test('W6 adapter requires envelope and panel validators',()=>{
   assert.throws(()=>A.fromW6Themes({}, {}, {}),/validators required/);
+});
+
+// Native C5 source periods are IDs such as p0/p1; the interchange dates are
+// ISO dates and MUST NOT be used as proxy period keys by the display adapter.
+// The fake accepted validator below tests projection only, NOT C5 verification.
+function w4NativeShape(){
+  const frame=copy(), base=frame.panels[2], from=frame.sources.slice(0,2);
+  const observations=from.map((s,i)=>({id:s.id,text_sha256:s.sha256,
+    source_status:'available',exclusion_reasons:[],missing_reason:null,
+    country:s.country,date:i===0?'2025-01-15':'2026-01-15',
+    review_status:s.review_status,source_url:null,json_pointer:null}));
+  const env={schema:'un.parallel-analysis.v1',contract_version:'1.0.0',
+    producer:{workstream_id:'W4',fixture_kind:'synthetic'},
+    upstream:{source_schema:'synthetic.v1',source_hash_basis:'synthetic',
+      source_sha256:frame.source.source_sha256,selection_sha256:frame.source.selection_sha256},
+    cohort:{split:'synthetic',population:'synthetic native source-year opportunity',
+      unit:'synthetic',weighting:'equal meeting within genre',total_in_frame:2,eligible:2},
+    observations,models:[{model_id:'imported-model',representation_id:'saved-w4-map',
+      representation_version:'frozen-1'}],
+    coverage:{eligible:2,excluded:0,unavailable_sources:0,models:[]},
+    publication_eligible:false,evaluation_role:'engineering_only'};
+  const panel={kind:'longitudinal',status:'ready',reason:null,
+    measure:'Saved native source coordinates, no numerical fitting or inference.',
+    warnings:['Only source-verified synthetic periods are comparable.'],
+    identity:{representation_id:'saved-w4-map',representation_version:'frozen-1',
+      source_sha256:env.upstream.source_sha256,
+      selection_sha256:env.upstream.selection_sha256,
+      source_hash_basis:env.upstream.source_hash_basis},
+    coverage:{frame:2,eligible:2,excluded:0,missing:0,included:2},
+    periods:['p0','p1'],alignments:[{from:'p0',to:'p1',status:'passed',anchors:4,
+      reference_basis:'saved-w4-map',selection_comparability:'checked',
+      rank_ok:true,degeneracy_ok:true,reason:null}],
+    actors:[{id:'A0',label:'Invented A0',attribution_status:'synthetic only',
+      roster_status:'matched',positions:[
+        {period:'p0',status:'observed',xy:[.1,.2],radius:null,n:1,
+         observation_ids:[from[0].id],reason:null},
+        {period:'p1',status:'observed',xy:[.3,.4],radius:null,n:1,
+         observation_ids:[from[1].id],reason:null}
+      ]}]};
+  return {envelope:env,panel,source:{observations:observations.map((s,i)=>({id:s.id,period:'p'+i}))},
+    analysis:{mode:'identity_pinned_transform'},provenance:{publication_eligible:false}};
+}
+test('W4 native p0/p1 IDs join source-panel periods rather than interchange calendar years',async()=>{
+  const result=w4NativeShape();
+  const data=await A.fromW4({}, {loadW4Files:async()=>result});
+  assert.deepEqual(data.sources.map(s=>s.period),['p0','p1']);
+  assert.deepEqual(data.panels[2].periods,['p0','p1']);
+  assert.equal(data.panels[2].status,'ready');
+  V.validate(data);
+});
+test('W4 refuses an original source observation without a matching native period',async()=>{
+  const result=w4NativeShape();result.source.observations[1].period='unknown';
+  await assert.rejects(A.fromW4({}, {loadW4Files:async()=>result}),/validated comparable native period/);
+});
+test('W4 refuses a missing original source identity despite a claimed validated panel',async()=>{
+  const result=w4NativeShape();result.source.observations.pop();
+  await assert.rejects(A.fromW4({}, {loadW4Files:async()=>result}),/validated comparable native period/);
+});
+
+// Merged C5 W4's original CI source receipt declares 176 synthetic records.
+// The v2 common source-ledger limit must accommodate that accepted frame.
+test('W4 accepts full 176-row C5-scale original source inventory, without selection truncation',async()=>{
+  const result=w4NativeShape();
+  const src=result.envelope.observations;
+  result.source.observations=[];
+  src.length=0;
+  for(let i=0;i<176;i++){
+    const id='C5-SYN-'+String(i).padStart(3,'0'),period=i<88?'p0':'p1';
+    const rec={id,text_sha256:(i%2?'b':'a').repeat(64),
+      source_status:'available',exclusion_reasons:[],missing_reason:null,
+      country:null,date:period==='p0'?'2025-01-15':'2026-01-15',
+      review_status:'synthetic',source_url:null,json_pointer:null};
+    src.push(rec);result.source.observations.push({id,period});
+  }
+  for(let i=0;i<2;i++){
+    const ids=result.source.observations.filter(o=>o.period==='p'+i).map(o=>o.id);
+    const pos=result.panel.actors[0].positions[i];
+    pos.observation_ids=ids;pos.n=ids.length;
+  }
+  result.envelope.cohort.total_in_frame=176;
+  result.envelope.cohort.eligible=176;
+  result.envelope.coverage.eligible=176;
+  result.panel.coverage.frame=176;
+  result.panel.coverage.eligible=176;
+  result.panel.coverage.included=176;
+  const out=await A.fromW4({}, {loadW4Files:async()=>result});
+  assert.equal(out.sources.length,176);
+  assert.equal(out.panels[2].coverage.frame,176);
+  assert.equal(out.panels[2].rows.reduce((n,r)=>n+r.n,0),176);
+  assert.deepEqual(new Set(out.sources.map(s=>s.period)),new Set(['p0','p1']));
+});
+fails('reject hidden original transcript added to otherwise valid replay',()=>{
+  const x=copy();x.panels[0].debug_original_transcript='Synthetic refusal marker';V.exportJSON(x);
+},/Undeclared panel payload/);
+fails('reject nested original-text payload inside a source record',()=>{
+  const x=copy();x.sources[0].private_document_bytes='Synthetic refusal marker';V.exportJSON(x);
+},/Undeclared observation payload/);
+fails('reject hidden extra raw text in a displayed consensus pair',()=>{
+  const x=copy();x.panels[0].rows[0].original_speech='Synthetic refusal marker';V.exportJSON(x);
+},/Undeclared consensus payload/);
+
+test('W4 refuses the decoded-bundle validator without original five-file SHA loader',async()=>{
+  const result=w4NativeShape();
+  await assert.rejects(A.fromW4({}, {validateW4:async()=>result}),/byte\/hash loader required/);
 });
