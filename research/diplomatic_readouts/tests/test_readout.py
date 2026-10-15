@@ -354,7 +354,17 @@ class SchemaAndProvenance(unittest.TestCase):
         for template in TEMPLATES:
             report, proofs, decision = fixture()
             report["template"] = template
-            self.assertEqual(normalize(report, proofs, refresh(report, decision))["release_state"], "synthetic_demo")
+            view = normalize(report, proofs, refresh(report, decision))
+            self.assertEqual(view["release_state"], "synthetic_demo")
+            self.assertIn("question", view["template_guidance"])
+            self.assertIn("Template-specific qualification", render(
+                report, "markdown", proofs=proofs, decision=refresh(report, decision)))
+
+    def test_human_reports_preserve_authenticated_original_source_urls(self):
+        report, proofs, decision = fixture()
+        output = render(report, "markdown", proofs=proofs, decision=decision)
+        self.assertIn("https://documents.un.org/synthetic", output)
+        self.assertIn("text SHA-256", output)
 
 
 if __name__ == "__main__":
