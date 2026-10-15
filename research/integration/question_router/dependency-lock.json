@@ -1,0 +1,64 @@
+{
+  "schema": "u2.dependency-lock.v1",
+  "c0_head": "884097997f89b0040e4418480378f077e3b65434",
+  "u1_head": "afb92e82881dc11003170899aef9958682d61abe",
+  "base_dependencies": [
+    {
+      "path": "research/integration/product_contracts/contracts.mjs",
+      "git_blob": "426182ef86876699c4e0888f7b728e3af6085792",
+      "sha256": "d73b08a749cd01c78e9df7a729edf8073d739897e1af656f57d5797f059bdfbb"
+    },
+    {
+      "path": "research/integration/product_contracts/schemas.mjs",
+      "git_blob": "a3a4f41b380b0d7843a67cbffe8abd5144fc6c22",
+      "sha256": "dfdc669e7bc47e7aae8f41bdd19cfcce522bec600cae02c5023fce19cc00f338"
+    },
+    {
+      "path": "research/integration/product_contracts/interface-lock.json",
+      "git_blob": "2bdeaf7c1a24bedc8a30c585fc5637d4051fdb9b",
+      "sha256": "9a5a346f74ce8e71592606166d721410099393ce1d52425d1f3c8932fb7acb99"
+    },
+    {
+      "path": "research/integration/product_contracts/emit_contracts.mjs",
+      "git_blob": "084ba0cda93d4a9398a644e474c4ac10851fe8b8",
+      "sha256": "f7edac165a05dfdf454f49b0d17358c36668865d27579d52f0162bacbf87546f"
+    },
+    {
+      "path": "research/integration/product_contracts/check_schemas.py",
+      "git_blob": "9fbe9a33a570f98fb3fbf82fe0566ff028357922",
+      "sha256": "1a6cf66e7db4da3f7bf34f0c9fb745219db84d961e7737bd58f858506d9ac88f"
+    },
+    {
+      "path": "research/integration/product_contracts/test_contracts.mjs",
+      "git_blob": "b1b262107ba283c3eda68cc4780d6a9ecdc85161",
+      "sha256": "601d4f3263128534eb1d96d565e7aafdd80bb77f6157263f843f9cd1597871af"
+    },
+    {
+      "path": "research/integration/product_contracts/test_independent_review.mjs",
+      "git_blob": "c1ba4f14e5759117c58df1e3095bf4f833bf1a49",
+      "sha256": "4452472477db8c618cba96ee9f2ff139f34b2eda735bdabb240d2cf8f7107e5b"
+    },
+    {
+      "path": "research/integration/product_contracts/fixtures.mjs",
+      "git_blob": "6c24804c39f81a51fa0b5dced6f35f8b11e96915",
+      "sha256": "045415a2fb925d5039424088cb077cbb600adb7f79be304b66a92b6a64243e5a"
+    },
+    {
+      "path": "docs/parallel-work/source-inventory-v1.cjs",
+      "git_blob": "52be70fd2f6c86960217599be9dd478566bc83a2",
+      "sha256": "5ef27bd1deb8aae6199731eb03a4e0cc9145170f86dd46a196c2d3a932f1fbb7"
+    },
+    {
+      "path": "docs/parallel-work/source-inventory-v1.schema.json",
+      "git_blob": "80e1dba753f3bdb2fd59cf584b0c87748e1f9cc8",
+      "sha256": "50a5ecfa2b8afd83e566574cccd4ad57578035c33a84396a8e94dbff0260c1ff"
+    }
+  ],
+  "u1_dependencies": [
+    {
+      "path": "site/parallel/w07-diplomat-ux/controller.mjs",
+      "git_blob": "7abba75142aab66e9b197ce7d04154c87a013a30",
+      "sha256": "e5d8f8343b135b3a709ad9c38b617189c75c588d0a0078ed9fd0efd42d2fd27c"
+    }
+  ]
+}
