@@ -21,7 +21,11 @@ FILES=("v3_prototype.py","v3_nuisance.py","v3_design_proposal.json",
        "v3_serial_partial.py","v3_serial_partial_study.py",
        "test_v3_serial_partial.py","test_v3_serial_partial_replay.py",
        "v3_serial_partial_failure_index.json",
-       "SERIAL_RESPONSE_PARTIAL_COVARIANCE_V3.md")
+       "SERIAL_RESPONSE_PARTIAL_COVARIANCE_V3.md",
+       "v3_identification_audit.py","test_v3_identification_audit.py",
+       "V3_IDENTIFICATION_FREEZE_DECISION.md","v3_identification_decision.json",
+       "v3_freeze_candidate.py","test_v3_freeze_candidate.py",
+       "v3_coordinator_preflight.py","test_v3_coordinator_preflight.py")
 
 def proposal_receipt():
     cfg=json.loads((ROOT/"v3_design_proposal.json").read_text())
