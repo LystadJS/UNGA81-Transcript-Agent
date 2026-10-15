@@ -41,31 +41,35 @@ def audit_manifest(m):
     by_frame={}
     for f in frames:
         _string_fields(f,FRAME_KEYS,'frame')
-        if not isinstance(f['year'],int) or not 2008<=f['year']<=2023 or f['id'] in by_frame:
+        if type(f['year']) is not int or not 2008<=f['year']<=2023 or f['id'] in by_frame:
             raise IncompatibleCohort('bad/duplicate frame or year')
         by_frame[f['id']]=f
     by_document={}
     for r in receipts:
         _string_fields(r,RECEIPT_KEYS,'receipt')
-        if not isinstance(r['year'],int) or type(r['available'])!=bool or type(r['transcript_available'])!=bool:
+        if type(r['year']) is not int or type(r['available']) is not bool or type(r['transcript_available']) is not bool:
             raise IncompatibleCohort('invalid receipt source/year availability')
         if not (SHA.fullmatch(r['sha256']) and SHA.fullmatch(r['text_sha256'])):
             raise IncompatibleCohort('source original/text SHA-256 identities not declared')
         if r['document_id'] in by_document:
             raise IncompatibleCohort('duplicate original document receipt')
         by_document[r['document_id']]=r
-    totals=defaultdict(Counter);seen=set()
+    totals=defaultdict(Counter);seen=set();speech_lineages=set()
     for o in observations:
         _string_fields(o,OBS_KEYS,'observation')
         if o['id'] in seen:raise IncompatibleCohort('duplicate observation identity')
         seen.add(o['id'])
+        lineage=(o['document_id'],o['meeting_id'],o['speech_id'])
+        if lineage in speech_lineages:
+            raise IncompatibleCohort('duplicate original meeting/speech lineage')
+        speech_lineages.add(lineage)
         f=by_frame.get(o['frame_id']);r=by_document.get(o['document_id'])
         if not f or not r or o['year']!=f['year'] or o['year']!=r['year'] or o['meeting_id']!=r['meeting_id']:
             raise IncompatibleCohort('invalid meeting-to-speech-to-frame/year lineage')
         p=o['inclusion_probability']
         if not isinstance(p,(int,float)) or isinstance(p,bool) or not 0<p<=1:
             raise IncompatibleCohort('unknown or nonpositive meeting selection probability')
-        if not isinstance(o['speech_length'],int) or o['speech_length']<0 or type(o['outcome_available'])!=bool:
+        if type(o['year']) is not int or type(o['speech_length']) is not int or o['speech_length']<0 or type(o['outcome_available']) is not bool:
             raise IncompatibleCohort('invalid speech length/missingness status')
         if not SHA.fullmatch(o['text_sha256']):
             raise IncompatibleCohort('invalid text source identity')
