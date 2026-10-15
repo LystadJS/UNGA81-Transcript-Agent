@@ -42,7 +42,7 @@ CASES = (
     "wrong_parent_replay_refused",
     "same_sequence_revocation_rewrite_refused",
     "delayed_equivocation_evidence_persists",
-    "compromised_keys_and_replaced_pins_known_limit",
+    "compromised_witness_quorum_unvalidated_checkpoint",
     "permission_escalation_refused",
 )
 
@@ -144,9 +144,11 @@ def execute_case(case, rotation):
         _, r = _receipt_or_failure(f, [votes[ids[1]]], state=restored,
                                    pins=propose_gossip_pins(s, f["trust"]))
         expected = "withheld"
-    elif case == "compromised_keys_and_replaced_pins_known_limit":
-        # Complete compromise means a fabricated alternative trust context can
-        # verify its own narrative. The result still cannot grant source access.
+    elif case == "compromised_witness_quorum_unvalidated_checkpoint":
+        # Three compromised signer keys can make gossip observe a quorum for
+        # a checkpoint digest whose *source/log content is not validated here*.
+        # Independent full checkpoint validators remain mandatory and the
+        # observed signature quorum can never grant source access.
         f2 = fixture()
         cp2 = dict(f2["cp1"], audit_tip_sha256="e"*64)
         crafted = [sign_forged(cp2, f2["keys"][x], x) for x in ids[:3]]
@@ -182,7 +184,7 @@ def run(iterations=360, seed=81081):
                       "expected": ("quorum_observed_no_authority" if name in (
                           "partition_three_one_quorum_no_authority", "delayed_gossip_pending_then_quorum",
                           "reversed_message_order_quorum", "valid_witness_restart_advances",
-                          "compromised_keys_and_replaced_pins_known_limit") else
+                          "compromised_witness_quorum_unvalidated_checkpoint") else
                           "pending_gossip" if name in (
                           "partition_two_two_pending", "duplicate_delivery_pending",
                           "two_corrupt_signers_cannot_form_quorum") else "withheld")}
@@ -204,7 +206,7 @@ def run(iterations=360, seed=81081):
         "authority": "none", "authorized": False, "source_access": False,
         "publication_eligible": False, "delivery_eligible": False,
         "transcripts_opened": 0, "security_certified": False,
-        "residual_risk": "full_key_and_observer_compromise_not_detectable",
+        "residual_risk": "witness_quorum_or_external_pin_compromise_not_prevented",
     }
 
 
