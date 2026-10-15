@@ -76,3 +76,28 @@ jobs:
               assert a['rows']==b['rows']
               print('PINNED_ONNX_16_OF_16_PASS; LONG_WORDPIECES_CHUNKED; WARM_CACHE_16_OF_16_PASS; NO_NETWORK_IN_INFERENCE')
           PY
+
+      - name: Prospective stance development negative controls and 120-row evaluation
+        if: hashFiles('research/semantic_representations/stance_dev_evaluation.py') != ''
+        env:
+          HF_HUB_OFFLINE: '1'
+          TRANSFORMERS_OFFLINE: '1'
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/semantic_representations -p 'test_*.py' -v
+          python research/semantic_representations/stance_dev_evaluation.py --checkpoint /tmp/unga-pinned-minilm --output "$RUNNER_TEMP/stance_dev_first.json"
+          python research/semantic_representations/stance_dev_evaluation.py --checkpoint /tmp/unga-pinned-minilm --output "$RUNNER_TEMP/stance_dev_second.json"
+          python - "$RUNNER_TEMP/stance_dev_first.json" "$RUNNER_TEMP/stance_dev_second.json" <<'PY'
+          import hashlib,json,sys
+          from pathlib import Path
+          first,second=(Path(p).read_bytes() for p in sys.argv[1:])
+          assert first==second,"cross-process synthetic development replay mismatch"
+          obj=json.loads(first)
+          assert obj['population']['families']==30 and obj['population']['observations']==120
+          assert obj['coverage']['encoded']==120 and obj['coverage']['failed_batches']==0
+          assert obj['advance']['signed_minilm']['guard_abstentions']==16
+          assert obj['advance']['signed_lexical']['guard_abstentions']==16
+          print('STANCE_DEV_EXACT_HEAD_SHA256='+hashlib.sha256(first).hexdigest())
+          print('STANCE_DEV_EXACT_HEAD_ADVANCE='+json.dumps(obj['advance'],sort_keys=True))
+          print('STANCE_DEV_EXACT_HEAD_STRATA='+json.dumps(obj['by_stratum'],sort_keys=True))
+          PY
