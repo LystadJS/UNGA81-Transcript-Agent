@@ -31,7 +31,7 @@ def make_saved(frame, vector_view):
 
 def sample_interchange():
     model={"model_id":"partition-1","representation_id":"rep-1"}
-    return {"schema":"un.parallel-analysis.v1","contract_version":"1.0.0",
+    x = {"schema":"un.parallel-analysis.v1","contract_version":"1.0.0",
             "producer":{"workstream_id":"W1"},
             "upstream":{"source_schema":"synthetic.v1","source_hash_basis":"synthetic",
                         "source_sha256":"a"*64,"selection_sha256":"b"*64},
@@ -47,6 +47,23 @@ def sample_interchange():
                         "models":[{"model_id":"partition-1","eligible":2,"assigned":1,"unassigned":1,
                                    "not_fitted":0,"excluded":1,"attempted_fits":1,"successful_fits":1,"failed_fits":0}]},
             "publication_eligible":False,"evaluation_role":"engineering_only"}
+
+    x["producer"].update(adapter_version="1.0.0",code_sha256="e"*64,runtime="python-3.13",generated_at="2026-10-15T12:00:00Z",fixture_kind="synthetic")
+    x["upstream"].update(source_engine="synthetic-test",frame_sha256=None,corpus_sha256=None,review_sha256=None,missing_reason=None)
+    x["cohort"].update(population="synthetic_passages",selection_policy="all",weighting="equal_passage",source_group_unit="synthetic",duplicate_policy="retain",total_in_frame=3)
+    for idx,o in enumerate(x["observations"]):
+        o.update(parent_id=None,parent_text_sha256=None,meeting_id=None,speech_id=None,source_family_id=None,date="2026-10-01",country=None,source_url=None,json_pointer=None,review_status="not_applicable",exclusion_reasons=[],source_status="available",missing_reason=None)
+        if idx==2:
+            o.update(source_status="unavailable",missing_reason="absent source",exclusion_reasons=["missing_source"])
+    model.update(method_family="partition",method="pam",representation_version="1",fit_version="1",fit_split="synthetic",parameters_sha256="f"*64,training_selection_sha256="b"*64,diagnostic_basis="synthetic")
+    for r in x["results"]:
+        r.update(membership_kind="none",memberships=None,membership_strength=None)
+        r.setdefault("reason",None)
+    x["coverage"].update(inventory_meetings=3,unavailable_sources=1,failure_ledger=[])
+    x["evidence"]=[]
+    x["diagnostics"]=[]
+    x["limitations"]=[{"code":"synthetic","scope":"all","description":"fixture"}]
+    return x
 
 
 class SourceTests(unittest.TestCase):
@@ -303,6 +320,37 @@ class AdapterTests(unittest.TestCase):
         with self.assertRaises(ValueError):check_parallel_v1(bad)
     def test_parallel_v1_failed_fit_count(self):
         bad=sample_interchange();bad["coverage"]["models"][0]["failed_fits"]=1
+        with self.assertRaises(ValueError):check_parallel_v1(bad)
+    def test_parallel_v1_official_synthetic_example(self):
+        import json
+        from pathlib import Path
+        official = Path(__file__).with_name("official_v1_synthetic.json")
+        self.assertEqual(check_parallel_v1(json.loads(official.read_text()))["observation_count"], 1)
+    def test_parallel_v1_missing_reason(self):
+        bad=sample_interchange();bad["observations"][2]["missing_reason"]=None
+        with self.assertRaises(ValueError):check_parallel_v1(bad)
+    def test_parallel_v1_parent_missing_hash(self):
+        bad=sample_interchange();bad["observations"][0]["parent_id"]="p"
+        with self.assertRaises(ValueError):check_parallel_v1(bad)
+    def test_parallel_v1_unverified_speech(self):
+        bad=sample_interchange();bad["observations"][0]["speech_id"]="fabricated"
+        with self.assertRaises(ValueError):check_parallel_v1(bad)
+    def test_parallel_v1_invalid_membership(self):
+        bad=sample_interchange();bad["results"][0].update(membership_kind="nmf_share",memberships=[0.1,0.2])
+        with self.assertRaises(ValueError):check_parallel_v1(bad)
+    def test_parallel_v1_orphan_evidence(self):
+        bad=sample_interchange();bad["evidence"].append({"observation_id":"missing"})
+        with self.assertRaises(ValueError):check_parallel_v1(bad)
+    def test_parallel_v1_eligible_population(self):
+        bad=sample_interchange();bad["observations"][1]["exclusion_reasons"]=["declared_exclusion"]
+        with self.assertRaises(ValueError):check_parallel_v1(bad)
+    def test_parallel_v1_missing_failed_reason(self):
+        bad=sample_interchange();bad["diagnostics"].append({"model_id":None,"status":"failed","reason":None})
+        with self.assertRaises(ValueError):check_parallel_v1(bad)
+    def test_parallel_v1_reserved_development_date(self):
+        bad=sample_interchange();bad["cohort"]["split"]="development"
+        bad["producer"]["fixture_kind"]="private_development"
+        bad["observations"][0]["date"]="2026-10-05"
         with self.assertRaises(ValueError):check_parallel_v1(bad)
     def test_parallel_v1_unregistered_w8(self):
         bad=sample_interchange();bad["producer"]["workstream_id"]="W8"
