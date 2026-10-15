@@ -15,20 +15,25 @@ The selected encoder is English-biased and cannot substantiate multilingual qual
 negation competence, diplomatic agreement, stance or influence. Actual checkpoint
 execution **in this PR**: NOT RUN. Do not perform a remote inference call.
 
-## Current committed implementation
+## Committed implementation
 
-- `pipeline.py`: deterministic fixture segmentation, restartable SHA-checked vector
-  caching, source/selection/schema identity and same-observation overlap safeguards.
-  **Character-window segmentation is fixture-only**, not a model-safe production token policy.
+- `pipeline.py`: fail-closed original-source identity, UTF-8 hash-basis and split/selection
+  checks, deterministic restartable SHA-checked vector caching, denominator accounting
+  and strict mismatch refusal; the production tokenizer is inherited from pinned ONNX.
 - `controls.py`: synthetic-only complete-artifact inventory checker, bounded tokenizer
   window checker and negative-control rank ledger.
-- `local_model.py`: opt-in offline SentenceTransformers loader with artifact inventory
-  check; this early adapter is **not** wired to the accepted upstream ONNX implementation.
-  Do not run it on empirical sources.
-- `cluster_sensitivity.py`: seeded synthetic medoid partitions, label-invariant ARI,
-  denominator and failed-fit accounting. Descriptive diagnostics only.
+- `local_model.py`: read-only exact-Git-blob-verified bridge to the accepted upstream
+  ONNX encoder, with exact runtime dependency checks and offline networking guard.
+- `comparison.py`: read-only same-observation lexical-versus-semantic neighborhood
+  comparisons, seeded medoid sensitivity, ARI, failure ledger and missingness denominators.
+- `interchange.py`: metadata-only browser adapter and relational checks; does not
+  register an unauthorized W8 producer or export private text/vectors.
+- `fixtures.py`, `cli.py`: deterministic synthetic contrast cases and offline CLI
+  with independent-process replay.
+- `cluster_sensitivity.py`: additional seeded synthetic medoid partition diagnostics,
+  label-invariant ARI, denominator and failed-fit accounting.
 - `test_pipeline.py`, `test_controls.py`, `test_cluster_sensitivity.py`:
-  synthetic unit tests, no private transcript inputs.
+  83 synthetic tests, no private transcript inputs.
 
 To run committed tests:
 
@@ -47,13 +52,11 @@ run locally: **4/4 tests PASS**.
 
 ## Current acceptance blocks
 
-1. Replace the early local loader and character fixture-only inference path with
-   the upstream exact-blob-pinned ONNX adapter; verify model artifact hashes and
-   runtime package identity. Do not invent checkpoint execution.
-2. Integrate complete authored contrast corpus, read-only archived lexical baseline
-   adapter and full source-relational checks under this owned namespace.
-3. Run the **committed head** test suite, existing applicable upstream regressions
-   and exact-head CI. No workflow currently validates this worker namespace.
+1. Run existing applicable upstream regressions and exact-head CI. No workflow
+   currently validates this worker namespace. Full multi-host dependency wheel hashes
+   and actual ONNX inference in this workstream remain NOT RUN.
+2. Independently validate the official parallel JSON schema and source-relational
+   integrity against coordinator-approved synthetic interchange envelopes.
 4. Authenticate eligible original development source receipts independently before
    real source comparison. Missing/withheld inputs are unknown, not negative findings.
 5. Keep PR draft, no empirical publication, no D1 O1–O5 gate changes, and no
