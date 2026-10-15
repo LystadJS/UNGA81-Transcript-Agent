@@ -1,0 +1,58 @@
+name: W4 2008–2023 temporal covariance source-safe calibration
+on:
+  push:
+    branches: ['coord/w4-extended-year-covariance-20261013']
+    paths:
+      - 'research/longitudinal/temporal_covariance/*.py'
+      - 'docs/parallel-work/W4_2008_2023_COVARIANCE_PREREG_2026-10-13.md'
+      - '.github/workflows/w4-temporal-covariance-ci.yml'
+  pull_request:
+    paths:
+      - 'research/longitudinal/temporal_covariance/*.py'
+      - '.github/workflows/w4-temporal-covariance-ci.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-free-synthetic-calibration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install fixed numerical dependencies
+        run: python -m pip install numpy==2.2.6 scipy==1.15.3
+      - name: Validate explicitly frozen UN PV historical source ID selection
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          f=Path('research/longitudinal/temporal_covariance/selected_official_pvs_2008_2015.txt')
+          a=[s.strip() for s in f.read_text().splitlines() if s.strip() and not s.startswith('#')]
+          assert len(a)==64 and len(set(a))==64
+          assert all(re.fullmatch(r'A/(6[3-9]|70)/PV\.[1-9]\d*',s) for s in a)
+          assert all(sum(s.startswith(f'A/{year-1945}/PV.') for s in a)==8 for year in range(2008,2016))
+          print('PASS: frozen 64 original PV symbols 2008–2015; 0 heldout documents')
+          PY
+      - name: Independent exact covariance and synthetic negative controls
+        run: |
+          python -m py_compile research/longitudinal/temporal_covariance/*.py
+          python research/longitudinal/temporal_covariance/independent_calibration.py --selftest
+          python research/longitudinal/temporal_covariance/source_sampler.py --selftest
+          python -m unittest discover -s research/longitudinal/temporal_covariance -p 'test_*.py' -v
+      - name: Supply source-only methods for private, preregistered full simulation
+        uses: actions/upload-artifact@v4
+        with:
+          name: w4-extended-covariance-source-only
+          path: |
+            research/longitudinal/temporal_covariance/temporal_covariance.py
+            research/longitudinal/temporal_covariance/synthetic_worlds.py
+            research/longitudinal/temporal_covariance/independent_calibration.py
+            research/longitudinal/temporal_covariance/source_sampler.py
+            research/longitudinal/temporal_covariance/selected_official_pvs_2008_2015.txt
+          if-no-files-found: error
+          retention-days: 1
