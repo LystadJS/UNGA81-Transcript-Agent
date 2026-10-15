@@ -37,6 +37,12 @@ def review_candidate():
         "test_v3_finite_year_continuous.py","test_v3_finite_year_replay.py",
         "v3_finite_year_development_receipt.json","v3_finite_year_failure_masks.json",
         "V3_FINITE_YEAR_CONTINUOUS_REVIEW.md",
+        "v3_hierarchical_external.py","v3_hierarchical_external_study.py",
+        "test_v3_hierarchical_external.py","test_v3_hierarchical_external_replay.py",
+        "v3_hierarchical_external_development_receipt.json",
+        "v3_hierarchical_external_failure_masks.json",
+        "V3_HIERARCHICAL_EXTERNAL_FREEZE_REVIEW.md",
+        "v3_hierarchical_freeze_decision.json",
     }
     if set(candidate["source_sha256"]) != expected:
         raise ValueError("freeze candidate source completeness failed")
@@ -95,6 +101,30 @@ def review_candidate():
     if (recovered!=finite["failure_ledger_count"] or recovered!=masks["failures"] or
             masks["canonical_uncompressed_failure_sha256"]!=finite["failure_ledger_canonical_sha256"]):
         raise ValueError("finite-year failed-fit index or checksum mismatch")
+    hierarchical=json.loads((ROOT/"v3_hierarchical_external_development_receipt.json").read_text())
+    hierarchical_masks=json.loads((ROOT/"v3_hierarchical_external_failure_masks.json").read_text())
+    hierarchical_review=json.loads((ROOT/"v3_hierarchical_freeze_decision.json").read_text())
+    if (hierarchical.get("schema")!="un.w4.v3.hierarchical-external-development-replay.v1" or
+            hierarchical_review.get("decision")!="STATISTICAL_FREEZE_NOT_ACCEPTED" or
+            hierarchical.get("v3_holdout_attempted")!=0 or
+            hierarchical_review.get("v3_holdout_attempted")!=0 or
+            hierarchical.get("statistical_freeze_accepted") is not False or
+            hierarchical_review.get("real_fit_authorized") is not False):
+        raise ValueError("hierarchical development improper statistical promotion")
+    if (hierarchical["gamma_attempted"]!=hierarchical["gamma_completed"]+hierarchical["gamma_refused"] or
+            hierarchical["cov_attempted"]!=hierarchical["cov_completed"]+hierarchical["cov_refused"] or
+            hierarchical["failure_count"]!=hierarchical["gamma_refused"]+hierarchical["cov_refused"]):
+        raise ValueError("hierarchical response and external-scale lost attempted fits")
+    mask_count=sum(int(item["failed_replicates_hex"],16).bit_count()
+                   for item in hierarchical_masks["methods_and_scenarios"])
+    if (mask_count!=hierarchical["failure_count"] or
+            mask_count!=hierarchical_masks["retained_method_failures"] or
+            hierarchical_masks["full_failure_canonical_sha256"]!=hierarchical["failure_canonical_sha256"]):
+        raise ValueError("hierarchical failed-fit source identity mismatch")
+    if (hierarchical_review["studies"]["gamma"]["refused"]!=hierarchical["gamma_refused"] or
+            hierarchical_review["studies"]["covariance"]["refused"]!=hierarchical["cov_refused"] or
+            hierarchical_review["all_failed_fit_records_retained"]!=mask_count):
+        raise ValueError("hierarchical coordinator review disagrees with development evidence")
     # Continuous-bound correctness is mathematical and conditional. In
     # particular, neither upper scale source nor UN annual-selection
     # unbiasedness is authenticated by this source-free synthetic module.
@@ -115,6 +145,10 @@ def review_candidate():
         "continuous_nuisance_variance_upper_bound": "PASS_CONDITIONAL_MATHEMATICAL_PROOF_ONLY",
         "external_empirical_year_scale_upper_source": "NOT_VERIFIED",
         "calendar_year_block_refit_gamma_interval": "DEVELOPMENT_NOT_CALIBRATED",
+        "hierarchical_year_AR1_gamma_interval": "DEVELOPMENT_TWO_STAGE_NOT_CALIBRATED",
+        "hierarchical_year_nuisance_profile": "FAILED_WEAK_IDENTIFICATION",
+        "real_external_gaussian_world_scale_calibration": "NOT_AUTHENTICATED",
+        "bonferroni_external_scale_continuous_bound": "CONDITIONAL_MATHEMATICS_ONLY",
         "response_audit_real_source_independence": "NOT_VERIFIED",
         "source_design_era_comparability": "NOT_VERIFIED",
         "full_prespecified_grid_and_thresholds": "NOT_FROZEN",
@@ -128,8 +162,8 @@ def review_candidate():
         "candidate_source_sha256":candidate["source_sha256"],
         "gates":gates,
         "methodological_resolution":{
-            "gamma":"new full year-block FE refits included with all optimizer failures; finite T16/actor dependence and randomized audit variation remain insufficient for calibrated confidence intervals",
-            "measurement":"algebraically conservative bound over a continuous nonnegative rho/nugget rectangle conditional on an external total year-scale upper bound; empirical bound and unbiased Gaussian year panel not independently authenticated",
+            "gamma":"new two-stage hierarchical annual AR1 empirical Bayes attempted, with all fitted correlated T16 nuisance profiles weak; finite-year structural gamma interval still uncalibrated",
+            "measurement":"conditional Bonferroni 2.5% external Gaussian independent-world scale error + 7.5% Gaussian contrast error over a continuous nuisance region; no corresponding historical independent-world scale experiment authenticated",
             "selection":"without randomized recovery of missing original outcomes, outcome-dependent transcript selection is not identified",
         },
         "identification_counterexamples":{
