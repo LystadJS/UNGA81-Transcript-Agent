@@ -58,8 +58,10 @@ refs/index/unrelated objects stay unchanged. No corpus is used by these tests.
 ## Source and execution boundary
 
 Checkout starts sparse in coordinator gate files. The controller reads Git tree
-metadata and materializes only code/tests/configuration in the three declared
-research/documentation prefixes. It never checks out `data/`, `un/`, reports,
+metadata and materializes only exact gate/payload paths and the 15 named
+upstream code/test/contract dependencies in `policy.json`. All dependency modes
+and blobs must match the reviewed historical base before any contents are read.
+There is no directory/extension fallback, including for source-like `.py` files. It never checks out `data/`, `un/`, reports,
 private corpora, site assets or transcript files. Dependency installation is
 runner setup; analytical execution accepts generated synthetic panels only.
 Browser tests retain their original no-network behavior. The gate performs
@@ -90,3 +92,36 @@ and successful prior acceptance archives are not edited or overwritten.
 
 No full WCAG, manual screen-reader, actual browser zoom or Firefox/WebKit
 certification is implied by retained Chromium/contrast acceptance.
+
+## G97 repair and status-base binding, 15 October 2026
+
+Repair `6e18e715a5821db94651904edeef60d8e2f0ec3b` closes G97-1 through
+G97-3. `evidence_contract.py` requires stage-defined supporting evidence
+independently of producer manifests and verifies build/frame, native records,
+scan/target coverage, measured contrasts and SVG text. Fixed mandatory test-ID
+inventories are reconciled with raw outcomes and counts. PR87 historical labels
+remain intact, with separate actual-execution bindings. The materializer uses
+the explicit dependency inventory described above, retaining uppercase `.R`.
+
+Follow-up `0f237cbfecf8bf747b1e6b15fcdb90a9bb71ff24` addresses PR payloads
+whose reported base snapshot predates the actual GitHub status merge. For PR
+events the gate resolves the base only after proving two ordered status-commit
+parents, exact proposed head, ancestor relation of the reported base, and equality
+with an independently recomputed merge tree. `event_base_sha` is retained and
+`base_resolution` states this derivation. Existing live-reference checks still
+reject later head/base drift, including drift after successful test execution.
+Neither evidence from a stale status nor a different mutable base is substituted.
+
+Run `38814014750` failed before tests on the base-snapshot mismatch. After the
+follow-up, run `38814668297` passed all three execution jobs, including native R
+and Chromium, but its aggregate rejected subsequent main-branch movement. The
+metadata-only edited event `38815149989` retained the old status merge and failed
+freshness again. Those failures remain recorded; no failed aggregate is called
+accepted. This documentation update requests a fresh exact-head/status run.
+
+Original gate30 and independent reviewer15 methods, including all eight rejection
+regressions, are unchanged. Local reruns also cover 21 extended evidence/source
+boundaries and nine independent synthetic Git status-binding cases. Current-base
+hosted results and repinned PR98 review remain required before repair acceptance.
+No adoption, product integration, retargeting, changed protection, publication or
+real/private/reserved transcript access is authorized by any of these repairs.
