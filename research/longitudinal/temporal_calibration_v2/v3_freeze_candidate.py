@@ -25,7 +25,11 @@ FILES=("v3_prototype.py","v3_nuisance.py","v3_design_proposal.json",
        "v3_identification_audit.py","test_v3_identification_audit.py",
        "V3_IDENTIFICATION_FREEZE_DECISION.md","v3_identification_decision.json",
        "v3_freeze_candidate.py","test_v3_freeze_candidate.py",
-       "v3_coordinator_preflight.py","test_v3_coordinator_preflight.py")
+       "v3_coordinator_preflight.py","test_v3_coordinator_preflight.py",
+       "v3_finite_year_continuous.py","v3_finite_year_study.py",
+       "test_v3_finite_year_continuous.py","test_v3_finite_year_replay.py",
+       "v3_finite_year_development_receipt.json","v3_finite_year_failure_masks.json",
+       "V3_FINITE_YEAR_CONTINUOUS_REVIEW.md")
 
 def proposal_receipt():
     cfg=json.loads((ROOT/"v3_design_proposal.json").read_text())
@@ -50,6 +54,9 @@ def proposal_receipt():
         hypothetical_covariance_sensitivity_development_only=True,
         externally_measured_year_process_nugget_available=False,
         full_covariance_identification_achieved=False,
+        whole_year_block_refit_development_only=True,
+        conditional_continuous_variance_math_demonstrated=True,
+        external_total_year_scale_source_authenticated=False,
         real_fit_authorized=False,
         next_authorization="coordinator and independent statistician must approve design and model assumptions",
         python_runtime=platform.python_version())
