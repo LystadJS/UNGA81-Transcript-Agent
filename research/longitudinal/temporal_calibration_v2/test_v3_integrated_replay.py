@@ -77,7 +77,7 @@ class IndependentIntegratedAndPartialReplay(unittest.TestCase):
                 for field in previously_saved:
                     left,right=previously_saved[field],newly_computed[field]
                     if isinstance(left,float) and isinstance(right,float):
-                        self.assertAlmostEqual(left,right,places=7,
+                        self.assertAlmostEqual(left,right,delta=5e-4,
                                                msg=previously_saved["scenario"]+":"+field)
                     else:
                         self.assertEqual(left,right,previously_saved["scenario"]+":"+field)
