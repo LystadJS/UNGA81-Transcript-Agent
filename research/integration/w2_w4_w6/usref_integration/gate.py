@@ -123,6 +123,35 @@ def event_identity(event, name, status_sha, run_id, attempt):
             'run_id': str(run_id), 'attempt': str(attempt), 'freshness': current}
 
 
+def bind_pr_status_base(repo, identity):
+    """Resolve the PR base from the immutable status merge, not mutable PR metadata.
+
+    Preserve the event's reported base separately. Only an ancestor snapshot may
+    differ; exact head, two ordered parents and recomputed merge tree must agree.
+    The ordinary live-ref freshness checks still reject any subsequent movement.
+    """
+    if identity['event'] != 'pull_request':
+        return dict(identity)
+    status = identity['status_sha']
+    try:
+        oid(repo, status)
+    except Rejected:
+        # Fetch a specific commit object only, without updating any branch ref.
+        git(repo, 'fetch', '--no-tags', '--filter=blob:none', 'origin', status)
+        oid(repo, status)
+    parents = git(repo, 'rev-list', '--parents', '-n', '1', status).decode().strip().split()
+    need(len(parents) == 3 and parents[0] == status and parents[2] == identity['head'],
+         'Status merge does not have the exact ordered PR head/base parents')
+    resolved = oid(repo, parents[1])
+    declared = oid(repo, identity['base'])
+    git(repo, 'merge-base', '--is-ancestor', declared, resolved)
+    expected_tree = git(repo, 'merge-tree', '--write-tree', resolved, identity['head']).decode().strip()
+    need(HEX.fullmatch(expected_tree) and tree(repo, status) == expected_tree,
+         'Status merge tree differs from independently reconstructed head/base tree')
+    return {**identity, 'event_base_sha': declared, 'base': resolved,
+            'base_resolution': 'verified_status_merge_first_parent'}
+
+
 def check_fresh(repo, identity):
     """GET-only, run before and after execution. Never retrieves PR body/source."""
     f = identity['freshness']
@@ -291,7 +320,8 @@ def validate_final(event, results, needs):
     need(type(results) is dict and set(results) == set(MODES), 'Missing or extra mode receipts')
     for mode, bundle in results.items():
         i, r = bundle['identity'], bundle['receipt']
-        for k in ('event', 'status_sha', 'head', 'base', 'run_id', 'attempt', 'freshness'):
+        for k in ('event', 'status_sha', 'head', 'base', 'run_id', 'attempt', 'freshness',
+                  'event_base_sha', 'base_resolution'):
             need(i.get(k) == event.get(k), 'Stale or wrong event identity: '+k)
         need(i.get('mode') == mode and r.get('mode') == mode, 'Wrong mode')
         need(r.get('identity_sha256') == bundle['identity_sha256'], 'Receipt identity binding failed')
@@ -357,6 +387,7 @@ def main():
     a = p.parse_args()
     event = event_identity(load(os.environ['GITHUB_EVENT_PATH']), os.environ['GITHUB_EVENT_NAME'],
                            os.environ['GITHUB_SHA'], os.environ['GITHUB_RUN_ID'], os.environ['GITHUB_RUN_ATTEMPT'])
+    event = bind_pr_status_base(a.repo, event)
     check_fresh(a.repo, event)
     if a.command == 'prepare':
         out = safe_output(a.out, [a.repo, a.control])
