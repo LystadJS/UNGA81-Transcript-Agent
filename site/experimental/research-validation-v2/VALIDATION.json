@@ -119,5 +119,69 @@
     "Attempted native C5 adapter test in isolated local subtree: Node failed to import ../../research-consensus.js (MODULE_NOT_FOUND) before executing tests; full merged C5 repository checkout is unavailable due github.com DNS/network block. Inherited C5 original CI receipts are not new native execution.",
     "Browser navigation to localhost is blocked by administrator policy. Actual Chromium DOM QA uses exact injected local scripts; HTTP byte parity is independently checked.",
     "No private original source file bytes were accessed; SHA-256 values in synthetic evidence are fixture commitments only."
-  ]
+  ],
+  "current_reexecution": {
+    "execution_scope": "Exact prior head ef11b3fa087bd5cb1631ba803b81dee42b06358b; no original source files opened",
+    "main_at_check": "1af11061e3fa65d51b28d42a1b98bef250b6168b",
+    "runtime": {
+      "node": "22.16.0",
+      "python": "3.13.5",
+      "chromium": "144.0.7559.96"
+    },
+    "node_v2": {
+      "status": "PASS",
+      "passed": 62,
+      "failed": 0,
+      "command": "node --test site/experimental/research-validation-v2/tests.cjs",
+      "log_sha256": "f290881933577997763746c811d446c153a6fab1bb9e574aa169327a073970e2"
+    },
+    "native_c5_syntax": {
+      "status": "PASS",
+      "command": "node --check site/experimental/research-validation-v2/native-c5-regression.cjs"
+    },
+    "native_c5_execution": {
+      "status": "BLOCKED",
+      "code": "MODULE_NOT_FOUND",
+      "missing": "site/research-consensus.js",
+      "command": "C5_W2_FIXTURES=/tmp/nonexistent-c5-w2 C5_W4_FIXTURES=/tmp/nonexistent-c5-w4 node --test site/experimental/research-validation-v2/native-c5-regression.cjs",
+      "reason": "Only v2 subtree mounted; github.com DNS unavailable; no original C5 fixture producer or native test executed",
+      "log_sha256": "7d3ccee9cae49aeecc8a58e93af2a6177b96412efd020c5ffa56f89865f1c7a5"
+    },
+    "real_chromium_dom": {
+      "status": "PASS_WITH_NAVIGATION_FALLBACK",
+      "viewports": [
+        "1440x900",
+        "390x844"
+      ],
+      "command": "python3 site/experimental/research-validation-v2/browser_smoke.py --browser /usr/bin/chromium --output <qa-dir>",
+      "log_sha256": "0675548d0b5dacaad09c95a60a6dde9bf1c9e3d392425c1ec847fe93377f4839",
+      "served_http_asset_sha_parity": "PASS_4_OF_4"
+    },
+    "chromium_served_navigation": {
+      "status": "BLOCKED",
+      "error": "net::ERR_BLOCKED_BY_ADMINISTRATOR",
+      "url_scheme_tests": [
+        "http://127.0.0.1",
+        "https://example.invalid",
+        "https://example.com"
+      ],
+      "note": "Even request-intercepted navigation blocked; DOM QA used page.set_content"
+    },
+    "inherited_c5": {
+      "status": "PASS_HISTORICAL_NOT_EXACT_PR69_HEAD",
+      "run_id": 38458650819,
+      "source_frame": 25,
+      "eligible": 24,
+      "unavailable": 1,
+      "pairs": 300,
+      "off_diagonal": 276,
+      "w4_records": 176,
+      "w4_actors": 13,
+      "source_artifact_sha256": "f0f6700ce2c356b72b278283826934f279f650641c6c0bc5ff8ca89e1e55d4a3"
+    },
+    "coordinator_patch": "PREPARED_NOT_APPLIED",
+    "acceptance": "WITHHELD_NATIVE_C5_AND_SERVED_BROWSER",
+    "merge": "NOT_PERFORMED",
+    "deployment": "NOT_PERFORMED"
+  }
 }
