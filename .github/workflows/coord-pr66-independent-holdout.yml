@@ -1,0 +1,149 @@
+name: Coordinator independent synthetic stance holdout
+on:
+  push:
+    branches: ['coord/pr66-independent-synthetic-holdout-20261015']
+permissions:
+  contents: read
+jobs:
+  pinned-real-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install exact upstream runtime dependencies
+        if: hashFiles('research/semantic_representations/local_model.py') != ''
+        run: python -m pip install -r research/semantic_review/requirements.txt
+      - name: Verify all ten immutable pinned model files
+        if: hashFiles('research/semantic_representations/local_model.py') != ''
+        run: |
+          python - <<'PY'
+          import json,hashlib,urllib.request,time
+          from pathlib import Path
+          lock=json.loads(Path('research/semantic_review/model-lock.json').read_text())
+          base=Path('/tmp/unga-pinned-minilm')
+          for name,record in lock['files'].items():
+              target=base/name;target.parent.mkdir(parents=True,exist_ok=True)
+              error=None
+              for attempt in range(3):
+                  try:
+                      with urllib.request.urlopen(record['url'],timeout=120) as response, target.open('wb') as out:
+                          while chunk:=response.read(1024*1024): out.write(chunk)
+                      if target.stat().st_size != record['bytes'] or hashlib.sha256(target.read_bytes()).hexdigest()!=record['sha256']:
+                          raise ValueError('immutable pinned checkpoint digest mismatch: '+name)
+                      error=None;break
+                  except Exception as exc:
+                      error=exc
+                      if attempt<2:time.sleep(3)
+              if error:raise error
+          print('TEN_ORIGINAL_PINNED_ARTIFACTS_PASS')
+          PY
+      - name: Native MiniLM long-input, tokenizer audit and cold/warm cache
+        if: hashFiles('research/semantic_representations/local_model.py') != ''
+        env:
+          HF_HUB_OFFLINE: '1'
+          TRANSFORMERS_OFFLINE: '1'
+        run: |
+          python - <<'PY'
+          import hashlib,sys,tempfile
+          from pathlib import Path
+          sys.path.insert(0,str(Path('research/semantic_representations').resolve()))
+          from fixtures import fixture_frame
+          from pipeline import encode,sha
+          from local_model import LocalModelEncoder,model_identity
+          frame=fixture_frame()
+          row=frame['rows'][0]
+          row['text']=('Synthetic international cooperation language, with Unicode café. ' * 90)
+          row['text_sha256']=sha(row['text'].encode())
+          model=model_identity()
+          encoder=LocalModelEncoder(Path('/tmp/unga-pinned-minilm'))
+          settings={'metric':'cosine','pooling':'upstream_chunk_token_weighted'}
+          with tempfile.TemporaryDirectory() as tmp:
+              a=encode(frame,model,settings,encoder,Path(tmp),batch_size=4)
+              assert a['coverage']['encoded']==16,a['coverage']
+              assert a['coverage']['not_fitted']==0,a['coverage']
+              long=next(r for r in a['rows'] if r['id']==row['id'])
+              assert long['chunks']>1,long
+              b=encode(frame,model,settings,encoder,Path(tmp),batch_size=4)
+              assert b['coverage']['cache_hits']==16,b['coverage']
+              assert a['rows']==b['rows']
+              print('PINNED_ONNX_16_OF_16_PASS; LONG_WORDPIECES_CHUNKED; WARM_CACHE_16_OF_16_PASS; NO_NETWORK_IN_INFERENCE')
+          PY
+
+      - name: Prospective stance development negative controls and 120-row evaluation
+        if: hashFiles('research/semantic_representations/stance_dev_evaluation.py') != ''
+        env:
+          HF_HUB_OFFLINE: '1'
+          TRANSFORMERS_OFFLINE: '1'
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/semantic_representations -p 'test_*.py' -v
+          python research/semantic_representations/stance_dev_evaluation.py --checkpoint /tmp/unga-pinned-minilm --output "$RUNNER_TEMP/stance_dev_first.json"
+          python research/semantic_representations/stance_dev_evaluation.py --checkpoint /tmp/unga-pinned-minilm --output "$RUNNER_TEMP/stance_dev_second.json"
+          python - "$RUNNER_TEMP/stance_dev_first.json" "$RUNNER_TEMP/stance_dev_second.json" <<'PY'
+          import hashlib,json,sys
+          from pathlib import Path
+          first,second=(Path(p).read_bytes() for p in sys.argv[1:])
+          assert first==second,"cross-process synthetic development replay mismatch"
+          obj=json.loads(first)
+          assert obj['population']['families']==30 and obj['population']['observations']==120
+          assert obj['coverage']['encoded']==120 and obj['coverage']['failed_batches']==0
+          assert obj['advance']['signed_minilm']['guard_abstentions']==16
+          assert obj['advance']['signed_lexical']['guard_abstentions']==16
+          print('STANCE_DEV_EXACT_HEAD_SHA256='+hashlib.sha256(first).hexdigest())
+          print('STANCE_DEV_EXACT_HEAD_ADVANCE='+json.dumps(obj['advance'],sort_keys=True))
+          print('STANCE_DEV_EXACT_HEAD_STRATA='+json.dumps(obj['by_stratum'],sort_keys=True))
+          PY
+
+      - name: Validate frozen coordinator holdout and original worker source
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import importlib.util,sys
+          from pathlib import Path
+          path=Path('research/integration/semantic_holdout_20261015/holdout_eval.py')
+          spec=importlib.util.spec_from_file_location('holdout_eval',path)
+          module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+          original=Path('research/integration/semantic_holdout_20261015/LOCKED_FIXTURE.json')
+          fixture,digest=module.locked_fixture(original)
+          assert digest and len(fixture['families'])==42
+          for mutation in ('duplicate_id','missing_text','changed_stratum','source_marker'):
+              import copy,json,tempfile
+              q=copy.deepcopy(fixture)
+              if mutation=='duplicate_id':q['families'][1]['id']=q['families'][0]['id']
+              if mutation=='missing_text':q['families'][2]['paraphrase']=''
+              if mutation=='changed_stratum':q['families'][3]['stratum']='direct_wrong'
+              if mutation=='source_marker':q['families'][4]['anchor']='A/81/PV private'
+              with tempfile.TemporaryDirectory() as d:
+                  f=Path(d)/'corrupted.json';f.write_text(json.dumps(q))
+                  try:module.locked_fixture(f)
+                  except ValueError:pass
+                  else:raise AssertionError('holdout integrity mutation accepted: '+mutation)
+          print('HOLDOUT_LOCKED_FIXTURE_SHA256='+digest)
+          print('HOLDOUT_NEGATIVE_CONTROLS=4/4 refused')
+          PY
+      - name: Run frozen coordinator-authored synthetic holdout twice
+        env:
+          HF_HUB_OFFLINE: '1'
+          TRANSFORMERS_OFFLINE: '1'
+        run: |
+          set -euo pipefail
+          python research/integration/semantic_holdout_20261015/holdout_eval.py --fixture research/integration/semantic_holdout_20261015/LOCKED_FIXTURE.json --checkpoint /tmp/unga-pinned-minilm --out "$RUNNER_TEMP/independent_holdout_1.json"
+          python research/integration/semantic_holdout_20261015/holdout_eval.py --fixture research/integration/semantic_holdout_20261015/LOCKED_FIXTURE.json --checkpoint /tmp/unga-pinned-minilm --out "$RUNNER_TEMP/independent_holdout_2.json"
+          python - "$RUNNER_TEMP/independent_holdout_1.json" "$RUNNER_TEMP/independent_holdout_2.json" <<'PY'
+          import hashlib,json,sys
+          from pathlib import Path
+          a,b=[Path(x).read_bytes() for x in sys.argv[1:]]
+          assert a==b,'independent process receipt mismatch'
+          o=json.loads(a)
+          assert o['counts']['observations']==168 and o['counts']['families']==42
+          assert o['counts']['failed_batches']==0 and o['counts']['not_fitted']==0
+          assert o['publication_eligible'] is False
+          print('INDEPENDENT_HOLDOUT_REPLAY_SHA256='+hashlib.sha256(a).hexdigest())
+          print('INDEPENDENT_HOLDOUT_SCOPED_METRICS='+json.dumps(o['methods'],sort_keys=True))
+          print('INDEPENDENT_HOLDOUT_STRATA='+json.dumps(o['strata'],sort_keys=True))
+          PY

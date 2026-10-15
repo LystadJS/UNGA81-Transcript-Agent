@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.cache/
+cache/
+cache-*/
+*.npy
+*.npz
+*.onnx
+*.jsonl
+results/
+private/
+model/
+*.log
