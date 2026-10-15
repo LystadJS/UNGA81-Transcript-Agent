@@ -12,7 +12,8 @@ from .v3_prototype import verify_design
 
 ROOT=Path(__file__).resolve().parent
 FILES=("v3_prototype.py","v3_nuisance.py","v3_design_proposal.json",
-       "test_v3_prototype.py","test_v3_nuisance.py")
+       "test_v3_prototype.py","test_v3_nuisance.py",
+       "v3_grouped_development.py","test_v3_grouped_development.py")
 
 def proposal_receipt():
     cfg=json.loads((ROOT/"v3_design_proposal.json").read_text())
@@ -31,6 +32,8 @@ def proposal_receipt():
         independent_holdout_seed_committed=False,
         holdout_run=False,
         response_gamma_grouped_inference_validated=False,
+        development_only_grouped_diagnostics_present=True,
+        external_measurement_error_calibration_development_only=True,
         externally_measured_year_process_nugget_available=False,
         full_covariance_identification_achieved=False,
         real_fit_authorized=False,
