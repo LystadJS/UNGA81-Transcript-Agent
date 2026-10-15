@@ -328,6 +328,26 @@ class SchemaAndProvenance(unittest.TestCase):
         report["title"] = "Bad\ud800unicode"
         self.assertIn("schema_required_prose_missing_or_invalid", validate(report, proofs, decision))
 
+    def test_failed_source_suppresses_all_authored_report_level_claims(self):
+        report, proofs, decision = fixture()
+        report["reviewer_note"] = "UNSUPPORTED CLAIM OF DIPLOMATIC REALIGNMENT"
+        proofs["synthetic:A"] = replace(proofs["synthetic:A"], accepted=False)
+        view = normalize(report, proofs, refresh(report, decision))
+        self.assertEqual(view["release_state"], "withheld")
+        self.assertEqual(view["reviewer_note"], "Withheld")
+        self.assertEqual(view["sources"], [])
+        self.assertEqual(view["findings"], [])
+        self.assertNotIn("UNSUPPORTED", json.dumps(view))
+
+    def test_missing_support_suppresses_unqualified_reviewer_note(self):
+        report, proofs, decision = fixture()
+        report["findings"][0]["supporting"] = []
+        report["reviewer_note"] = "UNSUPPORTED DISCOURSE COMMUNITY ASSERTION"
+        view = normalize(report, proofs, refresh(report, decision))
+        self.assertEqual(view["release_state"], "withheld")
+        self.assertEqual(view["reviewer_note"], "Withheld")
+        self.assertNotIn("UNSUPPORTED", render(report, "json", proofs=proofs, decision=refresh(report, decision)))
+
     def test_fail_closed_malformed_top_level(self):
         self.assertEqual(normalize({"credentials": "DO_NOT_LEAK"})["release_state"], "withheld")
         self.assertNotIn("DO_NOT_LEAK", render({"credentials": "DO_NOT_LEAK"}, "json"))
