@@ -83,6 +83,22 @@ class ProspectiveIdentificationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"empirical fitting"):
             independent_freeze_decision(receipt,cfg)
 
+    def test_coordinator_decision_evidence_conserves_attempts(self):
+        evidence=json.loads((ROOT/"v3_identification_decision.json").read_text())
+        self.assertEqual(evidence["decision"],"STATISTICAL_FREEZE_NOT_ACCEPTED")
+        num=evidence["numerical_development"]
+        self.assertEqual(num["gamma_completed"]+num["gamma_refused"],num["gamma_method_attempts"])
+        self.assertEqual(num["covariance_completed"]+num["covariance_refused"],num["covariance_attempts"])
+        self.assertEqual(num["gamma_refused"]+num["covariance_refused"],num["all_failed_fit_ids_retained"])
+        self.assertEqual(num["correlated_year_T16"]["year_FE_diagnostic_true_hits"],25)
+        self.assertEqual(num["correlated_year_T16"]["year_FE_diagnostic_fit_denominator"],29)
+        self.assertFalse(evidence["v3_holdout_executed"])
+        self.assertFalse(evidence["real_inference_authorized"])
+        self.assertFalse(evidence["pr_merge_authorized"])
+        self.assertEqual(evidence["gates"]["continuous_partial_identification_set"],"NOT_IMPLEMENTED")
+        self.assertEqual(evidence["reviewer_approval_record"],
+                         "NONE_NO_INDEPENDENT_HUMAN_STATISTICIAN_SIGNOFF")
+
     def test_nonfinite_designs_refuse(self):
         with self.assertRaises(ValueError):
             conditional_vs_marginal_gamma(gamma=float("nan"))
