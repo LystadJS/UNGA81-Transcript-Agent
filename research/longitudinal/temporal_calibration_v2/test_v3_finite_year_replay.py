@@ -7,6 +7,7 @@ from __future__ import annotations
 from collections import Counter,defaultdict
 import hashlib
 import json
+from pathlib import Path
 import unittest
 from .v3_finite_year_study import run_development,GAMMA_WORLDS,COV_WORLDS
 
@@ -73,6 +74,29 @@ class FullIndependentFiniteYearReplay(unittest.TestCase):
               "gamma":report["gamma_scenarios"],
               "covariance":report["covariance_scenarios"],
               "holdout_attempted":0,"statistical_acceptance":False}
+        # Independent replay of committed source-free development evidence.
+        root=Path(__file__).resolve().parent
+        saved=json.loads((root/"v3_finite_year_development_receipt.json").read_text())
+        masks_saved=json.loads((root/"v3_finite_year_failure_masks.json").read_text())
+        self.assertEqual(masks_saved["masks"],masks)
+        self.assertEqual(masks_saved["failures"],len(ledger))
+        self.assertEqual(masks_saved["canonical_uncompressed_failure_sha256"],digest)
+        for key in ("gamma_methods_attempted","gamma_methods_completed","gamma_methods_refused",
+                    "gamma_bootstrap_attempted","gamma_bootstrap_completed","gamma_bootstrap_failed",
+                    "cov_methods_attempted","cov_methods_completed","cov_methods_refused",
+                    "failure_ledger_count","failure_ledger_canonical_sha256","holdout_attempted"):
+            self.assertEqual(saved[key],core[key],key)
+        self.assertEqual(len(saved["gamma"]),len(core["gamma"]))
+        self.assertEqual(len(saved["covariance"]),len(core["covariance"]))
+        for name in ("gamma","covariance"):
+            for left,right in zip(saved[name],core[name]):
+                self.assertEqual(left.keys(),right.keys())
+                for field in left:
+                    a,b=left[field],right[field]
+                    if isinstance(a,float) and isinstance(b,float):
+                        self.assertAlmostEqual(a,b,places=7,msg=f"{name}:{field}")
+                    else:
+                        self.assertEqual(a,b,f"{name}:{field}")
         # Output a source-free aggregate and lossless failure bitsets in CI logs,
         # not hidden original documents or full raw synthetic source rows.
         print("V3_FINITE_YEAR_REPLAY_AGGREGATE="+json.dumps(core,sort_keys=True,separators=(",",":")))
