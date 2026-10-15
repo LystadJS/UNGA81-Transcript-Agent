@@ -89,6 +89,17 @@ document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',(
 $('about-button').addEventListener('click',()=>{$('about').open=true;$('about').querySelector('summary').focus();});
 $('close-evidence').addEventListener('click',()=>{controller.closeEvidence();if(evidenceInvoker)document.querySelector(`[data-evidence="${CSS.escape(evidenceInvoker)}"]`)?.focus();});
 $('evidence-dialog').addEventListener('cancel',()=>{controller.closeEvidence();if(evidenceInvoker)document.querySelector(`[data-evidence="${CSS.escape(evidenceInvoker)}"]`)?.focus();});
+// Keep keyboard focus visible inside the modal; Escape retains native close behavior.
+$('evidence-dialog').addEventListener('keydown',event=>{
+  if(event.key!=='Tab'||!$('evidence-dialog').open)return;
+  const dialog=$('evidence-dialog');
+  const controls=[...dialog.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])')].filter(el=>el.getClientRects().length);
+  const first=controls[0],last=controls.at(-1);
+  if(!first)return;
+  if(!dialog.contains(document.activeElement)||(event.shiftKey&&document.activeElement===first)||(!event.shiftKey&&document.activeElement===last)){
+    event.preventDefault();(event.shiftKey?last:first).focus();
+  }
+});
 $('bundle-file').addEventListener('change',()=>{const f=$('bundle-file').files?.[0];controller.invalidate();if(!f)return;if(f.size>MAX_IMPORT_BYTES){controller.importBundle(Promise.reject(new Error('size')));return;}controller.importBundle(f.text()).then(s=>{if(s?.query){navigate(s.query.intent==='meeting'?'meetings':'explore',false);restoreForm(s.query);}});$('bundle-file').value='';});
 $('cancel-import').addEventListener('click',()=>{controller.invalidate();$('bundle-file').value='';});
 // Permission checks are refreshed while visible, on focus, before source access and before export.
