@@ -30,7 +30,7 @@ def encode(rows, model, encoder, cache_dir, max_chars=900, batch_size=16):
     output=[]
     for row in rows:
         passages=segments(row["text"],max_chars)
-        key=digest({"model":model,"text_sha256":row["text_sha256"],"source_sha256":row["source_sha256"],"selection_sha256":row["selection_sha256"],"unit":row["unit"],"max_chars":max_chars})
+        key=digest({"model":model,"text_sha256":row["text_sha256"],"source_sha256":row["source_sha256"],"selection_sha256":row["selection_sha256"],"source_schema":row["source_schema"],"unit":row["unit"],"max_chars":max_chars})
         path=root/(key+".json")
         if path.exists():
             record=json.loads(path.read_text())
@@ -53,7 +53,7 @@ def encode(rows, model, encoder, cache_dir, max_chars=900, batch_size=16):
                 os.replace(tmp,path)
             finally:
                 if os.path.exists(tmp): os.unlink(tmp)
-        output.append({"id":row["id"],"text_sha256":row["text_sha256"],"source_sha256":row["source_sha256"],"unit":row["unit"],**record})
+        output.append({"id":row["id"],"text_sha256":row["text_sha256"],"source_sha256":row["source_sha256"],"selection_sha256":row["selection_sha256"],"source_schema":row["source_schema"],"unit":row["unit"],**record})
     return {"schema":SCHEMA,"representation_id":identity(rows,model),"model":model,"rows":output,"publication_eligible":False,"evaluation_role":"engineering_only"}
 def compare(a,b,k=1):
     if a["schema"]!=SCHEMA or b["schema"]!=SCHEMA: raise ValueError("schema mismatch")
@@ -61,7 +61,7 @@ def compare(a,b,k=1):
     aa=a["rows"]; bb=b["rows"]
     if len(aa)!=len(bb) or len(aa)<3 or not 1<=k<len(aa): raise ValueError("population or k mismatch")
     for x,y in zip(aa,bb):
-        if any(x[field]!=y[field] for field in ("id","text_sha256","source_sha256","unit")): raise ValueError("source or observation mismatch")
+        if any(x[field]!=y[field] for field in ("id","text_sha256","source_sha256","selection_sha256","source_schema","unit")): raise ValueError("source or observation mismatch")
     def neighbors(rows,i):
         v=rows[i]["vector"]
         if any(len(z["vector"])!=len(v) for z in rows): raise ValueError("dimension mismatch")
@@ -72,4 +72,4 @@ def fixture_encoder(passages):
     # Explicit deterministic TEST DOUBLE, not a semantic checkpoint.
     return [[float(len(p)),float(sum(map(ord,p))%997),float(p.count("not"))] for p in passages]
 def interchange(result):
-    return {"schema":SCHEMA,"representation_id":result["representation_id"],"observations":[{k:r[k] for k in ("id","text_sha256","source_sha256","unit","vector_sha256")} for r in result["rows"]],"publication_eligible":False,"evaluation_role":"engineering_only"}
+    return {"schema":SCHEMA,"representation_id":result["representation_id"],"observations":[{k:r[k] for k in ("id","text_sha256","source_sha256","selection_sha256","source_schema","unit","vector_sha256")} for r in result["rows"]],"publication_eligible":False,"evaluation_role":"engineering_only"}
