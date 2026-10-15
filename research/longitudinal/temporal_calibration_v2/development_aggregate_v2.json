@@ -1,0 +1,38 @@
+{
+  "code_hashes": {
+    "inference.py": "cff3ae04c67253bc51fdc5cb086190c30117be73690b08b170e09f0cd1074d92",
+    "run_study.py": "330f829516ad39fe1052cb7241ed6a2658ec592385e23451b43e225e04217091",
+    "synthetic_dev.py": "bd3df14aa05ee9b76295431b5a6f584f55c33607957dddd5e733f1b83155348b",
+    "synthetic_holdout.py": "3f19c31d65b92ae3fe06dcad2fc4ece92c574f6a4be530c6356fe1739f023862"
+  },
+  "empirical_publication_eligible": false,
+  "expected_no_audit_abstentions": 720,
+  "independent_real_source_selection_audit": false,
+  "methods": [
+    "iid_year",
+    "ar1_constrained",
+    "ar1_nugget_ridge"
+  ],
+  "new_real_2008_2023_model_fit": false,
+  "numpy_version": "2.3.5",
+  "panels_attempted": 3600,
+  "panels_completed": 2829,
+  "pass_coverage_scenarios": {
+    "ar1_constrained": 0,
+    "ar1_nugget_ridge": 0,
+    "iid_year": 0
+  },
+  "pass_recovery_scenarios": {
+    "ar1_constrained": 1,
+    "ar1_nugget_ridge": 0,
+    "iid_year": 0
+  },
+  "phase": "development",
+  "python_version": "3.13.5",
+  "scenarios": 30,
+  "scipy_version": "1.17.0",
+  "sensitivity_note": "Known DGP contrasts are distinct from unverifiable real source selection and 64D discourse movement.",
+  "statistical_acceptance": false,
+  "unexpected_failures": 51,
+  "unsafe_no_audit_fits": 0
+}
