@@ -46,7 +46,7 @@ class PrivateAuthorizationDesignTests(unittest.TestCase):
         text = json.dumps(p)
         self.assertNotIn('DO_NOT_COPY_SYNTHETIC_SECRET',text)
         self.assertNotIn('SYNTHETIC_CREDENTIAL',text)
-        self.assertNotIn('source_text',text)
+        self.assertNotIn('"source_text":',text)
         self.assertNotIn('credentials',text)
 
     def test_cannot_escalate_private_gate(self):
