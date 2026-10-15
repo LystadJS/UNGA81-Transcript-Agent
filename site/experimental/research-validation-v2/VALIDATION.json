@@ -42,7 +42,7 @@
     ],
     "http_original_asset_parity": "PASS_4_OF_4",
     "chromium_navigation": "BLOCKED_ERR_BLOCKED_BY_ADMINISTRATOR",
-    "native_c5_source_adapter_regression": "NOT_RUN_FULL_CHECKOUT_UNAVAILABLE",
+    "native_c5_source_adapter_regression": "BLOCKED_MISSING_UPSTREAM_CHECKOUT_MODULE_NOT_FOUND_NO_NATIVE_TESTS_EXECUTED",
     "native_c5_regression_command": "C5_W2_FIXTURES=/tmp/c5-w2 C5_W4_FIXTURES=/tmp/c5-w4 node --test site/experimental/research-validation-v2/native-c5-regression.cjs",
     "native_c5_regression_syntax": "PASS",
     "c5_exported_read_model_audit": "PASS_EXPORT_ONLY_NOT_NATIVE_PRODUCER",
@@ -105,9 +105,9 @@
       "bytes": 10777
     },
     "COORDINATOR_PATCH.md": {
-      "sha256_bytes": "9b8367ee1dc1ad0ef78380a8c6a977aaa5afb8072b3dd6a3b88051b051bcf9d8",
-      "git_blob_sha1": "d2d1c09ea9599d3aad7adbba4df8dcebf56ce8a4",
-      "bytes": 3765
+      "sha256_bytes": "480f8ac43c342a8bfd64d85bb0dcdbbcde4922ca24c3de8d39d5fb23404665a6",
+      "git_blob_sha1": "71b47f54c684bb9dc1417092cf866412f9b308b6",
+      "bytes": 3751
     },
     "coordinator-integration.patch": {
       "sha256_bytes": "11a6ee7f1117b02b762bb3ae981c78bbe467a324fe1699dc04baa64cbadf7fb7",
@@ -116,7 +116,7 @@
     }
   },
   "warnings": [
-    "Native C5 generator/validator execution on this head requires a full checkout not available to this container; accepted C5 CI receipt is inherited.",
+    "Attempted native C5 adapter test in isolated local subtree: Node failed to import ../../research-consensus.js (MODULE_NOT_FOUND) before executing tests; full merged C5 repository checkout is unavailable due github.com DNS/network block. Inherited C5 original CI receipts are not new native execution.",
     "Browser navigation to localhost is blocked by administrator policy. Actual Chromium DOM QA uses exact injected local scripts; HTTP byte parity is independently checked.",
     "No private original source file bytes were accessed; SHA-256 values in synthetic evidence are fixture commitments only."
   ]
