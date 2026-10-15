@@ -1,0 +1,89 @@
+{
+  "acceptance_thresholds": {
+    "max_absolute_gamma_bias": 0.2,
+    "max_absolute_rho_bias": 0.12,
+    "max_coverage_deviation": 0.05,
+    "max_gamma_rmse": 0.45,
+    "max_median_interval_width": 0.8,
+    "max_rho_boundary_fraction": 0.05,
+    "max_rho_rmse": 0.25,
+    "min_holdout_completion_rate": 0.95,
+    "target_coverage": 0.9,
+    "wilson_interval_must_include_nominal": true
+  },
+  "critical_values": {
+    "16": {
+      "ar1_constrained": 2.407741142925909,
+      "ar1_nugget_ridge": 2.3672945486376866,
+      "iid_year": 2.884082145232419
+    },
+    "24": {
+      "ar1_constrained": 2.2661169451016567,
+      "ar1_nugget_ridge": 2.16969901918686,
+      "iid_year": 3.138567303469403
+    },
+    "32": {
+      "ar1_constrained": 2.1273606011360346,
+      "ar1_nugget_ridge": 1.993888540978639,
+      "iid_year": 2.9594752196231817
+    }
+  },
+  "development_attempted_panels": 3600,
+  "development_completed_identifiable_panels": 2829,
+  "development_expected_nonidentification": 720,
+  "development_panels_per_scenario": 120,
+  "development_seed_namespace": "UNGA81-TEMPORAL-V2-DEV-20261015",
+  "frozen_code_hashes": {
+    "inference.py": "cff3ae04c67253bc51fdc5cb086190c30117be73690b08b170e09f0cd1074d92",
+    "run_study.py": "330f829516ad39fe1052cb7241ed6a2658ec592385e23451b43e225e04217091",
+    "synthetic_dev.py": "bd3df14aa05ee9b76295431b5a6f584f55c33607957dddd5e733f1b83155348b",
+    "synthetic_holdout.py": "3f19c31d65b92ae3fe06dcad2fc4ece92c574f6a4be530c6356fe1739f023862"
+  },
+  "frozen_original_W4_thresholds_preserved": true,
+  "holdout_inspected_at_freeze": false,
+  "holdout_seed_namespace": "UNGA81-TEMPORAL-V2-HOLDOUT-20261015",
+  "locked_holdout_panels_per_scenario": 240,
+  "masks": [
+    "near_census",
+    "stratified_2_of_3"
+  ],
+  "models": [
+    "iid_year",
+    "ar1_constrained",
+    "ar1_nugget_ridge"
+  ],
+  "nugget_grid": [
+    0.0,
+    0.2,
+    0.4,
+    0.6,
+    0.8
+  ],
+  "rho_grid": [
+    -0.2,
+    0.0,
+    0.1,
+    0.25,
+    0.4,
+    0.55,
+    0.7,
+    0.85,
+    0.92
+  ],
+  "schema": "un.w4.temporal_calibration_v2.frozen_development.v1",
+  "source_audit_or_real_inference_authorized": false,
+  "study_status": "DEVELOPMENT_ONLY_UNTIL_FROZEN_COMMIT",
+  "thresholds_may_not_change_after_holdout": true,
+  "worlds": [
+    "iid_MAR",
+    "AR1_MAR",
+    "AR1_MNAR_audited",
+    "AR1_MNAR_no_audit",
+    "AR1_nugget_MNAR_audited"
+  ],
+  "years": [
+    16,
+    24,
+    32
+  ]
+}
