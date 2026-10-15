@@ -19,14 +19,15 @@
       "p0",
       "p1"
     ],
-    "original_private_source_byte_authentication": "NOT_RUN"
+    "original_private_source_byte_authentication": "NOT_RUN",
+    "main_latest_reconciled": "964ba0899665bb03bbe4fc54b4c65426d7c4d35d"
   },
   "local_execution": {
     "node_version": "22.16.0",
     "python_version": "3.13.5",
     "chromium_version": "144.0.7559.96",
-    "native_v2_node_cases": 62,
-    "native_v2_node_passed": 62,
+    "native_v2_node_cases": 63,
+    "native_v2_node_passed": 63,
     "native_v2_node_failed": 0,
     "node_command": "node --test site/experimental/research-validation-v2/tests.cjs",
     "chromium_browser_qa": "PASS_WITH_NAVIGATION_FALLBACK",
@@ -47,7 +48,15 @@
     "native_c5_regression_syntax": "PASS",
     "c5_exported_read_model_audit": "PASS_EXPORT_ONLY_NOT_NATIVE_PRODUCER",
     "coordinator_patch_synthetic_context_git_apply_check": "PASS",
-    "coordinator_patch_actual_main_git_apply_check": "NOT_RUN_FULL_CHECKOUT_UNAVAILABLE"
+    "coordinator_patch_actual_main_git_apply_check": "NOT_RUN_FULL_GIT_CHECKOUT_UNAVAILABLE",
+    "strict_served_navigation_gate": "PASS_REFUSES_ADMIN_BLOCKED_NAVIGATION",
+    "browser_receipt_schema": "un.research-browser-v2.qa.v1",
+    "browser_fallback_receipt": {
+      "acceptance_mode": "injected_fallback_not_acceptance",
+      "served_navigation_verified": false,
+      "viewports": 2
+    },
+    "coordinator_patch_in_memory_exact_source_contexts": "PASS_6_OF_6_MATCH_GITHUB_MAIN_964ba0899665bb03bbe4fc54b4c65426d7c4d35d"
   },
   "immutable_gates": {
     "37_reserved_october_meeting_texts_opened": 0,
@@ -70,9 +79,9 @@
       "bytes": 13129
     },
     "tests.cjs": {
-      "sha256_bytes": "fd1c3022975fb28f26ae9c59999cd762c98b1a87a83dc86d04c10c752cf8fb1d",
-      "git_blob_sha1": "86106c282ce414ddb2394b508255be9622fa0fe1",
-      "bytes": 18503
+      "sha256_bytes": "125b066dde17019008ec07a108d8a4e7e9b81ccd31b5bd8b202ace159dac5357",
+      "git_blob_sha1": "3b51d84d4174e983d6ce32b2a6830fef58e60e58",
+      "bytes": 18988
     },
     "native-c5-regression.cjs": {
       "sha256_bytes": "ea0a57d431c2fe18155314e5b5161c864064319997db129179b4ae923d1a0f90",
@@ -80,9 +89,9 @@
       "bytes": 4780
     },
     "browser_smoke.py": {
-      "sha256_bytes": "6732531aa67edd104f05c95c358ba72fb5f17e00f683aaf1c9e38acac3fca90c",
-      "git_blob_sha1": "e9e7b4f5122c9ce67cd7b5fd3cc1ac2e61b7fd14",
-      "bytes": 8291
+      "sha256_bytes": "76d0a5debd4a33f4d30d8bf10fa9e1cc16a982b4cd6721906730eda7ff01a03a",
+      "git_blob_sha1": "7bb1a033d3ac3a141b48ab954a97a8affdabd064",
+      "bytes": 10023
     },
     "fixture.json": {
       "sha256_bytes": "29928c916c4b22740f80dfe6bd596d221437923eed30d550cb3e3b0d21c2e57e",
@@ -100,25 +109,26 @@
       "bytes": 2361
     },
     "README.md": {
-      "sha256_bytes": "51a06293264d508d8be1583c0f583a03bbe48bee6eb1972c70eba35a4d5d6fd6",
-      "git_blob_sha1": "a48ffa7a1a1addac033f056a7db00610c9a314ef",
-      "bytes": 10777
+      "sha256_bytes": "cc5a490de560a018adac7c75e51434608cc33a7d463b924a4cd566ceef16380f",
+      "git_blob_sha1": "2b56a44b0669afc8cfd3937e6c32556731ef394a",
+      "bytes": 11889
     },
     "COORDINATOR_PATCH.md": {
-      "sha256_bytes": "480f8ac43c342a8bfd64d85bb0dcdbbcde4922ca24c3de8d39d5fb23404665a6",
-      "git_blob_sha1": "71b47f54c684bb9dc1417092cf866412f9b308b6",
-      "bytes": 3751
+      "sha256_bytes": "b07837b0cfd3bd4d90e0d6c658a5e5c8bf1bced05a4ed4288e3489ce4c948693",
+      "git_blob_sha1": "f012d492fc5b23f826737112b8f1dc7b1805568d",
+      "bytes": 4617
     },
     "coordinator-integration.patch": {
-      "sha256_bytes": "11a6ee7f1117b02b762bb3ae981c78bbe467a324fe1699dc04baa64cbadf7fb7",
-      "git_blob_sha1": "d82ec15f341c97e11dc95a91b62f043350d6d0a3",
-      "bytes": 3811
+      "sha256_bytes": "2489be3c242748a2aa44220ea9250effacc0c7ce28329562a6faeaf942f62ceb",
+      "git_blob_sha1": "c4d080502f1f319016d578fd25a5b03bef26f416",
+      "bytes": 3854
     }
   },
   "warnings": [
     "Attempted native C5 adapter test in isolated local subtree: Node failed to import ../../research-consensus.js (MODULE_NOT_FOUND) before executing tests; full merged C5 repository checkout is unavailable due github.com DNS/network block. Inherited C5 original CI receipts are not new native execution.",
     "Browser navigation to localhost is blocked by administrator policy. Actual Chromium DOM QA uses exact injected local scripts; HTTP byte parity is independently checked.",
-    "No private original source file bytes were accessed; SHA-256 values in synthetic evidence are fixture commitments only."
+    "No private original source file bytes were accessed; SHA-256 values in synthetic evidence are fixture commitments only.",
+    "Strict served-navigation acceptance is a separate fail-closed gate: --require-served-navigation rejects Chromium administrator-blocked page.goto. Only injected-fallback DOM and same-origin HTTP asset parity were observed here; coordinator must run strict served navigation in an unrestricted checkout."
   ],
   "current_reexecution": {
     "execution_scope": "Exact prior head ef11b3fa087bd5cb1631ba803b81dee42b06358b; no original source files opened",
@@ -130,10 +140,10 @@
     },
     "node_v2": {
       "status": "PASS",
-      "passed": 62,
+      "passed": 63,
       "failed": 0,
       "command": "node --test site/experimental/research-validation-v2/tests.cjs",
-      "log_sha256": "f290881933577997763746c811d446c153a6fab1bb9e574aa169327a073970e2"
+      "log_sha256": "c05b19293baf16e3bcf6a5bc0367022f9dbeea2807cd76b871e8d9662c304db4"
     },
     "native_c5_syntax": {
       "status": "PASS",
@@ -179,9 +189,29 @@
       "w4_actors": 13,
       "source_artifact_sha256": "79195a755f3ff1e28570fd368f94842d6f140d83f0dd1315b5bee567fc6814af"
     },
-    "coordinator_patch": "PREPARED_NOT_APPLIED",
-    "acceptance": "WITHHELD_NATIVE_C5_AND_SERVED_BROWSER",
+    "coordinator_patch": {
+      "status": "PASS_IN_MEMORY_SOURCE_HUNKS_6_OF_6",
+      "source_main": "964ba0899665bb03bbe4fc54b4c65426d7c4d35d",
+      "patch_blob": "c4d080502f1f319016d578fd25a5b03bef26f416",
+      "actual_git_apply": "NOT_RUN_FULL_GIT_CHECKOUT_UNAVAILABLE",
+      "applied_to_shared_files": false
+    },
+    "acceptance": "WITHHELD_NATIVE_C5_AND_STRICT_SERVED_BROWSER",
     "merge": "NOT_PERFORMED",
-    "deployment": "NOT_PERFORMED"
+    "deployment": "NOT_PERFORMED",
+    "new_strict_served_gate": {
+      "status": "PASS_FAIL_CLOSED",
+      "command": "python3 site/experimental/research-validation-v2/browser_smoke.py --require-served-navigation --browser /usr/bin/chromium",
+      "exit_code": 1,
+      "expected_failure": "ERR_BLOCKED_BY_ADMINISTRATOR",
+      "reason": "Server-page acceptance withheld rather than replaced by injected fallback",
+      "log_sha256": "fec27b622149250d50f587166c491980d08e14600361752d4e3caee2fd95197c"
+    },
+    "browser_receipt": {
+      "schema": "un.research-browser-v2.qa.v1",
+      "served_navigation_verified": false,
+      "mode": "injected_fallback_not_acceptance",
+      "viewports": 2
+    }
   }
 }
