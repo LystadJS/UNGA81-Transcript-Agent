@@ -42,6 +42,18 @@
 
 Timing differences are exploratory single-machine measures, not stable deployment benchmarks; reported REML total includes attempted/refused fits.
 
+
+
+## Exact-source local verification addendum — 2026-10-15
+
+After the original development comparison, reconstructed the **actual committed Python source and tests** in the local execution directory and compared `git hash-object` of each against GitHub's blob ID. All matched, including `calibration.py` f71bcc60cdd107a6df46bee92937ce9a206302d0, `study.py` edcae986c67137e328f63a436e094d9eb0667eab, `temporal_ar1.py` 16deea98c425e70d6069026de83f779d95221564, `profile_reml.py` e73cd98caf321c3f2916f7ada9406552b9160742, `compare_reml.py` 634b99492e081ec1bf04058a0afe8e0a61049995, and all five unit-test files (their Git blobs were checked against the exact branch).
+
+**PASS — full owned Python regression suite:** `python3 -m unittest -v test_calibration.py test_extended.py test_study.py test_temporal_ar1.py test_profile_reml.py`: **27 tests, 27 pass, 0 failures, 0 errors**, Python 3.13.5, NumPy 2.3.5, SciPy 1.17.0. This is a genuinely newly executed, byte-for-byte committed-source local validation, **not** a GitHub Actions CI result and not an upstream full-repository integration regression.
+
+**PASS — exact-source numerical benchmark replay:** `python3 compare_reml.py` from hash-matched committed files reproduced all 150 world-level numerical fits and all convergence/bias/RMSE/coverage denominators above exactly. As expected, wall-clock times differed slightly on replay: per-attempt moments **0.000382/0.000363/0.000163 seconds** and reduced REML **0.019845/0.018006/0.013300 seconds** for balanced/misspecified/sparse cases; total REML evaluation budgets unchanged at 10,221 / 9,756 / 10,295. Timing is non-deterministic and must not be treated as a fixture checksum.
+
+This closes the prior **local exact-source Python-test blocker**. However, applicable GitHub Actions checks and full upstream W1/W2 and coordinator integration regressions are **not yet executed or attested**. The scientific covariance and identification failures remain; no inferential gate is promoted.
+
 ## Exact-head acceptance status and next work
 New source is pushed to existing draft PR #67. GitHub Actions runs and combined statuses on prior head returned empty; without a runnable full GitHub checkout, **do not claim exact-head baseline regression PASS**. Required at new head:
 
