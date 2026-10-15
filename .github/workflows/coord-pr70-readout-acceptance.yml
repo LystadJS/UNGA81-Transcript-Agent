@@ -17,13 +17,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: f1a883e0ac5ce49f1dc8adb69e4accbf3e1f3c70
+          ref: 028e3d26f707401cbff498593ab27f64e2cc072a
           persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
       - name: Confirm exact committed PR head
-        run: test "$(git rev-parse HEAD)" = f1a883e0ac5ce49f1dc8adb69e4accbf3e1f3c70
+        run: test "$(git rev-parse HEAD)" = 028e3d26f707401cbff498593ab27f64e2cc072a
       - name: Run closed-world source and privacy unit suite
         run: |
           set -euo pipefail
@@ -77,7 +77,7 @@ jobs:
       - name: Checkout exact PR70 head separately
         uses: actions/checkout@v4
         with:
-          ref: f1a883e0ac5ce49f1dc8adb69e4accbf3e1f3c70
+          ref: 028e3d26f707401cbff498593ab27f64e2cc072a
           path: readout-head
           persist-credentials: false
       - uses: actions/setup-node@v4
@@ -100,7 +100,7 @@ jobs:
         run: |
           set -euo pipefail
           test "$(cd baseline && git rev-parse HEAD)" = 1af11061e3fa65d51b28d42a1b98bef250b6168b
-          test "$(cd readout-head && git rev-parse HEAD)" = f1a883e0ac5ce49f1dc8adb69e4accbf3e1f3c70
+          test "$(cd readout-head && git rev-parse HEAD)" = 028e3d26f707401cbff498593ab27f64e2cc072a
           cp -a readout-head/research/diplomatic_readouts baseline/research/
           cd baseline
           python -m unittest discover -s research/diplomatic_readouts/tests -v
