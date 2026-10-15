@@ -4,19 +4,40 @@ export {SCHEMAS, GATES, DESTINATIONS, VERSION};
 const fail = code => { throw new Error(code); };
 const check = (condition, code) => { if (!condition) fail(code); };
 const same = (a,b) => canonical(a) === canonical(b);
-const copy = value => JSON.parse(JSON.stringify(value));
+// Canonical copying cannot invoke attacker-supplied toJSON or accessor hooks.
+const copy = value => JSON.parse(canonical(value));
 const own = (o,k) => Object.prototype.hasOwnProperty.call(o,k);
 const plain = o => o !== null && typeof o === 'object' && Object.getPrototypeOf(o) === Object.prototype;
 const isDate = s => typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s) && !Number.isNaN(Date.parse(s)) && new Date(s).toISOString().slice(0,10) === s;
 const isStamp = s => typeof s === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(s) && !Number.isNaN(Date.parse(s)) && new Date(s).toISOString() === s.replace('Z','.000Z');
 
+/** Accept JSON data, not executable objects. Proxies are outside this API's sandbox. */
+function dataKeys(value, array = false) {
+  check(array ? Array.isArray(value) && Object.getPrototypeOf(value) === Array.prototype : plain(value), 'plain_data');
+  const descriptors = Object.getOwnPropertyDescriptors(value);
+  const names = Reflect.ownKeys(descriptors);
+  check(names.every(k => typeof k === 'string' && k.isWellFormed()), 'data_keys');
+  if (array) {
+    check(value.length <= 10000 && names.length === value.length + 1, 'dense_array');
+    check(names.every(k => k === 'length' || /^(0|[1-9]\d*)$/.test(k) && Number(k) < value.length), 'array_fields');
+  }
+  for (const name of names) {
+    const descriptor = descriptors[name];
+    check(own(descriptor, 'value') && (array && name === 'length' || descriptor.enumerable), 'data_descriptor');
+    check(!['__proto__','constructor','prototype'].includes(name), 'unsafe_data_key');
+  }
+  return names.filter(k => !array || k !== 'length');
+}
 export function canonical(value) {
-  if (value === null || typeof value === 'boolean') return JSON.stringify(value);
-  if (typeof value === 'string') { check(value.isWellFormed(),'unicode'); return JSON.stringify(value); }
-  if (typeof value === 'number') { check(Number.isSafeInteger(value),'integer_wire'); return JSON.stringify(value); }
-  if (Array.isArray(value)) return '['+value.map(canonical).join(',')+']';
-  check(plain(value),'plain_object');
-  return '{'+Object.keys(value).sort().map(k => JSON.stringify(k)+':'+canonical(value[k])).join(',')+'}';
+  const visit = (v, depth) => {
+    check(depth <= 24, 'wire_depth');
+    if (v === null || typeof v === 'boolean') return JSON.stringify(v);
+    if (typeof v === 'string') { check(v.isWellFormed(),'unicode'); return JSON.stringify(v); }
+    if (typeof v === 'number') { check(Number.isSafeInteger(v),'integer_wire'); return JSON.stringify(v); }
+    if (Array.isArray(v)) { dataKeys(v, true); return '['+v.map(x => visit(x, depth+1)).join(',')+']'; }
+    return '{'+dataKeys(v).sort().map(k => JSON.stringify(k)+':'+visit(v[k], depth+1)).join(',')+'}';
+  };
+  return visit(value, 0);
 }
 export async function digest(value) {
   const bytes = new TextEncoder().encode(canonical(value));
@@ -70,8 +91,9 @@ export function validateShape(kind, data) {
     if (s.type === 'null') {check(v===null,'null');return;}
     if (s.type === 'string') {check(typeof v==='string' && v.isWellFormed() && [...v].length>=s.minLength && [...v].length<=s.maxLength && new RegExp(s.pattern).test(v),'string');return;}
     if (s.type === 'integer') {check(Number.isSafeInteger(v) && v>=s.minimum && v<=s.maximum,'integer');return;}
-    if (s.type === 'array') {check(Array.isArray(v) && v.length<=s.maxItems,'array');v.forEach(x=>walk(s.items,x,depth+1));if(s.uniqueItems)check(new Set(v.map(canonical)).size===v.length,'duplicate');return;}
+    if (s.type === 'array') {check(Array.isArray(v) && v.length<=s.maxItems,'array');dataKeys(v,true);v.forEach(x=>walk(s.items,x,depth+1));if(s.uniqueItems)check(new Set(v.map(canonical)).size===v.length,'duplicate');return;}
     check(s.type==='object' && plain(v),'object');
+    dataKeys(v);
     const descriptors=Object.getOwnPropertyDescriptors(v);
     check(Reflect.ownKeys(v).length===s.required.length && s.required.every(k=>own(v,k)) && Object.keys(v).every(k=>own(s.properties,k) && own(descriptors[k],'value')),'closed_fields');
     Object.entries(s.properties).forEach(([k,child])=>walk(child,v[k],depth+1));
@@ -104,6 +126,8 @@ export function validateCapability(cap) {
 const uniqueIds = items => check(new Set(items.map(x=>x.id)).size===items.length,'duplicate_identity');
 export async function validateProduct(product,query,cap) {
   validateQuery(query); validateCapability(cap); validateShape('product',product);
+  // Standalone validation has the same pre-await snapshot guarantee as assess.
+  query=copy(query); cap=copy(cap); product=copy(product);
   check(product.query_sha256===await digest(query) && product.capability_sha256===await digest(cap),'query_policy_digest');
   const u=product.upstream,p=product.fit_population,v=product.display_population,f=product.fit;
   check((u.source_sha256===null)===(u.source_missing_reason!==null),'source_missing_reason');
@@ -136,6 +160,7 @@ export async function validateProduct(product,query,cap) {
     if(finding.template==='observed_expression') check(finding.country!==null,'expression_attribution');
   }
   for(const section of product.sections) {
+    check(section.id!=='all','reserved_section_id');
     check(section.finding_ids.every(x=>findings.has(x) && findings.get(x).claim===section.claim),'finding_join');
     section.finding_ids.forEach(x=>used.add(x));
     if(section.data_state==='available') check(section.reason===null,'available_reason');
@@ -151,6 +176,7 @@ export async function validateProduct(product,query,cap) {
   check(evidenceUsed.size===evidence.size,'orphan_evidence'); return true;
 }
 export async function bindingFor(product) {
+  validateShape('product',product); product=copy(product);
   return {product_sha256:await digest(product),query_sha256:product.query_sha256,capability_sha256:product.capability_sha256,
     source_sha256:product.upstream.source_sha256,selection_sha256:product.upstream.selection_sha256,
     fit_population_sha256:product.fit_population.sha256,display_population_sha256:product.display_population.sha256,
@@ -177,11 +203,32 @@ function gateVector(decisions,section,destination) {
     return [gate,values.size>1?'conflict':values.size===0?'not_run':[...values][0]];
   }));
 }
-function needed(section,cap) {
+function needed(section,cap,product) {
   const gates=new Set(['engineering','source','review','export',...cap.extra_gates]);
-  if(['comparison','trend','map'].includes(section.kind) || section.claim!=='descriptive') gates.add('comparability');
+  const findings=product.findings.filter(f=>section.finding_ids.includes(f.id));
+  const comparisonTemplates=new Set(['language_comparison','period_comparison']);
+  const comparisonSchemas=new Set(['un.us-relative-trajectories.v1','un.latent-comparison.v1']);
+  const references=[section.result,...findings.map(f=>f.result)].filter(Boolean);
+  if(['comparison','trend','map'].includes(section.kind) || section.claim!=='descriptive' ||
+     section.uncertainty==='sensitivity' || findings.some(f=>comparisonTemplates.has(f.template)) ||
+     references.some(r=>comparisonSchemas.has(r.schema))) gates.add('comparability');
   if(['inferential','stance'].includes(section.claim) || section.uncertainty==='calibrated') gates.add('inference');
-  if(section.kind==='map') gates.add('display'); return [...gates];
+  // A chart cannot evade validation by being placed in an overview or evidence section.
+  if(section.kind==='map' || section.display!==null) gates.add('display');
+  return [...gates];
+}
+/** Hash the COMPLETE active receipt set; the expected digest must come from a trusted host ledger.
+ * This helper does not create, authenticate, or approve such a ledger. No incoming bundle is authority.
+ */
+export async function receiptSetDigest(receipts) {
+  check(Array.isArray(receipts) && receipts.length<=512,'receipt_limit');
+  dataKeys(receipts,true); receipts.forEach(r=>validateShape('receipt',r));
+  const snapshots=receipts.map(r=>canonical(r)).sort();
+  return digest({schema:'un.product-active-decisions.v1',receipts:snapshots});
+}
+const CONTEXT_FIELDS=new Set(['query','capability','product','receipts','trustedKeys','trustedReceiptSetSha256','destination','now']);
+function contextFields(input) {
+  check(dataKeys(input).every(k=>CONTEXT_FIELDS.has(k)),'context_fields');
 }
 function regimeFailure(product,query,cap) {
   if(product.fixture_kind!=='synthetic' || query.resolved.source_mode!=='synthetic') return 'development_not_authorized';
@@ -191,15 +238,24 @@ function regimeFailure(product,query,cap) {
   if(days>r.max_days || p.frame>r.max_frame || product.display_population.count>r.max_display) return 'resource_limit';
   if(u.source_sha256===null) return 'source_unavailable'; return null;
 }
-/** Keys are host configuration, NEVER imported from the product or an uploaded receipt. */
-export async function assess({query,capability:cap,product,receipts=[],trustedKeys=[],destination='local_view',now=new Date().toISOString().replace(/\.\d{3}Z$/,'Z')}) {
+/** Keys AND the current complete-receipt commitment are trusted host configuration. */
+export async function assess(input) {
   try {
+    contextFields(input);
+    let {query,capability:cap,product,receipts=[],trustedKeys=[],trustedReceiptSetSha256=null,
+      destination='local_view',now=new Date().toISOString().replace(/\.\d{3}Z$/,'Z')}=input;
     check(DESTINATIONS.includes(destination) && isStamp(now),'assessment_context');
     // Snapshot every untrusted object synchronously before crypto yields control.
     validateShape('query',query); validateShape('capability',cap); validateShape('product',product);
-    check(Array.isArray(receipts) && Array.isArray(trustedKeys),'context_arrays');
+    check(Array.isArray(receipts) && receipts.length<=512 && Array.isArray(trustedKeys) && trustedKeys.length<=32,'context_arrays');
+    dataKeys(receipts,true); dataKeys(trustedKeys,true);
     receipts.forEach(r=>validateShape('receipt',r)); trustedKeys.forEach(k=>validateShape('authority',k));
     query=copy(query); cap=copy(cap); product=copy(product); receipts=copy(receipts); trustedKeys=copy(trustedKeys);
+    // Individual signatures do not prove completeness: omitted valid vetoes must fail closed.
+    if(receipts.length || trustedReceiptSetSha256!==null) {
+      check(typeof trustedReceiptSetSha256==='string' && /^[a-f0-9]{64}$/.test(trustedReceiptSetSha256),'trusted_decision_set_required');
+      check(await receiptSetDigest(receipts)===trustedReceiptSetSha256,'decision_set_mismatch');
+    }
     await validateProduct(product,query,cap);
     check(Array.isArray(receipts) && receipts.length<=512 && Array.isArray(trustedKeys) && trustedKeys.length<=32,'receipt_limit');
     check(new Set(trustedKeys.map(k=>k.key_id)).size===trustedKeys.length,'duplicate_authority');
@@ -208,7 +264,7 @@ export async function assess({query,capability:cap,product,receipts=[],trustedKe
     uniqueIds(ds);
     const globalReason=regimeFailure(product,query,cap) || (!['local_view','local_export'].includes(destination)?'destination_prohibited':!cap.destinations.includes(destination)?'destination_not_eligible':null);
     const results=product.sections.map(section=>{
-      const gates=gateVector(ds,section,destination),required=needed(section,cap);
+      const gates=gateVector(ds,section,destination),required=needed(section,cap,product);
       const blocked=required.filter(g=>gates[g]!=='pass');
       let state,reason;
       if(globalReason) {state='withheld';reason=globalReason;}
@@ -242,6 +298,7 @@ export function createSession() {
 }
 /** Memory-only safe export. Never serialize the unfiltered input product. */
 export async function exportReadModel(input) {
+  try { contextFields(input); } catch { return {ok:false,media_type:null,utf8:null}; }
   const model=await assess({...input,destination:'local_export'});
   return model.can_export?{ok:true,media_type:'application/json',utf8:canonical(model)+'\n'}:{ok:false,media_type:null,utf8:null};
 }

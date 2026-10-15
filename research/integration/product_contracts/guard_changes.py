@@ -33,4 +33,4 @@ if __name__ == '__main__':
         if not tree.startswith('100644 blob '):
             raise SystemExit('Deleted/nonregular C0 path: ' + path)
     print(json.dumps({'changed_files': len(paths), 'owned_paths': True,
-                      'frozen_shared_changes': 0, 'private_source_reads': 0}))
+                      'frozen_shared_changes': 0, 'check_scope': 'git_path_and_mode_metadata_only'}))

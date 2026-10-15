@@ -45,11 +45,32 @@ jobs:
       - name: Native C0 contracts, signatures, state machine and adversarial controls
         run: |
           set -euo pipefail
-          node --test research/integration/product_contracts/test_contracts.mjs
+          node --test research/integration/product_contracts/test_*.mjs
           node research/integration/product_contracts/emit_contracts.mjs "$RUNNER_TEMP/c0-generated"
           python research/integration/product_contracts/check_schemas.py "$RUNNER_TEMP/c0-generated"
           node research/integration/product_contracts/emit_contracts.mjs "$RUNNER_TEMP/c0-replay"
           diff -rq "$RUNNER_TEMP/c0-generated" "$RUNNER_TEMP/c0-replay"
+      - name: Preserve independent red evidence against the immutable original source
+        run: |
+          set -euo pipefail
+          baseline="$RUNNER_TEMP/c0-original-source"
+          mkdir -p "$baseline"
+          for file in contracts.mjs schemas.mjs fixtures.mjs; do
+            git show "4ea131fb33ea7735b6543e8ba2110ecb268743ab:research/integration/product_contracts/$file" > "$baseline/$file"
+            test "$(git hash-object "$baseline/$file")" = "$(git rev-parse "4ea131fb33ea7735b6543e8ba2110ecb268743ab:research/integration/product_contracts/$file")"
+          done
+          set +e
+          C0_REVIEW_SOURCE="$baseline" node --test research/integration/product_contracts/test_independent_review.mjs > "$RUNNER_TEMP/c0-original-red.tap" 2>&1
+          rc=$?
+          set -e
+          test "$rc" = 1
+          python - "$RUNNER_TEMP/c0-original-red.tap" <<'PYRED'
+          import re, sys
+          text = open(sys.argv[1], encoding='utf8').read()
+          counts = {k: int(re.search(r'^# ' + k + r' (\d+)$', text, re.M).group(1)) for k in ('tests', 'pass', 'fail', 'skipped')}
+          assert counts == {'tests': 64, 'pass': 21, 'fail': 43, 'skipped': 0}, counts
+          print('Immutable original source has expected independent failures:', counts)
+          PYRED
       - name: Original native upstream contracts and merged PR71 regressions
         run: |
           set -euo pipefail

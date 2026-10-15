@@ -16,7 +16,8 @@ The upstream registry includes the actual PR82 result name `un.us-relative-traje
 - `validateQuery(query)`: immutable requested/resolved substantive scope, recorded defaults, real inclusive calendar dates and New York timezone. IDs are never numerically coerced; `01` and `1` differ. The UI/catalog layer resolves raw user labels before constructing this canonical query. No model knobs are admitted.
 - `validateCapability(capability)`: task/regime/recipe configuration and limits. No capability object certifies itself as approved. Multi-node fallback traversal/cycle checking belongs to U2.
 - `await validateProduct(product, query, capability)`: closed shapes, exact query/policy digests, source/registry/hash basis, fit versus display populations, complete attempt ledger, assignment counts, evidence joins, country capacity, spans and result bindings.
-- `await assess({query, capability, product, receipts, trustedKeys, destination, now})`: recomputes per-section gate vectors and safe output. Unknown authority, wrong signature, stale/conflicting decisions, changed worker/tree/product/population and malformed imports cannot enable a section.
+- `await assess({query, capability, product, receipts, trustedKeys, trustedReceiptSetSha256, destination, now})`: recomputes per-section gate vectors and safe output. Unknown authority, wrong signature, stale/conflicting decisions, changed worker/tree/product/population and malformed imports cannot enable a section.
+- `await receiptSetDigest(receipts)`: order-independent SHA-256 commitment of the complete active receipt set, domain-separated as `un.product-active-decisions.v1`. This calculates a digest; it does not authenticate or approve the set.
 - `await exportReadModel(input)`: rechecks local-export authority and serializes only the filtered safe read model into memory. It never writes a file, sends mail or serializes the unfiltered input product.
 - `createSession()`: load, snapshot and invalidate; clears old results before imports and guards against stale asynchronous completion. Snapshots are copies, not permissions. Export must be re-assessed, never authorized from a saved can_export flag.
 
@@ -28,16 +29,18 @@ The implementation uses Web Crypto SHA-256 and Ed25519, with no network calls or
 |---|---|
 | Descriptive section | Engineering, source, review, destination-specific output authority |
 | Comparison/trend | Above plus comparability |
-| Map | Above plus display validation |
+| Map, or any section carrying a display reference | Above plus display validation |
 | Inferential section | Above plus applicable statistical acceptance |
 | Local export | A separate exact-destination output authorization; view permission is insufficient |
 | Public site, email, real development | Prohibited by this initial implementation even if a test signer supplies PASS |
 
 Gate values remain separate: pass, fail, not_run, not_applicable and conflict. Not-applicable never substitutes for a required pass. A failed optional map gate cannot erase a valid descriptive section. Missing/unverified records make an otherwise empty result partial, not a complete zero. Frame = eligible + excluded + missing + unverified. Planned fits = attempted + skipped; attempted = succeeded + failed. All ledger IDs remain present. Display population is a declared subset of the fit population, never an implicit refit.
 
+A trusted **host-side** ledger supplies `trustedReceiptSetSha256` for the complete current set of active decisions. The caller must obtain it independently of the uploaded receipts and refresh it on adjudication/revocation and before export. Never compute this expected value from an incoming bundle merely to make validation pass. Missing, added, changed or omitted decisions invalidate the commitment; receipt reordering does not. Individual signatures alone cannot prove completeness. Empty unsigned assessments remain withheld. There is no operational ledger, signing service, or provisioned keyring in C0.
+
 A trusted **host-side** keyring supplies public verification keys with narrow gate and destination authority. It is never loaded from uploaded product/receipt JSON. Each signed payload binds the full product, query, capability, source/selection, fit/view population, worker commit and effective tree plus issuance/expiry and exact section/destination. Hashes establish consistency; signatures only establish the configured signer's identity, not source truth. Only an authorized source/review/scientific process may issue that gate after running its authoritative checks. No operational keyring or real approval is provisioned here. Tests generate ephemeral keys in memory; none are committed or exported.
 
-Engineering uses coordinator_acceptance evidence, not PR prose, mergeability, an arbitrary CI success or a model's own declaration. A CI run is evidence for its actual worker/effective tree; it does not authorize source, inference or publication gates. Source, comparability, owner-review, statistical, display and output decisions each require their matching evidence kind and delegated signer. Conflicting active decisions with the same binding yield conflict; the implementation never selects the newest or most optimistic receipt. Superseding/revoking a decision requires a separately adjudicated trusted ledger update; no self-authored supersedes flag exists. Every supplied stale/malformed receipt fails closed.
+Engineering uses coordinator_acceptance evidence, not PR prose, mergeability, an arbitrary CI success or a model's own declaration. A CI run is evidence for its actual worker/effective tree; it does not authorize source, inference or publication gates. Source, comparability, owner-review, statistical, display and output decisions each require their matching evidence kind and delegated signer. A section cannot be named `all`, which is reserved for the global decision selector. Conflicting active decisions with the same binding yield conflict; the implementation never selects the newest or most optimistic receipt. Superseding/revoking a decision requires a separately adjudicated trusted ledger update; no self-authored supersedes flag exists. Every supplied stale/malformed receipt fails closed.
 
 Structured signed decisions are a **new integration interface**, not a claim that historical PR comments already have digital signatures. Historical evidence in DEPENDENCIES.json is a handoff snapshot, not a runtime authority store.
 
@@ -50,7 +53,7 @@ Structured signed decisions are a **new integration interface**, not a claim tha
 ## Reproduce (synthetic only)
 
 ```sh
-node --test research/integration/product_contracts/test_contracts.mjs
+node --test research/integration/product_contracts/test_*.mjs
 node research/integration/product_contracts/emit_contracts.mjs /tmp/c0-generated
 python research/integration/product_contracts/check_schemas.py /tmp/c0-generated
 node research/integration/product_contracts/emit_contracts.mjs /tmp/c0-replay
@@ -66,3 +69,13 @@ The coordinator-owned workflow runs both the immutable worker head and GitHub's 
 See `docs/parallel-work/C0_PRODUCT_OWNERSHIP.md`, `c0-ownership.json` and `C0_WORKER_HANDOFFS.md`. New lanes can use the reviewed C0 commit as a stacked read-only dependency; existing PR70/82 branches are not rebased or merged by this work. C1 alone connects future accepted consumers to shared browser/build files.
 
 This is not an empirical model evaluator, catalog/search implementation, source authenticator, PKI deployment, human-review substitute, UI renderer or publication service. No real source integration or operational authority is enabled. Synthetic test success never changes the 37 reserved transcript lock, G01–G13, temporal v2 failures/v3 holdout, original hashes, completed owner choices or D1 O1–O5.
+
+## Independent review hardening — 15 October 2026
+
+The pre-review source `4ea131fb33ea7735b6543e8ba2110ecb268743ab` passed its original tests but failed new independent adversarial checks. `INDEPENDENT_REVIEW.md` records the failures and repair scope. The seven generated JSON schemas, four examples and existing interface lock are byte-for-byte unchanged: this is a stricter host-side authorization API and runtime validation repair, not a schema or scientific-gate migration. Old callers supplying signed receipts without the trusted complete-set commitment now fail closed and must be updated before integration.
+
+Gate requirements follow semantic references as well as layout. `language_comparison`, `period_comparison`, source-bound US-relative/latent-comparison numerical references and sensitivity results require comparability even inside an overview. Every non-null display reference requires display approval. A separately valid descriptive section remains usable when another section is withheld.
+
+Only ordinary dense JSON data is accepted by the object APIs. Own accessors, non-enumerable fields, custom/sparse arrays, symbols, serialization hooks and reserved object keys are rejected before their values are read. Canonical copying does not call `toJSON`; cycles/depth are bounded. Standalone validation and decision binding snapshot inputs before awaiting crypto. `parseStrict` is still mandatory for uploaded JSON. JavaScript Proxies or malicious code already executing in the host are not a sandbox this library can secure; no such claim is made.
+
+U1/U2/R1/Q1/C1 must keep the trusted keyring, expected active-ledger digest, destination and clock in host configuration, never in the imported query/product wrapper. Source/semantic truth, key custody, trusted-ledger adjudication, live revocation delivery and current clock correctness remain external responsibilities. Session invalidation is required when that host trust context changes. No production trust service or empirical source adapter is enabled by this patch.

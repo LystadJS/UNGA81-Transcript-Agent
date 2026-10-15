@@ -32,3 +32,12 @@ PR71 is already merged engineering-only; its historical syntax failure is not cu
 | Scientific and publication authority | WITHHELD; all existing gates unchanged |
 
 The new coordinator-only workflow is read-only, path/branch limited, and has separate worker-head/effective-tree jobs. It runs native C0 tests, independent schema/replay checks, original v1 interchange, source-inventory, source-comparability, W1 historical-link and merged-PR71 tests. It never builds/deploys Pages, downloads models, reads private originals or executes heldouts. A successful original suite is not evidence that PR82's independent defects are repaired.
+
+
+## Independent PR91 security review and repaired candidate — 15 October 2026
+
+The earlier 111-test implementation receipt is historical, not final independent acceptance. New checks reproduced omitted signed vetoes, misplaced comparison/display gates, unsafe data-object hooks, asynchronous binding/validation mutation and reserved global-section identity. See `research/integration/product_contracts/INDEPENDENT_REVIEW.md` and the mandatory `test_independent_review.mjs` suite.
+
+Local source-exact review: 64 independent cases yield 21 pass/43 fail against initial `4ea131fb33ea7735b6543e8ba2110ecb268743ab`, then 64/64 pass after repairs. Original 111 tests remain and pass; combined 175/175, no skips. Independent schema/hash checks 52/52, deterministic emission unchanged against the existing interface lock. Original and current head checks are not conflated. Full repaired-head hosted evidence and final independent engineering disposition will be appended to the PR discussion after actual execution without altering that tested commit.
+
+Every change is C0-owned. PR71's accepted code, PR82/87, other worker namespaces, shared/frozen protocols, source records, site files and release manifests are unchanged. Ownership guard reports only observed path/mode facts, not an unsupported runtime private-read count. This review does not authorize merging, public delivery, real data or operational signing keys.

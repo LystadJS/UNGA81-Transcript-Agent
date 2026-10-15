@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {generateKeyPairSync,sign} from 'node:crypto';
 import {fixture,NOW,H,J,K,C} from './fixtures.mjs';
-import {VERSION,GATES,canonical,digest,parseStrict,validateShape,validateQuery,validateCapability,validateProduct,bindingFor,assess,createSession} from './contracts.mjs';
+import {VERSION,GATES,canonical,digest,parseStrict,validateShape,validateQuery,validateCapability,validateProduct,bindingFor,receiptSetDigest,assess,createSession} from './contracts.mjs';
 const keypair=generateKeyPairSync('ed25519');
 const key={key_id:'ephemeral_test_only',spki_base64:keypair.publicKey.export({type:'spki',format:'der'}).toString('base64'),gates:[...GATES],destinations:['local_view','local_export','public_site','email']};
 const kinds={engineering:'coordinator_acceptance',source:'source_validation',comparability:'comparability_review',review:'owner_review',inference:'statistical_acceptance',display:'display_validation',export:'output_authorization'};
@@ -11,7 +11,8 @@ async function receipt(f,gate,verdict='pass',section_id='all',destination='local
   return {payload,signature:sign(null,Buffer.from(canonical(payload)),keypair.privateKey).toString('base64')};
 }
 async function signed(f,gates=['engineering','source','review','export'],destination='local_view') {
-  return {...f,receipts:await Promise.all(gates.map(g=>receipt(f,g,'pass','all',destination))),trustedKeys:[key],destination,now:NOW};
+  const receipts=await Promise.all(gates.map(g=>receipt(f,g,'pass','all',destination)));
+  return {...f,receipts,trustedReceiptSetSha256:await receiptSetDigest(receipts),trustedKeys:[key],destination,now:NOW};
 }
 async function result(f,options={}) {return assess({...await signed(f),...options});}
 function empty(f,state='empty',reason='no_matches') {f.product.evidence=[];f.product.findings=[];Object.assign(f.product.sections[0],{data_state:state,reason,finding_ids:[],result:null,display:null});}
@@ -54,9 +55,9 @@ for(const [name,mutate] of [
   ['cross-country attribution',f=>f.product.findings[0].country='XBB'],
 ]) test(`relational validation rejects ${name}`,async()=>{const f=await fixture();mutate(f);await assert.rejects(validateProduct(f.product,f.query,f.capability));});
 test('all failed and skipped attempts retained without invented assignments',async()=>{const f=await fixture();empty(f,'failed','fit_failed');Object.assign(f.product.fit,{planned:2,attempted:1,succeeded:0,failed:1,skipped:1,ledger:[{id:'a',model_id:'m',family_id:'f',seed:1,status:'failed',reason:'timeout'},{id:'b',model_id:'m',family_id:'f',seed:2,status:'skipped',reason:'unsupported'}],assignments:{eligible:2,assigned:0,unassigned:0,not_fitted:2}});const r=await result(f);assert.equal(r.state,'failed');assert.equal(r.sections[0].coverage.failed,1);assert.equal(r.sections[0].coverage.skipped,1);});
-for(const verdict of ['fail','not_run','not_applicable']) test(`required gate ${verdict} never becomes pass`,async()=>{const f=await fixture(),input=await signed(f);input.receipts=input.receipts.filter(x=>x.payload.gate!=='source');input.receipts.push(await receipt(f,'source',verdict));const r=await assess(input);assert.equal(r.state,'withheld');assert.equal(r.sections[0].findings.length,0);});
-test('competing current pass and fail holds, not newest-wins',async()=>{const f=await fixture(),input=await signed(f);input.receipts.push(await receipt(f,'source','fail','all','local_view',{id:'other_source'}));const r=await assess(input);assert.equal(r.sections[0].gates.source,'conflict');assert.equal(r.state,'withheld');});
-test('PR prose or CI success cannot impersonate source authority',async()=>{const f=await fixture(),input=await signed(f);input.receipts[1]=await receipt(f,'source','pass','all','local_view',{evidence_kind:'coordinator_acceptance'});assert.equal((await assess(input)).valid,false);});
+for(const verdict of ['fail','not_run','not_applicable']) test(`required gate ${verdict} never becomes pass`,async()=>{const f=await fixture(),input=await signed(f);input.receipts=input.receipts.filter(x=>x.payload.gate!=='source');input.receipts.push(await receipt(f,'source',verdict));input.trustedReceiptSetSha256=await receiptSetDigest(input.receipts);const r=await assess(input);assert.equal(r.state,'withheld');assert.equal(r.sections[0].findings.length,0);});
+test('competing current pass and fail holds, not newest-wins',async()=>{const f=await fixture(),input=await signed(f);input.receipts.push(await receipt(f,'source','fail','all','local_view',{id:'other_source'}));input.trustedReceiptSetSha256=await receiptSetDigest(input.receipts);const r=await assess(input);assert.equal(r.sections[0].gates.source,'conflict');assert.equal(r.state,'withheld');});
+test('PR prose or CI success cannot impersonate source authority',async()=>{const f=await fixture(),input=await signed(f);input.receipts[1]=await receipt(f,'source','pass','all','local_view',{evidence_kind:'coordinator_acceptance'});input.trustedReceiptSetSha256=await receiptSetDigest(input.receipts);assert.equal((await assess(input)).valid,false);});
 for(const [name,change] of [
   ['signature mutation',x=>x.receipts[0].signature='A'.repeat(86)+'=='],['unknown key',x=>x.trustedKeys=[]],
   ['key has no source authority',x=>x.trustedKeys=[{...key,gates:['engineering','review','export']}]],
@@ -64,7 +65,7 @@ for(const [name,change] of [
   ['digest drift',x=>x.product.run_id='other_run'],['display filter drift',x=>x.product.display_population.count=0],
   ['worker head drift',x=>x.product.provenance.worker_sha='e'.repeat(40)],['merge tree drift',x=>x.product.provenance.effective_tree_sha='f'.repeat(40)],
   ['duplicate receipt',x=>x.receipts.push(x.receipts[0])],['duplicate key IDs',x=>x.trustedKeys=[key,key]],
-]) test(`permission rejects ${name}`,async()=>{const x=await signed(await fixture());change(x);const r=await assess(x);assert.equal(r.valid,false);assert.equal(r.can_export,false);assert.deepEqual(r.sections,[]);});
+]) test(`permission rejects ${name}`,async()=>{const x=await signed(await fixture());change(x);x.trustedReceiptSetSha256=await receiptSetDigest(x.receipts);const r=await assess(x);assert.equal(r.valid,false);assert.equal(r.can_export,false);assert.deepEqual(r.sections,[]);});
 test('policy cannot remove mandatory source review and export requirements',async()=>{const f=await fixture(),input=await signed(f,['engineering']);assert.equal((await assess(input)).state,'withheld');});
 test('descriptive product needs no inferential or comparability acceptance',async()=>{const r=await result(await fixture());assert.equal(r.state,'ready');assert.equal(r.sections[0].gates.inference,'not_run');assert.equal(r.sections[0].gates.comparability,'not_run');});
 test('unverified source never means a complete zero finding',async()=>{const f=await fixture();empty(f);f.product.fit_population.unverified=1;f.product.fit_population.frame=3;const r=await result(f);assert.equal(r.state,'partial');assert.equal(r.sections[0].reason,'incomplete_coverage');});
