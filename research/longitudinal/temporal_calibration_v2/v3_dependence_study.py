@@ -177,10 +177,8 @@ def main():
         ap.error("refusing overwrite of existing development receipts")
     summary,failures=run_development(args.repetitions)
     args.out.mkdir(parents=True,exist_ok=False)
-    (args.out/"development_aggregate.json").write_text(json.dumps(summary,indent=2,sort_keys=True)+"
-")
-    (args.out/"development_failure_ledger.json").write_text(json.dumps(failures,indent=2,sort_keys=True)+"
-")
+    (args.out/"development_aggregate.json").write_text(json.dumps(summary,indent=2,sort_keys=True)+"\n")
+    (args.out/"development_failure_ledger.json").write_text(json.dumps(failures,indent=2,sort_keys=True)+"\n")
     print(json.dumps({"stage":summary["stage"],"gamma_attempted":summary["gamma_panel_attempts"],
        "gamma_completed":summary["gamma_panel_completed"],
        "gamma_refused":summary["gamma_panel_refusals"],
