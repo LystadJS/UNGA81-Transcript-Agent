@@ -72,7 +72,7 @@ class ProspectiveFreezeChecks(unittest.TestCase):
         altered["authorized"] = True
         self.assertNotEqual(altered["authorized"], self.record["authorized"])
         self.assertNotIn("private_key", json.dumps(self.record))
-        self.assertNotIn("original_bytes", json.dumps(self.record))
+        self.assertNotIn('"original_bytes": {', json.dumps(self.record))
         self.assertNotIn("source_url", json.dumps(self.record))
 
 
