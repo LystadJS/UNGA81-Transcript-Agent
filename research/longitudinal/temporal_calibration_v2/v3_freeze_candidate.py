@@ -16,7 +16,8 @@ FILES=("v3_prototype.py","v3_nuisance.py","v3_design_proposal.json",
        "v3_grouped_development.py","test_v3_grouped_development.py",
        "v3_dependence_benchmark.py","v3_dependence_study.py",
        "test_v3_dependence_benchmark.py","test_v3_dependence_replay.py",
-       "DEVELOPMENT_DEPENDENCE_RESULTS_V3.md")
+       "DEVELOPMENT_DEPENDENCE_RESULTS_V3.md",
+       "v3_development_failure_masks.json")
 
 def proposal_receipt():
     cfg=json.loads((ROOT/"v3_design_proposal.json").read_text())
