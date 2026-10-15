@@ -17,7 +17,11 @@ FILES=("v3_prototype.py","v3_nuisance.py","v3_design_proposal.json",
        "v3_dependence_benchmark.py","v3_dependence_study.py",
        "test_v3_dependence_benchmark.py","test_v3_dependence_replay.py",
        "DEVELOPMENT_DEPENDENCE_RESULTS_V3.md",
-       "v3_development_failure_masks.json")
+       "v3_development_failure_masks.json",
+       "v3_serial_partial.py","v3_serial_partial_study.py",
+       "test_v3_serial_partial.py","test_v3_serial_partial_replay.py",
+       "v3_serial_partial_failure_index.json",
+       "SERIAL_RESPONSE_PARTIAL_COVARIANCE_V3.md")
 
 def proposal_receipt():
     cfg=json.loads((ROOT/"v3_design_proposal.json").read_text())
@@ -38,6 +42,8 @@ def proposal_receipt():
         response_gamma_grouped_inference_validated=False,
         development_only_grouped_diagnostics_present=True,
         external_measurement_error_calibration_development_only=True,
+        serial_year_response_development_only=True,
+        hypothetical_covariance_sensitivity_development_only=True,
         externally_measured_year_process_nugget_available=False,
         full_covariance_identification_achieved=False,
         real_fit_authorized=False,
