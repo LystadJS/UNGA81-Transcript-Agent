@@ -8,7 +8,8 @@
     "node": "v22.16.0",
     "external_dependencies": 0,
     "direct_git_clone": "BLOCKED_DNS_NETWORK",
-    "rscript": "NOT AVAILABLE"
+    "rscript": "NOT AVAILABLE",
+    "checkout_kind": "GITHUB_BLOB_VERIFIED_TARGETED_RECONSTRUCTION_NOT_COMPLETE_CLONE"
   },
   "code": {
     "path": "research/source_comparability/audit.cjs",
@@ -18,17 +19,18 @@
     "path": "research/source_comparability/audit.test.cjs",
     "git_blob_sha1": "4279de35e6e0fcca827e7e204beb67139ad3d26e",
     "command": "node --test research/source_comparability/audit.test.cjs research/source_comparability/audit.integration.test.cjs",
-    "passed": 43,
+    "passed": 50,
     "failed": 0,
-    "skipped": 1,
+    "skipped": 0,
     "cancelled": 0,
-    "run_kind": "EXECUTED_IN_LOCAL_NODE_RUNTIME",
-    "skipped_case": "Actual upstream coordinator module not present in isolated worker-only directory; not counted as PASS"
+    "run_kind": "NATIVE_NODE22_TARGETED_VERIFIED_UPSTREAM",
+    "skipped_case": null
   },
   "integration_test": {
     "path": "research/source_comparability/audit.integration.test.cjs",
     "git_blob_sha1": "1724ad3d95c91c645746f4ef93053ffb4b239a87",
-    "full_checkout_node": "NOT RUN; skipped locally when repository root unavailable"
+    "full_checkout_node": "NOT RUN: full repository checkout unavailable (DNS/HTTPS egress blocked)",
+    "actual_coordinator_validator_node": "PASS: 7 native Node integration tests, coordinator validator/schema unchanged and git-blob-verified"
   },
   "fixture": {
     "path": "research/source_comparability/fixtures/synthetic-manifest.v1.json",
@@ -68,14 +70,16 @@
     "owner_namespace_diff": "PASS",
     "synthetic_unit_controls": "PASS",
     "exact_git_blob_match": "PASS",
-    "coordinator_inventory_contract_in_memory": "PASS_WITH_MOCKED_NODE_BUILTINS",
-    "full_checkout_node_interoperability": "NOT RUN",
-    "existing_w1_p2_w4_source_regressions": "NOT RUN",
-    "github_actions_exact_head": "NOT RUN_NO_CHECKS_FOUND",
+    "coordinator_inventory_contract_in_memory": "PASS_14_NATIVE_ON_GIT_BLOB_VERIFIED_VALIDATOR_AND_SCHEMA",
+    "full_checkout_node_interoperability": "PASS_NATIVE_TARGETED_RECONSTRUCTION; FULL_CLONE_NOT_RUN",
+    "existing_w1_p2_w4_source_regressions": "PARTIAL: 14 coordinator inventory + 4 P2 archive member native; 43 W4 aggregate assertions in read-only V8; full W1/P2/W4 regression suite NOT RUN",
+    "github_actions_exact_head": "NOT_RUN_NO_CHECK_RUNS_OR_WORKFLOW_RUNS_AT_PRE_EVIDENCE_HEAD",
     "historical_private_original_bytes": "NOT RUN",
     "sampling_response_identification": "NOT IDENTIFIED",
     "cross_era_source_frame_compatibility": "NOT ESTABLISHED",
-    "publication": "WITHHELD"
+    "publication": "WITHHELD",
+    "coordinator_engineering_merge_approval": "HOLD_NO_FULL_CHECKOUT_NO_EXACT_HEAD_CI",
+    "full_checkout_regressions": "NOT RUN_NETWORK_BLOCKED"
   },
   "reserved_october_2026_transcripts_read": 0,
   "limitations": [
@@ -84,6 +88,47 @@
     "No original private UN PV PDF, Harvard raw member, speech source or held-out transcript was opened.",
     "Known first-stage inclusion probability does not establish speech response probability, MAR/MNAR, or calendar-year independence.",
     "Available English PDF text is not proof of original delivery language or translation equivalence; missing-source cells cannot be treated as negative evidence.",
-    "Engineering validation does not permit empirical source generalization, substantive model fitting, inference or publication."
-  ]
+    "Engineering validation does not permit empirical source generalization, substantive model fitting, inference or publication.",
+    "The current exact PR code, integration tests and unchanged coordinator validator/schema were tested with native Node in a GitHub blob-verified targeted checkout, not an entire repository git clone.",
+    "The coordinator source-inventory regression used the verbatim synthetic mapping example, not the full interchange Markdown; its test and source modules were unchanged.",
+    "W1 historical-link and complete P2-to-W1 and W4 native regressions remain unexecuted; isolated V8 W4 aggregate replay does not substitute for them.",
+    "GitHub Actions exact-head CI remains absent; coordinator-owned workflow triggers cannot be modified by this worker."
+  ],
+  "native_execution": {
+    "checked_before_evidence_update_commit": "b7dc88e9586e890863ff5a22c03ea2309220104b",
+    "node": "v22.16.0",
+    "checkout_kind": "targeted reconstruction from GitHub-verified file bytes; no complete git clone",
+    "pr_audit_suite": {
+      "passed": 50,
+      "failed": 0,
+      "skipped": 0,
+      "log_sha256": "b06a2ac9909c9d3f9952cfb4ca0fe0b07590f3e74879bca162fc2a2c353c88a8"
+    },
+    "source_inventory_suite": {
+      "passed": 14,
+      "failed": 0,
+      "original_test_blob": "12dca1f6eff12097fe901d6f9d514b97e3766b9d",
+      "log_sha256": "1f88ddd55d74555c79e1fecfe94ae4f4b125ec293bf85598a8e6054ea708bea3",
+      "spec_fixture_basis": "exact synthetic mapping example from coordinator INTERCHANGE_V1.md; not a complete materialization of Markdown specification"
+    },
+    "p2_harvard_tar_member_synthetic_suite": {
+      "passed": 4,
+      "failed": 0,
+      "adapter_blob": "2295c725e64f035ce0cd1b7feece84aa141b8534",
+      "test_blob": "e539ab40ce14b5eaaa74db5e1e638d78b0c426ab",
+      "log_sha256": "0ff859e569016078d0fbc61cf893df4b923b3f6bb14567d5e46950097f74f311"
+    },
+    "w4_p2_aggregate_source_consistency": {
+      "assertions_passed": 43,
+      "failed": 0,
+      "execution": "READ_ONLY_V8_NOT_NATIVE_NODE",
+      "test_blob": "aaea985c589fdebee1d0971d3f1bacdaf882b9f0",
+      "source_aggregate_blob": "36284a2dec58f6b1825da5f4db5010dc040d1d08",
+      "inference_register_blob": "6010950f334e079e1a5d812d792f5e769dac4908"
+    },
+    "privacy": "synthetic_and_public_aggregate_only",
+    "original_private_bytes_verified": "NOT RUN",
+    "reserved_2026_transcripts_accessed": 0,
+    "full_checkout": "NOT RUN"
+  }
 }
