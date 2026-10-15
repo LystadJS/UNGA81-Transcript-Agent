@@ -248,7 +248,7 @@ def validate_envelope(doc: Any, schema: dict | None) -> list[str]:
         if not _nonnull_string(entry['reason']):
             errs.append('unexplained failed-fit')
     for c in mc:
-        failures = [f for f in coverage['failure_ledger'] if f['model_id'] == c['model_id'] and f['status'] in ('failed', 'timeout', 'nonconverged')]
+        failures = [f for f in coverage['failure_ledger'] if f['model_id'] == c['model_id'] and f['status'] in ('failed', 'timed_out', 'nonconverged')]
         if c['failed_fits'] and len(failures) < c['failed_fits']:
             errs.append('missing failed-fit ledger')
     for evidence in doc['evidence']:
