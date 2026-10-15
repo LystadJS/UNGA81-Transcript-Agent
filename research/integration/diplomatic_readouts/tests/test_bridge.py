@@ -180,6 +180,27 @@ class BridgeTests(unittest.TestCase):
         self.intent['outlook_send']=True
         self.denied('authoring_intent_incomplete')
 
+    def test_31_unavailable_count_must_match_source_frame(self):
+        self.envelope['coverage']['unavailable_sources']=0
+        self.approval=fixtures.reaffirm(self.envelope,self.approval)
+        self.denied('interchange_unavailable_source_count_mismatch')
+
+    def test_32_duplicate_supporting_observation_denied(self):
+        self.intent['findings'][0]['supporting']=['synthetic-A','synthetic-A']
+        self.denied('duplicate_finding_evidence_identity')
+
+    def test_33_unfitted_observation_cannot_ground_exploratory_claim(self):
+        self.envelope['results'][1]['status']='not_fitted'
+        self.envelope['results'][1]['cluster']=None
+        self.envelope['results'][1]['reason']='synthetic not fitted'
+        self.envelope['coverage']['models'][0]['unassigned']=0
+        self.envelope['coverage']['models'][0]['not_fitted']=1
+        self.approval=fixtures.reaffirm(self.envelope,self.approval)
+        self.intent['findings'][0]['category']='exploratory'
+        self.intent['findings'][0]['observation']=None
+        self.intent['findings'][0]['pattern']='Fictional grouping only; no real diplomatic evidence'
+        self.denied('exploratory_evidence_not_fitted')
+
     def test_30_statistical_result_requires_external_gate(self):
         self.intent['findings'][0]['category']='exploratory'
         self.intent['findings'][0]['pattern']='Fictional grouping, no diplomatic inference'
