@@ -288,3 +288,13 @@ test('W4 refuses the decoded-bundle validator without original five-file SHA loa
   const result=w4NativeShape();
   await assert.rejects(A.fromW4({}, {validateW4:async()=>result}),/byte\/hash loader required/);
 });
+
+
+test('coordinator browser acceptance cannot silently substitute injected fallback',()=>{
+  const smoke=fs.readFileSync(path.join(__dirname,'browser_smoke.py'),'utf8');
+  const patch=fs.readFileSync(path.join(__dirname,'coordinator-integration.patch'),'utf8');
+  assert.match(smoke,/--require-served-navigation/);
+  assert.match(smoke,/if args\.require_served_navigation:/);
+  assert.match(smoke,/served_navigation_verified/);
+  assert.match(patch,/--require-served-navigation/);
+});
