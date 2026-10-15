@@ -19,7 +19,7 @@ import threading
 import unittest
 from urllib.parse import urlsplit
 import xml.etree.ElementTree as ET
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, expect
 
 CONFIG = {}
 
@@ -88,11 +88,12 @@ class BrowserAcceptance(unittest.TestCase):
         self.context.close()
 
     def ready(self):
-        self.page.wait_for_function("document.getElementById('status').dataset.state === 'ready' && !!window.USReferenceView")
+        expect(self.page.locator('#status')).to_have_attribute('data-state', 'ready')
 
     def scene(self, name):
         self.page.locator('#scenario').select_option(name)
-        self.page.wait_for_function('(id)=>window.USReferenceView.getReplay().scene_id===id', arg=name)
+        expect(self.page.locator('#scenario')).to_have_value(name)
+        self.ready()
 
     def export(self, label, filename):
         with self.page.expect_download() as pending:
@@ -181,7 +182,7 @@ class BrowserAcceptance(unittest.TestCase):
         for value in variants:
             self.page.get_by_role('button',name='Reset view',exact=True).click()
             self.page.locator('#replay-file').set_input_files(dict(name='bad.json',mimeType='application/json',buffer=json.dumps(value).encode()))
-            self.page.wait_for_function("document.getElementById('status').dataset.state==='failed'")
+            expect(self.page.locator('#status')).to_have_attribute('data-state', 'failed')
             self.assertEqual(self.page.locator('svg,#evidence pre').count(),0)
             self.assertEqual(self.page.locator('[data-export]:disabled').count(),5)
             self.assertEqual(self.page.locator('#injected-marker').count(),0)
@@ -243,7 +244,7 @@ class BrowserAcceptance(unittest.TestCase):
         html=(self.root/'index.html').read_text().replace('Moving US reference','Corrupt US reference',1)
         (self.root/'corrupt.html').write_text(html)
         self.page.goto(self.url+'/corrupt.html')
-        self.page.wait_for_function("document.getElementById('status').dataset.state==='failed'")
+        expect(self.page.locator('#status')).to_have_attribute('data-state', 'failed')
         self.assertEqual(self.page.locator('svg').count(),0)
         self.assertEqual(self.page.locator('[data-export]:disabled').count(),5)
 
@@ -284,12 +285,12 @@ class BrowserAcceptance(unittest.TestCase):
             result=self.page.evaluate("async()=>await axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa']}})")
             record=dict(scene=scene['id'],engine=result['testEngine'],
                         violations=[dict(id=v['id'],impact=v['impact'],targets=[n['target'] for n in v['nodes']]) for v in result['violations']],
-                        incomplete=[v['id'] for v in result['incomplete']])
+                        incomplete=[dict(id=v['id'], targets=[n['target'] for n in v['nodes']]) for v in result['incomplete']])
             self.a11y.append(record)
             self.assertEqual(record['violations'],[],json.dumps(record))
         self.page.set_viewport_size({'width':390,'height':844});self.scene('moving')
         result=self.page.evaluate("async()=>await axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa']}})")
-        self.a11y.append(dict(scene='moving-mobile',engine=result['testEngine'],violations=[v['id'] for v in result['violations']],incomplete=[v['id'] for v in result['incomplete']]))
+        self.a11y.append(dict(scene='moving-mobile',engine=result['testEngine'],violations=[v['id'] for v in result['violations']],incomplete=[dict(id=v['id'], targets=[n['target'] for n in v['nodes']]) for v in result['incomplete']]))
         self.assertEqual(result['violations'],[])
 
 
