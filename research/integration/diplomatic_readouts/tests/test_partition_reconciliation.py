@@ -517,13 +517,14 @@ class WitnessPartitionTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     run(iterations=20, seed=seed)
 
-    def test_46_complete_compromise_produces_only_no_authority(self):
+    def test_46_compromised_witness_quorum_alone_is_never_authorization(self):
         f = self.f
         bad_cp = dict(f["cp1"], audit_tip_sha256="f"*64)
         corrupted = [sign_forged(bad_cp, f["keys"][x], x)
                      for x in f["ids"][:3]]
-        # When all trust roots and pins are replaced consistently, synthetic
-        # gossip cannot infer real provenance, but must not grant permissions.
+        # Three compromised witness signing keys can attest a forged checkpoint
+        # digest that gossip alone does not resolve to validated source/log data.
+        # An observed quorum is *never* source, review or release authority.
         _, receipt = reconcile_gossip(f["gossip"], f["gpins"], corrupted, f["trust"])
         self.assertEqual(receipt["status"], "quorum_observed_no_authority")
         self.assertSafe(receipt)
