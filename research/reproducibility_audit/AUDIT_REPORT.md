@@ -82,3 +82,7 @@ These are **triage findings** from exact PR metadata, changed paths, workflow co
 5. Require separately documented coordinator human review and publication authorization; do not merge draft branches solely on synthetically clean checks.
 
 **Disposition:** engineering draft / no merge / no deployment / no private transcript retrieval.
+
+## Coordinator exact-head CI reconciliation — 2026-10-15
+
+Full-checkout independent native regression PASS on coordinator effective-tree commit `15b3087f503f6ba774ea34ecf3f459479453aef9`, GitHub Actions run `38753795947`: Python audit 86/86 and applicable Node W1/P2/W4/source/interchange regressions PASS. Coordinator-owned exact-head workflow merged to main in PR #79 (`4a913fd0f36dbb2970fc7b08facebf64e66e3bf1`). This documentation-only change triggers fresh PR-head CI and **must not** be reported as exact-head PASS until the new run is inspected. No scientific, source, privacy, evaluation or publication restriction is changed.
