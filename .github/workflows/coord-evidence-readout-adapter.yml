@@ -182,6 +182,31 @@ jobs:
               assert "original_bytes" not in report and "source_url" not in report
           print("PASS synthetic restart/revocation rollback and dual-root compromise matrix")
           PY
+      - name: Independent four-host quorum, observer-fork and append-only audit stress
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="$GITHUB_WORKSPACE/research/integration/diplomatic_readouts"
+          python3 research/integration/diplomatic_readouts/stress_multi_host.py --iterations 280 --seed 81081 --output "$RUNNER_TEMP/multi-host-a"
+          python3 research/integration/diplomatic_readouts/stress_multi_host.py --iterations 280 --seed 81081 --output "$RUNNER_TEMP/multi-host-b"
+          diff -rq "$RUNNER_TEMP/multi-host-a" "$RUNNER_TEMP/multi-host-b"
+          MULTI_HOST_TEMP="$RUNNER_TEMP" python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          root=Path(os.environ["MULTI_HOST_TEMP"])/"multi-host-a"
+          receipt=json.loads((root/"stress-manifest.json").read_text())
+          assert receipt["schema"]=="un.synthetic-multi-host-witness-stress.v0"
+          assert receipt["fixture_kind"]=="synthetic"
+          assert receipt["iterations"]==280 and receipt["failures"]==0
+          assert receipt["authorized"] is False and receipt["source_access_granted"] is False
+          assert receipt["publication_eligible"] is False and receipt["delivery_eligible"] is False
+          assert receipt["transcripts_opened"]==0
+          assert len(receipt["cases"])==14
+          assert sum(v["attempted"] for v in receipt["cases"].values())==280
+          assert all(v["failures"]==0 for v in receipt["cases"].values())
+          assert receipt["cases"]["compromised_quorum_and_pins"]["expected"]=="no_authority"
+          print("PASS 4 witness keys, quorum 3, 2 independent observer pins, bounded append-only log, 280 seeded fictional cases")
+          PY
       - name: Native W1 to W2 saved source-envelope regression (synthetic only)
         shell: bash
         run: |
