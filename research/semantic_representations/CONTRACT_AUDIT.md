@@ -40,3 +40,29 @@
 2. Run relevant existing browser/latent/corpus/source/reviewed-unit regressions, inspect every result and log by head SHA.
 3. Validate official schema and relational invariants on synthetic envelopes using the original Node validator; do not claim the copied fixture substitutes for a full integration contract test.
 4. Keep PR draft until coordinator confirms exact-head acceptance. No public deployment, merge, private source publication or change to official W1–W7 schema is authorized.
+
+
+## October 15, 09:24 EDT continuation — exact-module validation
+
+- Direct git checkout attempt: `git ls-remote https://github.com/LystadJS/UNGA81-Transcript-Agent.git HEAD` → `Could not resolve host: github.com`. The local execution environment has Python 3.13.5 / Node v22.16.0, but no complete source checkout. GitHub connector verified current branch and base; there is no remote shell/workflow-dispatch facility in the connector.
+- **99/99 PASS**, freshly executed via `python3 -m unittest discover -q -p 'test_*.py'`; `python3 -m compileall -q .` PASS. The new `interchange.py` Git blob `329c8312cf1dec46c85d146d33cc34a0c8e18542` and new `test_interchange_v1_compat.py` Git blob `4857f91c0606fa6d10d382992a6e44ed7f02c69a` match locally tested bytes. The older `test_pipeline.py` file still differs in bytes from the remote head: **a complete exact-head checkout/run remains NOT VERIFIED**.
+- Source-bound synthetic CLI with 16/16 synthetic eligible observations ran twice in separate processes against the same private cache; first attempt `cache_hits=0,cache_misses=16`; replay `cache_hits=16,cache_misses=0`. The output reports differ ONLY in expected cache and attempt accounting; representation observations and neighborhoods replay consistently. Initial smoke-script failure stemmed from using a pre-created output file; the CLI correctly refuses output overwrite.
+- **Integration defect fixed**: Official v1 permits `upstream.source_sha256:null` or `selection_sha256:null` when `missing_reason` is populated, but this reader previously rejected both before checking the explicit reason. Now metadata-only read accepts declared unknown provenance but malformed non-null digests and missing reasons fail closed. Comparisons requiring source alignment remain blocked by the stricter source-bound engine. Backward-compatible `1.x.y` version format now follows the official schema, while other major versions fail.
+- Official contract Node test and upstream browser/numerical/corpus/source/reviewed suites: **NOT RUN**. No complete checkout; do not treat local Python pass as their substitute. For the new head, GitHub workflow runs and combined status contexts are empty.
+- No empirical ONNX inference, official original-byte source access or reserved evaluation access. No edits outside this namespace, no merge, no deployment.
+
+### Exact-head coordinator execution commands (still required)
+
+```sh
+node docs/parallel-work/validate-contract.cjs
+node tools/test_browser_clusters.cjs
+node tools/test_passage_corpus.cjs
+node research/validation_framework/tests/test_schema.cjs
+node research/validation_framework/tests/test_framework.cjs
+python3 tools/test_reviewed_loader.py
+cd research/semantic_representations
+python3 -m unittest discover -v -p 'test_*.py'
+python3 -m compileall -q .
+```
+
+Run any additional applicable latent/numerical tests after examining latest `main` and the current package scripts. The named commands above have not been executed in this environment. Record exact SHA and CI logs for each.
