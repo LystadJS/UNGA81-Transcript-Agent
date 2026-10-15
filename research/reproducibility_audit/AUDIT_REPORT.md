@@ -10,37 +10,54 @@
 - Authoritative interchange JSON Schema Git blob: `3786a08eb6c4a7de7db2845138ffe4ae51f4b2c3`; research method catalog Git blob: `6aca560d961369fda7637869853e92366df86bde`. Both are pinned as **read-only upstream identities**.
 - Newly generated `method_inventory.json` lists 30 registered backlog methods (29 declared synthetic kernels and M26 not implemented), 12 established daily adapters, declared runners and required gates. Declared kernel test status is inherited from the upstream registry, not independently rerun evidence.
 
-## Newly executed local synthetic validation
+## Independent, source-exact engineering review — 15 October 2026
 
-Run in an isolated Python 3.13.5 environment, Node 22.16.0 available, `Rscript` unavailable, repository clone unavailable (DNS cannot resolve github.com). An upstream contract change during this branch's lifetime is deliberately rejected by the pinned-schema check until reviewed. The local test candidate was authored from the connected GitHub metadata and pushed via the GitHub app; **these local runs do not count as exact-head CI execution of the final GitHub checkout**.
+The reviewer fetched the PR code and coordinator contract through the authorized GitHub connector, reconstructed a **limited runnable source tree**, and independently checked Git blob identities. A **full Git repository checkout remains unavailable** because `git ls-remote https://github.com/LystadJS/UNGA81-Transcript-Agent.git HEAD` fails DNS resolution in this execution environment. This fact prevents claiming complete repository-wide or exact-head GitHub Actions acceptance. No substitute private source material was opened.
+
+**Reviewed worker code head before documenting this review:** `1f8978b7af449e55d2a642d6a154f9c9e2de7b06`. The final PR head after this documentation-only commit must be rechecked separately. Latest verified `main`: `1af11061e3fa65d51b28d42a1b98bef250b6168b`.
+
+### New executable tests and repair evidence
 
 ```sh
+# In an offline local tree populated from authenticated GitHub file blobs:
 python3 -m unittest discover -s research/reproducibility_audit -p 'test_*.py' -v
-python3 research/reproducibility_audit/run_qa.py --repo-root . --output /tmp/unga-repro-qa.json
+python3 research/reproducibility_audit/run_qa.py --repo-root . \
+  --synthetic-envelope /tmp/unga71-envelope.json \
+  --public-root /tmp/unga71-staging \
+  --changed-path-list /tmp/unga71-changed-paths.txt \
+  --output /tmp/unga71-final-qa.json
+# Execute natively in a future full repository checkout:
+node docs/parallel-work/validate-contract.cjs
 ```
 
-- Local synthetic test suite: **66 attempted; 65 PASS; 0 FAIL; 1 SKIP**. The skipped test requires the upstream coordinator Schema file in an authenticated full checkout. Legacy `test_audit.py` has not been executed in this isolated candidate.
-- Corrupt observation IDs, duplicate rows, wrong parent hashes, invalid spans, missing partial/failed fit denominators, wrong cluster labels, incompatible representation/source basis, zero-denominator diagnostics, reserved-date identities, evaluation source overlap and unapproved release fields are negative controls.
-- An independent-process synthetic numerical replay ran twice with seed `271828`, with independent reference implementation, pinned fixture SHA256 `88ba2f60c77b87e71c30e4022d1c2ad90905f44454ee76ad7783cce1f5a260e0` and output SHA256 `1639ed5e207c3704860cf5190f3233198882bc190cead010905fbd6f4a290130`. The output is a **synthetic arithmetic fixture only**, not a replay of historical W1/W4 fits.
-- Privacy negative controls for a fake transcript sentinel, fake private-key marker, cached-vector files, and JSON row-level source records were detected. A synthetic aggregate-only staging directory was also scanned clean. **Actual public Pages assets were not audited.**
-- QA statuses deliberately report absent upstream schema, catalog checkout, original-source hashes, sealed evaluation identities and exact-head GitHub Actions as `NOT RUN`, not `PASS`. The standalone CLI exits **3** rather than **0** when engineering evidence remains incomplete, **1** for failed checks and **2** for invalid input; a zero exit requires all required checks to be present and accepted. No proof of real release eligibility is inferred.
+- **Python 3.13.5, source-verified local tree: 86/86 tests PASS, 0 FAIL, 0 SKIP**. All ten runnable audit Python files plus the authoritative schema, catalog and inventory, 13 files total, were verified by `git hash-object` against GitHub. The legacy `test_audit.py` and previously skipped actual-coordinator-schema case are included in the 86.
+- **Regression red-to-green:** five new tests proved the original comparability checker wrongly accepted changed model parameters, method/fit version, matching missing text hashes, duplicate observation identities or altered cohort definitions. Repaired `protocol.py` with explicit source, population, representation, fit-policy, model-parameter and producer identity checks. Three new security tests proved archives, escaped JSON and HTML-entity synthetic sentinels were previously missed; repaired `security.py` to fail closed on compressed assets and examine decoded JSON strings and markup.
+- **Official coordinator interchange smoke tests:** the source-exact `validate-contract.cjs` was executed in a JavaScript V8 isolate using read-only fs/path/assert adapters against verified GitHub schema and original Markdown synthetic example. It reported **1 positive and 13 negative controls PASS**. **This is not a native Node process in a complete checkout**; that native command remains NOT RUN.
+- **Two isolated synthetic numerical replays:** PASS with seed `271828`, Python stdlib only; fixture SHA256 `88ba2f60c77b87e71c30e4022d1c2ad90905f44454ee76ad7783cce1f5a260e0`, expected output SHA256 `1639ed5e207c3704860cf5190f3233198882bc190cead010905fbd6f4a290130`. Neither run is an original W1/W4 numerical fit.
+- **Standalone QA receipt:** correct exit **3**, `engineering_acceptance:WITHHELD`, `publication_authorized:false`. Eight explicitly supplied synthetic checks **PASS** (schema, synthetic interchange, inventory, owned paths, replay, privacy, evaluation isolation, synthetic aggregate staging scan). Authenticated original source hashes, sealed evaluation identities and current-head Actions **NOT RUN**. The staging scan is **not** a full Pages/public-build privacy audit.
+- **Runtime and resources:** Python `3.13.5`, Node `v22.16.0` available; no `Rscript`. Offline, single-thread synthetic arithmetic; replay has two independent child-process restarts each with ten-second timeout. No remote network, empirical fitting, source text or evaluation-set access.
 
-## Acceptance status matrix
+### Engineering acceptance matrix — coordinator disposition
 
-| Requirement | Status | Evidence / blocker |
+| Gate | Status | Evidence / blocker |
 | --- | --- | --- |
-| Exclusive path ownership | PASS on verified PR diff when checked; recheck after final head | Changes only in `research/reproducibility_audit/**` |
-| Machine-readable method inventory | PASS (metadata enumeration) | Pin to catalog Git blob; downstream execution still NOT RUN |
-| Synthetic provenance/relational controls | PASS (isolated synthetic subset) | Full authoritative schema test skipped locally |
-| Original source/checksum authentication | NOT RUN | Private originals excluded from this worker's access |
-| Longitudinal/evaluation source segregation | PASS synthetic controls; real NOT RUN | Sealed evaluation identity records unavailable |
-| Deterministic synthetic numerical replay | PASS isolated runtime | Original W1/W4 model replay NOT RUN |
-| Synthetic privacy sentinel controls | PASS isolated runtime | Complete Pages artifact scan NOT RUN |
-| Frozen gate mutation check | PASS exact changed-path constraint (subject to final PR recheck) | No forbidden paths edited by this worker |
-| Current-head CI and upstream regressions | NOT RUN | No applicable PR-head Actions workflows returned; full checkout and R runtime unavailable |
-| Human review | NOT RUN | No owner-validated decisions changed |
-| Statistical calibration / source eligibility | NOT RUN | Distinct scientific prerequisites |
-| Public release authorization | FAIL / WITHHELD | Owner/coordinator release gate remains closed |
+| PR exclusive changed paths and frozen-file protection | PASS | GitHub exact changed filename listing: 13 worker-owned paths, no shared files, no symlinks in verified tree |
+| Source-exact synthetic harness regressions | PASS | 86 tests, zero skips/failures, code + schema blob verification |
+| Pinned authoritative v1 schema, relational and denominator negative controls | PASS for audited synthetic fixtures | Actual coordinator schema and clean + corrupted interchange fixtures checked; does not certify all empirical adapters |
+| Method inventory and exact registered source catalog | PASS | 30 methods, 29 declared synthetic kernels, catalog blob matched, claims inherited |
+| Reproducible synthetic arithmetic and replay restart | PASS | Deterministic fixture/seed, independent reference and output SHA |
+| Synthetic privacy and evaluation leakage negative controls | PASS | Escaped/archived sentinels and identity overlaps detected |
+| Native upstream Node and complete repository regressions | NOT RUN | Cannot obtain full repository checkout in execution environment; V8-adapted upstream smoke tests are partial evidence |
+| Applicable GitHub Actions against current PR head | NOT RUN | No workflow runs, combined statuses or check-runs reported at validated head; workflow is coordinator-owned |
+| Complete public build privacy/manifest scan | NOT RUN | Only explicit synthetic aggregate staging tested |
+| Original source-byte/source-selection authentication | NOT RUN | Original private bytes excluded from authorized synthetic audit |
+| Sealed evaluation identity isolation | NOT RUN | Evaluation identities deliberately not opened |
+| Statistical calibration and empirical source eligibility | NOT RUN | Separate frozen research gates remain unmet/unassessed |
+| Human review of empirical interpretation | NOT RUN | No owner-reviewed scientific or publication decision |
+| Publication authorization | FAIL / WITHHELD | Explicit publication lock remains unchanged |
+| **Full PR engineering acceptance** | **WITHHELD (NOT RUN required gates)** | Exact-head Actions, native upstream regressions, complete checkout and coordinator integration review incomplete |
+
+**Coordinator decision:** recognize the 86/86 source-exact synthetic audit controls as **engineering test evidence only**. Do **not** mark the entire PR accepted or merge/deploy until remaining applicable engineering gates are independently executed against the final GitHub head. Neither clean synthetic testing nor the absence of GitHub workflow failures proves CI success.
 
 ## Findings for the integration coordinator
 
