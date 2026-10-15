@@ -15,7 +15,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 from registry_preflight import event_digest
 from synthetic_signatures import verify_synthetic_signatures, assert_zero_authority
-from test_synthetic_signatures import fixture, pub, resign_custody, resign_revocation
+from test_synthetic_signatures import fixture, pub, resign_custody, resign_revocation, sign
 from test_registry_preflight import WHEN
 
 
@@ -82,6 +82,82 @@ class SyntheticTrustAdversaries(unittest.TestCase):
         subjects[revocation_id] = f["trust"].expected_custodian_ref
         f["trust"] = replace(f["trust"], custodian_keys=keys,
                               custodian_subjects=subjects)
+        self.denial()
+
+    def test_05_compromised_revocation_signer_cannot_roll_back_pinned_revocations(self):
+        f = self.f
+        old = f["key_ids"]["custody"]
+        f["revocation"]["payload"]["revoked_key_ids"] = [old]
+        resign_revocation(f)  # checkpoint was independently pinned after revocation
+        f["revocation"]["payload"]["revoked_key_ids"] = []
+        f["revocation"] = sign(f["revocation"]["payload"],
+                                f["key_ids"]["revocation"],
+                                f["keys"]["revocation"])
+        # The attacker has the revocation private key but not the independently
+        # persisted digest/high-water. A replacement signed checkpoint is denied.
+        self.denial()
+
+    def test_06_revocation_signature_binds_independent_audit_tip(self):
+        f = self.f
+        f["revocation"]["payload"]["audit_tip_sha256"] = "f" * 64
+        resign_revocation(f)
+        self.denial()
+
+    def test_07_revocation_signature_binds_independent_policy_digest(self):
+        f = self.f
+        f["revocation"]["payload"]["policy_sha256"] = "e" * 64
+        resign_revocation(f)
+        self.denial()
+
+    def test_08_revocation_signature_binds_independent_registry_digest(self):
+        f = self.f
+        f["revocation"]["payload"]["registry_sha256"] = "d" * 64
+        resign_revocation(f)
+        self.denial()
+
+    def test_09_compromised_custodian_cannot_resign_changed_policy(self):
+        f = self.f
+        f["policy"]["reviewer_ref"] = "synthetic:alternate-reviewer"
+        # Reconstruct the synthetic second audit action to pass the unsigned
+        # continuity check while retaining the original, externally pinned roots.
+        f["events"][1]["actor_ref"] = f["policy"]["reviewer_ref"]
+        ev = f["events"][1]
+        ev["event_sha256"] = event_digest({k: v for k, v in ev.items()
+                                           if k != "event_sha256"})
+        f["custody"]["payload"]["policy_sha256"] = __import__(
+            "synthetic_signatures").policy_digest(f["policy"])
+        f["custody"]["payload"]["audit_tip_sha256"] = ev["event_sha256"]
+        resign_custody(f)
+        self.denial()
+
+    def test_10_valid_rotation_still_only_reports_no_authority(self):
+        f = self.f
+        f["custody"]["key_id"] = f["key_ids"]["rotation"]
+        resign_custody(f)
+        f["revocation"]["payload"]["revoked_key_ids"] = [f["key_ids"]["custody"]]
+        resign_revocation(f)
+        result = self.evaluate()
+        self.assertEqual(result["status"],
+                         "synthetic_signatures_verified_no_authority")
+        self.assertFalse(result["authorized"])
+        self.assertFalse(result["can_read_source"])
+        self.assertFalse(result["publication_eligible"])
+        self.assertEqual(set(result["gate_status"].values()), {"NOT_RUN"})
+
+    def test_11_signed_payload_never_allows_custody_role_change(self):
+        f = self.f
+        f["custody"]["key_id"] = f["key_ids"]["revocation"]
+        self.denial()
+
+    def test_12_revocation_checkpoint_must_reject_source_scope_expansion(self):
+        f = self.f
+        f["revocation"]["payload"]["permission"] = "read_un_original_source"
+        resign_revocation(f)
+        self.denial()
+
+    def test_13_independent_checkpoint_highwater_blocks_old_state(self):
+        f = self.f
+        f["trust"] = replace(f["trust"], minimum_checkpoint_sequence=4)
         self.denial()
 
 
