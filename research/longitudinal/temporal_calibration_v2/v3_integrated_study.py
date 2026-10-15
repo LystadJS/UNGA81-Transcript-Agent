@@ -120,7 +120,7 @@ def run_development(repetitions=6):
                     reason=type(e).__name__+':'+str(e)
                     failures.append({'study':'integrated_vs_partial','scenario':name,
                          'replicate':rep,'method':method,'reason':reason,
-                         'expected_refusal':method=='unrestricted_MNAR_no_fit' or q==0 or actor_stress})
+                         'expected_refusal':method=='unrestricted_MNAR_no_fit' or q<=.025 or actor_stress})
                     err[method][reason]+=1
         for method in METHODS:
             fits=complete[method];refused=sum(err[method].values())
