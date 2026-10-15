@@ -117,3 +117,21 @@ jobs:
           assert a==b,'independent process output drift'
           print('INDEPENDENT_TWO_PROCESS_REPLAY_PASS='+json.dumps(a,sort_keys=True))
           PY
+
+      - name: Expanded source-matched lexical and real-checkpoint contrast benchmark
+        env:
+          HF_HUB_OFFLINE: '1'
+          TRANSFORMERS_OFFLINE: '1'
+        run: |
+          set -euo pipefail
+          python research/semantic_representations/expanded_contrast.py --checkpoint /tmp/unga-pinned-minilm --output "$RUNNER_TEMP/expanded1.json"
+          python research/semantic_representations/expanded_contrast.py --checkpoint /tmp/unga-pinned-minilm --output "$RUNNER_TEMP/expanded2.json"
+          python - "$RUNNER_TEMP/expanded1.json" "$RUNNER_TEMP/expanded2.json" <<'PY'
+          import json,sys,hashlib
+          a,b=[json.load(open(p)) for p in sys.argv[1:]]
+          assert a == b, 'replay drift between independent processes'
+          assert a['assessed_cases']==16 and a['observations']==64 and a['failures']==0
+          print('EXPANDED_RESULT='+json.dumps({k:v for k,v in a.items() if k not in ('results','limitations')},sort_keys=True))
+          print('EXPANDED_CASES='+json.dumps(a['results'],sort_keys=True))
+          print('EXPANDED_SHA256='+hashlib.sha256(open(sys.argv[1],'rb').read()).hexdigest())
+          PY
