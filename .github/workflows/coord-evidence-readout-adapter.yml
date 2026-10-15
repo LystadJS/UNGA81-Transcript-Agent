@@ -229,7 +229,7 @@ jobs:
           assert result["authorized"] is False and result["source_access"] is False
           assert result["publication_eligible"] is False and result["delivery_eligible"] is False
           assert result["transcripts_opened"] == 0 and result["security_certified"] is False
-          assert result["residual_risk"] == "full_key_and_observer_compromise_not_detectable"
+          assert result["residual_risk"] == "witness_quorum_or_external_pin_compromise_not_prevented"
           print("PASS 18 synthetic partition/equivocation classes, 360 seeded trials, zero access")
           PY
       - name: Native W1 to W2 saved source-envelope regression (synthetic only)
