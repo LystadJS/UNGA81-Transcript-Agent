@@ -2,6 +2,10 @@
 from __future__ import annotations
 import itertools
 import math
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
 import unittest
 import numpy as np
 from scipy.special import expit,logsumexp
@@ -138,6 +142,17 @@ class IntegratedResponseAndSharpPartialIdentification(unittest.TestCase):
         out=population_gamma_identification(p,bounds,
            population_moments_certified=True,independent_bounds_justified=True)
         self.assertEqual(out['status'],'REFUSE_COMMON_GAMMA_MODEL_INCOMPATIBLE')
+
+    def test_holdout_and_real_cli_never_create_outputs(self):
+        module="research.longitudinal.temporal_calibration_v2.v3_integrated_study"
+        with tempfile.TemporaryDirectory() as d:
+            for phase in ("holdout","real"):
+                target=Path(d)/phase
+                result=subprocess.run([sys.executable,"-m",module,
+                     "--phase",phase,"--repetitions","4",
+                     "--out",str(target)],capture_output=True,text=True,timeout=20)
+                self.assertNotEqual(result.returncode,0)
+                self.assertFalse(target.exists())
 
     def test_full_new_development_attempt_accounting(self):
         report,failures=run_development(4)
