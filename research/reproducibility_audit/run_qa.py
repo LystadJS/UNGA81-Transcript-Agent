@@ -6,7 +6,7 @@ from pathlib import Path
 import sys
 from protocol import (load_contract, validate_envelope, changed_path_violations, qa_summary,
                       result_record, canonical_json, check_isolation)
-from inventory import build
+from inventory import build, verify_snapshot
 from replay import replay
 from security import scan_public, scan_bytes
 
@@ -34,8 +34,10 @@ def build_summary(repo_root: Path, *, public_root: Path | None = None,
         checks.append(result_record('interchange','NOT RUN','no explicit synthetic envelope supplied'))
     try:
         registry=build(repo_root)
-        checks.append(result_record('method_inventory','PASS',
-                                    f"{registry['count_registered']} registered; {registry['count_declared_kernels']} declared synthetic kernels; no executable claim"))
+        inconsistencies=verify_snapshot(repo_root)
+        checks.append(result_record('method_inventory','FAIL' if inconsistencies else 'PASS',
+                 '; '.join(inconsistencies) if inconsistencies else
+                 f"{registry['count_registered']} registered; {registry['count_declared_kernels']} declared synthetic kernels; unchanged original catalog bytes"))
     except (OSError,ValueError,KeyError,TypeError) as exc:
         registry=None
         checks.append(result_record('method_inventory','NOT RUN' if isinstance(exc,OSError) else 'FAIL',
