@@ -26,6 +26,45 @@
   const sourceURL = x => x === null || (typeof x === 'string' && /^https:\/\/example\.invalid(?:\/|$)/.test(x));
   const unsafeKeys = ['text','quote','transcript','source_text','raw_text','passage_text','content'];
   const noText = x => !unsafeKeys.some(k => Object.prototype.hasOwnProperty.call(x,k));
+  // Reject undeclared payloads, not merely fields named `transcript`.
+  // Otherwise a synthetic replay could smuggle source material in a nested
+  // metadata object that the renderer ignores but exportJSON republishes.
+  const fields = Object.freeze({
+    root: 'schema fixture_kind publication_eligible evaluation_role source sources panels',
+    source: 'source_schema source_hash_basis source_sha256 selection_sha256',
+    observation: 'id sha256 status missing_reason country period meeting_id review_status source_url json_pointer',
+    panel: 'kind status reason rows identity coverage measure warnings pair_population_ids family_weight_audit countries themes unattributed_count periods actors alignments',
+    identity: 'population weighting unit representation_id representation_version source_hash_basis source_sha256 selection_sha256 source_ids',
+    coverage: 'frame eligible excluded missing included',
+    consensus: 'a b record_status coassigned_count assigned_both_count planned_count missing_pair_count noise_pair_count different_cluster_count failed_fit_count coassigned_weight assigned_both_weight planned_weight association assignment_coverage contributing_families unstable missing_reason source_ids',
+    'country-theme': 'country theme status weighted_sum weight_total evidence_count source_ids reason',
+    longitudinal: 'actor period status xy uncertainty_radius n source_ids composition reason',
+    'method-comparison': 'method method_family attempted successful failed skipped excluded not_fitted unassigned stability comparable settings_sha256 representation_id reason source_ids',
+    family: 'family planned_weight attempted successful failed skipped',
+    theme: 'id label',
+    actor: 'id label attribution_status roster_status',
+    alignment: 'from to status anchors reference_basis selection_comparability rank_ok degeneracy_ok reason'
+  });
+  const allowed = Object.fromEntries(Object.entries(fields).map(([name,items]) =>
+    [name,new Set(items.split(' '))]));
+  function keys(value,kind){
+    must(value && typeof value === 'object' && !Array.isArray(value),
+      'Invalid '+kind+' record');
+    for (const name of Object.keys(value)) must(allowed[kind].has(name),
+      'Undeclared '+kind+' payload field: '+name);
+  }
+  function limitPayload(data){
+    keys(data,'root');keys(data.source,'source');
+    if(Array.isArray(data.sources))for(const source of data.sources)keys(source,'observation');
+    if(Array.isArray(data.panels))for(const panel of data.panels){
+      keys(panel,'panel');keys(panel.identity,'identity');keys(panel.coverage,'coverage');
+      if(Array.isArray(panel.rows))for(const row of panel.rows)keys(row,panel.kind in allowed?panel.kind:'panel');
+      if(Array.isArray(panel.family_weight_audit))for(const family of panel.family_weight_audit)keys(family,'family');
+      if(Array.isArray(panel.themes))for(const theme of panel.themes)keys(theme,'theme');
+      if(Array.isArray(panel.actors))for(const actor of panel.actors)keys(actor,'actor');
+      if(Array.isArray(panel.alignments))for(const alignment of panel.alignments)keys(alignment,'alignment');
+    }
+  }
 
   function validate(data) {
     must(data && data.schema === 'un.research-validation-v2.synthetic' &&
@@ -34,9 +73,10 @@
     must(data.source && data.source.source_schema === 'synthetic.v1' &&
       data.source.source_hash_basis === 'synthetic' && SHA.test(data.source.source_sha256) &&
       SHA.test(data.source.selection_sha256), 'Source/hash basis/selection fingerprint required');
-    must(Array.isArray(data.sources) && data.sources.length <= 100 &&
+    must(Array.isArray(data.sources) && data.sources.length <= 600 &&
       Array.isArray(data.panels) && data.panels.length > 0 && data.panels.length <= 8,
       'Source frame/panel size missing or exceeded');
+    limitPayload(data);
     const sources = new Map(), eligible = new Set();
     for (const s of data.sources) {
       must(s && string(s.id) && !sources.has(s.id) &&
