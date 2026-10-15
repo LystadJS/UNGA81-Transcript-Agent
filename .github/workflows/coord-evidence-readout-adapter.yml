@@ -1,0 +1,101 @@
+name: Coordinator source to readout synthetic interoperability (nonpublishing)
+on:
+  push:
+    branches: [coord/evidence-first-readout-adapter]
+    paths:
+      - 'research/integration/diplomatic_readouts/**'
+      - '.github/workflows/coord-evidence-readout-adapter.yml'
+  pull_request:
+    paths:
+      - 'research/integration/diplomatic_readouts/**'
+      - '.github/workflows/coord-evidence-readout-adapter.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline-contract-and-bridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONHASHSEED: '0'
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - name: Checkout coordinator adapter
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Checkout unmodified PR70 readout implementation
+        uses: actions/checkout@v4
+        with:
+          ref: 028e3d26f707401cbff498593ab27f64e2cc072a
+          path: pr70
+          persist-credentials: false
+      - name: Verify pinned readout dependency
+        run: |
+          test "$(git -C pr70 rev-parse HEAD)" = 028e3d26f707401cbff498593ab27f64e2cc072a
+          test ! -e research/diplomatic_readouts/readout.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install pinned synthetic schema validator
+        run: python3 -m pip install --disable-pip-version-check -r research/integration/diplomatic_readouts/requirements-dev.txt
+      - name: Official native source and interchange regressions
+        run: |
+          set -euo pipefail
+          node docs/parallel-work/validate-contract.cjs
+          node research/validation_framework/tests/test_schema.cjs
+          node research/validation_framework/tests/test_framework.cjs
+          node tools/test_passage_corpus.cjs
+          node tools/test_latent.cjs
+      - name: Coordinator bridge regression against actual pinned source and readout contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="$GITHUB_WORKSPACE/pr70/research/diplomatic_readouts:$GITHUB_WORKSPACE/research/integration/diplomatic_readouts"
+          python3 -m unittest discover -s research/integration/diplomatic_readouts/tests -v
+          python3 -m unittest discover -s pr70/research/diplomatic_readouts/tests -v
+      - name: Two independent synthetic readout generations and output/privacy checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="$GITHUB_WORKSPACE/pr70/research/diplomatic_readouts:$GITHUB_WORKSPACE/research/integration/diplomatic_readouts"
+          python3 research/integration/diplomatic_readouts/examples.py --output "$RUNNER_TEMP/readout-bridge-a"
+          python3 research/integration/diplomatic_readouts/examples.py --output "$RUNNER_TEMP/readout-bridge-b"
+          diff -rq "$RUNNER_TEMP/readout-bridge-a" "$RUNNER_TEMP/readout-bridge-b"
+          R_TEMP="$RUNNER_TEMP" python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          p = Path(os.environ['R_TEMP'])/'readout-bridge-a'
+          m = json.loads((p/'manifest.json').read_text())
+          assert m['publication_eligible'] is False and len(m['cases']) == 5
+          assert m['cases']['descriptive']['state'] == 'descriptive_only'
+          assert all(v['state']=='withheld' for k,v in m['cases'].items() if k!='descriptive')
+          for output in p.rglob('readout.json'):
+              obj=json.loads(output.read_text())
+              assert obj['publication_eligible'] is False
+              assert 'original_bytes' not in obj
+              assert 'raw_source' not in obj
+          assert len(list(p.rglob('readout.json'))) == 5
+          PY
+      - name: Native W1 to W2 saved source-envelope regression (synthetic only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          node research/integration/w1_w2/make-synthetic.cjs "$RUNNER_TEMP/w1-w2-readout"
+          export PYTHONPATH="$GITHUB_WORKSPACE/pr70/research/diplomatic_readouts:$GITHUB_WORKSPACE/research/integration/diplomatic_readouts"
+          W1_SYNTHETIC="$RUNNER_TEMP/w1-w2-readout/w1-v1-interchange.json" python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          from bridge import UpstreamValidation, digest, validate_interchange
+          e=json.loads(Path(os.environ['W1_SYNTHETIC']).read_text())
+          u=e['upstream']
+          receipt=UpstreamValidation(digest(e),u['source_schema'],u['source_hash_basis'],u['source_sha256'],u['selection_sha256'])
+          # v1 analytical contract remains separate from source/reviewer authority.
+          info=validate_interchange(e,receipt)
+          assert len(info['eligible'])==e['coverage']['eligible']
+          print('PASS native-W1-v1 source frame and fit ledger; NOT a readout authorization',len(info['eligible']))
+          PY
