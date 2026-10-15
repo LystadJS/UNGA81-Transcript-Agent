@@ -99,8 +99,11 @@ function audit(m, { originals = null, canonicalTexts = null } = {}) {
         flagReceipt(r.document_id, 'unaccepted_source_verification');
       if (hash(r.source_sha256)) {
         const prev = sourceDigestOwners.get(r.source_sha256);
-        if (prev && prev !== r.document_id && r.duplicate_group == null)
+        if (prev && prev !== r.document_id &&
+            (!str(r.duplicate_group) || r.duplicate_group !== receiptById.get(prev)?.duplicate_group)) {
+          flagReceipt(prev, 'duplicate_document_content_unresolved');
           flagReceipt(r.document_id, 'duplicate_document_content_unresolved');
+        }
         sourceDigestOwners.set(r.source_sha256, r.document_id);
       }
     }
@@ -258,12 +261,18 @@ function audit(m, { originals = null, canonicalTexts = null } = {}) {
       const accepted = arr=>arr.some(o=>rows.some(r=>r.id===o.id && r.eligible_metadata));
       const same = key=>[...new Set(first.filter(o=>o.source_status==='available').map(o=>o[key]))].sort().join('|')===
         [...new Set(second.filter(o=>o.source_status==='available').map(o=>o[key]))].sort().join('|');
-      const ok=accepted(first)&&accepted(second)&&same('genre')&&same('translation_modality')&&same('language');
+      const actors=arr=>new Set(arr.filter(o=>o.source_status==='available' && str(o.country)).map(o=>o.country));
+      const rosterA=actors(first),rosterB=actors(second);
+      const matched=[...rosterA].filter(c=>rosterB.has(c)).length;
+      const rosterStable=matched===rosterA.size && matched===rosterB.size && matched>0;
+      const ok=accepted(first)&&accepted(second)&&same('genre')&&same('translation_modality')&&same('language')&&rosterStable;
       withinFrameComparisons.push({frame_id:f.id,years:[Number(yy[i]),Number(yy[j])],
         status:ok?'supported':'uncertain',scope:'within-frame descriptive metadata only',
+        recorded_affiliations:[rosterA.size,rosterB.size],matched_recorded_affiliations:matched,
+        roster_composition_changed:!rosterStable,
         eligible_metadata:[first.filter(o=>rows.some(r=>r.id===o.id && r.eligible_metadata)).length,
           second.filter(o=>rows.some(r=>r.id===o.id && r.eligible_metadata)).length],
-        reason:ok?'Both years include comparable eligible metadata under one declared frame; no inference':'Coverage, language, genre or translation may differ'});
+        reason:ok?'Both years include comparable eligible metadata and matched affiliations under one declared frame; no inference':'Coverage, roster composition, language, genre or translation may differ'});
     }
   }
   const privateSourceValidation = checkedBytes===0 ? 'NOT RUN' :
