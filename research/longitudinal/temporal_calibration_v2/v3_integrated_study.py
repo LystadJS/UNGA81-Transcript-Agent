@@ -28,8 +28,7 @@ SCENARIOS=(
     ('actor_effect_stress_T16',16,.82,.65,.80,.45,True,False),
     ('changing_gamma_stress_T16',16,.82,.65,.80,.45,False,True),
 )
-METHODS=('integrated_two_state_year_markov','simultaneous_audit_CP_gamma_set',
-         'unrestricted_MNAR_no_fit')
+METHODS=('integrated_two_state_year_markov','formal_gamma_set_or_no_fit')
 TRUE_GAMMA=-1.25
 
 def seed(label):
@@ -99,7 +98,14 @@ def run_development(repetitions=6):
                               'rho':2*fit['year_stay_probability_hat']-1,
                               'weak':fit['weakly_identified_year_nuisance'],
                               'nuisance_boundaries':fit['nuisance_boundary_parameters']}
-                    elif method=='simultaneous_audit_CP_gamma_set':
+                    elif method=='formal_gamma_set_or_no_fit':
+                        if q==0:
+                            # Unrestricted nonresponse outcome composition is
+                            # nonidentifiable even with known respondent moments.
+                            bound=population_gamma_identification(np.full(T,.7))
+                            if bound['status']!='NO_FIT_UNRESTRICTED_MNAR':
+                                raise RuntimeError('unaudited MNAR must be unidentified')
+                            raise NoIdentifiedFit('NO_FIT_UNRESTRICTED_MNAR')
                         fit=audited_gamma_confidence_set(observed)
                         if not fit['status'].startswith('SYNTHETIC_CONDITIONAL_'):
                             raise NoIdentifiedFit('gamma partial confidence set refused: '+fit['status'])
@@ -108,19 +114,12 @@ def run_development(repetitions=6):
                           'width':fit['gamma_width'],
                           'hit':fit['gamma_lower']<=truth<=fit['gamma_upper'] if truth is not None else None,
                           'nuisance_boundaries':None}
-                    else:
-                        # Without independent outcome information the
-                        # unrestricted MNAR population gamma set is real line.
-                        ref=population_gamma_identification(np.full(T,.7))
-                        if ref['status']!='NO_FIT_UNRESTRICTED_MNAR':
-                            raise RuntimeError('unaudited MNAR must be unidentified')
-                        raise NoIdentifiedFit('NO_FIT_UNRESTRICTED_MNAR')
                     complete[method].append(entry)
                 except (NoIdentifiedFit,ValueError,ArithmeticError,np.linalg.LinAlgError) as e:
                     reason=type(e).__name__+':'+str(e)
                     failures.append({'study':'integrated_vs_partial','scenario':name,
                          'replicate':rep,'method':method,'reason':reason,
-                         'expected_refusal':method=='unrestricted_MNAR_no_fit' or q<=.025 or actor_stress})
+                         'expected_refusal':q<=.025 or actor_stress})
                     err[method][reason]+=1
         for method in METHODS:
             fits=complete[method];refused=sum(err[method].values())
