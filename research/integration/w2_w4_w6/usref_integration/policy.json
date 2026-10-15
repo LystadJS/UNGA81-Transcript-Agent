@@ -59,7 +59,8 @@
     "head_sha": "dc8f98dec92cd34242f9ed7c6ce85814291ada38",
     "planned_merge": false,
     "source_path": "research/integration/w2_w4_w6/pr82_review/test_independent.py",
-    "workflow_path": ".github/workflows/coord-pr82-us-reference-review.yml"
+    "workflow_path": ".github/workflows/coord-pr82-us-reference-review.yml",
+    "receipt_base_sha": "5f0a872cff0899819b21326e6c18b7af794556c5"
   },
   "stage_order": [
     "bootstrap",
@@ -79,24 +80,8 @@
     "research/integration/w2_w4_w6/usref_integration/policy.json",
     "research/integration/w2_w4_w6/usref_integration/stage.json",
     "research/integration/w2_w4_w6/usref_integration/README.md",
-    ".github/workflows/coord-us-relative-integration.yml"
-  ],
-  "materialize_prefixes": [
-    "research/longitudinal/",
-    "research/integration/w2_w4_w6/",
-    "docs/parallel-work/"
-  ],
-  "materialize_suffixes": [
-    ".py",
-    ".cjs",
-    ".js",
-    ".css",
-    ".html",
-    ".json",
-    ".md",
-    ".txt",
-    ".yml",
-    ".yaml"
+    ".github/workflows/coord-us-relative-integration.yml",
+    "research/integration/w2_w4_w6/usref_integration/evidence_contract.py"
   ],
   "expected_counts": {
     "phase1": 40,
@@ -119,5 +104,183 @@
     "numpy": "2.2.6",
     "scipy": "1.15.3",
     "jsonschema": "4.23.0"
-  }
+  },
+  "materialize_dependencies": [
+    "research/longitudinal/dependence_sensitivity.py",
+    "research/longitudinal/fixtures.py",
+    "research/longitudinal/framework.py",
+    "research/longitudinal/requirements.txt",
+    "research/longitudinal/run_demo.py",
+    "research/longitudinal/test_dependence_sensitivity.py",
+    "research/longitudinal/test_framework.py",
+    "research/integration/w2_w4_w6/w4_bridge.py",
+    "docs/parallel-work/validate-contract.cjs",
+    "docs/parallel-work/interchange-v1.schema.json",
+    "docs/parallel-work/INTERCHANGE_V1.md",
+    "docs/parallel-work/test-w1-w2-inference-readiness.cjs",
+    "docs/parallel-work/inference-readiness-v1.cjs",
+    "docs/parallel-work/w1-w2-inference-readiness.v1.json",
+    "docs/parallel-work/W1_W2_INFERENCE_READINESS_REQUIREMENTS_2026-10-13.md"
+  ],
+  "mandatory_test_ids": {
+    "bridge": {
+      "count": 49,
+      "sha256": "423d54d1a656d54059f0524440927eb3aced3ac8110b37b0074fbe3013853053"
+    },
+    "browser": {
+      "count": 17,
+      "sha256": "86fc4426c331bdcd01d72f1632a88dc0f1fae2e11da324a409d330f5e59362d9"
+    },
+    "gate-controls": {
+      "count": 30,
+      "sha256": "433705cc11ca347303929e5ffd722c6c4739d5f81c0d20379a8bba8aab5198b9"
+    },
+    "guards": {
+      "count": 11,
+      "sha256": "0cfa74a2929728dc032c3b50bf8119216aa4667cdc9095314b28cec3957b9191"
+    },
+    "phase1": {
+      "count": 40,
+      "sha256": "bb2db341b88e38173bdbdf477ec1f5b54ac4e9f745eaef928321cc281bc87cf5"
+    },
+    "phase2-build": {
+      "count": 4,
+      "sha256": "2aed5beaa838c3c6dd9c926d3c1bf90f4a4c73e11e98503e1353bc97790d22fc"
+    },
+    "phase2-node": {
+      "count": 12,
+      "sha256": "38941ecd814492a1804fc046a6ec3e3584a3a41ff9417aaf0149693c5ca15e05"
+    },
+    "pr87": {
+      "count": 7,
+      "sha256": "24f2e7f67c7feee6734819c563535656a6b67ed0603377b538e20315845d7428"
+    },
+    "pr93": {
+      "count": 7,
+      "sha256": "b433f235ed87941ebf993f8ce8b850838a1097a8a92ab7c1e33b232caf6b6acd"
+    },
+    "w4": {
+      "count": 25,
+      "sha256": "3bed802f783cc70b16cf3de40f4f6a0f621ecb4c2922aad79e9e2ddc5da28554"
+    }
+  },
+  "frozen_synthetic_build": {
+    "manifest_sha256": "4d415f28e6f37cc542eda005e9781a4bd43a435e6681d276c29bbe32767a59a9",
+    "schema": "un.us-relative-offline-build.v1",
+    "phase1_head": "81110db49786a05f9c8f8ce4d5103c92fe255586",
+    "catalogue_sha256": "805582f705eb26ae16100709cf4f4ee603f965a5eb2552fedf207de25a04f7ce",
+    "scenario_count": 8,
+    "publication_eligible": false,
+    "real_sources_opened": 0,
+    "files": {
+      "index.html": "62af9c57400eef36cd58eee4b13abf5e854d78d956004b6a588cbcef4c030a94",
+      "catalogue.json": "a6904b1f438087b74c3a651264ba089e6750aa50f6c76315c8b6a46cdb255f06",
+      "verification.json": "9e1d0cd1effe960c9e9470efeb3b38229051e8cb67316840059e717724690935"
+    }
+  },
+  "axe_target_inventory": {
+    "moving": {
+      "count": 52,
+      "selectors_sha256": "5234072d3c62fd015cac77a1918b26de890cb2650a2710f9370f2623173e441a"
+    },
+    "missing-us": {
+      "count": 57,
+      "selectors_sha256": "aead1cf002c1c1e42d733820b86d8f09e6aa13d1529f6fc63608d539d390372e"
+    },
+    "support-gap": {
+      "count": 53,
+      "selectors_sha256": "94f4f1b91ccde14f7c0efe6e338236a7cfdd3df14938aafb97b74284137107ea"
+    },
+    "hidden-dimension": {
+      "count": 49,
+      "selectors_sha256": "33e6a449ea7c38974396b20dca31d49075259b8edc7d6a6dd2b43610ecfd93b1"
+    },
+    "zero-gap": {
+      "count": 45,
+      "selectors_sha256": "4b2482e2d74ff324ac49a42fcb99e525fa3e1614b30a96e05a9079b828ce0f78"
+    },
+    "display-withheld": {
+      "count": 21,
+      "selectors_sha256": "1cbcd332458ba1cd2bb4547b625179f608525d03d0170840cb5602af46619ccd"
+    },
+    "empty": {
+      "count": 66,
+      "selectors_sha256": "572ad80275144f36c64a70caa3143adab3915b90b9091c6a23756e4a8d89275c"
+    },
+    "failed-source": {
+      "count": 49,
+      "selectors_sha256": "8e680c38b2d004e439c8d84eb7edb55a72243efdb785c00de07aef690febab09"
+    },
+    "moving-mobile": {
+      "count": 52,
+      "selectors_sha256": "5819c5e2be84f5bbebacc00e34e4c4e0a737141df7574116d4cd341f8a59b630"
+    }
+  },
+  "palette_counts": {
+    "moving": [
+      67,
+      77,
+      77,
+      77,
+      77,
+      69
+    ],
+    "missing-us": [
+      67,
+      77,
+      77,
+      77,
+      77,
+      69
+    ],
+    "support-gap": [
+      67,
+      77,
+      77,
+      77,
+      77,
+      69
+    ],
+    "hidden-dimension": [
+      66,
+      76,
+      74,
+      76,
+      76,
+      68
+    ],
+    "zero-gap": [
+      67,
+      77,
+      70,
+      77,
+      77,
+      69
+    ],
+    "display-withheld": [
+      40,
+      46,
+      46,
+      46,
+      46,
+      40
+    ],
+    "empty": [
+      66,
+      66,
+      66,
+      66,
+      66,
+      66
+    ],
+    "failed-source": [
+      67,
+      77,
+      69,
+      77,
+      77,
+      69
+    ]
+  },
+  "reviewed_graphic_focus_minimum_ratio": 3.730154685471816
 }

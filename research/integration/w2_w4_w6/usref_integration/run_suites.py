@@ -22,6 +22,8 @@ def unittest_result(text, minimum):
     runs = re.findall(r'^Ran (\d+) tests? in ', text, re.M)
     ids = re.findall(r'^(test_\w+) \(([^)]+)\) \.\.\. ', text, re.M)
     need(len(runs) == 1 and re.search(r'^OK\s*$', text, re.M), 'Missing unittest completion')
+    outcomes = re.findall(r'^test_\w+ \([^)]+\) \.\.\. (.*)$', text, re.M)
+    need(len(outcomes) == len(ids) and all(x == 'ok' for x in outcomes), 'Nonpassing raw unittest outcome')
     n = int(runs[0])
     need(n >= minimum and len(ids) == n and len(set(ids)) == n, 'Missing/duplicated test inventory')
     need(not re.search(r'\.\.\. skipped|^OK \(|^FAILED|^ERROR:|^FAIL:', text, re.M), 'Skipped/failed unittest')
@@ -34,6 +36,7 @@ def tap_result(text, minimum):
         values = re.findall(r'^# '+key+r' (\d+)\s*$', text, re.M)
         need(len(values) == 1, 'Missing or repeated TAP count: '+key)
         counts[key] = int(values[0])
+    need(not re.search(r'^not ok|# (?:SKIP|TODO)', text, re.M), 'Nonpassing raw TAP outcome')
     names = re.findall(r'^ok \d+ - (.+)$', text, re.M)
     need(counts['tests'] == counts['pass'] == len(names) and len(set(names)) == len(names)
          and counts['tests'] >= minimum and all(counts[k] == 0 for k in ('fail','cancelled','skipped','todo')),
@@ -173,18 +176,29 @@ def run(control, out, axe):
 
 
 def audit_bundle(folder, bundle, policy):
-    """Finalizer independently parses raw logs and native receipts, not counts alone."""
+    """Reconcile fixed evidence/ID inventories with logs, native receipts and outcomes.
+
+    The producer manifest is not an authority to choose which evidence is required.
+    Original PR87 labels remain historical; returned wrappers bind their new run.
+    """
+    from evidence_contract import (require_inventory, require_test_ids, bind_native,
+                                   validate_build, validate_accessibility)
+    folder = Path(folder)
     r = bundle['receipt']; i = bundle['identity']
     need(r.get('runtimes') == policy['runtime_baseline'], 'Runtime receipt mismatch')
+    require_inventory(folder, bundle)
+    checked_suites = {}
     for name, expected in required_suites(i['stage']).items():
-        path = Path(folder)/('evidence/logs/'+name+'.log')
-        need(path.is_file() and str(path.relative_to(folder)) in r['files'], 'Mandatory raw log missing')
+        relative = 'evidence/logs/'+name+'.log'
+        path = folder/relative
         text = path.read_text()
         if name in ('guards','phase2-node'):
             checked = tap_result(text,expected)
         elif name in ('interchange','source-replay'):
-            checked = None  # Raw result is also parsed below.
-            obj = json.JSONDecoder().raw_decode(text.strip())[0]
+            checked = {'result':'pass','tests':expected,'skipped':0,'failures':0,'errors':0}
+            obj, end = json.JSONDecoder().raw_decode(text.strip())
+            tail = text.strip()[end:].strip()
+            need(tail in ('', '\\n'), 'Unparsed trailing result content')
             if name == 'interchange':
                 need(obj.get('status') == 'pass' and obj.get('positive') == 1 and obj.get('negative') == 13
                      and obj.get('network_access') is False and obj.get('holdout_access') is False, 'Bad interchange evidence')
@@ -193,18 +207,28 @@ def audit_bundle(folder, bundle, policy):
                      and obj.get('publication_eligible') is False, 'Bad source replay evidence')
         else:
             checked = unittest_result(text,expected)
-        if checked:
-            for key in checked:
-                need(r['suites'][name].get(key) == checked[key], 'Summary differs from raw test evidence')
-        need(r['suites'][name].get('log_sha256') == sha(path.read_bytes()), 'Log digest mismatch')
+        require_test_ids(name, checked, policy)
+        for key in checked:
+            need(r['suites'][name].get(key) == checked[key], 'Summary differs from raw test evidence')
+        need(r['suites'][name].get('log') == relative and
+             r['suites'][name].get('log_sha256') == sha(path.read_bytes()), 'Log binding mismatch')
+        checked_suites[name] = checked
+    native_files = {}
     if i['stage'] != 'bootstrap':
-        check_native_record(Path(folder)/'evidence/phase1-original.json',40)
-        check_native_record(Path(folder)/'evidence/pr87-original.json',7)
+        native_files.update(phase1='evidence/phase1-original.json',pr87='evidence/pr87-original.json')
     if i['stage'] in ('phase2','integrated'):
-        check_native_record(Path(folder)/'evidence/browser/browser-receipt.json',17)
-        check_native_record(Path(folder)/'evidence/independent/review-receipt.json',7)
-        need((Path(folder)/'evidence/browser/axe-results.json').is_file()
-             and (Path(folder)/'evidence/independent/contrast-resolution.json').is_file(), 'Contrast evidence missing')
+        native_files.update(browser='evidence/browser/browser-receipt.json',pr93='evidence/independent/review-receipt.json')
+    wrappers = []
+    for name, relative in native_files.items():
+        path = folder/relative
+        native = check_native_record(path, checked_suites[name]['tests'])
+        wrappers.append(bind_native(name, native, checked_suites[name], i, policy,
+                                    sha(path.read_bytes()), r['suites'][name]['log_sha256']))
+    bundle['native_execution_bindings'] = wrappers
+    if i['stage'] in ('phase2','integrated'):
+        counts = validate_build(folder, policy)
+        bundle['semantic_evidence'] = validate_accessibility(folder, policy, counts)
+    bundle['semantic_evidence_verified'] = True
 
 
 if __name__ == '__main__':

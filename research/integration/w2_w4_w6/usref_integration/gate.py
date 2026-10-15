@@ -7,6 +7,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import os
 from pathlib import Path, PurePosixPath
 import re
@@ -52,7 +53,15 @@ def load(path):
             need(k not in d, 'Duplicate JSON keys')
             d[k] = v
         return d
-    return json.loads(p.read_text(encoding='utf-8'), object_pairs_hook=unique)
+    def finite_float(raw):
+        value = float(raw)
+        need(math.isfinite(value), 'Nonfinite JSON number')
+        return value
+    try:
+        return json.loads(p.read_text(encoding='utf-8'), object_pairs_hook=unique, parse_float=finite_float,
+                          parse_constant=lambda _: need(False, 'Nonfinite JSON number'))
+    except (json.JSONDecodeError, UnicodeError) as exc:
+        raise Rejected('Malformed JSON receipt') from exc
 
 
 def git(repo, *args, data=None, extra=None):
@@ -200,15 +209,27 @@ def safe_output(path, repos):
 
 
 def materialize(repo, ref, dest, policy):
-    """Write only test/code allowlist; no git checkout or transcript/corpus loader."""
-    dest.mkdir(parents=True, exist_ok=False)
-    selected = {}
+    """Closed path inventory, with mode/blob preflight BEFORE any blob is read.
+
+    Upstream dependencies are exact paths pinned to the reviewed historical base.
+    Product files retain their reviewed payload identities (checked by stage_in).
+    No directory/extension fallback exists, including for source-like Python.
+    Missing dependencies fail later mandatory tests, never enable wider reads.
+    """
+    entries = listing(repo, ref)
     explicit = set(policy['gate_paths']) | {p for x in policy['payloads'] for p in x['integration_paths']}
-    for name, entry in listing(repo, ref).items():
-        if name in explicit or (any(name.startswith(x) for x in policy['materialize_prefixes'])
-                and Path(name).suffix in policy['materialize_suffixes']):
-            need(entry[:2] == ['100644', 'blob'], 'Symlink, submodule or executable mode rejected: '+name)
-            selected[name] = entry
+    dependencies = set(policy.get('materialize_dependencies', []))
+    need(len(dependencies) == len(policy.get('materialize_dependencies', [])), 'Duplicate dependency path')
+    selected = {n:e for n,e in entries.items() if n in explicit | dependencies}
+    historical = listing(repo, policy['historical_main']) if dependencies & set(entries) else {}
+    for name, entry in selected.items():
+        need(entry[:2] == ['100644', 'blob'], 'Symlink, submodule or executable mode rejected: '+name)
+        need(not name.startswith('/') and '..' not in PurePosixPath(name).parts
+             and str(PurePosixPath(name)) == name and '\\' not in name, 'Noncanonical code path')
+        if name in dependencies:
+            need(entry == historical.get(name), 'Unreviewed dependency content: '+name)
+    # All validation above is metadata-only. Never partially copy on a bad mode/blob.
+    dest.mkdir(parents=True, exist_ok=False)
     for name, entry in selected.items():
         p = dest/name
         p.parent.mkdir(parents=True, exist_ok=True)
@@ -288,10 +309,14 @@ def validate_final(event, results, needs):
         need(bundle.get('evidence_verified') is True, 'Missing/corrupt evidence')
     need(results['combined']['identity']['stage'] == 'integrated', 'Combined coverage not integrated')
     need(results['head']['identity']['stage'] == results['effective-tree']['identity']['stage'], 'Ambiguous actual stage')
-    return {'schema':'un.usref-required-check.v1', 'result':'pass', 'event_identity':event,
+    decision = {'schema':'un.usref-required-check.v1', 'result':'pass', 'event_identity':event,
             'actual_stage': results['head']['identity']['stage'],
             'combined_tree': results['combined']['identity']['tested_tree'],
             'combined_coverage': 'offline_synthetic_dry_run', **HOLD}
+    if all(b.get('semantic_evidence_verified') is True for b in results.values()):
+        decision['evidence_audit'] = {m:{'native_execution_bindings':b['native_execution_bindings'],
+            'semantic_evidence':b.get('semantic_evidence')} for m,b in results.items()}
+    return decision
 
 
 def required_suites(stage):
@@ -310,9 +335,16 @@ def read_bundle(folder):
     files = r.get('files')
     need(type(files) is dict and files, 'No retained evidence')
     for name, expected in files.items():
-        p = folder/name
-        need(not Path(name).is_absolute() and '..' not in Path(name).parts and p.is_file()
-             and not p.is_symlink() and sha(p.read_bytes()) == expected, 'Missing/corrupt artifact member')
+        need(type(name) is str and name and not Path(name).is_absolute()
+             and str(PurePosixPath(name)) == name and '..' not in PurePosixPath(name).parts
+             and '\\' not in name, 'Unsafe artifact member path')
+        p = folder
+        for part in PurePosixPath(name).parts:
+            p = p/part
+            need(not p.is_symlink(), 'Symlink in artifact member ancestry')
+        need(type(expected) is str and re.fullmatch(r'[0-9a-f]{64}', expected)
+             and p.is_file() and 0 < p.stat().st_size <= 32*1024*1024
+             and sha(p.read_bytes()) == expected, 'Missing/corrupt artifact member')
     return {'identity':i, 'receipt':r, 'identity_sha256':sha((folder/'identity.json').read_bytes()), 'evidence_verified':True}
 
 
