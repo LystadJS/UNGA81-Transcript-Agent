@@ -35,3 +35,23 @@ No 37 reserved Oct 5–6 2026 transcript reads, no source checksum rewrites, no 
 - Node/Python/R/Shiny/browser local regressions: NOT RUN.
 - Post-merge CI, Pages build, portfolio mirror, deployed hash verification: NOT RUN (no authorized merges).
 - Coordinator branch ledger publication: engineering-only documentation; not a release authorization.
+
+## Coordinator refresh — 2026-10-15 12:35Z+ (supersedes open-state snapshot above)
+
+**Verified new main:** `ecfc201ccfcd442c9f29e92777c1d9241beab4d9` (three commits newer than ledger baseline). PR #63 was merged as `1e78e81a2270a6b643b9c344863199107e9138f2`. The 40 newly changed paths on main encompass the previous C5 browser and historical-source integrations. The new browser release metadata PR #72 explicitly records #56 source merge `ecfc201ccfcd442c9f29e92777c1d9241beab4d9`; historical P1/P2 are no longer listed as open. This updated ledger makes **no new scientific or release gate assertion** about those merges. Confirm corresponding historical merge records and latest-main CI before asserting downstream readiness.
+
+| PR | Exact head | Current disposition | Latest exact-head CI |
+| --- | --- | --- | --- |
+| #64 Historical source comparability | `f940800612858e0066e3fc0c4bbfc1f50f25ac10` | DRAFT; private source validation not run; schema review pending | NOT RUN/no returned runs |
+| #66 Semantic representations | `f13b8bce9dc3c90e033043fc8173aa6bb59d2342` | DRAFT; model checkpoint/revision/hash and real inference not complete | NOT RUN/no returned runs |
+| #67 Null calibration | `b1f402eb70efbeda024ca363fd1c04988e20c140` | DRAFT; nuisance estimator and independent calibration incomplete | NOT RUN/no returned runs |
+| #68 Temporal calibration v2 | `c12d93edf8b5bf6fa0dc1ad817d65bd838a949f3` | DRAFT; 0/18 temporal-correlation recovery unresolved, no scientific eligibility | PASS #38734471164 (synthetic/interchange only) |
+| #69 Research visualization v2 | `a096aebd623e3249494ba552701fb482f524ef51` | DRAFT; browser QA, complete heatmap and accepted adapter missing | PASS #38735107775 (latent acceptance only) |
+| #70 Diplomatic readouts | `e9b309a7ee582a732a94d2ae7bac9590e1d58e54` | DRAFT; tests/verified source binding not complete | NOT RUN/no returned runs |
+| #71 Reproducibility/security | `096dfe1f63819a6bd6a56d9222d43c603bda548f` | DRAFT; tests and full-schema/replay validation not complete | NOT RUN/no returned runs |
+| #72 C5 synthetic release metadata | `cfa5c4df0f9f88bb706c16b5c72d4720c212ce64` | OPEN, non-draft; changes only `site/release.json`, mergeable; review release-metadata integrity and mirror prerequisites separately | PASS #38735797270 (latent acceptance) |
+| #25 Historical source acquisition | `1759349c117de3606182746538d437f7fafa1de2` | DRAFT; old source retrieval failure unresolved | FAIL #37816285803 |
+
+Eight new worker PRs (#64, #66–#71 plus an expected supervised workstream not yet present in the open PR list) are not scientifically accepted by this record. Seven observed worker PRs listed above plus additional pending worker submission: **do not assume missing PR was delivered**. CI run visibility is not equivalent to full test coverage; all unexecuted suites remain NOT RUN. Existing 37 reserved 2026 meeting transcript lock, frozen decisions, O1–O5 gates, original source bytes/hashes, private artifacts and empirical-publication restrictions remain unchanged.
+
+**Next unblocked sequence:** independently inspect each worker effective diff and ownership list, prioritize source comparability and privacy/reproducibility; execute synthetic suites at exact heads in a suitable runner; make narrowly scoped worker fixes on their owned branches or coordinator-only integration revisions; merge only on full acceptance. For #72, examine release JSON metadata and required deployment workflow before any merge or mirror. No repository-wide regression, site build, Shiny or deployed SHA check was performed in this ledger refresh.
