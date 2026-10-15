@@ -61,7 +61,7 @@ diff --git a/.github/workflows/coord-c5-evidence-browser-qa.yml b/.github/workfl
        - name: Real desktop/mobile Chromium, source inspector, SVG/HTML, tamper and no-network QA
          shell: bash
          run: |
-@@ -113,5 +132,11 @@
+@@ -113,5 +132,12 @@
              --browser "$CHROME_BIN" \
              --output "$RUNNER_TEMP/c5-browser-qa"
 +      - name: V2 served desktop/mobile Chromium replay and failure QA
@@ -69,7 +69,8 @@ diff --git a/.github/workflows/coord-c5-evidence-browser-qa.yml b/.github/workfl
 +        run: |
 +          set -euo pipefail
 +          python site/experimental/research-validation-v2/browser_smoke.py \
-+            --browser "$CHROME_BIN" --output "$RUNNER_TEMP/rv2-browser-qa"
++            --browser "$CHROME_BIN" --require-served-navigation \
++            --output "$RUNNER_TEMP/rv2-browser-qa"
        - name: Confirm W2 and W4 are still source-safe, synthetic-only and unpublished
          shell: bash
          run: |
