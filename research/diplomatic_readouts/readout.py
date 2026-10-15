@@ -136,7 +136,7 @@ def _hash(value: object) -> bool:
 def _safe_url(value: object) -> bool:
     if value is None:
         return True
-    if not isinstance(value, str) or len(value) > 512 or any(ord(c) < 33 for c in value):
+    if not isinstance(value, str) or len(value) > 512 or any(ord(c) < 33 or 0xD800 <= ord(c) <= 0xDFFF for c in value):
         return False
     try:
         parts = urlsplit(value)
@@ -150,7 +150,7 @@ def _safe_url(value: object) -> bool:
 def _safe_pointer(value: object) -> bool:
     return (value is None or (isinstance(value, str) and len(value) <= 500
                               and (value == "" or value.startswith("/"))
-                              and not any(c in value for c in "\r\n")
+                              and not any(ord(c) < 32 or 0xD800 <= ord(c) <= 0xDFFF for c in value)
                               and re.search(r"~(?![01])", value) is None))
 
 
