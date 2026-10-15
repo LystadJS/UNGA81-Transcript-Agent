@@ -29,7 +29,13 @@ FILES=("v3_prototype.py","v3_nuisance.py","v3_design_proposal.json",
        "v3_finite_year_continuous.py","v3_finite_year_study.py",
        "test_v3_finite_year_continuous.py","test_v3_finite_year_replay.py",
        "v3_finite_year_development_receipt.json","v3_finite_year_failure_masks.json",
-       "V3_FINITE_YEAR_CONTINUOUS_REVIEW.md")
+       "V3_FINITE_YEAR_CONTINUOUS_REVIEW.md",
+       "v3_hierarchical_external.py","v3_hierarchical_external_study.py",
+       "test_v3_hierarchical_external.py","test_v3_hierarchical_external_replay.py",
+       "v3_hierarchical_external_development_receipt.json",
+       "v3_hierarchical_external_failure_masks.json",
+       "V3_HIERARCHICAL_EXTERNAL_FREEZE_REVIEW.md",
+       "v3_hierarchical_freeze_decision.json")
 
 def proposal_receipt():
     cfg=json.loads((ROOT/"v3_design_proposal.json").read_text())
@@ -57,6 +63,10 @@ def proposal_receipt():
         whole_year_block_refit_development_only=True,
         conditional_continuous_variance_math_demonstrated=True,
         external_total_year_scale_source_authenticated=False,
+        hierarchical_year_effect_gamma_development_only=True,
+        independent_world_gaussian_scale_development_only=True,
+        hierarchical_gamma_interval_calibrated=False,
+        external_historical_gaussian_scale_authentication=False,
         real_fit_authorized=False,
         next_authorization="coordinator and independent statistician must approve design and model assumptions",
         python_runtime=platform.python_version())
