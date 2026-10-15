@@ -30,6 +30,10 @@ def contract():
     xy=arr(number,2,2)
     states=enum('ready','empty','failed','withheld')
     d={}
+    # Derived identity is ISO3 + '/' + an unchanged source token (3+1+160).
+    # Do not widen source identifiers or truncate/hash away their original value.
+    d['country_period_id']={'type':'string',
+        'pattern':r'^[A-Z]{3}/[A-Za-z0-9][A-Za-z0-9_.:/-]{0,159}$','maxLength':164}
     d['receipt']=obj({'kind':const('synthetic_consistency_only'),'hash_basis':const('sha256/usref-wire-v1'),'panel_sha256':sha})
     identity={'producer_schema':token,'producer_version':token,'producer_panel_sha256':sha,'selection_sha256':sha,'runtime_id':token}
     d['identity']=obj(identity)
@@ -61,7 +65,7 @@ def contract():
         'identity':ref('identity'),'metric_space':ref('metric'),'display_space':nullable(ref('display_input')),'scope':ref('scope'),
         'periods':arr(ref('period'),2,256),'observations':arr(ref('observation'))})
     coverage=obj({'unit':const('source_observation'),'inventory':count,'included':count,'excluded':count})
-    profile=obj({'id':token,'country_iso3':iso,'period':token,'scope_sha256':sha,'metric_fingerprint':sha,
+    profile=obj({'id':ref('country_period_id'),'country_iso3':iso,'period':token,'scope_sha256':sha,'metric_fingerprint':sha,
         'excluded':arr(obj({'observation_id':token,'reason':token})),'coverage':coverage,'state':states,'reason':nullable(token),
         'vector':nullable(vector),'contributions':arr(obj({'observation_id':token,'weight':{'type':'number','exclusiveMinimum':0,'maximum':1}})), 'sha256':sha})
     d['profile']=guard(profile,'state',{'vector':vector,'reason':const(None),'contributions':{'minItems':1}},
@@ -71,7 +75,7 @@ def contract():
         'fraction_reason':nullable(token)})
     d['projected']=guard(projected,'state',{'reason':const(None),'country_xy':xy,'us_xy':xy,'relative_xy':xy},
         {'reason':token,'country_xy':const(None),'us_xy':const(None),'relative_xy':const(None),'visible_squared_gap_fraction':const(None),'fraction_reason':token})
-    comparison=obj({'id':token,'country_iso3':iso,'period':token,'country_profile_sha256':sha,'us_profile_sha256':sha,
+    comparison=obj({'id':ref('country_period_id'),'country_iso3':iso,'period':token,'country_profile_sha256':sha,'us_profile_sha256':sha,
         'state':enum('ready','withheld'),'reason':nullable(token),'distance':nullable({'type':'number','minimum':0,'maximum':1e210}),
         'relative_vector':nullable(vector),'display':nullable(ref('projected'))})
     d['comparison']=guard(comparison,'state',{'reason':const(None),'distance':{'type':'number','minimum':0},'relative_vector':vector,'display':ref('projected')},
@@ -84,7 +88,7 @@ def contract():
     d['metrics']=guard(obj(metrics),'decomposition_status',
         {k:number for k in ['gap_country_contribution','gap_us_contribution','reconciliation_residual']},
         {k:const(None) for k in ['gap_country_contribution','gap_us_contribution','reconciliation_residual']})
-    transition=obj({'country_iso3':iso,'before':token,'after':token,'before_comparison_id':token,'after_comparison_id':token,
+    transition=obj({'country_iso3':iso,'before':token,'after':token,'before_comparison_id':ref('country_period_id'),'after_comparison_id':ref('country_period_id'),
         'state':enum('ready','withheld'),'reason':nullable(token),'metrics':nullable(ref('metrics'))})
     d['transition']=guard(transition,'state',{'reason':const(None),'metrics':ref('metrics')}, {'reason':token,'metrics':const(None)})
     d['output']=obj({'schema':const('un.us-relative-trajectories.v1'),'version':const('0.1.0'),'split':const('synthetic'),

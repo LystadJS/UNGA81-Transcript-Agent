@@ -42,8 +42,11 @@ us_transition <- function(c0, c1, u0, u1) {
 # vectors and reviewed synthetic metadata into a fresh temporary directory.
 run_synthetic_tables <- function(directory) {
   read_table <- function(name) {
+    # Identifier columns are opaque strings: 01, 1, 1e0 and TRUE are distinct.
+    # Only empty fields represent missing data; a literal NA identifier survives.
     read.delim(file.path(directory, name), check.names = FALSE,
-               stringsAsFactors = FALSE, na.strings = "", quote = "")
+               colClasses = "character", stringsAsFactors = FALSE,
+               na.strings = "", quote = "")
   }
   write_table <- function(x, name) {
     write.table(x, file.path(directory, name), sep = "\t", quote = FALSE,
@@ -63,7 +66,24 @@ run_synthetic_tables <- function(directory) {
             all(periods$start <= periods$end),
             all(head(periods$end, -1L) < tail(periods$start, -1L)))
   vector_names <- grep("^v[0-9]+$", names(rows), value = TRUE)
-  stopifnot(length(vector_names) >= 2L)
+  stopifnot(length(vector_names) >= 2L, length(vector_names) <= 1024L,
+            identical(vector_names, paste0("v", seq_along(vector_names) - 1L)))
+  # Convert declared features only. Refuse malformed/nonfinite values instead of
+  # silently introducing NA through type guessing or numeric conversion warnings.
+  numeric_pattern <- "^[+-]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)(?:[eE][+-]?[0-9]+)?$"
+  for (name in vector_names) {
+    raw <- rows[[name]]
+    present <- !is.na(raw)
+    stopifnot(all(grepl(numeric_pattern, raw[present], perl = TRUE)))
+    value <- rep(NA_real_, length(raw))
+    value[present] <- as.numeric(raw[present])
+    stopifnot(all(is.finite(value[present])), all(abs(value[present]) <= 1e100))
+    rows[[name]] <- value
+  }
+  values <- as.matrix(rows[, vector_names, drop = FALSE])
+  observed <- rows$source_status == "available"
+  stopifnot(all(is.finite(values[observed, , drop = FALSE])),
+            all(is.na(values[!observed, , drop = FALSE])))
   exclusion <- function(r) {
     if (r$source_status != "available") return(r$source_status)
     if (r$capacity != "national") return("non_national_capacity")

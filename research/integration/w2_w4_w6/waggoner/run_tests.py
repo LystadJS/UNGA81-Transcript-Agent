@@ -16,11 +16,14 @@ from pathlib import Path
 from .make_schema import write_contract
 
 MODULE = 'research.integration.w2_w4_w6.waggoner.test_us_reference'
+REGRESSIONS = 'research.integration.w2_w4_w6.waggoner.test_identity_regressions'
 
 
 def suite(loader=None):
     write_contract()
-    return (loader or unittest.TestLoader()).loadTestsFromName(MODULE)
+    loader = loader or unittest.TestLoader()
+    return unittest.TestSuite([loader.loadTestsFromName(MODULE),
+                               loader.loadTestsFromName(REGRESSIONS)])
 
 
 def main():
