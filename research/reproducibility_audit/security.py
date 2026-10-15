@@ -1,6 +1,7 @@
 """Fail-closed public artifact inspection; only synthetic test data is provided."""
 from __future__ import annotations
 import base64
+import html
 import json
 from pathlib import Path
 import re
@@ -11,6 +12,7 @@ SENTINELS = (
     'SYNTHETIC_CACHED_VECTOR_SENTINEL',
 )
 BAD_EXTENSIONS = {'.npy', '.npz', '.pkl', '.pickle', '.pt', '.pth', '.safetensors', '.onnx', '.faiss', '.index'}
+ARCHIVE_EXTENSIONS = {'.zip', '.tar', '.gz', '.tgz', '.bz2', '.xz', '.7z', '.rar', '.zst'}
 SECRET_PATTERNS = {
     'private key': re.compile(rb'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----'),
     'GitHub token': re.compile(rb'gh[pousr]_[A-Za-z0-9]{30,}'),
@@ -52,6 +54,8 @@ def _inspect_json(obj, *, path='$', depth=0) -> list[str]:
     elif isinstance(obj, list):
         for i,v in enumerate(obj):
             findings.extend(_inspect_json(v, path=f'{path}[{i}]', depth=depth+1))
+    elif isinstance(obj, str):
+        findings.extend(path+': '+reason for reason in scan_bytes(obj.encode('utf-8')))
     return findings
 
 
@@ -78,6 +82,8 @@ def scan_public(root: Path, *, max_file_bytes=5_000_000, max_files=10000) -> lis
             break
         if path.suffix.lower() in BAD_EXTENSIONS:
             findings.append({'path':rel,'reason':'cached model/vector artifact'})
+        if path.suffix.lower() in ARCHIVE_EXTENSIONS:
+            findings.append({'path':rel,'reason':'uninspectable compressed/archive artifact'})
         try:
             size=path.stat().st_size
             if size>max_file_bytes:
@@ -89,6 +95,13 @@ def scan_public(root: Path, *, max_file_bytes=5_000_000, max_files=10000) -> lis
             continue
         for reason in scan_bytes(data):
             findings.append({'path':rel,'reason':reason})
+        if path.suffix.lower() in ('.html', '.htm', '.svg', '.xml'):
+            try:
+                expanded = html.unescape(data.decode('utf-8')).encode('utf-8')
+                for reason in scan_bytes(expanded):
+                    findings.append({'path':rel,'reason':'decoded markup: '+reason})
+            except UnicodeDecodeError:
+                findings.append({'path':rel,'reason':'uninspectable non-UTF8 markup'})
         if path.suffix.lower() in ('.json','.jsonl'):
             try:
                 if path.suffix.lower()=='.json':
