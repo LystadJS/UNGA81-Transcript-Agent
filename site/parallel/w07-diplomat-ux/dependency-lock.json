@@ -1,0 +1,55 @@
+{
+  "schema": "u1.dependency-lock.v1",
+  "c0_commit": "884097997f89b0040e4418480378f077e3b65434",
+  "c0_tree": "ea7571664f79cb78b4e134ce0f9e2f1283893f17",
+  "files": [
+    {
+      "path": "research/integration/product_contracts/check_schemas.py",
+      "git_blob": "9fbe9a33a570f98fb3fbf82fe0566ff028357922",
+      "sha256": "1a6cf66e7db4da3f7bf34f0c9fb745219db84d961e7737bd58f858506d9ac88f",
+      "bytes": 3192
+    },
+    {
+      "path": "research/integration/product_contracts/contracts.mjs",
+      "git_blob": "426182ef86876699c4e0888f7b728e3af6085792",
+      "sha256": "d73b08a749cd01c78e9df7a729edf8073d739897e1af656f57d5797f059bdfbb",
+      "bytes": 22932
+    },
+    {
+      "path": "research/integration/product_contracts/emit_contracts.mjs",
+      "git_blob": "084ba0cda93d4a9398a644e474c4ac10851fe8b8",
+      "sha256": "f7edac165a05dfdf454f49b0d17358c36668865d27579d52f0162bacbf87546f",
+      "bytes": 1831
+    },
+    {
+      "path": "research/integration/product_contracts/fixtures.mjs",
+      "git_blob": "6c24804c39f81a51fa0b5dced6f35f8b11e96915",
+      "sha256": "045415a2fb925d5039424088cb077cbb600adb7f79be304b66a92b6a64243e5a",
+      "bytes": 4008
+    },
+    {
+      "path": "research/integration/product_contracts/interface-lock.json",
+      "git_blob": "2bdeaf7c1a24bedc8a30c585fc5637d4051fdb9b",
+      "sha256": "9a5a346f74ce8e71592606166d721410099393ce1d52425d1f3c8932fb7acb99",
+      "bytes": 876
+    },
+    {
+      "path": "research/integration/product_contracts/schemas.mjs",
+      "git_blob": "a3a4f41b380b0d7843a67cbffe8abd5144fc6c22",
+      "sha256": "dfdc669e7bc47e7aae8f41bdd19cfcce522bec600cae02c5023fce19cc00f338",
+      "bytes": 7739
+    },
+    {
+      "path": "research/integration/product_contracts/test_contracts.mjs",
+      "git_blob": "b1b262107ba283c3eda68cc4780d6a9ecdc85161",
+      "sha256": "601d4f3263128534eb1d96d565e7aafdd80bb77f6157263f843f9cd1597871af",
+      "bytes": 18790
+    },
+    {
+      "path": "research/integration/product_contracts/test_independent_review.mjs",
+      "git_blob": "c1ba4f14e5759117c58df1e3095bf4f833bf1a49",
+      "sha256": "4452472477db8c618cba96ee9f2ff139f34b2eda735bdabb240d2cf8f7107e5b",
+      "bytes": 14428
+    }
+  ]
+}
