@@ -40,7 +40,8 @@ CUSTODY_FIELDS = frozenset((
     "purpose", "audience", "custodian_ref", "issued_at", "expires_at", "permission",
 ))
 REVOCATION_FIELDS = frozenset((
-    "schema", "fixture_kind", "registry_id", "sequence", "observed_at",
+    "schema", "fixture_kind", "registry_id", "registry_sha256",
+    "policy_sha256", "audit_tip_sha256", "sequence", "observed_at",
     "expires_at", "revoked_key_ids", "audience", "purpose", "issuer_ref", "permission",
 ))
 ENVELOPE_FIELDS = frozenset(("schema", "algorithm", "key_id", "payload", "signature_b64"))
@@ -123,6 +124,8 @@ class SyntheticTrustAnchors:
     expected_registry_id: str
     expected_registry_sha256: str
     expected_proposal_sha256: str
+    expected_policy_sha256: str
+    expected_audit_tip_sha256: str
     expected_checkpoint_sha256: str
     minimum_checkpoint_sequence: int
     expected_audience: str = AUDIENCE
@@ -137,6 +140,7 @@ def _anchors(trust: object) -> None:
              and _ident(trust.expected_revocation_issuer_ref)
              and all(_hex(x) for x in (
                  trust.expected_registry_sha256, trust.expected_proposal_sha256,
+                 trust.expected_policy_sha256, trust.expected_audit_tip_sha256,
                  trust.expected_checkpoint_sha256))
              and type(trust.minimum_checkpoint_sequence) is int
              and trust.minimum_checkpoint_sequence >= 2
@@ -148,6 +152,12 @@ def _anchors(trust: object) -> None:
         for kid, data in mapping.items():
             _require(_ident(kid) and type(data) is bytes and len(data) == 32,
                      "independent_trust_anchor_missing_or_invalid")
+    # A key must have one unique revocation identity in each signer role.
+    # Otherwise a revoked key can be re-labelled without changing Ed25519 bytes.
+    _require(len(set(trust.custodian_keys.values())) == len(trust.custodian_keys)
+             and len(set(trust.revocation_keys.values())) == len(trust.revocation_keys)
+             and set(trust.custodian_keys).isdisjoint(set(trust.revocation_keys)),
+             "ambiguous_or_duplicate_signer_identity")
     _require(isinstance(trust.custodian_subjects, Mapping) and
              set(trust.custodian_subjects) == set(trust.custodian_keys) and
              all(subject == trust.expected_custodian_ref
@@ -180,7 +190,7 @@ def _verify_signed(envelope: object, schema: str, keys: Mapping[str, bytes]) -> 
         raise SignatureWithheld("invalid_signature_encoding") from None
     try:
         Ed25519PublicKey.from_public_bytes(keys[e["key_id"]]).verify(
-            binary, DOMAINS[schema] + _canon(payload))
+            binary, DOMAINS[schema] + _canon({"key_id": e["key_id"], "payload": payload}))
     except (InvalidSignature, ValueError, TypeError):
         raise SignatureWithheld("invalid_ed25519_signature") from None
     return payload, e["key_id"]
@@ -221,6 +231,11 @@ def verify_synthetic_signatures(snapshot: object, policy: object, events: object
                  and snapshot["registry_id"] == trust.expected_registry_id
                  and proposal_digest(proposal) == trust.expected_proposal_sha256,
                  "externally_pinned_source_or_proposal_mismatch")
+        # A compromised custody key must not rewrite the audit or policy
+        # without also compromising the independent pinned authority.
+        _require(events[-1]["event_sha256"] == trust.expected_audit_tip_sha256
+                 and policy_digest(policy) == trust.expected_policy_sha256,
+                 "independent_policy_or_audit_anchor_mismatch")
         revoke, signer = _verify_signed(revocation_envelope, REVOCATION_SCHEMA,
                                          trust.revocation_keys)
         _require(revoke["registry_id"] == trust.expected_registry_id
@@ -234,6 +249,10 @@ def verify_synthetic_signatures(snapshot: object, policy: object, events: object
                  all(_ident(x) for x in revoke["revoked_key_ids"]) and
                  revoke["revoked_key_ids"] == sorted(set(revoke["revoked_key_ids"])),
                  "revocation_checkpoint_invalid_or_rollback")
+        _require(revoke["registry_sha256"] == trust.expected_registry_sha256
+                 and revoke["policy_sha256"] == trust.expected_policy_sha256
+                 and revoke["audit_tip_sha256"] == trust.expected_audit_tip_sha256,
+                 "revocation_checkpoint_binding_mismatch")
         _require(content_digest(REVOCATION_SCHEMA, revoke) ==
                  trust.expected_checkpoint_sha256,
                  "revocation_checkpoint_not_externally_pinned")
