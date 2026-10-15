@@ -135,3 +135,33 @@ jobs:
           print('EXPANDED_CASES='+json.dumps(a['results'],sort_keys=True))
           print('EXPANDED_SHA256='+hashlib.sha256(open(sys.argv[1],'rb').read()).hexdigest())
           PY
+
+      - name: Prospective stance development-only regressions
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/semantic_representations -p 'test_stance_dev_evaluation.py' -v
+          python -m compileall -q research/semantic_representations/stance_dev_evaluation.py
+      - name: Two-process prospective 30-family semantic and lexical evaluation
+        env:
+          HF_HUB_OFFLINE: '1'
+          TRANSFORMERS_OFFLINE: '1'
+        run: |
+          set -euo pipefail
+          python research/semantic_representations/stance_dev_evaluation.py --checkpoint /tmp/unga-pinned-minilm --output "$RUNNER_TEMP/stance-dev-1.json"
+          python research/semantic_representations/stance_dev_evaluation.py --checkpoint /tmp/unga-pinned-minilm --output "$RUNNER_TEMP/stance-dev-2.json"
+          python - "$RUNNER_TEMP/stance-dev-1.json" "$RUNNER_TEMP/stance-dev-2.json" <<'PY'
+          import hashlib,json,sys
+          from pathlib import Path
+          a,b=(Path(p).read_bytes() for p in sys.argv[1:])
+          assert a==b,"cross-process source-safe synthetic receipt mismatch"
+          receipt=json.loads(a)
+          assert receipt['population']['families']==30
+          assert receipt['population']['observations']==120
+          assert receipt['coverage']['encoded']==120
+          assert receipt['coverage']['failed_batches']==0
+          assert len(receipt['cases'])==30
+          print('STANCE_DEV_SHA256='+hashlib.sha256(a).hexdigest())
+          print('STANCE_DEV_ADVANCE='+json.dumps(receipt['advance'],sort_keys=True))
+          print('STANCE_DEV_STRATA='+json.dumps(receipt['by_stratum'],sort_keys=True))
+          print('STANCE_DEV_REPLAY_PASS=2 independent processes; all 120 synthetic observations included')
+          PY
