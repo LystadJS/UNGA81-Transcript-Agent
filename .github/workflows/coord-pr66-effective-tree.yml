@@ -1,29 +1,72 @@
-name: Coordinator PR66 effective-tree native acceptance
+name: Coordinator PR66 pinned ONNX synthetic verification
 on:
   push:
     branches: ['coord/pr66-effective-tree-20261015']
 permissions:
   contents: read
 jobs:
-  semantic-contract:
+  pinned-real-model:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - name: Native semantic Python tests
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install exact upstream runtime dependencies
+        run: python -m pip install -r research/semantic_review/requirements.txt
+      - name: Verify all ten immutable pinned model files
         run: |
-          set -euo pipefail
-          python3 --version
-          python3 -m compileall -q research/semantic_representations
-          python3 -m unittest discover -s research/semantic_representations -p 'test_*.py' -v
-      - name: Upstream contracts and source regressions
+          python - <<'PY'
+          import json,hashlib,urllib.request,time
+          from pathlib import Path
+          lock=json.loads(Path('research/semantic_review/model-lock.json').read_text())
+          base=Path('/tmp/unga-pinned-minilm')
+          for name,record in lock['files'].items():
+              target=base/name;target.parent.mkdir(parents=True,exist_ok=True)
+              error=None
+              for attempt in range(3):
+                  try:
+                      with urllib.request.urlopen(record['url'],timeout=120) as response, target.open('wb') as out:
+                          while chunk:=response.read(1024*1024): out.write(chunk)
+                      if target.stat().st_size != record['bytes'] or hashlib.sha256(target.read_bytes()).hexdigest()!=record['sha256']:
+                          raise ValueError('immutable pinned checkpoint digest mismatch: '+name)
+                      error=None;break
+                  except Exception as exc:
+                      error=exc
+                      if attempt<2:time.sleep(3)
+              if error:raise error
+          print('TEN_ORIGINAL_PINNED_ARTIFACTS_PASS')
+          PY
+      - name: Native MiniLM long-input, tokenizer audit and cold/warm cache
+        env:
+          HF_HUB_OFFLINE: '1'
+          TRANSFORMERS_OFFLINE: '1'
         run: |
-          set -euo pipefail
-          node docs/parallel-work/validate-contract.cjs
-          node docs/parallel-work/test-source-inventory-v1.cjs
-          node research/source_acquisition/p2_expansion/test_p2_to_w1.cjs
-          node research/validation_framework/tests/test_historical_link.cjs
-          node docs/parallel-work/test_w4_p2_independent_source_audit.cjs
-          node --test research/source_comparability/audit.test.cjs research/source_comparability/audit.integration.test.cjs
+          python - <<'PY'
+          import hashlib,sys,tempfile
+          from pathlib import Path
+          sys.path.insert(0,str(Path('research/semantic_representations').resolve()))
+          from fixtures import fixture_frame
+          from pipeline import encode,sha
+          from local_model import LocalModelEncoder,model_identity
+          frame=fixture_frame()
+          row=frame['rows'][0]
+          row['text']=('Synthetic international cooperation language, with Unicode café. ' * 90)
+          row['text_sha256']=sha(row['text'].encode())
+          model=model_identity()
+          encoder=LocalModelEncoder(Path('/tmp/unga-pinned-minilm'))
+          settings={'metric':'cosine','pooling':'upstream_chunk_token_weighted'}
+          with tempfile.TemporaryDirectory() as tmp:
+              a=encode(frame,model,settings,encoder,Path(tmp),batch_size=4)
+              assert a['coverage']['encoded']==16,a['coverage']
+              assert a['coverage']['not_fitted']==0,a['coverage']
+              long=next(r for r in a['rows'] if r['id']==row['id'])
+              assert long['chunks']>1,long
+              b=encode(frame,model,settings,encoder,Path(tmp),batch_size=4)
+              assert b['coverage']['cache_hits']==16,b['coverage']
+              assert a['rows']==b['rows']
+              print('PINNED_ONNX_16_OF_16_PASS; LONG_WORDPIECES_CHUNKED; WARM_CACHE_16_OF_16_PASS; NO_NETWORK_IN_INFERENCE')
+          PY
