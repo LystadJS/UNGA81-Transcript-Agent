@@ -116,6 +116,10 @@
             "audience": {
               "const": "synthetic:unga81-metadata-preflight"
             },
+            "audit_tip_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
             "expires_at": {
               "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
               "type": "string"
@@ -134,12 +138,20 @@
             "permission": {
               "const": "no_source_access_or_release"
             },
+            "policy_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
             "purpose": {
               "const": "synthetic_revocation_verification"
             },
             "registry_id": {
               "pattern": "^synthetic:[A-Za-z0-9][A-Za-z0-9._:-]{0,100}$",
               "type": "string"
+            },
+            "registry_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
             },
             "revoked_key_ids": {
               "items": {
@@ -160,13 +172,16 @@
           },
           "required": [
             "audience",
+            "audit_tip_sha256",
             "expires_at",
             "fixture_kind",
             "issuer_ref",
             "observed_at",
             "permission",
+            "policy_sha256",
             "purpose",
             "registry_id",
+            "registry_sha256",
             "revoked_key_ids",
             "schema",
             "sequence"
