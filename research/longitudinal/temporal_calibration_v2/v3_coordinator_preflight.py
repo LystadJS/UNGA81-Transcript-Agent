@@ -33,6 +33,10 @@ def review_candidate():
         "V3_IDENTIFICATION_FREEZE_DECISION.md","v3_identification_decision.json",
         "v3_freeze_candidate.py","test_v3_freeze_candidate.py",
         "v3_coordinator_preflight.py","test_v3_coordinator_preflight.py",
+        "v3_finite_year_continuous.py","v3_finite_year_study.py",
+        "test_v3_finite_year_continuous.py","test_v3_finite_year_replay.py",
+        "v3_finite_year_development_receipt.json","v3_finite_year_failure_masks.json",
+        "V3_FINITE_YEAR_CONTINUOUS_REVIEW.md",
     }
     if set(candidate["source_sha256"]) != expected:
         raise ValueError("freeze candidate source completeness failed")
@@ -77,6 +81,23 @@ def review_candidate():
             numer["covariance_completed"]+numer["covariance_refused"]!=numer["covariance_attempts"] or
             numer["gamma_refused"]+numer["covariance_refused"]!=numer["all_failed_fit_ids_retained"]):
         raise ValueError("prospective review evidence loses failed attempts")
+    finite=json.loads((ROOT/"v3_finite_year_development_receipt.json").read_text())
+    masks=json.loads((ROOT/"v3_finite_year_failure_masks.json").read_text())
+    if (finite.get("schema")!="un.w4.v3.finite-year-development-replay.v1" or
+            finite.get("holdout_attempted")!=0 or finite.get("statistical_acceptance") is not False or
+            masks.get("v3_holdout_attempted")!=0 or masks.get("real_fit_authorized") is not False):
+        raise ValueError("finite-year research improperly authorizes confirmation")
+    if (finite["gamma_methods_attempted"] != finite["gamma_methods_completed"]+finite["gamma_methods_refused"] or
+            finite["gamma_bootstrap_attempted"] != finite["gamma_bootstrap_completed"]+finite["gamma_bootstrap_failed"] or
+            finite["cov_methods_attempted"] != finite["cov_methods_completed"]+finite["cov_methods_refused"]):
+        raise ValueError("finite-year research attempt conservation failed")
+    recovered=sum(int(x["mask_hex"],16).bit_count() for x in masks["masks"])
+    if (recovered!=finite["failure_ledger_count"] or recovered!=masks["failures"] or
+            masks["canonical_uncompressed_failure_sha256"]!=finite["failure_ledger_canonical_sha256"]):
+        raise ValueError("finite-year failed-fit index or checksum mismatch")
+    # Continuous-bound correctness is mathematical and conditional. In
+    # particular, neither upper scale source nor UN annual-selection
+    # unbiasedness is authenticated by this source-free synthetic module.
     # An independent reviewer must not infer effective independent year
     # replicates from this descriptive year-score sandwich.
     gates={
@@ -91,6 +112,9 @@ def review_candidate():
         "year_serial_dependence_aware_gamma_interval": "FAIL_NOT_IDENTIFIED",
         "gamma_model_misspecification_and_coverage": "DEVELOPMENT_YEAR_FE_POINT_BIAS_IMPROVED_BUT_INTERVAL_UNCALIBRATED",
         "year_process_nugget_external_identification": "FAIL_NOT_IDENTIFIED",
+        "continuous_nuisance_variance_upper_bound": "PASS_CONDITIONAL_MATHEMATICAL_PROOF_ONLY",
+        "external_empirical_year_scale_upper_source": "NOT_VERIFIED",
+        "calendar_year_block_refit_gamma_interval": "DEVELOPMENT_NOT_CALIBRATED",
         "response_audit_real_source_independence": "NOT_VERIFIED",
         "source_design_era_comparability": "NOT_VERIFIED",
         "full_prespecified_grid_and_thresholds": "NOT_FROZEN",
@@ -104,8 +128,8 @@ def review_candidate():
         "candidate_source_sha256":candidate["source_sha256"],
         "gates":gates,
         "methodological_resolution":{
-            "gamma":"year fixed effects improve conditional point gamma bias for correlated synthetic response/outcome-year shocks, but T16 diagnostic intervals remain uncalibrated and serial propensity rho recovery insufficient",
-            "measurement":"externally measured Gaussian replicate noise restricts assumed covariance sensitivity envelope; intrinsic calendar-year nugget remains unidentified, and the hypothesis-dependent envelope lacks formal coverage guarantees",
+            "gamma":"new full year-block FE refits included with all optimizer failures; finite T16/actor dependence and randomized audit variation remain insufficient for calibrated confidence intervals",
+            "measurement":"algebraically conservative bound over a continuous nonnegative rho/nugget rectangle conditional on an external total year-scale upper bound; empirical bound and unbiased Gaussian year panel not independently authenticated",
             "selection":"without randomized recovery of missing original outcomes, outcome-dependent transcript selection is not identified",
         },
         "identification_counterexamples":{
