@@ -72,10 +72,10 @@ class IndependentPR82Review(unittest.TestCase):
             raise AssertionError('R and Node are required, not optional/skippable')
         for name, expected in {
             'us_reference.py':'e33b4b40fbe18ab98365501cad45d9529b104d33',
-            'arithmetic.R':'9b234a190ef5089543ca5758eefb2d75fed1e5ee',
+            'arithmetic.R':'0fe4748d88d8ea95a4c6f9422d47239e823f933c',
             'read_model.cjs':'2416e015a86e41edaac4e6115b84a5eca137a32b',
             'schema_contract.py':'41b425822b2846a182c24ca83a8428de390938cb',
-            'make_schema.py':'a478cce5324622abda03bed02595aa9fd78f72b3',
+            'make_schema.py':'fbdaabf88655d42f491f129770bb2b6bfe705161',
         }.items():
             raw = (PKG/name).read_bytes()
             actual = hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
@@ -160,8 +160,8 @@ class IndependentPR82Review(unittest.TestCase):
 
 if __name__=='__main__':
     result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(IndependentPR82Review))
-    record = {'kind':'independent_pr82_synthetic_review','candidate_head':'32112ff5793c1be763db709aa3ef536fb409428a',
-        'review_base':'f593301d27dc300ec6a77621846cc75bfacd43da','mode':os.environ.get('PR82_REVIEW_MODE'),
+    record = {'kind':'independent_pr82_synthetic_review','candidate_head':'81110db49786a05f9c8f8ce4d5103c92fe255586',
+        'review_base':'5f0a872cff0899819b21326e6c18b7af794556c5','mode':os.environ.get('PR82_REVIEW_MODE'),
         'tests_run':result.testsRun,'failures':[str(t) for t,_ in result.failures],
         'errors':[str(t) for t,_ in result.errors],'skipped':[str(t) for t,_ in result.skipped],
         'result':'pass' if result.wasSuccessful() and not result.skipped else 'fail',
