@@ -71,6 +71,16 @@ class IndependentIntegratedAndPartialReplay(unittest.TestCase):
             self.assertEqual(prior["refused_method_fits"],len(failed))
             self.assertEqual(prior["failed_method_replicate_masks"],masks)
             self.assertEqual(prior["full_failures_sha256"],checksum)
+            self.assertEqual(len(prior["scenarios"]),len(core["scenarios"]))
+            for previously_saved,newly_computed in zip(prior["scenarios"],core["scenarios"]):
+                self.assertEqual(previously_saved.keys(),newly_computed.keys())
+                for field in previously_saved:
+                    left,right=previously_saved[field],newly_computed[field]
+                    if isinstance(left,float) and isinstance(right,float):
+                        self.assertAlmostEqual(left,right,places=7,
+                                               msg=previously_saved["scenario"]+":"+field)
+                    else:
+                        self.assertEqual(left,right,previously_saved["scenario"]+":"+field)
             self.assertFalse(prior["statistical_freeze_accepted"])
             self.assertEqual(prior["v3_holdout_attempted"],0)
         print("V3_INTEGRATED_DEVELOPMENT_REPLAY="+json.dumps(core,sort_keys=True,
