@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 import sys
 from protocol import (load_contract, validate_envelope, changed_path_violations, qa_summary,
-                      result_record, canonical_json)
+                      result_record, canonical_json, check_isolation)
 from inventory import build
 from replay import replay
 from security import scan_public, scan_bytes
@@ -57,6 +57,12 @@ def build_summary(repo_root: Path, *, public_root: Path | None = None,
     sentinel_hits=scan_bytes(b'SYNTHETIC_PRIVATE_TRANSCRIPT_SENTINEL\n-----BEGIN PRIVATE KEY-----')
     checks.append(result_record('privacy_negative_control','PASS' if len(sentinel_hits)>=2 else 'FAIL',
                     f'{len(sentinel_hits)} expected classes detected' if len(sentinel_hits)>=2 else 'negative control missed'))
+    synthetic_train=[{'id':'syn-train','source_family_id':'synthetic-shared','text_sha256':'a'*64}]
+    synthetic_test=[{'id':'syn-eval','source_family_id':'synthetic-shared','text_sha256':'b'*64}]
+    isolation_hits=check_isolation(synthetic_train, synthetic_test)
+    checks.append(result_record('evaluation_leakage_negative_control',
+         'PASS' if 'evaluation leakage: source_family_id' in isolation_hits else 'FAIL',
+         'shared synthetic source-family identity rejected' if isolation_hits else 'source-family leakage missed'))
     if public_root is None:
         checks.append(result_record('actual_public_build_privacy_scan','NOT RUN','public staging directory not supplied'))
     else:
