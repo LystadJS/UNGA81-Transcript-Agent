@@ -122,7 +122,7 @@ class RestartCompromiseTests(unittest.TestCase):
     def test_08_changed_pin_or_trust_root_is_withheld(self):
         p = replace(self.pin1, state_sha256='a'*64)
         self.assertEqual(self._evaluate(pin=p)['status'], 'withheld')
-        f = deepcopy(self.original)
+        f = fixture()  # fresh synthetic key objects cannot be deep-copied
         f['trust'] = replace(f['trust'], expected_registry_sha256='e'*64)
         self.assertEqual(self._evaluate(f)['status'], 'withheld')
 
