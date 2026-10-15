@@ -29,6 +29,30 @@ class InventoryTests(unittest.TestCase):
             self.assertIsNone(obj['methods'][1]['runner'])
             self.assertEqual(obj['methods'][1]['execution_evidence'],'inherited declaration; not independently executed')
 
+    def test_registry_snapshot_detects_source_drift(self):
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td)
+            (root/'research/reproducibility_audit').mkdir(parents=True)
+            source=self.synthetic_catalog()
+            raw=(json.dumps(source,sort_keys=True)+'\n').encode()
+            (root/'research/catalog.json').write_bytes(raw)
+            snapshot={'source_blob_sha':protocol.git_blob_sha(raw),
+                      'source_catalog_schema':source['schema'],
+                      'methods':[{'method_id':m['id'],'name':m['method'],
+                                  'required_gates':m['required_gates'],
+                                  'registered_state':m['research_kernel'],
+                                  'runner':None if m['runner'] is None else 'research/'+m['runner']}
+                                 for m in source['methods']]}
+            source['backlog_methods']=2;source['synthetic_kernels']=1
+            # Correct the metadata fixture before testing the signed snapshot.
+            raw=(json.dumps(source,sort_keys=True)+'\n').encode()
+            (root/'research/catalog.json').write_bytes(raw)
+            snapshot['source_blob_sha']=protocol.git_blob_sha(raw)
+            (root/'research/reproducibility_audit/method_inventory.json').write_text(json.dumps(snapshot))
+            self.assertEqual(inventory.verify_snapshot(root),[])
+            (root/'research/catalog.json').write_bytes(raw+b' ')
+            self.assertIn('method catalog source Git blob mismatch',inventory.verify_snapshot(root))
+
     def test_duplicate_catalog_id_rejected(self):
         c=self.synthetic_catalog();c['methods'][1]['id']='M03'
         with tempfile.TemporaryDirectory() as td:
