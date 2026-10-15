@@ -25,8 +25,10 @@ jobs:
       REVIEW_BASE: 'da4ab9ed11dba3693d11aa12f5333963b1b85478'
       REVIEW_MODE: ${{ matrix.mode }}
       CANDIDATE: ${{ github.event.pull_request.head.sha }}
-      OUT: ${{ runner.temp }}/usref-phase2-${{ matrix.mode }}
     steps:
+      - name: Initialize runner-local artifact directory
+        shell: bash
+        run: echo "OUT=$RUNNER_TEMP/usref-phase2-$REVIEW_MODE" >> "$GITHUB_ENV"
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
