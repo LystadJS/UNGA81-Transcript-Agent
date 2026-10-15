@@ -318,6 +318,11 @@ def verify_multi_host(snapshot: object, policy: object, events: object,
                  and prev.revocation_sequence <= revocation["payload"]["sequence"],
                  "observer_source_or_revocation_regression")
         revhash = content_digest(REVOCATION_SCHEMA, revocation["payload"])
+        # Never accept a different signed revocation hash at an unchanged
+        # sequence even if both signers and a witness quorum are compromised.
+        _require(revocation["payload"]["sequence"] != prev.revocation_sequence
+                 or revhash == prev.revocation_sha256,
+                 "revocation_same_sequence_rewrite")
         entries = _log_validate(log_entries, source_trust.expected_registry_sha256,
                                 revhash, now)
         _require(prev.log_length < len(entries)
