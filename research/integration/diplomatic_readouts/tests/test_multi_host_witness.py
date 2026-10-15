@@ -402,5 +402,52 @@ class MultiHostSyntheticTests(unittest.TestCase):
         self.withhold("witness_gossip_fork_detected")
 
 
+    def test_37_closed_portable_receipt_schema(self):
+        from jsonschema import Draft202012Validator
+        schema=json.loads((HERE / "multi_host_witness_receipt.v0.schema.json").read_text())
+        Draft202012Validator.check_schema(schema)
+        validator=Draft202012Validator(schema)
+        good=inspect(self.f)
+        self.assertFalse(list(validator.iter_errors(good)))
+        fail=deepcopy(good)
+        fail["authorized"] = True
+        self.assertTrue(list(validator.iter_errors(fail)))
+        self.f["attestations"] = self.f["attestations"][:2]
+        rejected=inspect(self.f)
+        self.assertFalse(list(validator.iter_errors(rejected)))
+
+    def test_38_seeded_fourteen_attack_stress_replay(self):
+        from stress_multi_host import simulate
+        a=simulate(iterations=28,seed=8123)
+        b=simulate(iterations=28,seed=8123)
+        self.assertEqual(a,b)
+        self.assertEqual(a["failures"],0)
+        self.assertEqual(len(a["cases"]),14)
+        self.assertEqual(sum(v["attempted"] for v in a["cases"].values()),28)
+        self.assertFalse(a["authorized"])
+        self.assertEqual(a["transcripts_opened"],0)
+
+    def test_39_stress_iteration_controls_reject_bool_and_overrun(self):
+        from stress_multi_host import simulate
+        for invalid in (True, False, 27, 2049, 0, -1):
+            with self.subTest(value=invalid):
+                with self.assertRaises(ValueError):
+                    simulate(iterations=invalid)
+
+    def test_40_unpinned_prefix_cannot_be_substituted_in_place(self):
+        f=self.f
+        changed=[]
+        for i,e in enumerate(f["log"]):
+            changed.append(new_log_event(changed,
+                                         ("synthetic:edited-start" if i==0 else e["event_id"]),
+                                         e["kind"],e["registry_sha256"],
+                                         e["revocation_sha256"],e["occurred_at"]))
+        f["log"]=changed
+        f["checkpoint"]["log_sha256"]=log_digest(changed)
+        f["checkpoint"]["log_tip_sha256"]=changed[-1]["event_sha256"]
+        resign_host(f)
+        self.withhold("witness_log_prefix_fork_or_rollback")
+
+
 if __name__ == "__main__":
     unittest.main()
