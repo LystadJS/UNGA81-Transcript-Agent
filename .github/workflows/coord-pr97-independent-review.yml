@@ -1,0 +1,91 @@
+name: Coordinator PR97 independent failure-control review
+on:
+  pull_request:
+    paths:
+      - 'research/integration/w2_w4_w6/pr97_review/**'
+      - '.github/workflows/coord-pr97-independent-review.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  review:
+    name: pr97-review-${{ matrix.mode }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [head, effective-tree]
+    env:
+      REVIEW_MODE: ${{ matrix.mode }}
+      REVIEWER_SHA: ${{ github.event.pull_request.head.sha }}
+      PYTHONHASHSEED: '0'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: reviewer
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /research/integration/w2_w4_w6/pr97_review/
+            /.github/workflows/coord-pr97-independent-review.yml
+      - uses: actions/checkout@v4
+        with:
+          ref: ab559b74842e9a9165bf619f4869015d90588e8c
+          path: candidate
+          fetch-depth: 0
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /research/integration/w2_w4_w6/usref_integration/
+            /.github/workflows/coord-us-relative-integration.yml
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.16'
+      - name: Pin gate code and record metadata-only execution
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/pr97-review-$REVIEW_MODE"
+          echo "OUT=$OUT" >> "$GITHUB_ENV"
+          mkdir -p "$OUT"
+          cd candidate
+          test "$(git rev-parse HEAD)" = ab559b74842e9a9165bf619f4869015d90588e8c
+          if [ "$REVIEW_MODE" = effective-tree ]; then
+            TREE=$(git merge-tree --write-tree HEAD da4ab9ed11dba3693d11aa12f5333963b1b85478)
+          else
+            TREE=$(git rev-parse 'HEAD^{tree}')
+          fi
+          git ls-tree -r HEAD -- research/integration/w2_w4_w6/usref_integration .github/workflows/coord-us-relative-integration.yml > "$OUT/head-code.txt"
+          git ls-tree -r "$TREE" -- research/integration/w2_w4_w6/usref_integration .github/workflows/coord-us-relative-integration.yml > "$OUT/tested-code.txt"
+          cmp "$OUT/head-code.txt" "$OUT/tested-code.txt"
+          printf '%s\n' "candidate=$(git rev-parse HEAD)" "base=da4ab9ed11dba3693d11aa12f5333963b1b85478" "mode=$REVIEW_MODE" "tree=$TREE" "reviewer=$REVIEWER_SHA" > "$OUT/execution.txt"
+      - name: Read retained successful synthetic artifacts only
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38806920470
+          github-token: ${{ github.token }}
+          pattern: usref-gate-*
+          path: ${{ runner.temp }}/pr97-pristine
+      - name: Retain unchanged original gate-control results
+        shell: bash
+        run: |
+          set -euo pipefail
+          python candidate/research/integration/w2_w4_w6/usref_integration/test_gate.py -v 2>&1 | tee "$OUT/original-controls.log"
+      - name: Independently reconstruct trees and challenge evidence validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python reviewer/research/integration/w2_w4_w6/pr97_review/test_review.py \
+            --gate-root "$GITHUB_WORKSPACE/candidate/research/integration/w2_w4_w6/usref_integration" \
+            --metadata-repo "$GITHUB_WORKSPACE/candidate" \
+            --artifacts "$RUNNER_TEMP/pr97-pristine" --out "$OUT" 2>&1 | tee "$OUT/review-tests.log"
+      - name: Retain reviewer evidence, including failing regression cases
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr97-review-${{ matrix.mode }}
+          path: ${{ env.OUT }}
+          if-no-files-found: error
+          retention-days: 14
