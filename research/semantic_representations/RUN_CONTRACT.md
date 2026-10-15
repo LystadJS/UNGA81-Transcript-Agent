@@ -1,0 +1,29 @@
+# Execution and provenance contract, semantic research v1
+
+**Approved input split:** `development` with independently authenticated and authorized upstream source receipts, or explicitly authored `synthetic`. `holdout`, unknown or restricted splits fail before any text is encoded. The 37 reserved October 5–6 meetings are not available to this workstream. No autonomous download of text, audio, model checkpoints or source ledgers occurs.
+
+## Input frame (`un.semantic-input-frame.v1`)
+
+Top-level required fields: `schema,split,source_schema,source_hash_basis,source_sha256,selection_sha256,population,unit,source_group_unit,weighting,selection_policy,duplicate_policy,inventory_total,rows`. Accepted source schemas: `synthetic.v1`, `un.browser.corpus.v1`, `un.passage-corpus.v1`, `un.review.v1`, `un.latent-comparison.v1`. Hash basis is mandatory and cannot be silently exchanged between UTF-8 decoded text, source bytes and canonical exports. `source_sha256` binds the population input, and `selection_sha256` binds the selected/source-frame accounting. A hash in a user-authored frame is **not** itself a source-authentication receipt.
+
+Each row requires stable `id`, `source_id`, `source_sha256`, original `text_sha256` for eligible text, `source_status`, `exclusion_reasons`, `missing_reason` when excluded or unavailable, `review_status`, `unit`, and original `text` only when eligible. Optional metadata is carried *without inferring* `country` (affiliation only), `meeting_id`, `speech_id` (must be verified), `source_family_id`, `source_url` and source-specific offsets. A declared parent needs `parent_id`, `parent_text_sha256`, `parent_length`, and zero-based end-exclusive Unicode `start/end` within that length. A missing parent hash/bound rejects rather than guessing. Transcripts are hashed as original UTF-8; normalization is left to the pinned model tokenizer. Never reinterpret research corpus raw-byte digests as browser decoded-text digests.
+
+Frame counts retain **inventory**, **in-frame**, **eligible**, **excluded**, **unavailable**, **not-in-frame**, **encoded**, **not fitted**, **cache hits/misses** and **attempted/successful/failed batches**, without treating unknown material as absent issue content. No reliance on country identity for a text join. No training on selected future rows; the pretrained encoder stays fixed, and saved lexical geometries are read, never silently refitted.
+
+## Source identity and cache
+
+Per-row cache key binds representation identity, upstream source corpus/hash basis, selection, observed text hash, original document hash, source ID, observation ID and unit. Representation identity binds model artifact lock, model revision, tokenizer, transformation settings, this pipeline's code SHA-256, and the encoder source SHA-256. Cached normalized vectors are SHA-256 checked; keys are content addressed; each row is written through an atomic replace. Corrupted cache is an error, not an invitation to silently recompute. A failed batch preserves previous successful rows; the failure ledger preserves attempts. Caches are private, and the CLI refuses storing them under the public repository. Restarts are permitted only with matching keys and identical preprocessing/encoder identity.
+
+## Local model requirements
+
+Model revision `1110a243fdf4706b3f48f1d95db1a4f5529b4d41`; existing exact official ONNX CPU model under `research/semantic_review/model-lock.json`, read-only; 10 pinned public checkpoint/config/tokenizer files. Python 3.13 required; `numpy 2.3.5`, `scipy 1.17.0`, `scikit-learn 1.8.0`, `threadpoolctl 3.6.0`, `onnxruntime 1.23.0`, `tokenizers 0.22.1` (exact checks). CPU only, thread count 1 in upstream encoder, max batch 32, max 5,000 observations, max 100,000 source Unicode codepoints/observation and upstream 20,000 wordpiece ceiling. Max sequence 256 with 254 original WordPieces + specials; **no truncation**. English language is required for development inputs, and uncertain translation/genre comparability must remain a separate review. Full upstream dependencies may need wheelhouse/OS-specific hashes for bitwise multi-host reproducibility; not available here.
+
+## Read-only lexical/semantic comparison
+
+Use only an authenticated archived `un.lexical-saved-reference.v1` extracted from existing source-bound TF-IDF/PCA/LSA fit. It must declare input `frame_sha256`, `source_sha256`, `source_hash_basis`, `selection_sha256`, exact ordered source IDs with original text/document hashes, unit and population, fitted transform digest, settings digest, fit version, and normalized saved vectors/digests. No refit is attempted. Cross-basis comparison uses named protocol `same-observation-lexical-semantic-v1`. It refuses mismatched frame, selection, original source, units, order and representation basis. Missing vectors and failed fits remain counted. Report k-nearest-neighbor intersection, assessable denominators, source-group exclusions, seed sensitivity, failures and ARI only as descriptive measures. Seeded medoid fixtures are independent of existing PCA/LSA production kernels and cannot establish superiority.
+
+## Adapter boundary
+
+`un.semantic-readonly.v1` carries only row source hashes, identities, status, vector hashes and aggregate coverage; no raw text, vectors or inferred country positions. **Development metadata remains private:** `readonly_browser(..., public=True)` refuses a development split. `un.parallel-analysis.v1` is coordinator-controlled; this non-W1–W7 workstream only validates its read-only inputs, and does not spoof a registered producer ID or add a shared schema/version.
+
+Synthetic and real checkpoint tests are separate. Authored semantic contrast cases are not a random holdout or accuracy estimate. No statement about statistically nonrandom diplomatic structures, policy alliances, causal diffusion or nation-level positions can follow from similarity or cluster co-assignment.

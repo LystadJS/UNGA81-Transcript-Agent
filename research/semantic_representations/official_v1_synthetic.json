@@ -1,0 +1,125 @@
+{
+  "schema": "un.parallel-analysis.v1",
+  "contract_version": "1.0.0",
+  "producer": {
+    "workstream_id": "W2",
+    "adapter_version": "0.1.0",
+    "code_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "runtime": "node-22",
+    "generated_at": "2026-10-08T00:00:00Z",
+    "fixture_kind": "synthetic"
+  },
+  "upstream": {
+    "source_schema": "un.browser.corpus.v1",
+    "source_engine": "synthetic-browser-fixture",
+    "source_hash_basis": "utf8_corpus_export",
+    "source_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "frame_sha256": null,
+    "corpus_sha256": null,
+    "selection_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "review_sha256": null,
+    "missing_reason": null
+  },
+  "cohort": {
+    "split": "synthetic",
+    "population": "synthetic_passages",
+    "unit": "synthetic",
+    "selection_policy": "all synthetic rows",
+    "weighting": "equal_passage",
+    "source_group_unit": "meeting",
+    "duplicate_policy": "retain_and_audit",
+    "total_in_frame": 1,
+    "eligible": 1
+  },
+  "observations": [
+    {
+      "id": "synthetic-1",
+      "text_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "parent_id": null,
+      "parent_text_sha256": null,
+      "meeting_id": null,
+      "speech_id": null,
+      "source_family_id": null,
+      "date": "2026-10-01",
+      "country": null,
+      "source_url": null,
+      "json_pointer": null,
+      "start": null,
+      "end": null,
+      "unit": "synthetic",
+      "review_status": "not_applicable",
+      "exclusion_reasons": [],
+      "source_status": "available",
+      "missing_reason": null
+    }
+  ],
+  "models": [
+    {
+      "model_id": "demo-1",
+      "method_family": "partition",
+      "method": "pam",
+      "representation_id": "synthetic-representation-1",
+      "representation_version": "1",
+      "fit_version": "1",
+      "fit_split": "synthetic",
+      "parameters_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "training_selection_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "diagnostic_basis": "synthetic fixture"
+    }
+  ],
+  "results": [
+    {
+      "model_id": "demo-1",
+      "observation_id": "synthetic-1",
+      "status": "unassigned",
+      "cluster": 0,
+      "membership_kind": "none",
+      "memberships": null,
+      "membership_strength": null,
+      "representation_basis_id": "synthetic-representation-1",
+      "reason": "Synthetic explicit abstention"
+    }
+  ],
+  "coverage": {
+    "inventory_meetings": 1,
+    "observations_total": 1,
+    "eligible": 1,
+    "excluded": 0,
+    "unavailable_sources": 0,
+    "models": [
+      {
+        "model_id": "demo-1",
+        "eligible": 1,
+        "assigned": 0,
+        "unassigned": 1,
+        "not_fitted": 0,
+        "excluded": 0,
+        "attempted_fits": 1,
+        "successful_fits": 1,
+        "failed_fits": 0
+      }
+    ],
+    "failure_ledger": []
+  },
+  "evidence": [],
+  "diagnostics": [
+    {
+      "model_id": "demo-1",
+      "name": "synthetic_coverage",
+      "value": 0,
+      "denominator": 1,
+      "unit": "observation",
+      "status": "descriptive",
+      "reason": null
+    }
+  ],
+  "limitations": [
+    {
+      "code": "synthetic_only",
+      "scope": "all",
+      "description": "Illustrative only; no diplomatic source, accuracy or release claim."
+    }
+  ],
+  "publication_eligible": false,
+  "evaluation_role": "engineering_only"
+}
