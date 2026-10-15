@@ -147,3 +147,11 @@ jobs:
           print('INDEPENDENT_HOLDOUT_SCOPED_METRICS='+json.dumps(o['methods'],sort_keys=True))
           print('INDEPENDENT_HOLDOUT_STRATA='+json.dumps(o['strata'],sort_keys=True))
           PY
+
+      - name: Preserve complete synthetic holdout result (no text or embeddings)
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr66-separate-synthetic-holdout-ledger
+          path: ${{ runner.temp }}/independent_holdout_1.json
+          if-no-files-found: error
+          retention-days: 30
