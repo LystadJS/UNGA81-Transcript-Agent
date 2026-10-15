@@ -153,7 +153,7 @@ def review_candidate():
     if len(q0)!=2 or any(x["completed"]!=0 for x in q0):
         raise ValueError("unaudited transcript selection incorrectly identified")
     if (integrated_review["partial_identification"]["historical_source_audit_verified"] or
-            integrated_review["partial_identification"]["repeated_actor_meeting_dependence_supported"] or
+            integrated_review["partial_identification"]["meeting_actor_cluster_validity_established"] or
             integrated_review["integrated_likelihood"]["gamma_interval_calibrated"]):
         raise ValueError("synthetic assumptions improperly promoted to real inference")
     # Continuous-bound correctness is mathematical and conditional. In
