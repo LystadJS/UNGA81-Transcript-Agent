@@ -37,5 +37,25 @@
 | GitHub exact-head CI and coordinator approval | NOT VERIFIED |
 | Scientific publication | WITHHELD |
 
+
+## Independent numerical covariance diagnostic — follow-up (2026-10-15)
+
+**Numerical FAILURE; not an exact-head GitHub CI run.** A separate offline Python 3.13.5 diagnostic on the **local prior-turn prototype** generated 200 synthetic independent 16-year worlds (two meetings/year, four passages/meeting), with AR1 year-shock generator coefficient 0.55 and source-group moments estimated without supplying the generator's coefficients. All 200 fits completed and all 200 single reference draws completed; zero failures. The statistic was observed yearly count-prevalence lag-one correlation, paired against one bootstrap reference on the same source design.
+
+- Across 200 paired worlds, mean lag-one correlation in generated observations: **0.2836830483**.
+- Across the same 200 worlds, mean lag-one correlation in nuisance reference draws: **-0.0646777548**.
+- Mean paired difference: **+0.3483608031**, standard error **0.0263422250** (descriptive, not type-I coverage inference).
+- Estimated year AR1 coefficients: **0/200**. The moment estimator has no rho component, and its independent-meeting bootstrap destroys year-level serial covariance.
+- Local exploratory receipt SHA256 **edc3c4a2564fff9c86831bd81fa67ec485ffe20e38e3d15eb0a3ac8eca684e66**; local benchmark script SHA256 **6860633fcec47e65407c5cf87538427d657d13f9e2b35db533c3b0d0b8dc4ef9**. These hashes refer to the local prototype evaluation, **not committed source files**.
+- A separate repository-owned and reviewable `benchmark_covariance.py` now runs a corresponding diagnostic against **committed** `study.py`, but its exact-head numerical output remains **NOT RUN / NOT VERIFIED**. Do not substitute local-prototype numbers for that output.
+
+**Disposition:** covariance preservation **FAIL** for the tested prototype; scientific calibration remains withheld. These 200 worlds are a development stress experiment, not DESIGN_LOCK's 120 independent holdout worlds, and do not satisfy PR57's 1,999-reference budget. No observed p-values, type-I/coverage or power estimates are inferred from a single reference draw. The confirmed structural gap (rho not estimated, year shocks not sampled) requires design repair before confirmatory holdout use.
+
+**Reproducibility/CI gap:** This execution environment cannot resolve github.com for a Git clone, while the GitHub connector supports read/write contents but not shell execution. The source files in this branch were inspected via the connector, but the complete exact-head committed test suite could not be executed. Latest-head GitHub workflow-run and combined-status queries returned empty arrays; **empty != PASS**. No CI workflow changes were made because worker ownership is limited to this namespace.
+
+**Exact-head executable checks:**
+`cd research/null_calibration && python3 -m unittest -v test_calibration.py test_extended.py test_study.py`
+`cd research/null_calibration && python3 benchmark_covariance.py --worlds 200`
+
 ## Next executable action
 Run exact-head local/CI suites against committed study.py and test_study.py, fix any failures, then implement a source-family-preserving W1/W2 candidate-search/refitting adapter and truly estimated year/meeting/speech/affiliation covariance with parameter identification diagnostics. **Do not run or reinterpret the locked holdout until each model/statistic, null design and failure policy is implemented and development-only checks pass.** Keep this PR draft/unmerged.
