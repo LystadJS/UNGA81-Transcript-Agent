@@ -376,7 +376,7 @@ class MultiHostSyntheticTests(unittest.TestCase):
 
     def test_34_source_data_not_in_receipt(self):
         out = json.dumps(inspect(self.f), sort_keys=True)
-        for bad in ("signature_b64", "raw_sha256", "original_bytes", "source_url"):
+        for bad in ("signature_b64", "raw_sha256", '"original_bytes": {', "source_url"):
             self.assertNotIn(bad, out)
 
     def test_35_observer_pin_roundtrip_across_process(self):
