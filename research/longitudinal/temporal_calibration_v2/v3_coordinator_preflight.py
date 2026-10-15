@@ -20,6 +20,10 @@ def review_candidate():
         "test_v3_dependence_benchmark.py","test_v3_dependence_replay.py",
         "DEVELOPMENT_DEPENDENCE_RESULTS_V3.md",
         "v3_development_failure_masks.json",
+        "v3_serial_partial.py","v3_serial_partial_study.py",
+        "test_v3_serial_partial.py","test_v3_serial_partial_replay.py",
+        "v3_serial_partial_failure_index.json",
+        "SERIAL_RESPONSE_PARTIAL_COVARIANCE_V3.md",
     }
     if set(candidate["source_sha256"]) != expected:
         raise ValueError("freeze candidate source completeness failed")
@@ -38,7 +42,7 @@ def review_candidate():
         "holdout_execution_suppressed": "PASS",
         "v2_frozen_integrity": "NOT_INDEPENDENTLY_REHASHED_BY_THIS_MODULE",
         "year_serial_dependence_aware_gamma_interval": "FAIL_NOT_IDENTIFIED",
-        "gamma_model_misspecification_and_coverage": "DEVELOPMENT_FAIL_NOMINAL_90_DIAGNOSTICS",
+        "gamma_model_misspecification_and_coverage": "DEVELOPMENT_YEAR_FE_POINT_BIAS_IMPROVED_BUT_INTERVAL_UNCALIBRATED",
         "year_process_nugget_external_identification": "FAIL_NOT_IDENTIFIED",
         "response_audit_real_source_independence": "NOT_VERIFIED",
         "source_design_era_comparability": "NOT_VERIFIED",
@@ -53,8 +57,8 @@ def review_candidate():
         "candidate_source_sha256":candidate["source_sha256"],
         "gates":gates,
         "methodological_resolution":{
-            "gamma":"development-only score-HAC and circular-year-block bootstrap implemented and compared; model misspecification and T16 interval calibration unresolved",
-            "measurement":"external replicate-noise variance does not identify calendar process nugget; exact information rank deficiency and high finite-year moment refusal documented",
+            "gamma":"year fixed effects improve conditional point gamma bias for correlated synthetic response/outcome-year shocks, but T16 diagnostic intervals remain uncalibrated and serial propensity rho recovery insufficient",
+            "measurement":"externally measured Gaussian replicate noise restricts assumed covariance sensitivity envelope; intrinsic calendar-year nugget remains unidentified, and the hypothesis-dependent envelope lacks formal coverage guarantees",
             "selection":"without randomized recovery of missing original outcomes, outcome-dependent transcript selection is not identified",
         },
         "approved":False,"v3_holdout_authorized":False,"real_fit_authorized":False,
