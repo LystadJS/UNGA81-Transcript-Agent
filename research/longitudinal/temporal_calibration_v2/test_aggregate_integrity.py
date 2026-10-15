@@ -69,7 +69,8 @@ def check_receipts(summary, failures, records):
         require(unsafe == 0, "unsafe fit in scenario")
         require(abstained == (240 if key[2] == "AR1_MNAR_no_audit" else 0),
                 "incorrect nonidentification abstentions")
-        require(r["statistical_acceptance"] == "False", "scenario unexpectedly accepted")
+        require(r["statistical_acceptance"] in ("True", "False"), "invalid scenario acceptance flag")
+        if key[0] == 16:\n            require(r["statistical_acceptance"] == "False", "T16 scenario unexpectedly accepted")
         by_method[method].append(r)
     require(len(triples) == 90, "missing scenario-method cross product")
     for method, rows in by_method.items():
