@@ -43,6 +43,10 @@ def review_candidate():
         "v3_hierarchical_external_failure_masks.json",
         "V3_HIERARCHICAL_EXTERNAL_FREEZE_REVIEW.md",
         "v3_hierarchical_freeze_decision.json",
+        "v3_integrated_markov.py","v3_partial_identification.py",
+        "v3_integrated_study.py","test_v3_integrated_markov.py",
+        "test_v3_integrated_replay.py","v3_integrated_development_receipt.json",
+        "V3_INTEGRATED_VS_PARTIAL_ID_REVIEW.md","v3_integrated_freeze_decision.json",
     }
     if set(candidate["source_sha256"]) != expected:
         raise ValueError("freeze candidate source completeness failed")
@@ -125,6 +129,33 @@ def review_candidate():
             hierarchical_review["studies"]["covariance"]["refused"]!=hierarchical["cov_refused"] or
             hierarchical_review["all_failed_fit_records_retained"]!=mask_count):
         raise ValueError("hierarchical coordinator review disagrees with development evidence")
+    # New exact finite-state integrated likelihood versus audited gamma set.
+    # This audit reads ONLY committed source-free synthetic aggregate/method
+    # receipt and never executes the independent future holdout.
+    integrated=json.loads((ROOT/"v3_integrated_development_receipt.json").read_text())
+    integrated_review=json.loads((ROOT/"v3_integrated_freeze_decision.json").read_text())
+    if (integrated.get("schema")!="un.w4.v3.integrated-vs-partial.development.v1" or
+            integrated.get("v3_holdout_attempted")!=0 or integrated.get("statistical_freeze_accepted") is not False or
+            integrated_review.get("status")!="STATISTICAL_FREEZE_NOT_ACCEPTED" or
+            integrated_review.get("v3_holdout_attempted")!=0 or integrated_review.get("real_fit_authorized") is not False):
+        raise ValueError("integrated response/partial gamma study attempted scientific promotion")
+    if (integrated["attempted_method_fits"] != integrated["completed_method_fits"]+
+            integrated["refused_method_fits"] or
+            integrated["refused_method_fits"]!=integrated["failure_ledger_count"] or
+            integrated_review["new_development"]["refused_method_fits"]!=integrated["refused_method_fits"]):
+        raise ValueError("integrated response/partial gamma development attempts mismatch")
+    masks=integrated["failed_method_replicate_masks"]
+    if (sum(int(x["replicate_mask_hex"],16).bit_count() for x in masks) !=
+            integrated["refused_method_fits"]):
+        raise ValueError("integrated response/partial gamma missing failed method identities")
+    integrated_cells=integrated["scenarios"]
+    q0=[x for x in integrated_cells if x["scenario"]=="no_audit_T16"]
+    if len(q0)!=2 or any(x["completed"]!=0 for x in q0):
+        raise ValueError("unaudited transcript selection incorrectly identified")
+    if (integrated_review["partial_identification"]["historical_source_audit_verified"] or
+            integrated_review["partial_identification"]["repeated_actor_meeting_dependence_supported"] or
+            integrated_review["integrated_likelihood"]["gamma_interval_calibrated"]):
+        raise ValueError("synthetic assumptions improperly promoted to real inference")
     # Continuous-bound correctness is mathematical and conditional. In
     # particular, neither upper scale source nor UN annual-selection
     # unbiasedness is authenticated by this source-free synthetic module.
@@ -149,6 +180,11 @@ def review_candidate():
         "hierarchical_year_nuisance_profile": "FAILED_WEAK_IDENTIFICATION",
         "real_external_gaussian_world_scale_calibration": "NOT_AUTHENTICATED",
         "bonferroni_external_scale_continuous_bound": "CONDITIONAL_MATHEMATICS_ONLY",
+        "exact_finite_state_integrated_response_likelihood": "DEVELOPMENT_PASS_NOT_GAUSSIAN_AR1",
+        "integrated_response_gamma_interval_T16": "NOT_CALIBRATED",
+        "binomial_sharp_conditional_gamma_set": "MATHEMATICAL_PASS_ASSUMPTION_CONDITIONAL",
+        "unaudited_missing_outcome_gamma": "NO_FIT_UNRESTRICTED_MNAR",
+        "real_within_year_actor_meeting_iid_design": "NOT_VERIFIED",
         "response_audit_real_source_independence": "NOT_VERIFIED",
         "source_design_era_comparability": "NOT_VERIFIED",
         "full_prespecified_grid_and_thresholds": "NOT_FROZEN",
@@ -162,7 +198,7 @@ def review_candidate():
         "candidate_source_sha256":candidate["source_sha256"],
         "gates":gates,
         "methodological_resolution":{
-            "gamma":"new two-stage hierarchical annual AR1 empirical Bayes attempted, with all fitted correlated T16 nuisance profiles weak; finite-year structural gamma interval still uncalibrated",
+            "gamma":"exact integrated two-state Markov response likelihood improves synthetic point estimation but has no calibrated T16 interval; independently audited finite-sample Bonferroni gamma sets are mathematically valid only with within-year conditional iid and verified randomized q, and remain too wide or unsupported for real originals",
             "measurement":"conditional Bonferroni 2.5% external Gaussian independent-world scale error + 7.5% Gaussian contrast error over a continuous nuisance region; no corresponding historical independent-world scale experiment authenticated",
             "selection":"without randomized recovery of missing original outcomes, outcome-dependent transcript selection is not identified",
         },
