@@ -162,6 +162,16 @@ export async function planQuery(metadata,input) {
   else if(!covers(inv.periods,p)) reason='unsupported_history';
   else if(c.collection_kind==='synthetic_live' && inclusiveDays(p)>LIVE_MAX_DAYS) reason='live_range_limit';
   const periods=new Map(inv.periods.map(x=>[x.id,x]));
+  // Catalogue meetings remain in scope even when no inventory row was supplied.
+  // Unknown dates use period overlap only to withhold, never to invent an event date.
+  const catalogScope=c.meetings.filter(item=>{
+    if(r.meeting!==null)return item.id===r.meeting;
+    const period=periods.get(item.period_id);
+    return item.date===null ? period.start<=p.end && period.end>=p.start : item.date>=p.start && item.date<=p.end;
+  });
+  if(!reason && catalogScope.some(item=>item.protected))reason='protected_scope';
+  if(!reason && catalogScope.some(item=>item.date===null))reason='meeting_date_unknown';
+  if(!reason && catalogScope.some(item=>!inv.observations.some(row=>row.meeting_id===item.id)))reason='meeting_inventory_missing';
   const rows=inv.observations.filter(row=> {
     const period=periods.get(row.period_id);
     return (row.event_date===null ? period.start<=p.end && period.end>=p.start : row.event_date>=p.start && row.event_date<=p.end) && (r.meeting===null || row.meeting_id===null || row.meeting_id===r.meeting);
@@ -188,7 +198,13 @@ export async function planQuery(metadata,input) {
   if(reason) return {schema:'un.query-route-plan.v1',authority:'none',publication_eligible:false,synthetic_only:true,state:'unavailable',reason,query:q,query_sha256:await digest(q),
     source_sha256:null,parent_selection_sha256:null,source_hash_basis:null,inventory_sha256:null,fit_population:null,display_population:null,selection_sha256:null,
     fit_ids:[],display_ids:[],classification:[],days:inclusiveDays(p),source_states:null,excluded_from_country:null};
-  const fitSha=await digest({schema:'u2.fit-population.v1',source:inv.upstream.source_sha256,parent_selection:inv.upstream.selection_sha256,inventory:inv.inventory_sha256,period:p,meeting:r.meeting,topic:r.topic,classification:classified});
+  // Bind exact fitted units, not just row IDs/counts. Country display filters and
+  // navigation aliases are deliberately absent; original inventory hashes are untouched.
+  const unitBasis=fitIds.map(id=>{
+    const b=bindings.get(id);
+    return {id,parent_id:b.parent_id,start:b.start,end:b.end,parent_length:b.parent_length,language:b.language};
+  });
+  const fitSha=await digest({schema:'u2.fit-population.v2',source:inv.upstream.source_sha256,parent_selection:inv.upstream.selection_sha256,inventory:inv.inventory_sha256,period:p,meeting:r.meeting,topic:r.topic,classification:classified,unit_basis:unitBasis});
   const displaySha=await digest({schema:'u2.display-population.v1',parent:fitSha,countries:r.countries,ids:displayIds});
   return {schema:'un.query-route-plan.v1',authority:'none',publication_eligible:false,synthetic_only:true,state:reason?'unavailable':'planned',reason,query:q,query_sha256:await digest(q),
     source_sha256:inv.upstream.source_sha256,parent_selection_sha256:inv.upstream.selection_sha256,source_hash_basis:inv.upstream.source_hash_basis,inventory_sha256:inv.inventory_sha256,

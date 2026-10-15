@@ -34,6 +34,12 @@ async function validateBoundBundle(b,plan,cap,metadata) {
   ensure(equal(b.query,plan.query) && equal(b.capability,cap),'bundle_query_policy');
   await validateProduct(b.product,b.query,b.capability);
   const p=b.product,u=p.upstream;
+  // A signed, internally counted failed attempt still cannot supply a completed
+  // exploratory/inferential result. Source-only descriptive sections remain possible.
+  if(p.fit.succeeded===0)ensure(!p.sections.some(section=>
+    section.claim!=='descriptive' && ['available','partial'].includes(section.data_state) &&
+    (section.finding_ids.length>0 || section.result!==null || section.display!==null)),
+    'unfitted_analytical_result');
   ensure(u.schema==='un.parallel-source-inventory.v1' && u.source_sha256===plan.source_sha256 && u.source_hash_basis===plan.source_hash_basis && u.inventory_sha256===plan.inventory_sha256 && u.selection_sha256===plan.selection_sha256,'source_inventory_binding');
   ensure(equal(p.fit_population,plan.fit_population) && equal(p.display_population,plan.display_population),'population_binding');
   // One C0 language/genre summary cannot stand for a heterogeneous source regime.
