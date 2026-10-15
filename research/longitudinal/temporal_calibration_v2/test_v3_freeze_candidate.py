@@ -5,7 +5,7 @@ from .v3_freeze_candidate import proposal_receipt
 class FreezeCandidateSafety(unittest.TestCase):
     def test_candidate_hashes_and_no_authorization(self):
         r=proposal_receipt()
-        self.assertEqual(len(r["source_sha256"]),34)
+        self.assertEqual(len(r["source_sha256"]),42)
         self.assertTrue(all(len(v)==64 for v in r["source_sha256"].values()))
         self.assertEqual(r["status"],"UNAPPROVED_DESIGN_CANDIDATE_NOT_FROZEN")
         self.assertFalse(r["v3_acceptance_thresholds_locked"])
