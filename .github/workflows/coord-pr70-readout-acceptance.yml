@@ -28,6 +28,21 @@ jobs:
         run: |
           set -euo pipefail
           python -m unittest discover -s research/diplomatic_readouts/tests -v
+      - name: Adversarial source-failure disclosure isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=research/diplomatic_readouts:research/diplomatic_readouts/examples python - <<'PY'
+          from dataclasses import replace
+          from fixtures import fixture, refresh
+          from readout import normalize
+          report, proofs, decision = fixture()
+          report["reviewer_note"] = "UNSUPPORTED claim of a diplomatic realignment"
+          proofs["synthetic:A"] = replace(proofs["synthetic:A"], accepted=False)
+          view = normalize(report, proofs, refresh(report, decision))
+          assert view["release_state"] == "withheld"
+          assert "UNSUPPORTED" not in str(view), "Invalid source exposed an unauthorized report-level claim"
+          PY
       - name: Generate twice; verify deterministic states, restricted output and manifests
         shell: bash
         run: |
