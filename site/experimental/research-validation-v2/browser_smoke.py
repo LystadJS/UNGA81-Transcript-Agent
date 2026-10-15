@@ -7,6 +7,7 @@ import contextlib
 import functools
 import http.server
 import json
+import hashlib
 import os
 import pathlib
 import shutil
@@ -53,6 +54,7 @@ def assert_plot(page, name):
 
 
 def test_size(browser, base_url, out, width, height, html=None):
+    served_navigation = html is None
     context = browser.new_context(viewport={'width': width, 'height': height}, accept_downloads=True)
     page = context.new_page()
     bad_network = []
@@ -89,9 +91,9 @@ def test_size(browser, base_url, out, width, height, html=None):
     assert data['panels'][2]['alignments'][1]['status'] == 'withheld'
     with page.expect_download() as info:
         page.locator('#rv-html').click()
-    html=pathlib.Path(info.value.path()).read_text()
-    assert '<script' not in html.lower() and 'fetch(' not in html.lower()
-    assert 'SRC-E' in html and 'missing/failed 2' in html
+    exported_html=pathlib.Path(info.value.path()).read_text()
+    assert '<script' not in exported_html.lower() and 'fetch(' not in exported_html.lower()
+    assert 'SRC-E' in exported_html and 'missing/failed 2' in exported_html
     with page.expect_download() as info:
         page.locator('#rv-svg').click()
     ET.parse(info.value.path())
@@ -122,6 +124,9 @@ def test_size(browser, base_url, out, width, height, html=None):
     assert not exceptions
     assert not bad_network
     context.close()
+    return {'width':width,'height':height,'served_navigation':served_navigation,
+            'unexpected_requests':len(bad_network),'uncaught_page_errors':len(exceptions),
+            'horizontal_overflow_px':overflow,'keyboard_and_export_replay':'PASS'}
 
 
 def main():
@@ -130,6 +135,8 @@ def main():
     parser.add_argument('--browser',default=os.environ.get('CHROME_BIN') or
                         shutil.which('chromium') or shutil.which('google-chrome'),
                         help='Installed Chromium/Chrome path (defaults to CHROME_BIN or PATH)')
+    parser.add_argument('--require-served-navigation',action='store_true',
+                        help='Fail rather than substituting set_content if Chromium cannot navigate to the real HTTP-served page; REQUIRED for coordinator acceptance')
     args=parser.parse_args()
     out=pathlib.Path(args.output);out.mkdir(parents=True,exist_ok=True)
     with server() as base, sync_playwright() as p:
@@ -149,6 +156,8 @@ def main():
         except Exception as error:
             if 'ERR_BLOCKED_BY_ADMINISTRATOR' not in str(error):
                 raise
+            if args.require_served_navigation:
+                raise RuntimeError('Actual served Chromium navigation is REQUIRED for engineering acceptance; administrator policy blocked page.goto(). No fallback acceptance permitted.') from error
             fixture=json.loads((ROOT/'fixture.json').read_text())
             raw=(ROOT/'index.html').read_text()
             raw=raw.replace('<link rel="stylesheet" href="style.css">',
@@ -162,11 +171,24 @@ def main():
             print('LIMITATION: Chromium blocks localhost/file/data navigation; using actual Chromium set_content with exact inline app/CSS and synthetic fixture')
         finally:
             probe.close()
+        tested=[]
         for w,h in [(1440,900),(390,844)]:
-            test_size(browser,base,out,w,h,html)
+            tested.append(test_size(browser,base,out,w,h,html))
             print(f'PASS Chromium {w}x{h}: display, source ledger, keyboard, script-free exports, XML, replay, invalidation, no network/overflow')
         browser.close()
-    print('Browser QA PASS; screenshots:',out)
+    receipt={'schema':'un.research-browser-v2.qa.v1',
+             'fixture_kind':'synthetic','evaluation_role':'engineering_only',
+             'publication_eligible':False,
+             'served_navigation_verified':html is None,
+             'acceptance_mode':'served' if html is None else 'injected_fallback_not_acceptance',
+             'assets_sha256':{name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest()
+                              for name in ('index.html','style.css','renderer.js','fixture.json')},
+             'viewports':tested,
+             'heldout_transcripts_opened':0,
+             'release_authorized':False}
+    (out/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8')
+    assert all(item['served_navigation'] is receipt['served_navigation_verified'] for item in tested)
+    print('Browser QA PASS ('+receipt['acceptance_mode']+'); screenshots:',out)
 
 
 if __name__=='__main__':
