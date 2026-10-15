@@ -10,4 +10,12 @@ After exact-head PR acceptance and source contract verification, add a navigatio
 
 ## Limitations and pending acceptance
 
-The current implementation is an accessible table-first baseline, not a complete graphical heatmap or plotted movement interface. It does not yet implement an accepted v1 interchange adapter, hash lineage verification against upstream originals, source URL inspection, graphical exports, browser automation or saved-run persistence. Node tests are deterministic; browser QA must be run separately. Co-assignment is not policy agreement, thematic profile is not stance, stability is not significance, and observed movement is not causal influence.
+The current implementation is an accessible table-first baseline, a basic keyboard-accessible pair-eligibility heatmap, not a complete matrix or plotted movement interface. It does not yet implement an accepted v1 interchange adapter, hash lineage verification against upstream originals, source URL inspection, graphical exports, browser automation or saved-run persistence. Node tests are deterministic; browser QA must be run separately. Co-assignment is not policy agreement, thematic profile is not stance, stability is not significance, and observed movement is not causal influence.
+
+## Continuation audit — 15 October 2026
+
+- Verified main from commit search: `25ba1a7948c33188f21986af3cffbe73bbcafdba`.
+- Added keyboard-focusable consensus pair tiles showing **supplied** family numerator/eligible counts; zero opportunities are hatched, unstable assignments marked separately. No family aggregation or W6 numerical formula is recalculated.
+- Added checks for mandatory identity disclosures, malformed family ledgers, negative theme weights and inconsistent attempted/successful/failed fits; added four negative tests.
+- **NOT RUN:** Node test suite, actual Chromium/mobile/keyboard QA, CI for latest head, accepted interchange relational adapter, independent replay verification. The execution container could not resolve github.com to clone the repository; GitHub connector reads/writes succeeded. No pass claim is made from authored tests.
+- **Still required:** actual pairwise matrix heatmap, country/theme graphical profile, uncertainty-aware longitudinal chart, method comparison chart, source-hash bound v1 adapter, real browser screenshot/accessibility checks and source-population compatibility tests. Do not merge or deploy before independent coordinator acceptance.
