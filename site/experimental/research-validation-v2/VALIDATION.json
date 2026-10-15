@@ -177,7 +177,7 @@
       "off_diagonal": 276,
       "w4_records": 176,
       "w4_actors": 13,
-      "source_artifact_sha256": "f0f6700ce2c356b72b278283826934f279f650641c6c0bc5ff8ca89e1e55d4a3"
+      "source_artifact_sha256": "79195a755f3ff1e28570fd368f94842d6f140d83f0dd1315b5bee567fc6814af"
     },
     "coordinator_patch": "PREPARED_NOT_APPLIED",
     "acceptance": "WITHHELD_NATIVE_C5_AND_SERVED_BROWSER",
