@@ -1,0 +1,168 @@
+{
+  "schema": "un.research-validation-v2.synthetic",
+  "fixture_kind": "synthetic",
+  "publication_eligible": false,
+  "evaluation_role": "engineering_only",
+  "sources": [
+    {
+      "id": "SYN-A",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "status": "available",
+      "review_status": "synthetic"
+    },
+    {
+      "id": "SYN-B",
+      "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "status": "missing",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "SYN-C",
+      "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "status": "failed",
+      "review_status": "unreviewed"
+    }
+  ],
+  "panels": [
+    {
+      "kind": "consensus",
+      "status": "ready",
+      "identity": {
+        "population": "synthetic source segments",
+        "weighting": "equal eligible method families",
+        "representation_id": "synthetic-r1",
+        "source_ids": [
+          "SYN-A",
+          "SYN-B",
+          "SYN-C"
+        ]
+      },
+      "coverage": {
+        "frame": 3,
+        "eligible": 1,
+        "missing": 1,
+        "excluded": 2
+      },
+      "rows": [
+        {
+          "pair": "SYN-A/SYN-B",
+          "families": [
+            {
+              "family": "partition",
+              "together": 0,
+              "eligible": 0,
+              "failed": 1
+            },
+            {
+              "family": "density",
+              "together": 0,
+              "eligible": 0,
+              "failed": 1
+            }
+          ],
+          "unstable": true,
+          "missing_reason": "source unavailable",
+          "source_ids": [
+            "SYN-A",
+            "SYN-B"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "country-theme",
+      "status": "ready",
+      "identity": {
+        "population": "synthetic observed subset",
+        "weighting": "source-balanced",
+        "representation_id": "synthetic-r1",
+        "source_ids": [
+          "SYN-A",
+          "SYN-B"
+        ]
+      },
+      "coverage": {
+        "frame": 3,
+        "eligible": 1,
+        "missing": 1,
+        "excluded": 2
+      },
+      "rows": [
+        {
+          "country": "AAA",
+          "theme": "T1",
+          "weighted_sum": 0.7,
+          "weight_total": 1,
+          "source_ids": [
+            "SYN-A"
+          ]
+        },
+        {
+          "country": "BBB",
+          "theme": "T1",
+          "weighted_sum": null,
+          "weight_total": 0,
+          "missing_reason": "unavailable",
+          "source_ids": [
+            "SYN-B"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "longitudinal",
+      "status": "withheld",
+      "reason": "Insufficient comparable source years",
+      "identity": {
+        "population": "synthetic country-years",
+        "weighting": "country-year",
+        "representation_id": "synthetic-r1",
+        "source_ids": [
+          "SYN-A",
+          "SYN-B"
+        ]
+      },
+      "coverage": {
+        "frame": 3,
+        "eligible": 1,
+        "missing": 1,
+        "excluded": 2
+      },
+      "rows": []
+    },
+    {
+      "kind": "method-comparison",
+      "status": "ready",
+      "identity": {
+        "population": "synthetic attempts",
+        "weighting": "attempt-level",
+        "representation_id": "synthetic-r1",
+        "source_ids": [
+          "SYN-A",
+          "SYN-C"
+        ]
+      },
+      "coverage": {
+        "frame": 3,
+        "eligible": 1,
+        "missing": 1,
+        "excluded": 2
+      },
+      "rows": [
+        {
+          "method": "M1",
+          "attempted": 3,
+          "successful": 1,
+          "failed": 2,
+          "excluded": 1,
+          "stability": null,
+          "reason": "incompatible representation",
+          "source_ids": [
+            "SYN-A",
+            "SYN-C"
+          ]
+        }
+      ]
+    }
+  ]
+}
