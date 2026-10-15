@@ -112,6 +112,41 @@ jobs:
                   assert value["metadata_status"] == "withheld"
           print("PASS 7 synthetic registry preflight cases, no granted authority")
           PY
+      - name: Two-signer synthetic Ed25519 revocation, reproducible no-access examples and benchmark
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="$GITHUB_WORKSPACE/research/integration/diplomatic_readouts"
+          python3 research/integration/diplomatic_readouts/examples_signatures.py --output "$RUNNER_TEMP/signed-a"
+          python3 research/integration/diplomatic_readouts/examples_signatures.py --output "$RUNNER_TEMP/signed-b"
+          diff -rq "$RUNNER_TEMP/signed-a" "$RUNNER_TEMP/signed-b"
+          python3 research/integration/diplomatic_readouts/benchmark_signatures.py --iterations 200 --warmup 20 --output "$RUNNER_TEMP/signature-benchmark.json"
+          SIGNATURE_TEMP="$RUNNER_TEMP" python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          root=Path(os.environ["SIGNATURE_TEMP"])
+          manifest=json.loads((root/"signed-a"/"manifest.json").read_text())
+          assert manifest["synthetic_only"] is True and manifest["authority"] == "none"
+          assert manifest["authorized"] is False and manifest["publication_eligible"] is False
+          assert manifest["delivery_eligible"] is False and manifest["transcripts_opened"] == 0
+          assert len(manifest["cases"]) == 10
+          positive={"valid_no_authority","rotation_unrevoked_key_no_authority"}
+          for name in manifest["cases"]:
+              content=json.loads((root/"signed-a"/(name+".json")).read_text())
+              assert (content["status"]=="synthetic_signatures_verified_no_authority") == (name in positive)
+              assert content["authority"]=="none" and content["can_read_source"] is False
+              assert content["authorized"] is False and content["publication_eligible"] is False
+              assert len(content["gate_status"]) == 13
+              assert set(content["gate_status"].values())=={"NOT_RUN"}
+              assert content["holdout_lock"]["transcripts_opened"]==0
+              assert "signature_b64" not in content and "records" not in content
+          benchmark=json.loads((root/"signature-benchmark.json").read_text())
+          assert benchmark["synthetic_only"] is True and benchmark["authorized"] is False
+          assert benchmark["publication_eligible"] is False and benchmark["iterations_per_mode"]==200
+          assert benchmark["metadata_preflight"]["median_ms"]>0
+          assert benchmark["ed25519_revocation_preflight"]["median_ms"]>0
+          print("PASS Ed25519 two-role crypto, 10 fictional cases, 13 unchanged holds, benchmark no SLA gate")
+          PY
       - name: Native W1 to W2 saved source-envelope regression (synthetic only)
         shell: bash
         run: |

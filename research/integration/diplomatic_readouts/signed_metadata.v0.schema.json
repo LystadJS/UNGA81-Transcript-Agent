@@ -1,0 +1,202 @@
+{
+  "$id": "urn:unga81:synthetic-custodian-signatures:v0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "custody": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "Ed25519"
+        },
+        "key_id": {
+          "pattern": "^synthetic:[A-Za-z0-9][A-Za-z0-9._:-]{0,100}$",
+          "type": "string"
+        },
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "audience": {
+              "const": "synthetic:unga81-metadata-preflight"
+            },
+            "audit_tip_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "custodian_ref": {
+              "pattern": "^synthetic:[A-Za-z0-9][A-Za-z0-9._:-]{0,100}$",
+              "type": "string"
+            },
+            "expires_at": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+              "type": "string"
+            },
+            "fixture_kind": {
+              "const": "synthetic"
+            },
+            "issued_at": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+              "type": "string"
+            },
+            "permission": {
+              "const": "no_source_access_or_release"
+            },
+            "policy_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "proposal_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "purpose": {
+              "const": "synthetic_metadata_preflight"
+            },
+            "registry_id": {
+              "pattern": "^synthetic:[A-Za-z0-9][A-Za-z0-9._:-]{0,100}$",
+              "type": "string"
+            },
+            "registry_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "schema": {
+              "const": "un.synthetic-custody-attestation.v0"
+            }
+          },
+          "required": [
+            "audience",
+            "audit_tip_sha256",
+            "custodian_ref",
+            "expires_at",
+            "fixture_kind",
+            "issued_at",
+            "permission",
+            "policy_sha256",
+            "proposal_sha256",
+            "purpose",
+            "registry_id",
+            "registry_sha256",
+            "schema"
+          ],
+          "type": "object"
+        },
+        "schema": {
+          "const": "un.synthetic-ed25519-envelope.v0"
+        },
+        "signature_b64": {
+          "maxLength": 88,
+          "minLength": 88,
+          "pattern": "^[A-Za-z0-9+/]{86}==$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "algorithm",
+        "key_id",
+        "payload",
+        "schema",
+        "signature_b64"
+      ],
+      "type": "object"
+    },
+    "revocation": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "Ed25519"
+        },
+        "key_id": {
+          "pattern": "^synthetic:[A-Za-z0-9][A-Za-z0-9._:-]{0,100}$",
+          "type": "string"
+        },
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "audience": {
+              "const": "synthetic:unga81-metadata-preflight"
+            },
+            "expires_at": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+              "type": "string"
+            },
+            "fixture_kind": {
+              "const": "synthetic"
+            },
+            "issuer_ref": {
+              "pattern": "^synthetic:[A-Za-z0-9][A-Za-z0-9._:-]{0,100}$",
+              "type": "string"
+            },
+            "observed_at": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+              "type": "string"
+            },
+            "permission": {
+              "const": "no_source_access_or_release"
+            },
+            "purpose": {
+              "const": "synthetic_revocation_verification"
+            },
+            "registry_id": {
+              "pattern": "^synthetic:[A-Za-z0-9][A-Za-z0-9._:-]{0,100}$",
+              "type": "string"
+            },
+            "revoked_key_ids": {
+              "items": {
+                "pattern": "^synthetic:[A-Za-z0-9][A-Za-z0-9._:-]{0,100}$",
+                "type": "string"
+              },
+              "maxItems": 32,
+              "type": "array",
+              "uniqueItems": true
+            },
+            "schema": {
+              "const": "un.synthetic-revocation-checkpoint.v0"
+            },
+            "sequence": {
+              "minimum": 2,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "audience",
+            "expires_at",
+            "fixture_kind",
+            "issuer_ref",
+            "observed_at",
+            "permission",
+            "purpose",
+            "registry_id",
+            "revoked_key_ids",
+            "schema",
+            "sequence"
+          ],
+          "type": "object"
+        },
+        "schema": {
+          "const": "un.synthetic-ed25519-envelope.v0"
+        },
+        "signature_b64": {
+          "maxLength": 88,
+          "minLength": 88,
+          "pattern": "^[A-Za-z0-9+/]{86}==$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "algorithm",
+        "key_id",
+        "payload",
+        "schema",
+        "signature_b64"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "custody",
+    "revocation"
+  ],
+  "title": "Synthetic-only, signed metadata envelope: NO SOURCE AUTHORITY",
+  "type": "object"
+}

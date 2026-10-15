@@ -52,3 +52,7 @@ Seven invented scenarios include a consistent but **unauthorized** metadata pack
 ## Coordinator handoff, not part of this PR
 
 For a subsequent separate integration proposal, perform an official contract-version/schema pin, independently validate original byte/text and selection identities on an approved private host, join source groups and representation lineage against W1/W2/W4 accepted outputs, verify actual human labels and proposition-specific stance under the quick-reader rules, independently establish all applicable statistical and privacy gates, and regression-test D1 O1–O5, Shiny, non-send Outlook and browser replay before *any* operational use. Engineering validation must not change a frozen gate or be used as scientific or publication authority. **Do not merge or publish either PR automatically.**
+
+## Synthetic custodian-signature and independent revocation simulation
+
+See [SYNTHETIC_CUSTODIAN_SIGNATURES.md](SYNTHETIC_CUSTODIAN_SIGNATURES.md) for the Ed25519 custody/revocation trust model, two portable closed schemas, 56 signed-metadata negative/positive tests, ten source-free examples, and a bounded median/p95 benchmark. Publicly reconstructible **test-only keys** verify cryptographic binding and deny access on tampering, revocation, expiry, rollback, wrong signer, or policy confusion. Even valid signatures produce `authority=none`, 13 `NOT_RUN` gates, `authorized=false`, `can_read_source=false`, and `publication_eligible=false`. This is **not** an operational PKI, access authorizer, private-source fetcher, or publication producer.
