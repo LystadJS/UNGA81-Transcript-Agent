@@ -1,0 +1,134 @@
+{
+  "schema": "un.historical-audit-engineering-validation.v1",
+  "evaluation_role": "engineering_only",
+  "publication_eligible": false,
+  "date_utc": "2026-10-15",
+  "source_scope": "synthetic_only",
+  "runtime": {
+    "node": "v22.16.0",
+    "external_dependencies": 0,
+    "direct_git_clone": "BLOCKED_DNS_NETWORK",
+    "rscript": "NOT AVAILABLE",
+    "checkout_kind": "GITHUB_BLOB_VERIFIED_TARGETED_RECONSTRUCTION_NOT_COMPLETE_CLONE"
+  },
+  "code": {
+    "path": "research/source_comparability/audit.cjs",
+    "git_blob_sha1": "77423e99c6b7b010194708242fd7242a36407d03"
+  },
+  "tests": {
+    "path": "research/source_comparability/audit.test.cjs",
+    "git_blob_sha1": "4279de35e6e0fcca827e7e204beb67139ad3d26e",
+    "command": "node --test research/source_comparability/audit.test.cjs research/source_comparability/audit.integration.test.cjs",
+    "passed": 50,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "run_kind": "NATIVE_NODE22_TARGETED_VERIFIED_UPSTREAM",
+    "skipped_case": null
+  },
+  "integration_test": {
+    "path": "research/source_comparability/audit.integration.test.cjs",
+    "git_blob_sha1": "1724ad3d95c91c645746f4ef93053ffb4b239a87",
+    "full_checkout_node": "NOT RUN: full repository checkout unavailable (DNS/HTTPS egress blocked)",
+    "actual_coordinator_validator_node": "PASS: 7 native Node integration tests, coordinator validator/schema unchanged and git-blob-verified"
+  },
+  "fixture": {
+    "path": "research/source_comparability/fixtures/synthetic-manifest.v1.json",
+    "sha256": "802cde4c5655f01a9820195b4a2e4f25ed552b9641ff64e5c3f763900330d525",
+    "command": "node research/source_comparability/audit.cjs research/source_comparability/fixtures/synthetic-manifest.v1.json",
+    "cli_status": "PASS",
+    "cross_era_comparison": "uncertain",
+    "metadata_eligible": 2,
+    "inference_eligible": false
+  },
+  "in_memory_upstream_contract_replay": {
+    "runtime": "isolated V8 evaluation of exact GitHub source with read-only node:fs/path mocks and independently implemented SHA-256 (empty/abc vectors checked); NOT a real Node checkout",
+    "main_ref": "1af11061e3fa65d51b28d42a1b98bef250b6168b",
+    "source_inventory_validator_blob": "52be70fd2f6c86960217599be9dd478566bc83a2",
+    "source_inventory_schema_blob": "80e1dba753f3bdb2fd59cf584b0c87748e1f9cc8",
+    "source_inventory_regression_blob": "12dca1f6eff12097fe901d6f9d514b97e3766b9d",
+    "source_inventory_synthetic_regressions": {
+      "passed": 14,
+      "failed": 0
+    },
+    "interchange_v1_validation_blob": "345682f607ecba7633cdb35bcf4e7fa965d03d10",
+    "interchange_v1_schema_blob": "3786a08eb6c4a7de7db2845138ffe4ae51f4b2c3",
+    "interchange_v1_synthetic_regressions": {
+      "positive": 1,
+      "negative": 13,
+      "failed": 0
+    },
+    "audit_inventory_adapter_blob": "77423e99c6b7b010194708242fd7242a36407d03",
+    "audit_inventory_interoperability": {
+      "positive": 1,
+      "negative": 6,
+      "failed": 0
+    },
+    "private_original_pdf_or_harvard_bytes_read": 0
+  },
+  "acceptance": {
+    "owner_namespace_diff": "PASS",
+    "synthetic_unit_controls": "PASS",
+    "exact_git_blob_match": "PASS",
+    "coordinator_inventory_contract_in_memory": "PASS_14_NATIVE_ON_GIT_BLOB_VERIFIED_VALIDATOR_AND_SCHEMA",
+    "full_checkout_node_interoperability": "PASS_NATIVE_TARGETED_RECONSTRUCTION; FULL_CLONE_NOT_RUN",
+    "existing_w1_p2_w4_source_regressions": "PARTIAL: 14 coordinator inventory + 4 P2 archive member native; 43 W4 aggregate assertions in read-only V8; full W1/P2/W4 regression suite NOT RUN",
+    "github_actions_exact_head": "NOT_RUN_NO_CHECK_RUNS_OR_WORKFLOW_RUNS_AT_PRE_EVIDENCE_HEAD",
+    "historical_private_original_bytes": "NOT RUN",
+    "sampling_response_identification": "NOT IDENTIFIED",
+    "cross_era_source_frame_compatibility": "NOT ESTABLISHED",
+    "publication": "WITHHELD",
+    "coordinator_engineering_merge_approval": "HOLD_NO_FULL_CHECKOUT_NO_EXACT_HEAD_CI",
+    "full_checkout_regressions": "NOT RUN_NETWORK_BLOCKED"
+  },
+  "reserved_october_2026_transcripts_read": 0,
+  "limitations": [
+    "The local worker directory is not an authenticated complete Git checkout; the Node upstream integration test is skipped, not passed.",
+    "The in-memory V8 source replay executes the exact upstream source and schema but substitutes read-only filesystem/path modules and independent SHA-256; it is separate from a real Node regression in the repository checkout.",
+    "No original private UN PV PDF, Harvard raw member, speech source or held-out transcript was opened.",
+    "Known first-stage inclusion probability does not establish speech response probability, MAR/MNAR, or calendar-year independence.",
+    "Available English PDF text is not proof of original delivery language or translation equivalence; missing-source cells cannot be treated as negative evidence.",
+    "Engineering validation does not permit empirical source generalization, substantive model fitting, inference or publication.",
+    "The current exact PR code, integration tests and unchanged coordinator validator/schema were tested with native Node in a GitHub blob-verified targeted checkout, not an entire repository git clone.",
+    "The coordinator source-inventory regression used the verbatim synthetic mapping example, not the full interchange Markdown; its test and source modules were unchanged.",
+    "W1 historical-link and complete P2-to-W1 and W4 native regressions remain unexecuted; isolated V8 W4 aggregate replay does not substitute for them.",
+    "GitHub Actions exact-head CI remains absent; coordinator-owned workflow triggers cannot be modified by this worker."
+  ],
+  "native_execution": {
+    "checked_before_evidence_update_commit": "b7dc88e9586e890863ff5a22c03ea2309220104b",
+    "node": "v22.16.0",
+    "checkout_kind": "targeted reconstruction from GitHub-verified file bytes; no complete git clone",
+    "pr_audit_suite": {
+      "passed": 50,
+      "failed": 0,
+      "skipped": 0,
+      "log_sha256": "b06a2ac9909c9d3f9952cfb4ca0fe0b07590f3e74879bca162fc2a2c353c88a8"
+    },
+    "source_inventory_suite": {
+      "passed": 14,
+      "failed": 0,
+      "original_test_blob": "12dca1f6eff12097fe901d6f9d514b97e3766b9d",
+      "log_sha256": "1f88ddd55d74555c79e1fecfe94ae4f4b125ec293bf85598a8e6054ea708bea3",
+      "spec_fixture_basis": "exact synthetic mapping example from coordinator INTERCHANGE_V1.md; not a complete materialization of Markdown specification"
+    },
+    "p2_harvard_tar_member_synthetic_suite": {
+      "passed": 4,
+      "failed": 0,
+      "adapter_blob": "2295c725e64f035ce0cd1b7feece84aa141b8534",
+      "test_blob": "e539ab40ce14b5eaaa74db5e1e638d78b0c426ab",
+      "log_sha256": "0ff859e569016078d0fbc61cf893df4b923b3f6bb14567d5e46950097f74f311"
+    },
+    "w4_p2_aggregate_source_consistency": {
+      "assertions_passed": 43,
+      "failed": 0,
+      "execution": "READ_ONLY_V8_NOT_NATIVE_NODE",
+      "test_blob": "aaea985c589fdebee1d0971d3f1bacdaf882b9f0",
+      "source_aggregate_blob": "36284a2dec58f6b1825da5f4db5010dc040d1d08",
+      "inference_register_blob": "6010950f334e079e1a5d812d792f5e769dac4908"
+    },
+    "privacy": "synthetic_and_public_aggregate_only",
+    "original_private_bytes_verified": "NOT RUN",
+    "reserved_2026_transcripts_accessed": 0,
+    "full_checkout": "NOT RUN"
+  }
+}
