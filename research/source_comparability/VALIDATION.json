@@ -1,0 +1,53 @@
+{
+  "schema": "un.historical-audit-engineering-validation.v1",
+  "evaluation_role": "engineering_only",
+  "publication_eligible": false,
+  "date_utc": "2026-10-15",
+  "source_scope": "synthetic_only",
+  "runtime": {
+    "node": "v22.16.0",
+    "external_dependencies": 0,
+    "network_access": "not_used"
+  },
+  "code": {
+    "path": "research/source_comparability/audit.cjs",
+    "git_blob_sha1": "9617160166a5e7b99307ff3deadf594867061e2c"
+  },
+  "tests": {
+    "path": "research/source_comparability/audit.test.cjs",
+    "git_blob_sha1": "eb622a08ba45d623139624a5f57e43ec1b22b68f",
+    "command": "node --test research/source_comparability/audit.test.cjs",
+    "passed": 40,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "run_kind": "executed_in_local_node_runtime"
+  },
+  "fixture": {
+    "path": "research/source_comparability/fixtures/synthetic-manifest.v1.json",
+    "sha256": "802cde4c5655f01a9820195b4a2e4f25ed552b9641ff64e5c3f763900330d525",
+    "command": "node research/source_comparability/audit.cjs research/source_comparability/fixtures/synthetic-manifest.v1.json",
+    "cli_status": "PASS",
+    "cross_era_comparison": "uncertain",
+    "metadata_eligible": 2,
+    "inference_eligible": false
+  },
+  "acceptance": {
+    "synthetic_negative_controls": "PASS",
+    "exact_file_blob_match": "PENDING_REMOTE_VERIFICATION",
+    "coordinator_source_inventory_adapter_actual_upstream_validator": "NOT RUN",
+    "existing_repository_regressions": "NOT RUN",
+    "github_actions_exact_head": "NOT RUN",
+    "historical_private_original_bytes": "NOT RUN",
+    "sampling_response_identification": "NOT IDENTIFIED",
+    "cross_era_source_frame_compatibility": "NOT ESTABLISHED",
+    "publication": "WITHHELD"
+  },
+  "reserved_october_2026_transcripts_read": 0,
+  "limitations": [
+    "No original private PDF or speech text was loaded.",
+    "Current source eligibility describes manifest consistency only.",
+    "No independent original-source SHA-256 or MAR/MNAR identification claim.",
+    "Engineering tests do not demonstrate scientific release eligibility."
+  ]
+}
