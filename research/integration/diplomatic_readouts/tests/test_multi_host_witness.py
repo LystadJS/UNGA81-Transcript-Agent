@@ -449,5 +449,25 @@ class MultiHostSyntheticTests(unittest.TestCase):
         self.withhold("witness_log_prefix_fork_or_rollback")
 
 
+    def test_41_same_sequence_revocation_checkpoint_rewrite_requires_new_epoch_proof(self):
+        f=self.f
+        src=f["source"]
+        src["revocation"]["payload"]["observed_at"]="2026-10-14T03:00:00Z"
+        from test_synthetic_signatures import resign_revocation
+        resign_revocation(src)
+        new_sha=content_digest(REVOCATION_SCHEMA,src["revocation"]["payload"])
+        # Both source signers and the witness quorum can be compromised;
+        # two unchanged observer pins still constrain the old sequence.
+        new_row=new_log_event(f["log"][:2],"synthetic:event3","audit_observed",
+                              src["trust"].expected_registry_sha256,
+                              new_sha,"2026-10-15T01:00:00Z")
+        f["log"][-1]=new_row
+        f["checkpoint"].update(revocation_sha256=new_sha,
+                                log_sha256=log_digest(f["log"]),
+                                log_tip_sha256=new_row["event_sha256"])
+        resign_host(f)
+        self.withhold("revocation_same_sequence_rewrite")
+
+
 if __name__ == "__main__":
     unittest.main()
