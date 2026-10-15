@@ -1,0 +1,8 @@
+# Same exact runtime pins as the accepted read-only research/semantic_review/requirements.txt.
+# Python 3.13. Dependency/wheel artifact hashes remain externally unverified.
+numpy==2.3.5
+scipy==1.17.0
+scikit-learn==1.8.0
+threadpoolctl==3.6.0
+onnxruntime==1.23.0
+tokenizers==0.22.1

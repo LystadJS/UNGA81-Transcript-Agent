@@ -1,0 +1,29 @@
+name: Coordinator PR66 effective-tree native acceptance
+on:
+  push:
+    branches: ['coord/pr66-effective-tree-20261015']
+permissions:
+  contents: read
+jobs:
+  semantic-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Native semantic Python tests
+        run: |
+          set -euo pipefail
+          python3 --version
+          python3 -m compileall -q research/semantic_representations
+          python3 -m unittest discover -s research/semantic_representations -p 'test_*.py' -v
+      - name: Upstream contracts and source regressions
+        run: |
+          set -euo pipefail
+          node docs/parallel-work/validate-contract.cjs
+          node docs/parallel-work/test-source-inventory-v1.cjs
+          node research/source_acquisition/p2_expansion/test_p2_to_w1.cjs
+          node research/validation_framework/tests/test_historical_link.cjs
+          node docs/parallel-work/test_w4_p2_independent_source_audit.cjs
+          node --test research/source_comparability/audit.test.cjs research/source_comparability/audit.integration.test.cjs
