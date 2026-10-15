@@ -148,6 +148,9 @@ def validate_interchange(envelope: dict, validation: UpstreamValidation, *, sche
             'interchange_population_mismatch')
     _ensure(len(cv['models']) == len(mids) and set(m['model_id'] for m in cv['models']) == set(mids),
             'interchange_model_coverage_mismatch')
+    unavailable = sum(o['source_status'] != 'available' for o in a)
+    _ensure(cv['unavailable_sources'] == unavailable,
+            'interchange_unavailable_source_count_mismatch')
     eligible = [o for o in a if o['source_status'] == 'available' and not o['exclusion_reasons']]
     _ensure(len(eligible) == cv['eligible'], 'interchange_eligibility_mismatch')
     byid = {o['id']: o for o in a}
@@ -308,6 +311,8 @@ def prepare(envelope: dict, intent: dict, proofs: Mapping[str, Any], validation:
         output_refs = {}
         for kind, role in EVIDENCE_ROLES.items():
             refs=[]
+            _ensure(len(finding[kind]) == len(set(finding[kind])) if all(isinstance(x, str) for x in finding[kind]) else False,
+                    'duplicate_finding_evidence_identity')
             for obs_id in finding[kind]:
                 _ensure(_id(obs_id) and obs_id in v['observations'], 'unknown_evidence_observation')
                 obs=v['observations'][obs_id]
@@ -317,8 +322,12 @@ def prepare(envelope: dict, intent: dict, proofs: Mapping[str, Any], validation:
                 _ensure(e['verification']=='synthetic' and e['start'] is not None and
                         e['end'] is not None and e['end']>e['start'],
                         'evidence_verification_or_span_missing')
-                _ensure(v['result_index'][(chosen,obs_id)]['status'] in ('assigned','unassigned','not_fitted'),
+                fit_status = v['result_index'][(chosen,obs_id)]['status']
+                _ensure(fit_status in ('assigned','unassigned','not_fitted'),
                         'model_source_join_invalid')
+                if finding['category'] == 'exploratory':
+                    _ensure(fit_status in ('assigned','unassigned'),
+                            'exploratory_evidence_not_fitted')
                 proof=proofs.get(obs_id)
                 _verify_material(obs,proof,envelope['upstream'],readout_module)
                 _ensure(e['end']<=len(proof.text) and e['start']>=0,
