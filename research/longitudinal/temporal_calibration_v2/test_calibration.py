@@ -1,3 +1,11 @@
+# Make this isolated test directory importable both by nested W4 CI discovery
+# and by standalone `unittest discover -s temporal_calibration_v2`.
+import sys
+from pathlib import Path as _Path
+_local = str(_Path(__file__).resolve().parent)
+if _local not in sys.path:
+    sys.path.insert(0, _local)
+
 import unittest
 import numpy as np
 from calibration import Design, covariance, generate, identifiable, estimate_year_covariance, metadata_compatible, real_fit
