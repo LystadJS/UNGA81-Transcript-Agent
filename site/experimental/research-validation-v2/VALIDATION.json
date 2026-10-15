@@ -213,5 +213,80 @@
       "mode": "injected_fallback_not_acceptance",
       "viewports": 2
     }
+  },
+  "latest_exact_head_review": {
+    "prior_head": "10cb9b9ac3c7045eb9f3448a76bbd3e3ad8bb1b2",
+    "main_commit": "93b17c8779d959f5dd5559adb7f56381210f2f89",
+    "reviewed_at_utc": "2026-10-15",
+    "node": {
+      "status": "PASS",
+      "command": "node --test site/experimental/research-validation-v2/tests.cjs",
+      "passed": 63,
+      "failed": 0,
+      "skipped": 0,
+      "node": "v22.16.0",
+      "log_sha256": "76de50eb1a2ee9ebf46b03c77badfd9588f9a541ba1955e8a8ccfbb7771e8c94"
+    },
+    "browser_fallback": {
+      "status": "PASS_INJECTED_DOM_ONLY",
+      "chromium": "144.0.7559.96",
+      "viewports": [
+        "1440x900",
+        "390x844"
+      ],
+      "actual_http_bytes": "PASS_4_OF_4",
+      "served_navigation_verified": false,
+      "acceptance_mode": "injected_fallback_not_acceptance",
+      "page_errors": 0,
+      "unintended_network_requests": 0,
+      "page_overflow_px": 0,
+      "log_sha256": "c3c4a17ece9c6c089e33d12929a5bd1405d13e7ea94be5058df816d71b997048"
+    },
+    "served_browser_strict": {
+      "status": "BLOCKED",
+      "exit_code": 1,
+      "error": "net::ERR_BLOCKED_BY_ADMINISTRATOR",
+      "command": "python3 site/experimental/research-validation-v2/browser_smoke.py --require-served-navigation --browser /usr/bin/chromium",
+      "guard": "PASS_FAIL_CLOSED",
+      "served_qa": "NOT_RUN_SUCCESSFULLY",
+      "log_sha256": "52bf8e4ca945c6b5d1fe72590537cd6bf6a10815dce377b41497e6d817877aa8"
+    },
+    "native_c5": {
+      "status": "BLOCKED",
+      "exit_code": 1,
+      "tests_started": 0,
+      "error_code": "MODULE_NOT_FOUND",
+      "missing_module": "site/research-consensus.js",
+      "source": "Full current GitHub checkout unavailable: git ls-remote cannot resolve github.com; original W1/W2/W4 producer outputs unavailable",
+      "syntax": "PASS",
+      "log_sha256": "4457cc031efb0f3e194a68044fa478a6d1bde751bafabc72dca6701b09d575ae"
+    },
+    "inherited_current_head_ci": {
+      "status": "PASS_INHERITED_WORKFLOW_ONLY",
+      "workflow": "Latent comparison acceptance",
+      "run_id": 38752576846,
+      "conclusion": "success",
+      "native_c5_executed": false,
+      "strict_served_qa_executed": false
+    },
+    "exact_source_scope": {
+      "changed_files": 12,
+      "owned": "site/experimental/research-validation-v2/**",
+      "shared_files_modified": false
+    },
+    "coordinator_patch": {
+      "status": "PREPARED_NOT_APPLIED",
+      "real_main_source_hunks_verified": 6,
+      "full_checkout_git_apply": "NOT_RUN",
+      "strict_served_navigation_required": true
+    },
+    "scientific_release": {
+      "status": "WITHHELD",
+      "private_transcript_contents_opened": 0,
+      "publication_eligible": false,
+      "merging_authorized": false,
+      "deployment_authorized": false
+    },
+    "decision": "ENGINEERING_ACCEPTANCE_WITHHELD_PENDING_NATIVE_C5_AND_STRICT_SERVED_CHROMIUM"
   }
 }
