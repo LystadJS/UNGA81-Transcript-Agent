@@ -258,6 +258,33 @@ class ComparisonTests(unittest.TestCase):
         a=specimen();b=specimen();b['cohort']['population']='changed'
         self.assertTrue(protocol.check_populations(a,b,{'protocol_id':'x','approved':False,'protocol_sha256':H}))
 
+    def test_changed_fit_parameters_rejected(self):
+        a=specimen(); b=copy.deepcopy(a)
+        b['models'][0]['parameters_sha256']='f'*64
+        self.assertIn('model fit policy mismatch', protocol.check_populations(a,b))
+
+    def test_changed_method_and_fit_version_rejected(self):
+        for field,value in [('method','different'),('fit_version','v2'),
+                            ('training_selection_sha256','f'*64)]:
+            a=specimen(); b=copy.deepcopy(a)
+            b['models'][0][field]=value
+            self.assertIn('model fit policy mismatch', protocol.check_populations(a,b))
+
+    def test_matching_missing_text_hash_rejected(self):
+        a=specimen(); b=copy.deepcopy(a)
+        for doc in (a,b): doc['observations'][0]['text_sha256']=None
+        self.assertIn('missing eligible observation text hash',protocol.check_populations(a,b))
+
+    def test_duplicate_source_identity_rejected_during_comparison(self):
+        a=specimen(); b=copy.deepcopy(a)
+        for doc in (a,b):doc['observations'].append(copy.deepcopy(doc['observations'][0]))
+        self.assertIn('duplicate/missing observation identity',protocol.check_populations(a,b))
+
+    def test_cohort_split_or_denominator_change_rejected(self):
+        for field,value in [('split','development'),('eligible',1),('duplicate_policy','deduplicate')]:
+            a=specimen();b=copy.deepcopy(a);b['cohort'][field]=value
+            self.assertTrue(protocol.check_populations(a,b),field)
+
     def test_source_group_overlap(self):
         a=[{'id':'one','source_family_id':'family','text_sha256':H}]
         b=[{'id':'two','source_family_id':'family','text_sha256':B}]
