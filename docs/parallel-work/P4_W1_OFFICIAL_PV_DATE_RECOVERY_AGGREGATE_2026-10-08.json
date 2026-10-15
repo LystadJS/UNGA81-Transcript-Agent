@@ -1,0 +1,47 @@
+{
+  "schema": "un.w1.p4.official-PV-meeting-date.recovery-aggregate.v1",
+  "audited_at": "2026-10-08",
+  "prior_index_date_verified": 520,
+  "independent_original_PV_frontpage_meeting_dates_recovered": 3,
+  "dates_recovered_by_year": {
+    "2016": 1,
+    "2017": 1,
+    "2023": 1
+  },
+  "final_original_PV_source_meeting_date_known": 523,
+  "original_source_unverified": 269,
+  "complete_country_year_inventory": 792,
+  "original_UN_PV_PDF_SHA256_newly_rechecked": 3,
+  "first_page_official_PV_symbol_agreed": true,
+  "original_PV_date_weekday_validated": true,
+  "prior_saved_Harvard_PV_strong_correspondence_checked_for_three": true,
+  "original_Harvard_speech_text_bytes_directly_reverified": false,
+  "individual_person_identity_authenticated": false,
+  "speaker_to_speech_original_span_independently_reviewed": false,
+  "original_P3_inventory_preserved_sha256": "7f7ab119fb64c1ed3501059c2dd2ae51832ee3b89b80c4c07bf5dd29a4d019a8",
+  "derived_private_P4_inventory_audit_sha256": "0cc03aaae1d428c00b9222c7c3d6180953874c6adf42f7d1fff6cc2f12ee58ee",
+  "private_date_supplement_file_sha256": "d8258ec0d0c164f7d3a4233620c8b931e11529ed0cdf960c18ee3ea942d7130b",
+  "independent_private_replay_outputs_identical": true,
+  "P2_selection_sha256": "3ebec834635e4d493e8035aeede3321efb951aa22f2f61d81f6ac7a0f65a4c89",
+  "recovered_meeting_dates": [
+    "2016-09-24",
+    "2017-09-23",
+    "2023-09-22"
+  ],
+  "old_original_P3_year_cells_mutated": 0,
+  "new_derived_source_row_changes": 3,
+  "changes_to_source_bytes_or_person_verification": 0,
+  "original_source_meeting_groups": 55,
+  "native_W1_historical_source_frame_fit_eligible": false,
+  "W1_empirical_fits": 0,
+  "W4_empirical_fits": 0,
+  "heldout_37_Oct5_6_2026_transcripts_opened": 0,
+  "D1_gates_changed": false,
+  "publication_eligible": false,
+  "privacy": {
+    "private_country_year_rows_committed_to_GitHub": false,
+    "raw_original_UN_PV_text_committed": false,
+    "raw_Harvard_speeches_committed": false
+  },
+  "interpretation": "The three source-backed meetings now have independently checked original-PV meeting dates; this is not authentication of their individual speakers or original Harvard text bytes."
+}
