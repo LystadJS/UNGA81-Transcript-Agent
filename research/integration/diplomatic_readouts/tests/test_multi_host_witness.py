@@ -418,18 +418,18 @@ class MultiHostSyntheticTests(unittest.TestCase):
 
     def test_38_seeded_fourteen_attack_stress_replay(self):
         from stress_multi_host import simulate
-        a=simulate(iterations=28,seed=8123)
-        b=simulate(iterations=28,seed=8123)
+        a=simulate(iterations=30,seed=8123)
+        b=simulate(iterations=30,seed=8123)
         self.assertEqual(a,b)
         self.assertEqual(a["failures"],0)
-        self.assertEqual(len(a["cases"]),14)
-        self.assertEqual(sum(v["attempted"] for v in a["cases"].values()),28)
+        self.assertEqual(len(a["cases"]),15)
+        self.assertEqual(sum(v["attempted"] for v in a["cases"].values()),30)
         self.assertFalse(a["authorized"])
         self.assertEqual(a["transcripts_opened"],0)
 
     def test_39_stress_iteration_controls_reject_bool_and_overrun(self):
         from stress_multi_host import simulate
-        for invalid in (True, False, 27, 2049, 0, -1):
+        for invalid in (True, False, 29, 2049, 0, -1):
             with self.subTest(value=invalid):
                 with self.assertRaises(ValueError):
                     simulate(iterations=invalid)
@@ -467,6 +467,26 @@ class MultiHostSyntheticTests(unittest.TestCase):
                                 log_tip_sha256=new_row["event_sha256"])
         resign_host(f)
         self.withhold("revocation_same_sequence_rewrite")
+
+
+    def test_42_higher_signed_revocation_sequence_allows_valid_append(self):
+        f=self.f
+        src=f["source"]
+        src["revocation"]["payload"]["sequence"]=3
+        from test_synthetic_signatures import resign_revocation
+        resign_revocation(src)
+        new_sha=content_digest(REVOCATION_SCHEMA,src["revocation"]["payload"])
+        new_row=new_log_event(f["log"][:2],"synthetic:event3","audit_observed",
+                              src["trust"].expected_registry_sha256,new_sha,
+                              "2026-10-15T01:00:00Z")
+        f["log"][-1]=new_row
+        f["checkpoint"].update(revocation_sha256=new_sha, revocation_sequence=3,
+                                log_sha256=log_digest(f["log"]),
+                                log_tip_sha256=new_row["event_sha256"])
+        resign_host(f)
+        result=inspect(f)
+        self.assertEqual(result["status"],"synthetic_quorum_consistent_no_authority")
+        self.assertIs(result["authorized"],False)
 
 
 if __name__ == "__main__":
