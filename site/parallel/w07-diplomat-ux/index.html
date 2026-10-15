@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'none'; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>UNGA81 · Briefing workspace · Synthetic preview</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.mjs"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to briefing workspace</a>
+  <div class="preview-strip"><strong>Synthetic preview</strong><span>Invented records only. No real UN statements or country positions.</span></div>
+  <div class="workspace">
+    <aside class="sidebar" aria-label="Workspace navigation">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">UN</span><div><strong>UNGA81</strong><span>Briefing workspace</span></div></div>
+      <nav aria-label="Main"><button type="button" class="nav-item" data-page="explore" aria-current="page">Explore</button><button type="button" class="nav-item" data-page="meetings">Meetings</button><button type="button" class="nav-item" data-page="saved">Saved briefings <span id="saved-count">0</span></button></nav>
+      <div class="sidebar-note"><strong>Evidence first.</strong><p>Start with a country, topic or meeting. Each available finding links to its supporting records.</p><button id="about-button" type="button" class="text-button">About this preview</button></div>
+    </aside>
+    <main id="main" tabindex="-1">
+      <header class="page-header"><p class="eyebrow">A question, not a settings panel</p><h1 id="page-title" tabindex="-1">Explore the conversation</h1><p id="page-intro">Choose a country or topic. Add dates to narrow your briefing.</p></header>
+      <noscript><p class="notice">JavaScript is required to verify and display this preview. No unverified result is shown.</p></noscript>
+      <p id="host-error" role="alert" class="notice" hidden>The synthetic preview host is unavailable. Start the local preview using the instructions in the U1 README.</p>
+      <section id="selection-panel" aria-label="Research question" class="panel question-panel">
+        <form id="question-form">
+          <div id="meeting-picker" hidden><label for="meeting-search">Meeting name</label><input id="meeting-search" type="search" placeholder="Search invented meetings" autocomplete="off" aria-describedby="meeting-hint"><p id="meeting-hint" class="hint">Select a meeting below. Dates and forums distinguish repeated names.</p><div id="meeting-options" class="meeting-options" role="group" aria-label="Matching meetings"></div></div>
+          <div class="filter-grid">
+            <div><label for="country">Country</label><select id="country"><option value="">All countries</option></select></div>
+            <div><label for="topic">Topic</label><select id="topic"><option value="">All topics</option></select></div>
+            <div><label for="from">From <span class="optional">(optional)</span></label><input id="from" type="date" aria-describedby="dates-hint"></div>
+            <div><label for="to">To <span class="optional">(optional)</span></label><input id="to" type="date" aria-describedby="dates-hint"></div>
+          </div>
+          <div class="form-bottom"><p id="dates-hint" class="hint">Dates are inclusive, using New York calendar dates. Leave both blank for the available preview period.</p><div class="form-actions"><button type="button" id="reset" class="secondary">Clear selections</button><button type="submit" id="create" class="primary" disabled>Create briefing</button></div></div>
+          <p id="form-error" tabindex="-1" class="form-error" role="alert" hidden></p>
+        </form>
+      </section>
+      <p id="status" role="status" aria-live="polite" aria-atomic="true" class="status-line">Preview not connected. A briefing becomes available only when the local synthetic host is running.</p>
+      <section id="briefing" aria-label="Briefing" aria-busy="false">
+        <div class="empty-prompt panel"><p class="eyebrow">Start with a question</p><h2>What would you like to understand?</h2><p>Your briefing will bring together available records, an overview and the evidence behind it.</p><p class="hint">The preview contains invented examples dated 23–25 September 2024.</p></div>
+      </section>
+      <section id="saved-panel" aria-labelledby="saved-title" hidden><h2 id="saved-title">Saved in this session</h2><p class="hint">Results are kept in memory only. Reopening rechecks access without recalculating. Refreshing or closing the page clears this list.</p><div id="saved-list"></div></section>
+      <details id="about" class="about panel"><summary>Sources and preview information</summary><p>This is an isolated interface demonstration, not an analysis of UN proceedings. Country names are navigation labels for invented examples.</p><p>US-relative trajectories remain unavailable here. Similar wording would not establish policy agreement.</p><p>Current source and output permissions are checked separately. Saving a briefing does not preserve access after it expires.</p><div class="import-row"><label for="bundle-file">Inspect a synthetic bundle <span class="optional">(integration checks only)</span></label><input id="bundle-file" type="file" accept="application/json,.json"><button id="cancel-import" class="secondary" type="button">Cancel import</button></div><p class="hint">Maximum 2 MiB. Unknown bundles, embedded permission settings and real records are refused. Exports are filtered read-only results, not importable permissions.</p><p class="hint">No model runs, external services, browser storage or automatic delivery.</p></details>
+      <footer>UNGA81 research workspace <span>Preview only · Not published</span></footer>
+    </main>
+  </div>
+  <dialog id="evidence-dialog" aria-labelledby="evidence-title"><header><div><p class="eyebrow">Supporting record</p><h2 id="evidence-title">Invented evidence</h2></div><button id="close-evidence" class="secondary" type="button" autofocus>Close</button></header><p class="notice">Fictional example. Not a UN quotation or verified government position.</p><div id="evidence-content"></div></dialog>
+</body>
+</html>
