@@ -126,6 +126,9 @@ def check_parallel_v1(envelope: dict) -> dict:
     _assert(len(set(model_ids))==len(model_ids),"duplicate upstream model IDs")
     _assert(coverage.get("observations_total")==len(ids) and coverage.get("eligible",0)+coverage.get("excluded",0)==len(ids),"upstream denominator drift")
     _assert(coverage.get("eligible")==cohort.get("eligible"),"upstream eligible count drift")
+    _assert(cohort.get("split") != "development" or producer.get("fixture_kind")=="private_development", "development fixture-kind mismatch")
+    if upstream.get("source_sha256") is None or upstream.get("selection_sha256") is None:
+        _assert(bool(upstream.get("missing_reason")), "missing source/selection digest needs reason")
     _assert(len(coverage.get("models",[]))==len(models),"missing coverage model")
     identity=set(ids); mids=set(model_ids); keys=set()
     for observation in observations:
@@ -133,6 +136,16 @@ def check_parallel_v1(envelope: dict) -> dict:
         _assert(observation.get("unit")==cohort.get("unit"),"upstream unit drift")
         a,b=observation.get("start"),observation.get("end")
         _assert((a is None and b is None) or (type(a) is int and type(b) is int and 0<=a<b),"upstream Unicode offsets")
+        if observation.get("parent_id") is not None:
+            _hash(observation.get("parent_text_sha256"), "parent identity")
+        if observation.get("source_status") != "available":
+            _nonempty(observation.get("missing_reason"), "unavailable source reason")
+        if observation.get("speech_id") is not None:
+            _assert(observation.get("review_status")=="confirmed", "unverified speech ID")
+        if cohort.get("split")=="development":
+            _assert(observation.get("date") not in {"2026-10-05","2026-10-06"}, "reserved meeting date")
+            if observation.get("source_status")=="available":
+                _nonempty(observation.get("meeting_id"), "development meeting identity")
     for model in models:
         _nonempty(model.get("representation_id"),"model representation")
     for r in results:
@@ -148,13 +161,38 @@ def check_parallel_v1(envelope: dict) -> dict:
         _assert((state=="assigned" and type(label) is int and label>=1) or
                 (state=="unassigned" and label==0) or
                 (state in {"not_fitted","excluded"} and label is None and bool(r.get("reason"))), "bad assignment/noise/missing status")
+    for item in envelope.get("evidence", []):
+        _assert(item.get("observation_id") in identity, "orphan evidence")
+        a,b=item.get("start"),item.get("end")
+        _assert((a is None and b is None) or (type(a) is int and type(b) is int and 0<=a<b), "invalid evidence span")
+    for item in envelope.get("diagnostics", []):
+        _assert(item.get("model_id") is None or item.get("model_id") in mids, "orphan diagnostic")
+        if item.get("status") in {"withheld", "failed"}:
+            _nonempty(item.get("reason"), "withheld/failed diagnostic reason")
+    for item in coverage.get("failure_ledger", []):
+        _assert(item.get("model_id") in mids, "orphan failure ledger")
+    eligibles = {o["id"] for o in observations if o.get("source_status")=="available" and not o.get("exclusion_reasons")}
+    _assert(len(eligibles)==cohort.get("eligible"), "eligible population derivation")
+    _assert(len(coverage.get("models",[]))==len({x.get("model_id") for x in coverage.get("models",[])}), "duplicate coverage model")
+    for r in results:
+        kind = r.get("membership_kind")
+        if kind in {"gmm_responsibility", "nmf_share"}:
+            vals = r.get("memberships")
+            _assert(isinstance(vals,list) and bool(vals) and all(type(v) in {float,int} and __import__("math").isfinite(v) and 0<=v<=1 for v in vals) and abs(sum(vals)-1)<1e-6, "invalid normalized memberships")
+        else:
+            _assert(r.get("memberships") is None, "unexpected membership array")
+        if kind == "hdbscan_strength":
+            _assert(type(r.get("membership_strength")) in {float,int} and 0<=r["membership_strength"]<=1, "density strength missing")
     for m in coverage["models"]:
         _assert(m.get("model_id") in mids,"orphan coverage")
+        _assert(m.get("eligible")==cohort["eligible"], "model eligibility drift")
+        _assert(m.get("attempted_fits",0)>=0 and m.get("successful_fits",0)>=0 and m.get("failed_fits",0)>=0, "negative attempt count")
         _assert(m.get("assigned",0)+m.get("unassigned",0)+m.get("not_fitted",0)==m.get("eligible"),"fit eligible denominator")
         _assert(m.get("attempted_fits")==m.get("successful_fits",0)+m.get("failed_fits",0),"fit attempt denominator")
         _assert(m.get("excluded")==coverage["excluded"],"excluded denominator")
         for status in ("assigned","unassigned","not_fitted","excluded"):
             _assert(sum(r["status"]==status and r["model_id"]==m["model_id"] for r in results)==m.get(status,0),"upstream result state count mismatch")
         _assert(sum(r["model_id"]==m["model_id"] for r in results)==len(ids),"missing upstream result rows")
+        _assert(all(r["observation_id"] not in eligibles or r["status"]!="excluded" for r in results if r["model_id"]==m["model_id"]), "excluded eligible result")
     return {"schema":"un.parallel-analysis.v1","observation_count":len(ids),"model_count":len(models),
             "upstream_sha256":digest(envelope),"read_only":True}
