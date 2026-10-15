@@ -28,7 +28,7 @@ def validate(report):
     ids = [s.get("id") for s in sources]
     if len(ids) != len(set(ids)) or any(not x for x in ids):
         errors.append("duplicate or missing source identity")
-    accepted = {s["id"]: s for s in sources if s.get("accepted") is True and s.get("sha256") and re.fullmatch(r"[0-9a-f]{64}", s["sha256"]) and s.get("privacy") == "public"}
+    accepted = {s["id"]: s for s in sources if isinstance(s, dict) and s.get("id") and s.get("accepted") is True and isinstance(s.get("sha256"), str) and re.fullmatch(r"[0-9a-f]{64}", s["sha256"]) and s.get("privacy") == "public"}
     for s in sources:
         if "passage" in s or "text" in s:
             errors.append("embedded source passage forbidden")
@@ -40,8 +40,8 @@ def validate(report):
             errors.append("invalid evidence reference arrays")
             continue
         refs = finding.get("supporting", []) + finding.get("contrary", [])
-        if not refs:
-            errors.append("finding lacks evidence references")
+        if not finding.get("supporting"):
+            errors.append("finding lacks supporting evidence")
         for ref in refs:
             if not isinstance(ref, dict):
                 errors.append("invalid evidence reference")
