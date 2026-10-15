@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="@@CSP@@">
+<link rel="icon" href="data:,">
+<title>UNGA81 · Synthetic US-relative trajectories</title>
+<style>@@CSS@@</style>
+</head>
+<body>
+<a class="skip" href="#workspace">Skip to trajectory workspace</a>
+<header>
+  <p class="eyebrow">UNGA81 / RESEARCH COMPONENTS / PHASE 2</p>
+  <h1>Trajectories relative to the US</h1>
+  <p class="intro">The US is a moving reference. Compare absolute motion with country-minus-US motion in the same frozen display.</p>
+  <p class="boundary"><strong>Synthetic demonstration only.</strong> Every value, source and review record is fictional. No real transcripts, political-position inference or publication approval.</p>
+</header>
+<main id="workspace" tabindex="-1">
+<section class="toolbar" aria-label="Synthetic scenario and selection">
+  <label>Scenario<select id="scenario"></select></label>
+  <label>Comparator<select id="country"></select></label>
+  <label>Selected period<select id="period"></select></label>
+  <button id="reset" type="button">Reset view</button>
+</section>
+<p id="status" role="status" aria-live="polite"></p>
+<p id="scenario-note" class="note"></p>
+<section id="summary" class="summary" aria-label="Selected comparison metrics"></section>
+<section aria-labelledby="paired-heading">
+  <div class="section-heading"><h2 id="paired-heading">One comparison, two coordinate systems</h2><p>Fixed axes · equal x/y units · no animation or interpolation</p></div>
+  <p class="legend"><span>■ Dashed path: USA reference</span><span>● Solid path: selected comparator</span><span>Arrows: chronological movement</span></p>
+  <div class="paired">
+    <section class="plot-card" aria-labelledby="absolute-heading"><h3 id="absolute-heading">Absolute trajectories</h3><p>The US path remains visible.</p><div id="absolute"></div></section>
+    <section class="plot-card" aria-labelledby="relative-heading"><h3 id="relative-heading">US-centered trajectories</h3><p>The US is the origin, not a stationary political benchmark.</p><div id="relative"></div></section>
+  </div>
+  <p id="point-detail" class="point-detail" role="status" aria-live="polite"></p>
+</section>
+<section class="gap-section" aria-labelledby="gap-heading"><h2 id="gap-heading">Distance from the contemporaneous US</h2><p>Calculated upstream in three dimensions—not measured on the two-dimensional plots.</p><div id="gap"></div></section>
+<section aria-labelledby="contributions-heading"><h2 id="contributions-heading">What changed the gap?</h2><p>Comparator and US algebraic contributions for the preceding adjacent period. These are not causal effects.</p><div id="contributions"></div></section>
+<section aria-labelledby="matrix-heading"><h2 id="matrix-heading">Every declared country and period</h2><p>Select a cell to inspect its trajectory and both sides of the evidence. Missing, failed and incompatible cells remain in the frame.</p><div id="matrix" class="table-scroll" role="region" aria-label="Country by period comparison matrix" tabindex="0"></div></section>
+<section aria-labelledby="evidence-heading"><h2 id="evidence-heading">Source and weighting inspection</h2><p>Fictional source identities, original offsets and contribution weights. Synthetic pointers are not links to UN documents.</p><div id="evidence" class="evidence"></div></section>
+<section aria-labelledby="export-heading"><h2 id="export-heading">Local exports and exact replay</h2><p>CSV retains all countries, missing states and source hashes. JSON replays a selection in this exact bundled catalogue; it cannot introduce new analytical data.</p>
+<div class="exports">
+<button type="button" data-export="svg">Export SVG</button><button type="button" data-export="png">Export PNG</button><button type="button" data-export="csv">Export CSV</button><button type="button" data-export="json">Export replay JSON</button><button type="button" data-export="html">Export standalone HTML</button>
+</div>
+<div class="import"><label for="replay-file">Import matching replay JSON (maximum 8 KiB)</label><input type="file" id="replay-file" accept=".json,application/json"><button type="button" id="cancel">Cancel and clear</button></div>
+<details><summary>Inspect representation and consistency identities</summary><pre id="provenance"></pre></details>
+</section>
+</main>
+<footer>Offline synthetic engineering workspace · uncertainty and sensitivity withheld · publication eligible: false</footer>
+<script type="application/json" id="catalogue">@@DATA@@</script>
+<script>@@JS@@</script>
+</body>
+</html>
