@@ -1,0 +1,101 @@
+name: Coordinator US-relative Phase 2 offline views
+
+on:
+  pull_request:
+    paths:
+      - 'research/integration/w2_w4_w6/waggoner/phase2/**'
+      - '.github/workflows/coord-us-relative-phase2.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-views:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [head, effective-tree]
+    env:
+      PYTHONHASHSEED: '0'
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      REVIEW_BASE: 'da4ab9ed11dba3693d11aa12f5333963b1b85478'
+      REVIEW_MODE: ${{ matrix.mode }}
+      CANDIDATE: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - name: Initialize runner-local artifact directory
+        shell: bash
+        run: echo "OUT=$RUNNER_TEMP/usref-phase2-$REVIEW_MODE" >> "$GITHUB_ENV"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Pin exact candidate and disposable integration tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT/evidence"
+          test "$(git rev-parse HEAD)" = "$CANDIDATE"
+          git fetch --no-tags origin "$REVIEW_BASE"
+          if [ "$REVIEW_MODE" = effective-tree ]; then
+            TREE=$(git merge-tree --write-tree "$CANDIDATE" "$REVIEW_BASE")
+            git read-tree --reset -u "$TREE"
+          else
+            TREE=$(git rev-parse 'HEAD^{tree}')
+          fi
+          printf '%s\n' "candidate=$CANDIDATE" "base=$REVIEW_BASE" "mode=$REVIEW_MODE" "tree=$TREE" > "$OUT/evidence/identity.txt"
+          git diff --name-status "$REVIEW_BASE" "$TREE" > "$OUT/evidence/tree-diff.txt"
+          git ls-tree -r "$TREE" -- research/integration/w2_w4_w6/waggoner/phase2 .github/workflows/coord-us-relative-phase2.yml > "$OUT/evidence/code-blobs.txt"
+          cat "$OUT/evidence/identity.txt"
+      - name: Provision native R, Chromium and pinned test dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends r-base-core
+          Rscript --vanilla -e 'stopifnot(getRversion() >= "4.3.0")'
+          python -m pip install -r research/longitudinal/requirements.txt playwright==1.57.0
+          python -m playwright install --with-deps chromium
+          npm install --prefix "$RUNNER_TEMP/phase2-axe" --ignore-scripts --no-audit --no-fund axe-core@4.10.3
+      - name: Preserve complete Phase 1 native-R acceptance and W4 source regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          GITHUB_SHA="$CANDIDATE" python -m research.integration.w2_w4_w6.waggoner.run_tests --require-complete --receipt "$OUT/evidence/phase1.json"
+          python -m unittest discover -s research/longitudinal -p 'test_*.py' -v
+          python -m unittest research.integration.w2_w4_w6.test_w4_bridge -v
+          node docs/parallel-work/validate-contract.cjs
+          node docs/parallel-work/test-w1-w2-inference-readiness.cjs
+      - name: Build fictional views and independently replay every model
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest research.integration.w2_w4_w6.waggoner.phase2.test_build -v
+          python -m research.integration.w2_w4_w6.waggoner.phase2.build --out "$OUT/build"
+          node research/integration/w2_w4_w6/waggoner/phase2/verify_catalogue.cjs "$OUT/build"
+          PHASE2_BUILD_DIR="$OUT/build" node --test research/integration/w2_w4_w6/waggoner/phase2/test_views.cjs
+      - name: Strict served and offline-file Chromium, exports and axe accessibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m research.integration.w2_w4_w6.waggoner.phase2.test_browser \
+            --build-dir "$OUT/build" --artifact-dir "$OUT/evidence" --require-axe \
+            --axe "$RUNNER_TEMP/phase2-axe/node_modules/axe-core/axe.min.js"
+      - name: Retain only synthetic build and review evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: usref-phase2-${{ matrix.mode }}
+          path: ${{ env.OUT }}
+          if-no-files-found: error
+          retention-days: 14
