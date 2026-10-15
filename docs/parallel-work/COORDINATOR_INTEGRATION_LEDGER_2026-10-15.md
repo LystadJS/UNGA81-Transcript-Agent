@@ -79,3 +79,13 @@ Eight new worker PRs (#64, #66–#71 plus an expected supervised workstream not 
 - **Scientific/source/privacy gates unchanged:** original private UN PV/Harvard byte authentication and sampling-response inference NOT RUN/NOT IDENTIFIED; cross-era language, genre, roster and selection comparability NOT ESTABLISHED; empirical model fitting, calibrated inference, political stance interpretation and public empirical release WITHHELD. The 37 reserved Oct 2026 transcripts, D1 O1–O5, frozen evaluations, provenance hashes and completed owner decisions were not changed.
 
 This ledger update changes only coordinator documentation and is not itself empirical release authorization.
+
+## PR #71 independent reproducibility audit — coordinator review 2026-10-15
+
+**Engineering native tests PASS; merge acceptance HOLD DRAFT.** Current main `4a913fd0f36dbb2970fc7b08facebf64e66e3bf1`; current PR #71 head `bd060e72ae595c96e5b98d13d12299b8c895d28f`. Changed files: 13 exclusive `research/reproducibility_audit/**`; original worker code blobs were materialized unchanged on the verified main tree.
+
+- Full checkout native effective-tree validation `15b3087f503f6ba774ea34ecf3f459479453aef9`, [Actions run #38753795947](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/38753795947), job `116486770211`, SUCCESS. Python `unittest` **86/86**; Node parallel v1 1+13, source-inventory 14, P2-to-W1 7, W1 historical-link 4+30, W4 P2 aggregate PASS, source-comparability 50/50.
+- New coordinator-owned exact-head workflow `.github/workflows/reproducibility-audit-acceptance.yml` merged in PR #79 at `4a913fd0f36dbb2970fc7b08facebf64e66e3bf1`, triggered PR #71 exact-head [Actions run #38754190654](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/38754190654), job `116488134725`: Python and source/interchange Node steps SUCCESS.
+- No owned-source failure found; no worker implementation changes required. Worker audit report received a documentation-only CI provenance update.
+- **NOT RUN:** approved complete public Pages/build artifact privacy and leakage scan; private original PDF/Harvard-byte authentication and independent source-selection checking. **WITHHELD:** heldout evaluation, formal statistical calibration, public research claims, model inference, website sync/deployment, human review and D1 O1–O5 release authorization. Native synthetic audit PASS does not satisfy these.
+- **Disposition:** keep #71 draft and unmerged pending complete security/build audit and final current-main engineering acceptance. The 37 reserved 2026 meeting transcripts and frozen provenance/decision gates were not touched.
