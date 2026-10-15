@@ -44,7 +44,7 @@ def scan_bytes(data: bytes) -> list[str]:
     return sorted(set(problems))
 
 
-def _inspect_json(obj, *, path=' -> list[str]:
+def _inspect_json(obj, *, path='$', depth=0, allow_pinned_synthetic_rows=False) -> list[str]:
     if depth>32: return [path+': excessive JSON nesting']
     findings=[]
     if isinstance(obj, dict):
