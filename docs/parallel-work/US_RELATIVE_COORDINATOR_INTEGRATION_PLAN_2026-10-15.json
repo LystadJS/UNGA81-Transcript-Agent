@@ -1,0 +1,377 @@
+{
+  "schema": "un.us-relative-integration-plan.v1",
+  "version": "0.1",
+  "as_of_date": "2026-10-15",
+  "kind": "planning_metadata_not_analytical_contract_or_approval",
+  "scope": "coordinator-only offline synthetic integration planning",
+  "repository": "LystadJS/UNGA81-Transcript-Agent",
+  "main_sha": "da4ab9ed11dba3693d11aa12f5333963b1b85478",
+  "plan_document": "US_RELATIVE_COORDINATOR_INTEGRATION_PLAN_2026-10-15.md",
+  "authorization": {
+    "documentation_only": true,
+    "integration_authorized": false,
+    "merge_authorized": false,
+    "retarget_authorized": false,
+    "protection_write_authorized": false,
+    "publication_authorized": false,
+    "deployment_authorized": false,
+    "real_source_access_authorized": false,
+    "holdout_access_authorized": false
+  },
+  "prs": [
+    {
+      "number": 82,
+      "head_sha": "81110db49786a05f9c8f8ce4d5103c92fe255586",
+      "head_branch": "coord/us-relative-phase1",
+      "base_branch": "main",
+      "draft": true,
+      "merged": false,
+      "depends_on": [],
+      "integration_paths": [
+        "research/integration/w2_w4_w6/test_w4_bridge.py",
+        "research/integration/w2_w4_w6/waggoner/.gitignore",
+        "research/integration/w2_w4_w6/waggoner/R1_R2_REPAIR.md",
+        "research/integration/w2_w4_w6/waggoner/README.md",
+        "research/integration/w2_w4_w6/waggoner/__init__.py",
+        "research/integration/w2_w4_w6/waggoner/arithmetic.R",
+        "research/integration/w2_w4_w6/waggoner/golden_cases.json",
+        "research/integration/w2_w4_w6/waggoner/make_schema.py",
+        "research/integration/w2_w4_w6/waggoner/read_model.cjs",
+        "research/integration/w2_w4_w6/waggoner/run_tests.py",
+        "research/integration/w2_w4_w6/waggoner/schema_contract.cjs",
+        "research/integration/w2_w4_w6/waggoner/schema_contract.py",
+        "research/integration/w2_w4_w6/waggoner/test_identity_regressions.py",
+        "research/integration/w2_w4_w6/waggoner/test_us_reference.py",
+        "research/integration/w2_w4_w6/waggoner/us_reference.py"
+      ]
+    },
+    {
+      "number": 92,
+      "head_sha": "76fbfd73f440306dfd9fc72a6431704f7b09b45d",
+      "head_branch": "coord/us-relative-phase2",
+      "base_branch": "coord/us-relative-phase1",
+      "draft": true,
+      "merged": false,
+      "depends_on": [
+        82
+      ],
+      "integration_paths": [
+        ".github/workflows/coord-us-relative-phase2.yml",
+        "research/integration/w2_w4_w6/waggoner/phase2/README.md",
+        "research/integration/w2_w4_w6/waggoner/phase2/__init__.py",
+        "research/integration/w2_w4_w6/waggoner/phase2/build.py",
+        "research/integration/w2_w4_w6/waggoner/phase2/fixtures.py",
+        "research/integration/w2_w4_w6/waggoner/phase2/template.html",
+        "research/integration/w2_w4_w6/waggoner/phase2/test_browser.py",
+        "research/integration/w2_w4_w6/waggoner/phase2/test_build.py",
+        "research/integration/w2_w4_w6/waggoner/phase2/test_views.cjs",
+        "research/integration/w2_w4_w6/waggoner/phase2/verify_catalogue.cjs",
+        "research/integration/w2_w4_w6/waggoner/phase2/views.css",
+        "research/integration/w2_w4_w6/waggoner/phase2/views.js"
+      ]
+    },
+    {
+      "number": 93,
+      "head_sha": "3789018a0bd031d8bea65fd9b1973a8313bff314",
+      "executed_reviewer_sha": "0ba50379ff63cafb2ccd10aed6608e78f6a202db",
+      "head_branch": "coord/pr92-independent-review",
+      "base_branch": "main",
+      "draft": true,
+      "merged": false,
+      "depends_on": [
+        92
+      ],
+      "dependency_kind": "ordered engineering acceptance; reviewer implementation is independently branched",
+      "integration_paths": [
+        ".github/workflows/coord-pr92-independent-review.yml",
+        "docs/parallel-work/PR92_OFFLINE_ENGINEERING_ACCEPTANCE_2026-10-15.md",
+        "research/integration/w2_w4_w6/pr92_review/REVIEW.md",
+        "research/integration/w2_w4_w6/pr92_review/test_review.py"
+      ]
+    }
+  ],
+  "historical_evidence_dependency": {
+    "pr": 87,
+    "head_sha": "dc8f98dec92cd34242f9ed7c6ce85814291ada38",
+    "planned_merge": false,
+    "source_path": "research/integration/w2_w4_w6/pr82_review/test_independent.py",
+    "workflow_path": ".github/workflows/coord-pr82-us-reference-review.yml"
+  },
+  "integration_order": [
+    82,
+    92,
+    93
+  ],
+  "stages": [
+    {
+      "id": "G0",
+      "depends_on": [],
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "G1",
+      "depends_on": [
+        "G0"
+      ],
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "G2",
+      "depends_on": [
+        "G1"
+      ],
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "I82",
+      "depends_on": [
+        "G2"
+      ],
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "I92",
+      "depends_on": [
+        "I82"
+      ],
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "I93",
+      "depends_on": [
+        "I92"
+      ],
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "CLOSE",
+      "depends_on": [
+        "I93"
+      ],
+      "status": "NOT_EXECUTED"
+    }
+  ],
+  "prospective_gate": {
+    "status": "NOT_IMPLEMENTED",
+    "workflow_path": ".github/workflows/coord-us-relative-integration.yml",
+    "coordinator_code_prefix": "research/integration/w2_w4_w6/usref_integration/",
+    "required_status": "usref-integration-required",
+    "historical_workflows_unchanged": true,
+    "workflow_path_filters_allowed": false,
+    "triggers": [
+      "pull_request (including edited)",
+      "push to main",
+      "merge_group when configured"
+    ],
+    "permissions": {
+      "contents": "read"
+    },
+    "finalizer": "always() + needs; literal success and matched nonempty receipts",
+    "skip_is_acceptance": false,
+    "mutable_historical_repin_allowed": false,
+    "require_native_r": true,
+    "require_native_chromium_when_phase2_present": true,
+    "require_actual_base_resolution": true,
+    "require_zero_skips": true,
+    "require_combined_tree_dry_run": true,
+    "require_post_integration_exact_commit": true
+  },
+  "protection_observation": {
+    "main_protection_http_status": 403,
+    "message": "Resource not accessible by integration",
+    "visible_rulesets": [],
+    "enforcement": "UNVERIFIED",
+    "require_admin_evidence_before_integration": true,
+    "settings_changed": false
+  },
+  "historical_runs": [
+    38769872958,
+    38779954475,
+    38792204591
+  ],
+  "historical_trees": {
+    "phase2_head": "7be21e90e6142a62e1f12f04e04f28707107178a",
+    "phase2_effective": "f61c3b7efc5b2e4cc4c730a870ffdd1e834fa571"
+  },
+  "combined_tree": {
+    "status": "NOT_EXECUTED",
+    "tree_sha": null,
+    "reason": "Prior review combines main with PR92, not all PR93 and prospective gate additions."
+  },
+  "required_suites": [
+    {
+      "id": "phase1",
+      "retained_tests": 40,
+      "stages": [
+        "I82",
+        "I92",
+        "I93",
+        "combined"
+      ],
+      "mandatory_r": true,
+      "zero_skips": true
+    },
+    {
+      "id": "w4-core",
+      "retained_tests": 25,
+      "stages": [
+        "I82",
+        "I92",
+        "I93",
+        "combined"
+      ],
+      "zero_skips": true
+    },
+    {
+      "id": "w4-bridge-sidecar",
+      "retained_tests": 49,
+      "includes": "phase1",
+      "stages": [
+        "I82",
+        "I92",
+        "I93",
+        "combined"
+      ],
+      "zero_skips": true
+    },
+    {
+      "id": "pr87-independent",
+      "retained_tests": 7,
+      "stages": [
+        "I82",
+        "I92",
+        "I93",
+        "combined"
+      ],
+      "zero_skips": true
+    },
+    {
+      "id": "phase2-build",
+      "retained_tests": 4,
+      "stages": [
+        "I92",
+        "I93",
+        "combined"
+      ],
+      "zero_skips": true
+    },
+    {
+      "id": "phase2-node",
+      "retained_tests": 12,
+      "stages": [
+        "I92",
+        "I93",
+        "combined"
+      ],
+      "zero_skips": true
+    },
+    {
+      "id": "phase2-native-browser",
+      "retained_tests": 17,
+      "stages": [
+        "I92",
+        "I93",
+        "combined"
+      ],
+      "zero_skips": true
+    },
+    {
+      "id": "pr93-independent",
+      "retained_tests": 7,
+      "stages": [
+        "I92",
+        "I93",
+        "combined"
+      ],
+      "zero_skips": true
+    },
+    {
+      "id": "source-model-replay",
+      "models": 8,
+      "phase1_blob_pins": 6,
+      "stages": [
+        "I92",
+        "I93",
+        "combined"
+      ],
+      "zero_skips": true
+    },
+    {
+      "id": "official-interchange-and-frozen-guards",
+      "stages": [
+        "I82",
+        "I92",
+        "I93",
+        "combined"
+      ],
+      "zero_skips": true
+    }
+  ],
+  "accessibility": {
+    "historical_incomplete_targets": 444,
+    "resolution": "retained separate per-target evidence; never suppress axe incomplete results",
+    "full_wcag_certification": false,
+    "manual_screen_reader_certification": false,
+    "actual_browser_zoom_certification": false,
+    "firefox_webkit_certification": false
+  },
+  "pages_push_path_patterns": [
+    "site/**",
+    "reports/hlw-cuba/**",
+    "tools/build_pages.py",
+    "tools/test_browser*.cjs",
+    "tools/*latent*",
+    "tools/*passage*",
+    "tools/*speech_pilot*",
+    "tools/browser-deps/**",
+    "un/config/countries.csv",
+    ".github/workflows/pages.yml",
+    ".github/workflows/latent-comparison.yml"
+  ],
+  "retained_archives": [
+    {
+      "file": "PR82_repair_head.zip",
+      "sha256": "b91500e007d4c7ae28b7bb9d212ec693b4487e4dd0559f611881c844ce32954c",
+      "size_bytes": 1485,
+      "identity": "candidate_head=81110db49786a05f9c8f8ce4d5103c92fe255586\nreview_base=5f0a872cff0899819b21326e6c18b7af794556c5\nmode=head\ntested_tree=6355627254f890e2517a343acff248fbfb4f406e\n",
+      "crc_integrity": true
+    },
+    {
+      "file": "PR82_repair_effective_tree.zip",
+      "sha256": "72f1dc2662218775f713020383ee262146400e2e355f377e56c731bca273c169",
+      "size_bytes": 1303,
+      "identity": "candidate_head=81110db49786a05f9c8f8ce4d5103c92fe255586\nreview_base=5f0a872cff0899819b21326e6c18b7af794556c5\nmode=effective-tree\ntested_tree=20534e2ead5510057572852cbd7eb34d098d878d\n",
+      "crc_integrity": true
+    },
+    {
+      "file": "PR92_Phase2_Head_Acceptance.zip",
+      "sha256": "d950335521745efb86db1bd118874e5b14636c835c08d5e273c464cdc05564c8",
+      "size_bytes": 1679348,
+      "identity": "candidate=76fbfd73f440306dfd9fc72a6431704f7b09b45d\nbase=da4ab9ed11dba3693d11aa12f5333963b1b85478\nmode=head\ntree=7be21e90e6142a62e1f12f04e04f28707107178a\n",
+      "crc_integrity": true
+    },
+    {
+      "file": "PR92_Phase2_Effective_Tree_Acceptance.zip",
+      "sha256": "70b330f6a4ab507b3886687dd6d3c08cd935dea73ac07e3c7a63ad070300e5eb",
+      "size_bytes": 1679168,
+      "identity": "candidate=76fbfd73f440306dfd9fc72a6431704f7b09b45d\nbase=da4ab9ed11dba3693d11aa12f5333963b1b85478\nmode=effective-tree\ntree=f61c3b7efc5b2e4cc4c730a870ffdd1e834fa571\n",
+      "crc_integrity": true
+    },
+    {
+      "file": "PR92_Independent_Head_Review.zip",
+      "sha256": "4405db0e0c8a5d1f9de48ea01f68edee311d7cbf85f3278642b6d298aac6677e",
+      "size_bytes": 4814084,
+      "identity": "candidate=76fbfd73f440306dfd9fc72a6431704f7b09b45d\nbase=da4ab9ed11dba3693d11aa12f5333963b1b85478\nmode=head\ntree=7be21e90e6142a62e1f12f04e04f28707107178a\nreviewer=0ba50379ff63cafb2ccd10aed6608e78f6a202db\n",
+      "crc_integrity": true
+    },
+    {
+      "file": "PR92_Independent_Effective_Tree_Review.zip",
+      "sha256": "0d325383b1b9a4c24ac41a2b6f5a248a363b99195cb4e1857f1f21a47bf965d5",
+      "size_bytes": 4813896,
+      "identity": "candidate=76fbfd73f440306dfd9fc72a6431704f7b09b45d\nbase=da4ab9ed11dba3693d11aa12f5333963b1b85478\nmode=effective-tree\ntree=f61c3b7efc5b2e4cc4c730a870ffdd1e834fa571\nreviewer=0ba50379ff63cafb2ccd10aed6608e78f6a202db\n",
+      "crc_integrity": true
+    }
+  ],
+  "plan_validation_scope": "pins, inventory, dependency graph, plan consistency and retained archive integrity only; no native or browser reruns",
+  "next_prompt": "Implement the coordinator-only prospective integration gate and combined-tree dry-run checks for PRs #82, #92 and #93, retaining the #87 regression evidence and historical review pins, without merging, retargeting, changing branch protections, publishing or opening real transcripts."
+}
