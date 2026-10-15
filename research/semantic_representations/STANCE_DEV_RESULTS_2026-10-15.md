@@ -10,7 +10,7 @@ Prospective rules, strata, candidate methods, abstention behavior and developmen
 
 `314d38673983f7ed311869a4521bd8bbc6f1f34e4cf2a11ab8083e0b6e112b37`
 
-Synthetic source/selection SHA-256: `[source digest recorded inside complete output; benchmark code emits it deterministically]`. These are invented public-safe cases, never actual UN meeting texts.
+Synthetic selection SHA-256 (ordered 120 IDs, canonical JSON): `5e0c644dbbd4ec7447950595e48a6d28f1cdd44ea592788343417066c719296a`. These are invented public-safe cases, never actual UN meeting texts.
 
 ## All attempted cases and results
 
