@@ -23,7 +23,7 @@ jobs:
       U2_HEAD: ee89069532ff58da099f2366fbc68c66eeba3aad
       U1_HEAD: afb92e82881dc11003170899aef9958682d61abe
       C0_HEAD: 884097997f89b0040e4418480378f077e3b65434
-      MAIN_HEAD: da4ab9ed11dba3693d11aa12f5333963b1b85478
+      MAIN_HEAD: 240d83c77effb5844c9753d7e38891cce30daced
     steps:
       - uses: actions/checkout@v4
         with:
@@ -59,6 +59,13 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/u2-$MODE"
           { node --version; python --version; python -m pip freeze; git --version; } > "$RUNNER_TEMP/u2-$MODE/runtime.txt"
+          python - "$RUNNER_TEMP/u2-$MODE" <<'PY'
+          from pathlib import Path
+          import hashlib,json,sys
+          root=Path(sys.argv[1])
+          manifest={str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(root.rglob('*')) if p.is_file() and p.name!='SHA256.json'}
+          (root/'SHA256.json').write_text(json.dumps(manifest,indent=2)+'\n')
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
