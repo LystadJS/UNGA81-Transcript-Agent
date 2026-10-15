@@ -1,0 +1,30 @@
+name: Reproducibility audit exact-head acceptance
+on:
+  pull_request:
+    paths:
+      - 'research/reproducibility_audit/**'
+      - '.github/workflows/reproducibility-audit-acceptance.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  reproducibility-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Python audit and regression
+        if: hashFiles('research/reproducibility_audit/test_audit.py') != ''
+        run: python3 -m unittest discover -s research/reproducibility_audit -p 'test_*.py' -v
+      - name: Native upstream source and interchange
+        if: hashFiles('research/reproducibility_audit/test_audit.py') != ''
+        run: |
+          set -euo pipefail
+          node docs/parallel-work/validate-contract.cjs
+          node docs/parallel-work/test-source-inventory-v1.cjs
+          node research/source_acquisition/p2_expansion/test_p2_to_w1.cjs
+          node research/validation_framework/tests/test_historical_link.cjs
+          node docs/parallel-work/test_w4_p2_independent_source_audit.cjs
+          node --test research/source_comparability/audit.test.cjs research/source_comparability/audit.integration.test.cjs
