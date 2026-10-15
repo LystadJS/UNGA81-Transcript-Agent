@@ -1,0 +1,43 @@
+name: W4 P2 encrypted independent 2008–2015 original-PV source-quality audit
+on:
+  push:
+    branches: ['coord/w4-p2-independent-pv-quality-audit-20261013']
+    paths:
+      - 'research/source_acquisition/w4_2008_2015/independent_quality_audit_28.py'
+      - '.github/workflows/w4-p2-pre2016-independent-source-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-quality-independent-pv-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      RECIPIENT_PUBLIC_KEY_B64: U72wNyFNO4cR3MD+gR7YVtGOnNzWsTF/hFhc82OV1Vg=
+      PYTHONNOUSERSITE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Pin recipient-encryption dependency
+        run: python -m pip install cryptography==43.0.3
+      - name: Fail closed on frozen split and reserved 2026 exclusion
+        run: python research/source_acquisition/w4_2008_2015/independent_quality_audit_28.py --selftest
+      - name: Retrieve ONLY 28 source-quality audit original UN PVs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/source_acquisition/w4_2008_2015/independent_quality_audit_28.py \
+            --recipient-public-key "$RECIPIENT_PUBLIC_KEY_B64" \
+            --sealed-output w4_p2_pre2016_independent_audit_originals.x25519_aesgcm \
+            --workers 4
+      - name: Upload ONLY recipient-encrypted original-PV source-audit package
+        uses: actions/upload-artifact@v4
+        with:
+          name: w4-p2-private-recipient-encrypted-28-UN-PV-originals
+          path: w4_p2_pre2016_independent_audit_originals.x25519_aesgcm
+          retention-days: 1
+          if-no-files-found: error

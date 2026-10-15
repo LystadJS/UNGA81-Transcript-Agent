@@ -1,0 +1,31 @@
+name: W4 P2 independent original-PV source-audit aggregate and gate checks
+on:
+  push:
+    branches: ['coord/w4-p2-independent-pv-quality-audit-20261013']
+    paths:
+      - 'docs/parallel-work/W4_P2_*'
+      - 'docs/parallel-work/test_w4_p2_independent_source_audit.cjs'
+      - '.github/workflows/w4-p2-audit-aggregate-contract.yml'
+  pull_request:
+    paths:
+      - 'docs/parallel-work/W4_P2_*'
+      - 'docs/parallel-work/test_w4_p2_independent_source_audit.cjs'
+      - '.github/workflows/w4-p2-audit-aggregate-contract.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-free-denominator-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate frozen index and selection denominators; withhold empirical inference
+        run: node docs/parallel-work/test_w4_p2_independent_source_audit.cjs
+      - name: Legacy v1 integration remains structurally unchanged
+        run: node docs/parallel-work/validate-contract.cjs
