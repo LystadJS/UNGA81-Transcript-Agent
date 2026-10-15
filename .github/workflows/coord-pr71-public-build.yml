@@ -1,0 +1,30 @@
+name: Coordinator PR71 full public-build privacy audit
+on:
+  push:
+    branches: ['coord/pr71-public-build-20261015']
+permissions:
+  contents: read
+jobs:
+  public-build-security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Build approved public assets and fail-closed inspect all files
+        run: |
+          set -euo pipefail
+          python3 tools/build_pages.py "$RUNNER_TEMP/pr71-public-site"
+          python3 - "$RUNNER_TEMP/pr71-public-site" <<'PY'
+          import hashlib,json,sys
+          from pathlib import Path
+          sys.path.insert(0, str(Path('research/reproducibility_audit').resolve()))
+          from security import scan_public,scan_bytes
+          root=Path(sys.argv[1])
+          findings=scan_public(root)
+          inventory=[{'path':str(p.relative_to(root)), 'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'size':p.stat().st_size} for p in sorted(root.rglob('*')) if p.is_file() and not p.is_symlink()]
+          assert scan_bytes(b'SYNTHETIC_PRIVATE_TRANSCRIPT_SENTINEL\n-----BEGIN PRIVATE KEY-----'), 'privacy scanner negative-control refusal failed'
+          print(json.dumps({'schema':'un.public-build-security-receipt.v1','files':len(inventory),'total_bytes':sum(x['size'] for x in inventory),'manifest_sha256':hashlib.sha256(json.dumps(inventory,sort_keys=True,separators=(',',':')).encode()).hexdigest(),'findings':findings,'publication_authorized':False,'evaluation_role':'engineering_only'},sort_keys=True))
+          if findings: raise SystemExit(1)
+          PY
