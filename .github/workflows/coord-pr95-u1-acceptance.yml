@@ -17,7 +17,7 @@ jobs:
       matrix:
         mode: [worker-head, effective-tree]
     env:
-      U1_HEAD: aa19fb3a63dc5f9debe1ec4fb624f44aa78ff041
+      U1_HEAD: afb92e82881dc11003170899aef9958682d61abe
       C0_HEAD: 884097997f89b0040e4418480378f077e3b65434
       MAIN_HEAD: da4ab9ed11dba3693d11aa12f5333963b1b85478
       REVIEW_HEAD: ${{ github.event.pull_request.head.sha }}
@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: aa19fb3a63dc5f9debe1ec4fb624f44aa78ff041
+          ref: afb92e82881dc11003170899aef9958682d61abe
           fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-node@v4
