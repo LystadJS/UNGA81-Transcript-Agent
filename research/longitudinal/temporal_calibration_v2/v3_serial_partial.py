@@ -11,6 +11,7 @@ import numpy as np
 from scipy.optimize import minimize
 from scipy.special import expit
 from scipy.stats import t as student_t, chi2
+from .v3_nuisance import IdentificationFailure, response_gamma
 
 GAMMA_METHODS = ("pooled_logit", "year_fixed_effects", "estimated_ar1_year_effects")
 RHO_WIDE = (-0.20, 0.0, 0.25, 0.50, 0.70, 0.85)
