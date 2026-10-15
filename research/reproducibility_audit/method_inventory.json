@@ -1,0 +1,495 @@
+{
+  "schema": "un.research-method-inventory.v1",
+  "source_path": "research/catalog.json",
+  "source_blob_sha": "6aca560d961369fda7637869853e92366df86bde",
+  "source_catalog_schema": "un.i8.catalog.v1",
+  "source_counts": {
+    "daily_adapters": 12,
+    "backlog_methods": 30,
+    "synthetic_kernels": 29,
+    "remaining_kernels": 1
+  },
+  "methods": [
+    {
+      "method_id": "M03",
+      "name": "Sentence and document embeddings",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "source_text",
+        "embedding_version",
+        "embedding_provider_authorized"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M04",
+      "name": "Fixed-topic semantic relevance",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "source_text",
+        "embedding_version",
+        "fixed_topic_references"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M10",
+      "name": "UMAP",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "numeric_features",
+        "embedding_version",
+        "projection_diagnostics"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M11",
+      "name": "Unpenalized logistic issue classifier",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "gold_issue_labels",
+        "temporal_grouped_validation",
+        "full_rank_design"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M12",
+      "name": "Elastic-net multilabel issue classifier",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "gold_issue_labels",
+        "temporal_grouped_validation",
+        "calibration"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M13",
+      "name": "Random forest classifiers",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "gold_labels",
+        "temporal_grouped_validation",
+        "calibration"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M14",
+      "name": "Gradient-boosted trees",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "gold_labels",
+        "temporal_grouped_validation",
+        "calibration"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M15",
+      "name": "Embedding plus regularized classifier",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "gold_labels",
+        "embedding_version",
+        "temporal_grouped_validation",
+        "calibration"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M16",
+      "name": "Fine-tuned text transformer",
+      "registered_state": "synthetic_tested",
+      "runner": "research/neural.py",
+      "runtime": "Python",
+      "required_gates": [
+        "gold_labels",
+        "temporal_grouped_validation",
+        "approved_checkpoint",
+        "tokenizer_verified",
+        "neural_resource_benchmark"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M17",
+      "name": "Proposition-specific stance models",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "gold_stance_labels",
+        "proposition_schema",
+        "temporal_grouped_validation",
+        "calibration"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M18",
+      "name": "Latent Dirichlet allocation",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "historical_text_corpus",
+        "frozen_vocabulary",
+        "topic_validation"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M19",
+      "name": "Structural topic model",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "historical_text_corpus",
+        "document_metadata",
+        "topic_validation"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M20",
+      "name": "Embedding-topic pipeline with cluster descriptors",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "historical_passage_corpus",
+        "embedding_version",
+        "topic_validation"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M21",
+      "name": "HDBSCAN density clustering",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "numeric_features",
+        "density_support",
+        "cluster_stability"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M22",
+      "name": "Within-country historical distance",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "same_country_history",
+        "same_genre_issue",
+        "representation_consistent"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M23",
+      "name": "Isolation-forest anomaly detection",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "historical_features",
+        "same_genre_issue",
+        "anomaly_backtest"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M24",
+      "name": "Change-point detection",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "longitudinal_series",
+        "time_index_valid",
+        "dependence_specified",
+        "change_backtest"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M25",
+      "name": "Longitudinal Procrustes alignment",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "shared_entities",
+        "anchor_full_rank",
+        "representation_consistent",
+        "alignment_diagnostics"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M26",
+      "name": "driftmapR movement and resampling",
+      "registered_state": "not_implemented",
+      "runner": null,
+      "runtime": null,
+      "required_gates": [
+        "shared_entities",
+        "representation_consistent",
+        "driftmap_supported_regime",
+        "resampling_unit_valid"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M27",
+      "name": "Dynamic cluster correspondence",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "shared_entities",
+        "cluster_stability",
+        "cluster_correspondence"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M28",
+      "name": "Hidden Markov model",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "repeated_country_sequences",
+        "measurement_invariance",
+        "temporal_validation"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M29",
+      "name": "Latent transition analysis",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "repeated_country_sequences",
+        "measurement_invariance",
+        "temporal_validation"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M30",
+      "name": "Dynamic mixture model",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "repeated_country_sequences",
+        "measurement_invariance",
+        "temporal_validation",
+        "fit_diagnostics"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M35",
+      "name": "Stochastic block models",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "valid_graph_likelihood",
+        "network_stability",
+        "fit_diagnostics"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M37",
+      "name": "Issue / stance / shift / membership forecasting",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "historical_outcomes",
+        "observation_process",
+        "temporal_validation",
+        "forecast_calibration"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M38",
+      "name": "Temporal transformer / sequence model",
+      "registered_state": "synthetic_tested",
+      "runner": "research/neural.py",
+      "runtime": "Python",
+      "required_gates": [
+        "long_country_sequences",
+        "observation_process",
+        "temporal_validation",
+        "neural_resource_benchmark"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M39",
+      "name": "Discrete-time / survival adoption hazard",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "adoption_events",
+        "risk_set",
+        "lagged_exposures",
+        "censoring_specified",
+        "temporal_validation"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M40",
+      "name": "Network autocorrelation",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "historical_outcomes",
+        "preexisting_network",
+        "network_identification"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M41",
+      "name": "Relational event models",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "directed_relational_events",
+        "risk_set",
+        "event_time_precision",
+        "temporal_validation"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    },
+    {
+      "method_id": "M42",
+      "name": "Bayesian diffusion model",
+      "registered_state": "synthetic_tested",
+      "runner": "research/run.R",
+      "runtime": "R",
+      "required_gates": [
+        "adoption_events",
+        "risk_set",
+        "lagged_exposures",
+        "network_identification",
+        "fit_diagnostics"
+      ],
+      "execution_evidence": "inherited repository declaration, not independently executed",
+      "publication_eligible": false
+    }
+  ],
+  "test_entrypoints": [
+    {
+      "name": "parallel interchange",
+      "path": "docs/parallel-work/validate-contract.cjs",
+      "command": "node docs/parallel-work/validate-contract.cjs",
+      "runtime": "Node 22",
+      "execution_evidence": "NOT RUN on latest GitHub PR head"
+    },
+    {
+      "name": "research registry",
+      "path": "research/test_methods.py",
+      "command": "python3 research/test_methods.py",
+      "runtime": "Python 3",
+      "execution_evidence": "NOT RUN on latest GitHub PR head"
+    },
+    {
+      "name": "R kernels",
+      "path": "research/test_engines.R",
+      "command": "Rscript research/test_engines.R",
+      "runtime": "R",
+      "execution_evidence": "NOT RUN on latest GitHub PR head"
+    },
+    {
+      "name": "extended R kernels",
+      "path": "research/test_more.R",
+      "command": "Rscript research/test_more.R",
+      "runtime": "R",
+      "execution_evidence": "NOT RUN on latest GitHub PR head"
+    },
+    {
+      "name": "neural kernels",
+      "path": "research/test_neural.py",
+      "command": "python3 -m unittest research/test_neural.py",
+      "runtime": "Python 3",
+      "execution_evidence": "NOT RUN on latest GitHub PR head"
+    },
+    {
+      "name": "audit synthetic regressions",
+      "path": "research/reproducibility_audit/test_protocol.py",
+      "command": "python3 -m unittest discover -s research/reproducibility_audit -p test_*.py -v",
+      "runtime": "Python 3 stdlib",
+      "execution_evidence": "NOT RUN on latest GitHub PR head"
+    }
+  ],
+  "source_authority": "repository catalog (read only), registration not independent execution",
+  "publication_eligible": false
+}
