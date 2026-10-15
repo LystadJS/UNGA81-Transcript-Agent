@@ -70,3 +70,50 @@ jobs:
               assert a['rows']==b['rows']
               print('PINNED_ONNX_16_OF_16_PASS; LONG_WORDPIECES_CHUNKED; WARM_CACHE_16_OF_16_PASS; NO_NETWORK_IN_INFERENCE')
           PY
+
+      - name: Independent-process synthetic contrast and dependency wheel receipts
+        env:
+          HF_HUB_OFFLINE: '1'
+          TRANSFORMERS_OFFLINE: '1'
+        run: |
+          set -euo pipefail
+          python -m pip download --only-binary=:all: --no-deps -r research/semantic_review/requirements.txt -d "$RUNNER_TEMP/pinned-wheels" --quiet
+          python - "$RUNNER_TEMP/pinned-wheels" <<'PY'
+          import hashlib,json,sys
+          from pathlib import Path
+          files=sorted(Path(sys.argv[1]).iterdir())
+          assert len(files)==6, [p.name for p in files]
+          print('DEPENDENCY_WHEELS_SHA256='+json.dumps({p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in files},sort_keys=True))
+          PY
+          cat > "$RUNNER_TEMP/benchmark.py" <<'PY'
+          import hashlib,json,sys,tempfile
+          from pathlib import Path
+          import numpy as np
+          sys.path.insert(0,str(Path('research/semantic_representations').resolve()))
+          from fixtures import CONTRASTS
+          from local_model import LocalModelEncoder,model_identity
+          from pipeline import encode,sha
+          from fixtures import fixture_frame
+          frame=fixture_frame()
+          encoder=LocalModelEncoder(Path('/tmp/unga-pinned-minilm'))
+          with tempfile.TemporaryDirectory() as d:
+              out=encode(frame,model_identity(),{'metric':'cosine','pooling':'upstream_chunk_token_weighted'},encoder,Path(d),batch_size=4)
+              assert out['coverage']['encoded']==16 and out['coverage']['failed_batches']==0
+              data={x['id']:np.asarray(x['vector'],dtype=np.float64) for x in out['rows'] if x['status']=='encoded'}
+              observations=[]
+              for case in CONTRASTS:
+                  key=case['id'];anchor=data[key+':anchor']
+                  similarities={role:round(float(np.dot(anchor,data[key+':'+role])),8) for role in ('paraphrase','opposite','protocol')}
+                  observations.append({'case':key,'cosine':similarities,'paraphrase_gt_opposite':similarities['paraphrase']>similarities['opposite']})
+              print(json.dumps({'cases':observations,'successes':sum(x['paraphrase_gt_opposite'] for x in observations),'attempted':len(observations),'failed_fits':out['coverage']['failed_batches'],'rows':len(data),'vector_sha256':hashlib.sha256(json.dumps({k:[round(float(z),7) for z in v] for k,v in sorted(data.items())},sort_keys=True,separators=(',',':')).encode()).hexdigest()},sort_keys=True))
+          PY
+          python "$RUNNER_TEMP/benchmark.py" > "$RUNNER_TEMP/contrast1.json"
+          python "$RUNNER_TEMP/benchmark.py" > "$RUNNER_TEMP/contrast2.json"
+          python - "$RUNNER_TEMP/contrast1.json" "$RUNNER_TEMP/contrast2.json" <<'PY'
+          import json,sys
+          a,b=[json.load(open(p)) for p in sys.argv[1:]]
+          assert a['attempted']==b['attempted']==4 and a['rows']==b['rows']==16
+          assert a['failed_fits']==b['failed_fits']==0
+          assert a==b,'independent process output drift'
+          print('INDEPENDENT_TWO_PROCESS_REPLAY_PASS='+json.dumps(a,sort_keys=True))
+          PY
