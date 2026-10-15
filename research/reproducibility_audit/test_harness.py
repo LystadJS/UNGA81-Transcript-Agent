@@ -1,5 +1,6 @@
 """CLI/inventory and cross-grain regression checks; all fixtures synthetic."""
 import json
+import shutil
 from pathlib import Path
 import tempfile
 import unittest
@@ -8,6 +9,7 @@ import inventory
 import protocol
 import replay
 import run_qa
+import security
 from test_protocol import specimen, synthetic_schema
 
 
@@ -122,6 +124,35 @@ class QAIntegrationTests(unittest.TestCase):
             d={'schema':'un.replay-fixture.v1','fixture_kind':'synthetic',
                'seed':123,'observations':[1,2,3]}
             self.assertEqual(replay.replay(d,worker=p)['status'],'FAIL')
+
+
+class PublishedSyntheticFixtureSecurityTests(unittest.TestCase):
+    """A source-record exception is permitted only for an exact pinned public fixture."""
+    def setUp(self):
+        self.path=Path(__file__).resolve().parents[2] / 'site/parallel/w05-browser/experimental/method-lab/fixtures/synthetic-contract.json'
+        self.rel=Path('parallel/w05-browser/experimental/method-lab/fixtures/synthetic-contract.json')
+
+    def test_exact_pinned_fixture_is_not_misclassified_as_private(self):
+        with tempfile.TemporaryDirectory() as td:
+            target=Path(td)/self.rel
+            target.parent.mkdir(parents=True)
+            shutil.copyfile(self.path,target)
+            self.assertEqual(security.scan_public(Path(td)),[])
+
+    def test_even_whitespace_tampering_restores_source_row_refusal(self):
+        with tempfile.TemporaryDirectory() as td:
+            target=Path(td)/self.rel
+            target.parent.mkdir(parents=True)
+            target.write_bytes(self.path.read_bytes()+b' ')
+            findings=security.scan_public(Path(td))
+            self.assertTrue(any('row-level source record' in x['reason'] for x in findings))
+
+    def test_exact_fixture_under_unapproved_path_is_refused(self):
+        with tempfile.TemporaryDirectory() as td:
+            target=Path(td)/'other-fixture.json'
+            target.write_bytes(self.path.read_bytes())
+            findings=security.scan_public(Path(td))
+            self.assertTrue(any('row-level source record' in x['reason'] for x in findings))
 
 
 if __name__=='__main__': unittest.main()
