@@ -1,0 +1,41 @@
+"""Prospective v3 freeze CANDIDATE maker, not a preregistration approval.
+
+Hashes local source and proposed design. Does not run simulations, seed a holdout,
+derive cutoffs, or modify any frozen v2 files. Output is stdout only.
+"""
+from __future__ import annotations
+import hashlib
+import json
+from pathlib import Path
+import platform
+from .v3_prototype import verify_design
+
+ROOT=Path(__file__).resolve().parent
+FILES=("v3_prototype.py","v3_nuisance.py","v3_design_proposal.json",
+       "test_v3_prototype.py","test_v3_nuisance.py")
+
+def proposal_receipt():
+    cfg=json.loads((ROOT/"v3_design_proposal.json").read_text())
+    verify_design(cfg)
+    if cfg.get("gates_frozen") is not False:
+        raise ValueError("unapproved v3 design must never be recorded as frozen")
+    hashes={name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in FILES}
+    return dict(schema="un.w4.temporal-v3.freeze-candidate.v1",
+        status="UNAPPROVED_DESIGN_CANDIDATE_NOT_FROZEN",
+        source_sha256=hashes,
+        proposed_primary_horizon=16,
+        v2_thresholds_unmodified=True,
+        v3_acceptance_thresholds_locked=False,
+        development_calibration_run=False,
+        independent_holdout_generator_implemented=False,
+        independent_holdout_seed_committed=False,
+        holdout_run=False,
+        response_gamma_grouped_inference_validated=False,
+        externally_measured_year_process_nugget_available=False,
+        full_covariance_identification_achieved=False,
+        real_fit_authorized=False,
+        next_authorization="coordinator and independent statistician must approve design and model assumptions",
+        python_runtime=platform.python_version())
+
+if __name__=="__main__":
+    print(json.dumps(proposal_receipt(),indent=2,sort_keys=True))
