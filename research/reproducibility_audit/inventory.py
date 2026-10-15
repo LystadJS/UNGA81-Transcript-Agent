@@ -55,3 +55,28 @@ def build(repo_root: Path, *, catalog: dict | None = None) -> dict:
             'count_declared_kernels':sum(m['registered_state']=='synthetic_tested' for m in records),
             'methods':records,'test_entrypoints':suites,
             'note':'Registration and declared synthetic status are not re-execution or research release.'}
+
+
+def verify_snapshot(repo_root: Path) -> list[str]:
+    """Compare the reviewed registry snapshot to current original metadata bytes."""
+    from protocol import git_blob_sha
+    root=Path(repo_root)
+    raw=(root/'research/catalog.json').read_bytes()
+    source=json.loads(raw)
+    snapshot=json.loads((root/'research/reproducibility_audit/method_inventory.json').read_bytes())
+    errors=[]
+    if snapshot.get('source_blob_sha')!=git_blob_sha(raw):
+        errors.append('method catalog source Git blob mismatch')
+    if snapshot.get('source_catalog_schema')!=source.get('schema'):
+        errors.append('method catalog schema mismatch')
+    original={m['id']:(m['method'],m['required_gates'],m['research_kernel'],m.get('runner')) for m in source['methods']}
+    mirrored={m['method_id']:(m['name'],m['required_gates'],m['registered_state'],
+                None if m['runner'] is None else m['runner'].removeprefix('research/'))
+              for m in snapshot['methods']}
+    if original!=mirrored or len(snapshot['methods'])!=len(original):
+        errors.append('method snapshot differs from registered method contracts')
+    if source['backlog_methods']!=len(source['methods']):
+        errors.append('catalog backlog denominator mismatch')
+    if source['synthetic_kernels']!=sum(m['research_kernel']=='synthetic_tested' for m in source['methods']):
+        errors.append('catalog synthetic kernel denominator mismatch')
+    return errors
