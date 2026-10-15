@@ -1,0 +1,36 @@
+{
+  "schema": "un.p0p1.public-endpoint-probe.v1",
+  "audit_date": "2026-10-08",
+  "action_run": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37812396869",
+  "harvard": {
+    "dataset_url": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/0TJX8Y",
+    "metadata_api_http_status": 200,
+    "latest_published_version_reported": "14.0",
+    "pinned_corpus_file_id": 13591895,
+    "pinned_corpus_filename": "UNGDC_1946-2025.tar.gz",
+    "file_size_bytes_metadata": 71280312,
+    "file_md5_metadata": "81bdd06086d9e7c4e67026acb7325df3",
+    "archive_download_http_status": 400,
+    "archive_bytes_acquired": false,
+    "archive_sha256_verified": false,
+    "message": "Live metadata check confirms named v14 file, but direct archive download was blocked."
+  },
+  "un_official": {
+    "reference": "https://digitallibrary.un.org/record/4067189/",
+    "file_name": "GA_debate_speech_dataset_20260129.csv",
+    "file_year_max": 2024,
+    "file_year_min": 1946,
+    "endpoint_HEAD_http_status": 202,
+    "endpoint_HEAD_content_type": "text/html; charset=UTF-8",
+    "CSV_content_acquired": false,
+    "reconciliation_available": false
+  },
+  "overall": {
+    "primary_source_downloads_succeeded": 0,
+    "third_party_mirror_2016_2022_separate_receipt": true,
+    "independent_full_corpus_reconciliation_complete": false,
+    "W4_empirical_ready": false,
+    "publication_eligible": false,
+    "held_out_37_meetings_accessed": false
+  }
+}

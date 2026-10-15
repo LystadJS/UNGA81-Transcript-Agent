@@ -1,0 +1,176 @@
+{
+  "schema": "un.p0p1.general-debate-upload-reconciliation.aggregate.v1",
+  "audit_date": "2026-10-08",
+  "purpose": "Aggregate-only receipt for independently supplied uploaded Harvard Dataverse v14 ZIP and UN Dag Hammarskjöld speaker CSV",
+  "release_scope": "GA sessions 71–80; years 2016–2025",
+  "source_integrity": {
+    "dataverse_zip": {
+      "bytes": 71757566,
+      "sha256": "35cddf4a435d6d9ec9c75642507067db895f0d774d76bf8ee3d9330ae0107d92",
+      "crc": "pass",
+      "independent_publisher_checksum": "not_available_for_wrapper_zip"
+    },
+    "harvard_ungdc_archive": {
+      "bytes": 71280312,
+      "sha256": "55077dccf7242cdf544aa95c4797c68e443b0c37344c9c112a2e2392ddfcf8e5",
+      "published_md5": "81bdd06086d9e7c4e67026acb7325df3",
+      "published_md5_match": true,
+      "published_dataverse_file_id": 13591895
+    },
+    "harvard_speaker_workbook": {
+      "bytes": 483416,
+      "sha256": "1ab9a073a67cea005dec17de93fb5b8bd0215bbaca1476f735532bf0268a7dbb",
+      "published_md5": "557d23ac18ae9cff264d536edd4097e1",
+      "published_md5_match": true,
+      "published_dataverse_file_id": 13591894
+    },
+    "UN_speaker_index_CSV": {
+      "bytes": 2295289,
+      "sha256": "841ae22d6485a7e3c0bce84830f09c43d75421ce9b3a58408d20dfec3cbbaf43",
+      "independent_publisher_checksum": "not_available"
+    }
+  },
+  "inventory": {
+    "historical_all_sessions_named_speech_files": 11141,
+    "macOS_companion_files_excluded": 11239,
+    "non_speech_tar_artifacts_excluded": 5,
+    "country_speech_files_2016_2025": 1926,
+    "EU_nonstate_observer_speech_files_2016_2024": 9,
+    "UN_speaker_index_rows_2016_2024": 2008,
+    "UN_country_session_keys_2016_2024": 1734,
+    "harvard_speaker_workbook_rows_2016_2025": 1936,
+    "harvard_EU_observer_rows_2016_2024": 9,
+    "observed_union_candidate_ISO3": 195,
+    "candidate_country_session_cells": 1950,
+    "three_source_country_session_key_matches_2016_2024": 1733,
+    "corpus_country_keys_without_UN_index_2016_2024": 3,
+    "UN_index_country_keys_without_corpus_text_2016_2024": 1,
+    "corpus_speaker_workbook_internal_keys_2025": 190,
+    "unobserved_candidate_year_cells_unknown_not_absent": 23,
+    "yearly": [
+      {
+        "year": 2016,
+        "corpus_country_speeches": 193,
+        "UN_speaker_rows": 192,
+        "UN_country_keys": 192,
+        "three_source_keys": 192,
+        "multi_speaker_country_keys": 0
+      },
+      {
+        "year": 2017,
+        "corpus_country_speeches": 195,
+        "UN_speaker_rows": 195,
+        "UN_country_keys": 194,
+        "three_source_keys": 194,
+        "multi_speaker_country_keys": 1
+      },
+      {
+        "year": 2018,
+        "corpus_country_speeches": 195,
+        "UN_speaker_rows": 195,
+        "UN_country_keys": 195,
+        "three_source_keys": 195,
+        "multi_speaker_country_keys": 0
+      },
+      {
+        "year": 2019,
+        "corpus_country_speeches": 194,
+        "UN_speaker_rows": 194,
+        "UN_country_keys": 194,
+        "three_source_keys": 194,
+        "multi_speaker_country_keys": 0
+      },
+      {
+        "year": 2020,
+        "corpus_country_speeches": 192,
+        "UN_speaker_rows": 379,
+        "UN_country_keys": 192,
+        "three_source_keys": 192,
+        "multi_speaker_country_keys": 186
+      },
+      {
+        "year": 2021,
+        "corpus_country_speeches": 193,
+        "UN_speaker_rows": 278,
+        "UN_country_keys": 193,
+        "three_source_keys": 193,
+        "multi_speaker_country_keys": 85
+      },
+      {
+        "year": 2022,
+        "corpus_country_speeches": 192,
+        "UN_speaker_rows": 193,
+        "UN_country_keys": 192,
+        "three_source_keys": 192,
+        "multi_speaker_country_keys": 1
+      },
+      {
+        "year": 2023,
+        "corpus_country_speeches": 191,
+        "UN_speaker_rows": 190,
+        "UN_country_keys": 190,
+        "three_source_keys": 190,
+        "multi_speaker_country_keys": 0
+      },
+      {
+        "year": 2024,
+        "corpus_country_speeches": 191,
+        "UN_speaker_rows": 192,
+        "UN_country_keys": 192,
+        "three_source_keys": 191,
+        "multi_speaker_country_keys": 0
+      },
+      {
+        "year": 2025,
+        "corpus_country_speeches": 190,
+        "UN_speaker_rows": null,
+        "UN_country_keys": null,
+        "three_source_keys": null,
+        "multi_speaker_country_keys": null
+      }
+    ]
+  },
+  "open_discrepancy_flags": {
+    "all": 719,
+    "critical": 3,
+    "high": 21,
+    "review": 694,
+    "medium": 1,
+    "issues": {
+      "WORKBOOK_SUSPECT_COUNTRY_LABEL": 9,
+      "WORKBOOK_NONSTANDARD_COUNTRY_LABEL_REVIEW": 58,
+      "WORKBOOK_NON_STATE_EU": 9,
+      "WORKBOOK_INVALID_ISO3": 5,
+      "SPEAKER_NAME_NOT_STRING_EQUIVALENT": 340,
+      "CORPUS_WITHOUT_OFFICIAL_UN_KEY": 3,
+      "MULTIPLE_UN_SPEAKER_RECORDS": 273,
+      "UN_KEY_WITHOUT_CORPUS_TEXT": 1,
+      "HARVARD_SPEAKER_WITHOUT_CORPUS_TEXT": 1,
+      "UN_COUNTRY_ALIAS_MAPPING_REQUIRES_REVIEW": 14,
+      "UN_INDEX_STOPS_AT_2024": 1,
+      "2025_TEXT_IS_ASR_NOT_PV": 1,
+      "2024_MIXED_OCR_AND_TRANSLATION": 1,
+      "HARVARD_ZIP_AND_UN_CSV_NOT_SAME_TEXT_AUTHORITY": 1,
+      "UN_CSV_NO_PUBLISHER_HASH_AT_HAND": 1,
+      "UN_MEMBER_STATE_CENSUS_UNVALIDATED": 1
+    }
+  },
+  "independent_validation": {
+    "publisher_MD5_of_harvard_tar": "PASS",
+    "publisher_MD5_of_harvard_speaker_workbook": "PASS",
+    "UN_speaker_CSV_schema": "PASS",
+    "UN_speaker_CSV_publisher_digest": "NOT_AVAILABLE",
+    "country_session_key_level": "PASS_CANDIDATE_ONLY",
+    "year_2025_independent_UN_metadata": "NOT_AVAILABLE",
+    "original_delivered_UN_document_bytes": "NOT_RUN",
+    "person_identity": "NOT_RUN",
+    "state_membership_roster": "NOT_RUN",
+    "source_document_comparability_2024_2025": "NOT_VALIDATED",
+    "source_dependent_statistical_inference": "NOT_RUN",
+    "W4_empirical_eligible": false,
+    "publication_eligible": false,
+    "reserved_meeting_transcripts_accessed": 0,
+    "completed_consistency_checks": 34
+  },
+  "privacy": "No speech text, person/source-linked row-level results, UN record IDs or private discrepancy rows are committed. Full private artifacts delivered only in the user conversation."
+}
