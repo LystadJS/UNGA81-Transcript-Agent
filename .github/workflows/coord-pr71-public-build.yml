@@ -15,6 +15,7 @@ jobs:
       - name: Build approved public assets and fail-closed inspect all files
         run: |
           set -euo pipefail
+          sha256sum site/parallel/w05-browser/experimental/method-lab/fixtures/synthetic-contract.json
           python3 tools/build_pages.py "$RUNNER_TEMP/pr71-public-site"
           python3 - "$RUNNER_TEMP/pr71-public-site" <<'PY'
           import hashlib,json,sys
