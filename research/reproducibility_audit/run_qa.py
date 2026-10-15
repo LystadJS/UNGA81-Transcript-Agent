@@ -108,7 +108,9 @@ def main(argv=None):
             args.output.write_bytes(raw)
         else:
             sys.stdout.buffer.write(raw)
-        return 1 if any(c['status']=='FAIL' for c in report['checks']) else 0
+        if any(c['status']=='FAIL' for c in report['checks']):
+            return 1
+        return 0 if report['engineering_acceptance']=='PASS' else 3
     except (OSError,ValueError,TypeError) as e:
         print('FAIL: safe audit input could not be processed: '+e.__class__.__name__,file=sys.stderr)
         return 2
