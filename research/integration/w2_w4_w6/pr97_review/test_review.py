@@ -2,7 +2,7 @@
 
 The immutable successful artifacts are positive controls, not fresh native-R or
 Chromium execution. Mutations are confined to new temporary copies. Rejection
-assertions intentionally fail on the reviewed candidate; they are not xfails.
+assertions retain their original expectations across revisions; they are not xfails.
 """
 from __future__ import annotations
 import argparse
@@ -18,20 +18,21 @@ import sys
 import tempfile
 import unittest
 
-HEAD = 'ab559b74842e9a9165bf619f4869015d90588e8c'
-BASE = 'da4ab9ed11dba3693d11aa12f5333963b1b85478'
+HEAD = '37cd1d909d34a72f835dd3913de735d1d64208bc'
+BASE = '63be2a4ec284aca051dc6fd0f6c3b19784a91a2b'
 PREFIX = 'research/integration/w2_w4_w6/usref_integration/'
 PINS = {
- 'gate.py':'be9f08e6d6cc7f9d53d27d87de66c16ba7aee684',
- 'run_suites.py':'b7e037f5ed67b836be19c91c0c687302d90302c9',
+ 'gate.py':'34ab32a8e38aa8a3234a5f5bc859536a8d22201b',
+ 'run_suites.py':'a4f946524edd51276445041c6cd41e5cbc9c5455',
  'test_gate.py':'4c247360736a2bcda8f5a944fd2ae9c66fcb53d1',
- 'policy.json':'b93aad2160c5a5d1c223737c47da952b68759d0e',
+ 'policy.json':'678ce0f60db2ff08f19b81cdb379f969c4c442fa',
  'stage.json':'98e1cee7ddaee8581e1c694ca24f10ae4dcaf5a4',
- 'README.md':'6c7669c77e35dfcd683e72a3c61d2ddb8a2250c9',
+ 'README.md':'810752c1d663a727370a6cd7ce2d82ea6ea126b9',
+ 'evidence_contract.py':'89dd44f714065ceb2c2d655e9b2204ebef34cc18',
 }
 WORKFLOW_PIN = '8ede9e6bbbd2c2f3808b85900f25ef9cdff08650'
 MODES = ('head','effective-tree','combined')
-EVENT_KEYS = ('event','status_sha','head','base','run_id','attempt','freshness')
+EVENT_KEYS = ('event','status_sha','head','base','run_id','attempt','freshness','event_base_sha','base_resolution')
 OBSERVATIONS = []
 G = S = POLICY = ARTIFACTS = OUTPUT = None
 
@@ -86,7 +87,9 @@ def verify_pristine():
         home = ARTIFACTS/('usref-gate-'+mode)
         identity = read(home/'identity.json'); receipt = read(home/'receipt.json')
         assert identity['head'] == HEAD and identity['base'] == BASE
-        assert identity['run_id'] == '38806920470' and identity['attempt'] == '1'
+        assert identity['event_base_sha'] == 'da4ab9ed11dba3693d11aa12f5333963b1b85478'
+        assert identity['base_resolution'] == 'verified_status_merge_first_parent'
+        assert identity['run_id'] == '38815411197' and identity['attempt'] == '1'
         assert receipt['identity_sha256'] == sha(home/'identity.json')
         for name, expected in receipt['files'].items():
             assert not Path(name).is_absolute() and '..' not in Path(name).parts
@@ -111,10 +114,10 @@ def verify_pristine():
         assert rec['result'] == 'pass' and not rec['failures'] and not rec['errors'] and not rec['skipped']
     assert read(combined/'evidence/phase1-original.json')['head_sha'] == HEAD
     decision = acceptance(ARTIFACTS)
-    assert decision['combined_tree'] == 'e9f9dc9d4b8951059d6a210f7a99d3425c699f87'
+    assert decision['combined_tree'] == '45ff1bb72010e789efc101f7f6c518fa4c68d937'
     assert not decision['merge_authorized'] and not decision['publication_authorized']
-    result = {'source_pins':7,'verified_evidence_members':members,'result':'pass',
-              'historical_run':'38806920470','candidate':HEAD,'base':BASE,
+    result = {'source_pins':8,'verified_evidence_members':members,'result':'pass',
+              'historical_run':'38815411197','candidate':HEAD,'base':BASE,
               'native_and_browser_execution':'historical_receipts_reverified_not_rerun',
               'decision_replay':decision}
     write(OUTPUT/'pristine-verification.json', result)
@@ -148,6 +151,10 @@ def verify_git(repo):
     before_refs=git('show-ref'); before_index=git('write-tree')
     effective=merge(HEAD,BASE)
     actual={'head':tree(HEAD),'effective-tree':tree(effective)}
+    status=read(ARTIFACTS/'usref-gate-head'/'identity.json')['status_sha']
+    git('fetch','--no-tags','--filter=blob:none','origin',status)
+    assert git('rev-list','--parents','-n','1',status).decode().split()==[status,BASE,HEAD]
+    assert tree(status)==actual['effective-tree']
     ref=effective; stages=[]
     for payload in POLICY['payloads']:
         ref=merge(ref,payload['head_sha']);stages.append({'pr':payload['number'],'tree':tree(ref)})

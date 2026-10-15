@@ -32,7 +32,7 @@ jobs:
             /.github/workflows/coord-pr97-independent-review.yml
       - uses: actions/checkout@v4
         with:
-          ref: ab559b74842e9a9165bf619f4869015d90588e8c
+          ref: 37cd1d909d34a72f835dd3913de735d1d64208bc
           path: candidate
           fetch-depth: 0
           persist-credentials: false
@@ -51,20 +51,20 @@ jobs:
           echo "OUT=$OUT" >> "$GITHUB_ENV"
           mkdir -p "$OUT"
           cd candidate
-          test "$(git rev-parse HEAD)" = ab559b74842e9a9165bf619f4869015d90588e8c
+          test "$(git rev-parse HEAD)" = 37cd1d909d34a72f835dd3913de735d1d64208bc
           if [ "$REVIEW_MODE" = effective-tree ]; then
-            TREE=$(git merge-tree --write-tree HEAD da4ab9ed11dba3693d11aa12f5333963b1b85478)
+            TREE=$(git merge-tree --write-tree HEAD 63be2a4ec284aca051dc6fd0f6c3b19784a91a2b)
           else
             TREE=$(git rev-parse 'HEAD^{tree}')
           fi
           git ls-tree -r HEAD -- research/integration/w2_w4_w6/usref_integration .github/workflows/coord-us-relative-integration.yml > "$OUT/head-code.txt"
           git ls-tree -r "$TREE" -- research/integration/w2_w4_w6/usref_integration .github/workflows/coord-us-relative-integration.yml > "$OUT/tested-code.txt"
           cmp "$OUT/head-code.txt" "$OUT/tested-code.txt"
-          printf '%s\n' "candidate=$(git rev-parse HEAD)" "base=da4ab9ed11dba3693d11aa12f5333963b1b85478" "mode=$REVIEW_MODE" "tree=$TREE" "reviewer=$REVIEWER_SHA" > "$OUT/execution.txt"
-      - name: Read retained successful synthetic artifacts only
+          printf '%s\n' "candidate=$(git rev-parse HEAD)" "base=63be2a4ec284aca051dc6fd0f6c3b19784a91a2b" "mode=$REVIEW_MODE" "tree=$TREE" "reviewer=$REVIEWER_SHA" > "$OUT/execution.txt"
+      - name: Read newly executed successful synthetic artifacts only
         uses: actions/download-artifact@v4
         with:
-          run-id: 38806920470
+          run-id: 38815411197
           github-token: ${{ github.token }}
           pattern: usref-gate-*
           path: ${{ runner.temp }}/pr97-pristine
@@ -73,6 +73,13 @@ jobs:
         run: |
           set -euo pipefail
           python candidate/research/integration/w2_w4_w6/usref_integration/test_gate.py -v 2>&1 | tee "$OUT/original-controls.log"
+      - name: Independently test status-parent binding and retained freshness refusal
+        shell: bash
+        run: |
+          set -euo pipefail
+          PR97_GATE_ROOT="$GITHUB_WORKSPACE/candidate/research/integration/w2_w4_w6/usref_integration" \
+          PR97_STATUS_RECEIPT="$OUT/status-binding.json" \
+          python reviewer/research/integration/w2_w4_w6/pr97_review/test_status_binding.py 2>&1 | tee "$OUT/status-binding.log"
       - name: Independently reconstruct trees and challenge evidence validation
         shell: bash
         run: |
