@@ -19,7 +19,7 @@ python3 -m unittest discover -s research/reproducibility_audit -p 'test_*.py' -v
 python3 research/reproducibility_audit/run_qa.py --repo-root . --output /tmp/unga-repro-qa.json
 ```
 
-- Local synthetic test suite: **64 attempted; 63 PASS; 0 FAIL; 1 SKIP**. The skipped test requires the upstream coordinator Schema file in an authenticated full checkout. Legacy `test_audit.py` has not been executed in this isolated candidate.
+- Local synthetic test suite: **66 attempted; 65 PASS; 0 FAIL; 1 SKIP**. The skipped test requires the upstream coordinator Schema file in an authenticated full checkout. Legacy `test_audit.py` has not been executed in this isolated candidate.
 - Corrupt observation IDs, duplicate rows, wrong parent hashes, invalid spans, missing partial/failed fit denominators, wrong cluster labels, incompatible representation/source basis, zero-denominator diagnostics, reserved-date identities, evaluation source overlap and unapproved release fields are negative controls.
 - An independent-process synthetic numerical replay ran twice with seed `271828`, with independent reference implementation, pinned fixture SHA256 `88ba2f60c77b87e71c30e4022d1c2ad90905f44454ee76ad7783cce1f5a260e0` and output SHA256 `1639ed5e207c3704860cf5190f3233198882bc190cead010905fbd6f4a290130`. The output is a **synthetic arithmetic fixture only**, not a replay of historical W1/W4 fits.
 - Privacy negative controls for a fake transcript sentinel, fake private-key marker, cached-vector files, and JSON row-level source records were detected. A synthetic aggregate-only staging directory was also scanned clean. **Actual public Pages assets were not audited.**
