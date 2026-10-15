@@ -207,6 +207,31 @@ jobs:
           assert receipt["cases"]["compromised_quorum_and_pins"]["expected"]=="no_authority"
           print("PASS 4 witness keys, quorum 3, 2 independent observer pins, bounded append-only log, 300 seeded fictional cases")
           PY
+      - name: Four-host partitions, signer restart and signed equivocation evidence (source-free)
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="$GITHUB_WORKSPACE/research/integration/diplomatic_readouts"
+          python3 research/integration/diplomatic_readouts/stress_partition.py --iterations 360 --seed 81081 --output "$RUNNER_TEMP/partition-a"
+          python3 research/integration/diplomatic_readouts/stress_partition.py --iterations 360 --seed 81081 --output "$RUNNER_TEMP/partition-b"
+          diff -rq "$RUNNER_TEMP/partition-a" "$RUNNER_TEMP/partition-b"
+          PARTITION_ROOT="$RUNNER_TEMP/partition-a" python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          result=json.loads((Path(os.environ["PARTITION_ROOT"])/"manifest.json").read_text())
+          assert result["schema"] == "un.synthetic-witness-partition-stress.v0"
+          assert result["synthetic_only"] is True
+          assert result["iterations"] == 360 and result["seed"] == 81081
+          assert result["failures"] == 0 and len(result["cases"]) == 18
+          assert sum(case["attempted"] for case in result["cases"].values()) == 360
+          assert all(case["failures"] == 0 for case in result["cases"].values())
+          assert result["authority"] == "none"
+          assert result["authorized"] is False and result["source_access"] is False
+          assert result["publication_eligible"] is False and result["delivery_eligible"] is False
+          assert result["transcripts_opened"] == 0 and result["security_certified"] is False
+          assert result["residual_risk"] == "full_key_and_observer_compromise_not_detectable"
+          print("PASS 18 synthetic partition/equivocation classes, 360 seeded trials, zero access")
+          PY
       - name: Native W1 to W2 saved source-envelope regression (synthetic only)
         shell: bash
         run: |
