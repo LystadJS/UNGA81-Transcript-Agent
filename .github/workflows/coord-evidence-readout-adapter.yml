@@ -81,6 +81,37 @@ jobs:
               assert 'raw_source' not in obj
           assert len(list(p.rglob('readout.json'))) == 5
           PY
+      - name: Verify metadata-only registry preflight and deterministic refusal receipts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 research/integration/diplomatic_readouts/examples_registry.py --output "$RUNNER_TEMP/registry-preflight-a"
+          python3 research/integration/diplomatic_readouts/examples_registry.py --output "$RUNNER_TEMP/registry-preflight-b"
+          diff -rq "$RUNNER_TEMP/registry-preflight-a" "$RUNNER_TEMP/registry-preflight-b"
+          PREFLIGHT_TEMP="$RUNNER_TEMP" python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ["PREFLIGHT_TEMP"]) / "registry-preflight-a"
+          manifest = json.loads((root / "manifest.json").read_text())
+          assert manifest["synthetic_only"] is True
+          assert manifest["authorized"] is False and manifest["publication_eligible"] is False
+          assert manifest["delivery_eligible"] is False and manifest["transcripts_opened"] == 0
+          assert len(manifest["cases"]) == 7
+          for name in manifest["cases"]:
+              value = json.loads((root / (name + ".json")).read_text())
+              assert value["authority"] == "none"
+              assert value["authorized"] is False and value["can_read_source"] is False
+              assert value["publication_eligible"] is False and value["delivery_eligible"] is False
+              assert value["holdout_lock"]["transcripts_opened"] == 0
+              assert len(value["gate_status"]) == 13
+              assert set(value["gate_status"].values()) == {"NOT_RUN"}
+              assert "records" not in value and "original_bytes" not in value
+              if name == "consistent_metadata_not_authorized":
+                  assert value["metadata_status"] == "metadata_consistent"
+              else:
+                  assert value["metadata_status"] == "withheld"
+          print("PASS 7 synthetic registry preflight cases, no granted authority")
+          PY
       - name: Native W1 to W2 saved source-envelope regression (synthetic only)
         shell: bash
         run: |
