@@ -1,0 +1,15 @@
+# U2 independent acceptance handoff
+
+Independently review the exact pushed U2 head on `feat/question-first-router`, stacked against accepted C0 `884097997f89b0040e4418480378f077e3b65434`. Refresh current main, C0, U1 PR95 and all overlapping PRs first. Preserve the source-safe ownership addendum. No merge, deployment or actual transcript/model access.
+
+U2 owns only `research/integration/question_router/**`. Do not copy C0/U1 into its diff, alter the original inventory validator/schema, edit worker scientific code, or make an unrelated workflow execute U2 by changing its tests. A new coordinator-only validation workflow and independent probes belong in a separate coordinator namespace/PR.
+
+In a full checkout, verify actual HEAD and tree, U2-only changed paths, accepted dependency hashes and unchanged original source hash bases. Run the documented 126 U2 tests, original 175 C0 tests, independent 52 schema checks and deterministic nine-case demonstration. Check out accepted U1 `afb92e82881dc11003170899aef9958682d61abe` separately, set U1_CHECKOUT, and execute the 17 non-skipping controller interoperability tests. Do not mistake these for DOM/browser tests.
+
+Independently compute a disposable effective tree with native Git against refreshed main plus accepted C0 and U2, and test it without changing any branch ref. Do not assume the effective tree equals the worker tree when upstream has advanced. Run original source-inventory/interchange/source-comparability/W1 and merged PR71 checks. Record every command exit, exact code identities, all failures, counts and artifact hashes. Use the actual strict served browser only when separately composing U1+U2; no injected-DOM fallback.
+
+Review these boundaries in particular: current host metadata pin; ordinary aliases vs country mention; opaque identifiers and New York inclusive dates; unavailable/protected/unknown-date preflight; parent source selection vs derived fit/display identities; fixed fit geometry under country display filters; complete missing/unverified/failed/skipped accounting; all fallback edges/cycles; no alternative-approval search around source/reviewer/output failure; trusted complete receipt-set commitment; expired/revoked/omitted decisions; stale request cancellation and saved-product access.
+
+Two documented U1/C1 integration obligations are outside U2 ownership: render U2's no-product reasons as unavailable instead of U1's existing generic creation failure, and connect a separately authorized evidence service. Do not erase these gaps by generating a fake signed product, reopening restricted sources or patching U1 from this lane. Continue synthetic-only products and withheld US-trajectory integration until their distinct composition is approved.
+
+Fix only U2-owned failures, preserve independent failing probes, commit/push any repair, rerun at its new exact head, and record synthetic engineering acceptance without issuing source, statistical, human-review or publication authority. Keep every PR draft/unmerged. No change to original hashes, 37 reserved meetings, G01–G13/null study requirements, temporal v2 negative results/v3 holdout or D1 O1–O5.

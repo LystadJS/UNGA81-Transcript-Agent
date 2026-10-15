@@ -1,0 +1,28 @@
+/** Requires a separately supplied exact accepted U1 source checkout; missing dependency fails. */
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {resolve} from 'node:path';
+import {pathToFileURL} from 'node:url';
+import {digest} from '../../product_contracts/contracts.mjs';
+import {createU1Provider} from '../router.mjs';
+import {environment,select} from './fixtures.mjs';
+assert.ok(process.env.U1_CHECKOUT,'U1_CHECKOUT must identify accepted U1 sources; integration is never silently skipped');
+const path=resolve(process.env.U1_CHECKOUT,'site/parallel/w07-diplomat-ux/controller.mjs'),bytes=await readFile(path);
+assert.equal(createHash('sha1').update(Buffer.concat([Buffer.from(`blob ${bytes.length}\0`),bytes])).digest('hex'),'7abba75142aab66e9b197ce7d04154c87a013a30','exact accepted U1 controller required');
+const {createController}=await import(pathToFileURL(path));
+const setup=async(s=select(),verdicts={})=>{const e=await environment(),b=await e.register(s,'description','auto',verdicts),r=await e.router(),p=createU1Provider(r),c=createController(p);return {e,b,r,p,c,s};};
+test('U2 canonical catalog satisfies accepted U1 provider shape',async()=>{const {p}=await setup(),m=await p.catalog();assert.equal(m.schema,'u1.synthetic-catalog.v1');assert.equal(m.meetings[0].id,'01');assert.equal(m.countries[0].name,'Brazil');assert.equal('aliases' in m.countries[0],false);});
+for(const [name,s,state] of [['country',select({country:'BRA'}),'ready'],['topic',select({topic:'climate'}),'ready'],['meeting',select({page:'meetings',meeting:'01'}),'ready'],['complete no-match',select({country:'CAN',topic:'climate'}),'empty'],['partial source coverage',select({period:null}),'partial']])test('unchanged U1 consumes '+name,async()=>{const {c}=await setup(s);const result=await c.create(s);assert.equal(result.phase,state);assert.equal(result.query.resolved.source_mode,'synthetic');});
+test('U1 save/reopen reuses the product without another route/lookup',async()=>{const {e,c,s}=await setup();await c.create(s);assert.equal(await c.save(),true);const lookups=e.state.lookups,id=c.snapshot().saved[0].id;await c.openSaved(id);assert.equal(c.snapshot().phase,'ready');assert.equal(e.state.lookups,lookups);});
+test('U1 export uses only freshly authorized C0 read model',async()=>{const {c,s}=await setup();await c.create(s);const exported=await c.exportModel();assert.ok(exported);const out=JSON.parse(exported.utf8);assert.equal(out.schema,'un.product-readiness.v1');assert.equal(out.publication_eligible,false);assert.equal('receipts' in out,false);assert.equal('query' in out,false);assert.ok(out.sections[0].evidence.length>0);});
+test('view authorization does not authorize export',async()=>{const {c,s}=await setup(select(),{'local_export:export':'fail'});await c.create(s);assert.equal(c.snapshot().phase,'ready');assert.equal(c.snapshot().canExport,false);assert.equal(await c.exportModel(),null);});
+test('U1 refresh observes current host key revocation through U2',async()=>{const {e,c,s}=await setup();await c.create(s);e.state.revoked=true;e.state.revision++;assert.equal(await c.refreshTrust(),false);assert.equal(c.snapshot().model,null);assert.equal(c.snapshot().canExport,false);});
+test('U1 import cannot omit a signed veto using the same trusted U2 provider',async()=>{const {e,b,c,s}=await setup();await c.create(s);await e.veto(b);await c.importBundle(JSON.stringify(b));assert.equal(c.snapshot().phase,'withheld');assert.equal(c.snapshot().canExport,false);assert.ok(!c.snapshot().model?.sections.length);});
+test('U2 refuses a signed but unadmitted product through U1 import',async()=>{const {e,c}=await setup();const other=await e.register(select({country:'USA'}));await c.importBundle(JSON.stringify(other));assert.equal(c.snapshot().phase,'withheld');});
+test('expired authority prevents saved replay and export',async()=>{const {e,c,s}=await setup();await c.create(s);await c.save();e.state.now='2026-10-16T00:00:00Z';await c.openSaved(c.snapshot().saved[0].id);assert.equal(c.snapshot().phase,'withheld');assert.equal(await c.exportModel(),null);});
+test('highlighting never changes lookup count or fitted identity',async()=>{const {e,c,s}=await setup();await c.create(s);const n=e.state.lookups,sha=c.snapshot().model.product_sha256;c.highlight('USA');assert.equal(e.state.lookups,n);assert.equal(c.snapshot().model.product_sha256,sha);});
+test('U2 invalidation removes saved product access without changing owner decisions',async()=>{const {r,c,s}=await setup();await c.create(s);await c.save();r.invalidate();assert.equal(await c.refreshTrust(),false);assert.equal(c.snapshot().model,null);});
+test('metadata-only integration does not deliver any source prose',async()=>{const {c,s}=await setup();await c.create(s);assert.equal(await c.openEvidence('r01'),null);assert.equal(c.snapshot().details,null);});
+test('no-product route is explicit; unchanged U1 generic error mapping is documented',async()=>{const e=await environment(),r=await e.router(),c=createController(createU1Provider(r));const route=await r.route(select());assert.equal(route.state,'unavailable');assert.equal(route.reason,'no_qualifying_product');await c.create(select());assert.equal(c.snapshot().phase,'failed');assert.equal(c.snapshot().notice,'could_not_create');});
