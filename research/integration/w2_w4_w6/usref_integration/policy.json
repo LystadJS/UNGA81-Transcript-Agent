@@ -1,0 +1,123 @@
+{
+  "schema": "un.usref-prospective-gate-policy.v1",
+  "plan_commit": "7e7adc117b641b8ebd2a1826ca18c96c5bf2d148",
+  "repository": "LystadJS/UNGA81-Transcript-Agent",
+  "historical_main": "da4ab9ed11dba3693d11aa12f5333963b1b85478",
+  "payloads": [
+    {
+      "number": 82,
+      "head_sha": "81110db49786a05f9c8f8ce4d5103c92fe255586",
+      "integration_paths": [
+        "research/integration/w2_w4_w6/test_w4_bridge.py",
+        "research/integration/w2_w4_w6/waggoner/.gitignore",
+        "research/integration/w2_w4_w6/waggoner/R1_R2_REPAIR.md",
+        "research/integration/w2_w4_w6/waggoner/README.md",
+        "research/integration/w2_w4_w6/waggoner/__init__.py",
+        "research/integration/w2_w4_w6/waggoner/arithmetic.R",
+        "research/integration/w2_w4_w6/waggoner/golden_cases.json",
+        "research/integration/w2_w4_w6/waggoner/make_schema.py",
+        "research/integration/w2_w4_w6/waggoner/read_model.cjs",
+        "research/integration/w2_w4_w6/waggoner/run_tests.py",
+        "research/integration/w2_w4_w6/waggoner/schema_contract.cjs",
+        "research/integration/w2_w4_w6/waggoner/schema_contract.py",
+        "research/integration/w2_w4_w6/waggoner/test_identity_regressions.py",
+        "research/integration/w2_w4_w6/waggoner/test_us_reference.py",
+        "research/integration/w2_w4_w6/waggoner/us_reference.py"
+      ]
+    },
+    {
+      "number": 92,
+      "head_sha": "76fbfd73f440306dfd9fc72a6431704f7b09b45d",
+      "integration_paths": [
+        ".github/workflows/coord-us-relative-phase2.yml",
+        "research/integration/w2_w4_w6/waggoner/phase2/README.md",
+        "research/integration/w2_w4_w6/waggoner/phase2/__init__.py",
+        "research/integration/w2_w4_w6/waggoner/phase2/build.py",
+        "research/integration/w2_w4_w6/waggoner/phase2/fixtures.py",
+        "research/integration/w2_w4_w6/waggoner/phase2/template.html",
+        "research/integration/w2_w4_w6/waggoner/phase2/test_browser.py",
+        "research/integration/w2_w4_w6/waggoner/phase2/test_build.py",
+        "research/integration/w2_w4_w6/waggoner/phase2/test_views.cjs",
+        "research/integration/w2_w4_w6/waggoner/phase2/verify_catalogue.cjs",
+        "research/integration/w2_w4_w6/waggoner/phase2/views.css",
+        "research/integration/w2_w4_w6/waggoner/phase2/views.js"
+      ]
+    },
+    {
+      "number": 93,
+      "head_sha": "3789018a0bd031d8bea65fd9b1973a8313bff314",
+      "integration_paths": [
+        ".github/workflows/coord-pr92-independent-review.yml",
+        "docs/parallel-work/PR92_OFFLINE_ENGINEERING_ACCEPTANCE_2026-10-15.md",
+        "research/integration/w2_w4_w6/pr92_review/REVIEW.md",
+        "research/integration/w2_w4_w6/pr92_review/test_review.py"
+      ]
+    }
+  ],
+  "pr87": {
+    "pr": 87,
+    "head_sha": "dc8f98dec92cd34242f9ed7c6ce85814291ada38",
+    "planned_merge": false,
+    "source_path": "research/integration/w2_w4_w6/pr82_review/test_independent.py",
+    "workflow_path": ".github/workflows/coord-pr82-us-reference-review.yml"
+  },
+  "stage_order": [
+    "bootstrap",
+    "phase1",
+    "phase2",
+    "integrated"
+  ],
+  "modes": [
+    "head",
+    "effective-tree",
+    "combined"
+  ],
+  "gate_paths": [
+    "research/integration/w2_w4_w6/usref_integration/gate.py",
+    "research/integration/w2_w4_w6/usref_integration/run_suites.py",
+    "research/integration/w2_w4_w6/usref_integration/test_gate.py",
+    "research/integration/w2_w4_w6/usref_integration/policy.json",
+    "research/integration/w2_w4_w6/usref_integration/stage.json",
+    "research/integration/w2_w4_w6/usref_integration/README.md",
+    ".github/workflows/coord-us-relative-integration.yml"
+  ],
+  "materialize_prefixes": [
+    "research/longitudinal/",
+    "research/integration/w2_w4_w6/",
+    "docs/parallel-work/"
+  ],
+  "materialize_suffixes": [
+    ".py",
+    ".cjs",
+    ".js",
+    ".css",
+    ".html",
+    ".json",
+    ".md",
+    ".txt",
+    ".yml",
+    ".yaml"
+  ],
+  "expected_counts": {
+    "phase1": 40,
+    "w4": 25,
+    "bridge": 49,
+    "pr87": 7,
+    "phase2-build": 4,
+    "phase2-node": 12,
+    "browser": 17,
+    "pr93": 7,
+    "guards": 11
+  },
+  "runtime_baseline": {
+    "R": "4.3.3",
+    "python": "3.13.16",
+    "node": "22.23.3",
+    "playwright": "1.57.0",
+    "chromium": "143.0.7499.4",
+    "axe": "4.10.3",
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "jsonschema": "4.23.0"
+  }
+}
