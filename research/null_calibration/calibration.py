@@ -1,123 +1,175 @@
-"""Synthetic-only, fail-closed null calibration. Python 3.10+, standard library."""
+"""Offline descriptive consensus and fail-closed synthetic scalar calibration.
+
+Does NOT implement the frozen W1/W2 null hypothesis or qualify empirical data.
+Python 3.10+, standard library only.
+"""
+from collections import defaultdict
 import hashlib
 import json
 import math
 import random
-from collections import defaultdict
 
-PROTOCOL = "un.null-calibration.synthetic.v1"
+PROTOCOL = "un.null-calibration.synthetic.v2"
+
 
 def digest(obj):
-    return hashlib.sha256(json.dumps(obj, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    return hashlib.sha256(json.dumps(obj, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
+
 
 def generate(seed, groups=12, per_group=8, signal=0., imbalance=False, misspecified=False):
-    """Group-correlated token counts; nuisance prevalence/length and optional latent signal."""
-    if groups < 2 or per_group < 2:
-        raise ValueError("Insufficient groups/observations")
+    if groups < 2 or per_group < 2 or not math.isfinite(signal):
+        raise ValueError("invalid synthetic design")
     rng = random.Random(seed)
     rows = []
     for g in range(groups):
-        group_bias = rng.gauss(0, 1.5)
-        n = per_group * (4 if imbalance and g == 0 else 1)
-        for i in range(n):
+        effect = rng.gauss(0, 1.5) * (1 + g % 3 if misspecified else 1)
+        for i in range(per_group * (4 if imbalance and g == 0 else 1)):
             length = rng.randint(20, 120)
-            latent = (1 if g % 2 else -1) if signal else 0
-            dependence = group_bias * (1 + (g % 3) if misspecified else 1)
-            x = [sum(rng.random() < max(.01, min(.99, p)) for _ in range(length))
-                 for p in (.20 + .07 * dependence + signal * latent * .12,
-                           .35 - .04 * dependence - signal * latent * .12,
-                           .10 + .03 * dependence)]
+            topic = (1 if g % 2 else -1) if signal else 0
+            prevalence = (.20 + .07 * effect + signal * topic * .12,
+                          .35 - .04 * effect - signal * topic * .12,
+                          .10 + .03 * effect)
+            counts = [sum(rng.random() < max(.01, min(.99, p)) for _ in range(length)) for p in prevalence]
             rows.append(dict(id=f"g{g}-s{i}", group=f"g{g}", speech=f"g{g}-s{i//2}",
-                             length=length, tokens=x, representation="synthetic-counts-v1"))
+                             length=length, tokens=counts, representation="synthetic-counts-v1"))
     return rows
 
+
 def consensus(fits, ids, family_weights=None):
-    """Equal method-family votes; within family each setting has equal weight.
-    A fit is {family, labels: {id: integer label or None}, status}.
-    Missing/unassigned observations are never silently treated as separate clusters.
+    """Nested balancing: family > method > configuration > attempted replica.
+
+    A failed or unassigned fit retains its planned denominator. Pairwise association
+    is CONDITIONAL ON BOTH ASSIGNED; report unconditional assignment coverage too.
+    Neither fraction is an inferential probability.
     """
-    if len(ids) != len(set(ids)) or not ids:
-        raise ValueError("Duplicate/empty IDs")
-    families = defaultdict(list)
+    if not isinstance(ids, list) or not ids or len(ids) != len(set(ids)):
+        raise ValueError("duplicate or empty observation IDs")
+    if not isinstance(fits, list) or not fits:
+        return dict(ready=False, reason="no_attempts", pairs=[], ledger=[])
     ledger = []
-    for k, fit in enumerate(fits):
+    families = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+    signatures = {}
+    for index, fit in enumerate(fits):
+        family = fit.get("family")
+        if not isinstance(family, str) or not family:
+            raise ValueError("missing method family")
+        method = fit.get("method", "unspecified")
+        config = fit.get("configuration_id", "undeclared_setting")
+        seed = fit.get("seed", None)
+        if not all(isinstance(v, str) and v for v in (method, config)):
+            raise ValueError("invalid method/configuration ID")
         status = fit.get("status", "failed")
-        labels = fit.get("labels", {})
-        if status == "converged" and (not isinstance(labels, dict) or set(labels) != set(ids)):
-            status = "failed"
         if status not in ("converged", "failed", "nonconverged", "skipped"):
-            raise ValueError("Invalid fit status")
-        ledger.append(dict(index=k, family=fit.get("family"), status=status,
-                           assigned=sum(v is not None and v != 0 for v in labels.values()) if status == "converged" else 0,
-                           unassigned=sum(v is None or v == 0 for v in labels.values()) if status == "converged" else len(ids)))
+            raise ValueError("invalid attempted fit status")
+        labels = fit.get("labels", {})
         if status == "converged":
-            families[fit["family"]].append(labels)
-    if not families:
-        return dict(pairs=[], ledger=ledger, ready=False, reason="no_converged_fits")
-    weights = family_weights or {f: 1. for f in families}
-    if any(f not in weights or weights[f] <= 0 or not math.isfinite(weights[f]) for f in families):
-        raise ValueError("Invalid family weights")
+            if not isinstance(labels, dict) or set(labels) != set(ids) or any(
+                v is not None and (not isinstance(v, int) or isinstance(v, bool) or v < 0) for v in labels.values()
+            ):
+                status = "failed"
+                labels = {}
+        key = (family, method, config, seed)
+        # Exact same declared seed/configuration is not another independent vote.
+        if seed is not None and key in signatures:
+            if signatures[key] != (status, labels):
+                raise ValueError("duplicate fit identity with conflicting results")
+            ledger.append(dict(index=index, family=family, method=method, configuration_id=config,
+                               status="duplicate_excluded", assigned=0, unassigned=0,
+                               reason="same family/method/configuration/seed"))
+            continue
+        if seed is not None:
+            signatures[key] = (status, labels)
+        assigned = sum(v is not None and v != 0 for v in labels.values()) if status == "converged" else 0
+        ledger.append(dict(index=index, family=family, method=method, configuration_id=config,
+                           status=status, assigned=assigned,
+                           unassigned=(len(ids) - assigned) if status == "converged" else 0,
+                           not_fitted=len(ids) if status != "converged" else 0))
+        families[family][method][config].append((status, labels))
+    planned = sum(len(settings) for methods in families.values() for configs in methods.values() for settings in configs.values())
+    weights = {f: 1. for f in families} if family_weights is None else family_weights
+    if set(weights) != set(families) or any(not isinstance(w, (int, float)) or w <= 0 or not math.isfinite(w) for w in weights.values()):
+        raise ValueError("invalid or missing family weights")
+    slots = []
+    for family, methods in families.items():
+        for method, configs in methods.items():
+            for config, settings in configs.items():
+                vote = (weights[family] / sum(weights.values())) / len(methods) / len(configs) / len(settings)
+                slots.extend((family, vote, status, labels) for status, labels in settings)
     pairs = []
-    for a in range(len(ids)):
-        for b in range(a + 1, len(ids)):
-            numerator = denominator = 0.
-            opportunities = 0
-            for family, models in families.items():
-                w = weights[family] / len(models)
-                for labels in models:
-                    u, v = labels[ids[a]], labels[ids[b]]
-                    if u in (None, 0) or v in (None, 0):
-                        continue
-                    opportunities += 1
-                    denominator += w
-                    numerator += w * (u == v)
-            pairs.append(dict(a=ids[a], b=ids[b], coassignment=numerator / denominator if denominator else None,
-                              eligible_fit_pairs=opportunities, eligible_weight=denominator))
-    return dict(pairs=pairs, ledger=ledger, ready=True, reason=None)
+    for ai, a in enumerate(ids):
+        for b in ids[ai+1:]:
+            co = eligible = planned_weight = 0.
+            assigned_fits = 0
+            contributing = set()
+            for family, w, status, labels in slots:
+                planned_weight += w
+                if status != "converged":
+                    continue
+                u, v = labels[a], labels[b]
+                if u in (None, 0) or v in (None, 0):
+                    continue
+                eligible += w
+                assigned_fits += 1
+                contributing.add(family)
+                if u == v:
+                    co += w
+            pairs.append(dict(a=a, b=b, coassignment=co / eligible if eligible else None,
+                              eligible_fit_pairs=assigned_fits, eligible_weight=eligible,
+                              planned_fit_pairs=planned, planned_weight=planned_weight,
+                              assignment_coverage=eligible / planned_weight if planned_weight else None,
+                              contributing_families=sorted(contributing)))
+    return dict(pairs=pairs, ledger=ledger, attempted_fits=len(fits),
+                unique_planned_fits=planned,
+                converged_fits=sum(r["status"] == "converged" for r in ledger),
+                failed_or_unfitted=sum(r["status"] in ("failed", "nonconverged", "skipped") for r in ledger),
+                duplicates_excluded=sum(r["status"] == "duplicate_excluded" for r in ledger),
+                ready=False, reason="descriptive_only_not_null_calibrated")
+
 
 def calibrate(development, holdout, alpha=.05, minimum_groups=8, minimum_holdout=100):
-    """Prospective independent simulation threshold, then one-shot holdout evaluation.
-    Inputs are records {seed, statistic, groups, nuisance_converged, identifiable,
-    generator_hash, estimator_hash}; independent holdout seeds are mandatory.
+    """Finite-sample development quantile, then untouched synthetic holdout.
+
+    Failures remain in attempted denominators. No source-grounded or publication
+    claim, and not a substitute for PR57's untouched fixed critical values.
     """
-    if not 0 < alpha < 1:
-        raise ValueError("Invalid alpha")
+    if not isinstance(alpha, (float, int)) or not 0 < alpha < 1:
+        raise ValueError("invalid alpha")
     reasons = []
-    if len(holdout) < minimum_holdout:
-        reasons.append("insufficient_holdout_simulations")
+    if not isinstance(development, list) or not isinstance(holdout, list):
+        raise ValueError("development/holdout must be lists")
     if not development:
         reasons.append("no_development")
-    dev_seeds = [x["seed"] for x in development]
-    test_seeds = [x["seed"] for x in holdout]
-    if len(set(dev_seeds)) != len(dev_seeds) or len(set(test_seeds)) != len(test_seeds) or set(dev_seeds) & set(test_seeds):
-        reasons.append("seed_overlap_or_duplicate")
+    if len(holdout) < minimum_holdout:
+        reasons.append("insufficient_holdout_simulations")
+    seeds = [r.get("seed") for r in development + holdout]
+    if any(s is None for s in seeds) or len(set(seeds)) != len(seeds):
+        reasons.append("duplicate_or_missing_seed")
+    hashes = {key: {r.get(key) for r in development + holdout} for key in ("generator_hash", "estimator_hash")}
+    if any(len(values) != 1 or None in values or "" in values for values in hashes.values()):
+        reasons.append("missing_or_mismatched_code_identity")
     for r in development + holdout:
-        if r["groups"] < minimum_groups:
+        if r.get("groups", 0) < minimum_groups:
             reasons.append("small_effective_group_count")
-        if not r["nuisance_converged"]:
+        if r.get("nuisance_converged") is not True:
             reasons.append("nuisance_estimation_failure")
-        if not r["identifiable"]:
+        if r.get("identifiable") is not True:
             reasons.append("weak_identification")
-        if not math.isfinite(r["statistic"]):
-            reasons.append("nonfinite_statistic")
-    if len({r["generator_hash"] for r in development + holdout}) != 1:
-        reasons.append("generator_mismatch")
-    if len({r["estimator_hash"] for r in development + holdout}) != 1:
-        reasons.append("estimator_mismatch")
+        value = r.get("statistic")
+        if not isinstance(value, (int, float)) or not math.isfinite(value):
+            reasons.append("nonfinite_or_missing_statistic")
+    base = dict(attempted_development=len(development), attempted_holdout=len(holdout),
+                publication_eligible=False, evaluation_role="engineering_only")
     if reasons:
-        return dict(ready=False, reasons=sorted(set(reasons)), attempted_development=len(development),
-                    attempted_holdout=len(holdout), threshold=None, false_positive_rate=None)
-    sorted_dev = sorted(r["statistic"] for r in development)
-    rank = math.ceil((len(sorted_dev) + 1) * (1 - alpha))
-    if rank > len(sorted_dev):
-        return dict(ready=False, reasons=["insufficient_development_resolution"], threshold=None,
-                    attempted_development=len(development), attempted_holdout=len(holdout))
-    threshold = sorted_dev[rank - 1]
+        return dict(base, ready=False, reasons=sorted(set(reasons)), threshold=None, false_positive_rate=None)
+    ordered = sorted(r["statistic"] for r in development)
+    rank = math.ceil((len(ordered) + 1) * (1-alpha))
+    if rank > len(ordered):
+        return dict(base, ready=False, reasons=["insufficient_development_resolution"], threshold=None)
+    threshold = ordered[rank-1]
     exceed = sum(r["statistic"] > threshold for r in holdout)
-    p = exceed / len(holdout)
-    se = math.sqrt(p * (1 - p) / len(holdout))
-    return dict(ready=True, reasons=[], threshold=threshold, alpha=alpha,
-                attempted_development=len(development), attempted_holdout=len(holdout),
-                exceedances=exceed, false_positive_rate=p,
-                approximate_95pct_interval=[max(0, p - 1.96 * se), min(1, p + 1.96 * se)],
-                strict_exceedance=True, publication_eligible=False)
+    rate = exceed / len(holdout)
+    se = math.sqrt(rate * (1-rate) / len(holdout))
+    return dict(base, ready=True, reasons=[], alpha=alpha, threshold=threshold,
+                exceedances=exceed, false_positive_rate=rate,
+                approximate_95pct_interval=[max(0, rate-1.96*se), min(1, rate+1.96*se)],
+                strict_exceedance=True, scientific_inference_eligible=False)
