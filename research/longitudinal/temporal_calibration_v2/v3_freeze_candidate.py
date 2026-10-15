@@ -35,7 +35,11 @@ FILES=("v3_prototype.py","v3_nuisance.py","v3_design_proposal.json",
        "v3_hierarchical_external_development_receipt.json",
        "v3_hierarchical_external_failure_masks.json",
        "V3_HIERARCHICAL_EXTERNAL_FREEZE_REVIEW.md",
-       "v3_hierarchical_freeze_decision.json")
+       "v3_hierarchical_freeze_decision.json",
+       "v3_integrated_markov.py","v3_partial_identification.py",
+       "v3_integrated_study.py","test_v3_integrated_markov.py",
+       "test_v3_integrated_replay.py","v3_integrated_development_receipt.json",
+       "V3_INTEGRATED_VS_PARTIAL_ID_REVIEW.md","v3_integrated_freeze_decision.json")
 
 def proposal_receipt():
     cfg=json.loads((ROOT/"v3_design_proposal.json").read_text())
@@ -66,6 +70,10 @@ def proposal_receipt():
         hierarchical_year_effect_gamma_development_only=True,
         independent_world_gaussian_scale_development_only=True,
         hierarchical_gamma_interval_calibrated=False,
+        integrated_finite_state_year_likelihood_development_only=True,
+        population_sharp_and_conditional_binomial_gamma_sets_development_only=True,
+        historical_missing_outcome_audit_verified=False,
+        integrated_gamma_interval_calibrated=False,
         external_historical_gaussian_scale_authentication=False,
         real_fit_authorized=False,
         next_authorization="coordinator and independent statistician must approve design and model assumptions",
