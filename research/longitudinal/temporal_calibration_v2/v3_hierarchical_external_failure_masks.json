@@ -1,0 +1,117 @@
+{
+  "schema": "un.w4.v3.hierarchical-external-failure-masks.v1",
+  "development_only": true,
+  "source_commit": "96c92a8c3e33b8696866711c318804250de2a4ed",
+  "source_run_id": 38770504475,
+  "repetitions": 12,
+  "methods_and_scenarios": [
+    {
+      "expected_nonidentification": true,
+      "failed_replicates_hex": "fff",
+      "method": "continuous_narrow",
+      "reason": "IdentificationFailure:external covariance calibration provenance or comparability absent",
+      "scenario": "dependent_external_worlds_T16",
+      "study": "covariance"
+    },
+    {
+      "expected_nonidentification": true,
+      "failed_replicates_hex": "fff",
+      "method": "continuous_wide",
+      "reason": "IdentificationFailure:external covariance calibration provenance or comparability absent",
+      "scenario": "dependent_external_worlds_T16",
+      "study": "covariance"
+    },
+    {
+      "expected_nonidentification": true,
+      "failed_replicates_hex": "fff",
+      "method": "continuous_narrow",
+      "reason": "IdentificationFailure:external covariance calibration provenance or comparability absent",
+      "scenario": "shifted_external_population_T16",
+      "study": "covariance"
+    },
+    {
+      "expected_nonidentification": true,
+      "failed_replicates_hex": "fff",
+      "method": "continuous_wide",
+      "reason": "IdentificationFailure:external covariance calibration provenance or comparability absent",
+      "scenario": "shifted_external_population_T16",
+      "study": "covariance"
+    },
+    {
+      "expected_nonidentification": false,
+      "failed_replicates_hex": "21",
+      "method": "conditional_year_FE",
+      "reason": "IdentificationFailure:year-specific response and recovered-outcome support absent",
+      "scenario": "correlated_years_T32",
+      "study": "gamma"
+    },
+    {
+      "expected_nonidentification": false,
+      "failed_replicates_hex": "21",
+      "method": "hierarchical_AR1_EB",
+      "reason": "IdentificationFailure:year-specific response and recovered-outcome support absent",
+      "scenario": "correlated_years_T32",
+      "study": "gamma"
+    },
+    {
+      "expected_nonidentification": false,
+      "failed_replicates_hex": "21",
+      "method": "pooled",
+      "reason": "IdentificationFailure:year-specific response and recovered-outcome support absent",
+      "scenario": "correlated_years_T32",
+      "study": "gamma"
+    },
+    {
+      "expected_nonidentification": true,
+      "failed_replicates_hex": "fff",
+      "method": "conditional_year_FE",
+      "reason": "IdentificationFailure:no independent missing-outcome audit",
+      "scenario": "missing_outcome_audit_T16",
+      "study": "gamma"
+    },
+    {
+      "expected_nonidentification": true,
+      "failed_replicates_hex": "fff",
+      "method": "hierarchical_AR1_EB",
+      "reason": "IdentificationFailure:no independent missing-outcome audit",
+      "scenario": "missing_outcome_audit_T16",
+      "study": "gamma"
+    },
+    {
+      "expected_nonidentification": true,
+      "failed_replicates_hex": "fff",
+      "method": "pooled",
+      "reason": "IdentificationFailure:no independent missing-outcome audit",
+      "scenario": "missing_outcome_audit_T16",
+      "study": "gamma"
+    },
+    {
+      "expected_nonidentification": false,
+      "failed_replicates_hex": "fff",
+      "method": "conditional_year_FE",
+      "reason": "IdentificationFailure:year-specific response and recovered-outcome support absent",
+      "scenario": "weak_audit_T16",
+      "study": "gamma"
+    },
+    {
+      "expected_nonidentification": false,
+      "failed_replicates_hex": "fff",
+      "method": "hierarchical_AR1_EB",
+      "reason": "IdentificationFailure:year-specific response and recovered-outcome support absent",
+      "scenario": "weak_audit_T16",
+      "study": "gamma"
+    },
+    {
+      "expected_nonidentification": false,
+      "failed_replicates_hex": "fff",
+      "method": "pooled",
+      "reason": "IdentificationFailure:year-specific response and recovered-outcome support absent",
+      "scenario": "weak_audit_T16",
+      "study": "gamma"
+    }
+  ],
+  "retained_method_failures": 126,
+  "full_failure_canonical_sha256": "1f9b8c56a60666616c8b96610b923d86d8a0d8419549ac188d85e58754a6ce82",
+  "holdout_attempted": 0,
+  "real_fit_authorized": false
+}
