@@ -37,8 +37,9 @@ def pub(key):
 
 def sign(payload, kid, key):
     schema = payload["schema"]
-    raw = json.dumps(payload, sort_keys=True, separators=(",", ":"),
-                     ensure_ascii=True, allow_nan=False).encode("ascii")
+    raw = json.dumps({"key_id": kid, "payload": payload}, sort_keys=True,
+                     separators=(",", ":"), ensure_ascii=True,
+                     allow_nan=False).encode("ascii")
     signature = key.sign(DOMAINS[schema] + raw)
     return {"schema": SIGNED_SCHEMA, "algorithm": "Ed25519", "key_id": kid,
             "payload": payload, "signature_b64": base64.b64encode(signature).decode("ascii")}
@@ -67,7 +68,11 @@ def fixture():
     }
     revoke_payload = {
         "schema": REVOCATION_SCHEMA, "fixture_kind": "synthetic",
-        "registry_id": snapshot["registry_id"], "sequence": 2,
+        "registry_id": snapshot["registry_id"],
+        "registry_sha256": registry_digest(snapshot),
+        "policy_sha256": policy_digest(policy),
+        "audit_tip_sha256": events[-1]["event_sha256"],
+        "sequence": 2,
         "observed_at": "2026-10-14T00:00:00Z",
         "expires_at": "2026-10-17T00:00:00Z",
         "revoked_key_ids": [], "audience": AUDIENCE,
@@ -86,6 +91,8 @@ def fixture():
         expected_registry_id=snapshot["registry_id"],
         expected_registry_sha256=registry_digest(snapshot),
         expected_proposal_sha256=proposal_digest(proposal),
+        expected_policy_sha256=policy_digest(policy),
+        expected_audit_tip_sha256=events[-1]["event_sha256"],
         expected_checkpoint_sha256=content_digest(REVOCATION_SCHEMA, revoke_payload),
         minimum_checkpoint_sequence=2,
     )
