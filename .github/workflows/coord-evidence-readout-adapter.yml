@@ -147,6 +147,41 @@ jobs:
           assert benchmark["ed25519_revocation_preflight"]["median_ms"]>0
           print("PASS Ed25519 two-role crypto, 10 fictional cases, 13 unchanged holds, benchmark no SLA gate")
           PY
+      - name: Rehearse persistent revocation and signer compromise without source access
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="$GITHUB_WORKSPACE/research/integration/diplomatic_readouts"
+          python3 research/integration/diplomatic_readouts/stress_persistence.py --output "$RUNNER_TEMP/restart-a"
+          python3 research/integration/diplomatic_readouts/stress_persistence.py --output "$RUNNER_TEMP/restart-b"
+          diff -rq "$RUNNER_TEMP/restart-a" "$RUNNER_TEMP/restart-b"
+          RESTART_TEMP="$RUNNER_TEMP" python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ["RESTART_TEMP"]) / "restart-a"
+          m = json.loads((root / "manifest.json").read_text())
+          assert m["synthetic_only"] is True and m["authority"] == "none"
+          assert m["authorized"] is False and m["can_read_source"] is False
+          assert m["publication_eligible"] is False and m["delivery_eligible"] is False
+          assert m["transcripts_opened"] == 0
+          assert len(m["cases"]) == 8
+          expected = {"fresh_pinned_restart",
+                      "rotated_key_new_checkpoint_no_authority",
+                      "two_signers_and_observer_compromised_known_limit"}
+          for name, entry in m["cases"].items():
+              report = json.loads((root / (name + ".json")).read_text())
+              assert (report["status"] ==
+                      "synthetic_checkpoint_consistent_no_authority") == (name in expected)
+              assert report["authority"] == "none" and report["authorized"] is False
+              assert report["can_read_source"] is False
+              assert report["publication_eligible"] is False
+              assert report["delivery_eligible"] is False
+              assert report["holdout_lock"]["transcripts_opened"] == 0
+              assert len(report["gate_status"]) == 13
+              assert set(report["gate_status"].values()) == {"NOT_RUN"}
+              assert "original_bytes" not in report and "source_url" not in report
+          print("PASS synthetic restart/revocation rollback and dual-root compromise matrix")
+          PY
       - name: Native W1 to W2 saved source-envelope regression (synthetic only)
         shell: bash
         run: |

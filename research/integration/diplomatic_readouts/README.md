@@ -56,3 +56,7 @@ For a subsequent separate integration proposal, perform an official contract-ver
 ## Synthetic custodian-signature and independent revocation simulation
 
 See [SYNTHETIC_CUSTODIAN_SIGNATURES.md](SYNTHETIC_CUSTODIAN_SIGNATURES.md) for the Ed25519 custody/revocation trust model, two portable closed schemas, 56 signed-metadata negative/positive tests, ten source-free examples, and a bounded median/p95 benchmark. Publicly reconstructible **test-only keys** verify cryptographic binding and deny access on tampering, revocation, expiry, rollback, wrong signer, or policy confusion. Even valid signatures produce `authority=none`, 13 `NOT_RUN` gates, `authorized=false`, `can_read_source=false`, and `publication_eligible=false`. This is **not** an operational PKI, access authorizer, private-source fetcher, or publication producer.
+
+## Independent synthetic restart and dual-signer compromise assessment
+
+[The prospective security review](PERSISTENT_REVOCATION_REVIEW_2026-10-15.md) adds an isolated persistence/observer-pin rehearsal and 17 adversarial tests. This is an **offline security assessment**, not a real trust store or operational authorization. The existing frozen v0 signature verifier and freeze-candidate SHA identities remain unchanged. Missing external pin, restored local checkpoint, or forged revocation state is withheld. Simultaneous compromise of both signers **and** the independent observer is demonstrably undetectable, though still no source access or D1 authority can result. All 13 gates remain `NOT_RUN`.
