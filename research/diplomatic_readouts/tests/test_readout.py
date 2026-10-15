@@ -228,6 +228,16 @@ class SchemaAndProvenance(unittest.TestCase):
         self.assertIn("&amp;lt;script&amp;gt;", doc)
         self.assertIn("Content-Security-Policy", doc)
 
+    def test_malformed_unicode_in_urls_and_json_pointers_is_withheld(self):
+        report, proofs, decision = fixture()
+        report["sources"][0]["source_url"] = "https://example.invalid/\ud800"
+        self.assertIn("schema_source_identity_invalid", validate(report, proofs, decision))
+        self.assertEqual(normalize(report, proofs, decision)["release_state"], "withheld")
+        report, proofs, decision = fixture()
+        report["sources"][0]["json_pointer"] = "/records/\ud800"
+        self.assertIn("schema_source_identity_invalid", validate(report, proofs, decision))
+        self.assertEqual(normalize(report, proofs, decision)["release_state"], "withheld")
+
     def test_bad_url_rejected(self):
         report, proofs, decision = fixture()
         report["sources"][0]["source_url"] = "javascript:alert(1)"
