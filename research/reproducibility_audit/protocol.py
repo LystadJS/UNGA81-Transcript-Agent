@@ -270,15 +270,33 @@ def validate_envelope(doc: Any, schema: dict | None) -> list[str]:
 
 
 def check_populations(a: dict, b: dict, alignment_protocol: dict | None = None) -> list[str]:
-    """No implicit comparisons between different sources, selected rows or bases."""
-    keys = ('source_schema', 'source_hash_basis', 'source_sha256', 'selection_sha256')
-    errors = [f'{key} mismatch' for key in keys if a.get('upstream', {}).get(key) != b.get('upstream', {}).get(key)]
-    for key in keys:
-        if not a.get('upstream', {}).get(key) or not b.get('upstream', {}).get(key):
+    """Fail closed on unmatched source, selected rows, training or fit identity.
+
+    Passing this structural check does *not* authenticate source bytes or justify
+    comparison across method families. A proposed alignment protocol cannot
+    silently override an observed mismatch.
+    """
+    errors: list[str] = []
+    source_keys = ('source_schema', 'source_hash_basis', 'source_sha256', 'selection_sha256')
+    for key in source_keys:
+        l, r = a.get('upstream', {}).get(key), b.get('upstream', {}).get(key)
+        if not l or not r:
             errors.append(f'{key} missing comparison identity')
-    for key in ('population', 'unit', 'source_group_unit', 'weighting', 'selection_policy'):
+        if l != r:
+            errors.append(f'{key} mismatch')
+    for key in ('split', 'population', 'unit', 'source_group_unit', 'weighting',
+                'selection_policy', 'duplicate_policy', 'total_in_frame', 'eligible'):
         if a.get('cohort', {}).get(key) != b.get('cohort', {}).get(key):
             errors.append(f'{key} mismatch')
+    for doc in (a, b):
+        observations = doc.get('observations', [])
+        ids = [o.get('id') for o in observations]
+        if any(not _nonnull_string(identifier) for identifier in ids) or len(ids) != len(set(ids)):
+            errors.append('duplicate/missing observation identity')
+        if any(o.get('source_status') == 'available' and
+               (not isinstance(o.get('text_sha256'), str) or
+                not SHA256_RE.fullmatch(o['text_sha256'])) for o in observations):
+            errors.append('missing eligible observation text hash')
     left = {(o.get('id'), o.get('text_sha256')) for o in a.get('observations', [])}
     right = {(o.get('id'), o.get('text_sha256')) for o in b.get('observations', [])}
     if left != right:
@@ -287,6 +305,17 @@ def check_populations(a: dict, b: dict, alignment_protocol: dict | None = None) 
     right_rep = {(m.get('representation_id'), m.get('representation_version')) for m in b.get('models', [])}
     if left_rep != right_rep:
         errors.append('representation lineage mismatch')
+    fit_keys = ('model_id', 'method_family', 'method', 'representation_id',
+                'representation_version', 'fit_version', 'fit_split',
+                'parameters_sha256', 'training_selection_sha256', 'diagnostic_basis')
+    left_models = [tuple(m.get(k) for k in fit_keys) for m in a.get('models', [])]
+    right_models = [tuple(m.get(k) for k in fit_keys) for m in b.get('models', [])]
+    if len(set(left_models)) != len(left_models) or len(set(right_models)) != len(right_models):
+        errors.append('duplicate model fit identity')
+    if set(left_models) != set(right_models):
+        errors.append('model fit policy mismatch')
+    if a.get('producer', {}).get('code_sha256') != b.get('producer', {}).get('code_sha256'):
+        errors.append('producer code identity mismatch')
     if errors and alignment_protocol:
         errors.append('alignment proposal supplied; independent source authorization still required')
     return sorted(set(errors))
