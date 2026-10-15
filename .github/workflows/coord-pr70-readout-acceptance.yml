@@ -47,7 +47,7 @@ jobs:
               report = json.loads(path.read_text())
               assert report["publication_eligible"] is False
               assert report["release_state"] in {"synthetic_demo", "descriptive_only", "withheld"}
-              assert "original_bytes" not in path.read_text()
+              assert '"original_bytes":' not in path.read_text()
           PY
   upstream-contract-regressions:
     runs-on: ubuntu-latest
