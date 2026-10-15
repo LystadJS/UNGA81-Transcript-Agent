@@ -14,17 +14,17 @@ class SyntheticTests(unittest.TestCase):
         rows = generate(Design(16, .65, .2, 0, 2), 7)
         self.assertFalse(identifiable(rows)[0])
     def test_sparse_year_refusal(self):
-        with self.assertRaisesRegex(ValueError, "insufficient"):
+        with self.assertRaisesRegex(ValueError, 'insufficient'):
             estimate_year_covariance(np.ones(16))
     def test_incompatible_cohorts_refused(self):
-        a = dict(schema_version="v1", source_design_id="a", population_hash="a",
-                 representation_fingerprint="a", year_definition="calendar",
-                 sampling_frame_hash="a")
-        b = dict(a, source_design_id="b")
-        with self.assertRaisesRegex(ValueError, "incompatible"):
+        a = dict(schema_version='v1', source_design_id='a', population_hash='a',
+                 representation_fingerprint='a', year_definition='calendar',
+                 sampling_frame_hash='a')
+        b = dict(a, source_design_id='b')
+        with self.assertRaisesRegex(ValueError, 'incompatible'):
             metadata_compatible(a,b)
     def test_real_fit_forbidden(self):
         with self.assertRaises(PermissionError):
             real_fit()
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()
