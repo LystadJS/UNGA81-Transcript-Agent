@@ -206,7 +206,7 @@ function audit(m, { originals = null, canonicalTexts = null } = {}) {
       if (o.outcome_status === 'missing') s.missing_outcome++;
       if (o.attribution !== 'verified_recorded_affiliation') s.ambiguous_attribution++;
       if (o.inclusion_probability == null && atRisk) s.unknown_sampling++;
-      if (atRisk && Number.isFinite(o.inclusion_probability) && o.inclusion_probability > 0 && o.inclusion_probability <= 1 && o.probability_unit === f.sampling_unit)
+      if (atRisk && f && Number.isFinite(o.inclusion_probability) && o.inclusion_probability > 0 && o.inclusion_probability <= 1 && o.probability_unit === f.sampling_unit)
         s.positive_sampling_unit++;
     }
     rows.push({id:o.id, frame_id:o.frame_id, year:o.year, source_status:o.source_status, eligible_metadata:false,
