@@ -66,3 +66,17 @@ python3 -m compileall -q .
 ```
 
 Run any additional applicable latent/numerical tests after examining latest `main` and the current package scripts. The named commands above have not been executed in this environment. Record exact SHA and CI logs for each.
+
+
+## October 15, 09:41 EDT — independent full-checkout attempt
+
+**Requested exact-head upstream execution: BLOCKED, not PASS.**
+
+- GitHub exact head prior to this documentation update: `dc6e0ebb79dd7498f6adbb13b326fe7c91bc8e62`; `main`: `1af11061e3fa65d51b28d42a1b98bef250b6168b`; 24 ahead/4 behind; all 19 paths within this exclusive namespace.
+- Direct runtime inspection: `git 2.47.3`, `node v22.16.0`, `Python 3.13.5`, root privileges. `git ls-remote https://github.com/LystadJS/UNGA81-Transcript-Agent.git HEAD` **FAIL**, `Could not resolve host: github.com`. There is no full checkout, no `docs/parallel-work/validate-contract.cjs` in the workspace, and no authorized workflow dispatch surface.
+- Independently ran `cd /mnt/data/semantic_work/research/semantic_representations && python3 -m unittest discover -q -p 'test_*.py'`: **99 tests PASS** in 1.812 seconds, `python3 -m compileall -q .`: **PASS**.
+- **Git-blob source identity check** against the current PR: ten Python modules and `test_interchange_v1_compat.py` match GitHub byte-for-byte. However, local `test_pipeline.py` Git blob `5f7ba60ce263ff347b99e9eb1cebd6753520397f` differs from pushed `b991b62365b1a18fb33b956d9d8e8dcf7fc91e8b`; local `official_v1_synthetic.json` Git blob `58b1c6648c15de4a5085ff626fb5964b9bbd1a8e` differs from pushed `d22dad05461dc34e1a41aa7a7c0c7dd6528da194`. Therefore this is **local module execution with an inexact fixture/test pair**, **NOT a full exact-head test pass**.
+- GitHub Actions runs and commit status contexts for the inspected head: **none returned**. This means **NOT RUN / no evidence**, not success.
+- No upstream Node/browser/W1/corpus/reviewed tests could execute because their files and dependencies were unavailable. Original source authentication, semantic ONNX checkpoint, and empirical comparisons remain withheld.
+
+**Coordinator completion condition:** provide a trusted execution-capable full checkout or CI runner with repository access; verify `git rev-parse HEAD` equals the exact current PR head; run the official Node contract validator, browser/latent/numerical, W1/source/corpus/reviewed suites, and exact-head Python tests. Capture exit codes, logs, dependency versions, run URLs/IDs, and compare `main` again. Keep PR draft and unmerged in the meantime.
