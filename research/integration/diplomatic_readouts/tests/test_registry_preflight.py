@@ -9,7 +9,7 @@ import sys
 import unittest
 
 HERE = Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE))
+sys.path.insert(0, str(HERE.parent))
 from private_source_contract import make_proposal
 from registry_preflight import (  # noqa: E402
     LOCK, ZERO, RECEIPT_SCHEMA, event_digest, registry_digest, receipt_digest,
@@ -373,12 +373,12 @@ class RegistryPreflightTests(unittest.TestCase):
     def test_36_expected_schema_consistency(self):
         # No external dependency for the runtime. If jsonschema is installed,
         # independently check the emitted synthetic-only public receipt.
-        schema_path = HERE / "registry_preflight.v0.schema.json"
+        schema_path = HERE.parent / "registry_preflight.v0.schema.json"
         schema = json.loads(schema_path.read_text(encoding="utf-8"))
         r = self.check()
         self.assertEqual(schema["properties"]["schema"]["const"], RECEIPT_SCHEMA)
         self.assertEqual(set(schema["required"]), set(r))
-        input_schema = json.loads((HERE / "registry_preflight_input.v0.schema.json").read_text(encoding="utf-8"))
+        input_schema = json.loads((HERE.parent / "registry_preflight_input.v0.schema.json").read_text(encoding="utf-8"))
         self.assertEqual(set(input_schema["required"]), {"snapshot", "policy", "events", "checked_at"})
         try:
             import jsonschema
