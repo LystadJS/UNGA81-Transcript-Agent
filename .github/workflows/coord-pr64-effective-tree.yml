@@ -1,0 +1,35 @@
+name: Coordinator PR64 effective-tree native regression
+on:
+  push:
+    branches:
+      - coord/pr64-effective-tree-20261015
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-source-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Node and Python versions
+        run: node --version && python3 --version
+      - name: Native audit and upstream Node regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --test research/source_comparability/audit.test.cjs research/source_comparability/audit.integration.test.cjs
+          node docs/parallel-work/test-source-inventory-v1.cjs
+          node docs/parallel-work/validate-contract.cjs
+          node research/source_acquisition/p2_expansion/test_tar_source_binding.cjs
+          node research/source_acquisition/p2_expansion/test_p2_to_w1.cjs
+          node research/validation_framework/tests/test_historical_link.cjs
+          node docs/parallel-work/test_w4_p2_independent_source_audit.cjs
+      - name: W4 Python source-related regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s research/integration -p 'test_p3_harvard_archive_audit.py' -v
+          python3 -m unittest discover -s research/integration -p 'test_p5_harvard_receipt.py' -v
