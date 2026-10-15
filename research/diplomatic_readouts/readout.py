@@ -22,6 +22,28 @@ TEMPLATES = (
     "boundary_cases", "source_backed_anomalies",
 )
 CATEGORIES = ("descriptive", "exploratory")
+TEMPLATE_GUIDANCE = {
+    "emerging_themes": {
+        "question": "Which language patterns emerge in the declared comparable observation population?",
+        "limit": "A newly observed pattern is not proof a policy issue is new; selection, coverage and wording may explain it.",
+    },
+    "discourse_communities": {
+        "question": "Which independently sourced observations use relatively similar language?",
+        "limit": "A language community is not a diplomatic coalition, shared policy or coordination.",
+    },
+    "changing_actor_profiles": {
+        "question": "How do source-comparable actor-language profiles differ across reported periods?",
+        "limit": "Composition, attribution, translation or representation can mimic movement; do not infer realignment.",
+    },
+    "boundary_cases": {
+        "question": "Which accepted observations have ambiguous or method-sensitive memberships?",
+        "limit": "Instability and display proximity cannot establish a diplomatic bridge or agreement.",
+    },
+    "source_backed_anomalies": {
+        "question": "Which source-grounded observations depart from a declared comparison profile?",
+        "limit": "An unusual passage does not establish novelty, wrongdoing, causal influence or statistical significance.",
+    },
+}
 GATE_STATES = ("pass", "fail", "not_run")
 RESTRICTIONS = (
     "Language similarity is not policy agreement.",
@@ -439,7 +461,7 @@ def normalize(report: object, proofs: Mapping[str, SourceReceipt] | None = None,
     result: dict = {
         "schema": SCHEMA, "release_state": "withheld", "publication_eligible": False,
         "validation_errors": errors, "restrictions": list(RESTRICTIONS),
-        "title": "Research readout — withheld", "template": None,
+        "title": "Research readout — withheld", "template": None, "template_guidance": None,
         "coverage": None, "sources": [], "findings": [],
         "uncertainty": "Not established", "sensitivity": "Not established",
         "alternative_explanations": "Not established", "reviewer_note": "Withheld",
@@ -453,6 +475,7 @@ def normalize(report: object, proofs: Mapping[str, SourceReceipt] | None = None,
     result.update({key: report[key] for key in (
         "title", "template", "coverage", "uncertainty", "sensitivity",
         "alternative_explanations", "reviewer_note")})
+    result["template_guidance"] = TEMPLATE_GUIDANCE[report["template"]]
     proofs = proofs or {}
     sources = {s["id"]: s for s in report["sources"]}
     result["sources"] = [
@@ -525,6 +548,9 @@ def render(report: object, format: str = "json", *,
         return json.dumps(view, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
     lines = ["# " + _md(view["title"]), "", "Status: " + view["release_state"],
              "Publication eligible: no", ""]
+    if view["template_guidance"] is not None:
+        lines.extend(["## Evidence question", "", _md(view["template_guidance"]["question"]), "",
+                      "## Template-specific qualification", "", _md(view["template_guidance"]["limit"]), ""])
     if view["coverage"] is not None:
         cov = view["coverage"]
         lines.extend(["## Declared scope", ""])
@@ -539,6 +565,7 @@ def render(report: object, format: str = "json", *,
     lines.extend(["## Evidence", ""])
     if not view["findings"]:
         lines.append("No authorized findings to display.")
+    source_index = {s["id"]: s for s in view["sources"]}
     for f in view["findings"]:
         if f["status"] == "withheld":
             lines.append("- WITHHELD: " + ", ".join(f["reason_codes"]))
@@ -549,10 +576,12 @@ def render(report: object, format: str = "json", *,
         for role in ("supporting", "contrary"):
             if f[role]:
                 for p in f[role]:
+                    location = source_index.get(p["source_id"], {}).get("source_url")
                     lines.append("- " + role + ": " + _md(p["source_id"]) +
                                  " (" + _md(p["representation_id"]) + ", " +
                                  str(p["start"]) + ":" + str(p["end"]) + ", text SHA-256 " +
-                                 p["text_sha256"] + ")")
+                                 p["text_sha256"] + ")" +
+                                 (" — original: " + _md(location) if location else ""))
             elif role == "contrary":
                 lines.append("- Contrary-passage search: " + f["contrary_search"].replace("_", " "))
         if f["country_attribution"] is not None:
