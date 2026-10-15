@@ -43,12 +43,7 @@ python3 -m unittest discover -v -p 'test_*.py'
 python3 -m compileall -q .
 ```
 
-**Execution distinction:** local worktree includes a larger prepared, independently
-tested integration (83/83 Python 3.13.5 synthetic tests; CLI fixture replay PASS),
-but that entire worktree has **not yet been committed to this PR**. Do not attribute
-those 83 tests or its imported ONNX adapter to the current GitHub head.
-The newly committed `cluster_sensitivity.py` plus its test module were independently
-run locally: **4/4 tests PASS**.
+**New local execution:** 83/83 synthetic unit tests PASS on Python 3.13.5; compilation PASS; 16/16 synthetic fixture observations encoded and CLI replay PASS. GitHub source blobs for the seven major implementation/test modules match the tested local bytes. This is **not** same-head GitHub Actions CI and is **not** a new actual ONNX model run.
 
 ## Current acceptance blocks
 
@@ -57,9 +52,9 @@ run locally: **4/4 tests PASS**.
    and actual ONNX inference in this workstream remain NOT RUN.
 2. Independently validate the official parallel JSON schema and source-relational
    integrity against coordinator-approved synthetic interchange envelopes.
-4. Authenticate eligible original development source receipts independently before
+3. Authenticate eligible original development source receipts independently before
    real source comparison. Missing/withheld inputs are unknown, not negative findings.
-5. Keep PR draft, no empirical publication, no D1 O1–O5 gate changes, and no
+4. Keep PR draft, no empirical publication, no D1 O1–O5 gate changes, and no
    access to the 37 reserved October 5–6 transcripts.
 
 The coordinator owns shared interfaces, registry schemas, site loaders, workflows,
