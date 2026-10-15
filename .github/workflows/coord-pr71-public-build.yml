@@ -12,6 +12,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+      - name: Python audit and pinned-fixture adversarial tests
+        run: |
+          python3 -m unittest discover -s research/reproducibility_audit -p 'test_*.py' -v
       - name: Build approved public assets and fail-closed inspect all files
         run: |
           set -euo pipefail
