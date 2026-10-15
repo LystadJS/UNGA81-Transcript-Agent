@@ -12,18 +12,18 @@
 
 ## Newly executed local synthetic validation
 
-Run in an isolated Python 3.13.5 environment, Node 22.16.0 available, `Rscript` unavailable, repository clone unavailable (DNS cannot resolve github.com). The local test candidate was authored from the connected GitHub metadata and pushed via the GitHub app; **these local runs do not count as exact-head CI execution of the final GitHub checkout**.
+Run in an isolated Python 3.13.5 environment, Node 22.16.0 available, `Rscript` unavailable, repository clone unavailable (DNS cannot resolve github.com). An upstream contract change during this branch's lifetime is deliberately rejected by the pinned-schema check until reviewed. The local test candidate was authored from the connected GitHub metadata and pushed via the GitHub app; **these local runs do not count as exact-head CI execution of the final GitHub checkout**.
 
 ```sh
 python3 -m unittest discover -s research/reproducibility_audit -p 'test_*.py' -v
 python3 research/reproducibility_audit/run_qa.py --repo-root . --output /tmp/unga-repro-qa.json
 ```
 
-- Local synthetic test suite: **63 attempted; 62 PASS; 0 FAIL; 1 SKIP**. The skipped test requires the upstream coordinator Schema file in an authenticated full checkout. Legacy `test_audit.py` has not been executed in this isolated candidate.
+- Local synthetic test suite: **64 attempted; 63 PASS; 0 FAIL; 1 SKIP**. The skipped test requires the upstream coordinator Schema file in an authenticated full checkout. Legacy `test_audit.py` has not been executed in this isolated candidate.
 - Corrupt observation IDs, duplicate rows, wrong parent hashes, invalid spans, missing partial/failed fit denominators, wrong cluster labels, incompatible representation/source basis, zero-denominator diagnostics, reserved-date identities, evaluation source overlap and unapproved release fields are negative controls.
 - An independent-process synthetic numerical replay ran twice with seed `271828`, with independent reference implementation, pinned fixture SHA256 `88ba2f60c77b87e71c30e4022d1c2ad90905f44454ee76ad7783cce1f5a260e0` and output SHA256 `1639ed5e207c3704860cf5190f3233198882bc190cead010905fbd6f4a290130`. The output is a **synthetic arithmetic fixture only**, not a replay of historical W1/W4 fits.
 - Privacy negative controls for a fake transcript sentinel, fake private-key marker, cached-vector files, and JSON row-level source records were detected. A synthetic aggregate-only staging directory was also scanned clean. **Actual public Pages assets were not audited.**
-- QA statuses deliberately report absent upstream schema, catalog checkout, original-source hashes, sealed evaluation identities and exact-head GitHub Actions as `NOT RUN`, not `PASS`. No proof of real release eligibility is inferred.
+- QA statuses deliberately report absent upstream schema, catalog checkout, original-source hashes, sealed evaluation identities and exact-head GitHub Actions as `NOT RUN`, not `PASS`. The standalone CLI exits **3** rather than **0** when engineering evidence remains incomplete, **1** for failed checks and **2** for invalid input; a zero exit requires all required checks to be present and accepted. No proof of real release eligibility is inferred.
 
 ## Acceptance status matrix
 
@@ -37,7 +37,7 @@ python3 research/reproducibility_audit/run_qa.py --repo-root . --output /tmp/ung
 | Deterministic synthetic numerical replay | PASS isolated runtime | Original W1/W4 model replay NOT RUN |
 | Synthetic privacy sentinel controls | PASS isolated runtime | Complete Pages artifact scan NOT RUN |
 | Frozen gate mutation check | PASS exact changed-path constraint (subject to final PR recheck) | No forbidden paths edited by this worker |
-| Current-head CI and upstream regressions | NOT RUN | No applicable PR-head Actions workflows returned; Node/R full checkout unavailable |
+| Current-head CI and upstream regressions | NOT RUN | No applicable PR-head Actions workflows returned; full checkout and R runtime unavailable |
 | Human review | NOT RUN | No owner-validated decisions changed |
 | Statistical calibration / source eligibility | NOT RUN | Distinct scientific prerequisites |
 | Public release authorization | FAIL / WITHHELD | Owner/coordinator release gate remains closed |
