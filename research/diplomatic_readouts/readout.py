@@ -466,8 +466,11 @@ def normalize(report: object, proofs: Mapping[str, SourceReceipt] | None = None,
         "uncertainty": "Not established", "sensitivity": "Not established",
         "alternative_explanations": "Not established", "reviewer_note": "Withheld",
     }
-    # Any privacy, schema, or approval failure withholds ALL authored material.
-    blocking = any(e.startswith(("schema_", "authorization_", "privacy_")) for e in errors)
+    # Any invalid source, pointer, attribution or missing evidence also blocks
+    # ALL authored prose, including report-level reviewer notes and titles.
+    # Only a failed statistical gate may retain separately approved descriptive
+    # evidence, with the unrestricted reviewer note itself withheld.
+    blocking = any(e != "statistical_result_withheld" for e in errors)
     if blocking:
         return result
     assert isinstance(report, dict) and isinstance(decision, ReviewDecision)
@@ -475,6 +478,8 @@ def normalize(report: object, proofs: Mapping[str, SourceReceipt] | None = None,
     result.update({key: report[key] for key in (
         "title", "template", "coverage", "uncertainty", "sensitivity",
         "alternative_explanations", "reviewer_note")})
+    if "statistical_result_withheld" in errors:
+        result["reviewer_note"] = "Withheld pending statistical validation"
     result["template_guidance"] = TEMPLATE_GUIDANCE[report["template"]]
     proofs = proofs or {}
     sources = {s["id"]: s for s in report["sources"]}
