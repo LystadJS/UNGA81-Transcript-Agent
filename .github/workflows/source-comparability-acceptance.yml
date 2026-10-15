@@ -1,0 +1,37 @@
+name: Source comparability exact-head acceptance
+on:
+  pull_request:
+    paths:
+      - 'research/source_comparability/**'
+      - '.github/workflows/source-comparability-acceptance.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Exact-head source and native upstream regressions
+        if: hashFiles('research/source_comparability/audit.test.cjs') != ''
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --test research/source_comparability/audit.test.cjs research/source_comparability/audit.integration.test.cjs
+          node docs/parallel-work/test-source-inventory-v1.cjs
+          node docs/parallel-work/validate-contract.cjs
+          node research/source_acquisition/p2_expansion/test_tar_source_binding.cjs
+          node research/source_acquisition/p2_expansion/test_p2_to_w1.cjs
+          node research/validation_framework/tests/test_historical_link.cjs
+          node docs/parallel-work/test_w4_p2_independent_source_audit.cjs
+      - name: Native upstream Python source contracts
+        if: hashFiles('research/source_comparability/audit.test.cjs') != ''
+        run: |
+          python3 -m unittest discover -s research/integration -p 'test_p3_harvard_archive_audit.py' -v
+          python3 -m unittest discover -s research/integration -p 'test_p5_harvard_receipt.py' -v
