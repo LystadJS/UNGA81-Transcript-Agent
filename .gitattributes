@@ -1,6 +1,8 @@
 # Preserve package checksums on Windows and Unix checkouts.
 site/** text=auto eol=lf
 reports/hlw-cuba/** text=auto eol=lf
+# The public builder copies this reviewed renderer into the browser release.
+research/integration/w2_w4_w6/evidence_renderer.cjs text eol=lf
 un/** -text
 examples/review/** -text
 # Recovered texts have byte hashes recorded in recovery.json.
