@@ -7,6 +7,13 @@ on:
       - 'site/analysis-ui.js'
       - 'site/analysis-core.js'
       - 'site/collector.js'
+      - 'site/meeting-picker.js'
+      - 'tools/test_browser_briefing.cjs'
+      - 'tools/test_collection_recovery.cjs'
+      - 'tools/test_collection_recovery_ui.cjs'
+      - 'tools/test_meeting_picker.cjs'
+      - 'tools/test_meeting_quick_reader_ui.py'
+      - 'tools/test_meeting_quick_reader_static.py'
       - 'site/index.html'
       - 'site/analysis.css'
       - 'tools/test_meeting_quick_reader*'
@@ -21,6 +28,13 @@ on:
       - 'site/analysis-ui.js'
       - 'site/analysis-core.js'
       - 'site/collector.js'
+      - 'site/meeting-picker.js'
+      - 'tools/test_browser_briefing.cjs'
+      - 'tools/test_collection_recovery.cjs'
+      - 'tools/test_collection_recovery_ui.cjs'
+      - 'tools/test_meeting_picker.cjs'
+      - 'tools/test_meeting_quick_reader_ui.py'
+      - 'tools/test_meeting_quick_reader_static.py'
       - 'tools/test_meeting_quick_reader*'
       - 'tools/preview_meeting_quick_reader.cjs'
       - 'research/reference_tests/quick_reader_sample_audit.cjs'
@@ -28,6 +42,7 @@ on:
       - 'research/reference_tests/test_meeting_attribution.cjs'
       - '.github/workflows/meeting-quick-reader.yml'
   workflow_dispatch:
+  workflow_call:
 permissions:
   contents: read
 jobs:
@@ -49,11 +64,15 @@ jobs:
           node research/reference_tests/test_meeting_attribution.cjs
           node tools/test_meeting_picker.cjs
           node tools/test_browser_analysis.cjs
+          node tools/test_browser_briefing.cjs
+          node tools/test_collection_recovery.cjs
       - name: Install browser harness only
         run: python -m pip install --disable-pip-version-check playwright==1.55.0
       - name: Browser acceptance against artificial UN source responses
         run: |
           google-chrome --version
+          export PLAYWRIGHT_MODULE="$(python -c 'import pathlib, playwright; print(pathlib.Path(playwright.__file__).parent / "driver" / "package")')"
+          BROWSER_PATH="$(command -v google-chrome)" node tools/test_collection_recovery_ui.cjs site collection-recovery-browser
           CHROME_BINARY="$(command -v google-chrome)" python tools/test_meeting_quick_reader_ui.py quick-reader-browser
           node tools/preview_meeting_quick_reader.cjs quick-reader-synthetic.html
           CHROME_BINARY="$(command -v google-chrome)" python tools/test_meeting_quick_reader_static.py quick-reader-synthetic.html quick-reader-static
@@ -62,6 +81,7 @@ jobs:
         with:
           name: meeting-quick-reader-synthetic-browser
           path: |
+            collection-recovery-browser/
             quick-reader-browser/
             quick-reader-static/
             quick-reader-synthetic.html

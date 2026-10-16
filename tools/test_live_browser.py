@@ -105,8 +105,11 @@ def main():
             page.locator('#excludePhrases').fill('the')
             page.locator('#topic').fill('')
             check('Blank Topic disables stale exclusions', page.locator('#excludePhrases').is_disabled())
+            # Live monitoring checks collection plus the five descriptive methods.
+            # Expensive exploratory kernels have separate deterministic acceptance.
+            descriptive_methods = {'frequency', 'timeline', 'length', 'tfidf', 'similarity'}
             for control in page.locator('input[name=method]').all():
-                control.check()
+                control.set_checked(control.get_attribute('value') in descriptive_methods)
 
             generate(page)
             all_result = json.loads(downloaded(page, '#exportResult', 'all-analysis.json').read_text())
@@ -118,7 +121,7 @@ def main():
             check('Stale search fields ignored', all_result['parameters']['phrases'] == []
                   and all_result['parameters']['exclude'] == [])
             check('Both October 1 meetings collected', raw['collection']['selected_meetings'] == 2)
-            check('All five methods execute', len(all_result['methods']) == 5)
+            check('Selected descriptive methods execute', set(all_result['methods']) == descriptive_methods)
             check('All-mode count charts labeled correctly', 'Passages by region' in page.locator('#analysisReport').inner_text()
                   and 'Topic frequency by region' not in page.locator('#analysisReport').inner_text())
             check('Collector and analysis counts are separate', 'Passages collected' in page.locator('#analysisReport').inner_text())

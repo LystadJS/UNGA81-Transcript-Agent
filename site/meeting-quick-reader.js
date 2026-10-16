@@ -96,6 +96,7 @@
     // *object* includes the subject within ten words.  "We welcome a report
     // which mentions X" is not automatically support for all of X.
     const pieces=sentence.split(/[,;:]|\b(?:but|however|although)\b/i),candidates=[];
+    let ambiguousObject=false;
     for(const piece of pieces){
       const part=piece.trim();
       const actor=part.match(/^(?:we|i|our delegation|my delegation|our government|my government|our country)\b\s*/i);
@@ -110,6 +111,13 @@
          /^(?:that|whether|how|why)\b/i.test(object))continue;
       const objective=object.split(/\s+/).slice(0,10).join(' ');
       const targetAt=objective.search(issue.pattern);if(targetAt<0)continue;
+      // Negated, removed or indirectly referenced policy objects need contextual
+      // review: supporting 'no sanctions' or 'sanctions being lifted' is not
+      // support for sanctions. Do not flip such wording into a guessed stance.
+      if (/\b(?:no|not|neither|nor|without|except|unless|rather than|instead of)\b/i.test(object) ||
+          /\b(?:lift(?:ed|ing)?|remov(?:e|ed|al|ing)|end(?:ed|ing)?|abolish(?:ed|ing)?|repeal(?:ed|ing)?|suspend(?:ed|ing)?|termination|cessation|exemption|withdraw(?:al|n)?)\b/i.test(object) ||
+          /\b(?:which|that|who|whether|if|when|would|could|might)\b/i.test(object.slice(0,targetAt)) ||
+          /[“”"]/u.test(piece)) { ambiguousObject=true; continue; }
       // A secondary noun in another policy object's complement is not itself
       // the object of the verb (e.g., 'oppose sanctions on food security').
       if(ISSUES.some(other=>other.id!==issue.id && objective.search(other.pattern)>=0 && objective.search(other.pattern)<targetAt))continue;
@@ -118,6 +126,7 @@
     }
     const kinds=new Set(candidates);
     if(!kinds.size)return null;
+    if(ambiguousObject)return 'mixed_or_qualified';
     // Narrow positive and negative clauses or conditions within a sentence
     // need contextual review; do not silently call the target unqualified.
     if(kinds.size>1 || /\b(?:subject to|provided that|only if|unless|with the consent|on condition that)\b/i.test(sentence))return 'mixed_or_qualified';
@@ -177,7 +186,7 @@
        'The available wording does not support a reliable country-position summary. The source passages below remain available for attribution and substantive review.']:
       ['The available English record does not identify a recurring substantive subject under the fixed issue dictionary. A missing theme is not evidence that an issue was absent from the meeting.',
        'No country position is classified without an attributed first-person statement on a specific issue. Source limitations and unresolved affiliations remain visible below.'];
-    return {schema:'un.meeting-quick-reader.v1',method:'offline_deterministic_extract_with_source_links',single_meeting:true,meeting_slug:slug,meeting_date:date,meeting_title:title,agenda:agendaSeries(slug,title),agenda_cues:cues,
+    return {schema:'un.meeting-quick-reader.v1',engine:'un.meeting-quick-reader.v1.3-browser-briefing',method:'offline_deterministic_extract_with_source_links',single_meeting:true,meeting_slug:slug,meeting_date:date,meeting_title:title,agenda:agendaSeries(slug,title),agenda_cues:cues,
       sources:'all_english_source_segments_in_exact_selected_meeting_before_topic_filter',
       stats:{source_segments:recorded,substantive_looking_segments:substantive,median_words_per_segment:median,mapped_country_segments:verified.length,unresolved_country_segments:unknown,recorded_countries:counted.size,withheld_collective_segments:collective,records_with_explicit_speaker_id:withSpeakerId,records_with_affiliation_function_proxy:withSpeakerProxy,explicit_issue_country_positions:positions.length},
       paragraphs:prose,themes:themes.map(({id,label,count,evidence})=>({id,label,segments:count,evidence})).slice(0,6),positions,
