@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:un:private-source-registry:preflight-receipt:v0",
+  "title": "Synthetic-only, non-authorizing source-registry preflight receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "mode", "metadata_status", "reason_codes", "registry_sha256", "population", "gate_status", "holdout_lock", "authority", "authorized", "can_read_source", "can_issue_review", "statistical_eligible", "publication_eligible", "delivery_eligible", "source_text_included", "source_rows_exported"],
+  "properties": {
+    "schema": {"const": "un.private-source-registry.preflight-receipt.v0"},
+    "mode": {"const": "synthetic_metadata_only"},
+    "metadata_status": {"enum": ["metadata_consistent", "withheld"]},
+    "reason_codes": {"type": "array", "items": {"type": "string", "pattern": "^[a-z_]{3,80}$"}},
+    "registry_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "population": {
+      "anyOf": [
+        {"type": "null"},
+        {"type": "object", "additionalProperties": false,
+         "required": ["total_in_frame", "observations_total", "eligible", "excluded", "unavailable", "unobserved"],
+         "properties": {
+           "total_in_frame": {"type": "integer", "minimum": 0},
+           "observations_total": {"type": "integer", "minimum": 0},
+           "eligible": {"type": "integer", "minimum": 0},
+           "excluded": {"type": "integer", "minimum": 0},
+           "unavailable": {"type": "integer", "minimum": 0},
+           "unobserved": {"type": "integer", "minimum": 0}
+         }}
+      ]
+    },
+    "gate_status": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_registry", "original_bytes", "text_transform", "original_offsets", "selection_and_duplicates", "source_dependence", "country_attribution", "proposition_stance", "owner_review", "privacy", "statistical_identification", "reserved_holdout", "d1_publication"],
+      "properties": {
+        "source_registry": {"const": "NOT_RUN"},
+        "original_bytes": {"const": "NOT_RUN"},
+        "text_transform": {"const": "NOT_RUN"},
+        "original_offsets": {"const": "NOT_RUN"},
+        "selection_and_duplicates": {"const": "NOT_RUN"},
+        "source_dependence": {"const": "NOT_RUN"},
+        "country_attribution": {"const": "NOT_RUN"},
+        "proposition_stance": {"const": "NOT_RUN"},
+        "owner_review": {"const": "NOT_RUN"},
+        "privacy": {"const": "NOT_RUN"},
+        "statistical_identification": {"const": "NOT_RUN"},
+        "reserved_holdout": {"const": "NOT_RUN"},
+        "d1_publication": {"const": "NOT_RUN"}
+      }
+    },
+    "holdout_lock": {
+      "type": "object", "additionalProperties": false,
+      "required": ["reserved_meetings", "transcripts_opened", "access_granted", "d1_o1_o5"],
+      "properties": {
+        "reserved_meetings": {"const": 37},
+        "transcripts_opened": {"const": 0},
+        "access_granted": {"const": false},
+        "d1_o1_o5": {"const": "frozen"}
+      }
+    },
+    "authority": {"const": "none"},
+    "authorized": {"const": false},
+    "can_read_source": {"const": false},
+    "can_issue_review": {"const": false},
+    "statistical_eligible": {"const": false},
+    "publication_eligible": {"const": false},
+    "delivery_eligible": {"const": false},
+    "source_text_included": {"const": false},
+    "source_rows_exported": {"const": false}
+  }
+}

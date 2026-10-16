@@ -1,0 +1,451 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:un:private-source-registry:preflight-input:v0",
+  "title": "Synthetic only source-registry preflight authoring structure; relational invariants require Python validator",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "snapshot",
+    "policy",
+    "events",
+    "checked_at"
+  ],
+  "properties": {
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "fixture_kind",
+        "registry_id",
+        "registry_revision",
+        "previous_registry_sha256",
+        "recorded_at",
+        "source_schema",
+        "source_hash_basis",
+        "source_sha256",
+        "selection_sha256",
+        "records",
+        "population",
+        "holdout_lock"
+      ],
+      "properties": {
+        "schema": {
+          "const": "un.private-source-registry.metadata.v0"
+        },
+        "fixture_kind": {
+          "const": "synthetic"
+        },
+        "registry_id": {
+          "type": "string",
+          "pattern": "^synthetic:[A-Za-z0-9][A-Za-z0-9._:-]{0,100}$"
+        },
+        "registry_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "previous_registry_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recorded_at": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "source_schema": {
+          "enum": [
+            "synthetic.v1",
+            "un.browser.corpus.v1",
+            "un.passage-corpus.v1",
+            "un.review.v1"
+          ]
+        },
+        "source_hash_basis": {
+          "const": "synthetic"
+        },
+        "source_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "selection_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "records": {
+          "type": "array",
+          "maxItems": 128,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "parent_id",
+              "source_family_id",
+              "meeting_id",
+              "event_date",
+              "source_status",
+              "exclusion_code",
+              "missing_reason",
+              "raw_sha256",
+              "text_sha256",
+              "representation_id",
+              "offset_basis",
+              "classification"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^synthetic:[A-Za-z0-9][A-Za-z0-9._:-]{0,100}$"
+              },
+              "parent_id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^synthetic:[A-Za-z0-9][A-Za-z0-9._:-]{0,100}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "source_family_id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^synthetic:[A-Za-z0-9][A-Za-z0-9._:-]{0,100}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "meeting_id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^synthetic:[A-Za-z0-9][A-Za-z0-9._:-]{0,100}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "event_date": {
+                "type": "string",
+                "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+              },
+              "source_status": {
+                "enum": [
+                  "available",
+                  "unavailable",
+                  "failed",
+                  "inventory_failed"
+                ]
+              },
+              "exclusion_code": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^synthetic:[A-Za-z0-9][A-Za-z0-9._:-]{0,100}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "missing_reason": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^synthetic:[A-Za-z0-9][A-Za-z0-9._:-]{0,100}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "raw_sha256": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "text_sha256": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "representation_id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^synthetic:[A-Za-z0-9][A-Za-z0-9._:-]{0,100}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "offset_basis": {
+                "enum": [
+                  "unicode_codepoints",
+                  null
+                ]
+              },
+              "classification": {
+                "const": "synthetic_only"
+              }
+            }
+          }
+        },
+        "population": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "total_in_frame",
+            "observations_total",
+            "eligible",
+            "excluded",
+            "unavailable",
+            "unobserved"
+          ],
+          "properties": {
+            "total_in_frame": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "observations_total": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "eligible": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "excluded": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "unavailable": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "unobserved": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "holdout_lock": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "reserved_meetings",
+            "transcripts_opened",
+            "access_granted",
+            "d1_o1_o5"
+          ],
+          "properties": {
+            "reserved_meetings": {
+              "const": 37
+            },
+            "transcripts_opened": {
+              "const": 0
+            },
+            "access_granted": {
+              "const": false
+            },
+            "d1_o1_o5": {
+              "const": "frozen"
+            }
+          }
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "fixture_kind",
+        "registry_id",
+        "registry_sha256",
+        "custodian_ref",
+        "reviewer_ref",
+        "issuer_ref",
+        "purpose",
+        "issued_at",
+        "expires_at",
+        "revocation_sequence",
+        "attestation",
+        "requested_scopes",
+        "permissions"
+      ],
+      "properties": {
+        "schema": {
+          "const": "un.private-source-registry.custody-intent.v0"
+        },
+        "fixture_kind": {
+          "const": "synthetic"
+        },
+        "registry_id": {
+          "type": "string",
+          "pattern": "^synthetic:[A-Za-z0-9][A-Za-z0-9._:-]{0,100}$"
+        },
+        "registry_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "custodian_ref": {
+          "type": "string",
+          "pattern": "^synthetic:[A-Za-z0-9][A-Za-z0-9._:-]{0,100}$"
+        },
+        "reviewer_ref": {
+          "type": "string",
+          "pattern": "^synthetic:[A-Za-z0-9][A-Za-z0-9._:-]{0,100}$"
+        },
+        "issuer_ref": {
+          "type": "string",
+          "pattern": "^synthetic:[A-Za-z0-9][A-Za-z0-9._:-]{0,100}$"
+        },
+        "purpose": {
+          "const": "synthetic_metadata_preflight"
+        },
+        "issued_at": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "expires_at": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "revocation_sequence": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "attestation": {
+          "const": "unverified_metadata_consistency_only"
+        },
+        "requested_scopes": {
+          "const": [
+            "synthetic_metadata_inventory"
+          ]
+        },
+        "permissions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "read_source_bytes",
+            "read_reserved",
+            "write_registry",
+            "issue_reviewer_decision",
+            "approve_statistics",
+            "publish",
+            "send_mail"
+          ],
+          "properties": {
+            "read_source_bytes": {
+              "const": false
+            },
+            "read_reserved": {
+              "const": false
+            },
+            "write_registry": {
+              "const": false
+            },
+            "issue_reviewer_decision": {
+              "const": false
+            },
+            "approve_statistics": {
+              "const": false
+            },
+            "publish": {
+              "const": false
+            },
+            "send_mail": {
+              "const": false
+            }
+          }
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 128,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "index",
+          "event_id",
+          "kind",
+          "actor_ref",
+          "occurred_at",
+          "registry_sha256",
+          "previous_sha256",
+          "event_sha256"
+        ],
+        "properties": {
+          "index": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "event_id": {
+            "type": "string",
+            "pattern": "^synthetic:[A-Za-z0-9][A-Za-z0-9._:-]{0,100}$"
+          },
+          "kind": {
+            "enum": [
+              "registered",
+              "metadata_checked",
+              "revoked"
+            ]
+          },
+          "actor_ref": {
+            "type": "string",
+            "pattern": "^synthetic:[A-Za-z0-9][A-Za-z0-9._:-]{0,100}$"
+          },
+          "occurred_at": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+          },
+          "registry_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "previous_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "event_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      }
+    },
+    "checked_at": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    }
+  }
+}
