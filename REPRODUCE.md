@@ -1,5 +1,27 @@
 # Reproduce and validate this checkout
 
+## Use the browser application
+
+Open the [report builder](https://lystadjs.github.io/un/transcript-agent/). No installation or coding is required. Select a meeting or date range, generate a report, inspect its evidence and coverage, then save the transcript JSON to reopen the collection. The [browser guide](docs/BROWSER_ANALYSIS.md) explains the controls and limits. The current application release is **1.13.0**; `site/release.json` is the release record.
+
+## Developer verification
+
+These commands are for maintainers, not application users. From the repository root, with Node.js 22 and Python installed:
+
+```sh
+node tools/test_browser_analysis.cjs
+node tools/test_meeting_quick_reader.cjs
+node tools/test_meeting_quick_reader_context.cjs
+node tools/test_meeting_picker.cjs
+node tools/test_browser_briefing.cjs
+node tools/test_collection_recovery.cjs
+python tools/build_pages.py _site
+```
+
+The Pages workflow also requires synthetic browser acceptance from `meeting-quick-reader.yml` before deployment. These tests mock public UN responses and do not establish live service availability. A separate weekly or manually dispatched `browser-collection-check.yml` monitors actual UN collection using its fixed October 1 development date. External-service failures remain visible in that workflow without blocking the synthetic release gate. Reserved October 5–6 transcripts remain unopened.
+
+## Optional R / Shiny verification
+
 Run commands from `un/`. Set up the pipeline using `START_HERE.md` and the Shiny
 interface using `ui/START_HERE.md`. The themed UI starts with `ui/Start.bat`.
 

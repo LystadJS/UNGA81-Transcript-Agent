@@ -3,10 +3,8 @@
 </p>
 
 <p align="center">
-  <a href="un/ui/START_HERE.md"><img alt="R 4.3 or newer" src="https://img.shields.io/badge/R-4.3%2B-062135?style=flat-square" /></a>
-  <a href="un/ui/START_HERE.md"><img alt="Shiny local interface" src="https://img.shields.io/badge/Shiny-local%20UI-062135?style=flat-square" /></a>
   <a href="docs/BROWSER_ANALYSIS.md"><img alt="JavaScript browser application" src="https://img.shields.io/badge/JavaScript-browser-062135?style=flat-square" /></a>
-  <a href="site/release.json"><img alt="Browser engine version 1.12.1" src="https://img.shields.io/badge/Browser-v1.12.1-002D74?style=flat-square" /></a>
+  <a href="site/release.json"><img alt="Browser engine version 1.13.0" src="https://img.shields.io/badge/Browser-v1.13.0-002D74?style=flat-square" /></a>
   <a href="docs/LATENT_COMPARISON.md"><img alt="Node.js 22 for tests" src="https://img.shields.io/badge/Node.js-22%20tests-062135?style=flat-square" /></a>
   <a href="research/README.md"><img alt="Python 3.11 or newer for optional research" src="https://img.shields.io/badge/Python-3.11%2B%20optional-062135?style=flat-square" /></a>
 </p>
@@ -25,7 +23,7 @@
   &nbsp;&middot;&nbsp;
   <a href="https://lystadjs.github.io/un/transcript-agent/latent.html">Compare latent structure</a>
   &nbsp;&middot;&nbsp;
-  <a href="#local-r--shiny-workflow">Install locally</a>
+  <a href="docs/BROWSER_ANALYSIS.md">Browser guide</a>
 </p>
 
 ## Purpose
@@ -34,9 +32,9 @@ On its _https://transcripts.un.org/en_ website, the United Nations has built a c
 
 **The governing rule for this project is simple: an analytical claim should remain connected to its source, its denominator, and its limitations.**
 
-## Nonrandom Latent Information Discovery
+## Start in the browser
 
-_Unsupervised machine learning_ offers a unique approach to the task of learning from data.  Unsupervised learning allows data to speak for itself, where no expected outcomes or pre-existing bias can railroad analysis into pre-defined labeling values.  ......
+**The report builder is the primary application: open it in a browser, collect public UN transcripts, read the source-linked briefing, and save your work.** No software installation or coding is needed. Optional exploratory methods describe patterns in selected text; their settings and assumptions affect the results.
 
 ## Choose a workflow
 
@@ -55,7 +53,11 @@ _Unsupervised machine learning_ offers a unique approach to the task of learning
 
 The browser requests inventory and transcript records from [transcripts.un.org](https://transcripts.un.org/en). Date and public source requests reach the UN service; topic filtering and numerical analysis run on the user's device. There is no account, hosted model endpoint, scheduled collection, or automatic email send. The [collection and method guide](docs/BROWSER_ANALYSIS.md) records source, language, resource, and export limits. The [individual-meeting guide](docs/INDIVIDUAL_MEETINGS.md) explains the date-first selector and its source checks.
 
-## Local R & Shiny workflow
+## Optional developer and local R workflows
+
+The following installation steps apply only to the separate R briefing application. They are not required to collect, summarize or analyze transcripts in the browser.
+
+### Local R & Shiny workflow
 
 For the Windows briefing application, install **R 4.3 or newer** and use a short checkout path to avoid Windows extraction and model-filename limits. From PowerShell:
 
@@ -119,6 +121,6 @@ English transcript tracks may include interpretation or automatic transcription.
 | [`docs/`](docs/) | Method contracts, operating guides, acceptance records, and research roadmap |
 | [`reports/`](reports/) · [`examples/`](examples/) | Evidence-oriented examples and historical reports |
 
-The browser release is recorded in [`site/release.json`](site/release.json) (**1.12.1** at this revision); the saved-run comparison engine is **1.1.0**. For reproducible local checks, start with [`REPRODUCE.md`](REPRODUCE.md). Historical acceptance records are labeled by their original run and should not be mistaken for a new full-system test.
+The browser release is recorded in [`site/release.json`](site/release.json) (**1.13.0** at this revision); the saved-run comparison engine is **1.1.0**. For reproducible local checks, start with [`REPRODUCE.md`](REPRODUCE.md). Historical acceptance records are labeled by their original run and should not be mistaken for a new full-system test.
 
 <sub>Public reports are analytical aids. Verify quotations, transcription, speaker attribution, coverage, and conclusions against the linked UN records before citing or circulating findings.</sub>

@@ -1,8 +1,8 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.12.2",
-  "comparison_engine": "latent-comparison-1.0.0",
-  "date": "2026-10-08",
+  "browser_engine": "browser-descriptive-1.13.0",
+  "comparison_engine": "latent-comparison-1.1.0",
+  "date": "2026-10-16",
   "features": [
     "source-bound saved runs",
     "parent/excerpt comparison",
@@ -11,14 +11,19 @@
     "offline source-linked executive quick reader in individual meeting reports",
     "source-audited courtesy and collective spokesperson safeguards with recorded agenda cues",
     "source-bound 13-meeting development adjudication benchmark and conservative country-expression fixes",
-    "synthetic W3 source-verified graph inspection and isolated W5/W6 research previews"
+    "synthetic W3 source-verified graph inspection and isolated W5/W6 research previews",
+    "conservative object-negation abstention in country expressions",
+    "whole-meeting summaries independent of regional filters",
+    "saved single-meeting summary recovery",
+    "source-linked descriptive summaries for topic and date-range reports",
+    "downloadable collection recovery and explicit failed-source retry"
   ],
   "meeting_routes": "Validated canonical UN inventory paths, including HRC and treaty-body routes",
   "acceptance_run": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37651586467",
   "numerical_kernels_changed": false,
   "D1_publication_gates_changed": false,
   "analysis_status": "exploratory; 20-meeting development QA with 13 additional source-linked meetings, 83 assistant-provisional benchmark cases; context omissions remain, no official policy inference or GenAI API",
-  "quick_reader_engine": "un.meeting-quick-reader.v1.2-context-and-adjudication",
+  "quick_reader_engine": "un.meeting-quick-reader.v1.3-browser-briefing",
   "research_browser": {
     "status": "released_synthetic_research_preview",
     "entry": "research.html",
@@ -40,5 +45,18 @@
     "political_or_causal_inference_authorized": false,
     "heldout_37_meetings_opened": false,
     "D1_gates_unchanged": true
+  },
+  "reliability_validation": {
+    "status": "local_engineering_pass",
+    "record": "docs/RELEASE_1_13_0.md",
+    "heldout_transcripts_opened": 0,
+    "external_ai_calls": 0,
+    "checks": {
+      "node_regression_entry_points": 16,
+      "synthetic_recovery_browser": 13,
+      "synthetic_quick_reader_browser": 12,
+      "live_browser": 27,
+      "public_build_scanner_findings": 0
+    }
   }
 }

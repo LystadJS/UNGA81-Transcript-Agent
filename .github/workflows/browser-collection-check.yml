@@ -1,8 +1,9 @@
 name: Check live browser collection
 
 on:
-  push:
-    branches: [fix/committee-collection-all-topics]
+  # External-service monitoring is separate from release acceptance.
+  schedule:
+    - cron: '17 11 * * 1'
   workflow_dispatch:
 
 permissions:
@@ -28,6 +29,7 @@ jobs:
           python -m pip install playwright==1.57.0
           python -m playwright install --with-deps chromium
 
+      # The harness uses the fixed October 1 development date, never reserved October 5–6 meetings.
       - name: Exercise actual UN collection through browser controls
         run: python tools/test_live_browser.py --site site --live --output live-check/browser
 

@@ -75,9 +75,10 @@
   }
 
 
-  async function collect(p, countries, { signal, progress = () => {}, request = readJSON } = {}) {
+  async function collect(p, countries, { signal, progress = () => {}, request = readJSON, resume = null, checkpoint = () => {} } = {}) {
     if (!Scopes.isValid(p.scope)) throw Error('Invalid meeting scope.');
     if (p.meeting_slug !== undefined && (typeof p.meeting_slug !== 'string' || !/^[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+){1,5}$/.test(p.meeting_slug) || p.start !== p.end || p.meeting_date !== p.start || !/^\d{4}-\d{2}-\d{2}$/.test(p.start) || !Number.isFinite(Date.parse(p.start)) || new Date(p.start).toISOString().slice(0,10)!==p.start)) throw Error('Select one meeting on one valid date.');
+    if (resume && (resume.schema !== 'un.browser.corpus.v1' || resume.collection?.start !== p.start || resume.collection?.end !== p.end || resume.collection?.scope !== p.scope || (resume.collection.selected_meeting_slug || '') !== (p.meeting_slug || ''))) throw Error('Retry requires the original collection dates and meeting selection.');
     const matchesSelection = meeting => Scopes.matchesMeeting(meeting, p.scope) && (!p.meeting_slug || meeting.slug === p.meeting_slug);
 
     const alias = new Map();
@@ -165,7 +166,18 @@
 
     // Filter BEFORE downloading transcripts. Selecting Third Committee does
     // not download every other committee and hide its passages afterward.
-    const selected = meetings.filter(matchesSelection);
+    const originalSlugs = resume?.collection?.selected_meeting_slugs;
+    const failedDays = new Set((resume?.collection?.inventory_days || []).filter(day => day.status !== 'ok').map(day => day.date));
+    const selected = meetings.filter(meeting => matchesSelection(meeting) && (!Array.isArray(originalSlugs) || originalSlugs.includes(meeting.slug) || failedDays.has(meeting.date.slice(0, 10))));
+    const selectedSlugs = [...new Set([...(Array.isArray(originalSlugs) ? originalSlugs : []), ...selected.map(meeting => meeting.slug)])];
+    // Keep completed responses from the original run; retry only missing responses.
+    // Fresh inventory is still verified and selection is applied before any download.
+    const completed = new Map((resume?.coverage || [])
+      .filter(row => ['collected', 'empty_transcript', 'excluded_language'].includes(row.status))
+      .map(row => [row.slug, row]));
+    for (const row of completed.values()) coverage.push({...row});
+    records.push(...(resume?.records || []).filter(record => completed.has(record.meeting_slug)));
+    chars = records.reduce((sum, record) => sum + record.text.length, 0);
     if(p.meeting_slug && (inventoryDays.some(d=>d.status!=='ok') || selected.length!==1)) throw Error('The selected meeting could not be verified in the complete inventory. Search the date again; no other meeting was substituted.');
 
     progress(`Inventory checked: ${meetings.length} meetings; ${selected.length} within the selected scope.`);
@@ -176,6 +188,12 @@
 
     for (const [index, meeting] of selected.entries()) {
       check();
+      if (completed.has(meeting.slug)) {
+        const previous = completed.get(meeting.slug);
+        if (previous.date !== meeting.date.slice(0, 10)) throw Error('Saved meeting date does not match the inventory.');
+        checkpoint(snapshot());
+        continue;
+      }
       progress(`Collecting meeting ${index + 1} of ${selected.length} · ${meeting.title}`);
 
       const scope = Scopes.classifyMeeting(meeting);
@@ -190,7 +208,7 @@
       };
 
       coverage.push(row);
-      if (!meeting.hasTranscript) continue;
+      if (!meeting.hasTranscript) { checkpoint(snapshot()); continue; }
 
       try {
         const { data, hash } = await request(sourceURL(meeting.jsonUrl), signal);
@@ -276,11 +294,16 @@
         check();
         row.status = 'failed';
         row.error = error.message;
+      } finally {
+        // Exportable checkpoints contain only complete responses, never an unfinished batch.
+        checkpoint(snapshot());
       }
     }
 
 
-    return {
+    return snapshot();
+
+    function snapshot() { return {
       schema: 'un.browser.corpus.v1',
       origin: BASE,
       collection: {
@@ -289,19 +312,20 @@
         scope: p.scope,
         collected_at: new Date().toISOString(),
         inventory_meetings: meetings.length,
-        selected_meetings: selected.length,
+        selected_meetings: selectedSlugs.length,
+        selected_meeting_slugs: selectedSlugs,
         ...(p.meeting_slug?{selection_mode:'single_meeting',selected_meeting_slug:p.meeting_slug,selected_meeting_title:selected[0].title,selected_meeting_date:p.meeting_date}:{}),
-        inventory_pages: days,
-        inventory_days: inventoryDays,
+        inventory_pages: days.map(row => ({...row})),
+        inventory_days: inventoryDays.map(row => ({...row})),
         failed_inventory_days: inventoryDays.filter(day => day.status !== 'ok').length,
         collected_meetings: coverage.filter(row => row.status === 'collected').length,
         collected_passages: records.length,
         unit: 'Original UN transcript source segment; may include procedural and non-national interventions',
         english_only: true
       },
-      coverage,
-      records
-    };
+      coverage: coverage.map(row => ({...row})),
+      records: records.slice()
+    }; }
   }
 
 
