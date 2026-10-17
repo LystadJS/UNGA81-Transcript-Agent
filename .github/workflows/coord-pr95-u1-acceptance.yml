@@ -1,0 +1,127 @@
+name: Coordinator PR95 U1 exact-head and served acceptance
+on:
+  pull_request:
+    paths: ['.github/workflows/coord-pr95-u1-acceptance.yml', 'research/integration/u1_acceptance/**']
+permissions:
+  contents: read
+concurrency:
+  group: coord-pr95-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  acceptance:
+    if: github.repository == 'LystadJS/UNGA81-Transcript-Agent'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [worker-head, effective-tree]
+    env:
+      U1_HEAD: afb92e82881dc11003170899aef9958682d61abe
+      C0_HEAD: 884097997f89b0040e4418480378f077e3b65434
+      MAIN_HEAD: da4ab9ed11dba3693d11aa12f5333963b1b85478
+      REVIEW_HEAD: ${{ github.event.pull_request.head.sha }}
+      MODE: ${{ matrix.mode }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: afb92e82881dc11003170899aef9958682d61abe
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Pin full checkout and independently compose disposable effective tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "EVIDENCE=$RUNNER_TEMP/u1-$MODE" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/u1-$MODE"
+          test "$(git rev-parse HEAD)" = "$U1_HEAD"
+          git merge-base --is-ancestor "$MAIN_HEAD" "$C0_HEAD"
+          git merge-base --is-ancestor "$C0_HEAD" "$U1_HEAD"
+          effective=$(git merge-tree --write-tree "$MAIN_HEAD" "$U1_HEAD")
+          stacked=$(git merge-tree --write-tree "$C0_HEAD" "$U1_HEAD")
+          test "$effective" = "$stacked"
+          test "$effective" = "$(git rev-parse "$U1_HEAD^{tree}")"
+          if [ "$MODE" = effective-tree ]; then
+            commit=$(git -c user.name='Synthetic coordinator QA' -c user.email='qa@example.invalid' commit-tree "$effective" -p "$MAIN_HEAD" -p "$U1_HEAD" -m 'Disposable effective acceptance tree; no branch update')
+            git checkout --detach "$commit"
+          fi
+          python site/parallel/w07-diplomat-ux/tests/guard_owned.py --head "$(git rev-parse HEAD)" | tee "$RUNNER_TEMP/u1-$MODE/ownership.json"
+          node site/parallel/w07-diplomat-ux/tests/verify_dependencies.mjs | tee "$RUNNER_TEMP/u1-$MODE/dependencies.json"
+          printf 'mode=%s\nworker=%s\nc0=%s\nmain=%s\neffective_tree=%s\nactual_head=%s\nactual_tree=%s\nreviewer=%s\n' "$MODE" "$U1_HEAD" "$C0_HEAD" "$MAIN_HEAD" "$effective" "$(git rev-parse HEAD)" "$(git rev-parse HEAD^{tree})" "$REVIEW_HEAD" | tee "$RUNNER_TEMP/u1-$MODE/identities.txt"
+          git ls-tree -r HEAD -- site/parallel/w07-diplomat-ux > "$RUNNER_TEMP/u1-$MODE/u1-blobs.txt"
+          git show "$REVIEW_HEAD:research/integration/u1_acceptance/browser_review.py" > "$RUNNER_TEMP/u1-browser-review.py"
+          test "$(git hash-object "$RUNNER_TEMP/u1-browser-review.py")" = "$(git rev-parse "$REVIEW_HEAD:research/integration/u1_acceptance/browser_review.py")"
+          git hash-object "$RUNNER_TEMP/u1-browser-review.py" > "$RUNNER_TEMP/u1-$MODE/reviewer-blob.txt"
+      - name: Install isolated validation dependencies
+        run: |
+          python -m pip install jsonschema==4.23.0 -r site/parallel/w07-diplomat-ux/tests/requirements-browser.txt
+          python -m playwright install --with-deps chromium
+      - name: Native U1 and unchanged C0 acceptance
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --test site/parallel/w07-diplomat-ux/tests/test_controller.mjs > "$EVIDENCE/u1.tap" 2>&1 || { cat "$EVIDENCE/u1.tap"; exit 1; }
+          tail -10 "$EVIDENCE/u1.tap"
+          node --test research/integration/product_contracts/test_*.mjs > "$EVIDENCE/c0.tap" 2>&1 || { cat "$EVIDENCE/c0.tap"; exit 1; }
+          tail -10 "$EVIDENCE/c0.tap"
+          node research/integration/product_contracts/emit_contracts.mjs "$RUNNER_TEMP/u1-emission-$MODE" | tee "$EVIDENCE/emission.json"
+          python research/integration/product_contracts/check_schemas.py "$RUNNER_TEMP/u1-emission-$MODE" | tee "$EVIDENCE/schemas.json"
+          node research/integration/product_contracts/emit_contracts.mjs "$RUNNER_TEMP/u1-replay-$MODE" > /dev/null
+          diff -rq "$RUNNER_TEMP/u1-emission-$MODE" "$RUNNER_TEMP/u1-replay-$MODE"
+      - name: Native upstream source contracts and merged PR71 audit
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json,os,subprocess,sys
+          from pathlib import Path
+          suites=[['node','docs/parallel-work/validate-contract.cjs'],['node','docs/parallel-work/test-source-inventory-v1.cjs'],['node','--test','research/source_comparability/audit.test.cjs','research/source_comparability/audit.integration.test.cjs'],['node','research/validation_framework/tests/test_historical_link.cjs'],[sys.executable,'-m','unittest','discover','-s','research/reproducibility_audit','-p','test_*.py','-v']]
+          results=[]
+          with (Path(os.environ['EVIDENCE'])/'upstream.log').open('w') as log:
+              for command in suites:
+                  result=subprocess.run(command,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,timeout=120)
+                  log.write('COMMAND '+repr(command)+'\n'+result.stdout+'\nEXIT '+str(result.returncode)+'\n')
+                  results.append({'command':command,'exit_code':result.returncode})
+                  print(json.dumps(results[-1]))
+                  if result.returncode: print(result.stdout)
+          (Path(os.environ['EVIDENCE'])/'upstream-results.json').write_text(json.dumps(results,indent=2)+'\n')
+          sys.exit(1 if any(r['exit_code'] for r in results) else 0)
+          PY
+      - name: Strict HTTP-served Chromium interactions - no DOM fallback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python site/parallel/w07-diplomat-ux/tests/browser_qa.py --output "$EVIDENCE/browser"
+      - name: Independent real-HTTP keyboard, replay, asynchronous races and visual review
+        shell: bash
+        run: |
+          set -euo pipefail
+          python "$RUNNER_TEMP/u1-browser-review.py" --root "$PWD" --output "$EVIDENCE/independent-browser"
+      - name: Record actual outcomes and runtime versions
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f "$EVIDENCE/browser/receipt.json" ]; then cat "$EVIDENCE/browser/receipt.json"; fi
+          if [ -f "$EVIDENCE/independent-browser/receipt.json" ]; then cat "$EVIDENCE/independent-browser/receipt.json"; fi
+          { node --version; python --version; python -m pip freeze; git --version; } > "$EVIDENCE/runtime.txt"
+          python - "$EVIDENCE" <<'PY'
+          import hashlib,json,sys
+          from pathlib import Path
+          root=Path(sys.argv[1])
+          manifest={str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(root.rglob('*')) if p.is_file() and p.name!='SHA256.json'}
+          (root/'SHA256.json').write_text(json.dumps(manifest,indent=2)+'\n')
+          print(json.dumps({'evidence_files':len(manifest),'manifest_sha256':hashlib.sha256((root/'SHA256.json').read_bytes()).hexdigest(),'publication_eligible':False}))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pr95-u1-${{ matrix.mode }}
+          path: ${{ env.EVIDENCE }}
+          if-no-files-found: error
+          retention-days: 14
