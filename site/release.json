@@ -11,7 +11,8 @@
     "offline source-linked executive quick reader in individual meeting reports",
     "source-audited courtesy and collective spokesperson safeguards with recorded agenda cues",
     "source-bound 13-meeting development adjudication benchmark and conservative country-expression fixes",
-    "synthetic W3 source-verified graph inspection and isolated W5/W6 research previews"
+    "synthetic W3 source-verified graph inspection and isolated W5/W6 research previews",
+    "C5 synthetic W2 family-balanced consensus and W4 original-source temporal evidence read models"
   ],
   "meeting_routes": "Validated canonical UN inventory paths, including HRC and treaty-body routes",
   "acceptance_run": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37651586467",
@@ -39,6 +40,25 @@
     "real_source_or_pinned_minilm_inference": false,
     "political_or_causal_inference_authorized": false,
     "heldout_37_meetings_opened": false,
-    "D1_gates_unchanged": true
+    "D1_gates_unchanged": true,
+    "c5": {
+      "status": "synthetic_engineering_preview_only",
+      "source_commit": "ecfc201ccfcd442c9f29e92777c1d9241beab4d9",
+      "w2": "source-bound family-weighted coassignment, retains attempted/failure/abstention denominators",
+      "w4": "original synthetic chronological aligned positions, requires exact model and source SHA; no real historical source import",
+      "w6": "unchanged original renderer plus checked additive synthetic W2/W4 renderer",
+      "accepted_head": "e7b6ddb4c6e83b6104e715e436688f1088c3b823",
+      "acceptance_runs": [
+        "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/38458650819",
+        "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/38458650825"
+      ],
+      "private_transcripts_published": false,
+      "empirical_W2_significance": "NOT_RUN",
+      "empirical_W4_temporal_inference": "WITHHELD",
+      "real_2008_2023_common_reference_fitted": false,
+      "review_required_for_any_real_data": true,
+      "frozen_D1_O1_to_O5_unchanged": true,
+      "reserved_37_meeting_texts_opened": false
+    }
   }
 }
