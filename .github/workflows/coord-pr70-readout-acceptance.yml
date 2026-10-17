@@ -1,0 +1,126 @@
+name: Coordinator PR70 exact-head synthetic acceptance (read-only)
+on:
+  push:
+    branches:
+      - coord/pr70-readout-acceptance
+    paths:
+      - '.github/workflows/coord-pr70-readout-acceptance.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head-readouts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 028e3d26f707401cbff498593ab27f64e2cc072a
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Confirm exact committed PR head
+        run: test "$(git rev-parse HEAD)" = 028e3d26f707401cbff498593ab27f64e2cc072a
+      - name: Run closed-world source and privacy unit suite
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/diplomatic_readouts/tests -v
+      - name: Adversarial source-failure disclosure isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=research/diplomatic_readouts:research/diplomatic_readouts/examples python - <<'PY'
+          from dataclasses import replace
+          from fixtures import fixture, refresh
+          from readout import normalize
+          report, proofs, decision = fixture()
+          report["reviewer_note"] = "UNSUPPORTED claim of a diplomatic realignment"
+          proofs["synthetic:A"] = replace(proofs["synthetic:A"], accepted=False)
+          view = normalize(report, proofs, refresh(report, decision))
+          assert view["release_state"] == "withheld"
+          assert "UNSUPPORTED" not in str(view), "Invalid source exposed an unauthorized report-level claim"
+          PY
+      - name: Generate twice; verify deterministic states, restricted output and manifests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/diplomatic_readouts/examples/generate.py --output "$RUNNER_TEMP/pr70-a"
+          python research/diplomatic_readouts/examples/generate.py --output "$RUNNER_TEMP/pr70-b"
+          diff -rq "$RUNNER_TEMP/pr70-a" "$RUNNER_TEMP/pr70-b"
+          RUNNER_TEMP="$RUNNER_TEMP" python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ["RUNNER_TEMP"]) / "pr70-a"
+          manifests = list(root.rglob("manifest.json"))
+          assert len(manifests) >= 1
+          reports = list(root.rglob("readout.json"))
+          assert len(reports) == 10, len(reports)
+          for path in reports:
+              report = json.loads(path.read_text())
+              assert report["publication_eligible"] is False
+              assert report["release_state"] in {"synthetic_demo", "descriptive_only", "withheld"}
+              assert '"original_bytes":' not in path.read_text()
+          PY
+  upstream-contract-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout pinned latest reviewed main
+        uses: actions/checkout@v4
+        with:
+          ref: 1af11061e3fa65d51b28d42a1b98bef250b6168b
+          path: baseline
+          persist-credentials: false
+      - name: Checkout exact PR70 head separately
+        uses: actions/checkout@v4
+        with:
+          ref: 028e3d26f707401cbff498593ab27f64e2cc072a
+          path: readout-head
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Validate upstream source contracts on current main without modifying their files
+        working-directory: baseline
+        run: |
+          set -euo pipefail
+          node docs/parallel-work/validate-contract.cjs
+          node research/validation_framework/tests/test_schema.cjs
+          node research/validation_framework/tests/test_framework.cjs
+          node tools/test_passage_corpus.cjs
+          node tools/test_latent.cjs
+      - name: Overlay only readout namespace and verify fail-closed interchange input
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(cd baseline && git rev-parse HEAD)" = 1af11061e3fa65d51b28d42a1b98bef250b6168b
+          test "$(cd readout-head && git rev-parse HEAD)" = 028e3d26f707401cbff498593ab27f64e2cc072a
+          cp -a readout-head/research/diplomatic_readouts baseline/research/
+          cd baseline
+          python -m unittest discover -s research/diplomatic_readouts/tests -v
+          python - <<'PY'
+          import json, sys
+          sys.path.insert(0, 'research/diplomatic_readouts')
+          from readout import normalize
+          from pathlib import Path
+          doc = Path('docs/parallel-work/INTERCHANGE_V1.md').read_text()
+          anchor = doc.index('## 4. Mapping example')
+          start = doc.index('```json', anchor) + 7
+          end = doc.index('```', start)
+          envelope = json.loads(doc[start:end])
+          assert envelope['schema'] == 'un.parallel-analysis.v1'
+          assert envelope['publication_eligible'] is False
+          # An analytical interchange envelope is not a trusted source receipt.
+          # No reviewer, source, statistical or privacy verdict may be synthesized from it.
+          view = normalize(envelope)
+          assert view['release_state'] == 'withheld'
+          assert view['publication_eligible'] is False
+          assert not view['findings'] and not view['sources']
+          print('PASS: un.parallel-analysis.v1 cannot self-authorize readout export')
+          PY
