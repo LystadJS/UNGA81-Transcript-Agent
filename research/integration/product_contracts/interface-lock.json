@@ -1,0 +1,14 @@
+{
+  "contract_version": "1.0.0",
+  "kind": "synthetic_interface_candidate_not_scientific_freeze",
+  "files": {
+    "query.schema.json": "a6590857db0580d739618bfd368d7f147d8099f45afc456618bb1d5eb4206487",
+    "capability.schema.json": "09974234c63722239dedb1c051143912085d41db7ba35c4f1b83439567c26e3f",
+    "product.schema.json": "c460ef4f197d70dcfed70b41dd6e7825aafb13eb33ef2f0805dd734e832eba52",
+    "decision.schema.json": "1ac39b232857cd912c856c8b9ed48149d1f742ca7e2a34aa0eb487eaa0bb8eb7",
+    "receipt.schema.json": "061838648f41b4aeee181f4f4427c54a60b541ad4395f161ae35e6c6235bcd49",
+    "authority.schema.json": "21408539073c20ef38f9653614264bfcebb1f40d6498cf5f9b3d1ed3f4dbcf74",
+    "readiness.schema.json": "4dadefc7a58e8aea9c1adb3a0d31c733f131d91209fef6e804fd71e7a9a1594b",
+    "examples.json": "0722bdabd46e62a41906e88900626b9dbbde09ffed10a06765d8ff05866d6a24"
+  }
+}

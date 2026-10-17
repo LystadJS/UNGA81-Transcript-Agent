@@ -1,0 +1,29 @@
+{
+  "schema": "un.c0-worker-ownership.v1",
+  "version": "1.0.0",
+  "baseline_main": "691f13bb53232f72a40461855c8e08a78b21befe",
+  "scope": "UI migration only; additive to OWNERSHIP.md; no merge or publication permission",
+  "lanes": [
+    {"id":"C0","branch":"coord/c0-product-contracts","prefix":"research/integration/product_contracts/","base":"main","dependency":null},
+    {"id":"U1","branch":"feat/parallel-w07-diplomat-ux","prefix":"site/parallel/w07-diplomat-ux/","base":"coord/c0-product-contracts","dependency":"C0"},
+    {"id":"U2","branch":"feat/question-first-router","prefix":"research/integration/question_router/","base":"coord/c0-product-contracts","dependency":"C0"},
+    {"id":"M1","branch":"feat/task-model-selection","prefix":"research/model_selection/","base":"coord/c0-product-contracts","dependency":"C0"},
+    {"id":"V1","branch":"coord/us-relative-phase1","prefix":"research/integration/w2_w4_w6/waggoner/","base":"main","dependency":"PR82+PR87"},
+    {"id":"R1","branch":"feat/evidence-first-research-readouts","prefix":"research/diplomatic_readouts/","base":"main","dependency":"C0+PR70"},
+    {"id":"Q1","branch":"feat/c0-product-security","prefix":"research/reproducibility_audit/","base":"coord/c0-product-contracts","dependency":"C0+merged-PR71"}
+  ],
+  "preserved": {
+    "W1":"research/validation_framework/",
+    "W3":"research/graph_methods/",
+    "W4":"research/longitudinal/",
+    "W5":"site/parallel/w05-browser/",
+    "W6":"site/experimental/evidence-viz/",
+    "PR66":"research/semantic_representations/",
+    "PR67":"research/null_calibration/",
+    "PR68":"research/longitudinal/temporal_calibration_v2/",
+    "PR69":"site/experimental/research-validation-v2/",
+    "PR87":"research/integration/w2_w4_w6/pr82_review/"
+  },
+  "created_worker_branches": [],
+  "publication_eligible": false
+}
