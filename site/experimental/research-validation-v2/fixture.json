@@ -1,0 +1,571 @@
+{
+  "schema": "un.research-validation-v2.synthetic",
+  "fixture_kind": "synthetic",
+  "publication_eligible": false,
+  "evaluation_role": "engineering_only",
+  "source": {
+    "source_schema": "synthetic.v1",
+    "source_hash_basis": "synthetic",
+    "source_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "selection_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "sources": [
+    {
+      "id": "SRC-A",
+      "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "status": "available",
+      "missing_reason": null,
+      "country": "Illustrative A",
+      "period": "2024",
+      "meeting_id": "invented-1",
+      "review_status": "synthetic_unreviewed",
+      "source_url": null,
+      "json_pointer": "/invented/A"
+    },
+    {
+      "id": "SRC-B",
+      "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "status": "available",
+      "missing_reason": null,
+      "country": "Illustrative A",
+      "period": "2025",
+      "meeting_id": "invented-2",
+      "review_status": "synthetic_unreviewed",
+      "source_url": null,
+      "json_pointer": "/invented/B"
+    },
+    {
+      "id": "SRC-C",
+      "sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+      "status": "available",
+      "missing_reason": null,
+      "country": "Illustrative B",
+      "period": "2025",
+      "meeting_id": "invented-3",
+      "review_status": "synthetic_unreviewed",
+      "source_url": null,
+      "json_pointer": "/invented/C"
+    },
+    {
+      "id": "SRC-D",
+      "sha256": null,
+      "status": "missing",
+      "missing_reason": "Invented source not delivered",
+      "country": "Illustrative C",
+      "period": "2026",
+      "meeting_id": "invented-4",
+      "review_status": "not_reviewed",
+      "source_url": null,
+      "json_pointer": null
+    },
+    {
+      "id": "SRC-E",
+      "sha256": null,
+      "status": "failed",
+      "missing_reason": "Invented source extraction failure",
+      "country": null,
+      "period": "2026",
+      "meeting_id": "invented-5",
+      "review_status": "not_reviewed",
+      "source_url": null,
+      "json_pointer": null
+    }
+  ],
+  "panels": [
+    {
+      "kind": "consensus",
+      "status": "ready",
+      "reason": null,
+      "identity": {
+        "population": "Five invented source opportunities across three illustrative periods",
+        "weighting": "equal source opportunity",
+        "unit": "synthetic source",
+        "representation_id": "synthetic-frozen-tfidf",
+        "representation_version": "1",
+        "source_hash_basis": "synthetic",
+        "source_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "selection_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "source_ids": [
+          "SRC-A",
+          "SRC-B",
+          "SRC-C",
+          "SRC-D",
+          "SRC-E"
+        ]
+      },
+      "coverage": {
+        "frame": 5,
+        "eligible": 3,
+        "excluded": 2,
+        "missing": 2,
+        "included": 3
+      },
+      "measure": "Original synthetic W2 weighted conditional co-assignment: supplied weighted co-assigned divided by supplied weighted assigned-both opportunities; never an average of family rates.",
+      "warnings": [
+        "Unassigned/noise, missing and failed fit opportunities retained; descriptive stability is not statistical significance."
+      ],
+      "pair_population_ids": [
+        "SRC-A",
+        "SRC-B",
+        "SRC-C"
+      ],
+      "family_weight_audit": [
+        {
+          "family": "partition",
+          "planned_weight": 0.5,
+          "attempted": 3,
+          "successful": 2,
+          "failed": 1,
+          "skipped": 0
+        },
+        {
+          "family": "mixture",
+          "planned_weight": 0.5,
+          "attempted": 3,
+          "successful": 3,
+          "failed": 0,
+          "skipped": 0
+        }
+      ],
+      "rows": [
+        {
+          "a": "SRC-A",
+          "b": "SRC-B",
+          "record_status": "observed",
+          "coassigned_count": 2,
+          "assigned_both_count": 3,
+          "planned_count": 5,
+          "missing_pair_count": 1,
+          "noise_pair_count": 1,
+          "different_cluster_count": 1,
+          "failed_fit_count": 1,
+          "coassigned_weight": 0.4,
+          "assigned_both_weight": 0.6,
+          "planned_weight": 1,
+          "association": 0.6666666666666667,
+          "assignment_coverage": 0.6,
+          "unstable": true,
+          "missing_reason": null,
+          "contributing_families": [
+            "partition",
+            "mixture"
+          ],
+          "source_ids": [
+            "SRC-A",
+            "SRC-B"
+          ]
+        },
+        {
+          "a": "SRC-A",
+          "b": "SRC-C",
+          "record_status": "observed",
+          "coassigned_count": 0,
+          "assigned_both_count": 2,
+          "planned_count": 5,
+          "missing_pair_count": 2,
+          "noise_pair_count": 1,
+          "different_cluster_count": 2,
+          "failed_fit_count": 1,
+          "coassigned_weight": 0,
+          "assigned_both_weight": 0.4,
+          "planned_weight": 1,
+          "association": 0.0,
+          "assignment_coverage": 0.4,
+          "unstable": false,
+          "missing_reason": null,
+          "contributing_families": [
+            "partition"
+          ],
+          "source_ids": [
+            "SRC-A",
+            "SRC-C"
+          ]
+        },
+        {
+          "a": "SRC-B",
+          "b": "SRC-C",
+          "record_status": "zero_opportunity",
+          "coassigned_count": 0,
+          "assigned_both_count": 0,
+          "planned_count": 5,
+          "missing_pair_count": 3,
+          "noise_pair_count": 2,
+          "different_cluster_count": 0,
+          "failed_fit_count": 1,
+          "coassigned_weight": 0,
+          "assigned_both_weight": 0,
+          "planned_weight": 1,
+          "association": null,
+          "assignment_coverage": 0.0,
+          "unstable": false,
+          "missing_reason": "No jointly assigned fit weights",
+          "contributing_families": [],
+          "source_ids": [
+            "SRC-B",
+            "SRC-C"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "country-theme",
+      "status": "ready",
+      "reason": null,
+      "identity": {
+        "population": "Five invented source opportunities across three illustrative periods",
+        "weighting": "equal source opportunity",
+        "unit": "synthetic source",
+        "representation_id": "synthetic-frozen-tfidf",
+        "representation_version": "1",
+        "source_hash_basis": "synthetic",
+        "source_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "selection_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "source_ids": [
+          "SRC-A",
+          "SRC-B",
+          "SRC-C",
+          "SRC-D",
+          "SRC-E"
+        ]
+      },
+      "coverage": {
+        "frame": 5,
+        "eligible": 3,
+        "excluded": 2,
+        "missing": 2,
+        "included": 3
+      },
+      "measure": "Source-weighted normalized language component contributions, not voting, speaker verification, policy support or stance.",
+      "warnings": [
+        "Missing source groups remain in the five-source inventory; unresolved attribution is never imputed."
+      ],
+      "countries": [
+        "Illustrative A",
+        "Illustrative B",
+        "Illustrative C"
+      ],
+      "themes": [
+        {
+          "id": "T1",
+          "label": "Component 1"
+        },
+        {
+          "id": "T2",
+          "label": "Component 2"
+        }
+      ],
+      "unattributed_count": 0,
+      "rows": [
+        {
+          "country": "Illustrative A",
+          "theme": "T1",
+          "status": "observed",
+          "weighted_sum": 0.9,
+          "weight_total": 2,
+          "evidence_count": 2,
+          "source_ids": [
+            "SRC-A",
+            "SRC-B"
+          ],
+          "reason": null
+        },
+        {
+          "country": "Illustrative A",
+          "theme": "T2",
+          "status": "observed",
+          "weighted_sum": 1.1,
+          "weight_total": 2,
+          "evidence_count": 2,
+          "source_ids": [
+            "SRC-A",
+            "SRC-B"
+          ],
+          "reason": null
+        },
+        {
+          "country": "Illustrative B",
+          "theme": "T1",
+          "status": "observed",
+          "weighted_sum": 0,
+          "weight_total": 1,
+          "evidence_count": 1,
+          "source_ids": [
+            "SRC-C"
+          ],
+          "reason": null
+        },
+        {
+          "country": "Illustrative B",
+          "theme": "T2",
+          "status": "withheld",
+          "weighted_sum": null,
+          "weight_total": null,
+          "evidence_count": 0,
+          "source_ids": [],
+          "reason": "Upstream component assignment withheld"
+        },
+        {
+          "country": "Illustrative C",
+          "theme": "T1",
+          "status": "missing",
+          "weighted_sum": null,
+          "weight_total": null,
+          "evidence_count": 0,
+          "source_ids": [],
+          "reason": "Only unavailable invented sources for this affiliation"
+        },
+        {
+          "country": "Illustrative C",
+          "theme": "T2",
+          "status": "missing",
+          "weighted_sum": null,
+          "weight_total": null,
+          "evidence_count": 0,
+          "source_ids": [],
+          "reason": "Only unavailable invented sources for this affiliation"
+        }
+      ]
+    },
+    {
+      "kind": "longitudinal",
+      "status": "ready",
+      "reason": null,
+      "identity": {
+        "population": "Five invented source opportunities across three illustrative periods",
+        "weighting": "equal source opportunity",
+        "unit": "synthetic source",
+        "representation_id": "synthetic-frozen-tfidf",
+        "representation_version": "1",
+        "source_hash_basis": "synthetic",
+        "source_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "selection_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "source_ids": [
+          "SRC-A",
+          "SRC-B",
+          "SRC-C",
+          "SRC-D",
+          "SRC-E"
+        ]
+      },
+      "coverage": {
+        "frame": 5,
+        "eligible": 3,
+        "excluded": 2,
+        "missing": 2,
+        "included": 3
+      },
+      "measure": "Supplied 2D, already aligned actor-period coordinates; horizontal axis is period and vertical axis is aligned component X. Descriptive source spread is not a confidence interval.",
+      "warnings": [
+        "2025 → 2026 source and alignment gates failed; do not connect or infer movements across that boundary.",
+        "Genre/composition changes are explicitly flagged and must not be treated as substantive movement."
+      ],
+      "periods": [
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "alignments": [
+        {
+          "from": "2024",
+          "to": "2025",
+          "status": "passed",
+          "anchors": 4,
+          "reference_basis": "synthetic-frozen-tfidf",
+          "selection_comparability": "checked",
+          "rank_ok": true,
+          "degeneracy_ok": true,
+          "reason": null
+        },
+        {
+          "from": "2025",
+          "to": "2026",
+          "status": "withheld",
+          "anchors": 1,
+          "reference_basis": "synthetic-frozen-tfidf",
+          "selection_comparability": "failed",
+          "rank_ok": false,
+          "degeneracy_ok": false,
+          "reason": "Source family coverage not comparable"
+        }
+      ],
+      "actors": [
+        {
+          "id": "ACT-A",
+          "label": "Illustrative actor A",
+          "attribution_status": "synthetic affiliation only",
+          "roster_status": "matched"
+        },
+        {
+          "id": "ACT-B",
+          "label": "Illustrative actor B",
+          "attribution_status": "synthetic affiliation only",
+          "roster_status": "arrival"
+        }
+      ],
+      "rows": [
+        {
+          "actor": "ACT-A",
+          "period": "2024",
+          "status": "observed",
+          "xy": [
+            -0.6,
+            0.2
+          ],
+          "uncertainty_radius": 0.12,
+          "n": 1,
+          "source_ids": [
+            "SRC-A"
+          ],
+          "composition": "matched",
+          "reason": null
+        },
+        {
+          "actor": "ACT-A",
+          "period": "2025",
+          "status": "observed",
+          "xy": [
+            -0.2,
+            0.3
+          ],
+          "uncertainty_radius": 0.18,
+          "n": 1,
+          "source_ids": [
+            "SRC-B"
+          ],
+          "composition": "changed_genre",
+          "reason": null
+        },
+        {
+          "actor": "ACT-A",
+          "period": "2026",
+          "status": "missing",
+          "xy": null,
+          "uncertainty_radius": null,
+          "n": 0,
+          "source_ids": [],
+          "composition": null,
+          "reason": "Original 2026 source not available"
+        },
+        {
+          "actor": "ACT-B",
+          "period": "2024",
+          "status": "missing",
+          "xy": null,
+          "uncertainty_radius": null,
+          "n": 0,
+          "source_ids": [],
+          "composition": null,
+          "reason": "Actor not in observed 2024 roster"
+        },
+        {
+          "actor": "ACT-B",
+          "period": "2025",
+          "status": "observed",
+          "xy": [
+            0.65,
+            0.1
+          ],
+          "uncertainty_radius": null,
+          "n": 1,
+          "source_ids": [
+            "SRC-C"
+          ],
+          "composition": "arrival",
+          "reason": null
+        },
+        {
+          "actor": "ACT-B",
+          "period": "2026",
+          "status": "withheld",
+          "xy": null,
+          "uncertainty_radius": null,
+          "n": 0,
+          "source_ids": [],
+          "composition": null,
+          "reason": "Failed selection comparability"
+        }
+      ]
+    },
+    {
+      "kind": "method-comparison",
+      "status": "ready",
+      "reason": null,
+      "identity": {
+        "population": "Five invented source opportunities across three illustrative periods",
+        "weighting": "equal source opportunity",
+        "unit": "synthetic source",
+        "representation_id": "synthetic-frozen-tfidf",
+        "representation_version": "1",
+        "source_hash_basis": "synthetic",
+        "source_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "selection_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "source_ids": [
+          "SRC-A",
+          "SRC-B",
+          "SRC-C",
+          "SRC-D",
+          "SRC-E"
+        ]
+      },
+      "coverage": {
+        "frame": 5,
+        "eligible": 3,
+        "excluded": 2,
+        "missing": 2,
+        "included": 3
+      },
+      "measure": "Upstream fit-attempt ledger and comparative stability; no numerical fitting, p-values or inference by display.",
+      "warnings": [
+        "Skipped attempts are separate from attempted failures; unassigned and excluded source denominators are shown separately."
+      ],
+      "rows": [
+        {
+          "method": "PAM synthetic",
+          "method_family": "partition",
+          "attempted": 3,
+          "successful": 2,
+          "failed": 1,
+          "skipped": 1,
+          "excluded": 2,
+          "not_fitted": 1,
+          "unassigned": 1,
+          "stability": 0.82,
+          "comparable": true,
+          "reason": null,
+          "settings_sha256": "9999999999999999999999999999999999999999999999999999999999999999",
+          "representation_id": "synthetic-frozen-tfidf",
+          "source_ids": [
+            "SRC-A",
+            "SRC-B",
+            "SRC-C",
+            "SRC-D",
+            "SRC-E"
+          ]
+        },
+        {
+          "method": "Density synthetic",
+          "method_family": "density",
+          "attempted": 4,
+          "successful": 1,
+          "failed": 3,
+          "skipped": 0,
+          "excluded": 2,
+          "not_fitted": 2,
+          "unassigned": 1,
+          "stability": null,
+          "comparable": false,
+          "reason": "Selection basis differs; stability comparison withheld",
+          "settings_sha256": "8888888888888888888888888888888888888888888888888888888888888888",
+          "representation_id": "synthetic-frozen-tfidf",
+          "source_ids": [
+            "SRC-A",
+            "SRC-B",
+            "SRC-C",
+            "SRC-D",
+            "SRC-E"
+          ]
+        }
+      ]
+    }
+  ]
+}
