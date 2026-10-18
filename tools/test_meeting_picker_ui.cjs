@@ -1,10 +1,10 @@
 'use strict';
-const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),{chromium}=require('playwright');
+const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),{chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
 (async()=>{
  const [site,out]=process.argv.slice(2);if(!site||!out)throw Error('Usage: node tools/test_meeting_picker_ui.cjs SITE_OR_URL OUTPUT');fs.mkdirSync(out,{recursive:true});let server,url=site;
  if(!/^https?:/.test(site)){const root=path.resolve(site);server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+decodeURIComponent(req.url.split('?')[0]).replace(/\/$/,'/index.html'));if(!file.startsWith(root+path.sep)){res.writeHead(403).end();return;}try{res.setHeader('Content-Type',({'.js':'text/javascript','.json':'application/json','.css':'text/css','.html':'text/html'})[path.extname(file)]||'application/octet-stream');res.end(fs.readFileSync(file));}catch(e){res.writeHead(404).end();}});await new Promise(r=>server.listen(0,'127.0.0.1',r));url='http://127.0.0.1:'+server.address().port+'/';}
  if(!url.endsWith('/'))url+='/';
- const browser=await chromium.launch({headless:true,...(process.env.PW_CHANNEL?{channel:process.env.PW_CHANNEL}:{})});
+ const browser=await chromium.launch({headless:true,...(process.env.BROWSER_PATH?{executablePath:process.env.BROWSER_PATH}:process.env.PW_CHANNEL?{channel:process.env.PW_CHANNEL}:{})});
  try{
   const page=await browser.newPage({viewport:{width:1440,height:1000},acceptDownloads:true}),errors=[],downloads=[],requests=[],checks=[];page.on('pageerror',e=>errors.push(e.message));
   const date='2026-09-24',meetings=[{slug:'asset/test/first',title:'First Committee — engineering fixture',date,pageUrl:'/en/asset/test/first',jsonUrl:'/en/asset/test/first.json',hasTranscript:true},{slug:'hrc/63/25',title:'Second Committee — engineering fixture',date,pageUrl:'/en/hrc/63/25',jsonUrl:'/en/hrc/63/25.json',hasTranscript:true},{slug:'asset/test/pending',title:'Pending meeting — engineering fixture',date,pageUrl:'/en/asset/test/pending',hasTranscript:false}];

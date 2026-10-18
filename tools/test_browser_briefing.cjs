@@ -1,0 +1,20 @@
+'use strict';
+const assert=require('node:assert/strict');
+const A=require('../site/analysis-core.js'),Q=require('../site/meeting-quick-reader.js');
+const slug='ga/c3/81/1',date='2099-01-01';
+const make=(n,region='Africa',text='We support humanitarian assistance to displaced communities and ensure safe access for affected families.')=>({id:slug+'#'+n,meeting_slug:slug,date,region,country:'Example '+n,language:'en',scope:'committee_3',meeting:'Synthetic',text,source_url:'https://transcripts.un.org/en/'+slug,text_sha256:'a'.repeat(64),attribution:{country_status:'registry_mapped'},speaker_metadata:{function:'Representative'}});
+const corpus={schema:'un.browser.corpus.v1',records:[make(0),make(1,'Asia','We oppose sanctions on medical supplies and encourage open dialogue with the affected local communities.')],coverage:[{status:'ok'},{status:'unavailable'}],collection:{selection_mode:'single_meeting',selected_meeting_slug:slug,selected_meeting_date:date,selected_meeting_title:'Synthetic'}};
+const p={topic:'humanitarian',phrases:['humanitarian'],exclude:[],start:date,end:date,scope:'all',region:'Africa',methods:['frequency']};
+(async()=>{
+ let r=await A.analyze(corpus,p);assert.equal(r.quick_reader.stats.source_segments,2);assert.equal(r.quick_reader.engine,'un.meeting-quick-reader.v1.3-browser-briefing');assert.equal(r.counts.matched,1);assert.equal(r.briefing.stats.matched_segments,1);assert.equal(r.briefing.external_ai_calls,0);assert.equal(r.briefing.themes[0].evidence[0].source_url,corpus.records[0].source_url);assert.equal(r.briefing.stats.coverage_warnings,1);
+ r=await A.analyze(corpus,{...p,scope:'committee_4'});assert.equal(r.quick_reader,undefined);
+ r=await A.analyze(corpus,{...p,start:'2099-01-02',end:'2099-01-02'});assert.equal(r.quick_reader,undefined);assert.equal(r.briefing.stats.median_words_per_segment,null);
+ r=await A.analyze({...corpus,collection:{...corpus.collection,selected_meeting_slug:'ga/c3/81/2'}},p);assert.equal(r.quick_reader,undefined);
+ r=await A.analyze({...corpus,collection:{selection_mode:'range'}},p);assert.equal(r.quick_reader,undefined);assert.ok(r.briefing.paragraphs.length);
+ r=await A.analyze({...corpus,records:[...corpus.records,{...make(2),meeting_slug:'ga/c3/81/2'}]},p);assert.equal(r.quick_reader,undefined);
+ const late=await A.analyze({...corpus,records:[make(0,'Africa','Thank you for the opportunity. '+ 'Additional neutral introductory wording '.repeat(50)+' humanitarian assistance to displaced families.') ]},p);assert.match(late.briefing.themes[0].evidence[0].excerpt,/humanitarian assistance/);
+ const issue=Q.ISSUES.find(i=>i.id==='sanctions');
+ for(const text of ['We support no sanctions against civilians.','We support neither sanctions nor embargoes.','We support sanctions being lifted immediately.','We oppose the removal of sanctions.','We support a proposal that rejects sanctions.','We support sanctions without exceptions.','We support “sanctions” as an example.']) assert.equal(Q.stance(text,issue),null,text);
+ assert.equal(Q.stance('We support sanctions on weapons.',issue),'support_or_advocacy_expressed');assert.equal(Q.stance('We do not support sanctions on weapons.',issue),'concern_or_opposition_expressed');
+ console.log('PASS browser briefing, saved-meeting eligibility, scope, source links and object-negation safeguards (synthetic; heldout opened: 0)');
+})().catch(e=>{console.error(e);process.exitCode=1});

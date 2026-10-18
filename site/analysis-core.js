@@ -16,7 +16,7 @@
     ? require('./reviewed-units.js') : root.UNReviewedUnits;
   const MeetingQuickReader = typeof module !== 'undefined' && module.exports
     ? require('./meeting-quick-reader.js') : root.UNMeetingQuickReader;
-  const VERSION = 'browser-descriptive-1.12.2';
+  const VERSION = 'browser-descriptive-1.13.0';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters', 'nmf'];
 
@@ -230,6 +230,51 @@
   }
 
 
+  // Imported metadata remains author-supplied. Require exact agreement with
+  // every original record before restoring an explicitly saved meeting selection.
+  function meetingIdentity(corpus, p) {
+    if (corpus.reviewed_units || corpus.records.some(r => r.parent_id)) return null;
+    const c = corpus.collection || {};
+    if (c.selection_mode !== 'single_meeting') return null;
+    const slug = c.selected_meeting_slug, date = c.selected_meeting_date;
+    if (typeof slug !== 'string' || !/^[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+){1,5}$/.test(slug) ||
+        !dateOK(date) || date < p.start || date > p.end ||
+        (p.meeting_slug && (p.meeting_slug !== slug || p.meeting_date !== date))) return null;
+    if (!corpus.records.length || !corpus.records.every(r =>
+        (r.meeting_slug || r.id.split('#')[0]) === slug && r.date === date)) return null;
+    const rows = corpus.records.filter(r => r.language === 'en' && Scopes.matchesRecord(r, p.scope));
+    if (!rows.length || rows.length !== corpus.records.filter(r => r.language === 'en').length) return null;
+    return {meeting_slug: slug, meeting_date: date, title: c.selected_meeting_title};
+  }
+
+  function themeExcerpt(text, pattern) {
+    const normalized = text.replace(/\s+/g, ' ');
+    const line = normalized.split(/(?<=[.!?])\s+/).find(value => pattern.test(value)) || normalized;
+    const at = line.search(pattern), start = Math.max(0, at - 80);
+    return (start ? '…' : '') + line.slice(start, start + 240);
+  }
+
+  function briefing(records, matched, duplicates, corpus, p) {
+    const words = matched.map(r => tokens(r.text).length).sort((a,b) => a-b);
+    const median = words.length ? (words[Math.floor((words.length-1)/2)] + words[Math.floor(words.length/2)]) / 2 : null;
+    const sources = matched.filter(r => MeetingQuickReader.safeURL(r.source_url)).map(r => ({record_id:r.id,source_url:MeetingQuickReader.safeURL(r.source_url)}));
+    const themes = MeetingQuickReader.ISSUES.map(issue => {
+      const hits = matched.filter(r => issue.pattern.test(r.text));
+      return {id:issue.id,label:issue.label,segments:hits.length,evidence:hits.filter(r => MeetingQuickReader.safeURL(r.source_url)).slice(0,2).map(r => ({record_id:r.id,source_url:MeetingQuickReader.safeURL(r.source_url),excerpt:themeExcerpt(r.text, issue.pattern)}))};
+    }).filter(t => t.segments).sort((a,b) => b.segments-a.segments || a.label.localeCompare(b.label)).slice(0,6);
+    const warnings = corpus.coverage.filter(row => row.status !== 'ok' && row.status !== 'collected');
+    const meetings = new Set(matched.map(r => r.meeting_slug || r.id.split('#')[0])).size;
+    const paragraphs = [p.mode === 'topic'
+      ? `${matched.length} of ${records.length} eligible, distinct English source segments match the saved topic phrases and exclusions across ${meetings} recorded meetings. These are literal phrase matches, not a judgment of substantive relevance.`
+      : `The selected dates, scope and passage filters contain ${matched.length} distinct English source segments across ${meetings} recorded meetings.`,
+      matched.length ? `The included text contains ${words.reduce((a,b)=>a+b,0)} words, with a median of ${median} words per source segment. Segments may be fragments or several turns; these figures do not measure complete speeches or unique speakers.` : 'No source segments satisfy the current filters. This does not establish that the issue was absent from the proceedings.',
+      themes.length ? `The fixed issue dictionary finds references to ${themes.slice(0,2).map(t=>t.label.toLowerCase()).join(' and ')} most often among its issue families. Counts describe mentions in included segments, not priorities, agreement or decisions.` : 'The fixed issue dictionary identifies no subject family in the included text. Subjects outside that dictionary remain unclassified.',
+      `${warnings.length} of ${corpus.coverage.length} saved coverage entries have a status other than successful collection. Coverage refers to the saved collection and may extend beyond the current filters; the available text is not proof of complete proceedings.`];
+    return {schema:'un.browser-briefing.v1',method:'offline_deterministic_descriptive_summary',paragraphs,
+      stats:{eligible_segments:records.length,matched_segments:matched.length,matched_meetings:meetings,matched_words:words.reduce((a,b)=>a+b,0),median_words_per_segment:median,duplicate_segments:duplicates.length,coverage_entries:corpus.coverage.length,coverage_warnings:warnings.length},
+      themes,sources,limitations:['Automatic transcript text and imported metadata are not independently authenticated.','Exact-text duplicates are removed within the current selection; source segments are not unique speeches or speakers.','Theme counts use a fixed dictionary and do not infer country positions, voting outcomes or meeting consensus.','This deterministic summary describes the included source text and does not replace reading the linked passages.'],external_ai_calls:0};
+  }
+
   async function analyze(corpus, p, yieldProgress = async () => {}, runClusters, runNMF) {
     validateCorpus(corpus);
     p = parameters(p);
@@ -240,6 +285,8 @@
 
     // Apply committee, date, region and language restrictions before deduping.
     // This prevents out-of-scope text from changing denominators or matches.
+    const identity = meetingIdentity(corpus, p);
+    const wholeMeeting = identity ? corpus.records.filter(r => r.language === 'en' && r.date === identity.meeting_date && (r.meeting_slug || r.id.split('#')[0]) === identity.meeting_slug) : [];
     const selection=PassageSelection.validate(corpus,p.passageSelection);
     const beforeTypes = corpus.records.filter(record => (
       record.date >= p.start &&
@@ -304,13 +351,9 @@
       matched,
       methods: {}
     };
-    if(corpus.collection?.selection_mode==='single_meeting'&&p.meeting_slug){
-      // The quick read covers the whole recorded meeting, not just query matches.
-      // In particular a topic query must not redefine the opening meeting synopsis.
-      result.quick_reader=MeetingQuickReader.build(beforeTypes,{
-        meeting_slug:p.meeting_slug,meeting_date:p.meeting_date,
-        title:corpus.collection.selected_meeting_title
-      });
+    result.briefing = briefing(records, matched, duplicates, corpus, p);
+    if(identity){
+      result.quick_reader=MeetingQuickReader.build(wholeMeeting,identity);
     }
     if(selection){const {selected,...audit}=selection;result.passage_selection={...audit,eligible_before_type_filter:beforeTypes.length,eligible_after_type_filter:eligible.length,excluded_within_filters:beforeTypes.filter(r=>!selected.has(r.id)).map(r=>r.id)};}
     if(corpus.reviewed_units)result.reviewed_units={...corpus.reviewed_units,

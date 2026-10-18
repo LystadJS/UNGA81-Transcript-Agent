@@ -21,6 +21,37 @@
   let importedCorpusFile = null;
   let audioLedger = null;
   let result = null;
+  let retained = null;
+  let nextRun = null;
+  const recoveryPanel = document.createElement('section');
+  recoveryPanel.id = 'collectionRecovery';
+  recoveryPanel.hidden = true;
+  recoveryPanel.setAttribute('aria-label', 'Saved collection recovery');
+  recoveryPanel.innerHTML = '<h3>Collected transcripts</h3><p id="collectionRecoveryStatus" role="status"></p><button type="button" id="saveRetainedCorpus">Save collected transcripts</button> <button type="button" id="analyzeRetainedCorpus">Analyze this collection</button> <button type="button" id="retryCollection">Retry collection gaps</button><p class="method-note">Kept in this browser tab only. Save the collection before closing or reloading. Retrying checks the original dates and meeting selection and keeps completed responses.</p>';
+  el('analysisOutput').before(recoveryPanel);
+
+  function updateRecovery() {
+    recoveryPanel.hidden = !retained;
+    if (!retained) return;
+    const saved = retained.corpus;
+    const gaps = saved.coverage.filter(row => !['collected', 'empty_transcript', 'excluded_language'].includes(row.status)).length;
+    const pending = Math.max(0, (saved.collection?.selected_meetings || 0) - saved.coverage.filter(row => row.slug).length);
+    el('collectionRecoveryStatus').textContent = `${saved.records.length} source segments retained. ${gaps + pending} collection gaps or unfinished meetings. Downloads remain available if analysis fails or settings change.`;
+    el('saveRetainedCorpus').disabled = false;
+    el('analyzeRetainedCorpus').disabled = !!controller;
+    el('retryCollection').disabled = !!controller || !retained.live || !(gaps + pending);
+  }
+
+  function retainCollection(value, file, ledger, parameters, live) {
+    retained = {corpus:value, file, ledger, parameters:JSON.parse(JSON.stringify(parameters)), live};
+    updateRecovery();
+  }
+
+  el('saveRetainedCorpus').onclick = () => {
+    if (retained) save(retained.file || JSON.stringify(retained.corpus), retained.ledger ? 'reviewed-analysis.json' : 'un-transcripts.json', 'application/json');
+  };
+  el('analyzeRetainedCorpus').onclick = () => { if (!controller && retained) { nextRun = 'retained'; el('analysisForm').requestSubmit(); nextRun = null; } };
+  el('retryCollection').onclick = () => { if (!controller && retained?.live) { nextRun = 'retry'; el('analysisForm').requestSubmit(); nextRun = null; } };
   let ready = false;
   let stale = false;
   let datesEdited = false;
@@ -230,6 +261,17 @@
     </section>`;
   }
 
+  function renderBriefing(briefing) {
+    if (!briefing) return '';
+    const themes = briefing.themes || [];
+    return `<section class="analysis-briefing" aria-label="Analysis findings"><h3>What the collected passages show</h3>
+      ${briefing.paragraphs.map(paragraph => `<p>${esc(paragraph)}</p>`).join('')}
+      ${themes.length ? `<details><summary>Subjects and source evidence</summary>${table(['Subject', 'Matching segments'], themes.map(theme => [theme.label, theme.segments]))}
+        <ol>${themes.map(theme => `<li><strong>${esc(theme.label)}:</strong> ${(theme.evidence || []).map(item => UNMeetingQuickReader.safeURL(item.source_url) ? `<a href="${esc(item.source_url)}" target="_blank" rel="noopener noreferrer">${esc(item.excerpt)}</a>` : esc(item.excerpt)).join(' · ')}</li>`).join('')}</ol></details>` : ''}
+      <details><summary>How to read these findings</summary><ul>${briefing.limitations.map(item => `<li>${esc(item)}</li>`).join('')}</ul><p>Prepared locally with descriptive rules; no external AI service was called.</p></details>
+    </section>`;
+  }
+
   // ---------- Report content ----------
 
   function render(report) {
@@ -244,11 +286,12 @@
       byStatus[entry.status] = (byStatus[entry.status] || 0) + 1;
     }
 
-    const single = report.collection?.selection_mode==='single_meeting';
+    const single = !!report.quick_reader;
+    const meeting = report.quick_reader;
     let html = `
       <div class="report-document">
         <p class="eyebrow">${single?'SINGLE-MEETING BRIEF':'TRANSCRIPT REPORT'}</p>
-        <h2>${esc(single?report.collection.selected_meeting_title:(all?'All passages':p.topic))}</h2>
+        <h2>${esc(single?meeting.meeting_title:(all?'All passages':p.topic))}</h2>
         <p>${esc(p.start)} through ${esc(p.end)} · ${esc(p.region)}</p>
         ${single?'':`<p><strong>Meeting scope:</strong> ${esc(UNMeetingScopes.label(p.scope))}</p>
         <p>${all?'No topic filter; passages follow the selected dates, scope, region and inclusion policy.':`Any phrase: ${esc(p.phrases.join(' | '))}. Exclusions: ${esc(p.exclude.join(' | ') || 'None')}.`}</p>`}
@@ -256,8 +299,10 @@
     `;
 
     if(report.quick_reader)html+=renderQuickReader(report.quick_reader);
+    if(report.briefing)html+=renderBriefing(report.briefing);
     if(single)html+=`<p class="method-note">${all?'The detailed analysis below uses every eligible source segment.':`The detailed analysis below is restricted to the topic ${esc(p.topic)}; the opening summary covers the whole recorded meeting.`}</p>`;
-    if(report.collection?.selection_mode==='single_meeting')html+=`<p class="method-note"><strong>Individual meeting:</strong> ${esc(report.collection.selected_meeting_title)} · ${esc(report.collection.selected_meeting_date)} · ${esc(report.collection.selected_meeting_slug)}. Only this meeting was collected. Within-meeting passages do not supply independent meeting-level replication.</p>`;
+    if(report.collection?.selection_mode==='single_meeting' && !single)html+='<p class="warning">The saved single-meeting label could not be verified against the imported records. This report describes the filtered collection; it does not establish complete coverage of one meeting.</p>';
+    if(single)html+=`<p class="method-note"><strong>Individual meeting:</strong> ${esc(meeting.meeting_title)} · ${esc(meeting.meeting_date)} · ${esc(meeting.meeting_slug)}. Only this meeting was collected. Within-meeting passages do not supply independent meeting-level replication.</p>`;
     if(report.passage_selection)html+=`<p class="warning">Reviewed inclusion: ${esc(report.passage_selection.policy==='substantive'?'substantive address segments':'substantive, mixed and fragment segments')}. ${report.passage_selection.eligible_after_type_filter} of ${report.passage_selection.eligible_before_type_filter} passages within the date, scope and region filters remain before deduplication. ${report.passage_selection.human_confirmed} explicit passage decisions; reviewer identity is self-declared. Original text is preserved.</p>`;
     if(report.reviewed_units){const r=report.reviewed_units;
       html+=`<section class="reviewed-unit-summary"><h3>Reviewed speech excerpts</h3>
@@ -659,7 +704,9 @@
     try {
       if (!ready) throw Error('Country registry is not available. Reload the page.');
 
-      const p = settings();
+      const mode = nextRun; nextRun = null;
+      const p = mode === 'retry' ? retained.parameters : settings();
+      const previous = mode ? retained : null;
       controller = new AbortController();
 
       for (const control of el('analysisForm').elements) control.disabled = true;
@@ -671,8 +718,20 @@
       importedCorpusFile = null;
       audioLedger = null;
       stale = false;
+      updateRecovery();
 
-      if (el('corpusSource').value === 'import') {
+      if (mode === 'retained') {
+        corpus = previous.corpus;
+        importedCorpusFile = previous.file;
+        audioLedger = previous.ledger;
+        // Preserve reviewed inclusion decisions bound to the saved source bytes.
+        if (previous.parameters.passageSelection) p.passageSelection = previous.parameters.passageSelection;
+      } else if (mode === 'retry') {
+        corpus = await UNCollector.collect(p, countries, {
+          signal: controller.signal, progress: status, resume: previous.corpus,
+          checkpoint: value => retainCollection(value, null, null, p, true)
+        });
+      } else if (el('corpusSource').value === 'import') {
         status('Checking imported collection and hashes…');
         const file = el('corpusFile').files[0];
 
@@ -711,7 +770,8 @@
       } else {
         corpus = await UNCollector.collect(p, countries, {
           signal: controller.signal,
-          progress: status
+          progress: status,
+          checkpoint: value => retainCollection(value, null, null, p, true)
         });
       }
 
@@ -720,6 +780,7 @@
       status('Analyzing collected text…');
       await pause();
 
+      retainCollection(corpus, importedCorpusFile, audioLedger, p, mode === 'retry' || (mode === 'retained' ? previous.live : el('corpusSource').value === 'live'));
       result = await UNAnalysis.analyze(corpus, p, async message => {
         status(message);
         await pause();
@@ -744,17 +805,18 @@
       status(completionMessage(result));
     } catch (error) {
       result = null;
-      corpus = null;
-      importedCorpusFile = null;
-      audioLedger = null;
+      corpus = retained?.corpus || null;
+      importedCorpusFile = retained?.file || null;
+      audioLedger = retained?.ledger || null;
       el('analysisOutput').hidden = true;
 
       status(error.name === 'AbortError'
-        ? 'Collection cancelled. No partial report was released.'
-        : 'Could not complete report: ' + error.message +
+        ? 'Cancelled. No partial report was released.' + (retained ? ' Completed source responses remain available below.' : '')
+        : 'Could not complete report: ' + error.message + (retained ? ' The retained collection can still be saved or analyzed again.' : '') +
           (el('corpusSource').value==='live'?' If live access is blocked by your network, import an exported collection.':''));
     } finally {
       controller = null;
+      updateRecovery();
 
       for (const control of el('analysisForm').elements) control.disabled = false;
       el('cancelAnalysis').disabled = true;
@@ -842,7 +904,7 @@
 
   el('exportCorpus').onclick = () => {
     if (corpus && !stale) {
-      save(importedCorpusFile || JSON.stringify(corpus), result.reviewed_units?'reviewed-analysis.json':'un-transcripts.json', 'application/json');
+      save(importedCorpusFile || JSON.stringify(corpus), result?.reviewed_units?'reviewed-analysis.json':'un-transcripts.json', 'application/json');
     }
   };
   el('exportAudioLedger').onclick=()=>{
