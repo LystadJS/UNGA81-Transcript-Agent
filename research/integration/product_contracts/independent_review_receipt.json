@@ -1,0 +1,23 @@
+{
+  "reviewed_original_head": "4ea131fb33ea7735b6543e8ba2110ecb268743ab",
+  "reviewed_base": "da4ab9ed11dba3693d11aa12f5333963b1b85478",
+  "scope": "synthetic_engineering_only",
+  "original_independent": {
+    "tests": 64,
+    "pass": 21,
+    "fail": 43,
+    "skipped": 0
+  },
+  "repaired_local": {
+    "original_tests": 111,
+    "independent_tests": 64,
+    "total_pass": 175,
+    "failed": 0,
+    "skipped": 0,
+    "independent_schema_checks": 52
+  },
+  "original_probe_sha256": "144c19c6b226c8552b629a1c886ea5aa242d29e89c27e5b4142dce6ffa3d57a0",
+  "interface_lock_unchanged": true,
+  "hosted_repaired_status": "NOT_RUN_AT_PATCH_PREPARATION",
+  "publication_eligible": false
+}
