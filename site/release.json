@@ -1,8 +1,8 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.13.0",
+  "browser_engine": "browser-descriptive-1.14.0",
   "comparison_engine": "latent-comparison-1.1.0",
-  "date": "2026-10-16",
+  "date": "2026-10-18",
   "features": [
     "source-bound saved runs",
     "parent/excerpt comparison",
@@ -16,14 +16,18 @@
     "whole-meeting summaries independent of regional filters",
     "saved single-meeting summary recovery",
     "source-linked descriptive summaries for topic and date-range reports",
-    "downloadable collection recovery and explicit failed-source retry"
+    "downloadable collection recovery and explicit failed-source retry",
+    "automatic validated saved-filter restoration",
+    "consistent Unicode word counts across report sections",
+    "audited procedural sentence reduction for descriptive lexical methods",
+    "explicit country expression verbs and policy objects"
   ],
   "meeting_routes": "Validated canonical UN inventory paths, including HRC and treaty-body routes",
   "acceptance_run": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37651586467",
   "numerical_kernels_changed": false,
   "D1_publication_gates_changed": false,
   "analysis_status": "exploratory; 20-meeting development QA with 13 additional source-linked meetings, 83 assistant-provisional benchmark cases; context omissions remain, no official policy inference or GenAI API",
-  "quick_reader_engine": "un.meeting-quick-reader.v1.3-browser-briefing",
+  "quick_reader_engine": "un.meeting-quick-reader.v1.4-object-expressions",
   "research_browser": {
     "status": "released_synthetic_research_preview",
     "entry": "research.html",
@@ -48,14 +52,18 @@
   },
   "reliability_validation": {
     "status": "local_engineering_pass",
-    "record": "docs/RELEASE_1_13_0.md",
+    "record": "docs/RELEASE_1_14_0.md",
     "heldout_transcripts_opened": 0,
     "external_ai_calls": 0,
     "checks": {
-      "node_regression_entry_points": 16,
-      "synthetic_recovery_browser": 13,
-      "synthetic_quick_reader_browser": 12,
+      "node_regression_entry_points": 18,
+      "saved_filter_browser": 9,
+      "recovery_browser": 13,
+      "meeting_reader_browser": 12,
+      "comparison_browser": 13,
+      "script_free_report": 8,
       "live_browser": 27,
+      "recent_saved_source_replay": "PASS",
       "public_build_scanner_findings": 0
     }
   }

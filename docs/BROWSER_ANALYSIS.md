@@ -2,7 +2,7 @@
 
 Open the [report builder](https://lystadjs.github.io/un/transcript-agent/#analyze). No installation, account or coding is required.
 
-Current browser version: **1.13.0**. Select **One individual meeting**, enter its date, and choose from the returned meeting list to analyze just that meeting. See [individual-meeting analysis](INDIVIDUAL_MEETINGS.md). The [latent comparison workspace](LATENT_COMPARISON.md) adds saved-run replay, parent/excerpt comparisons and reusable settings.
+Current browser version: **1.14.0**. Select **One individual meeting**, enter its date, and choose from the returned meeting list to analyze just that meeting. See [individual-meeting analysis](INDIVIDUAL_MEETINGS.md). The [latent comparison workspace](LATENT_COMPARISON.md) adds saved-run replay, parent/excerpt comparisons and reusable settings.
 
  Text clustering offers k-means, PAM,
 hierarchical Ward/average linkage, HDBSCAN and regularized Gaussian mixtures on either PCA or LSA, including
@@ -27,9 +27,17 @@ aligned membership changes alongside highest-membership cluster stability.
 
 The opening briefing is deterministic and runs on your device. It describes the selected source text and its basic counts, with source links for inspection. Issue labels and country-linked expressions are cautious orientation cues; they do not establish official agendas, votes or government positions. Inspect the original wording, especially negation and statements about another speaker.
 
-Save the collected transcript JSON to preserve source text and provenance for later import. A standalone HTML report preserves the rendered readout; analysis JSON records calculations and settings. Keep a local copy before closing the page.
+Save the collected transcript JSON to preserve source text and provenance for later import. A standalone HTML report preserves the rendered readout; analysis JSON records calculations and settings. On JSON import, saved report filters are restored into the controls when present; inspect the topic, dates, scope and methods before generating a new report. Older collections without saved filters restore collection dates and scope, with all regions and all passages selected. Keep a local copy before closing the page.
 
 The **Collected transcripts** panel remains available if analysis fails or collection is cancelled. Use **Save collected transcripts** to download completed source batches, **Analyze this collection** to retry analysis, or **Retry collection gaps** to resume the original source selection. Retry skips completed sources and rechecks unavailable or unfinished material. The checkpoint lives only in the current tab until downloaded; closing the tab loses an unsaved checkpoint.
+
+## Words, procedural text and expressions
+
+Word counts use the same Unicode letter-and-number tokenization in the report builder and meeting reader. Punctuation separates tokens, and Unicode compatibility forms are normalized. Counts describe original source segments rather than complete speeches.
+
+Descriptive TF-IDF, cosine similarity and dictionary theme counts remove narrowly recognized procedural sentences, such as giving the floor or adjourning a meeting. The processing audit records removed sentences and source segments left with no analytical text. Original transcript text, topic matching, segment totals, word totals and exports remain intact. Clustering and NMF retain their existing input text and interpretation limits.
+
+Country-linked rows show the action and its particular object: for example, **Condemns — attacks on humanitarian workers**. Condemnation of attacks does not become opposition to humanitarian assistance. These extracts remain provisional readings of source wording, with source links and conservative abstention for ambiguous wording.
 
 ## Reviewed excerpts within speeches
 
@@ -91,8 +99,8 @@ uses NFKC, lowercase Unicode letter/number tokens and contiguous phrase boundari
 | Regional frequency | Matched unique segments / eligible unique segments, by speaker region |
 | Daily frequency | The same denominator by date; dates with no eligible collected segments are omitted |
 | Length distribution | Unicode token counts in matched segments, in four displayed bins |
-| TF-IDF | Lowercase unigrams longer than two characters, fixed English stop list; TF = 1 + ln(count), IDF = 1 + ln((1 + N)/(1 + df)); L2-normalized vectors; top 20 mean weights across matched segments |
-| Cosine similarity | All pairs of matched TF-IDF vectors, top 10 reported; skipped with an explanation above 300 matched segments |
+| TF-IDF | After narrow procedural-sentence removal: lowercase unigrams longer than two characters, fixed English stop list; TF = 1 + ln(count), IDF = 1 + ln((1 + N)/(1 + df)); L2-normalized vectors; top 20 mean weights across matched segments |
+| Cosine similarity | After the same procedural-sentence removal: all pairs of matched TF-IDF vectors, top 10 reported; skipped with an explanation above 300 matched segments |
 
 These are descriptive summaries of an observed corpus with dependent segments.
 No population confidence intervals, significance, causality, diffusion, coordination,

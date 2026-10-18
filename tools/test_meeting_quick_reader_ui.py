@@ -55,7 +55,8 @@ try:
   assert page.locator('#analysisOutput').is_visible(),page.locator('#analysisStatus').inner_text()
   assert page.locator('.meeting-quick-read').count()==1
   assert page.locator('.meeting-quick-read').inner_text().find('Country-linked expressions')>=0
-  assert 'mixed or qualified' in page.locator('.meeting-quick-read').inner_text().lower()
+  assert 'supports' in page.locator('.meeting-quick-read').inner_text().lower()
+  assert 'opposes' in page.locator('.meeting-quick-read').inner_text().lower()
   assert page.locator('.meeting-quick-read a[href^="https://transcripts.un.org/"]').count()>=1
   with page.expect_download() as info:page.locator('#exportResult').click()
   download=info.value;save=OUT/'analysis.json';download.save_as(save)

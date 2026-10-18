@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="docs/BROWSER_ANALYSIS.md"><img alt="JavaScript browser application" src="https://img.shields.io/badge/JavaScript-browser-062135?style=flat-square" /></a>
-  <a href="site/release.json"><img alt="Browser engine version 1.13.0" src="https://img.shields.io/badge/Browser-v1.13.0-002D74?style=flat-square" /></a>
+  <a href="site/release.json"><img alt="Browser engine version 1.14.0" src="https://img.shields.io/badge/Browser-v1.14.0-002D74?style=flat-square" /></a>
   <a href="docs/LATENT_COMPARISON.md"><img alt="Node.js 22 for tests" src="https://img.shields.io/badge/Node.js-22%20tests-062135?style=flat-square" /></a>
   <a href="research/README.md"><img alt="Python 3.11 or newer for optional research" src="https://img.shields.io/badge/Python-3.11%2B%20optional-062135?style=flat-square" /></a>
 </p>
@@ -121,6 +121,6 @@ English transcript tracks may include interpretation or automatic transcription.
 | [`docs/`](docs/) | Method contracts, operating guides, acceptance records, and research roadmap |
 | [`reports/`](reports/) · [`examples/`](examples/) | Evidence-oriented examples and historical reports |
 
-The browser release is recorded in [`site/release.json`](site/release.json) (**1.13.0** at this revision); the saved-run comparison engine is **1.1.0**. For reproducible local checks, start with [`REPRODUCE.md`](REPRODUCE.md). Historical acceptance records are labeled by their original run and should not be mistaken for a new full-system test.
+The browser release is recorded in [`site/release.json`](site/release.json) (**1.14.0** at this revision); the saved-run comparison engine is **1.1.0**. For reproducible local checks, start with [`REPRODUCE.md`](REPRODUCE.md). Historical acceptance records are labeled by their original run and should not be mistaken for a new full-system test.
 
 <sub>Public reports are analytical aids. Verify quotations, transcription, speaker attribution, coverage, and conclusions against the linked UN records before citing or circulating findings.</sub>

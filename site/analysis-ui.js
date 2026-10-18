@@ -23,11 +23,15 @@
   let result = null;
   let retained = null;
   let nextRun = null;
+  let restoredFile = null;
+  let restorePromise = null;
+  let resolveRegistry;
+  const registryReady = new Promise(resolve => { resolveRegistry = resolve; });
   const recoveryPanel = document.createElement('section');
   recoveryPanel.id = 'collectionRecovery';
   recoveryPanel.hidden = true;
   recoveryPanel.setAttribute('aria-label', 'Saved collection recovery');
-  recoveryPanel.innerHTML = '<h3>Collected transcripts</h3><p id="collectionRecoveryStatus" role="status"></p><button type="button" id="saveRetainedCorpus">Save collected transcripts</button> <button type="button" id="analyzeRetainedCorpus">Analyze this collection</button> <button type="button" id="retryCollection">Retry collection gaps</button><p class="method-note">Kept in this browser tab only. Save the collection before closing or reloading. Retrying checks the original dates and meeting selection and keeps completed responses.</p>';
+  recoveryPanel.innerHTML = '<h3>Collected transcripts</h3><p id="collectionRecoveryStatus" role="status"></p><button type="button" id="saveRetainedCorpus">Save collected transcripts</button> <button type="button" id="saveOriginalCollection" hidden>Save original collection</button> <button type="button" id="analyzeRetainedCorpus">Analyze this collection</button> <button type="button" id="retryCollection">Retry collection gaps</button><p class="method-note">Kept in this browser tab only. Save the collection before closing or reloading. Retrying checks the original dates and meeting selection and keeps completed responses.</p>';
   el('analysisOutput').before(recoveryPanel);
 
   function updateRecovery() {
@@ -38,6 +42,8 @@
     const pending = Math.max(0, (saved.collection?.selected_meetings || 0) - saved.coverage.filter(row => row.slug).length);
     el('collectionRecoveryStatus').textContent = `${saved.records.length} source segments retained. ${gaps + pending} collection gaps or unfinished meetings. Downloads remain available if analysis fails or settings change.`;
     el('saveRetainedCorpus').disabled = false;
+    el('saveOriginalCollection').hidden = !retained.file;
+    el('saveOriginalCollection').disabled = !retained.file;
     el('analyzeRetainedCorpus').disabled = !!controller;
     el('retryCollection').disabled = !!controller || !retained.live || !(gaps + pending);
   }
@@ -48,8 +54,9 @@
   }
 
   el('saveRetainedCorpus').onclick = () => {
-    if (retained) save(retained.file || JSON.stringify(retained.corpus), retained.ledger ? 'reviewed-analysis.json' : 'un-transcripts.json', 'application/json');
+    if (retained) save(retained.ledger ? retained.file : JSON.stringify(withSavedFilters(retained.corpus, retained.parameters)), retained.ledger ? 'reviewed-analysis.json' : 'un-transcripts.json', 'application/json');
   };
+  el('saveOriginalCollection').onclick = () => { if (retained?.file) save(retained.file, retained.ledger ? 'reviewed-analysis.json' : 'un-transcripts-original.json', 'application/json'); };
   el('analyzeRetainedCorpus').onclick = () => { if (!controller && retained) { nextRun = 'retained'; el('analysisForm').requestSubmit(); nextRun = null; } };
   el('retryCollection').onclick = () => { if (!controller && retained?.live) { nextRun = 'retry'; el('analysisForm').requestSubmit(); nextRun = null; } };
   let ready = false;
@@ -98,6 +105,75 @@
     });
   }
 
+
+  // Explicit paths bind only supported form fields; imported objects are never spread.
+  const filterBindings = {
+    representation:'clustering.representation',clusterAlgorithm:'clustering.algorithm',clusterLinkage:'clustering.linkage',pcaComponents:'clustering.components',clusterCount:'clustering.k',umapNeighbors:'clustering.neighbors',umapDistance:'clustering.minDist',clusterSeed:'clustering.seed',umapSeed:'clustering.umapSeed',
+    mdsEnabled:'clustering.mds.enabled',mdsStarts:'clustering.mds.starts',mdsIterations:'clustering.mds.maxIterations',mdsSeed:'clustering.mds.seed',hdbMinClusterSize:'clustering.hdbscan.minClusterSize',hdbMinSamples:'clustering.hdbscan.minSamples',hdbSelection:'clustering.hdbscan.selection',gmmCovariance:'clustering.gmm.covariance',gmmRegularization:'clustering.gmm.regularization',gmmStarts:'clustering.gmm.starts',gmmIterations:'clustering.gmm.maxIterations',gmmAmbiguity:'clustering.gmm.ambiguity',stabilityEnabled:'clustering.stability.enabled',stabilityUnit:'clustering.stability.unit',stabilityReplicates:'clustering.stability.replicates',stabilityFraction:'clustering.stability.fraction',stabilitySeed:'clustering.stability.seed',
+    nmfComponents:'nmf.components',nmfStarts:'nmf.starts',nmfIterations:'nmf.maxIterations',nmfSeed:'nmf.seed',nmfStability:'nmf.stability.enabled',nmfUnit:'nmf.stability.unit',nmfReplicates:'nmf.stability.replicates'
+  };
+  const pathValue = (object, path) => path.split('.').reduce((value, key) => value && Object.hasOwn(value, key) ? value[key] : undefined, object);
+  function setPath(object, path, value) {
+    const keys = path.split('.'); let target = object;
+    keys.slice(0,-1).forEach(key => { if (!target[key]) target[key] = {}; target = target[key]; });
+    target[keys.at(-1)] = value;
+  }
+  function validatedFilters(input) {
+    if (!input || typeof input !== 'object' || Array.isArray(input)) throw Error('Invalid saved filters.');
+    for (const family of ['clustering','nmf']) if (input[family] !== undefined && (!input[family] || typeof input[family] !== 'object' || Array.isArray(input[family]))) throw Error('Invalid saved option family: ' + family);
+    const p = {topic:input.topic, start:input.start, end:input.end, scope:input.scope, region:input.region,
+      phrases:Array.isArray(input.phrases) ? input.phrases.slice() : input.phrases,
+      exclude:Array.isArray(input.exclude) ? input.exclude.slice() : input.exclude,
+      methods:Array.isArray(input.methods) ? input.methods.slice() : input.methods};
+    if (![...el('region').options].some(option => option.value === p.region)) throw Error('Unknown saved region.');
+    for (const [id,path] of Object.entries(filterBindings)) {
+      const value = pathValue(input,path); if (value === undefined) continue;
+      const control = el(id);
+      if (control.type === 'checkbox' && typeof value !== 'boolean') throw Error('Invalid saved option: ' + id);
+      if (control.type === 'number' && (typeof value !== 'number' || !Number.isFinite(value) || (control.min !== '' && value < (id==='clusterCount' && pathValue(input,'clustering.algorithm')==='gmm' ? 1 : Number(control.min))) || (control.max !== '' && value > Number(control.max)))) throw Error('Invalid saved option: ' + id);
+      if (control.tagName === 'SELECT' && ![...control.options].some(option => option.value === value)) throw Error('Invalid saved option: ' + id);
+      setPath(p,path,value);
+    }
+    // Validate option families even if the saved methods do not currently use them.
+    const methods = p.methods;
+    if (!Array.isArray(methods) || !methods.length || methods.some(method => !UNAnalysis.METHODS.includes(method))) throw Error('Invalid saved methods.');
+    p.methods = [...new Set([...methods,'clusters','nmf'])];
+    const validated = UNAnalysis.parameters(p); validated.methods = methods;
+    return validated;
+  }
+  function withSavedFilters(value, parameters) {
+    return {...value, saved_filters:{schema:'un.browser.saved-filters.v1',parameters:validatedFilters(parameters)}};
+  }
+  function applyFilters(p, message) {
+    if (el('meetingSelectionMode')?.value === 'single') { el('meetingSelectionMode').value = 'range'; el('meetingSelectionMode').dispatchEvent(new Event('change',{bubbles:true})); }
+    el('startDate').value=p.start; el('endDate').value=p.end; el('meetingScope').value=p.scope; el('region').value=p.region;
+    el('topic').value=p.topic; el('phrases').value=p.phrases.filter(phrase => phrase !== p.topic).join(', '); el('excludePhrases').value=p.exclude.join(', ');
+    document.querySelectorAll('input[name=method]').forEach(control => {control.checked=p.methods.includes(control.value);});
+    for (const [id,path] of Object.entries(filterBindings)) {const value=pathValue(p,path);if(value===undefined)continue;if(el(id).type==='checkbox')el(id).checked=value;else el(id).value=value;}
+    datesEdited=true; el('dateRangeNote').textContent=message; updateTopicMode(); updateClusterControls(); updateNMFControls(); invalidate(); status(message);
+  }
+  async function restoreImportedFilters(file) {
+    if (!file) throw Error('Choose a saved collection JSON.');
+    if (restoredFile === file) return restorePromise;
+    restoredFile=file;
+    restorePromise=(async()=>{
+      if (!(await registryReady)) throw Error('Country registry is unavailable.');
+      if (file.size>30000000) throw Error('Choose a collection JSON under 30 MB.');
+      const value=UNAnalysis.validateCorpus(JSON.parse((await file.text()).replace(/^\uFEFF/,'')));
+      let p, message;
+      if (value.saved_filters !== undefined) {
+        if (value.saved_filters?.schema !== 'un.browser.saved-filters.v1') throw Error('Unsupported saved filters version.');
+        p=validatedFilters(value.saved_filters.parameters); message='Restored saved analysis filters. You can change them before generating the report.';
+      } else {
+        const dates=value.records.map(record=>record.date).sort();const collection=value.collection || {};
+        p=validatedFilters({topic:'',phrases:[],exclude:[],start:collection.start || dates[0],end:collection.end || dates.at(-1),scope:collection.selection_mode==='single_meeting'?'all':(collection.scope || 'all'),region:'All regions',methods:['frequency','timeline','tfidf']});
+        message='Restored collection dates and scope. This older file has no saved filters; all regions and all passages are selected.';
+      }
+      if (el('corpusFile').files[0] === file) applyFilters(p,message);
+    })();
+    return restorePromise;
+  }
+  el('corpusFile').addEventListener('change',()=>{restoreImportedFilters(el('corpusFile').files[0]).catch(error=>status('Could not restore collection filters: '+error.message));});
 
   function updateTopicMode() {
     const all = !el('topic').value.trim();
@@ -250,9 +326,9 @@
       ${cats.length?`<div class="table-wrap quick-topic-table"><table><thead><tr><th scope="col">Broad subject</th><th scope="col">Source segments</th><th scope="col">Example from the record</th></tr></thead><tbody>${cats.map(t=>`<tr><td data-label="Subject">${esc(t.label)}</td><td data-label="Segments">${esc(t.segments)}</td><td data-label="Example">${esc(t.evidence[0]?.excerpt||'No source excerpt')}</td></tr>`).join('')}</tbody></table></div>`:'<p>No recurring category was identified by the local issue dictionary.</p>'}
       ${cats.some(t=>t.evidence.length)?`<details><summary>Open evidence links for these subjects</summary><ol>${cats.map(t=>`<li><strong>${esc(t.label)}:</strong> ${evidence(t.evidence)}</li>`).join('')}</ol></details>`:''}
       <h4>Country-linked expressions</h4>
-      <p class="method-note">Broad descriptions of explicit first-person statements on a named subject. A country's presence, a keyword mention, or a source segment is not proof of an official position. Statements made explicitly for a broader country group are withheld from a single-country classification. The evaluative verb must concern the nearby subject; confirm the specific measure and attribution before citing.</p>
+      <p class="method-note">Each recorded action applies to the displayed policy object, not to the broad subject category. Condemning attacks on aid workers does not mean opposing aid. Country labels follow recorded affiliation; group statements are withheld from individual-country attribution. Confirm the wording and attribution in the source before citing.</p>
       ${stat.withheld_collective_segments?`<p class="method-note">${esc(stat.withheld_collective_segments)} source segments contain group/collective attribution cues and cannot independently establish a single-country position.</p>`:''}
-      ${positions.length?`<div class="table-wrap position-table"><table><thead><tr><th scope="col">Country label</th><th scope="col">Subject</th><th scope="col">Recorded expression</th><th scope="col">Original evidence</th></tr></thead><tbody>${positions.map(r=>`<tr><td data-label="Country">${esc(r.country)}</td><td data-label="Subject">${esc(r.issue)}</td><td data-label="Expression">${esc(rank(r.classification))}</td><td data-label="Source evidence">${evidence(r.evidence)}</td></tr>`).join('')}</tbody></table></div>`:'<p>No attributed first-person expression meets the conservative rule. Country positions are not established from these passages.</p>'}
+      ${positions.length?`<div class="table-wrap position-table"><table><thead><tr><th scope="col">Country label</th><th scope="col">Subject</th><th scope="col">Policy object</th><th scope="col">Recorded action</th><th scope="col">Original evidence</th></tr></thead><tbody>${positions.map(r=>`<tr><td data-label="Country">${esc(r.country)}</td><td data-label="Subject">${esc(r.issue)}</td><td data-label="Policy object">${esc(r.expression_object || 'Not established')}</td><td data-label="Expression">${esc(r.expression_label || r.expression_action || rank(r.classification))}</td><td data-label="Source evidence">${evidence(r.evidence)}</td></tr>`).join('')}</tbody></table></div>`:'<p>No attributed first-person expression meets the conservative rule. Country positions are not established from these passages.</p>'}
       ${q.positions.length>12?`<p class="method-note">The opening table shows 12 of ${esc(q.positions.length)} entries. The complete source-linked classifications are retained in the analysis JSON.</p>`:''}
       <details><summary>How this quick read was produced, and what it cannot establish</summary>
         <p>Everything above was generated locally from this meeting's collected English text using a fixed issue dictionary and source-linked sentence cues. No external generative AI API, remote classifier, or new model fitting was used.</p>
@@ -273,6 +349,11 @@
   }
 
   // ---------- Report content ----------
+
+  function lexicalProcessingNote(processing) {
+    if (!processing) return '';
+    return `<p class="method-note">Lexical analysis removed ${esc(processing.removed_sentence_count)} narrowly identified procedural sentences. ${esc(processing.zero_text_ids.length)} source segments have no text left for term analysis. All ${esc(processing.original_included_count)} original included segments remain in the descriptive counts and denominators; original source text is unchanged. ${(processing.procedural_stoplist || []).length ? 'The procedural stop list suppresses ' + esc(processing.procedural_stoplist.join(', ')) + '. ' : ''}${processing.zero_vector_ids ? esc(processing.zero_vector_ids.length) + ' zero-vector segments are excluded from similarity pairs.' : ''}</p>`;
+  }
 
   function render(report) {
     const p = report.parameters;
@@ -460,6 +541,7 @@
     if (methods.tfidf) {
       html += `
         <h3>TF-IDF term ranking</h3>
+        ${lexicalProcessingNote(methods.tfidf.processing)}
         <p class="method-note">Terms ranked by their average TF-IDF weight across included unique passages.</p>
         <details>
           <summary>Calculation</summary>
@@ -481,14 +563,14 @@
     }
 
     if (methods.similarity) {
-      html += '<h3>Pairwise cosine text similarity</h3>';
+      html += '<h3>Pairwise cosine text similarity</h3>' + lexicalProcessingNote(methods.similarity.processing);
 
       if (methods.similarity.skipped) {
         html += `<p class="warning">${esc(methods.similarity.skipped)}</p>`;
       } else {
         html += `
           <p class="method-note">
-            Top 10 of ${methods.similarity.compared} pairs using the same full TF-IDF vectors.
+            Top 10 of ${methods.similarity.compared} pairs using TF-IDF vectors after the procedural sentence filtering described above.
             Similar language is not evidence of shared stance or coordination.
             Exact duplicates have already been removed.
           </p>
@@ -668,7 +750,7 @@
   el('nmfMethod').addEventListener('change',updateNMFControls);el('nmfStability').addEventListener('change',updateNMFControls);updateNMFControls();
   function runNMFWorker(records,vectors,options){
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.12.1');
+      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.14.0');
       const finish=(fn,v)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(v);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));signal.addEventListener('abort',abort,{once:true});
       worker.onerror=()=>finish(reject,Error('NMF worker could not run. Reload the page or check browser permissions.'));
@@ -679,7 +761,7 @@
 
   function runClusterWorker(records,vectors,options,progress) {
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.12.1');
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.14.0');
       const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
       signal.addEventListener('abort',abort,{once:true});
@@ -705,6 +787,7 @@
       if (!ready) throw Error('Country registry is not available. Reload the page.');
 
       const mode = nextRun; nextRun = null;
+      if (!mode && el('corpusSource').value === 'import') await restoreImportedFilters(el('corpusFile').files[0]);
       const p = mode === 'retry' ? retained.parameters : settings();
       const previous = mode ? retained : null;
       controller = new AbortController();
@@ -904,7 +987,7 @@
 
   el('exportCorpus').onclick = () => {
     if (corpus && !stale) {
-      save(importedCorpusFile || JSON.stringify(corpus), result?.reviewed_units?'reviewed-analysis.json':'un-transcripts.json', 'application/json');
+      save(result?.reviewed_units ? importedCorpusFile : JSON.stringify(withSavedFilters(corpus, result?.parameters || retained.parameters)), result?.reviewed_units?'reviewed-analysis.json':'un-transcripts.json', 'application/json');
     }
   };
   el('exportAudioLedger').onclick=()=>{
@@ -984,7 +1067,8 @@
       }
 
       ready = true;
+      resolveRegistry(true);
     })
-    .catch(error => status('Country registry failed to load: ' + error.message));
+    .catch(error => { resolveRegistry(false); status('Country registry failed to load: ' + error.message); });
 
 })();
