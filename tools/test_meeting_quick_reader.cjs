@@ -27,7 +27,7 @@ check('unmapped country retained as missing',()=>{assert.equal(result.stats.unre
 check('counts do not claim one segment equals one speaker',()=>{assert.equal(result.stats.recorded_countries,6);assert.ok(result.limitations.some(x=>x.includes('person identifiers')));});
 check('prose has defensible caveats and source scope',()=>{assert.equal(result.paragraphs.length,2);assert.ok(result.paragraphs[0].includes('not a finding'));assert.equal(result.sources,'all_english_source_segments_in_exact_selected_meeting_before_topic_filter');});
 check('themes count source segments, not repeated keywords',()=>{assert.ok(result.themes.find(x=>x.id==='humanitarian').segments>=4);assert.ok(result.themes.every(x=>x.segments<=result.stats.source_segments));});
-check('genuine subject support requires attributed first-person statement',()=>{assert.ok(result.positions.some(p=>p.country==='Country A'&&p.classification==='mixed_or_qualified'));});
+check('different policy objects retain their own explicit actions',()=>{const rows=result.positions.filter(p=>p.country==='Country A');assert.ok(rows.some(p=>p.expression_label==='Supports'));assert.ok(rows.some(p=>p.expression_label==='Opposes'));assert.ok(rows.every(p=>p.expression_object));});
 check('other-country reported position never becomes speaker stance',()=>{assert.ok(!result.positions.some(p=>p.country==='Country B'));});
 check('unmapped affiliation cannot create a country position',()=>{assert.ok(!result.positions.some(p=>p.country==='Unmapped'));});
 check('procedural speaker not assigned position',()=>{assert.ok(!result.positions.some(p=>p.country==='Country E'));});

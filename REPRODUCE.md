@@ -2,7 +2,7 @@
 
 ## Use the browser application
 
-Open the [report builder](https://lystadjs.github.io/un/transcript-agent/). No installation or coding is required. Select a meeting or date range, generate a report, inspect its evidence and coverage, then save the transcript JSON to reopen the collection. The [browser guide](docs/BROWSER_ANALYSIS.md) explains the controls and limits. The current application release is **1.13.0**; `site/release.json` is the release record.
+Open the [report builder](https://lystadjs.github.io/un/transcript-agent/). No installation or coding is required. Select a meeting or date range, generate a report, inspect its evidence and coverage, then save the transcript JSON to reopen the collection. The [browser guide](docs/BROWSER_ANALYSIS.md) explains the controls and limits. The current application release is **1.14.0**; `site/release.json` is the release record.
 
 ## Developer verification
 
@@ -14,6 +14,8 @@ node tools/test_meeting_quick_reader.cjs
 node tools/test_meeting_quick_reader_context.cjs
 node tools/test_meeting_picker.cjs
 node tools/test_browser_briefing.cjs
+node tools/test_text_units.cjs
+node tools/test_object_expressions.cjs
 node tools/test_collection_recovery.cjs
 python tools/build_pages.py _site
 ```

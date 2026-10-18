@@ -1,0 +1,26 @@
+'use strict';
+const assert=require('node:assert/strict');
+const Text=require('../site/text-units.js'),Core=require('../site/analysis-core.js');
+assert.deepEqual(Text.tokens('ＦＯＯ café—peace, 123!'),['foo','café','peace','123']);
+assert.equal(Text.wordCount('peace—security １０ children’s'),5);
+assert.equal(Text.wordCount('...'),0);
+assert.equal(Text.reduceProceduralNoise('I thank the representative of China for the statement. And I now give the floor to the representative of Latvia.').text,'');
+const courtesy='Thank you, Mr. Chair. We support humanitarian assistance for displaced families and oppose sanctions on medicine.';
+assert.equal(Text.reduceProceduralNoise(courtesy).text,'We support humanitarian assistance for displaced families and oppose sanctions on medicine.');
+assert.equal(Text.reduceProceduralNoise(courtesy).removed_sentence_count,1);
+for(const text of ['I thank the representative for her statement.','The 10,245th meeting of the Security Council is called to order.','I thank the representative of China for the statement.','I thank Mrs. DiCarlo for her briefing.','Thank you, President, for giving me the floor.','I now give the floor to the representative of Example.','The meeting is adjourned.','The Security Council will now begin its consideration of the agenda item.']) assert.equal(Text.reduceProceduralNoise(text).text,'',text);
+for(const text of ['Thank you for supporting humanitarian assistance to displaced families.','We call for the Security Council to act now.','The Security Council should protect civilians.','I thank the chair, but sanctions should end.','Thank you, President, sanctions should end immediately.','I thank the representative of China for her statement on sanctions.','I thank Mrs. DiCarlo for supporting sanctions.'])assert.equal(Text.reduceProceduralNoise(text).text,text,text);
+const slug='ga/c3/81/1',date='2099-01-01';
+const texts=['The Security Council will now begin its consideration of the agenda item.','Thank you, Mr. Chair. Humanitarian assistance for displaced families remains essential.','Education and economic development strengthen communities.'];
+const records=texts.map((text,i)=>({id:slug+'#'+i,meeting_slug:slug,date,text,scope:'committee_3',meeting:'Synthetic',country:'Example '+i,region:'Africa',language:'en',source_url:'https://transcripts.un.org/en/'+slug,text_sha256:'a'.repeat(64)}));
+const original=JSON.stringify(records),raw=Core.tfidf(records),clean=Core.tfidf(records,{reduceProceduralNoise:true});
+const stopped=Core.tfidf([{...records[0],text:'representative floor statement'}],{reduceProceduralNoise:true});
+assert.equal(stopped.vectors[0].size,0);assert.deepEqual(stopped.processing.zero_vector_ids,[records[0].id]);assert.ok(stopped.processing.procedural_stoplist.includes('floor'));
+assert.ok(raw.terms.some(t=>t.term==='council'));assert.ok(!clean.terms.some(t=>t.term==='council'));assert.ok(clean.terms.some(t=>t.term==='humanitarian'));assert.equal(clean.processing.removed_sentence_count,2);assert.deepEqual(clean.processing.zero_text_ids,[records[0].id]);assert.equal(clean.processing.original_included_count,3);assert.equal(JSON.stringify(records),original);
+(async()=>{
+ const corpus={schema:'un.browser.corpus.v1',records,coverage:[]};
+ let latentCalled=false;
+ const result=await Core.analyze(corpus,{start:date,end:date,scope:'all',region:'All regions',topic:'',phrases:[],exclude:[],methods:['tfidf','similarity','clusters','length']},undefined,async(given,vectors)=>{latentCalled=true;assert.deepEqual(given,records);assert.deepEqual(vectors,raw.vectors);return {synthetic:true};});
+ assert.ok(latentCalled);assert.equal(result.counts.matched,3);assert.equal(result.briefing.stats.matched_words,texts.reduce((n,t)=>n+Text.wordCount(t),0));assert.ok(!result.briefing.themes.some(t=>t.id==='peace_security'));assert.ok(result.briefing.themes.some(t=>t.id==='humanitarian'));assert.equal(result.methods.tfidf.processing.original_included_count,3);assert.equal(result.methods.similarity.processing.removed_sentence_count,2);assert.equal(result.methods.length.reduce((n,b)=>n+b.total,0),3);assert.equal(JSON.stringify(records),original);
+ console.log('PASS shared Unicode counts, narrow procedural sentence reduction, original counts/provenance, lexical audit and unchanged latent vectors (synthetic only; heldout opened: 0)');
+})().catch(e=>{console.error(e);process.exitCode=1;});

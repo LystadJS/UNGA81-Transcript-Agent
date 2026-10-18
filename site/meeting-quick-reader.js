@@ -1,6 +1,7 @@
 /* Deterministic, local-only meeting quick read. No external AI or speaker inference. */
 (function (root) {
   'use strict';
+  const TextUnits = typeof module !== 'undefined' && module.exports ? require('./text-units.js') : root.UNTextUnits;
   const ISSUES = Object.freeze([
     {id:'human_rights',label:'Human rights and accountability',pattern:/\b(?:human rights|civil liberties|civil rights|racial discrimination|accountability|humanitarian law|fundamental freedom|rights violation)\b/i},
     {id:'humanitarian',label:'Humanitarian assistance',pattern:/\b(?:humanitarian(?!\s+(?:law|rights)\b)|refugees?|displaced persons|food security|relief efforts?|humanitarian access|civilian protection|humanitarian assistance)\b/i},
@@ -19,8 +20,8 @@
   const NEGATIVE = /\b(?:oppose|reject|object to|condemn|deep concern|serious concern|deplore|cannot support|do not support|are against)\b/i;
   const NEGATION = /\b(?:do not|don't|cannot|can't|never|not)\s+(?:fully\s+)?(?:support|endorse|welcome|back|favor|favour)\b/i;
   const ALLOW = /^https:\/\/transcripts\.un\.org(?:\/|$)/i;
-  const wordCount = text => (String(text||'').match(/\S+/g)||[]).length;
-  const sentences = text => String(text||'').replace(/\s+/g,' ').trim().split(/(?<=[.!?])\s+(?=[\p{Lu}\d"“])/u).filter(Boolean);
+  const wordCount = text => TextUnits.wordCount(text);
+  const sentences = text => TextUnits.sentences(text);
   const trimmed = value => typeof value==='string' ? value.trim().slice(0,240) : '';
   const safeURL = value => {
     try {const url=new URL(value);return ALLOW.test(url.href)&&!url.username&&!url.password&&!url.hash?url.href:null;}
@@ -132,6 +133,25 @@
     if(kinds.size>1 || /\b(?:subject to|provided that|only if|unless|with the consent|on condition that)\b/i.test(sentence))return 'mixed_or_qualified';
     return candidates[0];
   }
+  // Retain the verb's actual grammatical object. An issue family is context,
+  // not the target of support or opposition (e.g. condemning attacks on aid).
+  function expressions(sentence,issue){
+    const labels={'support':'Supports','supports':'Supports','endorse':'Endorses','welcome':'Welcomes','welcomes':'Welcomes','urge':'Urges','urges':'Urges','advocate':'Advocates','advocates':'Advocates','favor':'Favors','favour':'Favors','oppose':'Opposes','opposes':'Opposes','reject':'Rejects','rejects':'Rejects','condemn':'Condemns','condemns':'Condemns','deplore':'Deplores','deplores':'Deplores','do not support':'Does not support','cannot support':'Cannot support','are against':'Opposes','express concern':'Expresses concern about','are concerned':'Expresses concern about','have concerns':'Expresses concern about','stand behind':'Supports','call for':'Calls for','commit to':'Commits to','object to':'Objects to','back':'Supports','backs':'Supports'};
+    const found=[];
+    for(const piece of sentence.split(/[,;:]|\b(?:but|however|although)\b/i)){
+      const part=piece.trim();
+      const match=part.match(/^(?:we|i|our delegation|my delegation|our government|my government|our country)\b\s*(?:(?:strongly|fully|firmly|clearly|also|continue to|repeatedly|deeply)\s+){0,3}(do not support|cannot support|are against|express concern|are concerned|have concerns|stand behind|call for|commit to|object to|endorse|support(?:s)?|welcome(?:s)?|urge(?:s)?|advocate(?:s)?|favor(?:s)?|favour(?:s)?|oppose(?:s)?|reject(?:s)?|condemn(?:s)?|deplore(?:s)?|back(?:s)?)\b\s*(.+)$/i);
+      if(!match)continue;
+      const classification=stance(part,issue);if(!classification)continue;
+      const action=match[1].toLowerCase(),object=match[2].trim().replace(/[.!?]+$/,'');
+      if(!object)continue;
+      const qualified=stance(sentence,issue)==='mixed_or_qualified';
+      found.push({classification:qualified?'mixed_or_qualified':classification,
+        expression_action:action,expression_object:object.slice(0,480),
+        expression_label:(qualified?'Qualified: ':'')+(labels[action]||action)});
+    }
+    return found;
+  }
   function build(records, options={}){
     if(!Array.isArray(records))throw Error('Quick reader requires original meeting records.');
     const slug=String(options.meeting_slug||'');
@@ -141,14 +161,18 @@
     verified.forEach(r=>counted.add(r.country));
     const counts=new Map(ISSUES.map(i=>[i.id,{...i,count:0,evidence:[]}]));
     const positionIndex=new Map();let substantive=0,unknown=0,collective=0,words=[],withSpeakerId=0,withSpeakerProxy=0;
+    const processing={method:'narrow_procedural_sentences_v1',original_included_count:selected.length,removed_sentence_count:0,zero_text_ids:[]};
     for(const record of selected){
       const text=String(record.text||'');words.push(wordCount(text));
       const speaker=speakerEvidence(record);if(speaker.speaker_identity_observed)withSpeakerId++;if(speaker.speaker_proxy)withSpeakerProxy++;
       if(record.attribution?.country_status!=='registry_mapped'||record.region==='Unmapped')unknown++;
       if(collectiveAttribution(record))collective++;
+      const cleaned=TextUnits.reduceProceduralNoise(text);
+      processing.removed_sentence_count+=cleaned.removed_sentence_count;
+      if(!wordCount(cleaned.text))processing.zero_text_ids.push(record.id);
       if(!isSubstantive(text))continue;
       substantive++;
-      const lines=sentences(text);
+      const lines=sentences(cleaned.text);
       for(const issue of ISSUES){
         const hits=lines.filter(s=>issue.pattern.test(s));
         if(!hits.length)continue;
@@ -158,21 +182,23 @@
         for(const line of hits){
           // Do not promote issue co-occurrence or reported third-party views to a country stance.
           if(!FIRST.test(line))continue;
-          const detected=stance(line,issue);
-          if(!detected)continue;
-          const key=record.country+'\0'+issue.id;
-          const existing=positionIndex.get(key)||{country:record.country,issue:issue.label,issue_id:issue.id,labels:new Set(),evidence:[],source_segments:new Set()};
-          existing.labels.add(detected);existing.source_segments.add(record.id);
+          for(const expression of expressions(line,issue)){
+          const key=record.country+'\0'+issue.id+'\0'+expression.expression_action+'\0'+expression.expression_object.toLowerCase();
+          const existing=positionIndex.get(key)||{country:record.country,issue:issue.label,issue_id:issue.id,...expression,labels:new Set(),evidence:[],source_segments:new Set()};
+          existing.labels.add(expression.classification);existing.source_segments.add(record.id);
           if(existing.evidence.length<2&&safeURL(record.source_url))existing.evidence.push({record_id:record.id,source_url:safeURL(record.source_url),excerpt:line.slice(0,480),text_sha256:record.text_sha256||null,json_pointer:record.json_pointer||null});
           positionIndex.set(key,existing);
+          }
         }
       }
     }
     const themes=[...counts.values()].filter(x=>x.count>0).sort((a,b)=>b.count-a.count||a.label.localeCompare(b.label));
     const positions=[...positionIndex.values()].map(v=>({country:v.country,issue:v.issue,issue_id:v.issue_id,
+      expression_action:v.expression_action,expression_object:v.expression_object,expression_label:v.expression_label,
+      classification_target:'expression_object',
       classification:v.labels.size>1||v.labels.has('qualified_or_mixed')?'mixed_or_qualified':[...v.labels][0],
       source_segment_count:v.source_segments.size,evidence:v.evidence,
-      interpretation:'Broad issue-level descriptions may concern different measures; mixed categories do not prove a contradiction on the same proposal.'}))
+      interpretation:'The recorded verb applies only to the displayed policy object. The subject family does not itself receive a support or opposition label.'}))
       .sort((a,b)=>a.country.localeCompare(b.country)||a.issue.localeCompare(b.issue));
     const sortedWords=words.slice().sort((a,b)=>a-b);
     const median=sortedWords.length?(sortedWords.length%2?sortedWords[(sortedWords.length-1)/2]:(sortedWords[sortedWords.length/2-1]+sortedWords[sortedWords.length/2])/2):null;
@@ -182,17 +208,17 @@
     const cues=agendaCues(selected);
     const prose=themes.length?
       [`The available English record contains recurring references to ${topic.join(' and ')}. The counts cover ${substantive} substantive-looking source segments and are not a finding about formal agenda items or meeting decisions.`,
-       positions.length?`The transcript contains ${positions.length} narrowly matched issue-level expressions attributed to ${new Set(positions.map(p=>p.country)).size} recorded country labels. Each concerns particular wording, not a country's overall policy or the meeting's consensus.`:
+       positions.length?`The transcript contains ${positions.length} object-specific expressions attributed to ${new Set(positions.map(p=>p.country)).size} recorded country labels. Each concerns particular wording, not a country's overall policy or the meeting's consensus.`:
        'The available wording does not support a reliable country-position summary. The source passages below remain available for attribution and substantive review.']:
       ['The available English record does not identify a recurring substantive subject under the fixed issue dictionary. A missing theme is not evidence that an issue was absent from the meeting.',
        'No country position is classified without an attributed first-person statement on a specific issue. Source limitations and unresolved affiliations remain visible below.'];
-    return {schema:'un.meeting-quick-reader.v1',engine:'un.meeting-quick-reader.v1.3-browser-briefing',method:'offline_deterministic_extract_with_source_links',single_meeting:true,meeting_slug:slug,meeting_date:date,meeting_title:title,agenda:agendaSeries(slug,title),agenda_cues:cues,
+    return {schema:'un.meeting-quick-reader.v1',engine:'un.meeting-quick-reader.v1.4-object-expressions',method:'offline_deterministic_extract_with_source_links',single_meeting:true,meeting_slug:slug,meeting_date:date,meeting_title:title,agenda:agendaSeries(slug,title),agenda_cues:cues,
       sources:'all_english_source_segments_in_exact_selected_meeting_before_topic_filter',
       stats:{source_segments:recorded,substantive_looking_segments:substantive,median_words_per_segment:median,mapped_country_segments:verified.length,unresolved_country_segments:unknown,recorded_countries:counted.size,withheld_collective_segments:collective,records_with_explicit_speaker_id:withSpeakerId,records_with_affiliation_function_proxy:withSpeakerProxy,explicit_issue_country_positions:positions.length},
-      paragraphs:prose,themes:themes.map(({id,label,count,evidence})=>({id,label,segments:count,evidence})).slice(0,6),positions,
+      paragraphs:prose,themes:themes.map(({id,label,count,evidence})=>({id,label,segments:count,evidence})).slice(0,6),positions,processing,
       limitations:['Automatic UN transcripts and recorded speaker metadata are not independently authenticated.','One source segment is not necessarily one speaker or a complete speech; affiliation and function are not person identifiers.','Country affiliation and first-person language are provisional attribution, not verified governmental stance. Explicit group/coalition statements are withheld from single-country positions.','Keyword themes are broad mention counts. Country expressions require a nearby evaluative verb and issue term; even direct cues may concern a narrower measure, and contextual contradiction can remain undetected.','Topic-filtered figures below may use fewer passages than this all-meeting quick read.'],
       external_ai_calls:0};
   }
-  const api={build,agendaSeries,speakerEvidence,role,safeURL,ISSUES,isSubstantive,collectiveAttribution,agendaCues,stance};
+  const api={build,agendaSeries,speakerEvidence,role,safeURL,ISSUES,isSubstantive,collectiveAttribution,agendaCues,stance,expressions};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UNMeetingQuickReader=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

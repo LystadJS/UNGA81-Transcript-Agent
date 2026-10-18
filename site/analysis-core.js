@@ -16,7 +16,9 @@
     ? require('./reviewed-units.js') : root.UNReviewedUnits;
   const MeetingQuickReader = typeof module !== 'undefined' && module.exports
     ? require('./meeting-quick-reader.js') : root.UNMeetingQuickReader;
-  const VERSION = 'browser-descriptive-1.13.0';
+  const TextUnits = typeof module !== 'undefined' && module.exports
+    ? require('./text-units.js') : root.UNTextUnits;
+  const VERSION = 'browser-descriptive-1.14.0';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters', 'nmf'];
 
@@ -28,9 +30,7 @@
      'would you your').split(' ')
   );
 
-  const tokens = text => (
-    text.normalize('NFKC').toLowerCase().match(/[\p{L}\p{N}]+/gu) || []
-  );
+  const tokens = TextUnits.tokens;
 
   const canonical = text => tokens(text).join(' ');
 
@@ -167,12 +167,20 @@
 
 
   // Sublinear term frequency, smoothed inverse document frequency, L2 scaling.
-  function tfidf(records) {
-    const counts = records.map(record => {
+  function tfidf(records, options = {}) {
+    const proceduralStop = new Set(['thank','thanks','floor','representative','representatives','statement','statements','give','madam','chair']);
+    const processed = records.map(record => options.reduceProceduralNoise
+      ? TextUnits.reduceProceduralNoise(record.text) : {text:record.text,removed_sentence_count:0});
+    const processing = {method:options.reduceProceduralNoise ? 'narrow_procedural_sentences_v1' : 'original_text',
+      original_included_count:records.length,
+      removed_sentence_count:processed.reduce((sum,item)=>sum+item.removed_sentence_count,0),
+      zero_text_ids:records.filter((r,i)=>!TextUnits.wordCount(processed[i].text)).map(r=>r.id)};
+    if(options.reduceProceduralNoise)processing.procedural_stoplist=[...proceduralStop];
+    const counts = records.map((record,index) => {
       const frequencies = new Map();
 
-      for (const term of tokens(record.text)) {
-        if (term.length > 2 && !STOP.has(term)) {
+      for (const term of tokens(processed[index].text)) {
+        if (term.length > 2 && !STOP.has(term) && !(options.reduceProceduralNoise && proceduralStop.has(term))) {
           frequencies.set(term, (frequencies.get(term) || 0) + 1);
         }
       }
@@ -226,7 +234,8 @@
       .sort((a, b) => b.mean - a.mean || a.term.localeCompare(b.term))
       .slice(0, 20);
 
-    return { vectors, terms, vocabulary: documentFrequency.size };
+    processing.zero_vector_ids=records.filter((r,i)=>vectors[i].size===0).map(r=>r.id);
+    return { vectors, terms, vocabulary: documentFrequency.size, processing };
   }
 
 
@@ -255,11 +264,16 @@
   }
 
   function briefing(records, matched, duplicates, corpus, p) {
-    const words = matched.map(r => tokens(r.text).length).sort((a,b) => a-b);
+    const words = matched.map(r => TextUnits.wordCount(r.text)).sort((a,b) => a-b);
     const median = words.length ? (words[Math.floor((words.length-1)/2)] + words[Math.floor(words.length/2)]) / 2 : null;
     const sources = matched.filter(r => MeetingQuickReader.safeURL(r.source_url)).map(r => ({record_id:r.id,source_url:MeetingQuickReader.safeURL(r.source_url)}));
+    const processed = matched.map(r => TextUnits.reduceProceduralNoise(r.text));
+    const thematicRecords = matched.map((r,i) => ({...r,text:processed[i].text}));
+    const processing={method:'narrow_procedural_sentences_v1',original_included_count:matched.length,
+      removed_sentence_count:processed.reduce((n,r)=>n+r.removed_sentence_count,0),
+      zero_text_ids:thematicRecords.filter(r=>!TextUnits.wordCount(r.text)).map(r=>r.id)};
     const themes = MeetingQuickReader.ISSUES.map(issue => {
-      const hits = matched.filter(r => issue.pattern.test(r.text));
+      const hits = thematicRecords.filter(r => issue.pattern.test(r.text));
       return {id:issue.id,label:issue.label,segments:hits.length,evidence:hits.filter(r => MeetingQuickReader.safeURL(r.source_url)).slice(0,2).map(r => ({record_id:r.id,source_url:MeetingQuickReader.safeURL(r.source_url),excerpt:themeExcerpt(r.text, issue.pattern)}))};
     }).filter(t => t.segments).sort((a,b) => b.segments-a.segments || a.label.localeCompare(b.label)).slice(0,6);
     const warnings = corpus.coverage.filter(row => row.status !== 'ok' && row.status !== 'collected');
@@ -270,9 +284,9 @@
       matched.length ? `The included text contains ${words.reduce((a,b)=>a+b,0)} words, with a median of ${median} words per source segment. Segments may be fragments or several turns; these figures do not measure complete speeches or unique speakers.` : 'No source segments satisfy the current filters. This does not establish that the issue was absent from the proceedings.',
       themes.length ? `The fixed issue dictionary finds references to ${themes.slice(0,2).map(t=>t.label.toLowerCase()).join(' and ')} most often among its issue families. Counts describe mentions in included segments, not priorities, agreement or decisions.` : 'The fixed issue dictionary identifies no subject family in the included text. Subjects outside that dictionary remain unclassified.',
       `${warnings.length} of ${corpus.coverage.length} saved coverage entries have a status other than successful collection. Coverage refers to the saved collection and may extend beyond the current filters; the available text is not proof of complete proceedings.`];
-    return {schema:'un.browser-briefing.v1',method:'offline_deterministic_descriptive_summary',paragraphs,
+    return {schema:'un.browser-briefing.v1',method:'offline_deterministic_descriptive_summary',paragraphs,processing,
       stats:{eligible_segments:records.length,matched_segments:matched.length,matched_meetings:meetings,matched_words:words.reduce((a,b)=>a+b,0),median_words_per_segment:median,duplicate_segments:duplicates.length,coverage_entries:corpus.coverage.length,coverage_warnings:warnings.length},
-      themes,sources,limitations:['Automatic transcript text and imported metadata are not independently authenticated.','Exact-text duplicates are removed within the current selection; source segments are not unique speeches or speakers.','Theme counts use a fixed dictionary and do not infer country positions, voting outcomes or meeting consensus.','This deterministic summary describes the included source text and does not replace reading the linked passages.'],external_ai_calls:0};
+      themes,sources,limitations:['Automatic transcript text and imported metadata are not independently authenticated.','Exact-text duplicates are removed within the current selection; source segments are not unique speeches or speakers.','Theme counts use a fixed dictionary after removing narrow procedural sentences; original segment and word totals remain unchanged. They do not infer country positions, voting outcomes or meeting consensus.','This deterministic summary describes the included source text and does not replace reading the linked passages.'],external_ai_calls:0};
   }
 
   async function analyze(corpus, p, yieldProgress = async () => {}, runClusters, runNMF) {
@@ -376,7 +390,7 @@
       ];
 
       for (const record of matched) {
-        const count = tokens(record.text).length;
+        const count = TextUnits.wordCount(record.text);
         bins.find(bin => count <= bin.max).total++;
       }
 
@@ -391,14 +405,17 @@
         (p.methods.includes('nmf')&&!result.methods.nmf) ||
         (p.methods.includes('clusters') && !result.methods.clusters)) {
       await yieldProgress('Calculating TF-IDF');
-      const terms = tfidf(matched);
+      const needsLexical = p.methods.some(method => ['tfidf','similarity'].includes(method));
+      const terms = needsLexical ? tfidf(matched,{reduceProceduralNoise:true}) : null;
+      // Research latent models retain the original representation and inputs.
+      const latentTerms = (p.methods.includes('nmf') || p.methods.includes('clusters')) ? tfidf(matched) : null;
 
       if(p.methods.includes('nmf')&&!result.methods.nmf){
         const runner=runNMF||((records,vectors,settings,progress)=>{
           if(typeof module==='undefined'||!module.exports)throw Error('NMF worker is unavailable. Reload the page.');
           return require('./nmf-core.js').run(records,vectors,settings,progress);
         });
-        result.methods.nmf=await runner(matched,terms.vectors,p.nmf,yieldProgress);
+        result.methods.nmf=await runner(matched,latentTerms.vectors,p.nmf,yieldProgress);
       }
 
       if (p.methods.includes('clusters') && !result.methods.clusters) {
@@ -406,13 +423,14 @@
           if (typeof module === 'undefined' || !module.exports) throw Error('Clustering worker is unavailable. Reload the page.');
           return require('./cluster-core.js').run(records,vectors,settings,progress);
         });
-        result.methods.clusters = await runner(matched,terms.vectors,p.clustering,yieldProgress);
+        result.methods.clusters = await runner(matched,latentTerms.vectors,p.clustering,yieldProgress);
       }
 
       if (p.methods.includes('tfidf')) {
         result.methods.tfidf = {
           terms: terms.terms,
-          vocabulary: terms.vocabulary
+          vocabulary: terms.vocabulary,
+          processing: terms.processing
         };
       }
 
@@ -426,6 +444,7 @@
 
           for (let i = 0; i < terms.vectors.length; i++) {
             for (let j = i + 1; j < terms.vectors.length; j++) {
+              if (!terms.vectors[i].size || !terms.vectors[j].size) continue;
               let score = 0;
 
               for (const [term, weight] of terms.vectors[i]) {
@@ -450,7 +469,8 @@
 
           result.methods.similarity = {
             pairs: pairs.slice(0, 10),
-            compared: pairs.length
+            compared: pairs.length,
+            processing: terms.processing
           };
         }
       }
