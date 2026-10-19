@@ -50,3 +50,5 @@ require("./test_browser_all_passages.cjs");
 require('./test_mixed_scope.cjs');
 
 require('./test_formal_scope.cjs');
+
+require('./test_passage_labels.cjs');

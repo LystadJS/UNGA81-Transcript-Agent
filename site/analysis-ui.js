@@ -142,7 +142,7 @@
     return validated;
   }
   function withSavedFilters(value, parameters) {
-    return {...value, saved_filters:{schema:'un.browser.saved-filters.v1',parameters:validatedFilters(parameters)}};
+    return {...value, passage_labels:UNPassageLabels.snapshot(value.records), saved_filters:{schema:'un.browser.saved-filters.v1',parameters:validatedFilters(parameters)}};
   }
   function applyFilters(p, message) {
     if (el('meetingSelectionMode')?.value === 'single') { el('meetingSelectionMode').value = 'range'; el('meetingSelectionMode').dispatchEvent(new Event('change',{bubbles:true})); }
@@ -582,6 +582,10 @@
       }
     }
 
+    if (report.passage_labels) {
+      const rows=report.passage_labels.records;
+      html += `<section aria-label="Passage labels"><h3>Passage labels</h3><p>Automatic, provisional labels for humanitarian access and civilian protection language. A passage can have several labels. Counts overlap; no label means the rule found no clear cue.</p>${table(['Label','Passages'],UNPassageLabels.LABELS.map(label=>[UNPassageLabels.NAMES[label],rows.filter(r=>r.labels.includes(label)).length]))}<p class="method-note">Requested action describes an appeal or obligation. Reported condition describes a restriction or harm. Claimed implementation describes a reported step already taken. Labels do not verify events, compliance or country positions. Group statements retain group attribution. Inspect the original evidence below.</p></section>`;
+    }
     html += `
       <h3>Source passages</h3>
       <p>
@@ -591,9 +595,14 @@
     `;
 
     for (const record of report.matched.slice(0, 100)) {
+      const annotation=report.passage_labels?.records.find(r=>r.record_id===record.id);
+      const lines=UNTextUnits.sentences(record.text);
+      const labelsHTML=annotation?`<p><strong>${annotation.labels.length?annotation.labels.map(l=>esc(UNPassageLabels.NAMES[l])).join(' · '):'No clear label'}</strong> · Automatic provisional labels</p><details><summary>Label evidence and attribution</summary><p>${esc(annotation.attribution.label)}. Based on retained source metadata and opening wording; identity and governmental stance are not verified.</p>${annotation.labels.map(l=>`<p><strong>${esc(UNPassageLabels.NAMES[l])}</strong></p><ul>${annotation.evidence[l].map(i=>`<li>${esc(lines[i])}</li>`).join('')}</ul>`).join('')}</details>`:'';
+
       html += `
         <div class="evidence-item">
-          <strong>${esc(record.country)} · ${esc(record.date)}</strong>
+          <strong>${esc(annotation?.attribution.label || record.country)} · ${esc(record.date)}</strong>
+          ${labelsHTML}
           <p>${esc(record.meeting)}</p>
           <p class="method-note">${esc(record.region)} · ${esc(UNMeetingScopes.label(record.scope))}</p>
           <p>${esc(record.text.slice(0, 350))}${record.text.length > 350 ? '…' : ''}</p>
@@ -751,7 +760,7 @@
   el('nmfMethod').addEventListener('change',updateNMFControls);el('nmfStability').addEventListener('change',updateNMFControls);updateNMFControls();
   function runNMFWorker(records,vectors,options){
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.16.0');
+      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.17.0');
       const finish=(fn,v)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(v);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));signal.addEventListener('abort',abort,{once:true});
       worker.onerror=()=>finish(reject,Error('NMF worker could not run. Reload the page or check browser permissions.'));
@@ -762,7 +771,7 @@
 
   function runClusterWorker(records,vectors,options,progress) {
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.16.0');
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.17.0');
       const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
       signal.addEventListener('abort',abort,{once:true});
@@ -1000,7 +1009,7 @@
 
     const fields = [
       'id', 'date', 'country', 'region', 'scope', 'meeting',
-      'source_url', 'text_sha256', 'text',
+      'source_url', 'text_sha256', 'text', 'passage_labels', 'passage_attribution',
       ...(result.reviewed_units?['parent_id','parent_text_sha256','parent_raw_sha256','corpus_sha256','start','end','offset_unit','utf8_start','utf8_end','source_group','reviewer','reviewed_at','review_scope']:[])
     ];
 
@@ -1008,7 +1017,7 @@
       .replace(/^[=+@\-\t\r]/, "'$&")
       .replace(/"/g, '""') + '"';
 
-    const rows = [fields, ...result.matched.map(record => fields.map(field => record[field]))];
+    const rows = [fields, ...result.matched.map(record => fields.map(field => {const a=result.passage_labels?.records.find(r=>r.record_id===record.id);return field==='passage_labels'?a?.labels.join('; '):field==='passage_attribution'?a?.attribution.label:record[field];}))];
     const csv = '\uFEFF' + rows.map(row => row.map(cell).join(',')).join('\r\n');
 
     save(csv, result.parameters.mode === 'all' ? 'un-all-passages.csv' : 'un-matched-segments.csv',
