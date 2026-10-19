@@ -9,5 +9,27 @@ assert.equal(P.attribution({...r,speaker_metadata:{affiliation_full:'Uganda',gro
 assert.equal(P.attribution({...r,text:'I deliver this statement on behalf of the regional group.'}).kind,'collective');
 assert.notEqual(P.attribution({...r,text:'We align with the NAM statement and add national remarks.'}).kind,'collective');
 assert.equal(P.attribution({...r,speaker_metadata:{affiliation_full:'UN',function:'Acting Special Coordinator'}}).kind,'institutional');
+
+// Synthetic analogues of reviewed development errors; no private source text.
+const labels=text=>P.classify({...r,text}).labels;
+for(const text of ['We are calling for humanitarian access.','The urgent need for humanitarian access is clear.','The need to protect civilians has never been more urgent.','Our delegation considers it essential to ensure humanitarian access.','It is all the more necessary to protect civilians.'])assert.ok(labels(text).includes('requested_action'),text);
+assert.deepEqual(labels('We demand protection of civilians and an end to violations that are contrary to international law.'),['requested_action']);
+assert.deepEqual(labels('Our government has never obstructed humanitarian assistance.'),[]);
+assert.deepEqual(labels('We must guarantee an impeded humanitarian access to those in need.'),[]);
+assert.equal(P.classify({...r,text:'We must guarantee an impeded humanitarian access to those in need.'}).review_flags[0].reason,'unclear_transcript_wording');
+assert.deepEqual(labels('The resolution called on the parties to protect civilians.'),[]);
+assert.equal(P.classify({...r,text:'The resolution called on the parties to protect civilians.'}).review_flags[0].reason,'reported_or_quoted_appeal');
+assert.deepEqual(labels('The ministry organized a conference on the protection of civilians.'),['claimed_implementation']);
+assert.deepEqual(labels('We are committed to the protection of civilians.'),[]);
+assert.deepEqual(labels('We grant monitors unimpeded access to prisoners of war.'),[]);
+assert.deepEqual(labels('Our national budget funds humanitarian assistance.'),[]);
+assert.deepEqual(labels('Humanitarian access remains restricted.'),['reported_condition']);
+assert.deepEqual(labels('Restrictions on humanitarian access impede delivery.'),['reported_condition']);
+assert.deepEqual(labels('We join partners in calling on the authorities to ensure unhindered provision of humanitarian assistance.'),['requested_action']);
+assert.equal(P.attribution({...r,text:'We thank the delegate for speaking on behalf of the regional group.'}).kind,'unresolved');
+assert.equal(P.attribution({...r,text:'I speak on behalf of our country.'}).kind,'unresolved');
+assert.equal(P.attribution({...r,text:'I speak on behalf of the regional group. I add remarks in my national capacity.'}).kind,'mixed_or_ambiguous');
+assert.equal(P.attribution({...r,text:'I speak in my national capacity.',speaker_metadata:{affiliation_full:'Synthetic',group:'Regional Group'}}).kind,'mixed_or_ambiguous');
+const legacy={records:[r],passage_labels:P.legacySnapshot([r])};P.validate(legacy);const badLegacy=JSON.parse(JSON.stringify(legacy));badLegacy.passage_labels.records[0].labels=[];assert.throws(()=>P.validate(badLegacy),/Saved passage labels/);
 const corpus={schema:'un.browser.corpus.v1',collection:{start:r.date,end:r.date,scope:'all'},coverage:[],records:[r]};const before=JSON.stringify(corpus);corpus.passage_labels=P.snapshot(corpus.records);P.validate(corpus);const copy=JSON.parse(JSON.stringify(corpus));copy.passage_labels.records[0].labels=[];assert.throws(()=>P.validate(copy),/Saved passage labels/);assert.equal(JSON.stringify(corpus.records),JSON.stringify(JSON.parse(before).records));
 (async()=>{const report=await A.analyze(corpus,{start:r.date,end:r.date,scope:'all',topic:'',region:'All regions',methods:['frequency']});assert.deepEqual(report.passage_labels,corpus.passage_labels);console.log('PASS overlapping labels, sentence evidence, negation and future abstention, group/UN attribution, source-bound saved labels and immutable originals');})().catch(e=>{console.error(e);process.exitCode=1});
