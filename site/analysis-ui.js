@@ -239,7 +239,7 @@
       el('startDate').value === el('startDate').defaultValue &&
       el('endDate').value === el('endDate').defaultValue;
 
-    if (untouched && (el('meetingScope').value.startsWith('committee_') || el('meetingScope').value === 'ga_sc')) {
+    if (untouched && (el('meetingScope').value.startsWith('committee_') || ['ga_sc','ga_sc_formal'].includes(el('meetingScope').value))) {
       const dates = recentDates();
       setDates(dates.start, dates.end, 'Switched untouched General Debate defaults to recent dates for the selected meeting scope:');
     }
@@ -468,8 +468,8 @@
       html += `
         <p>
           Collected ${esc(report.collection.start)}–${esc(report.collection.end)}.
-          ${esc(report.collection.selected_meetings)} meetings selected from
-          ${esc(report.collection.inventory_meetings)} in the inventory.
+          ${esc(report.collection.selected_meetings)} source entries selected from
+          ${esc(report.collection.inventory_meetings)} in the inventory. ${report.collection.formal_meetings !== undefined ? `${esc(report.collection.formal_meetings)} formal meetings; resumed parts share one meeting identifier.` : ""}
           Collection scope: ${esc(UNMeetingScopes.label(report.collection.scope))}.
         </p>
         <p class="method-note">
@@ -486,6 +486,7 @@
         ]));
     }
 
+    if (report.collection?.meeting_groups) html += `<details><summary>Formal meetings and resumed parts</summary>${table(['Meeting identifier','Original source entries'],report.collection.meeting_groups.map(group=>[group.meeting,group.source_slugs.join(', ')]))}</details>`;
     html += table(['Status', 'Entries'], Object.entries(byStatus));
     html += table(
       ['Date', 'Meeting / day', 'Status', 'Detail'],
@@ -750,7 +751,7 @@
   el('nmfMethod').addEventListener('change',updateNMFControls);el('nmfStability').addEventListener('change',updateNMFControls);updateNMFControls();
   function runNMFWorker(records,vectors,options){
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.15.0');
+      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.16.0');
       const finish=(fn,v)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(v);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));signal.addEventListener('abort',abort,{once:true});
       worker.onerror=()=>finish(reject,Error('NMF worker could not run. Reload the page or check browser permissions.'));
@@ -761,7 +762,7 @@
 
   function runClusterWorker(records,vectors,options,progress) {
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.15.0');
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.16.0');
       const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
       signal.addEventListener('abort',abort,{once:true});

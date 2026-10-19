@@ -48,3 +48,5 @@ require('./test_browser_committees.cjs');
 // All-passages mode and collection diagnostics are release gates too.
 require("./test_browser_all_passages.cjs");
 require('./test_mixed_scope.cjs');
+
+require('./test_formal_scope.cjs');

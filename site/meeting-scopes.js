@@ -13,6 +13,7 @@
     { value: 'general_debate', label: 'General Debate meetings' },
     { value: 'all', label: 'All UN meetings in the inventory' },
     { value: 'ga_sc', label: 'General Assembly + Security Council only' },
+    { value: 'ga_sc_formal', label: 'GA + Security Council — formal meetings only' },
     { value: 'committee_1', label: 'First Committee — Disarmament and International Security' },
     { value: 'committee_2', label: 'Second Committee — Economic and Financial' },
     { value: 'committee_3', label: 'Third Committee — Social, Humanitarian and Cultural' },
@@ -173,17 +174,43 @@
     return null;
   }
 
+  // Only numbered canonical meeting routes establish formal status. Unknown
+  // asset-only events remain excluded rather than inferring status from subjects.
+  function formalMeetingKey(meeting) {
+    const title = normalize(meeting.title || meeting.meeting);
+    if (/\b(?:arria|informal|press briefing|press conference|stakeout|special event)\b/.test(title)) return null;
+    if (!meetingBody(meeting)) return null;
+    const keys = new Set();
+    for (const value of [meeting.pageUrl, meeting.jsonUrl, meeting.source_url, meeting.meeting_slug, meeting.slug]) {
+      if (typeof value !== 'string') continue;
+      try {
+        const url = new URL(value, ORIGIN + '/');
+        if (url.origin !== ORIGIN || url.username || url.password) continue;
+        const path = url.pathname.replace(/\.json$/, '').replace(/\/$/, '');
+        const match = path.match(/^\/(?:[a-z]{2}\/)?(sc\/\d+|ga\/(?:c[1-6]\/)?\d+\/\d+)(?:\/\d+)?$/i);
+        if (match) keys.add(match[1].toLowerCase());
+      } catch { /* Invalid metadata cannot establish formal status. */ }
+    }
+    return keys.size === 1 ? [...keys][0] : null;
+  }
+
+  function recordMeetingKey(record, scope) {
+    const metadata = {title:record.meeting, source_url:record.source_url,
+      slug:record.meeting_slug || record.id?.split('#')[0]};
+    return scope === 'ga_sc_formal' ? formalMeetingKey(metadata) : metadata.slug;
+  }
+
   function matchesMeeting(meeting, scope) {
     if (!isValid(scope)) throw Error('Invalid meeting scope.');
 
-    return scope === 'all' || (scope === 'ga_sc' ? meetingBody(meeting) !== null : classifyMeeting(meeting) === scope);
+    return scope === 'ga_sc_formal' ? formalMeetingKey(meeting) !== null : scope === 'all' || (scope === 'ga_sc' ? meetingBody(meeting) !== null : classifyMeeting(meeting) === scope);
   }
 
 
   function matchesRecord(record, scope) {
     if (!isValid(scope)) throw Error('Invalid meeting scope.');
 
-    return scope === 'all' || (scope === 'ga_sc' ? meetingBody({title:record.meeting,source_url:record.source_url,slug:record.meeting_slug || record.id?.split('#')[0]}) !== null : recordScope(record) === scope);
+    return scope === 'ga_sc_formal' ? recordMeetingKey(record, scope) !== null : scope === 'all' || (scope === 'ga_sc' ? meetingBody({title:record.meeting,source_url:record.source_url,slug:record.meeting_slug || record.id?.split('#')[0]}) !== null : recordScope(record) === scope);
   }
 
 
@@ -192,7 +219,7 @@
   function covers(collectedScope, requestedScope) {
     return isValid(collectedScope) && isValid(requestedScope) &&
       (collectedScope === 'all' || collectedScope === requestedScope ||
-       (collectedScope === 'ga_sc' && (requestedScope === 'general_debate' || /^committee_[1-6]$/.test(requestedScope))));
+       (collectedScope === 'ga_sc' && (requestedScope === 'ga_sc_formal' || requestedScope === 'general_debate' || /^committee_[1-6]$/.test(requestedScope))));
   }
 
 
@@ -204,6 +231,8 @@
     classifyMeeting,
     recordScope,
     meetingBody,
+    formalMeetingKey,
+    recordMeetingKey,
     matchesMeeting,
     matchesRecord,
     covers

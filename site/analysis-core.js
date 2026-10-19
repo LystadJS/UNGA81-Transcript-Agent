@@ -18,7 +18,7 @@
     ? require('./meeting-quick-reader.js') : root.UNMeetingQuickReader;
   const TextUnits = typeof module !== 'undefined' && module.exports
     ? require('./text-units.js') : root.UNTextUnits;
-  const VERSION = 'browser-descriptive-1.15.0';
+  const VERSION = 'browser-descriptive-1.16.0';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters', 'nmf'];
 
@@ -277,10 +277,10 @@
       return {id:issue.id,label:issue.label,segments:hits.length,evidence:hits.filter(r => MeetingQuickReader.safeURL(r.source_url) && TextUnits.sentences(r.text).some(line => issue.pattern.test(line) && TextUnits.summaryEvidenceSentence(line))).slice(0,2).map(r => ({record_id:r.id,source_url:MeetingQuickReader.safeURL(r.source_url),excerpt:themeExcerpt(r.text, issue.pattern)}))};
     }).filter(t => t.segments).sort((a,b) => b.segments-a.segments || a.label.localeCompare(b.label)).slice(0,6);
     const warnings = corpus.coverage.filter(row => row.status !== 'ok' && row.status !== 'collected');
-    const meetings = new Set(matched.map(r => r.meeting_slug || r.id.split('#')[0])).size;
+    const meetings = new Set(matched.map(r => Scopes.recordMeetingKey(r, p.scope))).size;
     const paragraphs = [p.mode === 'topic'
-      ? `${matched.length} of ${records.length} eligible, distinct English source segments match the saved topic phrases and exclusions across ${meetings} recorded meetings. These are literal phrase matches, not a judgment of substantive relevance.`
-      : `The selected dates, scope and passage filters contain ${matched.length} distinct English source segments across ${meetings} recorded meetings.`,
+      ? `${matched.length} of ${records.length} eligible, distinct English source segments match the saved topic phrases and exclusions across ${meetings} ${p.scope === 'ga_sc_formal' ? 'formal meetings (resumed parts grouped)' : 'recorded meetings'}. These are literal phrase matches, not a judgment of substantive relevance.`
+      : `The selected dates, scope and passage filters contain ${matched.length} distinct English source segments across ${meetings} ${p.scope === 'ga_sc_formal' ? 'formal meetings (resumed parts grouped)' : 'recorded meetings'}.`,
       matched.length ? `The included text contains ${words.reduce((a,b)=>a+b,0)} words, with a median of ${median} words per source segment. Segments may be fragments or several turns; these figures do not measure complete speeches or unique speakers.` : 'No source segments satisfy the current filters. This does not establish that the issue was absent from the proceedings.',
       themes.length ? `The fixed issue dictionary finds references to ${themes.slice(0,2).map(t=>t.label.toLowerCase()).join(' and ')} most often among its issue families. Counts describe mentions in included segments, not priorities, agreement or decisions.` : 'The fixed issue dictionary identifies no subject family in the included text. Subjects outside that dictionary remain unclassified.',
       `${warnings.length} of ${corpus.coverage.length} saved coverage entries have a status other than successful collection. Coverage refers to the saved collection and may extend beyond the current filters; the available text is not proof of complete proceedings.`];

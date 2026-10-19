@@ -313,6 +313,7 @@
         collected_at: new Date().toISOString(),
         inventory_meetings: meetings.length,
         selected_meetings: selectedSlugs.length,
+        ...(p.scope === 'ga_sc_formal' ? {formal_meetings:new Set([...selected, ...coverage].map(Scopes.formalMeetingKey).filter(Boolean)).size,meeting_groups:[...new Set([...selected, ...coverage].map(Scopes.formalMeetingKey).filter(Boolean))].map(key=>({meeting:key,source_slugs:selectedSlugs.filter(slug=>Scopes.formalMeetingKey({slug})===key)}))} : {}),
         selected_meeting_slugs: selectedSlugs,
         ...(p.meeting_slug?{selection_mode:'single_meeting',selected_meeting_slug:p.meeting_slug,selected_meeting_title:selected[0].title,selected_meeting_date:p.meeting_date}:{}),
         inventory_pages: days.map(row => ({...row})),
