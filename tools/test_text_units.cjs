@@ -44,3 +44,5 @@ const example=Q.build(exampleRecords,{meeting_slug:slug,meeting_date:date,title:
 assert.ok(example.themes.find(t=>t.id==='peace_security').evidence.every(e=>e.record_id===records[1].id));
 
 assert.equal(Text.summaryEvidenceSentence('I thank the Director and Deputy to the High Representative for Disarmament Affairs, Mr. Example, for his statement.'),false);
+
+assert.ok(!Core.tfidf([{...records[0],text:'His Excellency discusses nuclear disarmament.'}],{reduceProceduralNoise:true}).terms.some(t=>t.term==='excellency'));

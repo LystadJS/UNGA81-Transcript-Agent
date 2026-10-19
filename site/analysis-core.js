@@ -18,7 +18,7 @@
     ? require('./meeting-quick-reader.js') : root.UNMeetingQuickReader;
   const TextUnits = typeof module !== 'undefined' && module.exports
     ? require('./text-units.js') : root.UNTextUnits;
-  const VERSION = 'browser-descriptive-1.14.1';
+  const VERSION = 'browser-descriptive-1.14.2';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters', 'nmf'];
 
@@ -168,7 +168,7 @@
 
   // Sublinear term frequency, smoothed inverse document frequency, L2 scaling.
   function tfidf(records, options = {}) {
-    const proceduralStop = new Set(['thank','thanks','floor','representative','representatives','statement','statements','give','madam','chair','distinguished','excellencies','colleagues','mr','mrs','ms','now','speaking','behalf']);
+    const proceduralStop = new Set(['thank','thanks','floor','representative','representatives','statement','statements','give','madam','chair','distinguished','excellencies','excellency','colleagues','mr','mrs','ms','now','speaking','behalf']);
     const processed = records.map(record => options.reduceProceduralNoise
       ? TextUnits.reduceProceduralNoise(record.text) : {text:record.text,removed_sentence_count:0});
     const processing = {method:options.reduceProceduralNoise ? 'narrow_procedural_sentences_v2' : 'original_text',
