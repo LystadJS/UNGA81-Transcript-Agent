@@ -584,7 +584,7 @@
 
     if (report.passage_labels) {
       const rows=report.passage_labels.records;
-      html += `<section aria-label="Passage labels"><h3>Passage labels</h3><p>Automatic, provisional labels for humanitarian access and civilian protection language. A passage can have several labels. Counts overlap; no label means the rule found no clear cue.</p>${table(['Label','Passages'],UNPassageLabels.LABELS.map(label=>[UNPassageLabels.NAMES[label],rows.filter(r=>r.labels.includes(label)).length]))}<p class="method-note">Requested action describes an appeal or obligation. Reported condition describes a restriction or harm. Claimed implementation describes a reported step already taken. Labels do not verify events, compliance or country positions. Group statements retain group attribution. Inspect the original evidence below.</p></section>`;
+      html += `<section aria-label="Passage labels"><h3>Passage labels</h3><p>Automatic, provisional labels for humanitarian access and civilian protection language. A passage can have several labels. Counts overlap; no label means the rule found no clear cue.</p>${table(['Label','Passages'],UNPassageLabels.LABELS.map(label=>[UNPassageLabels.NAMES[label],rows.filter(r=>r.labels.includes(label)).length]))}<p class="method-note">Requested action describes an appeal or obligation. Reported condition describes a restriction or harm. Claimed implementation describes a reported step already taken. Labels do not verify events, compliance or country positions. Group statements retain group attribution. Reported or quoted appeals and unclear wording are flagged separately rather than treated as direct requests. Detention-monitor access is outside this relief-access scope. Older saved labels are verified against their sources and recomputed with the current rules; Save original collection retains the imported file. Inspect the original evidence below.</p></section>`;
     }
     html += `
       <h3>Source passages</h3>
@@ -597,7 +597,7 @@
     for (const record of report.matched.slice(0, 100)) {
       const annotation=report.passage_labels?.records.find(r=>r.record_id===record.id);
       const lines=UNTextUnits.sentences(record.text);
-      const labelsHTML=annotation?`<p><strong>${annotation.labels.length?annotation.labels.map(l=>esc(UNPassageLabels.NAMES[l])).join(' · '):'No clear label'}</strong> · Automatic provisional labels</p><details><summary>Label evidence and attribution</summary><p>${esc(annotation.attribution.label)}. Based on retained source metadata and opening wording; identity and governmental stance are not verified.</p>${annotation.labels.map(l=>`<p><strong>${esc(UNPassageLabels.NAMES[l])}</strong></p><ul>${annotation.evidence[l].map(i=>`<li>${esc(lines[i])}</li>`).join('')}</ul>`).join('')}</details>`:'';
+      const labelsHTML=annotation?`<p><strong>${annotation.labels.length?annotation.labels.map(l=>esc(UNPassageLabels.NAMES[l])).join(' · '):'No clear label'}</strong> · Automatic provisional labels</p><details><summary>Label evidence and attribution</summary><p>${esc(annotation.attribution.label)}. Based on retained source metadata and opening wording; identity and governmental stance are not verified.</p>${(annotation.review_flags||[]).length?`<p><strong>Review flags</strong></p><ul>${annotation.review_flags.map(f=>`<li>${esc(f.reason.replaceAll('_',' '))}: ${esc(lines[f.sentence_index])}</li>`).join('')}</ul>`:''}${annotation.labels.map(l=>`<p><strong>${esc(UNPassageLabels.NAMES[l])}</strong></p><ul>${annotation.evidence[l].map(i=>`<li>${esc(lines[i])}</li>`).join('')}</ul>`).join('')}</details>`:'';
 
       html += `
         <div class="evidence-item">
@@ -760,7 +760,7 @@
   el('nmfMethod').addEventListener('change',updateNMFControls);el('nmfStability').addEventListener('change',updateNMFControls);updateNMFControls();
   function runNMFWorker(records,vectors,options){
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.17.0');
+      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.17.1');
       const finish=(fn,v)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(v);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));signal.addEventListener('abort',abort,{once:true});
       worker.onerror=()=>finish(reject,Error('NMF worker could not run. Reload the page or check browser permissions.'));
@@ -771,7 +771,7 @@
 
   function runClusterWorker(records,vectors,options,progress) {
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.17.0');
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.17.1');
       const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
       signal.addEventListener('abort',abort,{once:true});
