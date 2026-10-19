@@ -48,6 +48,7 @@
         !/\b(?:support\w*|oppos\w*|reject\w*|condemn\w*|urg\w*|call(?:s|ed)? for|must|should)\b/i.test(line)) return false;
     return !/^(?:in accordance with the (?:program|programme) of work|following the exchanges|this will be followed by|(?:distinguished delegates,? )?the next meeting|it is now my pleasure to extend a warm welcome|with this,? i now invite)\b/i.test(line.trim());
   }
-  const api={tokens,wordCount,sentences,proceduralSentence,reduceProceduralNoise,summaryEvidenceSentence};
+  const unclearWording = line => /\b(?:guarantee an impeded humanitarian access|protection of civilians[.!?]?\s+(?:including[^.!?]{0,100})?must cease|multiple for safe)\b/i.test(line);
+  const api={unclearWording,tokens,wordCount,sentences,proceduralSentence,reduceProceduralNoise,summaryEvidenceSentence};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UNTextUnits=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

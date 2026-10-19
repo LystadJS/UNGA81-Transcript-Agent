@@ -2,7 +2,7 @@
 (function(root){
  'use strict';
  const T=typeof module!=='undefined'&&module.exports?require('./text-units.js'):root.UNTextUnits;
- const METHOD='humanitarian-discourse-v2';
+ const METHOD='humanitarian-discourse-v3';
  const LABELS=['requested_action','reported_condition','claimed_implementation'];
  const NAMES={requested_action:'Requested action',reported_condition:'Reported condition',claimed_implementation:'Claimed implementation'};
  const legacySubject=/\b(?:humanitarian access|aid access|unimpeded access|civilian protection|protection of civilians|protect(?:ing)? civilians|humanitarian (?:aid|assistance)|humanitarian personnel)\b/i;
@@ -69,7 +69,7 @@
   const implemented=completed&&!reportedAppeal&&!/\b(?:will|would|should|must|not|never|alleged)\b/i.test(line);
   return {requested,condition,implemented,flag:reportedAppeal?'reported_or_quoted_appeal':null};
  }
- function classify(r){
+ function classifyV2(r){
   const evidence={},review_flags=[];
   T.sentences(r.text||'').forEach((line,index)=>{
    if(!relevant(line)){if(/\b(?:unimpeded access|civilian protection office)\b/i.test(line))review_flags.push({sentence_index:index,reason:/civilian protection office/i.test(line)?'institution_name_only':'detention_monitoring_not_relief_access'});return;}
@@ -80,13 +80,26 @@
   });
   return {record_id:r.id,text_sha256:r.text_sha256,raw_sha256:r.raw_sha256||null,labels:LABELS.filter(l=>evidence[l]?.length),evidence,review_flags,attribution:attribution(r)};
  }
+ // Recording checks are machine-assisted audit notes, never human verification.
+ // Hash binding prevents a note being applied to a changed or unrelated source.
+ const recordingChecks={
+  'dfe96db716110b297a3f935e1e89e45794d7083437833d96eef5a948417796fc':{id:'sc/10243/2#1',raw:'0e97df3478d02d45e993c225530fc98209fe3450669047f33a515b1f29ca8b21',url:'https://webtv.un.org/en/asset/k1m/k1mlfdvxdy',seconds:449,timing:'recording_excerpt_located',note:'Local speech models disagree on the unclear civilian-protection wording. No replacement wording is established. Do not quote this sentence as a protection demand.'},
+  '20d504cebb5587fc04b8ef8d86b6371a71852f0e2d0e09659a2509bb834f5f57':{id:'ga/c3/81/19#28',raw:'08a8b30cd51482885ccfad00d2a7095a587d6536acb377511754edcb7054e355',url:'https://webtv.un.org/en/asset/k1g/k1gmea6hwe',seconds:2961,timing:'shortened_recording_original_timestamp_unreliable',note:'The source warns that the recording was shortened after transcription. The speech was located separately in the English recording. The access modifier remains unresolved; no replacement wording is established.'},
+  'aaff5e0a27a1a9c930c1c3b3a7321dae1f982f026775bb28447be44c24bdf4ec':{id:'ga/c3/81/19#90',raw:'08a8b30cd51482885ccfad00d2a7095a587d6536acb377511754edcb7054e355',url:'https://webtv.un.org/en/asset/k1g/k1gmea6hwe',seconds:7642,timing:'shortened_recording_original_timestamp_unreliable',note:'The source warns that the recording was shortened after transcription. The speech was located separately in the English recording. The malformed action wording remains unresolved; no replacement wording is established.'}
+ };
+ function classify(r){
+  const result=classifyV2(r),check=recordingChecks[r.text_sha256];
+  if(check&&r.id===check.id&&r.raw_sha256===check.raw)result.recording_review={status:'unresolved_machine_assisted_not_human_verified',checked_at:'2026-10-19',recording_url:check.url,approximate_recording_seconds:check.seconds,timing_status:check.timing,note:check.note,correction_applied:false,original_preserved:true,method:'Local English-track ASR; base.en, small.en and medium.en. Model disagreement is not a verified correction.'};
+  return result;
+ }
+ function v2Snapshot(records){return {schema:'un.browser.passage-labels.v1',method:'humanitarian-discourse-v2',status:'automatic_provisional_not_human_reviewed',records:records.map(classifyV2)};}
  function snapshot(records){return {schema:'un.browser.passage-labels.v1',method:METHOD,status:'automatic_provisional_not_human_reviewed',records:records.map(classify)};}
  function validate(corpus){
   if(corpus.passage_labels===undefined)return;
   const saved=corpus.passage_labels;
-  const expected=saved.method==='humanitarian-discourse-v1'?legacySnapshot(corpus.records):snapshot(corpus.records);
+  const expected=saved.method==='humanitarian-discourse-v1'?legacySnapshot(corpus.records):saved.method==='humanitarian-discourse-v2'?v2Snapshot(corpus.records):snapshot(corpus.records);
   if(JSON.stringify(saved)!==JSON.stringify(expected))throw Error('Saved passage labels do not match the retained sources or supported label method. Open the original collection to recompute labels.');
  }
- const api={METHOD,LABELS,NAMES,classify,attribution,snapshot,validate,legacySnapshot,cues,relevant};
+ const api={METHOD,LABELS,NAMES,classify,attribution,snapshot,validate,legacySnapshot,v2Snapshot,cues,relevant};
  if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UNPassageLabels=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
