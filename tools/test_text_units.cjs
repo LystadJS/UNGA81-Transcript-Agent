@@ -57,3 +57,11 @@ for(const line of ['Distinguished Delegates, the Committee will continue this mo
  assert.equal(Text.reduceProceduralNoise(line).text,'');assert.equal(Text.summaryEvidenceSentence(line),false);
 }
 assert.equal(Text.reduceProceduralNoise('The committee will continue its general debate, but we urge nuclear disarmament.').text,'The committee will continue its general debate, but we urge nuclear disarmament.');
+
+for(const line of ['Thank you very much.','Thanks so much.'])assert.equal(Text.reduceProceduralNoise(line).text,'');
+for(const line of ['He has previously served on the Afghanistan desk and as a director of arms control and disarmament.','His experience in humanitarian issues and in multilateralism qualifies him for the role.'])assert.equal(Text.summaryEvidenceSentence(line),false);
+assert.equal(Text.summaryEvidenceSentence('He served as a minister, but we support nuclear disarmament.'),true);
+const courtesies=Core.tfidf([{...records[0],text:'Very much support for humanitarian assistance.'}],{reduceProceduralNoise:true});
+assert.ok(!courtesies.terms.some(t=>['very','much'].includes(t.term)));assert.ok(courtesies.terms.some(t=>t.term==='humanitarian'));
+
+for(const line of ['I invite the committee to continue its consideration of agenda item 70, entitled Promotion and Protection of Human Rights.','I call to order the informal meeting of the plenary on climate action.'])assert.equal(Text.summaryEvidenceSentence(line),false);

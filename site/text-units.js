@@ -19,6 +19,7 @@
     if (/^(?:(?:i|we) (?:now )?(?:give|yield) (?:the |our panelists the )floor\b[^;!?]*|(?:i|we) (?:now )?call on\b[^;!?]*|(?:now )?you have the floor)[.!]?$/i.test(handoff)) return true;
     if (/^i thank (?:(?:the )?(?:distinguished |permanent |deputy )*(?:representative|observer|delegate|ambassador|director)\b)[^;!?]*[.!]?$/i.test(text) &&
         !/\b(?:that|which|who|while|because|on sanctions|on weapons|for (?!arms control|disarmament affairs|(?:his |her |their |the )?(?:statement|remarks|briefing|presentation|participation|contribution|attention)\b))\b/i.test(text)) return true;
+    if (/^(?:thank you|thanks)(?: very much| so much)?(?:,? (?:indeed|everyone|colleagues|(?:Mr\.? |Madam )?(?:Chair|President)))?[.!]?$/i.test(text)) return true;
     const transitions=text.split(/,?\s+and\s+(?=(?:i|we)\s)/i);
     if(transitions.length>1 && transitions.every(proceduralSentence))return true;
     if (/^(?:the )?(?:committee|security council|general assembly|council|assembly) (?:will|shall) (?:now )?(?:continue|begin|resume) (?:this (?:morning|afternoon|evening) )?(?:with )?(?:its |the )?(?:general debate|thematic discussions?|consideration of (?:the )?agenda item)\b[^;!?]*[.!]?$/i.test(text)) return true;
@@ -40,6 +41,11 @@
   function summaryEvidenceSentence(line){
     // Meeting logistics may name a policy subject without discussing that subject.
     if(proceduralSentence(line) || /^(?:i|we) thank\b/i.test(line.trim()))return false;
+    if (/^(?:i call to order\b|i invite (?:the )?committee to (?:continue|begin|resume) its consideration\b|(?:excellencies,? )?(?:ladies and gentlemen,? )?(?:once again,? )?i (?:warmly )?welcome you to\b)/i.test(line.trim())) return false;
+    // Career introductions mention policy fields without discussing policy.
+    if (/\b(?:he|she|his|her|ambassador|minister|director|secretary|president|chairperson)\b/i.test(line) &&
+        /\b(?:previously served|has served|had served|served as|serves as|experience in|experience of|career|was appointed|was elected|was nominated|qualifications)\b/i.test(line) &&
+        !/\b(?:support\w*|oppos\w*|reject\w*|condemn\w*|urg\w*|call(?:s|ed)? for|must|should)\b/i.test(line)) return false;
     return !/^(?:in accordance with the (?:program|programme) of work|following the exchanges|this will be followed by|(?:distinguished delegates,? )?the next meeting|it is now my pleasure to extend a warm welcome|with this,? i now invite)\b/i.test(line.trim());
   }
   const api={tokens,wordCount,sentences,proceduralSentence,reduceProceduralNoise,summaryEvidenceSentence};

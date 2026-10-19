@@ -18,7 +18,7 @@
     ? require('./meeting-quick-reader.js') : root.UNMeetingQuickReader;
   const TextUnits = typeof module !== 'undefined' && module.exports
     ? require('./text-units.js') : root.UNTextUnits;
-  const VERSION = 'browser-descriptive-1.14.3';
+  const VERSION = 'browser-descriptive-1.15.0';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters', 'nmf'];
 
@@ -168,10 +168,10 @@
 
   // Sublinear term frequency, smoothed inverse document frequency, L2 scaling.
   function tfidf(records, options = {}) {
-    const proceduralStop = new Set(['thank','thanks','floor','representative','representatives','statement','statements','give','madam','chair','distinguished','excellencies','excellency','colleagues','mr','mrs','ms','now','speaking','behalf']);
+    const proceduralStop = new Set(['thank','thanks','floor','representative','representatives','statement','statements','give','madam','chair','distinguished','excellencies','excellency','colleagues','mr','mrs','ms','now','speaking','behalf','much','very']);
     const processed = records.map(record => options.reduceProceduralNoise
       ? TextUnits.reduceProceduralNoise(record.text) : {text:record.text,removed_sentence_count:0});
-    const processing = {method:options.reduceProceduralNoise ? 'narrow_procedural_sentences_v3' : 'original_text',
+    const processing = {method:options.reduceProceduralNoise ? 'narrow_procedural_sentences_v4' : 'original_text',
       original_included_count:records.length,
       removed_sentence_count:processed.reduce((sum,item)=>sum+item.removed_sentence_count,0),
       zero_text_ids:records.filter((r,i)=>!TextUnits.wordCount(processed[i].text)).map(r=>r.id)};
@@ -269,7 +269,7 @@
     const sources = matched.filter(r => MeetingQuickReader.safeURL(r.source_url)).map(r => ({record_id:r.id,source_url:MeetingQuickReader.safeURL(r.source_url)}));
     const processed = matched.map(r => TextUnits.reduceProceduralNoise(r.text));
     const thematicRecords = matched.map((r,i) => ({...r,text:processed[i].text}));
-    const processing={method:'narrow_procedural_sentences_v3',original_included_count:matched.length,
+    const processing={method:'narrow_procedural_sentences_v4',original_included_count:matched.length,
       removed_sentence_count:processed.reduce((n,r)=>n+r.removed_sentence_count,0),
       zero_text_ids:thematicRecords.filter(r=>!TextUnits.wordCount(r.text)).map(r=>r.id)};
     const themes = MeetingQuickReader.ISSUES.map(issue => {

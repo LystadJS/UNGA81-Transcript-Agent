@@ -161,7 +161,7 @@
     verified.forEach(r=>counted.add(r.country));
     const counts=new Map(ISSUES.map(i=>[i.id,{...i,count:0,evidence:[]}]));
     const positionIndex=new Map();let substantive=0,unknown=0,collective=0,words=[],withSpeakerId=0,withSpeakerProxy=0;
-    const processing={method:'narrow_procedural_sentences_v3',original_included_count:selected.length,removed_sentence_count:0,zero_text_ids:[]};
+    const processing={method:'narrow_procedural_sentences_v4',original_included_count:selected.length,removed_sentence_count:0,zero_text_ids:[]};
     for(const record of selected){
       const text=String(record.text||'');words.push(wordCount(text));
       const speaker=speakerEvidence(record);if(speaker.speaker_identity_observed)withSpeakerId++;if(speaker.speaker_proxy)withSpeakerProxy++;
