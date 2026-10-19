@@ -19,7 +19,7 @@
   const TextUnits = typeof module !== 'undefined' && module.exports
     ? require('./text-units.js') : root.UNTextUnits;
   const PassageLabels = typeof module !== 'undefined' && module.exports ? require('./passage-labels.js') : root.UNPassageLabels;
-  const VERSION = 'browser-descriptive-1.17.2';
+  const VERSION = 'browser-descriptive-1.18.0';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters', 'nmf'];
 
@@ -50,6 +50,7 @@
       throw Error('Use an optional topic of at most 120 characters.');
     }
 
+    if(p.excludeUnresolved!==undefined&&typeof p.excludeUnresolved!=='boolean')throw Error('Invalid unresolved-passage exclusion.');
     const topic = p.topic.trim();
     const mode = topic ? 'topic' : 'all';
 
@@ -302,7 +303,7 @@
     // Apply committee, date, region and language restrictions before deduping.
     // This prevents out-of-scope text from changing denominators or matches.
     const identity = meetingIdentity(corpus, p);
-    const wholeMeeting = identity ? corpus.records.filter(r => r.language === 'en' && r.date === identity.meeting_date && (r.meeting_slug || r.id.split('#')[0]) === identity.meeting_slug) : [];
+    const wholeMeeting = identity ? corpus.records.filter(r => (!p.excludeUnresolved||!PassageLabels.unresolved(r))&& r.language === 'en' && r.date === identity.meeting_date && (r.meeting_slug || r.id.split('#')[0]) === identity.meeting_slug) : [];
     const selection=PassageSelection.validate(corpus,p.passageSelection);
     const beforeTypes = corpus.records.filter(record => (
       record.date >= p.start &&
@@ -313,7 +314,10 @@
       record.language === 'en'
     ));
 
-    const eligible=selection?beforeTypes.filter(r=>selection.selected.has(r.id)):beforeTypes;
+    const afterTypes=selection?beforeTypes.filter(r=>selection.selected.has(r.id)):beforeTypes;
+    const unresolvedExcluded=p.excludeUnresolved?afterTypes.filter(PassageLabels.unresolved):[];
+    const excludedIDs=new Set(unresolvedExcluded.map(r=>r.id));
+    const eligible=afterTypes.filter(r=>!excludedIDs.has(r.id));
     const records = [];
     const duplicates = [];
     const seen = new Map();
@@ -367,12 +371,14 @@
       matched,
       methods: {}
     };
+    result.unresolved_exclusions={enabled:!!p.excludeUnresolved,policy:'whole_source_segment',records:unresolvedExcluded.map(r=>({record_id:r.id,text_sha256:r.text_sha256,raw_sha256:r.raw_sha256||null,source_url:MeetingQuickReader.safeURL(r.source_url),reason:'unresolved_transcript_wording',recording_review:PassageLabels.classify(r).recording_review||null,attribution:PassageLabels.attribution(r)})),original_records_retained:true};
+    result.source_briefing=PassageLabels.sourceBriefing(matched);
     result.passage_labels = PassageLabels.snapshot(matched);
     result.briefing = briefing(records, matched, duplicates, corpus, p);
     if(identity){
       result.quick_reader=MeetingQuickReader.build(wholeMeeting,identity);
     }
-    if(selection){const {selected,...audit}=selection;result.passage_selection={...audit,eligible_before_type_filter:beforeTypes.length,eligible_after_type_filter:eligible.length,excluded_within_filters:beforeTypes.filter(r=>!selected.has(r.id)).map(r=>r.id)};}
+    if(selection){const {selected,...audit}=selection;result.passage_selection={...audit,eligible_before_type_filter:beforeTypes.length,eligible_after_type_filter:afterTypes.length,excluded_within_filters:beforeTypes.filter(r=>!selected.has(r.id)).map(r=>r.id)};}
     if(corpus.reviewed_units)result.reviewed_units={...corpus.reviewed_units,
       eligible_before_dedup:ReviewedUnits.count(eligible),eligible:ReviewedUnits.count(records),included:ReviewedUnits.count(matched)};
 

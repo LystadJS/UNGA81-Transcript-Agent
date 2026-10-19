@@ -88,6 +88,7 @@
       topic: el('topic').value.trim(),
       phrases: [el('topic').value.trim(), ...split(el('phrases').value)].filter(Boolean),
       exclude: split(el('excludePhrases').value),
+      excludeUnresolved:el('excludeUnresolved').checked,
       start: el('startDate').value,
       end: el('endDate').value,
       region: el('region').value,
@@ -107,7 +108,7 @@
 
 
   // Explicit paths bind only supported form fields; imported objects are never spread.
-  const filterBindings = {
+  const filterBindings = {excludeUnresolved:'excludeUnresolved',
     representation:'clustering.representation',clusterAlgorithm:'clustering.algorithm',clusterLinkage:'clustering.linkage',pcaComponents:'clustering.components',clusterCount:'clustering.k',umapNeighbors:'clustering.neighbors',umapDistance:'clustering.minDist',clusterSeed:'clustering.seed',umapSeed:'clustering.umapSeed',
     mdsEnabled:'clustering.mds.enabled',mdsStarts:'clustering.mds.starts',mdsIterations:'clustering.mds.maxIterations',mdsSeed:'clustering.mds.seed',hdbMinClusterSize:'clustering.hdbscan.minClusterSize',hdbMinSamples:'clustering.hdbscan.minSamples',hdbSelection:'clustering.hdbscan.selection',gmmCovariance:'clustering.gmm.covariance',gmmRegularization:'clustering.gmm.regularization',gmmStarts:'clustering.gmm.starts',gmmIterations:'clustering.gmm.maxIterations',gmmAmbiguity:'clustering.gmm.ambiguity',stabilityEnabled:'clustering.stability.enabled',stabilityUnit:'clustering.stability.unit',stabilityReplicates:'clustering.stability.replicates',stabilityFraction:'clustering.stability.fraction',stabilitySeed:'clustering.stability.seed',
     nmfComponents:'nmf.components',nmfStarts:'nmf.starts',nmfIterations:'nmf.maxIterations',nmfSeed:'nmf.seed',nmfStability:'nmf.stability.enabled',nmfUnit:'nmf.stability.unit',nmfReplicates:'nmf.stability.replicates'
@@ -121,7 +122,7 @@
   function validatedFilters(input) {
     if (!input || typeof input !== 'object' || Array.isArray(input)) throw Error('Invalid saved filters.');
     for (const family of ['clustering','nmf']) if (input[family] !== undefined && (!input[family] || typeof input[family] !== 'object' || Array.isArray(input[family]))) throw Error('Invalid saved option family: ' + family);
-    const p = {topic:input.topic, start:input.start, end:input.end, scope:input.scope, region:input.region,
+    const p = {topic:input.topic, start:input.start, end:input.end, scope:input.scope, region:input.region, excludeUnresolved:input.excludeUnresolved===undefined?false:input.excludeUnresolved,
       phrases:Array.isArray(input.phrases) ? input.phrases.slice() : input.phrases,
       exclude:Array.isArray(input.exclude) ? input.exclude.slice() : input.exclude,
       methods:Array.isArray(input.methods) ? input.methods.slice() : input.methods};
@@ -375,13 +376,15 @@
         <h2>${esc(single?meeting.meeting_title:(all?'All passages':p.topic))}</h2>
         <p>${esc(p.start)} through ${esc(p.end)} · ${esc(p.region)}</p>
         ${single?'':`<p><strong>Meeting scope:</strong> ${esc(UNMeetingScopes.label(p.scope))}</p>
-        <p>${all?'No topic filter; passages follow the selected dates, scope, region and inclusion policy.':`Any phrase: ${esc(p.phrases.join(' | '))}. Exclusions: ${esc(p.exclude.join(' | ') || 'None')}.`}</p>`}
+        <p>${all?'No topic filter; passages follow the selected dates, scope, region and inclusion policy.':`Any phrase: ${esc(p.phrases.join(' | '))}. Phrase exclusions: ${esc(p.exclude.join(' | ') || 'None')}.`}</p>`}
         <p class="method-note">Prepared ${esc(report.created_at.slice(0, 10))} · English transcripts</p>
     `;
 
     if(report.quick_reader)html+=renderQuickReader(report.quick_reader);
+    if(report.unresolved_exclusions?.enabled)html+=`<section aria-label="Unresolved passage exclusions"><h3>Unresolved passages excluded</h3><p>${report.unresolved_exclusions.records.length} whole source segments excluded from this report. Original records and recording notes remain in Save transcripts.</p><details><summary>Excluded sources</summary><ul>${report.unresolved_exclusions.records.map(r=>`<li>${esc(r.attribution.label)} · ${esc(r.record_id)}${r.recording_review?`<p>${esc(r.recording_review.note)}</p>`:''}${r.source_url?` · <a href="${esc(r.source_url)}" target="_blank" rel="noopener noreferrer">Source transcript</a>`:''}</li>`).join('')}</ul></details></section>`;
+    if(report.source_briefing){const b=report.source_briefing;html+=`<section class="analysis-briefing" aria-label="Source-linked briefing"><h3>Source-linked briefing</h3><p>${esc(b.takeaway)}</p><ul>${b.items.map(item=>`<li><strong>${esc(UNPassageLabels.NAMES[item.label])} — ${esc(item.attribution.label)}</strong> · ${esc(item.date)}<p>${esc(item.excerpt)}</p><a href="${esc(item.source_url)}" target="_blank" rel="noopener noreferrer">Source transcript</a></li>`).join('')}</ul><p class="method-note">Selected source excerpts, not an exhaustive synthesis. ${esc(b.caveat)}</p></section>`;}
     if(report.briefing)html+=renderBriefing(report.briefing);
-    if(single)html+=`<p class="method-note">${all?'The detailed analysis below uses every eligible source segment.':`The detailed analysis below is restricted to the topic ${esc(p.topic)}; the opening summary covers the whole recorded meeting.`}</p>`;
+    if(single)html+=`<p class="method-note">${all?'The detailed analysis below uses every eligible source segment.':`The detailed analysis below is restricted to the topic ${esc(p.topic)}; the opening summary covers the recorded meeting${p.excludeUnresolved?' with unresolved passages excluded':''}.`}</p>`;
     if(report.collection?.selection_mode==='single_meeting' && !single)html+='<p class="warning">The saved single-meeting label could not be verified against the imported records. This report describes the filtered collection; it does not establish complete coverage of one meeting.</p>';
     if(single)html+=`<p class="method-note"><strong>Individual meeting:</strong> ${esc(meeting.meeting_title)} · ${esc(meeting.meeting_date)} · ${esc(meeting.meeting_slug)}. Only this meeting was collected. Within-meeting passages do not supply independent meeting-level replication.</p>`;
     if(report.passage_selection)html+=`<p class="warning">Reviewed inclusion: ${esc(report.passage_selection.policy==='substantive'?'substantive address segments':'substantive, mixed and fragment segments')}. ${report.passage_selection.eligible_after_type_filter} of ${report.passage_selection.eligible_before_type_filter} passages within the date, scope and region filters remain before deduplication. ${report.passage_selection.human_confirmed} explicit passage decisions; reviewer identity is self-declared. Original text is preserved.</p>`;
@@ -762,7 +765,7 @@
   el('nmfMethod').addEventListener('change',updateNMFControls);el('nmfStability').addEventListener('change',updateNMFControls);updateNMFControls();
   function runNMFWorker(records,vectors,options){
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.17.2');
+      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.18.0');
       const finish=(fn,v)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(v);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));signal.addEventListener('abort',abort,{once:true});
       worker.onerror=()=>finish(reject,Error('NMF worker could not run. Reload the page or check browser permissions.'));
@@ -773,7 +776,7 @@
 
   function runClusterWorker(records,vectors,options,progress) {
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.17.2');
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.18.0');
       const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
       signal.addEventListener('abort',abort,{once:true});
