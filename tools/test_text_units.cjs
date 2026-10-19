@@ -24,3 +24,23 @@ assert.ok(raw.terms.some(t=>t.term==='council'));assert.ok(!clean.terms.some(t=>
  assert.ok(latentCalled);assert.equal(result.counts.matched,3);assert.equal(result.briefing.stats.matched_words,texts.reduce((n,t)=>n+Text.wordCount(t),0));assert.ok(!result.briefing.themes.some(t=>t.id==='peace_security'));assert.ok(result.briefing.themes.some(t=>t.id==='humanitarian'));assert.equal(result.methods.tfidf.processing.original_included_count,3);assert.equal(result.methods.similarity.processing.removed_sentence_count,2);assert.equal(result.methods.length.reduce((n,b)=>n+b.total,0),3);assert.equal(JSON.stringify(records),original);
  console.log('PASS shared Unicode counts, narrow procedural sentence reduction, original counts/provenance, lexical audit and unchanged latent vectors (synthetic only; heldout opened: 0)');
 })().catch(e=>{console.error(e);process.exitCode=1;});
+
+const opening='The 11th meeting of the Disarmament and International Security Committee of the 81st session of the General Assembly is called to order.';
+assert.equal(Text.reduceProceduralNoise(opening).text,'');
+assert.equal(Text.reduceProceduralNoise('Distinguished delegates, dear colleagues.').text,'');
+assert.equal(Text.reduceProceduralNoise('The full version of this statement will be submitted to the Secretariat.').text,'');
+for(const line of ['Distinguished delegates, nuclear weapons threaten humanity.','The meeting of the committee is called to order, but we oppose nuclear weapons.','We speak on behalf of our group and support disarmament.','Permanent membership of the Security Council requires reform.']) assert.equal(Text.reduceProceduralNoise(line).text,line);
+const ceremony=Core.tfidf([{...records[0],text:'Distinguished representatives now speaking on behalf of permanent members discuss nuclear disarmament.'}],{reduceProceduralNoise:true});
+for(const term of ['distinguished','now','speaking','behalf'])assert.ok(!ceremony.terms.some(t=>t.term===term));
+assert.ok(ceremony.terms.some(t=>t.term==='permanent'));
+
+for(const line of ['I thank the distinguished permanent representative of Vietnam speaking on behalf of ASEAN.','Now I give the floor to the distinguished permanent representative of Vietnam, speaking on behalf of ASEAN.','And now I give the floor to Her Excellency, Ambassador Example, Director of the Agency.','I now call on the distinguished delegate for Costa Rica.','You have the floor.'])assert.equal(Text.reduceProceduralNoise(line).text,'',line);
+for(const line of ['I thank the representative for supporting sanctions.','I thank the representative who condemns nuclear weapons.'])assert.equal(Text.reduceProceduralNoise(line).text,line);
+assert.equal(Text.summaryEvidenceSentence('In accordance with the program of work, the committee will discuss disarmament.'),false);
+assert.equal(Text.summaryEvidenceSentence('We support nuclear disarmament and must continue negotiations.'),true);
+const Q=require('../site/meeting-quick-reader.js');
+const exampleRecords=[{...records[0],text:opening+' In accordance with the program of work, the committee will discuss disarmament.'},{...records[1],text:'We support nuclear disarmament and must continue negotiations.'}];
+const example=Q.build(exampleRecords,{meeting_slug:slug,meeting_date:date,title:'Synthetic'});
+assert.ok(example.themes.find(t=>t.id==='peace_security').evidence.every(e=>e.record_id===records[1].id));
+
+assert.equal(Text.summaryEvidenceSentence('I thank the Director and Deputy to the High Representative for Disarmament Affairs, Mr. Example, for his statement.'),false);

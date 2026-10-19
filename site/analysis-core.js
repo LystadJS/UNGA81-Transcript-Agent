@@ -18,7 +18,7 @@
     ? require('./meeting-quick-reader.js') : root.UNMeetingQuickReader;
   const TextUnits = typeof module !== 'undefined' && module.exports
     ? require('./text-units.js') : root.UNTextUnits;
-  const VERSION = 'browser-descriptive-1.14.0';
+  const VERSION = 'browser-descriptive-1.14.1';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters', 'nmf'];
 
@@ -168,10 +168,10 @@
 
   // Sublinear term frequency, smoothed inverse document frequency, L2 scaling.
   function tfidf(records, options = {}) {
-    const proceduralStop = new Set(['thank','thanks','floor','representative','representatives','statement','statements','give','madam','chair']);
+    const proceduralStop = new Set(['thank','thanks','floor','representative','representatives','statement','statements','give','madam','chair','distinguished','excellencies','colleagues','mr','mrs','ms','now','speaking','behalf']);
     const processed = records.map(record => options.reduceProceduralNoise
       ? TextUnits.reduceProceduralNoise(record.text) : {text:record.text,removed_sentence_count:0});
-    const processing = {method:options.reduceProceduralNoise ? 'narrow_procedural_sentences_v1' : 'original_text',
+    const processing = {method:options.reduceProceduralNoise ? 'narrow_procedural_sentences_v2' : 'original_text',
       original_included_count:records.length,
       removed_sentence_count:processed.reduce((sum,item)=>sum+item.removed_sentence_count,0),
       zero_text_ids:records.filter((r,i)=>!TextUnits.wordCount(processed[i].text)).map(r=>r.id)};
@@ -258,7 +258,7 @@
 
   function themeExcerpt(text, pattern) {
     const normalized = text.replace(/\s+/g, ' ');
-    const line = normalized.split(/(?<=[.!?])\s+/).find(value => pattern.test(value)) || normalized;
+    const line = TextUnits.sentences(normalized).find(value => pattern.test(value) && TextUnits.summaryEvidenceSentence(value)) || '';
     const at = line.search(pattern), start = Math.max(0, at - 80);
     return (start ? '…' : '') + line.slice(start, start + 240);
   }
@@ -269,12 +269,12 @@
     const sources = matched.filter(r => MeetingQuickReader.safeURL(r.source_url)).map(r => ({record_id:r.id,source_url:MeetingQuickReader.safeURL(r.source_url)}));
     const processed = matched.map(r => TextUnits.reduceProceduralNoise(r.text));
     const thematicRecords = matched.map((r,i) => ({...r,text:processed[i].text}));
-    const processing={method:'narrow_procedural_sentences_v1',original_included_count:matched.length,
+    const processing={method:'narrow_procedural_sentences_v2',original_included_count:matched.length,
       removed_sentence_count:processed.reduce((n,r)=>n+r.removed_sentence_count,0),
       zero_text_ids:thematicRecords.filter(r=>!TextUnits.wordCount(r.text)).map(r=>r.id)};
     const themes = MeetingQuickReader.ISSUES.map(issue => {
       const hits = thematicRecords.filter(r => issue.pattern.test(r.text));
-      return {id:issue.id,label:issue.label,segments:hits.length,evidence:hits.filter(r => MeetingQuickReader.safeURL(r.source_url)).slice(0,2).map(r => ({record_id:r.id,source_url:MeetingQuickReader.safeURL(r.source_url),excerpt:themeExcerpt(r.text, issue.pattern)}))};
+      return {id:issue.id,label:issue.label,segments:hits.length,evidence:hits.filter(r => MeetingQuickReader.safeURL(r.source_url) && TextUnits.sentences(r.text).some(line => issue.pattern.test(line) && TextUnits.summaryEvidenceSentence(line))).slice(0,2).map(r => ({record_id:r.id,source_url:MeetingQuickReader.safeURL(r.source_url),excerpt:themeExcerpt(r.text, issue.pattern)}))};
     }).filter(t => t.segments).sort((a,b) => b.segments-a.segments || a.label.localeCompare(b.label)).slice(0,6);
     const warnings = corpus.coverage.filter(row => row.status !== 'ok' && row.status !== 'collected');
     const meetings = new Set(matched.map(r => r.meeting_slug || r.id.split('#')[0])).size;
