@@ -22,7 +22,7 @@
     const transitions=text.split(/,?\s+and\s+(?=(?:i|we)\s)/i);
     if(transitions.length>1 && transitions.every(proceduralSentence))return true;
     // Institutional names can be long; the action must still end the sentence.
-    if (/^(?:the )?[\d,]+(?:st|nd|rd|th)? meeting of the [\p{L}\p{N},’'() -]{1,180} is (?:now )?(?:called to order|opened|adjourned|suspended|resumed)[.!]?$/iu.test(text)) return true;
+    if (/^(?:the )?(?:[\d,]+(?:st|nd|rd|th)?|[\p{L}-]+(?: [\p{L}-]+){0,7}) meeting of the [\p{L}\p{N},’'() -]{1,180} is (?:now )?(?:called to order|opened|adjourned|suspended|resumed)[.!]?$/iu.test(text)) return true;
     if (/^(?:(?:distinguished|dear) (?:delegates|colleagues|representatives|members)|excellencies)(?:,? (?:distinguished |dear )?(?:delegates|colleagues|representatives|members|excellencies))*[,.!]?$/i.test(text)) return true;
     if (/^(?:the )?full (?:version|text) of (?:this|my|our|the) statement (?:will be|is|has been) (?:submitted|made available|available)(?: to the secretariat| on eStatements)?[.!]?$/i.test(text)) return true;
     return /^(?:thank you(?:,?\s+(?:(?:Mr|Madam|Ms|Mrs)\.?\s+)?(?:Chair(?:person)?|President|Secretary(?:-General)?|Ambassador|Minister))?(?:,? for giving (?:me|us) the floor)?[.!]?|good (?:morning|afternoon|evening)(?:,?\s+(?:colleagues|everyone|excellencies))?[.!]?)$/i.test(text) ||

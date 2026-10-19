@@ -14,7 +14,23 @@ const A=require('../site/analysis-core.js'),C=require('../site/collector.js');
  assert.throws(()=>C.sourceURL('https://attacker.test/data'));
  assert.throws(()=>A.validateCorpus({...corpus,records:[records[0],records[0]]}));
  const t=A.tfidf([row('a','health health'),row('b','health')]);assert.equal(t.terms[0].mean,1);assert.equal(t.vectors[0].get('health'),1);
- const many=Array.from({length:301},(_,i)=>row(String(i),'AI distinct '+i));assert.ok((await A.analyze({...corpus,records:many},p)).methods.similarity.skipped);
+ const many=Array.from({length:301},(_,i)=>row(String(i),'AI distinct '+i));assert.equal((await A.analyze({...corpus,records:many},{...p,topic:'',methods:['similarity']})).methods.similarity.compared,45150);
+ // Independent full-sort oracle: exact scores, deterministic ties, and >300 inputs.
+ const streamed=await A.analyze({...corpus,records:many},{...p,topic:'',methods:['similarity']});
+ const oracleVectors=A.tfidf(many,{reduceProceduralNoise:true}).vectors,oracle=[];
+ for(let i=0;i<many.length;i++)for(let j=i+1;j<many.length;j++){
+  let score=0;for(const [term,weight] of oracleVectors[i])score+=weight*(oracleVectors[j].get(term)||0);
+  oracle.push({left:many[i].id,right:many[j].id,cosine:Math.min(1,score)});
+ }
+ oracle.sort((a,b)=>b.cosine-a.cosine||a.left.localeCompare(b.left)||a.right.localeCompare(b.right));
+ assert.deepEqual(streamed.methods.similarity.pairs,oracle.slice(0,10));
+ assert.equal(streamed.methods.similarity.compared,oracle.length);
+ await assert.rejects(()=>A.analyze({...corpus,records:many},{...p,topic:'',methods:['similarity']},async message=>{
+  if(message.includes('1000 of'))throw Object.assign(new Error('cancelled'),{name:'AbortError'});
+ }),{name:'AbortError'});
+ const large=Array.from({length:1001},(_,i)=>row('large'+i,'nuclear treaty distinct '+i));
+ const scaled=await A.analyze({...corpus,records:large},{...p,topic:'',methods:['similarity']});
+ assert.equal(scaled.methods.similarity.compared,500500);assert.equal(scaled.methods.similarity.pairs.length,10);
  const countries=[{country:'Example',iso3:'EXA',aliases:'Example',region:'Africa'}];
  const m={date:'2026-09-22T00:00:00Z',slug:'asset/a',title:'General Debate',pageUrl:'/en/asset/a',jsonUrl:'/en/asset/a.json',hasTranscript:true};
  const doc={video:{slug:m.slug,date:m.date},transcript:{language:'en',data:[{speaker:{affiliation:'EXA'},paragraphs:[{sentences:[{text:'AI safeguards'}]}],pageUrl:'/en/asset/a?t=3'}]}};
