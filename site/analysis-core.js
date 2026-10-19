@@ -18,7 +18,8 @@
     ? require('./meeting-quick-reader.js') : root.UNMeetingQuickReader;
   const TextUnits = typeof module !== 'undefined' && module.exports
     ? require('./text-units.js') : root.UNTextUnits;
-  const VERSION = 'browser-descriptive-1.16.0';
+  const PassageLabels = typeof module !== 'undefined' && module.exports ? require('./passage-labels.js') : root.UNPassageLabels;
+  const VERSION = 'browser-descriptive-1.17.0';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters', 'nmf'];
 
@@ -291,6 +292,7 @@
 
   async function analyze(corpus, p, yieldProgress = async () => {}, runClusters, runNMF) {
     validateCorpus(corpus);
+    PassageLabels.validate(corpus);
     p = parameters(p);
     if(corpus.reviewed_units||corpus.records.some(r=>r.parent_id)){
       if(!ReviewedUnits?.isValidated(corpus))throw Error('Reviewed passages require a validated analysis bundle with original sources and saved decisions.');
@@ -365,6 +367,7 @@
       matched,
       methods: {}
     };
+    result.passage_labels = PassageLabels.snapshot(matched);
     result.briefing = briefing(records, matched, duplicates, corpus, p);
     if(identity){
       result.quick_reader=MeetingQuickReader.build(wholeMeeting,identity);

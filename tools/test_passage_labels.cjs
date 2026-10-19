@@ -1,0 +1,13 @@
+const assert=require('node:assert/strict'),P=require('../site/passage-labels'),A=require('../site/analysis-core');
+const r={id:'sc/1#0',date:'2026-10-14',language:'en',text_sha256:'a'.repeat(64),raw_sha256:'b'.repeat(64),meeting_slug:'sc/1',source_url:'https://transcripts.un.org/en/sc/1',scope:'other',meeting:'Synthetic formal meeting',country:'Synthetic',region:'Unmapped',text:'Restrictions on humanitarian access persist. We demand unrestricted humanitarian access. Our government has opened humanitarian access routes.'};
+assert.deepEqual(P.classify(r).labels,P.LABELS);
+assert.deepEqual(P.classify({...r,text:'We call for lifting restrictions on humanitarian access.'}).labels,['requested_action']);
+assert.deepEqual(P.classify({...r,text:'We do not demand humanitarian access.'}).labels,[]);
+assert.deepEqual(P.classify({...r,text:'Our government will open humanitarian access routes.'}).labels,[]);
+assert.deepEqual(P.classify({...r,text:'The Civilian Protection Office conducted training.'}).labels,[]);
+assert.equal(P.attribution({...r,speaker_metadata:{affiliation_full:'Uganda',group:'NAM'}}).kind,'collective');
+assert.equal(P.attribution({...r,text:'I deliver this statement on behalf of the regional group.'}).kind,'collective');
+assert.notEqual(P.attribution({...r,text:'We align with the NAM statement and add national remarks.'}).kind,'collective');
+assert.equal(P.attribution({...r,speaker_metadata:{affiliation_full:'UN',function:'Acting Special Coordinator'}}).kind,'institutional');
+const corpus={schema:'un.browser.corpus.v1',collection:{start:r.date,end:r.date,scope:'all'},coverage:[],records:[r]};const before=JSON.stringify(corpus);corpus.passage_labels=P.snapshot(corpus.records);P.validate(corpus);const copy=JSON.parse(JSON.stringify(corpus));copy.passage_labels.records[0].labels=[];assert.throws(()=>P.validate(copy),/Saved passage labels/);assert.equal(JSON.stringify(corpus.records),JSON.stringify(JSON.parse(before).records));
+(async()=>{const report=await A.analyze(corpus,{start:r.date,end:r.date,scope:'all',topic:'',region:'All regions',methods:['frequency']});assert.deepEqual(report.passage_labels,corpus.passage_labels);console.log('PASS overlapping labels, sentence evidence, negation and future abstention, group/UN attribution, source-bound saved labels and immutable originals');})().catch(e=>{console.error(e);process.exitCode=1});
