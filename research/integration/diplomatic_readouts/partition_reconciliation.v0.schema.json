@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:unga81:synthetic-partition-reconciliation:v0",
+  "title": "UNGA81 source-free synthetic witness partition review. NEVER a credential.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "reason_codes", "epoch", "signed_hosts", "quorum",
+    "fork_evidence_sha256", "authority", "authorized", "can_read_source",
+    "can_issue_review", "statistical_eligible", "publication_eligible",
+    "delivery_eligible", "holdout_lock", "gate_status", "source_text_included",
+    "source_rows_exported"
+  ],
+  "properties": {
+    "schema": {"const": "un.synthetic-partition-reconciliation.v0"},
+    "status": {"enum": ["withheld", "pending_gossip", "quorum_observed_no_authority"]},
+    "reason_codes": {"type": "array", "items": {"type": "string", "pattern": "^[a-z0-9_]{3,80}$"}, "maxItems": 5},
+    "epoch": {"type": ["integer", "null"], "minimum": 1},
+    "signed_hosts": {"type": "integer", "minimum": 0, "maximum": 4},
+    "quorum": {"const": 3},
+    "fork_evidence_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+    "authority": {"const": "none"},
+    "authorized": {"const": false},
+    "can_read_source": {"const": false},
+    "can_issue_review": {"const": false},
+    "statistical_eligible": {"const": false},
+    "publication_eligible": {"const": false},
+    "delivery_eligible": {"const": false},
+    "holdout_lock": {
+      "type": "object", "additionalProperties": false,
+      "required": ["reserved_meetings", "transcripts_opened", "access_granted", "d1_o1_o5"],
+      "properties": {
+        "reserved_meetings": {"const": 37},
+        "transcripts_opened": {"const": 0},
+        "access_granted": {"const": false},
+        "d1_o1_o5": {"const": "frozen"}
+      }
+    },
+    "gate_status": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_registry", "original_bytes", "text_transform", "original_offsets", "selection_and_duplicates", "source_dependence", "country_attribution", "proposition_stance", "owner_review", "privacy", "statistical_identification", "reserved_holdout", "d1_publication"],
+      "properties": {
+        "source_registry": {"const": "NOT_RUN"},
+        "original_bytes": {"const": "NOT_RUN"},
+        "text_transform": {"const": "NOT_RUN"},
+        "original_offsets": {"const": "NOT_RUN"},
+        "selection_and_duplicates": {"const": "NOT_RUN"},
+        "source_dependence": {"const": "NOT_RUN"},
+        "country_attribution": {"const": "NOT_RUN"},
+        "proposition_stance": {"const": "NOT_RUN"},
+        "owner_review": {"const": "NOT_RUN"},
+        "privacy": {"const": "NOT_RUN"},
+        "statistical_identification": {"const": "NOT_RUN"},
+        "reserved_holdout": {"const": "NOT_RUN"},
+        "d1_publication": {"const": "NOT_RUN"}
+      }
+    },
+    "source_text_included": {"const": false},
+    "source_rows_exported": {"const": false}
+  },
+  "allOf": [
+    {"if": {"properties": {"status": {"const": "withheld"}}},
+     "then": {"properties": {"epoch": {"const": null}, "signed_hosts": {"const": 0}, "reason_codes": {"minItems": 1}}}},
+    {"if": {"properties": {"status": {"enum": ["pending_gossip", "quorum_observed_no_authority"]}}},
+     "then": {"properties": {"epoch": {"type": "integer", "minimum": 1}, "reason_codes": {"maxItems": 0}}}}
+  ]
+}
