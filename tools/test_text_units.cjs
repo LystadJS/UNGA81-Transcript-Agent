@@ -52,3 +52,8 @@ for(const ordinal of ['eighth','ninth','twenty-first','one hundred and second'])
  assert.equal(Text.reduceProceduralNoise(line).text,'');assert.equal(Text.summaryEvidenceSentence(line),false);
  assert.equal(Text.reduceProceduralNoise(line.replace('.',', but we support nuclear disarmament.')).text,line.replace('.',', but we support nuclear disarmament.'));
 }
+
+for(const line of ['Distinguished Delegates, the Committee will continue this morning with its general debate on all disarmament and international security agenda items allocated to it.','I call on the representative of DPRK.','Now I call on the representative of Bahrain.']){
+ assert.equal(Text.reduceProceduralNoise(line).text,'');assert.equal(Text.summaryEvidenceSentence(line),false);
+}
+assert.equal(Text.reduceProceduralNoise('The committee will continue its general debate, but we urge nuclear disarmament.').text,'The committee will continue its general debate, but we urge nuclear disarmament.');
