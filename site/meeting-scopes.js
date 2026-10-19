@@ -12,6 +12,7 @@
   const OPTIONS = Object.freeze([
     { value: 'general_debate', label: 'General Debate meetings' },
     { value: 'all', label: 'All UN meetings in the inventory' },
+    { value: 'ga_sc', label: 'General Assembly + Security Council only' },
     { value: 'committee_1', label: 'First Committee — Disarmament and International Security' },
     { value: 'committee_2', label: 'Second Committee — Economic and Financial' },
     { value: 'committee_3', label: 'Third Committee — Social, Humanitarian and Cultural' },
@@ -148,17 +149,41 @@
   }
 
 
+  // Body membership uses retained meeting metadata, never passage wording.
+  function meetingBody(meeting) {
+    const bodies = new Set();
+    for (const path of [meeting.pageUrl, meeting.jsonUrl, meeting.source_url, meeting.slug]) {
+      if (typeof path !== 'string' || !path.trim()) continue;
+      try {
+        const url = new URL(path, ORIGIN + '/');
+        if (url.origin !== ORIGIN || url.username || url.password) continue;
+        const match = url.pathname.match(/^\/(?:[a-z]{2}\/)?(ga|sc)\/[^/]+/i);
+        if (match) bodies.add(match[1].toLowerCase());
+      } catch { /* Unusable metadata cannot establish membership. */ }
+    }
+    if (bodies.size > 1) return null;
+    if (bodies.size === 1) return [...bodies][0];
+    const title = normalize(meeting.title || meeting.meeting);
+    if (/\b(?:press briefing|press conference|media stakeout|stakeout)\b/.test(title)) return null;
+    if (/^general assembly\b/.test(title) ||
+        /\bgeneral assembly \d+(?:st|nd|rd|th)? session$/.test(title) ||
+        /^committee_[1-6]$/.test(classifyMeeting(meeting))) return 'ga';
+    if (/^security council\b/.test(title) ||
+        /\bsecurity council \d+(?:st|nd|rd|th)? meeting$/.test(title)) return 'sc';
+    return null;
+  }
+
   function matchesMeeting(meeting, scope) {
     if (!isValid(scope)) throw Error('Invalid meeting scope.');
 
-    return scope === 'all' || classifyMeeting(meeting) === scope;
+    return scope === 'all' || (scope === 'ga_sc' ? meetingBody(meeting) !== null : classifyMeeting(meeting) === scope);
   }
 
 
   function matchesRecord(record, scope) {
     if (!isValid(scope)) throw Error('Invalid meeting scope.');
 
-    return scope === 'all' || recordScope(record) === scope;
+    return scope === 'all' || (scope === 'ga_sc' ? meetingBody({title:record.meeting,source_url:record.source_url,slug:record.meeting_slug || record.id?.split('#')[0]}) !== null : recordScope(record) === scope);
   }
 
 
@@ -166,7 +191,8 @@
   // supply other committees or the full UN inventory.
   function covers(collectedScope, requestedScope) {
     return isValid(collectedScope) && isValid(requestedScope) &&
-      (collectedScope === 'all' || collectedScope === requestedScope);
+      (collectedScope === 'all' || collectedScope === requestedScope ||
+       (collectedScope === 'ga_sc' && (requestedScope === 'general_debate' || /^committee_[1-6]$/.test(requestedScope))));
   }
 
 
@@ -177,6 +203,7 @@
     committeeFromPath,
     classifyMeeting,
     recordScope,
+    meetingBody,
     matchesMeeting,
     matchesRecord,
     covers

@@ -16,7 +16,8 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright'),{fixture}=
   try{
     const page=await browser.newPage({viewport:{width:1440,height:1000},acceptDownloads:true}),errors=[],uploads=[],external=[];
     page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(r.method()!=='GET')uploads.push(r.url());if(new URL(r.url()).origin!==new URL(url).origin)external.push(r.url());});
-    await page.goto(url+'latent.html');await page.waitForFunction(()=>document.querySelector('#scope').options.length===8);
+    await page.goto(url+'latent.html');await page.waitForFunction(()=>document.querySelector('#scope').querySelector('option[value=ga_sc]'));
+    assert.deepEqual(await page.locator('#scope option').evaluateAll(options=>options.map(option=>option.value)),require('../site/meeting-scopes.js').OPTIONS.map(option=>option.value));
     const f=await fixture();f.plan.settings.push({label:'NMF engineering comparison',method:'nmf',options:{components:2,starts:1,maxIterations:100}});
     const file=(name,text)=>({name,mimeType:'application/json',buffer:Buffer.from(text)});
     const finished=async()=>{await page.waitForFunction(()=>!document.querySelector('#results').hidden||document.querySelector('#status').textContent.startsWith('Could not complete:'),{},{timeout:120000});assert.equal(await page.locator('#results').isVisible(),true,await page.locator('#status').textContent());};
