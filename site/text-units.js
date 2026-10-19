@@ -11,18 +11,19 @@
       .map(line=>line.replace(/\uE000/g,'.')).filter(Boolean);
   }
   function proceduralSentence(sentence){
-    const text=sentence.trim().replace(/^and\s+/i,'');
+    const text=sentence.trim().replace(/^and\s+/i,'').replace(/^(?:distinguished delegates|dear colleagues),\s*/i,'');
     if (wordCount(text)>65) return false;
     // Do not remove policy-bearing courtesy clauses or mixed action sentences.
     if (/\b(?:support\w*|oppos\w*|reject\w*|condemn\w*|urg\w*|call for|endors\w*|welcome|express\w*|believ\w*|recogniz\w*|must|should|because|but|however)\b/i.test(text)) return false;
     const handoff=text.replace(/^(?:and )?now /i,'').replace(/^(?:i|we) (?:will|shall) (?:first |now )?/i,'I ');
-    if (/^(?:(?:i|we) (?:now )?(?:give|yield) (?:the |our panelists the )floor\b[^;!?]*|(?:i|we) now call on\b[^;!?]*|(?:now )?you have the floor)[.!]?$/i.test(handoff)) return true;
-    if (/^i thank (?:(?:the )?(?:distinguished |permanent |deputy )*(?:representative|delegate|ambassador|director)\b)[^;!?]*[.!]?$/i.test(text) &&
+    if (/^(?:(?:i|we) (?:now )?(?:give|yield) (?:the |our panelists the )floor\b[^;!?]*|(?:i|we) (?:now )?call on\b[^;!?]*|(?:now )?you have the floor)[.!]?$/i.test(handoff)) return true;
+    if (/^i thank (?:(?:the )?(?:distinguished |permanent |deputy )*(?:representative|observer|delegate|ambassador|director)\b)[^;!?]*[.!]?$/i.test(text) &&
         !/\b(?:that|which|who|while|because|on sanctions|on weapons|for (?!arms control|disarmament affairs|(?:his |her |their |the )?(?:statement|remarks|briefing|presentation|participation|contribution|attention)\b))\b/i.test(text)) return true;
     const transitions=text.split(/,?\s+and\s+(?=(?:i|we)\s)/i);
     if(transitions.length>1 && transitions.every(proceduralSentence))return true;
+    if (/^(?:the )?(?:committee|security council|general assembly|council|assembly) (?:will|shall) (?:now )?(?:continue|begin|resume) (?:this (?:morning|afternoon|evening) )?(?:with )?(?:its |the )?(?:general debate|thematic discussions?|consideration of (?:the )?agenda item)\b[^;!?]*[.!]?$/i.test(text)) return true;
     // Institutional names can be long; the action must still end the sentence.
-    if (/^(?:the )?[\d,]+(?:st|nd|rd|th)? meeting of the [\p{L}\p{N},’'() -]{1,180} is (?:now )?(?:called to order|opened|adjourned|suspended|resumed)[.!]?$/iu.test(text)) return true;
+    if (/^(?:the )?(?:[\d,]+(?:st|nd|rd|th)?|[\p{L}-]+(?: [\p{L}-]+){0,7}) meeting of the [\p{L}\p{N},’'() -]{1,180} is (?:now )?(?:called to order|opened|adjourned|suspended|resumed)[.!]?$/iu.test(text)) return true;
     if (/^(?:(?:distinguished|dear) (?:delegates|colleagues|representatives|members)|excellencies)(?:,? (?:distinguished |dear )?(?:delegates|colleagues|representatives|members|excellencies))*[,.!]?$/i.test(text)) return true;
     if (/^(?:the )?full (?:version|text) of (?:this|my|our|the) statement (?:will be|is|has been) (?:submitted|made available|available)(?: to the secretariat| on eStatements)?[.!]?$/i.test(text)) return true;
     return /^(?:thank you(?:,?\s+(?:(?:Mr|Madam|Ms|Mrs)\.?\s+)?(?:Chair(?:person)?|President|Secretary(?:-General)?|Ambassador|Minister))?(?:,? for giving (?:me|us) the floor)?[.!]?|good (?:morning|afternoon|evening)(?:,?\s+(?:colleagues|everyone|excellencies))?[.!]?)$/i.test(text) ||

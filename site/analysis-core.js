@@ -18,7 +18,7 @@
     ? require('./meeting-quick-reader.js') : root.UNMeetingQuickReader;
   const TextUnits = typeof module !== 'undefined' && module.exports
     ? require('./text-units.js') : root.UNTextUnits;
-  const VERSION = 'browser-descriptive-1.14.2';
+  const VERSION = 'browser-descriptive-1.14.3';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters', 'nmf'];
 
@@ -171,7 +171,7 @@
     const proceduralStop = new Set(['thank','thanks','floor','representative','representatives','statement','statements','give','madam','chair','distinguished','excellencies','excellency','colleagues','mr','mrs','ms','now','speaking','behalf']);
     const processed = records.map(record => options.reduceProceduralNoise
       ? TextUnits.reduceProceduralNoise(record.text) : {text:record.text,removed_sentence_count:0});
-    const processing = {method:options.reduceProceduralNoise ? 'narrow_procedural_sentences_v2' : 'original_text',
+    const processing = {method:options.reduceProceduralNoise ? 'narrow_procedural_sentences_v3' : 'original_text',
       original_included_count:records.length,
       removed_sentence_count:processed.reduce((sum,item)=>sum+item.removed_sentence_count,0),
       zero_text_ids:records.filter((r,i)=>!TextUnits.wordCount(processed[i].text)).map(r=>r.id)};
@@ -269,7 +269,7 @@
     const sources = matched.filter(r => MeetingQuickReader.safeURL(r.source_url)).map(r => ({record_id:r.id,source_url:MeetingQuickReader.safeURL(r.source_url)}));
     const processed = matched.map(r => TextUnits.reduceProceduralNoise(r.text));
     const thematicRecords = matched.map((r,i) => ({...r,text:processed[i].text}));
-    const processing={method:'narrow_procedural_sentences_v2',original_included_count:matched.length,
+    const processing={method:'narrow_procedural_sentences_v3',original_included_count:matched.length,
       removed_sentence_count:processed.reduce((n,r)=>n+r.removed_sentence_count,0),
       zero_text_ids:thematicRecords.filter(r=>!TextUnits.wordCount(r.text)).map(r=>r.id)};
     const themes = MeetingQuickReader.ISSUES.map(issue => {
@@ -435,44 +435,38 @@
       }
 
       if (p.methods.includes('similarity')) {
-        if (matched.length > 300) {
-          result.methods.similarity = {
-            skipped: 'Pairwise similarity requires at most 300 matched segments. Narrow the topic, dates or region.'
-          };
-        } else {
-          const pairs = [];
-
-          for (let i = 0; i < terms.vectors.length; i++) {
-            for (let j = i + 1; j < terms.vectors.length; j++) {
-              if (!terms.vectors[i].size || !terms.vectors[j].size) continue;
-              let score = 0;
-
-              for (const [term, weight] of terms.vectors[i]) {
-                score += weight * (terms.vectors[j].get(term) || 0);
-              }
-
-              pairs.push({
-                left: matched[i].id,
-                right: matched[j].id,
-                cosine: Math.min(1, score)
-              });
+        // Examine every nonzero-vector pair but retain only the exact top ten.
+        // Pair storage stays bounded as multi-meeting collections grow.
+        const pairs = [];
+        const compare = (a, b) => b.cosine - a.cosine ||
+          a.left.localeCompare(b.left) || a.right.localeCompare(b.right);
+        const active = terms.vectors.reduce((n, vector) => n + Number(vector.size > 0), 0);
+        const total = active * (active - 1) / 2;
+        let compared = 0;
+        for (let i = 0; i < terms.vectors.length; i++) {
+          for (let j = i + 1; j < terms.vectors.length; j++) {
+            if (!terms.vectors[i].size || !terms.vectors[j].size) continue;
+            let score = 0;
+            for (const [term, weight] of terms.vectors[i]) {
+              score += weight * (terms.vectors[j].get(term) || 0);
             }
-
-            if (i % 25 === 0) await yieldProgress('Comparing text similarity');
+            const pair = {left: matched[i].id, right: matched[j].id, cosine: Math.min(1, score)};
+            if (pairs.length < 10 || compare(pair, pairs[pairs.length - 1]) < 0) {
+              pairs.push(pair);
+              pairs.sort(compare);
+              if (pairs.length > 10) pairs.pop();
+            }
+            compared++;
+            if (compared % 1000 === 0) {
+              await yieldProgress(`Comparing text similarity: ${compared} of ${total} pairs`);
+            }
           }
-
-          pairs.sort((a, b) => (
-            b.cosine - a.cosine ||
-            a.left.localeCompare(b.left) ||
-            a.right.localeCompare(b.right)
-          ));
-
-          result.methods.similarity = {
-            pairs: pairs.slice(0, 10),
-            compared: pairs.length,
-            processing: terms.processing
-          };
+          if (i % 25 === 0) await yieldProgress(`Comparing text similarity: ${compared} of ${total} pairs`);
         }
+        result.methods.similarity = {
+          pairs, compared, processing: terms.processing,
+          computation: 'exact_all_pairs_bounded_top_10'
+        };
       }
     }
 
