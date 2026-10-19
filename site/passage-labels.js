@@ -100,6 +100,31 @@
   const expected=saved.method==='humanitarian-discourse-v1'?legacySnapshot(corpus.records):saved.method==='humanitarian-discourse-v2'?v2Snapshot(corpus.records):snapshot(corpus.records);
   if(JSON.stringify(saved)!==JSON.stringify(expected))throw Error('Saved passage labels do not match the retained sources or supported label method. Open the original collection to recompute labels.');
  }
- const api={METHOD,LABELS,NAMES,classify,attribution,snapshot,validate,legacySnapshot,v2Snapshot,cues,relevant};
+ function unresolved(r){
+  const a=classify(r);
+  return !!a.recording_review||a.review_flags.some(f=>f.reason==='unclear_transcript_wording')||T.sentences(r.text||'').some(T.unclearWording);
+ }
+ function sourceBriefing(records){
+  const candidates=[];
+  for(const r of records){
+   if(!/^https:\/\/transcripts\.un\.org\/en\//.test(r.source_url||''))continue;
+   const a=classify(r),lines=T.sentences(r.text||'');
+   for(const label of LABELS)for(const index of a.evidence[label]||[]){
+    const line=lines[index];
+    if(!line||T.unclearWording(line)||!T.summaryEvidenceSentence(line)||T.wordCount(line)>100||T.wordCount(line)<6)continue;
+    if(label==='claimed_implementation'&&/\b(?:conference|training|workshop|seminar|report|convention|amendments)\b/i.test(line))continue;
+    candidates.push({record_id:r.id,text_sha256:r.text_sha256,source_url:r.source_url,date:r.date,meeting:r.meeting,label,attribution:a.attribution,sentence_index:index,excerpt:line});
+   }
+  }
+  const items=[],used=new Set();
+  const add=predicate=>{const item=candidates.find(x=>!used.has(x.record_id)&&predicate(x));if(item){used.add(item.record_id);items.push(item);}};
+  add(x=>x.label==='requested_action'&&x.attribution.kind==='collective');
+  add(x=>x.label==='reported_condition'&&x.attribution.kind==='institutional');
+  add(x=>x.label==='requested_action'&&!['collective','institutional','mixed_or_ambiguous'].includes(x.attribution.kind));
+  add(x=>x.label==='reported_condition');
+  for(const label of ['claimed_implementation','requested_action','reported_condition'])if(items.length<4)add(x=>x.label===label);
+  return {schema:'un.source-linked-briefing.v1',method:'deterministic_sentence_evidence_not_verified_outcomes',takeaway:items.length?'These linked excerpts describe humanitarian access and civilian protection. Each distinguishes a requested measure, reported condition or claim of implementation; none independently establishes compliance.':'No clear source-linked humanitarian-access or civilian-protection finding was identified under these filters.',items:items.slice(0,4),caveat:'Attribution follows retained metadata and explicit delivery wording. Group statements are not individual-country positions. Automatic transcripts, identities, events and compliance are not independently verified.',external_ai_calls:0};
+ }
+ const api={METHOD,LABELS,NAMES,classify,attribution,snapshot,validate,legacySnapshot,v2Snapshot,cues,relevant,unresolved,sourceBriefing};
  if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UNPassageLabels=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

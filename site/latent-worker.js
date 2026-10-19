@@ -1,5 +1,5 @@
 'use strict';
-importScripts(...['numerics.js','meeting-scopes.js','mds-core.js','gmm-core.js','cluster-options.js','nmf-options.js','passage-selection.js','passage-pilot-core.js','reviewed-units.js','text-units.js','meeting-quick-reader.js','passage-labels.js','analysis-core.js','lsa-core.js','representation-metrics.js','cluster-algorithms.js','hdbscan-core.js','cluster-core.js','cluster-stability.js','nmf-core.js','latent-core.js'].map(file=>file+'?v=1.17.2'));
+importScripts(...['numerics.js','meeting-scopes.js','mds-core.js','gmm-core.js','cluster-options.js','nmf-options.js','passage-selection.js','passage-pilot-core.js','reviewed-units.js','text-units.js','meeting-quick-reader.js','passage-labels.js','analysis-core.js','lsa-core.js','representation-metrics.js','cluster-algorithms.js','hdbscan-core.js','cluster-core.js','cluster-stability.js','nmf-core.js','latent-core.js'].map(file=>file+'?v=1.18.0'));
 const modules=['numerics.js','meeting-scopes.js','mds-core.js','gmm-core.js','cluster-options.js','nmf-options.js','passage-selection.js','passage-pilot-core.js','reviewed-units.js','text-units.js','meeting-quick-reader.js','passage-labels.js','analysis-core.js','lsa-core.js','representation-metrics.js','cluster-algorithms.js','hdbscan-core.js','cluster-core.js','cluster-stability.js','nmf-core.js','latent-core.js','latent-worker.js','latent-view.js','latent-ui.js','latent.css'];
 onmessage=async({data})=>{
   try{
@@ -13,7 +13,7 @@ onmessage=async({data})=>{
     }
     if(data.action!=='run')throw Error('Unknown comparison operation.');
     const hashes={};
-    for(const file of modules){const response=await fetch(file+'?v=1.17.2',{cache:'no-store'});if(!response.ok)throw Error('Cannot record runtime source: '+file);hashes[file]=await UNLatent.hash(new Uint8Array(await response.arrayBuffer()));}
+    for(const file of modules){const response=await fetch(file+'?v=1.18.0',{cache:'no-store'});if(!response.ok)throw Error('Cannot record runtime source: '+file);hashes[file]=await UNLatent.hash(new Uint8Array(await response.arrayBuffer()));}
     const runtime={engine:UNLatent.VERSION,execution:'browser Worker',user_agent:navigator.userAgent,module_sha256:hashes};
     const result=await UNLatent.run(data.payload,data.plan,runtime,progress);
     postMessage({type:'result',result,payload:data.payload,archive_text:await UNLatent.pack(data.payload,result)});
