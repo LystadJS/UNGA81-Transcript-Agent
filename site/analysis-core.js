@@ -19,7 +19,7 @@
   const TextUnits = typeof module !== 'undefined' && module.exports
     ? require('./text-units.js') : root.UNTextUnits;
   const PassageLabels = typeof module !== 'undefined' && module.exports ? require('./passage-labels.js') : root.UNPassageLabels;
-  const VERSION = 'browser-descriptive-1.17.1';
+  const VERSION = 'browser-descriptive-1.17.2';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters', 'nmf'];
 
@@ -259,7 +259,7 @@
 
   function themeExcerpt(text, pattern) {
     const normalized = text.replace(/\s+/g, ' ');
-    const line = TextUnits.sentences(normalized).find(value => pattern.test(value) && TextUnits.summaryEvidenceSentence(value)) || '';
+    const line = TextUnits.sentences(normalized).find(value => pattern.test(value) && TextUnits.summaryEvidenceSentence(value) && !TextUnits.unclearWording(value)) || '';
     const at = line.search(pattern), start = Math.max(0, at - 80);
     return (start ? '…' : '') + line.slice(start, start + 240);
   }
@@ -275,7 +275,7 @@
       zero_text_ids:thematicRecords.filter(r=>!TextUnits.wordCount(r.text)).map(r=>r.id)};
     const themes = MeetingQuickReader.ISSUES.map(issue => {
       const hits = thematicRecords.filter(r => issue.pattern.test(r.text));
-      return {id:issue.id,label:issue.label,segments:hits.length,evidence:hits.filter(r => MeetingQuickReader.safeURL(r.source_url) && TextUnits.sentences(r.text).some(line => issue.pattern.test(line) && TextUnits.summaryEvidenceSentence(line))).slice(0,2).map(r => ({record_id:r.id,source_url:MeetingQuickReader.safeURL(r.source_url),excerpt:themeExcerpt(r.text, issue.pattern)}))};
+      return {id:issue.id,label:issue.label,segments:hits.length,evidence:hits.filter(r => MeetingQuickReader.safeURL(r.source_url) && TextUnits.sentences(r.text).some(line => issue.pattern.test(line) && TextUnits.summaryEvidenceSentence(line) && !TextUnits.unclearWording(line))).slice(0,2).map(r => ({record_id:r.id,source_url:MeetingQuickReader.safeURL(r.source_url),excerpt:themeExcerpt(r.text, issue.pattern)}))};
     }).filter(t => t.segments).sort((a,b) => b.segments-a.segments || a.label.localeCompare(b.label)).slice(0,6);
     const warnings = corpus.coverage.filter(row => row.status !== 'ok' && row.status !== 'collected');
     const meetings = new Set(matched.map(r => Scopes.recordMeetingKey(r, p.scope))).size;

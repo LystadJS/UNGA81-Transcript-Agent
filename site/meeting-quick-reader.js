@@ -177,7 +177,7 @@
         const hits=lines.filter(s=>issue.pattern.test(s));
         if(!hits.length)continue;
         const bucket=counts.get(issue.id);bucket.count++;
-        if(bucket.evidence.length<2 && hits.some(TextUnits.summaryEvidenceSentence) && safeURL(record.source_url))bucket.evidence.push({record_id:record.id,source_url:safeURL(record.source_url),excerpt:hits.find(TextUnits.summaryEvidenceSentence)?.slice(0,240)});
+        if(bucket.evidence.length<2 && hits.some(line=>TextUnits.summaryEvidenceSentence(line)&&!TextUnits.unclearWording(line)) && safeURL(record.source_url))bucket.evidence.push({record_id:record.id,source_url:safeURL(record.source_url),excerpt:hits.find(line=>TextUnits.summaryEvidenceSentence(line)&&!TextUnits.unclearWording(line))?.slice(0,240)});
         if(record.attribution?.country_status!=='registry_mapped'||record.region==='Unmapped'||role(record)!=='country_affiliated'||collectiveAttribution(record))continue;
         for(const line of hits){
           // Do not promote issue co-occurrence or reported third-party views to a country stance.

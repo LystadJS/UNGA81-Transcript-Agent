@@ -30,6 +30,13 @@ assert.equal(P.attribution({...r,text:'We thank the delegate for speaking on beh
 assert.equal(P.attribution({...r,text:'I speak on behalf of our country.'}).kind,'unresolved');
 assert.equal(P.attribution({...r,text:'I speak on behalf of the regional group. I add remarks in my national capacity.'}).kind,'mixed_or_ambiguous');
 assert.equal(P.attribution({...r,text:'I speak in my national capacity.',speaker_metadata:{affiliation_full:'Synthetic',group:'Regional Group'}}).kind,'mixed_or_ambiguous');
+const v2={records:[r],passage_labels:P.v2Snapshot([r])};P.validate(v2);
+const checked={...r,id:'sc/10243/2#1',text_sha256:'dfe96db716110b297a3f935e1e89e45794d7083437833d96eef5a948417796fc',raw_sha256:'0e97df3478d02d45e993c225530fc98209fe3450669047f33a515b1f29ca8b21'};
+assert.equal(P.classify(checked).recording_review.correction_applied,false);
+assert.equal(P.classify({...checked,text_sha256:'a'.repeat(64)}).recording_review,undefined);
+assert.equal(P.classify({...checked,raw_sha256:'b'.repeat(64)}).recording_review,undefined);
+assert.equal(P.classify({...checked,id:'other'}).recording_review,undefined);
+const notes={records:[checked],passage_labels:P.snapshot([checked])};P.validate(notes);notes.passage_labels.records[0].recording_review.correction_applied=true;assert.throws(()=>P.validate(notes),/Saved passage labels/);
 const legacy={records:[r],passage_labels:P.legacySnapshot([r])};P.validate(legacy);const badLegacy=JSON.parse(JSON.stringify(legacy));badLegacy.passage_labels.records[0].labels=[];assert.throws(()=>P.validate(badLegacy),/Saved passage labels/);
 const corpus={schema:'un.browser.corpus.v1',collection:{start:r.date,end:r.date,scope:'all'},coverage:[],records:[r]};const before=JSON.stringify(corpus);corpus.passage_labels=P.snapshot(corpus.records);P.validate(corpus);const copy=JSON.parse(JSON.stringify(corpus));copy.passage_labels.records[0].labels=[];assert.throws(()=>P.validate(copy),/Saved passage labels/);assert.equal(JSON.stringify(corpus.records),JSON.stringify(JSON.parse(before).records));
 (async()=>{const report=await A.analyze(corpus,{start:r.date,end:r.date,scope:'all',topic:'',region:'All regions',methods:['frequency']});assert.deepEqual(report.passage_labels,corpus.passage_labels);console.log('PASS overlapping labels, sentence evidence, negation and future abstention, group/UN attribution, source-bound saved labels and immutable originals');})().catch(e=>{console.error(e);process.exitCode=1});

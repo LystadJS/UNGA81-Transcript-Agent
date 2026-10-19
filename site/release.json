@@ -1,6 +1,6 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.17.1",
+  "browser_engine": "browser-descriptive-1.17.2",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-10-19",
   "features": [

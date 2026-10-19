@@ -584,7 +584,9 @@
 
     if (report.passage_labels) {
       const rows=report.passage_labels.records;
-      html += `<section aria-label="Passage labels"><h3>Passage labels</h3><p>Automatic, provisional labels for humanitarian access and civilian protection language. A passage can have several labels. Counts overlap; no label means the rule found no clear cue.</p>${table(['Label','Passages'],UNPassageLabels.LABELS.map(label=>[UNPassageLabels.NAMES[label],rows.filter(r=>r.labels.includes(label)).length]))}<p class="method-note">Requested action describes an appeal or obligation. Reported condition describes a restriction or harm. Claimed implementation describes a reported step already taken. Labels do not verify events, compliance or country positions. Group statements retain group attribution. Reported or quoted appeals and unclear wording are flagged separately rather than treated as direct requests. Detention-monitor access is outside this relief-access scope. Older saved labels are verified against their sources and recomputed with the current rules; Save original collection retains the imported file. Inspect the original evidence below.</p></section>`;
+      const recordingReviews=rows.filter(r=>r.recording_review);
+      const recordingNotice=recordingReviews.length?`<p role="note"><strong>${recordingReviews.length} unresolved recording checks.</strong> No replacement wording was established by local speech recognition. Original wording is retained; unclear sentences are excluded from summary examples. Inspect each recording note below. GA source timestamps may not align with the shortened recording.</p>`:'';
+      html += `<section aria-label="Passage labels"><h3>Passage labels</h3>${recordingNotice}<p>Automatic, provisional labels for humanitarian access and civilian protection language. A passage can have several labels. Counts overlap; no label means the rule found no clear cue.</p>${table(['Label','Passages'],UNPassageLabels.LABELS.map(label=>[UNPassageLabels.NAMES[label],rows.filter(r=>r.labels.includes(label)).length]))}<p class="method-note">Requested action describes an appeal or obligation. Reported condition describes a restriction or harm. Claimed implementation describes a reported step already taken. Labels do not verify events, compliance or country positions. Group statements retain group attribution. Reported or quoted appeals and unclear wording are flagged separately rather than treated as direct requests. Detention-monitor access is outside this relief-access scope. Older saved labels are verified against their sources and recomputed with the current rules; Save original collection retains the imported file. Inspect the original evidence below.</p></section>`;
     }
     html += `
       <h3>Source passages</h3>
@@ -597,7 +599,7 @@
     for (const record of report.matched.slice(0, 100)) {
       const annotation=report.passage_labels?.records.find(r=>r.record_id===record.id);
       const lines=UNTextUnits.sentences(record.text);
-      const labelsHTML=annotation?`<p><strong>${annotation.labels.length?annotation.labels.map(l=>esc(UNPassageLabels.NAMES[l])).join(' · '):'No clear label'}</strong> · Automatic provisional labels</p><details><summary>Label evidence and attribution</summary><p>${esc(annotation.attribution.label)}. Based on retained source metadata and opening wording; identity and governmental stance are not verified.</p>${(annotation.review_flags||[]).length?`<p><strong>Review flags</strong></p><ul>${annotation.review_flags.map(f=>`<li>${esc(f.reason.replaceAll('_',' '))}: ${esc(lines[f.sentence_index])}</li>`).join('')}</ul>`:''}${annotation.labels.map(l=>`<p><strong>${esc(UNPassageLabels.NAMES[l])}</strong></p><ul>${annotation.evidence[l].map(i=>`<li>${esc(lines[i])}</li>`).join('')}</ul>`).join('')}</details>`:'';
+      const labelsHTML=annotation?`<p><strong>${annotation.labels.length?annotation.labels.map(l=>esc(UNPassageLabels.NAMES[l])).join(' · '):'No clear label'}</strong> · Automatic provisional labels</p><details><summary>Label evidence and attribution</summary><p>${esc(annotation.attribution.label)}. Based on retained source metadata and opening wording; identity and governmental stance are not verified.</p>${(annotation.review_flags||[]).length?`<p><strong>Review flags</strong></p><ul>${annotation.review_flags.map(f=>`<li>${esc(f.reason.replaceAll('_',' '))}: ${esc(lines[f.sentence_index])}</li>`).join('')}</ul>`:''}${annotation.recording_review?`<p><strong>Recording wording unresolved</strong> · Machine-assisted check; no correction applied.</p><p>${esc(annotation.recording_review.note)}</p><p><a href="${esc(annotation.recording_review.recording_url)}" target="_blank" rel="noopener noreferrer">Original recording</a> · Approximate excerpt position ${Math.floor(annotation.recording_review.approximate_recording_seconds/60)}m ${annotation.recording_review.approximate_recording_seconds%60}s. ${annotation.recording_review.timing_status.includes('shortened')?'Original transcript timestamps may not align with the shortened recording.':''}</p>`:''}${annotation.labels.map(l=>`<p><strong>${esc(UNPassageLabels.NAMES[l])}</strong></p><ul>${annotation.evidence[l].map(i=>`<li>${esc(lines[i])}</li>`).join('')}</ul>`).join('')}</details>`:'';
 
       html += `
         <div class="evidence-item">
@@ -760,7 +762,7 @@
   el('nmfMethod').addEventListener('change',updateNMFControls);el('nmfStability').addEventListener('change',updateNMFControls);updateNMFControls();
   function runNMFWorker(records,vectors,options){
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.17.1');
+      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.17.2');
       const finish=(fn,v)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(v);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));signal.addEventListener('abort',abort,{once:true});
       worker.onerror=()=>finish(reject,Error('NMF worker could not run. Reload the page or check browser permissions.'));
@@ -771,7 +773,7 @@
 
   function runClusterWorker(records,vectors,options,progress) {
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.17.1');
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.17.2');
       const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
       signal.addEventListener('abort',abort,{once:true});
@@ -1009,7 +1011,7 @@
 
     const fields = [
       'id', 'date', 'country', 'region', 'scope', 'meeting',
-      'source_url', 'text_sha256', 'text', 'passage_labels', 'passage_attribution',
+      'source_url', 'text_sha256', 'text', 'passage_labels', 'passage_attribution', 'recording_review',
       ...(result.reviewed_units?['parent_id','parent_text_sha256','parent_raw_sha256','corpus_sha256','start','end','offset_unit','utf8_start','utf8_end','source_group','reviewer','reviewed_at','review_scope']:[])
     ];
 
@@ -1017,7 +1019,7 @@
       .replace(/^[=+@\-\t\r]/, "'$&")
       .replace(/"/g, '""') + '"';
 
-    const rows = [fields, ...result.matched.map(record => fields.map(field => {const a=result.passage_labels?.records.find(r=>r.record_id===record.id);return field==='passage_labels'?a?.labels.join('; '):field==='passage_attribution'?a?.attribution.label:record[field];}))];
+    const rows = [fields, ...result.matched.map(record => fields.map(field => {const a=result.passage_labels?.records.find(r=>r.record_id===record.id);return field==='recording_review'?(a?.recording_review?JSON.stringify(a.recording_review):''):field==='passage_labels'?a?.labels.join('; '):field==='passage_attribution'?a?.attribution.label:record[field];}))];
     const csv = '\uFEFF' + rows.map(row => row.map(cell).join(',')).join('\r\n');
 
     save(csv, result.parameters.mode === 'all' ? 'un-all-passages.csv' : 'un-matched-segments.csv',

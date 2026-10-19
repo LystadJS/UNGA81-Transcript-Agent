@@ -65,3 +65,5 @@ const courtesies=Core.tfidf([{...records[0],text:'Very much support for humanita
 assert.ok(!courtesies.terms.some(t=>['very','much'].includes(t.term)));assert.ok(courtesies.terms.some(t=>t.term==='humanitarian'));
 
 for(const line of ['I invite the committee to continue its consideration of agenda item 70, entitled Promotion and Protection of Human Rights.','I call to order the informal meeting of the plenary on climate action.'])assert.equal(Text.summaryEvidenceSentence(line),false);
+
+assert.equal(require('../site/text-units').unclearWording('We must guarantee an impeded humanitarian access.'),true);
