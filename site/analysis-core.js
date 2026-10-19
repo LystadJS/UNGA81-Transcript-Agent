@@ -378,7 +378,7 @@
     if(identity){
       result.quick_reader=MeetingQuickReader.build(wholeMeeting,identity);
     }
-    if(selection){const {selected,...audit}=selection;result.passage_selection={...audit,eligible_before_type_filter:beforeTypes.length,eligible_after_type_filter:eligible.length,excluded_within_filters:beforeTypes.filter(r=>!selected.has(r.id)).map(r=>r.id)};}
+    if(selection){const {selected,...audit}=selection;result.passage_selection={...audit,eligible_before_type_filter:beforeTypes.length,eligible_after_type_filter:afterTypes.length,excluded_within_filters:beforeTypes.filter(r=>!selected.has(r.id)).map(r=>r.id)};}
     if(corpus.reviewed_units)result.reviewed_units={...corpus.reviewed_units,
       eligible_before_dedup:ReviewedUnits.count(eligible),eligible:ReviewedUnits.count(records),included:ReviewedUnits.count(matched)};
 

@@ -25,6 +25,7 @@ const p={topic:'humanitarian',phrases:['humanitarian'],exclude:[],start:date,end
  const excluded=await A.analyze(source,{...p,topic:'humanitarian access',phrases:['humanitarian access'],exclude:[],excludeUnresolved:true});
  assert.equal(include.counts.matched,3);assert.equal(excluded.counts.matched,2);assert.deepEqual(excluded.unresolved_exclusions.records.map(r=>r.record_id),[unclear.id]);assert.equal(JSON.stringify(source),original);
  assert.ok(excluded.source_briefing.items.every(x=>x.record_id!==unclear.id));assert.equal(excluded.source_briefing.items.find(x=>x.record_id===clean.id).attribution.kind,'collective');assert.ok(excluded.source_briefing.items.every(x=>x.source_url.startsWith('https://transcripts.un.org/')));
+ const singleExcluded=await A.analyze({...source,collection:corpus.collection},{...p,topic:'',phrases:[],exclude:[],excludeUnresolved:true});assert.equal(singleExcluded.quick_reader.stats.source_segments,2);
  assert.equal(P.unresolved({...clean,text:'The resolution calls for humanitarian access.'}),false);
  assert.equal(P.sourceBriefing([{...clean,source_url:'javascript:alert(1)'}]).items.length,0);
  assert.equal((await A.analyze(source,{...p,topic:'',phrases:[],exclude:[],excludeUnresolved:true})).counts.matched,2);
