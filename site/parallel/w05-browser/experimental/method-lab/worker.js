@@ -6,7 +6,7 @@ const adapters = self.UNMethodLabAdapters;
 const MODULES = [
   'numerics.js', 'meeting-scopes.js', 'mds-core.js', 'gmm-core.js',
   'cluster-options.js', 'nmf-options.js', 'passage-selection.js',
-  'passage-pilot-core.js', 'reviewed-units.js', 'meeting-quick-reader.js',
+  'passage-pilot-core.js', 'reviewed-units.js', 'text-units.js', 'meeting-quick-reader.js', 'passage-labels.js',
   'analysis-core.js', 'lsa-core.js', 'representation-metrics.js',
   'cluster-algorithms.js', 'hdbscan-core.js', 'cluster-core.js',
   'cluster-stability.js', 'nmf-core.js', 'latent-core.js'
