@@ -161,7 +161,7 @@
     verified.forEach(r=>counted.add(r.country));
     const counts=new Map(ISSUES.map(i=>[i.id,{...i,count:0,evidence:[]}]));
     const positionIndex=new Map();let substantive=0,unknown=0,collective=0,words=[],withSpeakerId=0,withSpeakerProxy=0;
-    const processing={method:'narrow_procedural_sentences_v1',original_included_count:selected.length,removed_sentence_count:0,zero_text_ids:[]};
+    const processing={method:'narrow_procedural_sentences_v2',original_included_count:selected.length,removed_sentence_count:0,zero_text_ids:[]};
     for(const record of selected){
       const text=String(record.text||'');words.push(wordCount(text));
       const speaker=speakerEvidence(record);if(speaker.speaker_identity_observed)withSpeakerId++;if(speaker.speaker_proxy)withSpeakerProxy++;
@@ -177,7 +177,7 @@
         const hits=lines.filter(s=>issue.pattern.test(s));
         if(!hits.length)continue;
         const bucket=counts.get(issue.id);bucket.count++;
-        if(bucket.evidence.length<2 && safeURL(record.source_url))bucket.evidence.push({record_id:record.id,source_url:safeURL(record.source_url),excerpt:hits[0].slice(0,240)});
+        if(bucket.evidence.length<2 && hits.some(TextUnits.summaryEvidenceSentence) && safeURL(record.source_url))bucket.evidence.push({record_id:record.id,source_url:safeURL(record.source_url),excerpt:hits.find(TextUnits.summaryEvidenceSentence)?.slice(0,240)});
         if(record.attribution?.country_status!=='registry_mapped'||record.region==='Unmapped'||role(record)!=='country_affiliated'||collectiveAttribution(record))continue;
         for(const line of hits){
           // Do not promote issue co-occurrence or reported third-party views to a country stance.
