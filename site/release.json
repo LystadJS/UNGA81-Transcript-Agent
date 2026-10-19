@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.15.0",
+  "browser_engine": "browser-descriptive-1.16.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-10-19",
   "features": [
+    "formal numbered GA and Council scope with resumed-part meeting groups",
     "metadata-bound General Assembly plus Security Council scope",
     "standalone courtesy reduction and biographical summary-evidence safeguards",
     "source-bound saved runs",
