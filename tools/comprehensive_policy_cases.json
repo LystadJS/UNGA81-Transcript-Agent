@@ -1,0 +1,252 @@
+[
+  {
+    "id": "mine_ban",
+    "object": "the Anti-Personnel Mine Ban Convention",
+    "context": "global"
+  },
+  {
+    "id": "cluster_munitions",
+    "object": "the Convention on Cluster Munitions",
+    "context": "global"
+  },
+  {
+    "id": "conventional_weapons",
+    "object": "the Convention on Certain Conventional Weapons",
+    "context": "global"
+  },
+  {
+    "id": "nuclear_test_moratorium",
+    "object": "a moratorium on nuclear testing",
+    "context": "global"
+  },
+  {
+    "id": "no_first_use",
+    "object": "a no-first-use policy for nuclear weapons",
+    "context": "global"
+  },
+  {
+    "id": "negative_security_assurances",
+    "object": "negative security assurances to non-nuclear-weapon states",
+    "context": "global"
+  },
+  {
+    "id": "outer_space_arms_race",
+    "object": "the prevention of an arms race in outer space",
+    "context": "global"
+  },
+  {
+    "id": "autonomous_weapons_treaty",
+    "object": "a legally binding instrument on lethal autonomous weapons systems",
+    "context": "global"
+  },
+  {
+    "id": "cybercrime_convention",
+    "object": "the United Nations Convention against Cybercrime",
+    "context": "global"
+  },
+  {
+    "id": "un_peacekeeping",
+    "object": "United Nations peacekeeping operations",
+    "context": "global"
+  },
+  {
+    "id": "oda_target",
+    "object": "the 0.7 per cent ODA target",
+    "context": "global"
+  },
+  {
+    "id": "debt_restructuring",
+    "object": "sovereign debt restructuring",
+    "context": "global"
+  },
+  {
+    "id": "debt_cancellation",
+    "object": "the cancellation of sovereign debt",
+    "context": "global"
+  },
+  {
+    "id": "concessional_finance",
+    "object": "concessional financing",
+    "context": "global"
+  },
+  {
+    "id": "social_protection",
+    "object": "social protection systems",
+    "context": "global"
+  },
+  {
+    "id": "technology_transfer",
+    "object": "technology transfer",
+    "context": "global"
+  },
+  {
+    "id": "illicit_financial_flows",
+    "object": "combating illicit financial flows",
+    "context": "global"
+  },
+  {
+    "id": "tax_cooperation_convention",
+    "object": "the UN Framework Convention on International Tax Cooperation",
+    "context": "global"
+  },
+  {
+    "id": "wto",
+    "object": "the World Trade Organization",
+    "context": "global"
+  },
+  {
+    "id": "doha_ldc",
+    "object": "the Doha Programme of Action for Least Developed Countries",
+    "context": "global"
+  },
+  {
+    "id": "adaptation_finance",
+    "object": "climate-adaptation finance",
+    "context": "global"
+  },
+  {
+    "id": "fossil_fuel_transition",
+    "object": "the transition away from fossil fuels",
+    "context": "global"
+  },
+  {
+    "id": "renewable_energy",
+    "object": "the expansion of renewable energy",
+    "context": "global"
+  },
+  {
+    "id": "biodiversity_framework",
+    "object": "the Kunming-Montreal Global Biodiversity Framework",
+    "context": "global"
+  },
+  {
+    "id": "bbnj",
+    "object": "the BBNJ Agreement",
+    "context": "global"
+  },
+  {
+    "id": "plastics_treaty",
+    "object": "a legally binding instrument on plastic pollution",
+    "context": "global"
+  },
+  {
+    "id": "sendai",
+    "object": "the Sendai Framework for Disaster Risk Reduction",
+    "context": "global"
+  },
+  {
+    "id": "early_warning",
+    "object": "multi-hazard early warning systems",
+    "context": "global"
+  },
+  {
+    "id": "gender_equality",
+    "object": "gender equality",
+    "context": "global"
+  },
+  {
+    "id": "women_peace_security",
+    "object": "the Women, Peace and Security agenda",
+    "context": "global"
+  },
+  {
+    "id": "women_peace_participation",
+    "object": "the participation of women in peace processes",
+    "context": "global"
+  },
+  {
+    "id": "end_child_marriage",
+    "object": "ending child marriage",
+    "context": "global"
+  },
+  {
+    "id": "torture_convention",
+    "object": "the Convention against Torture",
+    "context": "global"
+  },
+  {
+    "id": "disappearances_convention",
+    "object": "the International Convention for the Protection of All Persons from Enforced Disappearance",
+    "context": "global"
+  },
+  {
+    "id": "refugee_convention",
+    "object": "the 1951 Refugee Convention",
+    "context": "global"
+  },
+  {
+    "id": "migration_compact",
+    "object": "the Global Compact for Safe, Orderly and Regular Migration",
+    "context": "global"
+  },
+  {
+    "id": "refugees_compact",
+    "object": "the Global Compact on Refugees",
+    "context": "global"
+  },
+  {
+    "id": "disability_rights",
+    "object": "the Convention on the Rights of Persons with Disabilities",
+    "context": "global"
+  },
+  {
+    "id": "un80",
+    "object": "the UN80 Initiative",
+    "context": "global"
+  },
+  {
+    "id": "veto_restraint",
+    "object": "veto restraint in cases of mass atrocities",
+    "context": "global"
+  },
+  {
+    "id": "african_permanent_seats",
+    "object": "permanent seats for Africa on the Security Council",
+    "context": "global"
+  },
+  {
+    "id": "icj",
+    "object": "the International Court of Justice",
+    "context": "global"
+  },
+  {
+    "id": "unclos",
+    "object": "the United Nations Convention on the Law of the Sea",
+    "context": "global"
+  },
+  {
+    "id": "ai_human_rights",
+    "object": "human-rights-based AI governance",
+    "context": "global"
+  },
+  {
+    "id": "universal_health",
+    "object": "universal health coverage",
+    "context": "global"
+  },
+  {
+    "id": "release_hostages",
+    "object": "the release of all hostages",
+    "context": "sudan"
+  },
+  {
+    "id": "libya_elections",
+    "object": "national elections in Libya",
+    "context": "libya"
+  },
+  {
+    "id": "russian_withdrawal",
+    "object": "the withdrawal of Russian forces from Ukraine",
+    "context": "ukraine"
+  },
+  {
+    "id": "cuba_extraterritorial",
+    "object": "ending the extraterritorial application of the embargo on Cuba",
+    "context": "cuba"
+  },
+  {
+    "id": "end_unilateral_measures",
+    "object": "lifting unilateral coercive measures",
+    "context": "sudan"
+  }
+]

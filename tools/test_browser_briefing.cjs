@@ -1,3 +1,4 @@
+require('./test_comprehensive_policy_coverage.cjs');
 require('./test_policy_catalogue.cjs');
 require('./test_position_comparison.cjs');
 'use strict';
