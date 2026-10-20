@@ -1,3 +1,4 @@
+require('./test_remaining_country_coverage.cjs');
 require('./test_source_reviewed_positions.cjs');
 require('./test_comprehensive_policy_coverage.cjs');
 require('./test_policy_catalogue.cjs');

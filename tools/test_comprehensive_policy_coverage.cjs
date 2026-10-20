@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict'),P=require('../site/position-comparison'),V=require('../site/position-view');
 const {record,settings}=require('./test_position_comparison.cjs');
 const cases=require('./comprehensive_policy_cases.json');
-assert.equal(cases.length,50);assert.equal(P.POLICIES.length,87);assert.equal(new Set(P.POLICIES.map(p=>p.domain)).size,8);assert.equal(new Set(P.POLICIES.map(p=>p.id)).size,87);
+assert.equal(cases.length,50);assert.equal(P.POLICIES.length,107);assert.equal(new Set(P.POLICIES.map(p=>p.domain)).size,8);assert.equal(new Set(P.POLICIES.map(p=>p.id)).size,107);
 for(const c of cases){
  const p=P.POLICIES.find(p=>p.id===c.id),context=c.context==='global'?'':` in ${P.CONTEXTS.find(x=>x.id===c.context).label}`;
  const yes=`We support ${c.object}${context}.`,no=`We oppose ${c.object}${context}.`;
