@@ -1,3 +1,4 @@
+require('./test_policy_catalogue.cjs');
 require('./test_position_comparison.cjs');
 'use strict';
 const assert=require('node:assert/strict');
