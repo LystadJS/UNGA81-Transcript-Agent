@@ -108,5 +108,28 @@ function build(records,baselineRecords,settings){
  const selected=p.positionCountry||best?.country||null;
  return {schema:'un.explicit-position-comparison.v1',method:'bounded_policy_rules_same_day_no_imputation_v1',policy:{id:policy.id,label:policy.label},context:{id:p.positionContext,label:CONTEXTS.find(c=>c.id===p.positionContext).label},baseline:US,selected_country:selected,start:p.start,end:p.end,countries,trajectory:countries.find(c=>c.country===selected)?.days||dates.map(date=>{const us=usIndex.get(date)||[];return {date,comparison:us.length?'country_missing':'both_missing',value:null,country_evidence:[],us_evidence:us,country_state:'missing',us_state:state(us)};}),us_days:dates.map(date=>({date,state:state(usIndex.get(date)||[]),evidence:usIndex.get(date)||[]})),withheld:a.withheld,withheld_records:withheldRecords,baseline_source_count:baselineRecords.filter(r=>isUS(r.country)).length,baseline_evidence_count:b.found.length,status:'automatic_provisional_not_human_reviewed',limitations:['Only expressed direction on the selected bounded policy question and context is compared. This is not overall diplomatic alignment or agreement on every condition, scope or implementation detail.','Position evidence is deduplicated separately within each country and date; identical wording from different countries is retained.','The U.S. baseline uses the same retained collection, dates, meeting scope, topic and exclusions, but ignores the speaker-region filter.','Both countries need explicit, unqualified evidence on the same calendar date. No past statement is carried forward and no missing value is interpolated.','Qualified, conflicting, collective, institutional, unresolved and merely descriptive wording cannot establish national alignment.','A change can come from the country, the U.S., or both. Inspect both dated statements; the chart does not establish a country policy shift.','These automatic rules cover a small, declared policy catalogue and can miss valid positions. Source affiliations and automatic transcript wording are not independently verified.'],external_ai_calls:0};
 }
-const api={POLICIES,CONTEXTS,US,isUS,options,national,context,direction,evidence,build};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UNPositions=api;
+
+function overview(records,baselineRecords,settings){
+ const questions=[];
+ for(const policy of POLICIES){
+  if(!records.concat(baselineRecords).some(r=>policy.target.test(r.text||'')))continue;
+  for(const ctx of CONTEXTS.filter(c=>policy.global?c.id==='global':policy.cuba?c.id==='cuba':c.id!=='global')){
+   const q=build(records,baselineRecords,{...settings,positionPolicy:policy.id,positionContext:ctx.id,positionCountry:''});
+   if(q.baseline_evidence_count||q.countries.some(c=>c.latest))questions.push(q);
+  }
+ }
+ const names=[...new Set(records.filter(r=>r.country&&r.region!=='Unmapped').map(country))];
+ if(baselineRecords.some(r=>isUS(r.country))&&!names.includes(US))names.push(US);
+ const countries=names.sort().map(name=>{
+  const positions=questions.flatMap(q=>{
+   const days=name===US?q.us_days.map(d=>({date:d.date,country_state:d.state,country_evidence:d.evidence,us_state:d.state,us_evidence:d.evidence,comparison:'reference',value:null})):q.countries.find(c=>c.country===name)?.days||[];
+   if(!days.some(d=>d.country_evidence.length))return [];
+   return [{policy:q.policy,context:q.context,days,same:days.filter(d=>d.comparison==='same_direction').length,opposite:days.filter(d=>d.comparison==='opposite_direction').length,gaps:days.filter(d=>d.value===null).length}];
+  });
+  const same=positions.reduce((n,p)=>n+p.same,0),opposite=positions.reduce((n,p)=>n+p.opposite,0);
+  return {country:name,positions,comparable_question_dates:same+opposite,same_direction:same,opposite_direction:opposite,agreement_percent:same+opposite?100*same/(same+opposite):null};
+ });
+ return {schema:'un.country-position-overview.v1',status:'automatic_provisional_not_human_reviewed',baseline:US,start:settings.start,end:settings.end,countries,questions,countries_with_positions:countries.filter(c=>c.positions.length).length,countries_comparable:countries.filter(c=>c.comparable_question_dates).length,weighting:'One comparison per policy question, context and calendar date, with equal weight. Source repetition adds no weight.',limitations:['This covers the declared policy catalogue, not every possible opinion in a meeting. Unrecognized or ambiguous positions remain unestablished.','Agreement is the share of comparable question-dates with the same expressed direction. It is not overall diplomatic alignment. Different countries can have different comparison coverage.','Only explicit national expressions are compared. Group statements, unresolved wording and missing U.S. evidence cannot establish agreement.','No position is carried forward or interpolated. Statements on the same question and date are consolidated; conflicting or qualified evidence remains a gap.'],external_ai_calls:0};
+}
+const api={POLICIES,CONTEXTS,US,isUS,options,national,context,direction,evidence,build,overview};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UNPositions=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

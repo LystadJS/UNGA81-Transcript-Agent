@@ -77,3 +77,7 @@ the 37 reserved October 5–6 transcripts without separate authorization.
 ## Expanded quick-reader source-bound benchmark
 
 The initial seven-meeting development QA is complemented by a 13-meeting review. Reuse `research/reference_tests/quick_reader_benchmark.cjs` with exact source hashes and four distinct metrics: individual-country attribution, object-specific expressed stance, specific contextual anchors, and sampled abstention. Maintain source records and assistant-provisional choices separately from future owner-confirmed annotations; never label assistant review as human gold. No general accuracy or recall claims follow from these purposive same-development checks. Do not publish original text, private annotation ledgers, or source-bearing review HTML in this public repository. Retain the 37 unopened held-out transcripts and the original sealed evaluation protocol.
+
+## Country-first reporting
+
+Every meeting or collection report must automatically give a brief overview of each recorded country’s explicit positions and comparison with U.S. positions on matching policy questions. Country selection must not be required. Center country positions, comparison coverage and changes over time; source passages are supporting evidence, not the metric of importance. Repeated passages must not add weight to a position. Keep missing, ambiguous, collective and unsupported positions visible as gaps. Never describe language similarity as policy agreement.

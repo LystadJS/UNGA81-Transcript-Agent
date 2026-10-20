@@ -10,8 +10,8 @@
     <link href="theme.css" rel="stylesheet">
     <link href="app.css" rel="stylesheet">
     <script defer src="app.js"></script>
-    <link href="analysis.css?v=1.19.0" rel="stylesheet">
-    <script defer src="meeting-scopes.js?v=1.19.0"></script>
+    <link href="analysis.css?v=1.20.0" rel="stylesheet">
+    <script defer src="meeting-scopes.js?v=1.20.0"></script>
     <script defer src="mds-core.js?v=1.12.1"></script>
     <script defer src="mds-view.js?v=1.12.1"></script>
     <script defer src="gmm-core.js?v=1.12.1"></script>
@@ -21,21 +21,21 @@
     <script defer src="passage-selection.js?v=1.12.1"></script>
     <script defer src="passage-pilot-core.js?v=1.12.1"></script>
     <script defer src="reviewed-units.js?v=1.12.1"></script>
-    <script defer src="text-units.js?v=1.19.0"></script>
-    <script defer src="meeting-quick-reader.js?v=1.19.0"></script>
-    <script defer src="passage-labels.js?v=1.19.0"></script>
-    <script defer src="position-comparison.js?v=1.19.0"></script>
-    <script defer src="position-view.js?v=1.19.0"></script>
-    <script defer src="analysis-core.js?v=1.19.0"></script>
+    <script defer src="text-units.js?v=1.20.0"></script>
+    <script defer src="meeting-quick-reader.js?v=1.20.0"></script>
+    <script defer src="passage-labels.js?v=1.20.0"></script>
+    <script defer src="position-comparison.js?v=1.20.0"></script>
+    <script defer src="position-view.js?v=1.20.0"></script>
+    <script defer src="analysis-core.js?v=1.20.0"></script>
     <script defer src="nmf-view.js?v=1.12.1"></script>
-    <script defer src="collector.js?v=1.19.0"></script>
+    <script defer src="collector.js?v=1.20.0"></script>
     <script defer src="stability-view.js?v=1.12.1"></script>
     <script defer src="comparison-view.js?v=1.12.1"></script>
     <script defer src="hierarchy-view.js?v=1.12.1"></script>
     <script defer src="cluster-view.js?v=1.12.1"></script>
     <script defer src="meeting-picker-core.js?v=1.12.1"></script>
     <script defer src="meeting-picker.js?v=1.12.1"></script>
-    <script defer src="analysis-ui.js?v=1.19.0"></script>
+    <script defer src="analysis-ui.js?v=1.20.0"></script>
   </head>
 
   <body>
@@ -75,11 +75,11 @@
       <section class="intro">
         <p class="eyebrow">GENERAL DEBATE &amp; UN PROCEEDINGS</p>
         <h2>Generate Record</h2>
-        <p>Define the dates and meeting scope. Add a topic to search, or leave it blank to collect all available passages.</p>
+        <p>Define the dates and meeting scope. Every report includes country positions and comparison with the U.S. Add a topic to focus the analysis, or leave it blank for the full selection.</p>
       </section>
 
       <section class="visualization-routes" aria-label="Choose a visualization">
-        <a href="#positionControls"><strong>Positions over time</strong><span>Compare an explicit policy question with the U.S. baseline. Missing evidence stays visible.</span></a>
+        <a href="#analyze"><strong>Country positions in every report</strong><span>Compare an explicit policy question with the U.S. baseline. Missing evidence stays visible.</span></a>
         <a href="#visualizationMethods"><strong>Volume, timing and language</strong><span>Explore dates, passage lengths, terms and textual similarity in the report.</span></a>
         <a href="latent.html"><strong>Latent language patterns</strong><span>Compare PCA, LSA and NMF, then inspect the source passages. These patterns do not establish political agreement.</span></a>
       </section>
@@ -165,9 +165,9 @@
             untouched defaults to the last 7 days. Dates you enter are never changed automatically.
           </p>
 
-          <fieldset id="positionControls">
+          <fieldset id="positionControls" hidden>
             <legend>Country positions over time · U.S. baseline</legend>
-            <p>Choose one policy question and context. Only explicit national statements on the same calendar date are compared. To examine the full saved collection, leave Topic blank; other filters still apply.</p>
+            <p>Every report automatically includes all countries and all supported policy questions found in the selection. These optional settings are retained for compatibility with saved single-question reports; they do not restrict the country overview.</p>
             <div class="analysis-grid">
               <label>Policy question<select id="positionPolicy"></select></label>
               <label>Policy context<select id="positionContext"></select></label>

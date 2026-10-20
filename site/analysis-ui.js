@@ -383,18 +383,19 @@
     let html = `
       <div class="report-document">
         <p class="eyebrow">${single?'SINGLE-MEETING BRIEF':'TRANSCRIPT REPORT'}</p>
-        <h2>${esc(single?meeting.meeting_title:(all?'All passages':p.topic))}</h2>
+        <h2>${esc(single?meeting.meeting_title:(all?'Country positions and U.S. comparison':p.topic))}</h2>
         <p>${esc(p.start)} through ${esc(p.end)} · ${esc(p.region)}</p>
         ${single?'':`<p><strong>Meeting scope:</strong> ${esc(UNMeetingScopes.label(p.scope))}</p>
         <p>${all?'No topic filter; passages follow the selected dates, scope, region and inclusion policy.':`Any phrase: ${esc(p.phrases.join(' | '))}. Phrase exclusions: ${esc(p.exclude.join(' | ') || 'None')}.`}</p>`}
         <p class="method-note">Prepared ${esc(report.created_at.slice(0, 10))} · English transcripts</p>
     `;
 
-    if(report.quick_reader)html+=renderQuickReader(report.quick_reader);
+    if(report.country_positions)html+=UNPositionView.renderOverview(report.country_positions);
+    if(report.quick_reader)html+=`<details><summary>Meeting context and descriptive source analysis</summary>${renderQuickReader(report.quick_reader)}</details>`;
     if(report.unresolved_exclusions?.enabled)html+=`<section aria-label="Unresolved passage exclusions"><h3>Unresolved passages excluded</h3><p>${report.unresolved_exclusions.records.length} whole source segments excluded from this report. Original records and recording notes remain in Save transcripts.</p><details><summary>Excluded sources</summary><ul>${report.unresolved_exclusions.records.map(r=>`<li>${esc(r.attribution.label)} · ${esc(r.record_id)}${r.recording_review?`<p>${esc(r.recording_review.note)}</p>`:''}${r.source_url?` · <a href="${esc(r.source_url)}" target="_blank" rel="noopener noreferrer">Source transcript</a>`:''}</li>`).join('')}</ul></details></section>`;
     if(report.source_briefing){const b=report.source_briefing;html+=`<section class="analysis-briefing" aria-label="Source-linked briefing"><h3>Source-linked briefing</h3><p>${esc(b.takeaway)}</p><ul>${b.items.map(item=>`<li><strong>${esc(UNPassageLabels.NAMES[item.label])} — ${esc(item.attribution.label)}</strong> · ${esc(item.date)}<p>${esc(item.excerpt)}</p><a href="${esc(item.source_url)}" target="_blank" rel="noopener noreferrer">Source transcript</a></li>`).join('')}</ul><p class="method-note">Selected source excerpts, not an exhaustive synthesis. ${esc(b.caveat)}</p></section>`;}
-    if(report.position_comparison)html+=UNPositionView.render(report.position_comparison,{interactive:!standalone});
-    if(report.briefing)html+=renderBriefing(report.briefing);
+    if(!report.country_positions&&report.position_comparison)html+=UNPositionView.render(report.position_comparison,{interactive:!standalone});
+    if(report.briefing)html+=`<details><summary>Text overview and source evidence</summary>${renderBriefing(report.briefing)}</details>`;
     if(single)html+=`<p class="method-note">${all?'The detailed analysis below uses every eligible source segment.':`The detailed analysis below is restricted to the topic ${esc(p.topic)}; the opening summary covers the recorded meeting${p.excludeUnresolved?' with unresolved passages excluded':''}.`}</p>`;
     if(report.collection?.selection_mode==='single_meeting' && !single)html+='<p class="warning">The saved single-meeting label could not be verified against the imported records. This report describes the filtered collection; it does not establish complete coverage of one meeting.</p>';
     if(single)html+=`<p class="method-note"><strong>Individual meeting:</strong> ${esc(meeting.meeting_title)} · ${esc(meeting.meeting_date)} · ${esc(meeting.meeting_slug)}. Only this meeting was collected. Within-meeting passages do not supply independent meeting-level replication.</p>`;
@@ -419,7 +420,7 @@
     ];
 
     html += `
-      <div class="metrics">
+      <details><summary>Source coverage counts</summary><p>Source volume describes coverage; it does not measure the importance or strength of a country’s position.</p><div class="metrics">
         ${metrics.map(([value, title]) => `
           <div class="metric"><strong>${esc(value)}</strong>${esc(title)}</div>
         `).join('')}
@@ -428,7 +429,7 @@
         ${all ? 'All passages mode includes every eligible unique passage, regardless of its subject.'
           : 'Matches identify language, not a speaker’s position.'}
         These results describe the collected passages; verify their meaning in the source.
-      </p>
+      </p></details>
     `;
 
     if (!counts.input || !counts.eligible || (!all && !counts.matched)) {
@@ -688,7 +689,8 @@
 
     const prefix = failedDays.length || report.coverage.some(row => row.status !== 'collected')
       ? 'Partial collection' : 'Collection ready';
-    const collected = `${prefix}: ${n.input} passages collected; ${n.eligible} unique passages within your filters.`;
+    const overview=report.country_positions;
+    const collected = overview?`${prefix}: ${overview.countries.length} recorded country affiliations; ${overview.countries_with_positions} with identified positions; ${overview.countries_comparable} comparable with the U.S.`:`${prefix}: ${n.input} source segments collected.`;
 
     if (!n.eligible) return collected + ' Check dates, speaker region, meeting scope, passage inclusion, or the scope of the imported collection.';
     if (report.parameters.mode === 'all') return collected + ' All passages mode — no topic filter.';
@@ -781,7 +783,7 @@
   el('nmfMethod').addEventListener('change',updateNMFControls);el('nmfStability').addEventListener('change',updateNMFControls);updateNMFControls();
   function runNMFWorker(records,vectors,options){
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.19.0');
+      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.20.0');
       const finish=(fn,v)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(v);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));signal.addEventListener('abort',abort,{once:true});
       worker.onerror=()=>finish(reject,Error('NMF worker could not run. Reload the page or check browser permissions.'));
@@ -792,7 +794,7 @@
 
   function runClusterWorker(records,vectors,options,progress) {
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.19.0');
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.20.0');
       const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
       signal.addEventListener('abort',abort,{once:true});
@@ -1026,9 +1028,9 @@
   };
 
   el('exportPositions').onclick=()=>{
-    const p=result?.position_comparison;if(!p||stale)return;
+    const comparisons=result?.country_positions?.questions||[result?.position_comparison].filter(Boolean);if(!comparisons.length||stale)return;
     const headers=['policy_question','context','date','recorded_country','country_expression','us_expression','comparison','country_source_ids','country_source_urls','us_source_ids','us_source_urls','status'];
-    const rows=[headers,...p.countries.flatMap(c=>c.days.map(d=>[p.policy.label,p.context.label,d.date,c.country,d.country_state,d.us_state,d.comparison,d.country_evidence.map(x=>x.record_id).join(' | '),d.country_evidence.map(x=>x.source_url).join(' | '),d.us_evidence.map(x=>x.record_id).join(' | '),d.us_evidence.map(x=>x.source_url).join(' | '),p.status]))];
+    const rows=[headers,...comparisons.flatMap(p=>p.countries.flatMap(c=>c.days.map(d=>[p.policy.label,p.context.label,d.date,c.country,d.country_state,d.us_state,d.comparison,d.country_evidence.map(x=>x.record_id).join(' | '),d.country_evidence.map(x=>x.source_url).join(' | '),d.us_evidence.map(x=>x.record_id).join(' | '),d.us_evidence.map(x=>x.source_url).join(' | '),p.status])))];
     const cell=v=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,"'$&").replace(/"/g,'""')+'"';
     save('\uFEFF'+rows.map(r=>r.map(cell).join(',')).join('\r\n'),'un-country-position-comparison.csv','text/csv;charset=utf-8');
   };

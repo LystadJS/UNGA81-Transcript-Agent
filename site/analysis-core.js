@@ -20,7 +20,7 @@
     ? require('./text-units.js') : root.UNTextUnits;
   const PassageLabels = typeof module !== 'undefined' && module.exports ? require('./passage-labels.js') : root.UNPassageLabels;
   const Positions = typeof module !== 'undefined' && module.exports ? require('./position-comparison.js') : root.UNPositions;
-  const VERSION = 'browser-descriptive-1.19.0';
+  const VERSION = 'browser-descriptive-1.20.0';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters', 'nmf'];
 
@@ -380,6 +380,7 @@
     const positionEligible=corpus.records.filter(r=>r.language==='en'&&r.date>=p.start&&r.date<=p.end&&Scopes.matchesRecord(r,p.scope)&&(!p.meeting_slug||(r.meeting_slug||r.id.split('#')[0])===p.meeting_slug)&&(!selection||selection.selected.has(r.id))&&(!p.excludeUnresolved||!PassageLabels.unresolved(r)));
     const positionPool=positionEligible.filter(r=>p.mode==='all'||p.phrases.some(phrase=>hasPhrase(canonical(r.text),phrase))&&!p.exclude.some(phrase=>hasPhrase(canonical(r.text),phrase)));
     result.position_comparison=Positions.build(positionPool.filter(r=>p.region==='All regions'||r.region===p.region),positionPool,p);
+    result.country_positions=Positions.overview(positionPool.filter(r=>p.region==='All regions'||r.region===p.region),positionPool,p);
     result.passage_labels = PassageLabels.snapshot(matched);
     result.briefing = briefing(records, matched, duplicates, corpus, p);
     if(identity){
