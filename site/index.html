@@ -10,8 +10,8 @@
     <link href="theme.css" rel="stylesheet">
     <link href="app.css" rel="stylesheet">
     <script defer src="app.js"></script>
-    <link href="analysis.css?v=1.27.0" rel="stylesheet">
-    <script defer src="meeting-scopes.js?v=1.27.0"></script>
+    <link href="analysis.css?v=1.28.0" rel="stylesheet">
+    <script defer src="meeting-scopes.js?v=1.28.0"></script>
     <script defer src="mds-core.js?v=1.12.1"></script>
     <script defer src="mds-view.js?v=1.12.1"></script>
     <script defer src="gmm-core.js?v=1.12.1"></script>
@@ -21,21 +21,21 @@
     <script defer src="passage-selection.js?v=1.12.1"></script>
     <script defer src="passage-pilot-core.js?v=1.12.1"></script>
     <script defer src="reviewed-units.js?v=1.12.1"></script>
-    <script defer src="text-units.js?v=1.27.0"></script>
-    <script defer src="meeting-quick-reader.js?v=1.27.0"></script>
-    <script defer src="passage-labels.js?v=1.27.0"></script>
-    <script defer src="position-comparison.js?v=1.27.0"></script>
-    <script defer src="position-view.js?v=1.27.0"></script>
-    <script defer src="analysis-core.js?v=1.27.0"></script>
+    <script defer src="text-units.js?v=1.28.0"></script>
+    <script defer src="meeting-quick-reader.js?v=1.28.0"></script>
+    <script defer src="passage-labels.js?v=1.28.0"></script>
+    <script defer src="position-comparison.js?v=1.28.0"></script>
+    <script defer src="position-view.js?v=1.28.0"></script>
+    <script defer src="analysis-core.js?v=1.28.0"></script>
     <script defer src="nmf-view.js?v=1.12.1"></script>
-    <script defer src="collector.js?v=1.27.0"></script>
+    <script defer src="collector.js?v=1.28.0"></script>
     <script defer src="stability-view.js?v=1.12.1"></script>
     <script defer src="comparison-view.js?v=1.12.1"></script>
     <script defer src="hierarchy-view.js?v=1.12.1"></script>
     <script defer src="cluster-view.js?v=1.12.1"></script>
     <script defer src="meeting-picker-core.js?v=1.12.1"></script>
     <script defer src="meeting-picker.js?v=1.12.1"></script>
-    <script defer src="analysis-ui.js?v=1.27.0"></script>
+    <script defer src="analysis-ui.js?v=1.28.0"></script>
   </head>
 
   <body>
@@ -164,6 +164,9 @@
             Default dates cover the 2026 General Debate. Selecting a committee switches
             untouched defaults to the last 7 days. Dates you enter are never changed automatically.
           </p>
+
+          <label>Nearby-date window (days)<input id="nearbyDays" type="number" min="0" max="14" step="1" value="7"></label>
+          <p class="hint">Every report shows nearby-date findings separately from same-day scores. Show both dates and their difference; use 0 to disable nearby-date matching.</p>
 
           <fieldset id="positionControls" hidden>
             <legend>Country positions over time · U.S. baseline</legend>
@@ -335,6 +338,7 @@
             <button class="secondary" id="exportResult" type="button">Analysis data (.json)</button>
             <button class="secondary" id="exportCorpus" type="button">Save transcripts</button>
             <button class="secondary" hidden id="exportAudioLedger" type="button">Audio review record (.json)</button>
+            <button class="secondary" id="exportNearby" type="button">Nearby comparisons (.csv)</button>
             <button class="secondary" id="exportPositions" type="button">Country positions (.csv)</button>
             <button class="secondary" id="exportCSV" type="button">Included passages (.csv)</button>
             <button class="secondary" hidden id="exportClusters" type="button">Cluster data (.csv)</button>

@@ -149,7 +149,9 @@ function options(p){
  if(!contextsFor(policy).includes(positionContext))throw Error('Choose a valid context for this policy question.');
  const positionCountry=p.positionCountry===undefined?'':p.positionCountry;
  if(typeof positionCountry!=='string'||positionCountry.length>120||isUS(positionCountry))throw Error('Choose a comparison country other than the U.S. baseline.');
- return {positionPolicy,positionContext,positionCountry};
+ const nearbyDays=p.nearbyDays===undefined?7:p.nearbyDays;
+ if(!Number.isInteger(nearbyDays)||nearbyDays<0||nearbyDays>14)throw Error('Use a nearby-date window from 0 to 14 days.');
+ return {positionPolicy,positionContext,positionCountry,nearbyDays};
 }
 function national(r){
  const a=P.attribution(r),fn=String(r.speaker_metadata?.function||'');
@@ -326,5 +328,41 @@ function overview(records,baselineRecords,settings){
  });
  return {schema:'un.country-position-overview.v1',status:'automatic_provisional_not_human_reviewed',baseline:US,start:settings.start,end:settings.end,catalogue:POLICIES.map(p=>({id:p.id,label:p.label,domain:p.domain})),countries,questions,countries_with_positions:countries.filter(c=>c.positions.length).length,countries_comparable:countries.filter(c=>c.comparable_question_dates).length,weighting:'One comparison per policy question, context and calendar date, with equal weight. Source repetition adds no weight.',limitations:['This covers the declared policy catalogue, not every possible opinion in a meeting. Unrecognized or ambiguous positions remain unestablished.','Agreement is the share of comparable question-dates with the same expressed direction. It is not overall diplomatic alignment. Different countries can have different comparison coverage.','Policy questions can be related; question-date counts are not independent observations or a balanced index of diplomatic alignment.','Only explicit national expressions are compared. Group statements, unresolved wording and missing U.S. evidence cannot establish agreement.','No position is carried forward or interpolated. Statements on the same question and date are consolidated; conflicting or qualified evidence remains a gap.'],external_ai_calls:0};
 }
-const api={POLICIES,CONTEXTS,contextsFor,US,isUS,options,national,context,selfStatement,direction,evidence,build,overview};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UNPositions=api;
+
+// These comparisons are separate from the same-day trajectory and its denominator.
+function nearby(records,baselineRecords,settings,overviewResult){
+ const window=options(settings).nearbyDays,rows=[],seen=new Set();
+ const admissible=r=>r.language==='en'&&r.date>=settings.start&&r.date<=settings.end&&national(r)&&!P.unresolved(r)&&!/\b(?:mayor|governor|former|retired)\b/i.test(String(r.speaker_metadata?.function||''));
+ const own=records.filter(admissible),us=baselineRecords.filter(r=>isUS(r.country)&&admissible(r));
+ const ownIds=new Set(own.map(r=>r.id)),usIds=new Set(us.map(r=>r.id));
+ const delta=(a,b)=>Math.round((Date.parse(b)-Date.parse(a))/86400000);
+ const nearest=(date,candidates)=>{const eligible=candidates.filter(x=>Math.abs(delta(date,x.date))<=window&&x.date!==date);if(!eligible.length)return [];const distance=Math.min(...eligible.map(x=>Math.abs(delta(date,x.date))));return eligible.filter(x=>Math.abs(delta(date,x.date))===distance);};
+ const add=row=>{const key=[row.country,row.policy.id,row.context.id,row.country_date,row.us_date,row.relationship].join('|');if(seen.has(key))return;seen.add(key);rows.push({...row,day_difference:delta(row.country_date,row.us_date),contributes_to_same_day_score:false});};
+ for(const q of overviewResult.questions){
+  if(['domestic','unspecified'].includes(q.context.id))continue;
+  const reference=q.us_days.map(d=>({date:d.date,evidence:d.evidence.filter(e=>usIds.has(e.record_id))})).map(d=>({...d,state:state(d.evidence)})).filter(d=>d.evidence.length);
+  for(const c of q.countries){
+   if(isUS(c.country))continue;
+   for(const d of c.days){const evidence=d.country_evidence.filter(e=>ownIds.has(e.record_id)),direction=state(evidence);if(!['support','oppose'].includes(direction))continue;
+    for(const u of nearest(d.date,reference)){if(!['support','oppose'].includes(u.state))continue;add({country:c.country,policy:q.policy,context:q.context,country_date:d.date,us_date:u.date,relationship:direction===u.state?'same_policy_same_direction':'same_policy_opposite_direction',country_state:direction,us_state:u.state,country_evidence:evidence,us_evidence:u.evidence,qualification:'Same declared policy question and context, on different dates. This does not establish identical policies, overall agreement, or a position at an intervening date.'});}
+   }
+  }
+ }
+ // Broad child-protection priorities are not endorsements of a national strategy.
+ const priorityEvidence=source=>source.flatMap(r=>{const lines=T.sentences(r.text),found=[];lines.forEach((line,i)=>{
+  const ownLine=selfStatement(line,r),previous=selfStatement(lines[i-1]||'',r);
+  const direct=/^we (?:identify|consider|regard) (?:child protection|protecting children|the protection of children) as (?:a |our )?(?:key |national |important )?priority\.$/i.test(ownLine);
+  const list=/^where we do engage, it is because the substance aligns with clear (?:US|U\.S\.|our|national) priorities\.$/i.test(previous)&&/^For instance, [^.!?]{0,220}\bthe protection of children\b[^.!?]{0,100}\.$/i.test(line)&&!/\b(?:not|no|exclude|excluding|oppos\w*|reject\w*|said|according to)\b|["“”]/i.test(line);
+  if(!(direct||list)||!safe(r.source_url))return;
+  found.push({country:country(r),date:r.date,record_id:r.id,text_sha256:r.text_sha256,raw_sha256:r.raw_sha256||null,json_pointer:r.json_pointer||null,source_url:safe(r.source_url),excerpt:list?lines[i-1]+' '+line:line,sentence_index:i,...(list?{sentence_indices:[i-1,i]}:{}),stance:'priority',context_basis:'bounded_explicit_child_protection_priority',qualification:'Broad priority; no endorsement of a comprehensive national strategy is established.',attribution:'Recorded national affiliation; automatic provisional evidence, not independently verified'});
+ });return found;});
+ const plans=source=>evidence(source,{positionPolicy:'national_child_protection_strategy',positionContext:'*'}).found;
+ const group=evidenceRows=>{const out=new Map();for(const e of evidenceRows){const k=e.country+'|'+e.date;if(!out.has(k))out.set(k,{country:e.country,date:e.date,evidence:[]});if(!out.get(k).evidence.some(x=>x.excerpt===e.excerpt))out.get(k).evidence.push(e);}return [...out.values()];};
+ const matchPriority=(countryRows,usRows,countryState,usState)=>{const reference=group(usRows);for(const c of group(countryRows)){if(isUS(c.country))continue;for(const u of nearest(c.date,reference))add({country:c.country,policy:{id:'child_protection_priority',label:'Child protection: shared broad priority',domain:'Human rights and inclusion'},context:{id:'different_measures',label:'Different measures; national strategy not matched'},country_date:c.date,us_date:u.date,relationship:'shared_priority_only',country_state:countryState,us_state:usState,country_evidence:c.evidence,us_evidence:u.evidence,qualification:'Both identify child protection as a priority. A broad committee priority does not endorse the other country’s comprehensive national strategy. No exact-policy agreement is established.'});}};
+ if(window){matchPriority(plans(own),priorityEvidence(us),'national_strategy_being_formulated','broad_priority');matchPriority(priorityEvidence(own),plans(us),'broad_priority','national_strategy_being_formulated');}
+ rows.sort((a,b)=>a.country.localeCompare(b.country)||a.policy.id.localeCompare(b.policy.id)||a.country_date.localeCompare(b.country_date)||a.us_date.localeCompare(b.us_date));
+ return {schema:'un.nearby-date-comparisons.v1',status:'automatic_provisional_not_human_reviewed',window_days:window,offset_definition:'U.S. date minus country date: positive means the U.S. statement is later; negative means earlier.',selection:'Nearest eligible different-date U.S. evidence within the saved window; equally near dates are both shown. Report dates, scope, topic, exclusions and national-attribution rules still apply.',same_day_score_unchanged:true,rows,shared_priority_findings:rows.filter(r=>r.relationship==='shared_priority_only').length,same_policy_findings:rows.filter(r=>r.relationship!=='shared_priority_only').length,limitations:['Cross-date direction is not an as-of estimate: the U.S. position may change between statements. No statement is backdated, carried forward or interpolated.','Same policy question means the same declared question and context, not full policy identity or overall diplomatic agreement. Qualified, conflicting, domestic and unspecified-context positions cannot establish an exact-policy direction comparison.','Shared-priority coverage is currently limited to bounded child-protection declarations and national-strategy plans; other thematic similarities remain unestablished.','Only retained sources are compared. Missing evidence is not neutrality, disagreement or proof that no statement exists elsewhere. Imported review notes never create evidence.'],external_ai_calls:0};
+}
+
+const api={nearby,POLICIES,CONTEXTS,contextsFor,US,isUS,options,national,context,selfStatement,direction,evidence,build,overview};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UNPositions=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
