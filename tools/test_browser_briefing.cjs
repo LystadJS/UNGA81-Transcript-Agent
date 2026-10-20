@@ -1,3 +1,4 @@
+require('./test_position_comparison.cjs');
 'use strict';
 const assert=require('node:assert/strict');
 const A=require('../site/analysis-core.js'),Q=require('../site/meeting-quick-reader.js');

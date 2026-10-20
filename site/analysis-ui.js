@@ -12,6 +12,15 @@
     "'": '&#39;'
   })[character]);
 
+  for(const p of UNPositions.POLICIES){const option=document.createElement('option');option.value=p.id;option.textContent=p.label;el('positionPolicy').append(option);}
+  for(const c of UNPositions.CONTEXTS){const option=document.createElement('option');option.value=c.id;option.textContent=c.label;el('positionContext').append(option);}
+  function updatePositionControls(){
+    const policy=UNPositions.POLICIES.find(p=>p.id===el('positionPolicy').value);
+    for(const o of el('positionContext').options)o.disabled=policy.global?o.value!=='global':policy.cuba?o.value!=='cuba':o.value==='global';
+    const current=[...el('positionContext').options].find(o=>o.value===el('positionContext').value);
+    if(!current||current.disabled)el('positionContext').value=policy.global?'global':policy.cuba?'cuba':'sudan';
+  }
+  el('positionPolicy').addEventListener('change',updatePositionControls);updatePositionControls();
   const pause = () => new Promise(resolve => setTimeout(resolve, 0));
   const split = value => value.split(',').map(item => item.trim()).filter(Boolean);
 
@@ -89,6 +98,7 @@
       phrases: [el('topic').value.trim(), ...split(el('phrases').value)].filter(Boolean),
       exclude: split(el('excludePhrases').value),
       excludeUnresolved:el('excludeUnresolved').checked,
+      positionPolicy:el('positionPolicy').value,positionContext:el('positionContext').value,positionCountry:el('positionCountry').value,
       start: el('startDate').value,
       end: el('endDate').value,
       region: el('region').value,
@@ -108,7 +118,7 @@
 
 
   // Explicit paths bind only supported form fields; imported objects are never spread.
-  const filterBindings = {excludeUnresolved:'excludeUnresolved',
+  const filterBindings = {positionPolicy:'positionPolicy',positionContext:'positionContext',positionCountry:'positionCountry',excludeUnresolved:'excludeUnresolved',
     representation:'clustering.representation',clusterAlgorithm:'clustering.algorithm',clusterLinkage:'clustering.linkage',pcaComponents:'clustering.components',clusterCount:'clustering.k',umapNeighbors:'clustering.neighbors',umapDistance:'clustering.minDist',clusterSeed:'clustering.seed',umapSeed:'clustering.umapSeed',
     mdsEnabled:'clustering.mds.enabled',mdsStarts:'clustering.mds.starts',mdsIterations:'clustering.mds.maxIterations',mdsSeed:'clustering.mds.seed',hdbMinClusterSize:'clustering.hdbscan.minClusterSize',hdbMinSamples:'clustering.hdbscan.minSamples',hdbSelection:'clustering.hdbscan.selection',gmmCovariance:'clustering.gmm.covariance',gmmRegularization:'clustering.gmm.regularization',gmmStarts:'clustering.gmm.starts',gmmIterations:'clustering.gmm.maxIterations',gmmAmbiguity:'clustering.gmm.ambiguity',stabilityEnabled:'clustering.stability.enabled',stabilityUnit:'clustering.stability.unit',stabilityReplicates:'clustering.stability.replicates',stabilityFraction:'clustering.stability.fraction',stabilitySeed:'clustering.stability.seed',
     nmfComponents:'nmf.components',nmfStarts:'nmf.starts',nmfIterations:'nmf.maxIterations',nmfSeed:'nmf.seed',nmfStability:'nmf.stability.enabled',nmfUnit:'nmf.stability.unit',nmfReplicates:'nmf.stability.replicates'
@@ -122,7 +132,7 @@
   function validatedFilters(input) {
     if (!input || typeof input !== 'object' || Array.isArray(input)) throw Error('Invalid saved filters.');
     for (const family of ['clustering','nmf']) if (input[family] !== undefined && (!input[family] || typeof input[family] !== 'object' || Array.isArray(input[family]))) throw Error('Invalid saved option family: ' + family);
-    const p = {topic:input.topic, start:input.start, end:input.end, scope:input.scope, region:input.region, excludeUnresolved:input.excludeUnresolved===undefined?false:input.excludeUnresolved,
+    const p = {...UNPositions.options(input),topic:input.topic, start:input.start, end:input.end, scope:input.scope, region:input.region, excludeUnresolved:input.excludeUnresolved===undefined?false:input.excludeUnresolved,
       phrases:Array.isArray(input.phrases) ? input.phrases.slice() : input.phrases,
       exclude:Array.isArray(input.exclude) ? input.exclude.slice() : input.exclude,
       methods:Array.isArray(input.methods) ? input.methods.slice() : input.methods};
@@ -151,7 +161,7 @@
     el('topic').value=p.topic; el('phrases').value=p.phrases.filter(phrase => phrase !== p.topic).join(', '); el('excludePhrases').value=p.exclude.join(', ');
     document.querySelectorAll('input[name=method]').forEach(control => {control.checked=p.methods.includes(control.value);});
     for (const [id,path] of Object.entries(filterBindings)) {const value=pathValue(p,path);if(value===undefined)continue;if(el(id).type==='checkbox')el(id).checked=value;else el(id).value=value;}
-    datesEdited=true; el('dateRangeNote').textContent=message; updateTopicMode(); updateClusterControls(); updateNMFControls(); invalidate(); status(message);
+    updatePositionControls(); datesEdited=true; el('dateRangeNote').textContent=message; updateTopicMode(); updateClusterControls(); updateNMFControls(); invalidate(); status(message);
   }
   async function restoreImportedFilters(file) {
     if (!file) throw Error('Choose a saved collection JSON.');
@@ -356,7 +366,7 @@
     return `<p class="method-note">Lexical analysis removed ${esc(processing.removed_sentence_count)} narrowly identified procedural sentences. ${esc(processing.zero_text_ids.length)} source segments have no text left for term analysis. All ${esc(processing.original_included_count)} original included segments remain in the descriptive counts and denominators; original source text is unchanged. ${(processing.procedural_stoplist || []).length ? 'The procedural stop list suppresses ' + esc(processing.procedural_stoplist.join(', ')) + '. ' : ''}${processing.zero_vector_ids ? esc(processing.zero_vector_ids.length) + ' zero-vector segments are excluded from similarity pairs.' : ''}</p>`;
   }
 
-  function render(report) {
+  function render(report, standalone=false) {
     const p = report.parameters;
     const counts = report.counts;
     const methods = report.methods;
@@ -383,6 +393,7 @@
     if(report.quick_reader)html+=renderQuickReader(report.quick_reader);
     if(report.unresolved_exclusions?.enabled)html+=`<section aria-label="Unresolved passage exclusions"><h3>Unresolved passages excluded</h3><p>${report.unresolved_exclusions.records.length} whole source segments excluded from this report. Original records and recording notes remain in Save transcripts.</p><details><summary>Excluded sources</summary><ul>${report.unresolved_exclusions.records.map(r=>`<li>${esc(r.attribution.label)} · ${esc(r.record_id)}${r.recording_review?`<p>${esc(r.recording_review.note)}</p>`:''}${r.source_url?` · <a href="${esc(r.source_url)}" target="_blank" rel="noopener noreferrer">Source transcript</a>`:''}</li>`).join('')}</ul></details></section>`;
     if(report.source_briefing){const b=report.source_briefing;html+=`<section class="analysis-briefing" aria-label="Source-linked briefing"><h3>Source-linked briefing</h3><p>${esc(b.takeaway)}</p><ul>${b.items.map(item=>`<li><strong>${esc(UNPassageLabels.NAMES[item.label])} — ${esc(item.attribution.label)}</strong> · ${esc(item.date)}<p>${esc(item.excerpt)}</p><a href="${esc(item.source_url)}" target="_blank" rel="noopener noreferrer">Source transcript</a></li>`).join('')}</ul><p class="method-note">Selected source excerpts, not an exhaustive synthesis. ${esc(b.caveat)}</p></section>`;}
+    if(report.position_comparison)html+=UNPositionView.render(report.position_comparison,{interactive:!standalone});
     if(report.briefing)html+=renderBriefing(report.briefing);
     if(single)html+=`<p class="method-note">${all?'The detailed analysis below uses every eligible source segment.':`The detailed analysis below is restricted to the topic ${esc(p.topic)}; the opening summary covers the recorded meeting${p.excludeUnresolved?' with unresolved passages excluded':''}.`}</p>`;
     if(report.collection?.selection_mode==='single_meeting' && !single)html+='<p class="warning">The saved single-meeting label could not be verified against the imported records. This report describes the filtered collection; it does not establish complete coverage of one meeting.</p>';
@@ -712,6 +723,11 @@
   }
 
   el('analysisForm').addEventListener('input', invalidate);
+  el('analysisReport').addEventListener('click',event=>{
+    const button=event.target.closest('[data-position-country]');if(!button||controller||!retained)return;
+    const value=button.dataset.positionCountry;if(![...el('positionCountry').options].some(o=>o.value===value))return;
+    el('positionCountry').value=value;invalidate();nextRun='retained';el('analysisForm').requestSubmit();nextRun=null;
+  });
   el('analysisForm').addEventListener('change', invalidate);
 
   el('corpusSource').onchange = () => {
@@ -765,7 +781,7 @@
   el('nmfMethod').addEventListener('change',updateNMFControls);el('nmfStability').addEventListener('change',updateNMFControls);updateNMFControls();
   function runNMFWorker(records,vectors,options){
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.18.0');
+      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.19.0');
       const finish=(fn,v)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(v);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));signal.addEventListener('abort',abort,{once:true});
       worker.onerror=()=>finish(reject,Error('NMF worker could not run. Reload the page or check browser permissions.'));
@@ -776,7 +792,7 @@
 
   function runClusterWorker(records,vectors,options,progress) {
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.18.0');
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.19.0');
       const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
       signal.addEventListener('abort',abort,{once:true});
@@ -1009,6 +1025,14 @@
     if(audioLedger&&!stale)save(JSON.stringify(audioLedger,null,2),'audio-review-ledger.json','application/json');
   };
 
+  el('exportPositions').onclick=()=>{
+    const p=result?.position_comparison;if(!p||stale)return;
+    const headers=['policy_question','context','date','recorded_country','country_expression','us_expression','comparison','country_source_ids','country_source_urls','us_source_ids','us_source_urls','status'];
+    const rows=[headers,...p.countries.flatMap(c=>c.days.map(d=>[p.policy.label,p.context.label,d.date,c.country,d.country_state,d.us_state,d.comparison,d.country_evidence.map(x=>x.record_id).join(' | '),d.country_evidence.map(x=>x.source_url).join(' | '),d.us_evidence.map(x=>x.record_id).join(' | '),d.us_evidence.map(x=>x.source_url).join(' | '),p.status]))];
+    const cell=v=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,"'$&").replace(/"/g,'""')+'"';
+    save('\uFEFF'+rows.map(r=>r.map(cell).join(',')).join('\r\n'),'un-country-position-comparison.csv','text/csv;charset=utf-8');
+  };
+
   el('exportCSV').onclick = () => {
     if (!result || stale) return;
 
@@ -1050,7 +1074,7 @@
   </style>
 </head>
 <body>
-  ${render(result)}
+  ${render(result,true)}
 </body>
 </html>`;
 
@@ -1074,6 +1098,7 @@
     })
     .then(data => {
       countries = data;
+      for(const country of data.filter(c=>c.region!=='Unmapped'&&!UNPositions.isUS(c.country)).sort((a,b)=>a.country.localeCompare(b.country))){const o=document.createElement('option');o.value=country.country;o.textContent=country.country;el('positionCountry').append(o);}
 
       for (const region of [...new Set(data.map(country => country.region))].sort()) {
         const option = document.createElement('option');

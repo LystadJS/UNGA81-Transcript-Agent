@@ -10,8 +10,8 @@
     <link href="theme.css" rel="stylesheet">
     <link href="app.css" rel="stylesheet">
     <script defer src="app.js"></script>
-    <link href="analysis.css?v=1.18.0" rel="stylesheet">
-    <script defer src="meeting-scopes.js?v=1.18.0"></script>
+    <link href="analysis.css?v=1.19.0" rel="stylesheet">
+    <script defer src="meeting-scopes.js?v=1.19.0"></script>
     <script defer src="mds-core.js?v=1.12.1"></script>
     <script defer src="mds-view.js?v=1.12.1"></script>
     <script defer src="gmm-core.js?v=1.12.1"></script>
@@ -21,19 +21,21 @@
     <script defer src="passage-selection.js?v=1.12.1"></script>
     <script defer src="passage-pilot-core.js?v=1.12.1"></script>
     <script defer src="reviewed-units.js?v=1.12.1"></script>
-    <script defer src="text-units.js?v=1.18.0"></script>
-    <script defer src="meeting-quick-reader.js?v=1.18.0"></script>
-    <script defer src="passage-labels.js?v=1.18.0"></script>
-    <script defer src="analysis-core.js?v=1.18.0"></script>
+    <script defer src="text-units.js?v=1.19.0"></script>
+    <script defer src="meeting-quick-reader.js?v=1.19.0"></script>
+    <script defer src="passage-labels.js?v=1.19.0"></script>
+    <script defer src="position-comparison.js?v=1.19.0"></script>
+    <script defer src="position-view.js?v=1.19.0"></script>
+    <script defer src="analysis-core.js?v=1.19.0"></script>
     <script defer src="nmf-view.js?v=1.12.1"></script>
-    <script defer src="collector.js?v=1.18.0"></script>
+    <script defer src="collector.js?v=1.19.0"></script>
     <script defer src="stability-view.js?v=1.12.1"></script>
     <script defer src="comparison-view.js?v=1.12.1"></script>
     <script defer src="hierarchy-view.js?v=1.12.1"></script>
     <script defer src="cluster-view.js?v=1.12.1"></script>
     <script defer src="meeting-picker-core.js?v=1.12.1"></script>
     <script defer src="meeting-picker.js?v=1.12.1"></script>
-    <script defer src="analysis-ui.js?v=1.18.0"></script>
+    <script defer src="analysis-ui.js?v=1.19.0"></script>
   </head>
 
   <body>
@@ -74,6 +76,12 @@
         <p class="eyebrow">GENERAL DEBATE &amp; UN PROCEEDINGS</p>
         <h2>Generate Record</h2>
         <p>Define the dates and meeting scope. Add a topic to search, or leave it blank to collect all available passages.</p>
+      </section>
+
+      <section class="visualization-routes" aria-label="Choose a visualization">
+        <a href="#positionControls"><strong>Positions over time</strong><span>Compare an explicit policy question with the U.S. baseline. Missing evidence stays visible.</span></a>
+        <a href="#visualizationMethods"><strong>Volume, timing and language</strong><span>Explore dates, passage lengths, terms and textual similarity in the report.</span></a>
+        <a href="latent.html"><strong>Latent language patterns</strong><span>Compare PCA, LSA and NMF, then inspect the source passages. These patterns do not establish political agreement.</span></a>
       </section>
 
       <!-- REPORT BUILDER -->
@@ -157,6 +165,17 @@
             untouched defaults to the last 7 days. Dates you enter are never changed automatically.
           </p>
 
+          <fieldset id="positionControls">
+            <legend>Country positions over time · U.S. baseline</legend>
+            <p>Choose one policy question and context. Only explicit national statements on the same calendar date are compared. To examine the full saved collection, leave Topic blank; other filters still apply.</p>
+            <div class="analysis-grid">
+              <label>Policy question<select id="positionPolicy"></select></label>
+              <label>Policy context<select id="positionContext"></select></label>
+              <label>Comparison country<select id="positionCountry"><option value="">Automatically select best-covered country</option></select></label>
+            </div>
+            <p class="hint">The country breakdown and source-linked trajectory appear in every report. The U.S. reference uses retained sources within the same dates, scope, topic and exclusions, including U.S. records outside the selected speaker region. No missing statement is filled from an earlier date.</p>
+          </fieldset>
+
           <label><input id="excludeUnresolved" type="checkbox"> Exclude unresolved passages</label>
           <p class="hint">Exclude whole source segments flagged for unclear wording from the briefing, statistics and exports. Originals and recording notes remain in the saved collection. Reported or quoted appeals alone do not trigger this exclusion.</p>
 
@@ -197,7 +216,7 @@
           </details>
 
           <fieldset>
-            <legend>Methods</legend>
+            <legend id="visualizationMethods">Methods</legend>
 
             <div class="analysis-grid">
 
@@ -316,6 +335,7 @@
             <button class="secondary" id="exportResult" type="button">Analysis data (.json)</button>
             <button class="secondary" id="exportCorpus" type="button">Save transcripts</button>
             <button class="secondary" hidden id="exportAudioLedger" type="button">Audio review record (.json)</button>
+            <button class="secondary" id="exportPositions" type="button">Country positions (.csv)</button>
             <button class="secondary" id="exportCSV" type="button">Included passages (.csv)</button>
             <button class="secondary" hidden id="exportClusters" type="button">Cluster data (.csv)</button>
             <button class="secondary" hidden id="exportConsensus" type="button">Consensus pairs (.csv)</button>
