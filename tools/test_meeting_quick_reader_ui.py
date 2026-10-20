@@ -53,6 +53,8 @@ try:
   page.locator('#runAnalysis').click()
   page.locator('#analysisOutput').wait_for(state='visible', timeout=45000)
   assert page.locator('#analysisOutput').is_visible(),page.locator('#analysisStatus').inner_text()
+  assert page.locator('#countryPositionOverview').is_visible()
+  page.get_by_text('Meeting context and descriptive source analysis', exact=True).click()
   assert page.locator('.meeting-quick-read').count()==1
   assert page.locator('.meeting-quick-read').inner_text().find('Country-linked expressions')>=0
   assert 'supports' in page.locator('.meeting-quick-read').inner_text().lower()
