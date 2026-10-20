@@ -7,17 +7,17 @@ const POLICIES=[
  {id:'humanitarian_access',label:'Allow humanitarian access',target:/\b(?:humanitarian access|aid access|(?:unhindered|unimpeded|unrestricted|safe) (?:delivery|provision|distribution) of humanitarian (?:aid|assistance))\b/i},
  {id:'civilian_protection',label:'Protect civilians',target:/\b(?:protect(?:ing)? civilians|protection of civilians|civilian protection)\b/i},
  {id:'ceasefire',label:'Establish a ceasefire',target:/\b(?:ceasefire|cessation of hostilities)\b/i},
- {id:'two_state',label:'A two-state solution',target:/\btwo[ -]state solution\b/i},
+ {id:'two_state',label:'A two-state solution',target:/\btwo[ -]state solutions?\b/i},
  {domain:"Security and disarmament",id:'tpnw',label:'Treaty on the Prohibition of Nuclear Weapons',global:true,target:/\b(?:TPNW|Treaty on the Prohibition of Nuclear Weapons)\b/i},
  {domain:"Security and disarmament",id:'ctbt',label:'Comprehensive Nuclear-Test-Ban Treaty',global:true,target:/\b(?:CTBT|Comprehensive (?:Nuclear[ -])?Test[ -]Ban Treaty)\b/i},
  {id:'cuba_embargo',label:'Lift the embargo on Cuba',cuba:true,reject:/\b(?:extraterritorial|application of|Helms[ -]Burton)\b/i,target:/\b(?:lift(?:ing)?|end(?:ing)?|remov(?:e|ing|al of))\b[^.!?]{0,55}\b(?:embargo|blockade)\b/i},
- {domain:"Security and disarmament",id:'npt',label:'Nuclear Non-Proliferation Treaty',global:true,target:/\b(?:NPT|(?:Treaty on (?:the )?Non[ -]Proliferation of Nuclear Weapons)|(?:Nuclear )?Non[ -]Proliferation Treaty)\b/i,excludePrefix:/\bAdditional Protocol\b/i,excludeSuffix:/^\s+(?:Review Conference|review process)\b/i},
- {domain:"Security and disarmament",id:'iaea_additional_protocol',label:'Adopt the IAEA Additional Protocol',global:true,target:/\b(?:IAEA(?:'s)? Additional Protocol|Additional Protocol to (?:the )?(?:NPT|(?:Nuclear )?Non[ -]Proliferation Treaty))\b/i},
+ {domain:"Security and disarmament",id:'npt',label:'Nuclear Non-Proliferation Treaty',global:true,target:/\b(?:NPT|(?:Treaty on (?:the )?Non[ -]?Proliferation of Nuclear Weapons)|(?:Nuclear )?Non[ -]?Proliferation Treaty)\b/i,excludePrefix:/\bAdditional Protocol\b/i,excludeSuffix:/^\s+(?:Review Conference|review process)\b/i},
+ {domain:"Security and disarmament",id:'iaea_additional_protocol',label:'Adopt the IAEA Additional Protocol',global:true,target:/\b(?:IAEA(?:'s)? Additional Protocol|Additional Protocol to (?:the )?(?:NPT|(?:Nuclear )?Non[ -]?Proliferation Treaty))\b/i},
  {domain:"Security and disarmament",id:'bwc',label:'Biological Weapons Convention',global:true,target:/\b(?:BWC|Biological (?:and Toxin )?Weapons Convention)\b/i},
  {domain:"Security and disarmament",id:'cwc',label:'Chemical Weapons Convention',global:true,target:/\b(?:CWC|Chemical Weapons Convention)\b/i},
  {domain:"Security and disarmament",id:'arms_trade_treaty',label:'Arms Trade Treaty',global:true,target:/\bArms Trade Treaty\b/i},
  {domain:"Security and disarmament",id:'small_arms_programme',label:'UN Programme of Action on Small Arms',global:true,required:/\b(?:small arms|light weapons)\b/i,target:/\b(?:UN|United Nations) Programme of Action(?: on Small Arms(?: and Light Weapons)?)?\b|\bProgramme of Action on Small Arms(?: and Light Weapons)?\b/i},
- {domain:"Security and disarmament",id:'nuclear_disarmament',label:'Pursue nuclear disarmament',global:true,target:/\b(?:nuclear disarmament|(?:elimination|abolition) of (?:all )?nuclear weapons)\b/i},
+ {domain:"Security and disarmament",id:'nuclear_disarmament',excludeSuffix:/^\s+verification\b/i,label:'Pursue nuclear disarmament',global:true,target:/\b(?:nuclear disarmament|(?:elimination|abolition) of (?:all )?nuclear weapons)\b/i},
  {domain:"Security and disarmament",id:'pelindaba',label:'Treaty of Pelindaba',global:true,target:/\b(?:Treaty of Pelindaba|Pelindaba Treaty|African Nuclear[ -]Weapon[ -]Free[ -]Zone Treaty)\b/i},
  {domain:"Security and disarmament",id:'fissile_material_treaty',label:'Negotiate a fissile material cut-off treaty',global:true,target:/\b(?:FMCT|fissile material (?:cut[ -]off )?treaty|treaty (?:banning|prohibiting) (?:the )?production of fissile material)\b/i},
  {domain:"Climate and environment",id:'paris_agreement',label:'Paris Agreement',global:true,target:/\bParis Agreement\b/i},
@@ -66,7 +66,7 @@ const POLICIES=[
  {id:"women_peace_security",label:"Women, Peace and Security agenda",domain:"Human rights and inclusion",global:true,target:/\b(?:Women,? Peace and Security agenda|WPS agenda)\b/i},
  {id:"women_peace_participation",label:"Include women in peace processes",domain:"Human rights and inclusion",global:true,target:/\b(?:women(?:\x27s)? (?:full,? equal and meaningful )?participation in peace processes|participation of women in peace processes)\b/i},
  {id:"end_child_marriage",label:"End child marriage",domain:"Human rights and inclusion",global:true,target:/\b(?:end(?:ing)?|eliminat(?:e|ing|ion of)) child(?:, early and forced)? marriage\b/i},
- {id:"torture_convention",label:"Convention against Torture",domain:"Human rights and inclusion",global:true,target:/\bConvention against Torture\b/i},
+ {id:"torture_convention",excludePrefix:/\bOptional Protocol\b/i,label:"Convention against Torture",domain:"Human rights and inclusion",global:true,target:/\bConvention against Torture\b/i},
  {id:"disappearances_convention",label:"Convention protecting all persons from enforced disappearance",domain:"Human rights and inclusion",global:true,target:/\b(?:International )?Convention for the Protection of All Persons from Enforced Disappearance\b/i},
  {id:"refugee_convention",label:"1951 Refugee Convention",domain:"Migration and displacement",global:true,target:/\b(?:1951 (?:Refugee Convention|Convention (?:relating to|on) the Status of Refugees))\b/i},
  {id:"migration_compact",label:"Global Compact for Migration",domain:"Migration and displacement",global:true,target:/\bGlobal Compact for (?:Safe,? Orderly and Regular )?Migration\b/i},
@@ -83,10 +83,17 @@ const POLICIES=[
  {id:"libya_elections",label:"Hold national elections in Libya",domain:"Regional peace and protection",contexts:["libya"],target:/\b(?:national elections in Libya|Libyan national elections)\b/i},
  {id:"russian_withdrawal",label:"Withdraw Russian forces from Ukraine",domain:"Regional peace and protection",contexts:["ukraine"],target:/\b(?:withdrawal of Russian (?:forces|troops) from Ukraine|withdraw(?:ing)? Russian (?:forces|troops) from Ukraine)\b/i},
  {id:"cuba_extraterritorial",label:"End extraterritorial application of the Cuba embargo",domain:"Regional peace and protection",contexts:["cuba"],target:/\b(?:end(?:ing)?|remov(?:e|ing|al of)) (?:the )?extraterritorial application of (?:the )?(?:embargo|blockade) (?:on|against) Cuba\b/i},
- {id:"end_unilateral_measures",label:"Lift unilateral coercive measures",domain:"Regional peace and protection",qualifiersOutsideTarget:true,target:/\b(?:lift(?:ing)?|remov(?:e|ing|al of)|end(?:ing)?) (?:all |the )?unilateral coercive measures\b/i}
+ {id:"end_unilateral_measures",label:"Lift unilateral coercive measures",domain:"Regional peace and protection",qualifiersOutsideTarget:true,target:/\b(?:lift(?:ing)?|remov(?:e|ing|al of)|end(?:ing)?) (?:all |the )?unilateral coercive measures\b/i},
+ {id:'ihl_compliance',label:'Respect international humanitarian law',domain:'Regional peace and protection',global:true,target:/\b(?:international humanitarian law|IHL)\b/i},
+ {id:'poverty_eradication',label:'Eradicate poverty',domain:'Development and finance',global:true,target:/\b(?:poverty eradication|eradicat(?:e|ing|ion of) (?:extreme )?poverty)\b/i},
+ {id:'food_security',label:'Achieve food security',domain:'Development and finance',global:true,target:/\bfood security\b/i},
+ {id:'cyprus_good_offices',label:'Support the Secretary-General good-offices mission in Cyprus',domain:'Regional peace and protection',contexts:['cyprus'],target:/\b(?:Secretary[ -]General(?:'s|’s)? Good Offices Mission in Cyprus|(?:UN|United Nations) good[ -]offices mission in Cyprus)\b/i},
+ {id:'global_alliance_human_rights',label:'Global Alliance for Human Rights',domain:'Human rights and inclusion',global:true,target:/\bGlobal Alliance for Human Rights\b/i},
+ {id:'civil_society_cooperation',label:'Cooperate with civil society',domain:'Human rights and inclusion',global:true,target:/\bcooperation with civil society\b/i},
+ {id:'end_golan_occupation',label:'End Israeli occupation of the Syrian Golan',domain:'Regional peace and protection',contexts:['golan'],target:/\bend(?:ing)? (?:the )?(?:Israeli )?occupation of (?:the )?(?:occupied )?Syrian Golan\b/i}
 
 ];
-const CONTEXTS=[{id:'sudan',label:'Sudan',pattern:/(?:(?<!South )\bSudan\b|\b(?:Darfur|Kordofan|Al[ -](?:Fasher|Obeid))\b)/i},{id:'gaza',label:'Gaza',pattern:/\bGaza\b/i},{id:'west_bank',label:'West Bank',pattern:/\bWest Bank\b/i},{id:'ukraine',label:'Ukraine',pattern:/\b(?:Ukraine|Ukrainian)\b/i},{id:'myanmar',label:'Myanmar',pattern:/\b(?:Myanmar|Burma)\b/i},{id:'lebanon',label:'Lebanon',pattern:/\bLebanon\b/i},{id:'cuba',label:'Cuba',pattern:/\bCuba(?:n)?\b/i},{id:'south_sudan',label:'South Sudan',pattern:/\bSouth Sudan\b/i},{id:'yemen',label:'Yemen',pattern:/\bYemen\b/i},{id:'syria',label:'Syria',pattern:/\bSyria\b/i},{id:'haiti',label:'Haiti',pattern:/\bHaiti\b/i},{id:'afghanistan',label:'Afghanistan',pattern:/\bAfghanistan\b/i},{id:'libya',label:'Libya',pattern:/\bLibya(?:n)?\b/i},{id:'somalia',label:'Somalia',pattern:/\bSomalia(?:n)?\b/i},{id:'drc',label:'Democratic Republic of the Congo',pattern:/\b(?:Democratic Republic of (?:the )?Congo|DRC|eastern Congo)\b/i},{id:'western_sahara',label:'Western Sahara',pattern:/\bWestern Sahara\b/i},{id:'global',label:'International policy'}];
+const CONTEXTS=[{id:'sudan',label:'Sudan',pattern:/(?:(?<!South )\bSudan\b|\b(?:Darfur|Kordofan|Al[ -](?:Fasher|Obeid))\b)/i},{id:'gaza',label:'Gaza',pattern:/\bGaza\b/i},{id:'west_bank',label:'West Bank',pattern:/\bWest Bank\b/i},{id:'ukraine',label:'Ukraine',pattern:/\b(?:Ukraine|Ukrainian)\b/i},{id:'myanmar',label:'Myanmar',pattern:/\b(?:Myanmar|Burma)\b/i},{id:'lebanon',label:'Lebanon',pattern:/\bLebanon\b/i},{id:'cuba',label:'Cuba',pattern:/\bCuba(?:n)?\b/i},{id:'south_sudan',label:'South Sudan',pattern:/\bSouth Sudan\b/i},{id:'yemen',label:'Yemen',pattern:/\bYemen\b/i},{id:'syria',label:'Syria',pattern:/\bSyria\b/i},{id:'haiti',label:'Haiti',pattern:/\bHaiti\b/i},{id:'afghanistan',label:'Afghanistan',pattern:/\bAfghanistan\b/i},{id:'libya',label:'Libya',pattern:/\bLibya(?:n)?\b/i},{id:'somalia',label:'Somalia',pattern:/\bSomalia(?:n)?\b/i},{id:'drc',label:'Democratic Republic of the Congo',pattern:/\b(?:Democratic Republic of (?:the )?Congo|DRC|eastern Congo)\b/i},{id:'western_sahara',label:'Western Sahara',pattern:/\bWestern Sahara\b/i},{id:'israel_palestine',label:'Israel and Palestine',pattern:/\b(?:Israel|Palestin(?:e|ian))\b/i},{id:'cyprus',label:'Cyprus',pattern:/\bCyprus\b/i},{id:'golan',label:'Syrian Golan',pattern:/\b(?:Syrian Golan|Golan Heights)\b/i},{id:'global',label:'International policy'}];
 for(const p of POLICIES)if(!p.domain)p.domain='Regional peace and protection';
 const contextsFor=policy=>policy.global?['global']:policy.cuba?['cuba']:policy.contexts||CONTEXTS.filter(c=>c.id!=='global').map(c=>c.id);
 const US='United States';
@@ -110,38 +117,70 @@ function national(r){
 }
 function context(line,r,policy){
  if(policy.global)return {id:'global',basis:policy.id==='tpnw'||policy.id==='ctbt'?'named_global_treaty':'named_international_policy'};
- const hits=text=>CONTEXTS.filter(c=>c.pattern?.test(text));
+ const hits=text=>{let rows=CONTEXTS.filter(c=>c.pattern?.test(text));const family=['gaza','west_bank','israel_palestine'];if(policy.id==='two_state'&&rows.some(c=>family.includes(c.id)))rows=[...rows.filter(c=>!family.includes(c.id)),CONTEXTS.find(c=>c.id==='israel_palestine')];else if(rows.some(c=>['gaza','west_bank'].includes(c.id)))rows=rows.filter(c=>c.id!=='israel_palestine');return rows;};
  const places=[...line.matchAll(/\b(?:in|throughout|across|within)\s+(?:(?:the|occupied|northern|southern|eastern|western)\s+)*([A-Z][\p{L}'-]+(?:\s+[A-Z][\p{L}'-]+){0,3})/gu)];
  if(places.some(m=>!hits(m[1]).length))return null;
  const direct=hits(line);if(direct.length===1)return {id:direct[0].id,basis:'explicit_sentence'};if(direct.length>1)return null;
  const meeting=hits(r.meeting||''),segment=hits(r.text||'');
- if(segment.length>1)return null;
+ if(segment.length>1){if(meeting.length===1&&meeting[0].id==='israel_palestine'&&segment.every(c=>['gaza','west_bank','israel_palestine'].includes(c.id)))return {id:'israel_palestine',basis:'recorded_meeting_scope_with_related_subcontexts'};return null;}
  if(segment.length===1)return meeting.some(c=>c.id===segment[0].id)?{id:segment[0].id,basis:'single_segment_context_matching_recorded_meeting_title'}:null;
  return meeting.length===1?{id:meeting[0].id,basis:'recorded_meeting_title'}:null;
 }
-function direction(line,policy){
- if(!policy.target.test(line)||policy.reject?.test(line)||(policy.required&&!policy.required.test(line))||!T.summaryEvidenceSentence(line)||T.unclearWording(line))return null;
+// Normalize only a bounded self-declaration tied to the recorded national affiliation.
+const SELF_ALIASES={
+ 'Bahrain':['Kingdom of Bahrain'],'Türkiye':['Turkey'], 'Russian Federation':['Russia'], 'Tanzania, United Republic of':['Tanzania','United Republic of Tanzania'],
+ "Korea, Republic of":['Republic of Korea','South Korea'],"Korea, Democratic People\x27s Republic of":['Democratic People\x27s Republic of Korea','DPRK'],
+ 'Iran':['Islamic Republic of Iran'],'Viet Nam':['Vietnam'],'Palestine, State of':['State of Palestine','Palestine'],
+ 'Democratic Republic of the Congo':['DRC'],"Côte d'Ivoire":["Cote d'Ivoire"], 'Yemen':['Republic of Yemen']
+};
+function selfStatement(line,r){
+ let text=line.trim();
+ for(let i=0;i<2;i++)text=text.replace(/^(?:(?:Mr\.?|Madam|Mister) (?:Chair|Chairman|President)|Chair|Chairman|President|In (?:this|that) (?:regard|context)|In conclusion|At the same time|Therefore|Accordingly),\s*/i,'');
+ if(r&&national(r)){
+  const esc=v=>v.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  const names=[r.country,...(SELF_ALIASES[r.country]||[])].sort((a,b)=>b.length-a.length).map(esc).join('|');
+  const named='(?:(?:the )?(?:'+names+')|my country|our country)';
+  const possessive=new RegExp('^'+named+"[’']s commitment to (.+?) remains (?:firm|strong|steadfast|unwavering|undiminished|unchanged|resolute)\\b",'i').exec(text);
+  if(possessive)text='We remain committed to '+possessive[1]+'.';
+  else {text=text.replace(new RegExp('^'+named+',\\s*(?:therefore|accordingly),\\s*','i'),'We ');text=text.replace(new RegExp('^'+named+'(?=\\s)\\s+','i'),'We ');}
+  text=text.replace(/^(?:my delegation|our delegation|my government|our government)\s+/i,'We ');
+ }
+ text=text.replace(/^we (?:is a|are) (?:long[ -]standing |strong |consistent )?supporters? of /i,'We support ');
+ text=text.replace(/^we remain (?:steadfast|firm|resolute) in supporting /i,'We support ');
+ text=text.replace(/^we remains (?:fully|firmly|steadfastly|resolutely) committed to /i,'We remain committed to ');
+ text=text.replace(/^we (?:(?:therefore|also|further|once again|strongly|fully|firmly|urgently)\s+){1,3}/i,'We ');
+ text=text.replace(/^we (?:also )?(?:reaffirms?|reiterates?) (?:its|our|my) (?:(?:strong|firm|unwavering|steadfast|full|continued|unequivocal) )?(support for|opposition to|commitment to)\s+/i,(_,object)=>'We reaffirm our '+object+' ');
+ text=text.replace(/^(?:let us recall that|we recall that|we reaffirm that)\s+/i,'');
+ const verbs={'continues to':'continue to','will continue to':'continue to','supports':'support','opposes':'oppose','rejects':'reject','endorses':'endorse','welcomes':'welcome','calls for':'call for','calls on':'call on','calls upon':'call upon','urges':'urge','demands':'demand','advocates':'advocate','remains committed to':'remain committed to','remains strongly committed to':'remain committed to','is committed to':'are committed to'};
+ return text.replace(/^we (continues to|will continue to|supports|opposes|rejects|endorses|welcomes|calls for|calls on|calls upon|urges|demands|advocates|remains strongly committed to|remains committed to|is committed to)\b/i,(_,verb)=>'We '+verbs[verb.toLowerCase()]);
+}
+function direction(line,policy,r){
+ if(/\?/.test(line)||!policy.target.test(line)||policy.reject?.test(line)||(policy.required&&!policy.required.test(line))||!T.summaryEvidenceSentence(line)||T.unclearWording(line))return null;
  // Reported advocacy and quotations are not the speaker's own declaration.
  if(/\b(?:according to|said|says|stated|claims?|quoted|believes?|argues?|maintains?|asserts?|announced|the report|the resolution|the declaration)\b|[“”\"]/i.test(line))return null;
  const qualificationText=policy.qualifiersOutsideTarget?line.replace(policy.target,''):line;
- const qualified=/\b(?:if|unless|provided that|subject to|only|when|on condition|with the consent|would|could|might|temporary|conditional|unilateral|partial|limited|excluding|except|not all)\b/i.test(qualificationText);
- const uncertainObject=/\bwithout\s+(?!(?:delay|restrictions?|obstruction)\b)/i.test(line);
+ const qualified=/\b(?:if|unless|provided that|subject to|only|when|on condition|with the consent|consensus-based|complementarity between|would|could|might|temporary|conditional|unilateral|partial|limited|excluding|except|not all)\b/i.test(qualificationText);
+ const uncertainObject=/\bwithout\s+(?!(?:(?:further )?delay|restrictions?|obstruction)\b)/i.test(line);
  const states=[];
  for(let clause of line.split(/;|\b(?:but|however|although)\b|,\s*(?=(?:we|i|our delegation|my delegation)\b)/i)){
   clause=clause.trim().replace(/^(?:in this (?:context|regard),\s*|(?:first|second|third),\s*)/i,'');
-  const action=/^(?:we|i|our delegation|my delegation|our government|my government)\s+(?:(?:strongly|fully|firmly|also|continue to)\s+){0,3}(reaffirm our opposition to|reiterate our opposition to|reaffirm our support for|reiterate our support for|reaffirm our commitment to|reiterate our commitment to|remain committed to|are committed to|do not support|cannot support|oppose|reject|object to|support|endorse|welcome|call for|call on|urge|demand|advocate|stress the need for|stress the need to)\b\s*([^!?]+)/i.exec(clause);
+  clause=selfStatement(clause,r);
+  clause=clause.replace(/\b(?:states|countries) (?:that|which|who) have not yet done so to\b/ig,'states to');
+  const action=/^(?:we|i|our delegation|my delegation|our government|my government)\s+(?:(?:strongly|fully|firmly|also|therefore|further|urgently|continue to)\s+){0,3}(must support|should support|must strengthen|should strengthen|must respect|should respect|must ensure|should ensure|must implement|should implement|must ratify|should ratify|reaffirm our opposition to|reiterate our opposition to|reaffirm our support for|reiterate our support for|reaffirm our commitment to|reiterate our commitment to|remain committed to|are committed to|do not support|cannot support|oppose|reject|object to|support|endorse|welcome|call for|call on|call upon|encourage|urge|demand|advocate|stress the need for|stress the need to)\b\s*([^!?]+)/i.exec(clause);
   if(action){
    const object=action[2],at=object.search(policy.target),prefix=object.slice(0,at),targetMatch=policy.target.exec(object);
    if(targetMatch&&policy.excludeSuffix?.test(object.slice(targetMatch.index+targetMatch[0].length)))continue;
-   if(at<0||T.wordCount(prefix)>14||policy.excludePrefix?.test(prefix))continue;
-   if(/\b(?:report|resolution|declaration|statement|proposal|criticism|criticisms|critique|noncompliance|non-compliance|disregard|defiance|ignoring|evading|weakening|against|obstacles?|amendments?|reform|cuts?|reductions?|reducing|defunding|suspension|suspending|investigation|that|which|whether|who|because|while|sanctions?|attacks?|violence|obstruction|restrictions?|denial|obstruct(?:ing|ion)?|restrict(?:ing)?|imped(?:e|ing)|prevent(?:ing)?|block(?:ing)?|deny(?:ing)?|denying|withdraw(?:al|ing)?|violate|violat(?:ing|ions?)|rejection|rejecting|reject|opposing|oppose|opposition|abolition|cancellation|termination|military|intervention)\b/i.test(prefix))continue;
+   if(at<0||T.wordCount(prefix)>14||policy.excludePrefix?.test(prefix)||/\b(?:states? parties|parties|members)\s+(?:to|of)\s+(?:the\s+)?$/i.test(prefix))continue;
+   if(/\b(?:transparency|accountability|contribution|report|resolution|declaration|statement|proposal|criticism|criticisms|critique|noncompliance|non-compliance|disregard|defiance|ignoring|evading|weakening|against|obstacles?|amendments?|reform|cuts?|reductions?|reducing|defunding|suspension|suspending|investigation|that|which|whether|who|because|while|sanctions?|attacks?|violence|obstruction|restrictions?|denial|obstruct(?:ing|ion)?|restrict(?:ing)?|imped(?:e|ing)|prevent(?:ing)?|block(?:ing)?|deny(?:ing)?|denying|withdraw(?:al|ing)?|violate|violat(?:ing|ions?)|rejection|rejecting|reject|opposing|oppose|opposition|abolition|cancellation|termination|military|intervention)\b/i.test(prefix))continue;
    if(/\b(?:no|not|without|rather than|instead of|neither|nor|lift|lifting|removal|ending)\b/i.test(prefix)&&!policy.cuba){states.push('qualified');continue;}
    if(/\band\s+(?:oppose|reject|support|do not support)\b/i.test(object.slice(at)))states.push('qualified');
    else {const negative=/^(?:do not|cannot|oppose|reject|object|reaffirm our opposition|reiterate our opposition)/i.test(action[1]);states.push(negative&&prefix.replace(/\b(?:the|a|an)\b/ig,'').trim()?'qualified':negative?'oppose':'support');}
   }else if(!policy.cuba){
    const at=clause.search(policy.target);if(at<0)continue;
    const before=clause.slice(0,at),after=clause.slice(at);
-   if(/\b(?:must|should|need to)\s+(?:(?:ensure|facilitate|allow|guarantee|protect|establish|achieve|secure|provide|respect|implement|uphold)\s+(?:(?:full|safe|rapid|sustained|unhindered|unimpeded|and|the|a|an)[, ]+)*)?$/i.test(before)||/^(?:humanitarian access|aid access|protection of civilians|civilian protection|(?:a |an |the )?(?:immediate |permanent |durable )?(?:ceasefire|cessation of hostilities))\s+(?:must|should|needs? to)\s+(?:be (?:ensured|allowed|facilitated|protected|established|achieved|guaranteed)|remain (?:unhindered|unimpeded))/i.test(after))states.push('support');
+   if(['fissile_material_treaty','autonomous_weapons_treaty','plastics_treaty','disaster_protection_treaty'].includes(policy.id)&&/^(?:negotiations? (?:on|for|of) (?:an? |the )?)$/i.test(before)&&/^\s+(?:must|should|need to) (?:begin|start|commence|proceed)\b/i.test(after.slice(policy.target.exec(after)?.[0].length||0))){states.push('support');continue;}
+   if(T.wordCount(before)>16||/\b(?:that|which|language|wording|reported|noted|observed|has|had|was|were)\b/i.test(before))continue;
+   if((new RegExp('^(?:'+policy.target.source+')\\s+(?:must|should|needs? to)\\s+be (?:maintained|implemented|ratified|respected|upheld|strengthened|supported|adopted|ensured|protected|allowed|facilitated|guaranteed)\\b','i').test(after))||/\b(?:must|should|need to)\s+(?:(?:ensure|facilitate|allow|guarantee|protect|establish|achieve|secure|provide|respect|implement|uphold|strengthen|ratify|comply with|adhere to)\s+(?:(?:full|safe|rapid|sustained|unhindered|unimpeded|and|the|a|an)[, ]+)*)?$/i.test(before)||/^(?:humanitarian access|aid access|protection of civilians|civilian protection|(?:a |an |the )?(?:immediate |permanent |durable )?(?:ceasefire|cessation of hostilities))\s+(?:must|should|needs? to)\s+(?:be (?:ensured|allowed|facilitated|protected|established|achieved|guaranteed)|remain (?:unhindered|unimpeded))/i.test(after))states.push('support');
   }
  }
  if(!states.length)return null;
@@ -155,7 +194,7 @@ function evidence(records,p){
   if(!national(r)){withheld.attribution++;continue;}
   if(P.unresolved(r)){withheld.unclear++;continue;}
   T.sentences(r.text).forEach((line,index)=>{
-   const stance=direction(line,policy);if(!stance)return;
+   const stance=direction(line,policy,r);if(!stance)return;
    const c=context(line,r,policy);if(!c||!contextsFor(policy).includes(c.id)||(p.positionContext!=='*'&&c.id!==p.positionContext)){withheld.context++;return;}
    if(policy.cuba&&(c.id!=='cuba'||!/\bCuba(?:n)?\b/i.test(r.text)))return;
    const url=safe(r.source_url);if(!url)return;
@@ -206,9 +245,11 @@ function overview(records,baselineRecords,settings){
    return [{policy:q.policy,context:q.context,days,same:days.filter(d=>d.comparison==='same_direction').length,opposite:days.filter(d=>d.comparison==='opposite_direction').length,gaps:days.filter(d=>d.value===null).length}];
   });
   const same=positions.reduce((n,p)=>n+p.same,0),opposite=positions.reduce((n,p)=>n+p.opposite,0);
-  return {country:name,positions,comparable_question_dates:same+opposite,same_direction:same,opposite_direction:opposite,agreement_percent:same+opposite?100*same/(same+opposite):null};
+  const ownRecords=records.filter(r=>country(r)===name);
+  const coverage_reason=positions.length?'identified':ownRecords.length&&!ownRecords.some(national)?'national_attribution_withheld':'no_supported_explicit_expression';
+  return {country:name,positions,coverage_reason,comparable_question_dates:same+opposite,same_direction:same,opposite_direction:opposite,agreement_percent:same+opposite?100*same/(same+opposite):null};
  });
  return {schema:'un.country-position-overview.v1',status:'automatic_provisional_not_human_reviewed',baseline:US,start:settings.start,end:settings.end,catalogue:POLICIES.map(p=>({id:p.id,label:p.label,domain:p.domain})),countries,questions,countries_with_positions:countries.filter(c=>c.positions.length).length,countries_comparable:countries.filter(c=>c.comparable_question_dates).length,weighting:'One comparison per policy question, context and calendar date, with equal weight. Source repetition adds no weight.',limitations:['This covers the declared policy catalogue, not every possible opinion in a meeting. Unrecognized or ambiguous positions remain unestablished.','Agreement is the share of comparable question-dates with the same expressed direction. It is not overall diplomatic alignment. Different countries can have different comparison coverage.','Policy questions can be related; question-date counts are not independent observations or a balanced index of diplomatic alignment.','Only explicit national expressions are compared. Group statements, unresolved wording and missing U.S. evidence cannot establish agreement.','No position is carried forward or interpolated. Statements on the same question and date are consolidated; conflicting or qualified evidence remains a gap.'],external_ai_calls:0};
 }
-const api={POLICIES,CONTEXTS,contextsFor,US,isUS,options,national,context,direction,evidence,build,overview};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UNPositions=api;
+const api={POLICIES,CONTEXTS,contextsFor,US,isUS,options,national,context,selfStatement,direction,evidence,build,overview};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UNPositions=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

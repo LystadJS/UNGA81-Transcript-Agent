@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.22.0",
+  "browser_engine": "browser-descriptive-1.23.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-10-19",
   "features": [
+    "source-reviewed country-bound self-declarations, direct policy obligations, shared Israeli-Palestinian two-state context and seven source-supported policy questions",
     "80 automatic policy questions across eight policy areas with regional context boundaries and visible area coverage",
     "automatic country-first comparison across 30 explicit policy questions, with source-linked gaps and equal question-date weighting",
     "overlapping source-bound provisional passage labels with cautious group attribution",
@@ -74,9 +75,9 @@
     }
   },
   "position_catalogue": {
-    "questions": 80,
+    "questions": 87,
     "policy_areas": 8,
-    "added_in_1_22_0": 50,
-    "coverage": "bounded explicit policy expressions; not exhaustive opinions or verified government positions"
+    "added_in_1_23_0": 7,
+    "coverage": "bounded, source-linked explicit expressions; historical acts and third-party statements do not establish current national positions"
   }
 }
