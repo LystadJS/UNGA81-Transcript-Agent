@@ -20,7 +20,7 @@ const examples=[
  ['treaty_implementation_assistance','States parties to these mechanisms need training and technical assistance, financing to effectively implement these instruments.','support'],
  ['halt_settlement_expansion','We urge an immediate end to settlement expansion.','support']
 ];
-assert.equal(P.POLICIES.length,125);assert.equal(new Set(P.POLICIES.map(p=>p.id)).size,125);
+assert.equal(P.POLICIES.length,128);assert.equal(new Set(P.POLICIES.map(p=>p.id)).size,128);
 for(const [id,text,expected] of examples){const r=record('Armenia',1,text+' Human rights treaty bodies are the context.');assert.equal(P.direction(text,policy(id),r),expected,id);assert.equal(P.evidence([record('Armenia',1,r.text,{speaker_metadata:{group:'NAM'}})],{positionPolicy:id,positionContext:'*'}).found.length,0,id+' collective');assert.equal(P.direction('The report said: '+text,policy(id),r),null,id+' reported');assert.equal(P.direction('Is it true that '+text+'?',policy(id),r),null,id+' question');}
 for(const text of ['We support humanitarian access.','We oppose humanitarian access.']){
  const r=record('Armenia',1,text,{meeting:'International policy exchange'}),us=record('United States',1,'We support humanitarian access.',{meeting:'International policy exchange'});

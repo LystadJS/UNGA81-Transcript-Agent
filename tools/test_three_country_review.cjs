@@ -4,7 +4,7 @@ const {record,settings}=require('./test_position_comparison.cjs');
 const role='I would like to underscore the crucial role of the Office of the High Commissioner on Human Rights, particularly through its technical assistance, capacity building, and comprehensive reporting.';
 const framing='We need to move beyond the narrative on human rights that is too often negative, one that risks coding human rights as a partisan or luxury agenda.';
 const rolePolicy=P.POLICIES.find(p=>p.id==='ohchr_technical_functions'),framingPolicy=P.POLICIES.find(p=>p.id==='human_rights_framing');
-assert.equal(P.POLICIES.length,125);assert.equal(new Set(P.POLICIES.map(p=>p.id)).size,125);
+assert.equal(P.POLICIES.length,128);assert.equal(new Set(P.POLICIES.map(p=>p.id)).size,128);
 const a=record('Armenia',1,'In this difficult period, '+role),b=record('United States',1,role),c=record('France',1,framing),palau=record('Palau',1,'I deliver this statement on behalf of the Alliance of Small Island States. '+framing,{speaker_metadata:{group:'AOSIS'}});
 assert.equal(P.direction(role,rolePolicy,a),'qualified');assert.equal(P.direction(framing,framingPolicy,c),'support');
 for(const policy of [rolePolicy,framingPolicy]){
