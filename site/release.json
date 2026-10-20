@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.26.0",
+  "browser_engine": "browser-descriptive-1.27.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-10-20",
   "features": [
+    "National implementation priorities, bounded adjacent renewable-energy targets and climate-finance appeals; qualified domestic commitments remain outside U.S. agreement scoring",
     "three-country source review: 125 questions, qualified recognition of specific OHCHR functions, human rights framing, and explicit AOSIS attribution without national inference",
     "source-reviewed country coverage across 123 questions; explicit positions with unspecified context remain visible and never establish U.S. agreement",
     "remaining-country source review: 107 automatic policy questions, bounded present declarations and qualified jurisdiction/deterrence positions",
@@ -78,12 +79,13 @@
     }
   },
   "position_catalogue": {
-    "questions": 125,
+    "questions": 128,
     "policy_areas": 8,
     "added_in_1_23_0": 7,
     "coverage": "bounded, source-linked explicit expressions; historical acts and third-party statements do not establish current national positions",
     "added_in_1_24_0": 20,
     "added_in_1_25_0": 16,
-    "added_in_1_26_0": 2
+    "added_in_1_26_0": 2,
+    "added_in_1_27_0": 3
   }
 }
