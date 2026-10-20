@@ -785,7 +785,7 @@
   el('nmfMethod').addEventListener('change',updateNMFControls);el('nmfStability').addEventListener('change',updateNMFControls);updateNMFControls();
   function runNMFWorker(records,vectors,options){
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.28.0');
+      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.28.1');
       const finish=(fn,v)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(v);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));signal.addEventListener('abort',abort,{once:true});
       worker.onerror=()=>finish(reject,Error('NMF worker could not run. Reload the page or check browser permissions.'));
@@ -796,7 +796,7 @@
 
   function runClusterWorker(records,vectors,options,progress) {
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.28.0');
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.28.1');
       const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
       signal.addEventListener('abort',abort,{once:true});
@@ -1033,7 +1033,7 @@
     if(!result?.nearby_comparisons||stale)return;
     const header=['country','policy_question','context','relationship','country_date','us_date','us_minus_country_days','country_expression','us_expression','qualification','country_source_ids','country_source_urls','us_source_ids','us_source_urls','contributes_to_same_day_score'];
     const rows=[header,...result.nearby_comparisons.rows.map(r=>[r.country,r.policy.label,r.context.label,r.relationship,r.country_date,r.us_date,r.day_difference,r.country_state,r.us_state,r.qualification,r.country_evidence.map(e=>e.record_id).join(' | '),r.country_evidence.map(e=>e.source_url).join(' | '),r.us_evidence.map(e=>e.record_id).join(' | '),r.us_evidence.map(e=>e.source_url).join(' | '),false])];
-    const cell=v=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,"'$&").replace(/"/g,'""')+'"';
+    const cell=v=>'"'+(typeof v==='number'?String(v):String(v??'').replace(/^[=+@\-\t\r]/,"'$&")).replace(/"/g,'""')+'"';
     save('\uFEFF'+rows.map(r=>r.map(cell).join(',')).join('\r\n'),'un-nearby-date-comparisons.csv','text/csv;charset=utf-8');
   };
 

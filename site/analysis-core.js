@@ -20,7 +20,7 @@
     ? require('./text-units.js') : root.UNTextUnits;
   const PassageLabels = typeof module !== 'undefined' && module.exports ? require('./passage-labels.js') : root.UNPassageLabels;
   const Positions = typeof module !== 'undefined' && module.exports ? require('./position-comparison.js') : root.UNPositions;
-  const VERSION = 'browser-descriptive-1.28.0';
+  const VERSION = 'browser-descriptive-1.28.1';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters', 'nmf'];
 
