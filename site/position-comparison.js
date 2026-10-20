@@ -18,7 +18,7 @@ const POLICIES=[
  {domain:"Security and disarmament",id:'arms_trade_treaty',label:'Arms Trade Treaty',global:true,target:/\bArms Trade Treaty\b/i},
  {domain:"Security and disarmament",id:'small_arms_programme',label:'UN Programme of Action on Small Arms',global:true,required:/\b(?:small arms|light weapons)\b/i,target:/\b(?:UN|United Nations) Programme of Action(?: on Small Arms(?: and Light Weapons)?)?\b|\bProgramme of Action on Small Arms(?: and Light Weapons)?\b/i},
  {domain:"Security and disarmament",id:'nuclear_disarmament',excludeSuffix:/^\s+verification\b/i,label:'Pursue nuclear disarmament',global:true,target:/\b(?:nuclear disarmament|world without nuclear weapons|(?:elimination|abolition) of (?:all )?nuclear weapons)\b/i},
- {domain:"Security and disarmament",id:'pelindaba',label:'Treaty of Pelindaba',global:true,target:/\b(?:Treaty of Pelindaba|Pelindaba Treaty|African Nuclear[ -]Weapon[ -]Free[ -]Zone Treaty)\b/i},
+ {domain:"Security and disarmament",id:'pelindaba',supportDeclaration:/^while reiterating (?:its|our) commitment to (?:the )?(?:Treaty of Pelindaba|Pelindaba Treaty), (?:my country|we)\b/i,label:'Treaty of Pelindaba',global:true,target:/\b(?:Treaty of Pelindaba|Pelindaba Treaty|African Nuclear[ -]Weapon[ -]Free[ -]Zone Treaty)\b/i},
  {domain:"Security and disarmament",id:'fissile_material_treaty',label:'Negotiate a fissile material cut-off treaty',global:true,target:/\b(?:FMCT|fissile material (?:cut[ -]off )?treaty|treaty (?:banning|prohibiting) (?:the )?production of fissile material)\b/i},
  {domain:"Climate and environment",id:'paris_agreement',label:'Paris Agreement',global:true,target:/\bParis Agreement\b/i},
  {domain:"Climate and environment",id:'climate_finance',label:'Provide climate finance',global:true,target:/\bclimate financ(?:e|ing)\b/i},
@@ -85,8 +85,8 @@ const POLICIES=[
  {id:"cuba_extraterritorial",label:"End extraterritorial application of the Cuba embargo",domain:"Regional peace and protection",contexts:["cuba"],target:/\b(?:end(?:ing)?|remov(?:e|ing|al of)) (?:the )?extraterritorial application of (?:the )?(?:embargo|blockade) (?:on|against) Cuba\b/i},
  {id:"end_unilateral_measures",label:"Lift unilateral coercive measures",domain:"Regional peace and protection",qualifiersOutsideTarget:true,target:/\b(?:lift(?:ing)?|remov(?:e|ing|al of)|end(?:ing)?) (?:all |the )?unilateral coercive measures\b/i},
  {id:'ihl_compliance',label:'Respect international humanitarian law',domain:'Regional peace and protection',global:true,target:/\b(?:international humanitarian law|IHL)\b/i},
- {id:'poverty_eradication',label:'Eradicate poverty',domain:'Development and finance',global:true,target:/\b(?:poverty eradication|eradicat(?:e|ing|ion of) (?:extreme )?poverty)\b/i},
- {id:'food_security',label:'Achieve food security',domain:'Development and finance',global:true,target:/\bfood security\b/i},
+ {id:'poverty_eradication',supportDeclaration:/^(?:the )?(?:poverty eradication in all of its forms and manifestations?|eradication of poverty(?: and hunger)?) remains (?:a key priority|a fundamental responsibility)\b/i,label:'Eradicate poverty',domain:'Development and finance',global:true,target:/\b(?:poverty eradication|eradicat(?:e|ing|ion of) (?:extreme )?poverty)\b/i},
+ {id:'food_security',supportDeclaration:/^we are committed to (?!.*\b(?:not|report|proposal|that|which|against|rather than|instead of)\b)[^.!?]{0,240}\b(?:moving|progressing|working) towards food security\b/i,label:'Achieve food security',domain:'Development and finance',global:true,target:/\bfood security\b/i},
  {id:'cyprus_good_offices',label:'Support the Secretary-General good-offices mission in Cyprus',domain:'Regional peace and protection',contexts:['cyprus'],target:/\b(?:Secretary[ -]General(?:'s|’s)? Good Offices Mission in Cyprus|(?:UN|United Nations) good[ -]offices mission in Cyprus)\b/i},
  {id:'global_alliance_human_rights',label:'Global Alliance for Human Rights',domain:'Human rights and inclusion',global:true,target:/\bGlobal Alliance for Human Rights\b/i},
  {id:'civil_society_cooperation',label:'Cooperate with civil society',domain:'Human rights and inclusion',global:true,target:/\bcooperation with civil society\b/i},
@@ -110,13 +110,30 @@ const POLICIES=[
  {id:'libya_territorial_integrity',label:'Respect Libya sovereignty and territorial integrity',domain:'Regional peace and protection',contexts:['libya'],target:/\b(?:unity, sovereignty, independence and territorial integrity of Libya|Libya(?:'s|’s)? sovereignty independence, territorial integrity)\b/i},
  {id:'lebanon_1701',label:'Implement Security Council Resolution 1701',domain:'Regional peace and protection',contexts:['lebanon'],target:/\b(?:(?:UN |United Nations )?Security Council )?[Rr]esolution 1701\b/i},
  {id:'lebanon_sovereignty',label:'Respect Lebanon independence and territorial integrity',domain:'Regional peace and protection',contexts:['lebanon'],target:/\bLebanon(?:'s|’s) independence, unity, and territorial integrity\b/i},
- {id:'iran_iaea_cooperation',label:'Iran cooperation with IAEA safeguards',domain:'Security and disarmament',contexts:['iran'],required:/\b(?:Iran|Tehran)\b/i,target:/\b(?:(?:Iran|Tehran) to (?:fully cooperate|cooperate fully|cooperate) with the IAEA|(?:full )?cooperation (?:by|of) Iran with the IAEA)\b/i}
-
+ {id:'iran_iaea_cooperation',label:'Iran cooperation with IAEA safeguards',domain:'Security and disarmament',contexts:['iran'],required:/\b(?:Iran|Tehran)\b/i,target:/\b(?:(?:Iran|Tehran) to (?:fully cooperate|cooperate fully|cooperate) with the IAEA|(?:full )?cooperation (?:by|of) Iran with the IAEA)\b/i},
+ {id:'ohchr_work',label:'Support the UN human rights High Commissioner’s work',domain:'Human rights and inclusion',global:true,target:/\b(?:High Commissioner|OHCHR|Office of the (?:UN|United Nations) High Commissioner for Human Rights)\b/i,requiredRecord:/\b(?:human rights|OHCHR|Turk|Türk)\b/i,reject:/High Commissioner for Refugees/i,declarationOnly:true,supportDeclaration:/^we (?:(?:support|reaffirm our support for) (?:the )?(?:work|mandate) of (?:the )?(?:UN |United Nations )?High Commissioner(?: for Human Rights)?\b|thanks? High Commissioner (?:Turk|Türk) for his update and reiterates? (?:its|our) support for his mandate and the independence of his office\b|welcomes? the High Commissioner and congratulates? him on renewal of his mandate and reiterates? (?:its|our) commitment to continue supporting your work\b|hail the efforts of (?:the )?OHCHR to\b)/i},
+ {id:'disaster_risk_reduction',label:'Reduce disaster risks',domain:'Climate and environment',global:true,target:/\b(?:reduce disaster risks|disaster risk reduction|prevention of disasters)\b/i,supportDeclaration:/^we support draft article \d+,? which enshrines states[’']? obligations to reduce disaster risks\b/i},
+ {id:'disaster_assistance_consent',label:'Require affected-state consent for international assistance',domain:'Institutions and digital governance',global:true,qualifiersOutsideTarget:true,target:/\bassistance must[^.!?]{0,100}be provided with the consent of the affected states\b/i,supportDeclaration:/^assistance must (?![^.!?]*\bnot\b)[^.!?]{0,100}be provided with the consent of the affected states\b/i},
+ {id:'predictable_development_finance',label:'Provide predictable, accessible development finance',domain:'Development and finance',global:true,target:/\b(?:financing that is predictable, affordable, and easier to access|predictable development financ(?:e|ing)|adequate, stable and predictable financial resources for development)\b/i,supportDeclaration:/^it is essential to ensure adequate, stable and predictable financial resources for development\b/i},
+ {id:'state_sovereignty',label:'Respect state sovereignty',domain:'Institutions and digital governance',global:true,target:/\brespect (?:for |of (?:the )?)state sovereignty\b/i},
+ {id:'peaceful_dispute_settlement',label:'Settle international disputes by peaceful means',domain:'Institutions and digital governance',global:true,target:/\b(?:peaceful means for (?:the )?settlement of disputes|peaceful settlement of (?:international )?disputes)\b/i},
+ {id:'iran_no_nuclear_weapon',label:'Prevent Iran from acquiring a nuclear weapon',domain:'Security and disarmament',global:true,target:/\b(?:prevent Iran from acquiring a nuclear weapon|Iran (?:must|should) never acquire a nuclear weapon)\b/i,supportDeclaration:/^Iran (?:must|should) never acquire a nuclear weapon\b/i},
+ {id:'palestinian_statehood',label:'Support Palestinian statehood',domain:'Regional peace and protection',global:true,target:/\b(?:Palestinian statehood|Palestinian people have the right to establish a Palestinian state)\b/i,supportDeclaration:/^we renew our position that the Palestinian people have the right to establish a Palestinian state\b/i},
+ {id:'poverty_reduction',label:'Reduce poverty',domain:'Development and finance',global:true,target:/\b(?:poverty reduction|reduc(?:e|ing) poverty|tackling the problem of poverty)\b/i},
+ {id:'development_cooperation_framework',label:'Use nationally agreed UN development cooperation frameworks',domain:'Development and finance',global:true,target:/\b(?:United Nations |UN )?Sustainable Development Cooperation Framework\b/i,supportDeclaration:/^(?:the )?(?:United Nations |UN )?Sustainable Development Cooperation Framework, agreed with national authorities, should effectively guide\b/i},
+ {id:'opcw_mandate',label:'Support the OPCW mandate',domain:'Security and disarmament',global:true,target:/\b(?:Organization for the Prohibition of Chemical Weapons|OPCW)\b/i},
+ {id:'russian_nuclear_threats',label:'Russian threats of nuclear weapons use',domain:'Security and disarmament',global:true,target:/\bRussia[’']s[^.!?]{0,180}\bthreats of nuclear weapons use\b/i}
+,
+ {id:'outer_space_militarization',opposeDeclaration:/^we oppose all forms of [^.!?]{0,160}, as well as militarization of outer space\b/i,label:'Militarization of outer space',domain:'Security and disarmament',global:true,target:/\bmilitarization of outer space\b/i},
+ {id:'abandon_unilateral_measures',label:'Abandon measures described as illegitimate unilateral measures',domain:'Institutions and digital governance',global:true,qualifiersOutsideTarget:true,target:/\babandon (?:illegitimate )?unilateral measures\b/i},
+ {id:'treaty_implementation_assistance',unresolvedObject:true,label:'Training and technical assistance for treaty implementation (instrument unspecified)',domain:'Human rights and inclusion',requiredRecord:/\b(?:treaty organs|human rights mechanisms|treaty bodies)\b/i,target:/\bstates parties to these mechanisms need training and technical assistance\b/i,supportDeclaration:/^states parties to these mechanisms need training and technical assistance, financing to effectively implement these instruments\b/i}
+,
+ {id:'halt_settlement_expansion',label:'Halt settlement expansion',domain:'Regional peace and protection',target:/\b(?:end to|halt(?:ing)?|stop(?:ping)?) settlement expansion\b/i}
 
 ];
-const CONTEXTS=[{id:'sudan',label:'Sudan',pattern:/(?:(?<!South )\bSudan\b|\b(?:Darfur|Kordofan|Al[ -](?:Fasher|Obeid))\b)/i},{id:'gaza',label:'Gaza',pattern:/\bGaza\b/i},{id:'west_bank',label:'West Bank',pattern:/\bWest Bank\b/i},{id:'ukraine',label:'Ukraine',pattern:/\b(?:Ukraine|Ukrainian)\b/i},{id:'myanmar',label:'Myanmar',pattern:/\b(?:Myanmar|Burma)\b/i},{id:'lebanon',label:'Lebanon',pattern:/\bLebanon\b/i},{id:'cuba',label:'Cuba',pattern:/\bCuba(?:n)?\b/i},{id:'south_sudan',label:'South Sudan',pattern:/\bSouth Sudan\b/i},{id:'yemen',label:'Yemen',pattern:/\bYemen\b/i},{id:'syria',label:'Syria',pattern:/\bSyria\b/i},{id:'haiti',label:'Haiti',pattern:/\bHaiti\b/i},{id:'afghanistan',label:'Afghanistan',pattern:/\bAfghanistan\b/i},{id:'libya',label:'Libya',pattern:/\bLibya(?:n)?\b/i},{id:'somalia',label:'Somalia',pattern:/\bSomalia(?:n)?\b/i},{id:'drc',label:'Democratic Republic of the Congo',pattern:/\b(?:Democratic Republic of (?:the )?Congo|DRC|eastern Congo)\b/i},{id:'western_sahara',label:'Western Sahara',pattern:/\bWestern Sahara\b/i},{id:'israel_palestine',label:'Israel and Palestine',pattern:/\b(?:Israel|Palestin(?:e|ian)|Jerusalem)\b/i},{id:'cyprus',label:'Cyprus',pattern:/\bCyprus\b/i},{id:'golan',label:'Syrian Golan',pattern:/\b(?:Syrian Golan|Golan Heights)\b/i},{id:'iran',label:'Iran',pattern:/\b(?:Iran|Tehran)\b/i},{id:'global',label:'International policy'}];
+const CONTEXTS=[{id:'sudan',label:'Sudan',pattern:/(?:(?<!South )\bSudan\b|\b(?:Darfur|Kordofan|Al[ -](?:Fasher|Obeid))\b)/i},{id:'gaza',label:'Gaza',pattern:/\bGaza\b/i},{id:'west_bank',label:'West Bank',pattern:/\bWest Bank\b/i},{id:'ukraine',label:'Ukraine',pattern:/\b(?:Ukraine|Ukrainian)\b/i},{id:'myanmar',label:'Myanmar',pattern:/\b(?:Myanmar|Burma)\b/i},{id:'lebanon',label:'Lebanon',pattern:/\bLebanon\b/i},{id:'cuba',label:'Cuba',pattern:/\bCuba(?:n)?\b/i},{id:'south_sudan',label:'South Sudan',pattern:/\bSouth Sudan\b/i},{id:'yemen',label:'Yemen',pattern:/\bYemen\b/i},{id:'syria',label:'Syria',pattern:/\bSyria\b/i},{id:'haiti',label:'Haiti',pattern:/\bHaiti\b/i},{id:'afghanistan',label:'Afghanistan',pattern:/\bAfghanistan\b/i},{id:'libya',label:'Libya',pattern:/\bLibya(?:n)?\b/i},{id:'somalia',label:'Somalia',pattern:/\bSomalia(?:n)?\b/i},{id:'drc',label:'Democratic Republic of the Congo',pattern:/\b(?:Democratic Republic of (?:the )?Congo|DRC|eastern Congo)\b/i},{id:'western_sahara',label:'Western Sahara',pattern:/\bWestern Sahara\b/i},{id:'israel_palestine',label:'Israel and Palestine',pattern:/\b(?:Israel|Palestin(?:e|ian)|Jerusalem)\b/i},{id:'cyprus',label:'Cyprus',pattern:/\bCyprus\b/i},{id:'golan',label:'Syrian Golan',pattern:/\b(?:Syrian Golan|Golan Heights)\b/i},{id:'iran',label:'Iran',pattern:/\b(?:Iran|Tehran)\b/i},{id:'unspecified',label:'Context not established'},{id:'global',label:'International policy'}];
 for(const p of POLICIES)if(!p.domain)p.domain='Regional peace and protection';
-const contextsFor=policy=>policy.global?['global']:policy.cuba?['cuba']:policy.contexts||CONTEXTS.filter(c=>c.id!=='global').map(c=>c.id);
+const contextsFor=policy=>policy.unresolvedObject?['unspecified']:policy.global?['global']:policy.cuba?['cuba']:[...new Set([...(policy.contexts||CONTEXTS.filter(c=>!['global','unspecified'].includes(c.id)).map(c=>c.id)),'unspecified'])];
 const US='United States';
 const isUS=c=>/^(?:United States(?: of America)?|U\.?S\.?A?\.?)$/i.test(String(c||'').trim());
 const country=r=>isUS(r.country)?US:r.country;
@@ -137,6 +154,7 @@ function national(r){
   (!/\b(?:chair|presiding|moderator|rapporteur|secretariat|journalist|civil society|press|president of (?:the )?(?:council|assembly|committee))\b/i.test(fn)||nationalCapacity)&&!/^(?:President|National President)$/i.test(fn.trim());
 }
 function context(line,r,policy){
+ if(policy.unresolvedObject)return null;
  if(policy.global)return {id:'global',basis:policy.id==='tpnw'||policy.id==='ctbt'?'named_global_treaty':'named_international_policy'};
  const hits=text=>{let rows=CONTEXTS.filter(c=>c.pattern?.test(text));const family=['gaza','west_bank','israel_palestine'];if(policy.id==='two_state'&&rows.some(c=>family.includes(c.id)))rows=[...rows.filter(c=>!family.includes(c.id)),CONTEXTS.find(c=>c.id==='israel_palestine')];else if(rows.some(c=>['gaza','west_bank'].includes(c.id)))rows=rows.filter(c=>c.id!=='israel_palestine');return rows;};
  const places=[...line.matchAll(/\b(?:in|throughout|across|within)\s+(?:(?:the|occupied|northern|southern|eastern|western)\s+)*([A-Z][\p{L}'-]+(?:\s+[A-Z][\p{L}'-]+){0,3})/gu)];
@@ -155,10 +173,11 @@ const SELF_ALIASES={
  'Iran':['Islamic Republic of Iran'],'Viet Nam':['Vietnam'],'Palestine, State of':['State of Palestine','Palestine'],
  'Democratic Republic of the Congo':['DRC'],"Côte d'Ivoire":["Cote d'Ivoire"], 'Yemen':['Republic of Yemen']
 };
-function selfStatement(line,r){
+function selfStatement(line,r,rewriteBelief=true){
  let text=line.trim();
+ text=text.replace(/^It[’']s precisely in this context that /i,'');
  text=text.replace(/^Given (?!.*\b(?:said|says|reported|according to|claims?)\b)[^.!?;]{1,160}?,\s*/i,'');
- for(let i=0;i<2;i++)text=text.replace(/^(?:(?:Mr\.?|Madam|Mister) (?:Chair|Chairman|President)|Chair|Chairman|President|In (?:this|that) (?:regard|context)|In conclusion|In addition|At the outset|As I conclude|First of all|Despite these challenges|In closing|At the same time|With winter approaching|Therefore|Accordingly|On Gaza|On the UN80 initiative),\s*/i,'');
+ for(let i=0;i<2;i++)text=text.replace(/^(?:(?:Mr\.?|Madam|Mister) (?:Chair|Chairman|President)|Chair|Chairman|Chairwoman|President|In (?:this|that) (?:regard|context)|In conclusion|In its capacity as a member of the Executive Council|In addition|At the outset|As I conclude|First of all|Despite these challenges|In closing|At the same time|With winter approaching|Therefore|Accordingly|On Gaza|On the UN80 initiative),\s*/i,'');
  if(r&&national(r)){
   const esc=v=>v.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
   const names=[r.country,...(SELF_ALIASES[r.country]||[])].sort((a,b)=>b.length-a.length).map(esc).join('|');
@@ -178,26 +197,41 @@ function selfStatement(line,r){
  text=text.replace(/^we remains (?:fully|firmly|steadfastly|resolutely) committed to /i,'We remain committed to ');
  text=text.replace(/^we (?:(?:therefore|also|further|once again|strongly|fully|firmly|urgently)\s+){1,3}/i,'We ');
  text=text.replace(/^we (?:also )?(?:reaffirms?|reiterates?|renews?) (?:its|our|my) (?:(?:strong|firm|unwavering|steadfast|full|continued|unequivocal) )?(support for|opposition to|commitment to)\s+/i,(_,object)=>'We reaffirm our '+object+' ');
+ text=text.replace(/^we reaffirms that /i,'We reaffirm that ');
  text=text.replace(/^(?:let us recall that|we recall that|we reaffirm that)\s+/i,'');
+ text=text.replace(/^we reaffirms? that /i,'We reaffirm that ');
+ text=text.replace(/^we (?:reiterates?|reasserts?) (?:its|our) (?:staunch attachment|firm commitment) to /i,'We reaffirm our commitment to ');
+ text=text.replace(/^we (?:will consistently|will continue to) oppose /i,'We oppose ');
+ if(rewriteBelief)text=text.replace(/^we (?:believes?|believe) that it is of the utmost importance to move towards the conclusion of /i,'We call for the conclusion of ');
+ text=text.replace(/^we reiterates? (?:the|our) call for /i,'We call for ');
+ text=text.replace(/^we reiterate our condemnation of /i,'We oppose ');
+ text=text.replace(/^we (?:remain|remains) open to constructive debate on this agenda item and (?:is|are) committed to /i,'We are committed to ');
+ text=text.replace(/^we reiterate the need of moving towards /i,'We call for ');
  const verbs={'continues to':'continue to','will continue to':'continue to','supports':'support','opposes':'oppose','rejects':'reject','endorses':'endorse','welcomes':'welcome','calls for':'call for','calls on':'call on','calls upon':'call upon','urges':'urge','demands':'demand','advocates':'advocate','remains committed to':'remain committed to','remains strongly committed to':'remain committed to','is committed to':'are committed to'};
  return text.replace(/^we (continues to|will continue to|supports|opposes|rejects|endorses|welcomes|calls for|calls on|calls upon|urges|demands|advocates|remains strongly committed to|remains committed to|is committed to)\b/i,(_,verb)=>'We '+verbs[verb.toLowerCase()]);
 }
 function direction(line,policy,r){
- if(/\?/.test(line)||!policy.target.test(line)||policy.reject?.test(line)||(policy.required&&!policy.required.test(line))||!T.summaryEvidenceSentence(line)||T.unclearWording(line))return null;
- // Reported advocacy and quotations are not the speaker's own declaration.
- if(/\b(?:according to|said|says|stated|claims?|quoted|believes?|argues?|maintains?|asserts?|announced|the report|the resolution|the declaration)\b|[“”\"]/i.test(line))return null;
+ if(/\?/.test(line)||!policy.target.test(line)||policy.reject?.test(line)||(policy.required&&!policy.required.test(line))||(policy.requiredRecord&&!policy.requiredRecord.test((r?.text||line)+' '+(r?.meeting||'')))||!T.summaryEvidenceSentence(line)||T.unclearWording(line))return null;
+ // Only this bounded own normative belief is exempt from the reported-belief guard.
+ const ownBelief=/^we believes? that it is of the utmost importance to move towards the conclusion of /i.test(selfStatement(line,r,false));
+ const reportedText=ownBelief?line.replace(/\bbelieves?\b/i,''):line;
+ // Keep original quoted/reported wording even when self-normalization shortens a declaration.
+ if(/\b(?:according to|said|says|stated|claims?|quoted|believes?|argues?|maintains?|asserts?|announced|the report|the resolution|the declaration)\b|[“”\"]/i.test(reportedText))return null;
  const qualificationText=policy.qualifiersOutsideTarget?line.replace(policy.target,''):line;
  const qualified=/\b(?:if|unless|provided that|subject to|only|when|on condition|with the consent|consensus-based|complementarity between|as long as|cautious approach|with caution|circumspection|due process|fair trial|respect for sovereignty|would|could|might|temporary|conditional|unilateral|partial|limited|excluding|except|not all)\b/i.test(qualificationText);
- const uncertaintyText=policy.id==='nuclear_disarmament'?line.replace(/world without nuclear weapons/ig,''):line;
+ const uncertaintyText=policy.id==='nuclear_disarmament'?line.replace(/world without nuclear weapons/ig,''):qualificationText;
  const uncertainObject=/\bwithout\s+(?!(?:(?:further )?delay|restrictions?|obstruction)\b)/i.test(uncertaintyText);
  const states=[];
- for(let clause of line.replace(/\b(must|should), however, be\b/ig,'$1 be').split(/;|\b(?:but|however|although)\b|,\s*(?=(?:we|i|our delegation|my delegation)\b)/i)){
+ for(let clause of line.replace(/\b(must|should), however, be\b/ig,'$1 be').split(/;|\band\s+(?=we\s+(?:reiterate|reaffirm|call|support|remain))|\b(?:but|however|although)\b|,\s*(?=(?:we|i|our delegation|my delegation)\b)/i)){
   clause=clause.trim().replace(/^(?:in this (?:context|regard),\s*|(?:first|second|third),\s*)/i,'');
   clause=selfStatement(clause,r);
+  if(policy.supportDeclaration?.test(clause)){states.push('support');continue;}
+  if(policy.opposeDeclaration?.test(clause)){states.push('oppose');continue;}
+  if(policy.declarationOnly)continue;
   clause=clause.replace(/\ball countries, especially nuclear weapons states, to\b/ig,'states to');
   clause=clause.replace(/^we (reaffirm our support for|support) to /i,'We $1 ');
   clause=clause.replace(/\b(?:states|countries) (?:that|which|who) have not yet done so to\b/ig,'states to');
-  const action=/^(?:we|i|our delegation|my delegation|our government|my government)\s+(?:(?:strongly|fully|firmly|also|therefore|further|urgently|continue to)\s+){0,3}(must support|should support|must strengthen|should strengthen|must respect|should respect|must ensure|should ensure|must implement|should implement|must ratify|should ratify|must defend|should defend|reaffirm our opposition to|reiterate our opposition to|reaffirm our support for|reiterate our support for|reaffirm our commitment to|reiterate our commitment to|remain committed to|are committed to|do not support|cannot support|oppose|reject|object to|support|endorse|welcome|call for|call on|call upon|encourage|urge|demand|advocate|stress the need for|stress the need to)\b\s*([^!?]+)/i.exec(clause);
+  const action=/^(?:we|i|our delegation|my delegation|our government|my government)\s+(?:(?:strongly|fully|firmly|also|therefore|further|urgently|continue to)\s+){0,3}(must support|should support|must strengthen|should strengthen|must respect|should respect|must ensure|should ensure|must implement|should implement|must ratify|should ratify|must defend|should defend|reaffirm our opposition to|reiterate our opposition to|reaffirm our support for|reiterate our support for|reaffirm our commitment to|reiterate our commitment to|remain committed to|are committed to|do not support|cannot support|oppose|condemn|reject|object to|support|endorse|welcome|call for|call on|call upon|encourage|urge|demand|advocate|stress the need for|stress the need to)\b\s*([^!?]+)/i.exec(clause);
   if(action){
    const object=action[2],at=object.search(policy.target),prefix=object.slice(0,at),targetMatch=policy.target.exec(object);
    if(targetMatch&&policy.excludeSuffix?.test(object.slice(targetMatch.index+targetMatch[0].length)))continue;
@@ -205,7 +239,7 @@ function direction(line,policy,r){
    if(/\b(?:resetting|imbalance|transparency|accountability|contribution|agreement|head of|director of|representative of|report|resolution|declaration|statement|proposal|criticism|criticisms|critique|noncompliance|non-compliance|disregard|defiance|ignoring|evading|weakening|against|obstacles?|amendments?|reform|cuts?|reductions?|reducing|defunding|suspension|suspending|investigation|that|which|whether|who|because|while|sanctions?|attacks?|violence|obstruction|restrictions?|denial|obstruct(?:ing|ion)?|restrict(?:ing)?|imped(?:e|ing)|prevent(?:ing)?|block(?:ing)?|deny(?:ing)?|denying|withdraw(?:al|ing)?|violate|violat(?:ing|ions?)|rejection|rejecting|reject|opposing|oppose|opposition|abolition|cancellation|termination|military|intervention)\b/i.test(prefix))continue;
    if(/\b(?:no|not|without|rather than|instead of|neither|nor|lift|lifting|removal|ending)\b/i.test(prefix)&&!policy.cuba){states.push('qualified');continue;}
    if(/\band\s+(?:oppose|reject|support|do not support)\b/i.test(object.slice(at)))states.push('qualified');
-   else {const negative=/^(?:do not|cannot|oppose|reject|object|reaffirm our opposition|reiterate our opposition)/i.test(action[1]);states.push(negative&&prefix.replace(/\b(?:the|a|an)\b/ig,'').trim()?'qualified':negative?'oppose':'support');}
+   else {const negative=/^(?:do not|cannot|oppose|condemn|reject|object|reaffirm our opposition|reiterate our opposition)/i.test(action[1]);states.push(negative&&prefix.replace(/\b(?:the|a|an)\b/ig,'').trim()?'qualified':negative?'oppose':'support');}
   }else if(!policy.cuba){
    const at=clause.search(policy.target);if(at<0)continue;
    const before=clause.slice(0,at),after=clause.slice(at);
@@ -226,7 +260,7 @@ function evidence(records,p){
   if(P.unresolved(r)){withheld.unclear++;continue;}
   T.sentences(r.text).forEach((line,index)=>{
    const stance=direction(line,policy,r);if(!stance)return;
-   const c=context(line,r,policy);if(!c||!contextsFor(policy).includes(c.id)||(p.positionContext!=='*'&&c.id!==p.positionContext)){withheld.context++;return;}
+   const c=context(line,r,policy)||(!policy.global&&!policy.cuba?{id:'unspecified',basis:'context_unestablished_not_comparable'}:null);if(!c||!contextsFor(policy).includes(c.id)||(p.positionContext!=='*'&&c.id!==p.positionContext)){withheld.context++;return;}
    if(policy.cuba&&(c.id!=='cuba'||!/\bCuba(?:n)?\b/i.test(r.text)))return;
    const url=safe(r.source_url);if(!url)return;
    const key=[country(r),r.date,line.toLowerCase().replace(/\s+/g,' ')].join('|');if(seen.has(key))return;seen.add(key);
@@ -247,8 +281,8 @@ function build(records,baselineRecords,settings){
  for(const row of b.found){if(!usIndex.has(row.date))usIndex.set(row.date,[]);usIndex.get(row.date).push(row);}
  const daysFor=name=>dates.map(date=>{
   const own=ownIndex.get(name+'|'+date)||[],us=usIndex.get(date)||[],ownState=state(own),usState=state(us);
-  const comparable=['support','oppose'].includes(ownState)&&['support','oppose'].includes(usState);
-  const comparison=comparable?(ownState===usState?'same_direction':'opposite_direction'):ownState==='missing'&&usState==='missing'?'both_missing':ownState==='missing'?'country_missing':usState==='missing'?'us_missing':'qualified_or_mixed';
+  const comparable=p.positionContext!=='unspecified'&&['support','oppose'].includes(ownState)&&['support','oppose'].includes(usState);
+  const comparison=p.positionContext==='unspecified'?'context_unestablished':comparable?(ownState===usState?'same_direction':'opposite_direction'):ownState==='missing'&&usState==='missing'?'both_missing':ownState==='missing'?'country_missing':usState==='missing'?'us_missing':'qualified_or_mixed';
   return {date,country_state:ownState,us_state:usState,comparison,value:comparable?(ownState===usState?0:1):null,country_evidence:own,us_evidence:us};
  });
  const countries=names.map(name=>{const days=daysFor(name),withEvidence=days.filter(d=>d.country_evidence.length),latest=withEvidence.at(-1);return {country:name,days,latest:latest||null,comparable_days:days.filter(d=>d.value!==null).length,gap_days:days.filter(d=>d.value===null).length};});
