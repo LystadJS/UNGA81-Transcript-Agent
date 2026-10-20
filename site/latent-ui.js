@@ -14,7 +14,7 @@
   function invalidate(){ticket++;stop('Settings changed; active calculation cancelled.');current=null;archiveA=null;$('results').hidden=true;status('Settings changed. Run or reopen a saved comparison before exporting.');}
   function worker(data){
     stop();busy(true);
-    return new Promise((resolve,reject)=>{const w=new Worker('latent-worker.js?v=1.28.1');task={worker:w,reject};
+    return new Promise((resolve,reject)=>{const w=new Worker('latent-worker.js?v=1.29.0');task={worker:w,reject};
       const finish=()=>{w.terminate();if(task?.worker===w)task=null;busy(false);};
       w.onmessage=({data:d})=>{if(d.type==='progress'){status(d.message);return;}finish();if(d.type==='error')reject(Error(d.message));else resolve(d);};
       w.onerror=event=>{finish();reject(Error(event.message||'The comparison worker could not run.'));};w.postMessage(data);
