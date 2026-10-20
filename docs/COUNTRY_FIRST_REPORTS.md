@@ -1,0 +1,13 @@
+# Automatic country-first reports · 1.20.0
+
+Every meeting and collection report leads with a country-by-country overview and comparison with the U.S. No country, policy or context dropdown is required. The bounded catalogue is evaluated automatically across all supported contexts present in explicit evidence. Legacy single-question settings remain hidden and are preserved on save; they cannot restrict this overview.
+
+Country positions and comparison coverage are the main reporting units. Source segments remain evidence and coverage diagnostics, not a proxy for importance. Every country in the filtered records is listed, including those for which a national position cannot be established. Collective and institutional statements do not establish a speaker country's position.
+
+A comparison receives one equal-weight observation per policy question, context and calendar date. Repeated statements add no weight. Same-direction share is same-direction observations divided by all clear comparable observations; missing, qualified and conflicting evidence is excluded from that denominator and remains visible as gaps. This is a narrow expression comparison, not overall diplomatic alignment. Different countries have different coverage; percentages must be read alongside their denominators. No carry-forward or interpolation.
+
+Each country's brief overview shows its latest explicit expression on every identified question/context and matching comparison counts for the period. Expandable trajectories and daily tables include all dated expressions, including gaps and changes. Source links are retained in the overview, trajectories and tables. CSV exports all discovered question/context comparisons. Script-free HTML includes the complete report. Source originals, recording notes, exclusions, filters and grouped meetings retain their existing persistence format. Automatic results are recomputed from those sources after reopening.
+
+Catalogue coverage remains limited to humanitarian access, civilian protection, ceasefires, a two-state solution, TPNW, CTBT and lifting the Cuba embargo, within declared contexts. Unknown wording and other policy questions are not inferred. Source counts, lexical similarity and latent clusters do not establish positions or agreement.
+
+Validation: automatic multi-question synthetic support/opposition, missing countries, duplicate-invariant weighting and selector independence; browser tests for automatic country rows, trajectories, no dropdown requirement, complete exports, desktop/mobile layout and save/reopen. Retained 1,876-record collection replay preserved 25 meeting groups, three recording notes, three exclusions and all 55 saved controls. No reserved meetings opened and no external AI calls.

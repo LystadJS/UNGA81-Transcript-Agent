@@ -35,3 +35,13 @@ assert.equal(P.build(rows,rows.filter(x=>x.country!=='United States'),settings).
 assert.throws(()=>P.options({...settings,positionPolicy:'sentiment'}),/supported explicit/);assert.throws(()=>P.options({...settings,positionCountry:'United States'}),/other than/);assert.throws(()=>P.options({...settings,positionContext:'global'}),/valid context/);
 (async()=>{const corpus={schema:'un.browser.corpus.v1',collection:{start:settings.start,end:settings.end,scope:'all'},coverage:[],records:rows};const result=await A.analyze(corpus,{...settings,topic:'',phrases:[],exclude:[],scope:'all',region:'Africa',methods:['frequency']});assert.deepEqual(result.position_comparison.trajectory.map(d=>d.value),r.trajectory.map(d=>d.value));assert.equal(result.position_comparison.baseline_evidence_count,5);assert.equal(result.position_comparison.trajectory[0].country_evidence.length,1);assert.equal(result.position_comparison.trajectory[0].us_evidence.length,1);console.log('PASS explicit policy/context, national attribution, same-day U.S. baseline, region-independent reference, cross-country identical wording, no carry-forward, conditional/conflicting gaps, source evidence and categorical chart (synthetic only; heldout opened: 0)');})().catch(error=>{console.error(error);process.exitCode=1});
 module.exports={record,rows,settings};
+
+const autoRows=[...rows,record('Kenya',1,'We support a ceasefire in Gaza.'),record('United States',1,'We oppose a ceasefire in Gaza.'),record('France',1,'Conditions are difficult in Sudan.')];
+const auto=P.overview(autoRows,autoRows,settings),kenya=auto.countries.find(c=>c.country==='Kenya');
+assert.equal(auto.questions.length,2);assert.equal(kenya.comparable_question_dates,3);assert.equal(kenya.same_direction,1);assert.equal(kenya.opposite_direction,2);
+assert.equal(auto.countries.find(c=>c.country==='France').positions.length,0);
+assert.deepEqual(P.overview([...autoRows,...rows], [...autoRows,...rows],settings).countries,auto.countries);
+assert.deepEqual(P.overview(autoRows,autoRows,{...settings,positionCountry:'France',positionPolicy:'ctbt',positionContext:'global'}),auto);
+assert.ok(auto.countries.some(c=>c.country==='United States'));
+const autoHTML=V.renderOverview(auto);assert.match(autoHTML,/Brief position overview/);assert.match(autoHTML,/33% same direction/);assert.match(autoHTML,/France/);assert.ok(!autoHTML.includes('<select'));
+console.log('PASS automatic all-country/multi-question report; one question-date one weight; saved selectors do not restrict overview; explicit no-evidence country');
