@@ -72,7 +72,7 @@ const POLICIES=[
  {id:"migration_compact",label:"Global Compact for Migration",domain:"Migration and displacement",global:true,target:/\bGlobal Compact for (?:Safe,? Orderly and Regular )?Migration\b/i},
  {id:"refugees_compact",label:"Global Compact on Refugees",domain:"Migration and displacement",global:true,target:/\bGlobal Compact on Refugees\b/i},
  {id:"disability_rights",label:"Convention on the Rights of Persons with Disabilities",domain:"Human rights and inclusion",global:true,target:/\b(?:Convention on the Rights of Persons with Disabilities|CRPD)\b/i},
- {id:"un80",label:"UN80 Initiative",domain:"Institutions and digital governance",global:true,target:/\bUN80 Initiative\b/i},
+ {id:"un80",label:"UN80 Initiative",excludePrefix:/\b(?:group|leadership|office|pillar)\b/i,domain:"Institutions and digital governance",global:true,target:/\bUN80 Initiative\b/i},
  {id:"veto_restraint",label:"Restrain Security Council veto use in mass atrocities",domain:"Institutions and digital governance",global:true,target:/\b(?:restraint (?:on|in) (?:the )?(?:use of (?:the )?)?(?:Security Council )?veto in (?:cases of )?mass atrocities|veto restraint in (?:cases of )?mass atrocities)\b/i},
  {id:"african_permanent_seats",label:"Permanent African seats on the Security Council",domain:"Institutions and digital governance",global:true,target:/\b(?:permanent African seats on (?:the )?Security Council|permanent seats for Africa on (?:the )?Security Council)\b/i},
  {id:"icj",label:"International Court of Justice",domain:"Institutions and digital governance",global:true,target:/\bInternational Court of Justice\b/i},

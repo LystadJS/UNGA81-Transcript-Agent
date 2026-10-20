@@ -31,3 +31,5 @@ const cross=record('Kenya',1,'We support national elections in Libya. Sudan was 
 const text=record('Kenya',1,'We support economic growth. We oppose the 0.7 per cent ODA target.');assert.equal(P.evidence([text],{positionPolicy:'oda_target',positionContext:'global'}).found[0].stance,'oppose');
 assert.equal(P.direction('We support removal of Cuba from the U.S. list of state sponsors of terrorism.',get('cuba_terrorism_removal')),'support');
 console.log('PASS 50 comprehensive additions across eight areas: direction, qualification, wrong object, automatic report, gaps, context, group abstention and duplicate invariance; no general accuracy claim');
+
+assert.equal(P.direction('We support the working group created under the UN80 Initiative.',get('un80')),null);
