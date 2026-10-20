@@ -29,3 +29,5 @@ const group={...own,speaker_metadata:{group:'NAM'}};assert.equal(P.overview([gro
 const cases=Object.entries(examples).flatMap(([id,object])=>[record('Kenya',1,`We support ${object}.`),record('United States',1,`We oppose ${object}.`)]);
 const all=P.overview(cases,cases,settings),repeated=P.overview([...cases,...cases], [...cases,...cases],settings);assert.deepEqual(all.countries,repeated.countries);
 console.log('PASS 23 added policies: support, opposition, conditions, quotation/object abstention, automatic discovery, same-question comparison, country attribution and repetition-invariant weighting (synthetic only)');
+
+const wrongEmbargo=record('Kenya',1,'We call for lifting the blockade in Gaza. Cuba was also mentioned.');assert.doesNotThrow(()=>P.overview([wrongEmbargo],[wrongEmbargo],settings));assert.equal(P.overview([wrongEmbargo],[wrongEmbargo],settings).questions.some(q=>q.policy.id==='cuba_embargo'),false);
