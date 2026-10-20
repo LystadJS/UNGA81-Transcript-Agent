@@ -20,7 +20,7 @@
     ? require('./text-units.js') : root.UNTextUnits;
   const PassageLabels = typeof module !== 'undefined' && module.exports ? require('./passage-labels.js') : root.UNPassageLabels;
   const Positions = typeof module !== 'undefined' && module.exports ? require('./position-comparison.js') : root.UNPositions;
-  const VERSION = 'browser-descriptive-1.27.0';
+  const VERSION = 'browser-descriptive-1.28.0';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters', 'nmf'];
 
@@ -381,6 +381,7 @@
     const positionPool=positionEligible.filter(r=>p.mode==='all'||p.phrases.some(phrase=>hasPhrase(canonical(r.text),phrase))&&!p.exclude.some(phrase=>hasPhrase(canonical(r.text),phrase)));
     result.position_comparison=Positions.build(positionPool.filter(r=>p.region==='All regions'||r.region===p.region),positionPool,p);
     result.country_positions=Positions.overview(positionPool.filter(r=>p.region==='All regions'||r.region===p.region),positionPool,p);
+    result.nearby_comparisons=Positions.nearby(positionPool.filter(r=>p.region==='All regions'||r.region===p.region),positionPool,p,result.country_positions);
     result.passage_labels = PassageLabels.snapshot(matched);
     result.briefing = briefing(records, matched, duplicates, corpus, p);
     if(identity){

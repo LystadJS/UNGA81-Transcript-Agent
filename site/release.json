@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.27.0",
+  "browser_engine": "browser-descriptive-1.28.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-10-20",
   "features": [
+    "Automatic nearby-date comparisons: signed date differences, exact policy direction versus shared child-protection priorities, nearest-date ties, saved 0\u201314-day window, separate from same-day scores",
     "National implementation priorities, bounded adjacent renewable-energy targets and climate-finance appeals; qualified domestic commitments remain outside U.S. agreement scoring",
     "three-country source review: 125 questions, qualified recognition of specific OHCHR functions, human rights framing, and explicit AOSIS attribution without national inference",
     "source-reviewed country coverage across 123 questions; explicit positions with unspecified context remain visible and never establish U.S. agreement",

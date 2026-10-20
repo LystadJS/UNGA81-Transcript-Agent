@@ -98,7 +98,7 @@
       phrases: [el('topic').value.trim(), ...split(el('phrases').value)].filter(Boolean),
       exclude: split(el('excludePhrases').value),
       excludeUnresolved:el('excludeUnresolved').checked,
-      positionPolicy:el('positionPolicy').value,positionContext:el('positionContext').value,positionCountry:el('positionCountry').value,
+      nearbyDays:Number(el('nearbyDays').value),positionPolicy:el('positionPolicy').value,positionContext:el('positionContext').value,positionCountry:el('positionCountry').value,
       start: el('startDate').value,
       end: el('endDate').value,
       region: el('region').value,
@@ -118,7 +118,7 @@
 
 
   // Explicit paths bind only supported form fields; imported objects are never spread.
-  const filterBindings = {positionPolicy:'positionPolicy',positionContext:'positionContext',positionCountry:'positionCountry',excludeUnresolved:'excludeUnresolved',
+  const filterBindings = {nearbyDays:'nearbyDays',positionPolicy:'positionPolicy',positionContext:'positionContext',positionCountry:'positionCountry',excludeUnresolved:'excludeUnresolved',
     representation:'clustering.representation',clusterAlgorithm:'clustering.algorithm',clusterLinkage:'clustering.linkage',pcaComponents:'clustering.components',clusterCount:'clustering.k',umapNeighbors:'clustering.neighbors',umapDistance:'clustering.minDist',clusterSeed:'clustering.seed',umapSeed:'clustering.umapSeed',
     mdsEnabled:'clustering.mds.enabled',mdsStarts:'clustering.mds.starts',mdsIterations:'clustering.mds.maxIterations',mdsSeed:'clustering.mds.seed',hdbMinClusterSize:'clustering.hdbscan.minClusterSize',hdbMinSamples:'clustering.hdbscan.minSamples',hdbSelection:'clustering.hdbscan.selection',gmmCovariance:'clustering.gmm.covariance',gmmRegularization:'clustering.gmm.regularization',gmmStarts:'clustering.gmm.starts',gmmIterations:'clustering.gmm.maxIterations',gmmAmbiguity:'clustering.gmm.ambiguity',stabilityEnabled:'clustering.stability.enabled',stabilityUnit:'clustering.stability.unit',stabilityReplicates:'clustering.stability.replicates',stabilityFraction:'clustering.stability.fraction',stabilitySeed:'clustering.stability.seed',
     nmfComponents:'nmf.components',nmfStarts:'nmf.starts',nmfIterations:'nmf.maxIterations',nmfSeed:'nmf.seed',nmfStability:'nmf.stability.enabled',nmfUnit:'nmf.stability.unit',nmfReplicates:'nmf.stability.replicates'
@@ -391,6 +391,7 @@
     `;
 
     if(report.country_positions)html+=UNPositionView.renderOverview(report.country_positions);
+    if(report.nearby_comparisons)html+=UNPositionView.renderNearby(report.nearby_comparisons);
     if(report.quick_reader)html+=`<details><summary>Meeting context and descriptive source analysis</summary>${renderQuickReader(report.quick_reader)}</details>`;
     if(report.unresolved_exclusions?.enabled)html+=`<section aria-label="Unresolved passage exclusions"><h3>Unresolved passages excluded</h3><p>${report.unresolved_exclusions.records.length} whole source segments excluded from this report. Original records and recording notes remain in Save transcripts.</p><details><summary>Excluded sources</summary><ul>${report.unresolved_exclusions.records.map(r=>`<li>${esc(r.attribution.label)} · ${esc(r.record_id)}${r.recording_review?`<p>${esc(r.recording_review.note)}</p>`:''}${r.source_url?` · <a href="${esc(r.source_url)}" target="_blank" rel="noopener noreferrer">Source transcript</a>`:''}</li>`).join('')}</ul></details></section>`;
     if(report.source_briefing){const b=report.source_briefing;html+=`<section class="analysis-briefing" aria-label="Source-linked briefing"><h3>Source-linked briefing</h3><p>${esc(b.takeaway)}</p><ul>${b.items.map(item=>`<li><strong>${esc(UNPassageLabels.NAMES[item.label])} — ${esc(item.attribution.label)}</strong> · ${esc(item.date)}<p>${esc(item.excerpt)}</p><a href="${esc(item.source_url)}" target="_blank" rel="noopener noreferrer">Source transcript</a></li>`).join('')}</ul><p class="method-note">Selected source excerpts, not an exhaustive synthesis. ${esc(b.caveat)}</p></section>`;}
@@ -783,7 +784,7 @@
   el('nmfMethod').addEventListener('change',updateNMFControls);el('nmfStability').addEventListener('change',updateNMFControls);updateNMFControls();
   function runNMFWorker(records,vectors,options){
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.27.0');
+      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.28.0');
       const finish=(fn,v)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(v);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));signal.addEventListener('abort',abort,{once:true});
       worker.onerror=()=>finish(reject,Error('NMF worker could not run. Reload the page or check browser permissions.'));
@@ -794,7 +795,7 @@
 
   function runClusterWorker(records,vectors,options,progress) {
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.27.0');
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.28.0');
       const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
       signal.addEventListener('abort',abort,{once:true});
@@ -1025,6 +1026,14 @@
   };
   el('exportAudioLedger').onclick=()=>{
     if(audioLedger&&!stale)save(JSON.stringify(audioLedger,null,2),'audio-review-ledger.json','application/json');
+  };
+
+  el('exportNearby').onclick=()=>{
+    if(!result?.nearby_comparisons||stale)return;
+    const header=['country','policy_question','context','relationship','country_date','us_date','us_minus_country_days','country_expression','us_expression','qualification','country_source_ids','country_source_urls','us_source_ids','us_source_urls','contributes_to_same_day_score'];
+    const rows=[header,...result.nearby_comparisons.rows.map(r=>[r.country,r.policy.label,r.context.label,r.relationship,r.country_date,r.us_date,r.day_difference,r.country_state,r.us_state,r.qualification,r.country_evidence.map(e=>e.record_id).join(' | '),r.country_evidence.map(e=>e.source_url).join(' | '),r.us_evidence.map(e=>e.record_id).join(' | '),r.us_evidence.map(e=>e.source_url).join(' | '),false])];
+    const cell=v=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,"'$&").replace(/"/g,'""')+'"';
+    save('\uFEFF'+rows.map(r=>r.map(cell).join(',')).join('\r\n'),'un-nearby-date-comparisons.csv','text/csv;charset=utf-8');
   };
 
   el('exportPositions').onclick=()=>{
