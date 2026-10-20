@@ -104,7 +104,7 @@ function evidence(records,p){
   T.sentences(r.text).forEach((line,index)=>{
    const stance=direction(line,policy);if(!stance)return;
    const c=context(line,r,policy);if(!c||(p.positionContext!=='*'&&c.id!==p.positionContext)){withheld.context++;return;}
-   if(policy.cuba&&!/\bCuba(?:n)?\b/i.test(r.text))return;
+   if(policy.cuba&&(c.id!=='cuba'||!/\bCuba(?:n)?\b/i.test(r.text)))return;
    const url=safe(r.source_url);if(!url)return;
    const key=[country(r),r.date,line.toLowerCase().replace(/\s+/g,' ')].join('|');if(seen.has(key))return;seen.add(key);
    found.push({record_id:r.id,text_sha256:r.text_sha256,raw_sha256:r.raw_sha256||null,json_pointer:r.json_pointer||null,country:country(r),date:r.date,policy:policy.id,context:c.id,context_basis:c.basis,stance,excerpt:line,sentence_index:index,source_url:url,attribution:'Recorded country affiliation; automatic provisional expression, not a verified government position'});
