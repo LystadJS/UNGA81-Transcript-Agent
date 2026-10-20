@@ -783,7 +783,7 @@
   el('nmfMethod').addEventListener('change',updateNMFControls);el('nmfStability').addEventListener('change',updateNMFControls);updateNMFControls();
   function runNMFWorker(records,vectors,options){
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.25.0');
+      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.26.0');
       const finish=(fn,v)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(v);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));signal.addEventListener('abort',abort,{once:true});
       worker.onerror=()=>finish(reject,Error('NMF worker could not run. Reload the page or check browser permissions.'));
@@ -794,7 +794,7 @@
 
   function runClusterWorker(records,vectors,options,progress) {
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.25.0');
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.26.0');
       const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
       signal.addEventListener('abort',abort,{once:true});
@@ -1029,8 +1029,8 @@
 
   el('exportPositions').onclick=()=>{
     const comparisons=result?.country_positions?.questions||[result?.position_comparison].filter(Boolean);if(!comparisons.length||stale)return;
-    const headers=['policy_question','context','policy_area','date','recorded_country','country_expression','us_expression','comparison','country_source_ids','country_source_urls','us_source_ids','us_source_urls','status'];
-    const rows=[headers,...comparisons.flatMap(p=>p.countries.flatMap(c=>c.days.map(d=>[p.policy.label,p.context.label,p.policy.domain||'',d.date,c.country,d.country_state,d.us_state,d.comparison,d.country_evidence.map(x=>x.record_id).join(' | '),d.country_evidence.map(x=>x.source_url).join(' | '),d.us_evidence.map(x=>x.record_id).join(' | '),d.us_evidence.map(x=>x.source_url).join(' | '),p.status])))];
+    const headers=['policy_question','context','policy_area','date','recorded_country','country_expression','us_expression','comparison','country_source_ids','country_source_urls','us_source_ids','us_source_urls','status','country_qualification'];
+    const rows=[headers,...comparisons.flatMap(p=>p.countries.flatMap(c=>c.days.map(d=>[p.policy.label,p.context.label,p.policy.domain||'',d.date,c.country,d.country_state,d.us_state,d.comparison,d.country_evidence.map(x=>x.record_id).join(' | '),d.country_evidence.map(x=>x.source_url).join(' | '),d.us_evidence.map(x=>x.record_id).join(' | '),d.us_evidence.map(x=>x.source_url).join(' | '),p.status,[...new Set(d.country_evidence.map(x=>x.qualification).filter(Boolean))].join(' | ')])))];
     const cell=v=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,"'$&").replace(/"/g,'""')+'"';
     save('\uFEFF'+rows.map(r=>r.map(cell).join(',')).join('\r\n'),'un-country-position-comparison.csv','text/csv;charset=utf-8');
   };
