@@ -19,7 +19,8 @@
   const TextUnits = typeof module !== 'undefined' && module.exports
     ? require('./text-units.js') : root.UNTextUnits;
   const PassageLabels = typeof module !== 'undefined' && module.exports ? require('./passage-labels.js') : root.UNPassageLabels;
-  const VERSION = 'browser-descriptive-1.18.0';
+  const Positions = typeof module !== 'undefined' && module.exports ? require('./position-comparison.js') : root.UNPositions;
+  const VERSION = 'browser-descriptive-1.19.0';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters', 'nmf'];
 
@@ -95,7 +96,7 @@
     if(p.meeting_slug!==undefined && (typeof p.meeting_slug!=='string'||!/^[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+){1,5}$/.test(p.meeting_slug)||p.start!==p.end||p.meeting_date!==p.start)) throw Error('Individual meeting analysis requires one valid meeting ID and its exact date.');
     const clustering = p.methods.includes('clusters') ? ClusterOptions.options(p.clustering) : undefined;
     const nmf=p.methods.includes('nmf')?NMFOptions.options(p.nmf):undefined;
-    return { ...p, topic, mode, phrases, exclude, ...(p.methods.includes('clusters')?{clustering}:{}),...(nmf?{nmf}:{}) };
+    return { ...p, ...Positions.options(p), topic, mode, phrases, exclude, ...(p.methods.includes('clusters')?{clustering}:{}),...(nmf?{nmf}:{}) };
   }
 
 
@@ -373,6 +374,12 @@
     };
     result.unresolved_exclusions={enabled:!!p.excludeUnresolved,policy:'whole_source_segment',records:unresolvedExcluded.map(r=>({record_id:r.id,text_sha256:r.text_sha256,raw_sha256:r.raw_sha256||null,source_url:MeetingQuickReader.safeURL(r.source_url),reason:'unresolved_transcript_wording',recording_review:PassageLabels.classify(r).recording_review||null,attribution:PassageLabels.attribution(r)})),original_records_retained:true};
     result.source_briefing=PassageLabels.sourceBriefing(matched);
+    // Country positions use per-country/date/excerpt deduplication, not the
+    // report's cross-country exact-text deduplication. U.S. reference ignores
+    // only the speaker-region filter; all other source restrictions remain.
+    const positionEligible=corpus.records.filter(r=>r.language==='en'&&r.date>=p.start&&r.date<=p.end&&Scopes.matchesRecord(r,p.scope)&&(!p.meeting_slug||(r.meeting_slug||r.id.split('#')[0])===p.meeting_slug)&&(!selection||selection.selected.has(r.id))&&(!p.excludeUnresolved||!PassageLabels.unresolved(r)));
+    const positionPool=positionEligible.filter(r=>p.mode==='all'||p.phrases.some(phrase=>hasPhrase(canonical(r.text),phrase))&&!p.exclude.some(phrase=>hasPhrase(canonical(r.text),phrase)));
+    result.position_comparison=Positions.build(positionPool.filter(r=>p.region==='All regions'||r.region===p.region),positionPool,p);
     result.passage_labels = PassageLabels.snapshot(matched);
     result.briefing = briefing(records, matched, duplicates, corpus, p);
     if(identity){

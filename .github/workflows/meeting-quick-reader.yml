@@ -10,6 +10,10 @@ on:
       - 'tools/test_saved_filters_ui.cjs'
       - 'site/analysis-ui.js'
       - 'site/analysis-core.js'
+      - 'site/position-comparison.js'
+      - 'site/position-view.js'
+      - 'tools/test_position_comparison.cjs'
+      - 'tools/test_position_comparison_ui.cjs'
       - 'site/collector.js'
       - 'site/meeting-picker.js'
       - 'tools/test_browser_briefing.cjs'
@@ -35,6 +39,10 @@ on:
       - 'tools/test_saved_filters_ui.cjs'
       - 'site/analysis-ui.js'
       - 'site/analysis-core.js'
+      - 'site/position-comparison.js'
+      - 'site/position-view.js'
+      - 'tools/test_position_comparison.cjs'
+      - 'tools/test_position_comparison_ui.cjs'
       - 'site/collector.js'
       - 'site/meeting-picker.js'
       - 'tools/test_browser_briefing.cjs'
@@ -84,6 +92,7 @@ jobs:
           export PLAYWRIGHT_MODULE="$(python -c 'import pathlib, playwright; print(pathlib.Path(playwright.__file__).parent / "driver" / "package")')"
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_collection_recovery_ui.cjs site collection-recovery-browser
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_saved_filters_ui.cjs site saved-filters-browser
+          BROWSER_PATH="$(command -v google-chrome)" node tools/test_position_comparison_ui.cjs site position-comparison-browser
           CHROME_BINARY="$(command -v google-chrome)" python tools/test_meeting_quick_reader_ui.py quick-reader-browser
           node tools/preview_meeting_quick_reader.cjs quick-reader-synthetic.html
           CHROME_BINARY="$(command -v google-chrome)" python tools/test_meeting_quick_reader_static.py quick-reader-synthetic.html quick-reader-static
