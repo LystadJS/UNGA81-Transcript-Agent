@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.24.0",
+  "browser_engine": "browser-descriptive-1.25.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-10-20",
   "features": [
+    "source-reviewed country coverage across 123 questions; explicit positions with unspecified context remain visible and never establish U.S. agreement",
     "remaining-country source review: 107 automatic policy questions, bounded present declarations and qualified jurisdiction/deterrence positions",
     "source-reviewed country-bound self-declarations, direct policy obligations, shared Israeli-Palestinian two-state context and seven source-supported policy questions",
     "107 automatic policy questions across eight policy areas with regional context boundaries and visible area coverage",
@@ -76,10 +77,11 @@
     }
   },
   "position_catalogue": {
-    "questions": 107,
+    "questions": 123,
     "policy_areas": 8,
     "added_in_1_23_0": 7,
     "coverage": "bounded, source-linked explicit expressions; historical acts and third-party statements do not establish current national positions",
-    "added_in_1_24_0": 20
+    "added_in_1_24_0": 20,
+    "added_in_1_25_0": 16
   }
 }
