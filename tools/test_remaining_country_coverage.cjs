@@ -53,3 +53,6 @@ assert.equal(d('npt','We encourage all States Parties to the NPT to strengthen s
 const r=record('Syria',1,"Syria renews its support for Lebanon's independence, unity, and territorial integrity.");assert.equal(P.context(r.text,r,policy('lebanon_sovereignty')).id,'lebanon');
 assert.equal(P.context('We support a two-state solution in Cyprus.',r,policy('two_state')).id,'cyprus');
 console.log('PASS 20 source-supported questions, explicit-object boundaries, qualifications, same-question U.S. comparisons, no repetition weight or collective inference');
+
+assert.equal(P.context('On Gaza, Austria supports Resolution 2803.',record('Austria',1,''),policy('unsc_2803')).id,'gaza');
+assert.equal(d('international_crime_accountability','We support combating impunity for traffic violations.'),null);

@@ -141,7 +141,8 @@ function context(line,r,policy){
  const hits=text=>{let rows=CONTEXTS.filter(c=>c.pattern?.test(text));const family=['gaza','west_bank','israel_palestine'];if(policy.id==='two_state'&&rows.some(c=>family.includes(c.id)))rows=[...rows.filter(c=>!family.includes(c.id)),CONTEXTS.find(c=>c.id==='israel_palestine')];else if(rows.some(c=>['gaza','west_bank'].includes(c.id)))rows=rows.filter(c=>c.id!=='israel_palestine');return rows;};
  const places=[...line.matchAll(/\b(?:in|throughout|across|within)\s+(?:(?:the|occupied|northern|southern|eastern|western)\s+)*([A-Z][\p{L}'-]+(?:\s+[A-Z][\p{L}'-]+){0,3})/gu)];
  if(places.some(m=>!hits(m[1]).length))return null;
- const direct=hits(selfStatement(line,r));if(direct.length===1)return {id:direct[0].id,basis:'explicit_sentence'};if(direct.length>1)return null;
+ const placeIntro=/^(?:On|In|Throughout|Across|Within)\s+[^,]{1,70},/i.exec(line)?.[0]||'';
+ const direct=hits(placeIntro+' '+selfStatement(line,r));if(direct.length===1)return {id:direct[0].id,basis:'explicit_sentence'};if(direct.length>1)return null;
  const meeting=hits(r.meeting||''),segment=hits(r.text||'');
  if(segment.length>1){if(meeting.length===1&&meeting[0].id==='israel_palestine'&&segment.every(c=>['gaza','west_bank','israel_palestine'].includes(c.id)))return {id:'israel_palestine',basis:'recorded_meeting_scope_with_related_subcontexts'};return null;}
  if(segment.length===1)return meeting.some(c=>c.id===segment[0].id)?{id:segment[0].id,basis:'single_segment_context_matching_recorded_meeting_title'}:null;
