@@ -1,0 +1,13 @@
+# Three-country retained-source review · 1.26.0
+
+Georgia, Liechtenstein and Palau were reviewed against their four retained source records in the October 14–16 collection. This is assistant-provisional engineering review, not owner-confirmed annotation, a representative accuracy benchmark or a recall claim. Private source-bearing ledgers and reports remain unpublished, and the 37 reserved October 5–6 meetings remain unopened.
+
+Georgia explicitly recognizes the importance of OHCHR technical assistance, capacity building and reporting. The new bounded question retains this as qualified wording with a prominent explanation: recognition of institutional functions does not establish a funding or implementation commitment. It never establishes agreement with the U.S., even when a matching U.S. expression is available. This does not imply support for every aspect of the High Commissioner’s mandate or treat general concern about conditions as a policy demand.
+
+Liechtenstein’s national contribution calls for moving beyond negative framing of human rights as a partisan or luxury agenda. A separate question retains that stated communication approach. Its questions about institutional coordination and finance do not establish commitments on those matters. Its other retained statement is expressly collective and remains excluded from national comparison.
+
+Palau’s retained statement is expressly delivered for AOSIS. No separate Palauan national position is inferred from membership or the speaker’s registry affiliation. The country row now retains a source-linked attribution note naming the Alliance of Small Island States and explaining the absence of a national assignment. These notes are generated only from withheld source records; named AOSIS attribution requires an explicit opening in the source.
+
+The catalogue contains 125 questions. Country evidence keeps the new qualification alongside the original source text and hashes. The overview, detailed source view, script-free HTML and country CSV expose the qualification. The country JSON retains the collective-attribution source note. Original records, labels, grouped meetings, recording notes, exclusions and controls retain existing persistence; country results regenerate locally on reopening.
+
+Synthetic regressions check direct assessments and requests, qualified comparison gaps even with matching U.S. wording, quoted/reported/question/courtesy abstention, collective attribution, equal weighting, exports and browser save/reopen. The private full-collection replay separately checks preserved source records and regenerated results. No external AI calls or changes to analytical publication gates.

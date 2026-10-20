@@ -23,7 +23,7 @@ const cases=[
  ['lebanon_sovereignty',"Lebanon's independence, unity, and territorial integrity",'lebanon'],
  ['iran_iaea_cooperation','Iran to cooperate fully with the IAEA','iran']
 ];
-assert.equal(P.POLICIES.length,123);assert.equal(new Set(P.POLICIES.map(p=>p.id)).size,123);
+assert.equal(P.POLICIES.length,125);assert.equal(new Set(P.POLICIES.map(p=>p.id)).size,125);
 for(const [id,obj,ctx] of cases){const policy=P.POLICIES.find(p=>p.id===id),r=record('Armenia',1,'We support '+obj+'.'),us=record('United States',1,'We oppose '+obj+'.');
  assert.equal(P.direction(r.text,policy,r),'support',id);assert.equal(P.direction(us.text,policy,us),'oppose',id);
  assert.equal(P.direction('We support a report on '+obj+'.',policy,r),null,id+' wrong object');

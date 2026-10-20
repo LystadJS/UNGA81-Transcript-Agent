@@ -1,3 +1,4 @@
+require('./test_three_country_review.cjs');
 require('./test_final_country_coverage.cjs');
 require('./test_remaining_country_coverage.cjs');
 require('./test_source_reviewed_positions.cjs');
