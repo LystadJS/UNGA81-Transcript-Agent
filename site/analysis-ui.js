@@ -390,6 +390,7 @@
         <p class="method-note">Prepared ${esc(report.created_at.slice(0, 10))} · English transcripts</p>
     `;
 
+    if(report.country_positions&&report.nearby_comparisons)html+='<nav aria-label="Report sections"><a href="#countryPositionOverview">Country positions</a> · <a href="#nearbyComparisons">Nearby-date comparisons</a></nav>';
     if(report.country_positions)html+=UNPositionView.renderOverview(report.country_positions);
     if(report.nearby_comparisons)html+=UNPositionView.renderNearby(report.nearby_comparisons);
     if(report.quick_reader)html+=`<details><summary>Meeting context and descriptive source analysis</summary>${renderQuickReader(report.quick_reader)}</details>`;
