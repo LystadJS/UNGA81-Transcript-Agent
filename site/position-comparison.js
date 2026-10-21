@@ -217,6 +217,15 @@ function selfStatement(line,r,rewriteBelief=true){
  const verbs={'continues to':'continue to','will continue to':'continue to','supports':'support','opposes':'oppose','rejects':'reject','endorses':'endorse','welcomes':'welcome','calls for':'call for','calls on':'call on','calls upon':'call upon','urges':'urge','demands':'demand','advocates':'advocate','remains committed to':'remain committed to','remains strongly committed to':'remain committed to','is committed to':'are committed to'};
  return text.replace(/^we (continues to|will continue to|supports|opposes|rejects|endorses|welcomes|calls for|calls on|calls upon|urges|demands|advocates|remains strongly committed to|remains committed to|is committed to)\b/i,(_,verb)=>'We '+verbs[verb.toLowerCase()]);
 }
+// Bounded own endorsements with explicit safeguards are qualified support, not opposition.
+const UJ_QUALIFICATION='Supports universal jurisdiction within agreed limits and sovereignty safeguards, or a state-agreed normative basis. This is qualified support, not unrestricted endorsement; it is not scored against the U.S.';
+function qualifiedSupport(line,policy,r){
+ if(policy.id!=='universal_jurisdiction')return false;
+ const own=selfStatement(line,r);
+ return /^we (?:remain|are) committed to ending impunity\b[^.!?]{0,100}\bthrough universal jurisdiction\b[^.!?]{0,120}\bwithin agreed limits\b[^.!?]{0,100}\brespect for (?:the )?sovereignty of states\.?$/i.test(own)||
+  /^we support (?:the )?[^.!?]{0,50}\bgroup in seeking a common normative basis for (?:the exercise of )?universal jurisdiction\b[^.!?]{0,180}\bdeveloped by states\b[^.!?]{0,80}\badopted by consensus\.?$/i.test(own);
+}
+function qualifiedSupportRows(rows){return rows.length>0&&rows.some(e=>e.stance==='qualified')&&rows.every(e=>e.stance==='support'||(e.stance==='qualified'&&e.qualified_direction==='support'));}
 function direction(line,policy,r,previousLine){
  if(policy.adjacentDeclaration?.test(line)&&national(r)&&policy.precedingDeclaration.test(selfStatement(previousLine||'',r)))return 'qualified';
  if(/\?/.test(line)||!policy.target.test(line)||policy.reject?.test(line)||(policy.required&&!policy.required.test(line))||(policy.requiredRecord&&!policy.requiredRecord.test((r?.text||line)+' '+(r?.meeting||'')))||!T.summaryEvidenceSentence(line)||T.unclearWording(line))return null;
@@ -225,6 +234,7 @@ function direction(line,policy,r,previousLine){
  const reportedText=ownBelief?line.replace(/\bbelieves?\b/i,''):line;
  // Keep original quoted/reported wording even when self-normalization shortens a declaration.
  if(/\b(?:according to|said|says|stated|claims?|quoted|believes?|argues?|maintains?|asserts?|announced|the report|the resolution|the declaration)\b|[“”\"]/i.test(reportedText))return null;
+ if(qualifiedSupport(line,policy,r))return 'qualified';
  const qualificationText=policy.qualifiersOutsideTarget?line.replace(policy.target,''):line;
  const qualified=/\b(?:if|unless|provided that|subject to|only|when|on condition|with the consent|consensus-based|complementarity between|as long as|cautious approach|with caution|circumspection|due process|fair trial|respect for sovereignty|would|could|might|temporary|conditional|unilateral|partial|limited|excluding|except|not all)\b/i.test(qualificationText);
  const uncertaintyText=policy.id==='nuclear_disarmament'?line.replace(/world without nuclear weapons/ig,''):qualificationText;
@@ -275,12 +285,12 @@ function evidence(records,p){
    if(policy.cuba&&(c.id!=='cuba'||!/\bCuba(?:n)?\b/i.test(r.text)))return;
    const url=safe(r.source_url);if(!url)return;
    const key=[country(r),r.date,line.toLowerCase().replace(/\s+/g,' ')].join('|');if(seen.has(key))return;seen.add(key);
-   found.push({record_id:r.id,text_sha256:r.text_sha256,raw_sha256:r.raw_sha256||null,json_pointer:r.json_pointer||null,country:country(r),date:r.date,policy:policy.id,context:c.id,context_basis:c.basis,stance,...(stance==='qualified'&&(policy.qualifiedDeclaration?.test(selfStatement(line,r))||adjacent)?{qualification:policy.qualification}:{}),excerpt:adjacent?sentences[index-1]+' '+line:line,sentence_index:index,...(adjacent?{sentence_indices:[index-1,index]}:{}),source_url:url,attribution:'Recorded country affiliation; automatic provisional expression, not a verified government position'});
+   found.push({record_id:r.id,text_sha256:r.text_sha256,raw_sha256:r.raw_sha256||null,json_pointer:r.json_pointer||null,country:country(r),date:r.date,policy:policy.id,context:c.id,context_basis:c.basis,stance,...(stance==='qualified'&&qualifiedSupport(line,policy,r)?{qualified_direction:'support',qualification:UJ_QUALIFICATION}:stance==='qualified'&&(policy.qualifiedDeclaration?.test(selfStatement(line,r))||adjacent)?{qualification:policy.qualification}:{}),excerpt:adjacent?sentences[index-1]+' '+line:line,sentence_index:index,...(adjacent?{sentence_indices:[index-1,index]}:{}),source_url:url,attribution:'Recorded country affiliation; automatic provisional expression, not a verified government position'});
   });
  }
  return {found,withheld};
 }
-function state(rows){const dirs=new Set(rows.map(x=>x.stance));if(!rows.length)return 'missing';if(dirs.size===1)return [...dirs][0];return 'mixed';}
+function state(rows){const dirs=new Set(rows.map(x=>x.stance));if(!rows.length)return 'missing';if(dirs.size===1)return [...dirs][0];if(qualifiedSupportRows(rows))return 'qualified';return 'mixed';}
 function build(records,baselineRecords,settings){
  const p={...settings,...options(settings)},policy=POLICIES.find(x=>x.id===p.positionPolicy),a=evidence(records,p),b=evidence(baselineRecords.filter(r=>isUS(r.country)),p);
  const withheldRecords=records.filter(r=>policy.target.test(r.text||'')&&(!national(r)||P.unresolved(r))).map(r=>({record_id:r.id,source_url:safe(r.source_url),attribution:P.attribution(r),reason:!national(r)?'not_an_unambiguous_national_statement':'unresolved_wording'}));
@@ -413,7 +423,7 @@ function documents(review,records){
 function briefings(overviewResult,nearbyResult,documentaryResult){
  const refs=rows=>[...new Map(rows.filter(x=>safe(x.source_url)).map(x=>[x.record_id,{record_id:x.record_id,source_url:safe(x.source_url),text_sha256:x.text_sha256}])).values()];
  const countries=overviewResult.countries.filter(c=>!isUS(c.country)).map(c=>{
-  const positions=c.positions.map(p=>{const d=p.days.filter(d=>d.country_evidence.length).at(-1);return {policy:p.policy,context:p.context,date:d.date,state:d.country_state,qualifications:[...new Set(d.country_evidence.map(e=>e.qualification).filter(Boolean))],sources:refs(d.country_evidence)};});
+  const positions=c.positions.map(p=>{const d=p.days.filter(d=>d.country_evidence.length).at(-1);return {policy:p.policy,context:p.context,date:d.date,state:d.country_state,...(d.country_state==='qualified'&&qualifiedSupportRows(d.country_evidence)?{qualified_direction:'support'}:{}),qualifications:[...new Set(d.country_evidence.map(e=>e.qualification).filter(Boolean))],sources:refs(d.country_evidence)};});
   const nearby=(nearbyResult?.rows||[]).filter(r=>r.country===c.country).map(r=>({policy:r.policy,context:r.context,relationship:r.relationship,country_date:r.country_date,us_date:r.us_date,day_difference:r.day_difference,qualification:r.qualification,country_sources:refs(r.country_evidence),us_sources:refs(r.us_evidence)}));
   const documents=(documentaryResult?.rows||[]).filter(r=>r.country===c.country);
   const gaps=c.positions.filter(p=>!p.same&&!p.opposite).map(p=>({policy:p.policy,context:p.context,reason:p.context.id==='domestic'?'Different national implementation contexts; no exact cross-country measure is established.':p.context.id==='unspecified'?'Policy context is not established.':'Matching explicit, unqualified evidence on the same date is not established. Qualified expressions and shared priorities do not close this gap.'}));
