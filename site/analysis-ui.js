@@ -391,6 +391,8 @@
     `;
 
     if(report.country_positions&&report.nearby_comparisons)html+='<nav aria-label="Report sections"><a href="#countryPositionOverview">Country positions</a> · <a href="#nearbyComparisons">Nearby-date comparisons</a></nav>';
+    if(report.country_briefings)html+='<p><a href="#countryBriefings">Country–U.S. briefings</a></p>';
+    if(report.country_briefings)html+=UNPositionView.renderBriefings(report.country_briefings);
     if(report.documentary_comparisons)html+='<p><a href="#documentaryComparisons">Official documents — separate evidence</a></p>';
     if(report.country_positions)html+=UNPositionView.renderOverview(report.country_positions);
     if(report.nearby_comparisons)html+=UNPositionView.renderNearby(report.nearby_comparisons);
@@ -787,7 +789,7 @@
   el('nmfMethod').addEventListener('change',updateNMFControls);el('nmfStability').addEventListener('change',updateNMFControls);updateNMFControls();
   function runNMFWorker(records,vectors,options){
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.30.0');
+      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.31.0');
       const finish=(fn,v)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(v);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));signal.addEventListener('abort',abort,{once:true});
       worker.onerror=()=>finish(reject,Error('NMF worker could not run. Reload the page or check browser permissions.'));
@@ -798,7 +800,7 @@
 
   function runClusterWorker(records,vectors,options,progress) {
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.30.0');
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.31.0');
       const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
       signal.addEventListener('abort',abort,{once:true});
@@ -1065,6 +1067,14 @@
 
     save(csv, result.parameters.mode === 'all' ? 'un-all-passages.csv' : 'un-matched-segments.csv',
       'text/csv;charset=utf-8');
+  };
+
+  el('exportBriefings').onclick=async()=>{
+    if(!result||stale)return;
+    try{
+      const response=await fetch('analysis.css');if(!response.ok)throw Error('Styles unavailable');const css=await response.text();
+      save(`<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'"><title>Country–U.S. briefings</title><style>body{font:16px/1.5 Arial,sans-serif;max-width:1100px;margin:auto;padding:28px}${css}</style><h1>Country–U.S. briefings</h1>${UNPositionView.renderBriefings(result.country_briefings)}</html>`,'un-country-briefings.html','text/html');
+    }catch(error){status('Could not export briefings: '+error.message);}
   };
 
   el('exportHTML').onclick = async () => {
