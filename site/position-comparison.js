@@ -390,5 +390,24 @@ function nearby(records,baselineRecords,settings,overviewResult){
  return {schema:'un.nearby-date-comparisons.v1',status:'automatic_provisional_not_human_reviewed',window_days:window,offset_definition:'U.S. date minus country date: positive means the U.S. statement is later; negative means earlier.',selection:'Nearest eligible different-date U.S. evidence within the saved window; equally near dates are both shown. Report dates, scope, topic, exclusions and national-attribution rules still apply.',same_day_score_unchanged:true,priority_coverage:coverage,rows,shared_priority_findings:rows.filter(r=>r.relationship==='shared_priority_only').length,same_policy_findings:rows.filter(r=>r.relationship!=='shared_priority_only').length,limitations:['Cross-date direction is not an as-of estimate: the U.S. position may change between statements. No statement is backdated, carried forward or interpolated.','Same policy question means the same declared question and context, not full policy identity or overall diplomatic agreement. Qualified, conflicting, domestic and unspecified-context positions cannot establish an exact-policy direction comparison.','Shared-priority coverage includes bounded declarations and expressed commitments on child protection, climate finance, Convention against Torture accession, national human-rights institutions and renewable energy. Topic mentions alone do not establish priorities.','Only retained sources are compared. Missing evidence is not neutrality, disagreement or proof that no statement exists elsewhere. Imported review notes never create evidence.'],external_ai_calls:0};
 }
 
-const api={nearby,POLICIES,CONTEXTS,contextsFor,US,isUS,options,national,context,selfStatement,direction,evidence,build,overview};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UNPositions=api;
+// Imported documentary review is context only, never automatic position evidence.
+function documents(review,records){
+ if(!review)return null;
+ const out={schema:'un.documentary-policy-comparisons.v1',status:'imported_assistant_review_not_independently_verified',rows:[],withheld:0,contributes_to_scores:false};
+ if(review.schema!=='un.documentary-policy-review.v1'||!Array.isArray(review.entries)||review.entries.length>50){out.withheld=1;return out;}
+ const validDate=v=>typeof v==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v)&&Number.isFinite(Date.parse(v))&&new Date(v).toISOString().slice(0,10)===v;
+ const official=v=>{try{const u=new URL(v);return u.protocol==='https:'&&!u.username&&!u.password&&!u.port&&(u.hostname.endsWith('.gov')||['docstore.ohchr.org','digitallibrary.un.org','docs.un.org','treaties.un.org'].includes(u.hostname))?u.href:null;}catch{return null;}};
+ const text=v=>typeof v==='string'&&v.length>0&&v.length<=3000;
+ const seen=new Set();
+ for(const row of review.entries){
+  const doc=row?.document,ref=row?.reference;
+  const source=ref&&/^[a-f0-9]{64}$/i.test(ref.text_sha256||'')&&records.find(r=>r.id===ref.record_id&&r.text_sha256===ref.text_sha256&&r.country===row.country&&r.date===ref.date&&national(r)&&!P.unresolved(r));
+  if(!doc||!source||!safe(source.source_url)||!validDate(doc.date)||!validDate(ref.date)||!validDate(row.reviewed_on)||doc.date>row.reviewed_on||!official(doc.url)||!['policy_area','country_summary','document_summary','comparison','qualification','relationship'].every(k=>text(row[k]))||!['title','issuer','date_basis','section','historical_status'].every(k=>text(doc[k]))||!text(row.id)||seen.has(row.id)) {out.withheld++;continue;}
+  seen.add(row.id);
+  out.rows.push({id:row.id,country:source.country,policy_area:row.policy_area,country_date:source.date,country_summary:row.country_summary,reference:{record_id:source.id,text_sha256:source.text_sha256,source_url:safe(source.source_url)},document:{title:doc.title,issuer:doc.issuer,url:official(doc.url),date:doc.date,date_basis:doc.date_basis,section:doc.section,historical_status:doc.historical_status,...(validDate(doc.publication_date)?{publication_date:doc.publication_date}:{})},document_summary:row.document_summary,relationship:row.relationship,comparison:row.comparison,qualification:row.qualification,reviewed_on:row.reviewed_on,day_difference:Math.round((Date.parse(doc.date)-Date.parse(source.date))/86400000),evidence_kind:'official_document_review_not_UN_meeting_statement',contributes_to_scores:false});
+ }
+ return out;
+}
+
+const api={documents,nearby,POLICIES,CONTEXTS,contextsFor,US,isUS,options,national,context,selfStatement,direction,evidence,build,overview};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UNPositions=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
