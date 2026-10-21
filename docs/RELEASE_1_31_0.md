@@ -1,0 +1,7 @@
+# Browser release 1.31.0
+
+Every report now includes concise country–U.S. briefings, generated from the existing source-bound position overview, nearby comparisons and validated documentary review. No country selector is required. Countries with documentary context are expanded automatically. Separate sections distinguish UN statements, shared-priority-only findings, dated same-question direction comparisons, historical/dated official documents and current evidence gaps. Statements are summarized once per policy/context at the latest expressed date; repetition adds no weight and nothing is carried forward.
+
+A Country briefings (.html) export provides a standalone script-free copy. Full HTML and analysis JSON exports retain the briefings; collection save/reopen recomputes them from unchanged source records, documentary notes and saved filters. Documentary context remains outside transcript statistics, trajectories and agreement scores. The briefing introduces no new stance evidence or score.
+
+Validation: synthetic source categories, same-day versus nearby distinction, signed dates, historical/current gaps, collective attribution abstention, repetition invariance and escaping; browser save/reopen with identical results and four documentary entries; standalone and full script-free HTML; desktop/mobile layout; prior position and analysis regressions. Private source reviews remain outside the public repository. Reserved meetings and publication gates are unchanged.

@@ -21,6 +21,7 @@ on:
       - 'tools/test_palau_national_positions.cjs'
       - 'tools/test_nearby_comparisons.cjs'
       - 'tools/test_documentary_comparisons.cjs'
+      - 'tools/test_country_briefings.cjs'
       - 'tools/test_comprehensive_policy_coverage.cjs'
       - 'tools/comprehensive_policy_cases.json'
       - 'tools/test_position_comparison_ui.cjs'
@@ -60,6 +61,7 @@ on:
       - 'tools/test_palau_national_positions.cjs'
       - 'tools/test_nearby_comparisons.cjs'
       - 'tools/test_documentary_comparisons.cjs'
+      - 'tools/test_country_briefings.cjs'
       - 'tools/test_comprehensive_policy_coverage.cjs'
       - 'tools/comprehensive_policy_cases.json'
       - 'tools/test_position_comparison_ui.cjs'
@@ -102,6 +104,7 @@ jobs:
           node tools/test_palau_national_positions.cjs
           node tools/test_nearby_comparisons.cjs
           node tools/test_documentary_comparisons.cjs
+          node tools/test_country_briefings.cjs
           node tools/test_browser_analysis.cjs
           node tools/test_browser_briefing.cjs
           node tools/test_text_units.cjs

@@ -409,5 +409,21 @@ function documents(review,records){
  return out;
 }
 
-const api={documents,nearby,POLICIES,CONTEXTS,contextsFor,US,isUS,options,national,context,selfStatement,direction,evidence,build,overview};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UNPositions=api;
+// A briefing reorganizes established evidence; it never creates a new stance or score.
+function briefings(overviewResult,nearbyResult,documentaryResult){
+ const refs=rows=>[...new Map(rows.filter(x=>safe(x.source_url)).map(x=>[x.record_id,{record_id:x.record_id,source_url:safe(x.source_url),text_sha256:x.text_sha256}])).values()];
+ const countries=overviewResult.countries.filter(c=>!isUS(c.country)).map(c=>{
+  const positions=c.positions.map(p=>{const d=p.days.filter(d=>d.country_evidence.length).at(-1);return {policy:p.policy,context:p.context,date:d.date,state:d.country_state,qualifications:[...new Set(d.country_evidence.map(e=>e.qualification).filter(Boolean))],sources:refs(d.country_evidence)};});
+  const nearby=(nearbyResult?.rows||[]).filter(r=>r.country===c.country).map(r=>({policy:r.policy,context:r.context,relationship:r.relationship,country_date:r.country_date,us_date:r.us_date,day_difference:r.day_difference,qualification:r.qualification,country_sources:refs(r.country_evidence),us_sources:refs(r.us_evidence)}));
+  const documents=(documentaryResult?.rows||[]).filter(r=>r.country===c.country);
+  const gaps=c.positions.filter(p=>!p.same&&!p.opposite).map(p=>({policy:p.policy,context:p.context,reason:p.context.id==='domestic'?'Different national implementation contexts; no exact cross-country measure is established.':p.context.id==='unspecified'?'Policy context is not established.':'Matching explicit, unqualified evidence on the same date is not established. Qualified expressions and shared priorities do not close this gap.'}));
+  const shared=nearby.filter(r=>r.relationship==='shared_priority_only').length;
+  const takeaway=positions.length?`${c.country} has source-supported expressions on ${positions.length} policy/context item${positions.length===1?'':'s'}. ${shared?`${shared} shared-priority finding${shared===1?'':'s'} with the U.S. ${shared===1?'is':'are'} supported on nearby dates; this does not establish exact policy agreement.`:'No nearby shared priority is established by these rules in this selection.'}${documents.length?' Official documents supply separate dated context.':''}`:'No usable explicit national position is established by these rules in this selection. This is an evidence gap, not neutrality.';
+  return {country:c.country,takeaway,un_positions:positions,un_nearby:nearby,official_documents:documents,same_day:{comparable_question_dates:c.comparable_question_dates,same_direction:c.same_direction,opposite_direction:c.opposite_direction},gaps,attribution_gap:positions.length?null:c.coverage_reason,not_scored:true};
+ });
+ countries.sort((a,b)=>Number(b.official_documents.length>0)-Number(a.official_documents.length>0)||a.country.localeCompare(b.country));
+ return {schema:'un.country-comparison-briefings.v1',status:'source_bound_automatic_summary_with_imported_provisional_documentary_notes',start:overviewResult.start,end:overviewResult.end,nearby_window_days:nearbyResult?.window_days||0,countries,limitations:['UN transcript wording and recorded national affiliations remain provisional; collective or unresolved material cannot establish a national position.','Official documents are imported review notes, not UN meeting statements, current legal-effect certifications or additional position evidence. Dates are not carried forward.','Current gaps mean gaps in this selected evidence. They do not establish neutrality, opposition, or absence of policy elsewhere.','One policy/context item is summarized once at its latest expressed date. Repeated source passages add no weight; other dated evidence remains in the full report.'],external_ai_calls:0,contributes_new_scores:false};
+}
+
+const api={briefings,documents,nearby,POLICIES,CONTEXTS,contextsFor,US,isUS,options,national,context,selfStatement,direction,evidence,build,overview};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UNPositions=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
