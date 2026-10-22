@@ -401,6 +401,15 @@ function nearby(records,baselineRecords,settings,overviewResult){
 }
 
 // Imported documentary review is context only, never automatic position evidence.
+function documentKind(url){
+ try{
+  const u=new URL(url),h=u.hostname.toLowerCase(),p=u.pathname.toLowerCase();
+  if(h==='www.congress.gov'||h==='congress.gov')return /^\/crs(?:_|-|\/)/.test(p)?'congressional_analysis':'other_official';
+  if((h==='www.govinfo.gov'||h==='govinfo.gov')&&/^\/content\/pkg\/plaw-/.test(p))return 'enacted_law';
+  if(['whitehouse.gov','state.gov','usda.gov','defense.gov','fws.gov','doi.gov','justice.gov','usaid.gov'].some(d=>h===d||h.endsWith('.'+d))||['bidenwhitehouse.archives.gov','obamawhitehouse.archives.gov','trumpwhitehouse.archives.gov','2021-2025.state.gov','2009-2017.state.gov'].includes(h))return 'executive_policy';
+ }catch{}
+ return 'other_official';
+}
 function documents(review,records){
  if(!review)return null;
  const out={schema:'un.documentary-policy-comparisons.v1',status:'imported_assistant_review_not_independently_verified',rows:[],withheld:0,contributes_to_scores:false};
@@ -414,7 +423,7 @@ function documents(review,records){
   const source=ref&&/^[a-f0-9]{64}$/i.test(ref.text_sha256||'')&&records.find(r=>r.id===ref.record_id&&r.text_sha256===ref.text_sha256&&r.country===row.country&&r.date===ref.date&&national(r)&&!P.unresolved(r));
   if(!doc||!source||!safe(source.source_url)||!validDate(doc.date)||!validDate(ref.date)||!validDate(row.reviewed_on)||doc.date>row.reviewed_on||!official(doc.url)||!['policy_area','country_summary','document_summary','comparison','qualification','relationship'].every(k=>text(row[k]))||!['title','issuer','date_basis','section','historical_status'].every(k=>text(doc[k]))||!text(row.id)||seen.has(row.id)) {out.withheld++;continue;}
   seen.add(row.id);
-  out.rows.push({id:row.id,country:source.country,policy_area:row.policy_area,country_date:source.date,country_summary:row.country_summary,reference:{record_id:source.id,text_sha256:source.text_sha256,source_url:safe(source.source_url)},document:{title:doc.title,issuer:doc.issuer,url:official(doc.url),date:doc.date,date_basis:doc.date_basis,section:doc.section,historical_status:doc.historical_status,...(validDate(doc.publication_date)?{publication_date:doc.publication_date}:{})},document_summary:row.document_summary,relationship:row.relationship,comparison:row.comparison,qualification:row.qualification,reviewed_on:row.reviewed_on,day_difference:Math.round((Date.parse(doc.date)-Date.parse(source.date))/86400000),evidence_kind:'official_document_review_not_UN_meeting_statement',contributes_to_scores:false});
+  out.rows.push({id:row.id,country:source.country,policy_area:row.policy_area,country_date:source.date,country_summary:row.country_summary,reference:{record_id:source.id,text_sha256:source.text_sha256,source_url:safe(source.source_url)},document:{title:doc.title,issuer:doc.issuer,url:official(doc.url),date:doc.date,date_basis:doc.date_basis,section:doc.section,historical_status:doc.historical_status,...(validDate(doc.publication_date)?{publication_date:doc.publication_date}:{})},document_summary:row.document_summary,relationship:row.relationship,comparison:row.comparison,qualification:row.qualification,reviewed_on:row.reviewed_on,day_difference:Math.round((Date.parse(doc.date)-Date.parse(source.date))/86400000),evidence_source_kind:documentKind(doc.url),evidence_kind:'official_document_review_not_UN_meeting_statement',contributes_to_scores:false});
  }
  return out;
 }
@@ -435,5 +444,5 @@ function briefings(overviewResult,nearbyResult,documentaryResult){
  return {schema:'un.country-comparison-briefings.v1',status:'source_bound_automatic_summary_with_imported_provisional_documentary_notes',start:overviewResult.start,end:overviewResult.end,nearby_window_days:nearbyResult?.window_days||0,countries,limitations:['UN transcript wording and recorded national affiliations remain provisional; collective or unresolved material cannot establish a national position.','Official documents are imported review notes, not UN meeting statements, current legal-effect certifications or additional position evidence. Dates are not carried forward.','Current gaps mean gaps in this selected evidence. They do not establish neutrality, opposition, or absence of policy elsewhere.','One policy/context item is summarized once at its latest expressed date. Repeated source passages add no weight; other dated evidence remains in the full report.'],external_ai_calls:0,contributes_new_scores:false};
 }
 
-const api={briefings,documents,nearby,POLICIES,CONTEXTS,contextsFor,US,isUS,options,national,context,selfStatement,direction,evidence,build,overview};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UNPositions=api;
+const api={briefings,documents,documentKind,nearby,POLICIES,CONTEXTS,contextsFor,US,isUS,options,national,context,selfStatement,direction,evidence,build,overview};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UNPositions=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
