@@ -392,6 +392,7 @@
 
     if(report.country_positions&&report.nearby_comparisons)html+='<nav aria-label="Report sections"><a href="#countryPositionOverview">Country positions</a> · <a href="#nearbyComparisons">Nearby-date comparisons</a></nav>';
     if(report.country_briefings)html+='<p><a href="#countryBriefings">Country–U.S. briefings</a></p>';
+    if(report.humanitarian_issue)html+=UNIssueView.render(report.humanitarian_issue);
     if(report.country_briefings)html+=UNPositionView.renderBriefings(report.country_briefings);
     if(report.documentary_comparisons)html+='<p><a href="#documentaryComparisons">Official documents — separate evidence</a></p>';
     if(report.country_positions)html+=UNPositionView.renderOverview(report.country_positions);
@@ -789,7 +790,7 @@
   el('nmfMethod').addEventListener('change',updateNMFControls);el('nmfStability').addEventListener('change',updateNMFControls);updateNMFControls();
   function runNMFWorker(records,vectors,options){
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.32.0');
+      const signal=controller.signal,worker=new Worker('nmf-worker.js?v=1.33.0');
       const finish=(fn,v)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(v);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));signal.addEventListener('abort',abort,{once:true});
       worker.onerror=()=>finish(reject,Error('NMF worker could not run. Reload the page or check browser permissions.'));
@@ -800,7 +801,7 @@
 
   function runClusterWorker(records,vectors,options,progress) {
     return new Promise((resolve,reject)=>{
-      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.32.0');
+      const signal=controller.signal,worker=new Worker('cluster-worker.js?v=1.33.0');
       const finish=(fn,value)=>{worker.terminate();signal.removeEventListener('abort',abort);fn(value);};
       const abort=()=>finish(reject,new DOMException('Cancelled','AbortError'));
       signal.addEventListener('abort',abort,{once:true});

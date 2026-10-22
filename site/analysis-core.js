@@ -20,7 +20,8 @@
     ? require('./text-units.js') : root.UNTextUnits;
   const PassageLabels = typeof module !== 'undefined' && module.exports ? require('./passage-labels.js') : root.UNPassageLabels;
   const Positions = typeof module !== 'undefined' && module.exports ? require('./position-comparison.js') : root.UNPositions;
-  const VERSION = 'browser-descriptive-1.32.0';
+  const IssueWorkflow = typeof module !== 'undefined' && module.exports ? require('./issue-workflow.js') : root.UNIssueWorkflow;
+  const VERSION = 'browser-descriptive-1.33.0';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters', 'nmf'];
 
@@ -384,6 +385,12 @@
     result.nearby_comparisons=Positions.nearby(positionPool.filter(r=>p.region==='All regions'||r.region===p.region),positionPool,p,result.country_positions);
     result.documentary_comparisons=Positions.documents(corpus.collection?.documentary_policy_review,positionPool.filter(r=>p.region==='All regions'||r.region===p.region));
     result.country_briefings=Positions.briefings(result.country_positions,result.nearby_comparisons,result.documentary_comparisons);
+    if(corpus.collection?.humanitarian_issue){
+      const saved=corpus.collection.humanitarian_issue;
+      if(saved.schema!=='un.humanitarian-issue-settings.v1')throw Error('Unsupported issue workflow version.');
+      if(saved.history)validateCorpus(saved.history);
+      result.humanitarian_issue=IssueWorkflow.build(corpus,saved.history,{...saved.settings,start:p.start,end:p.end,scope:p.scope,region:p.region,excludeUnresolved:p.excludeUnresolved});
+    }
     result.passage_labels = PassageLabels.snapshot(matched);
     result.briefing = briefing(records, matched, duplicates, corpus, p);
     if(identity){
