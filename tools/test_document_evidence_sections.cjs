@@ -1,0 +1,12 @@
+const assert=require('node:assert/strict'),P=require('../site/position-comparison'),V=require('../site/position-view');
+const cases=[['https://bidenwhitehouse.archives.gov/strategy.pdf','executive_policy'],['https://2021-2025.state.gov/report/','executive_policy'],['https://www.usda.gov/announcement','executive_policy'],['https://www.congress.gov/crs_external_products/RL/PDF/RL1/RL1.pdf','congressional_analysis'],['https://www.congress.gov/crs-product/R1','congressional_analysis'],['https://www.govinfo.gov/content/pkg/PLAW-119publ75/html/law.htm','enacted_law'],['https://www.govinfo.gov/content/pkg/CHRG-1/report.htm','other_official'],['https://docstore.ohchr.org/report','other_official'],['https://state.gov.example.gov/report','other_official'],['https://www.congress.gov/bill/1','other_official']];
+for(const [url,kind] of cases)assert.equal(P.documentKind(url),kind,url);
+const rows=cases.filter((_,i)=>[0,3,5,7].includes(i)).map(([url,kind],i)=>({country:'Example',policy_area:'Area '+i,document:{url,title:'Document '+i,date:'2024-09-18',issuer:'Issuer',date_basis:'Release date',section:'Page 8',historical_status:'Previous-administration historical evidence'},reference:{source_url:'https://transcripts.un.org/en/example'},country_date:'2026-10-14',day_difference:-756,relationship:'Shared priority only',comparison:'No current agreement established',qualification:'Current executive gap remains',document_summary:'Source finding',evidence_source_kind:kind}));
+const html=V.renderDocuments({rows,withheld:0});
+for(const [kind,title] of [['executive_policy','Executive policy'],['congressional_analysis','Congressional analysis'],['enacted_law','Enacted U.S. law'],['other_official','Other official evidence']]){
+ const section=html.split('data-evidence-kind="'+kind+'"')[1].split('</section>')[0];assert.ok(section.includes(title));
+ const own=rows.find(x=>x.evidence_source_kind===kind);assert.ok(section.includes(own.document.title));for(const other of rows.filter(x=>x!==own))assert.ok(!section.includes(other.document.title));
+ assert.ok(section.includes('Previous-administration historical evidence'));assert.ok(section.includes('Current executive gap remains'));assert.ok(section.includes('-756 days'));assert.ok(!section.split('<details>')[0].includes('hidden'));
+}
+assert.equal(P.documentKind('https://www.congress.gov/crs-product/R1'),'congressional_analysis');
+console.log('PASS evidence provenance categories, unknown-source abstention, category isolation, historical status and visible current gaps');

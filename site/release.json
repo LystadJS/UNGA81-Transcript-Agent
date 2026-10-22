@@ -1,11 +1,12 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.31.1",
+  "browser_engine": "browser-descriptive-1.32.0",
   "comparison_engine": "latent-comparison-1.1.0",
-  "date": "2026-10-20",
+  "date": "2026-10-22",
   "features": [
+    "Country briefings and documentary exports separate executive policy, congressional analysis, enacted U.S. law and other official evidence; historical status and current gaps remain visible",
     "Qualified universal-jurisdiction support distinguished from conflicting positions without adding agreement scores",
-    "Automatic source-linked country–U.S. briefings separating UN statements, shared priorities, historical/dated official documents and current gaps; standalone script-free briefing export",
+    "Automatic source-linked country\u2013U.S. briefings separating UN statements, shared priorities, historical/dated official documents and current gaps; standalone script-free briefing export",
     "Separate source-bound documentary policy reviews: historical dates, official document links, saved review notes, no contribution to UN statement statistics or agreement scores",
     "Automatic nearby-date comparisons: signed date differences, exact policy direction versus shared child-protection, climate-finance, UNCAT-accession, human-rights-institution and renewable-energy priorities, nearest-date ties, saved 0\u201314-day window, separate from same-day scores",
     "National implementation priorities, bounded adjacent renewable-energy targets and climate-finance appeals; qualified domestic commitments remain outside U.S. agreement scoring",
