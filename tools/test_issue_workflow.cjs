@@ -13,6 +13,7 @@ assert.equal(a.questions.find(q=>q.policy.id==='civilian_protection'&&q.context.
 const repeat=I.build({...corpus,records:[...corpus.records,{...corpus.records[0],id:'duplicate-source'}]},history,settings);assert.deepEqual(repeat.questions,a.questions);assert.equal(JSON.stringify({corpus,history}),original);
 assert.ok(a.countries.includes('Malta'));assert.equal(a.model.status,'withheld_not_fitted');assert.ok(a.summary.years_with_sources<a.summary.calendar_years);
 const conflict=I.build(corpus,{...history,records:[{...corpus.records[0],text:oppose,text_sha256:sha(oppose)}]},settings);assert.ok(conflict.conflicting_source_ids.includes(corpus.records[0].id));
+const metadataConflict=I.build(corpus,{...history,records:[{...corpus.records[0],country:'Malta'}]},settings);assert.ok(metadataConflict.conflicting_source_ids.includes(corpus.records[0].id));
 assert.throws(()=>I.build(corpus,history,{...settings,as_of:'2026-02-30'}));assert.throws(()=>I.build(corpus,history,{...settings,end:'2027-01-01'}));
 assert.equal(I.bounds('2024-02-29').start,'2014-03-01');
 assert.equal(I.build(corpus,history,{...settings,start:'2026-10-02'}).window.start,a.window.start,'briefing dates do not truncate history');

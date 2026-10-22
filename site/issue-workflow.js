@@ -13,7 +13,7 @@ function build(corpus,history,settings){
  if(!S.isValid(settings.scope||'all'))throw Error('Invalid issue meeting scope.');
  const scope=settings.scope||'all',region=settings.region||'All regions',exclude=settings.excludeUnresolved!==false;
  // Primary and historical collections stay intact. This union removes only exact source identities.
- const union=new Map(),hashes=new Map(),conflictIds=new Set();for(const r of [...(history?.records||[]),...corpus.records]){const key=r.id+'|'+r.text_sha256;if(union.has(key))continue;if(hashes.has(r.id)&&hashes.get(r.id)!==r.text_sha256)conflictIds.add(r.id);hashes.set(r.id,r.text_sha256);union.set(key,r);}
+ const union=new Map(),identities=new Map(),conflictIds=new Set();for(const r of [...(history?.records||[]),...corpus.records]){const key=r.id+'|'+r.text_sha256,identity=JSON.stringify([r.text_sha256,r.date,r.country,r.region,r.language,r.scope,r.meeting_slug||null,r.meeting,r.source_url,r.attribution?.country_status||null,r.speaker_metadata?.function||null,r.speaker_metadata?.group||null]);if(identities.has(r.id)&&identities.get(r.id)!==identity)conflictIds.add(r.id);identities.set(r.id,identity);if(union.has(key))continue;union.set(key,r);}
  const all=[...union.values()];
  const eligible=all.filter(r=>!conflictIds.has(r.id)&&r.language==='en'&&r.date>=window.start&&r.date<=window.end&&S.matchesRecord(r,scope)&&(!exclude||!L.unresolved(r)));
  const names=[...new Set(all.filter(r=>r.date>=window.start&&r.date<=window.end&&r.country&&r.attribution?.country_status==='registry_mapped'&&S.matchesRecord(r,scope)&&(region==='All regions'||r.region===region||P.isUS(r.country))).map(r=>P.isUS(r.country)?P.US:r.country))].sort();
