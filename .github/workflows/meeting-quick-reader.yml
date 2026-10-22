@@ -9,6 +9,8 @@ on:
       - 'tools/test_object_expressions.cjs'
       - 'tools/test_saved_filters_ui.cjs'
       - 'site/analysis-ui.js'
+      - 'site/issue*'
+      - 'tools/test_issue_workflow*'
       - 'site/analysis-core.js'
       - 'site/position-comparison.js'
       - 'site/position-view.js'
@@ -50,6 +52,8 @@ on:
       - 'tools/test_object_expressions.cjs'
       - 'tools/test_saved_filters_ui.cjs'
       - 'site/analysis-ui.js'
+      - 'site/issue*'
+      - 'tools/test_issue_workflow*'
       - 'site/analysis-core.js'
       - 'site/position-comparison.js'
       - 'site/position-view.js'
@@ -122,6 +126,7 @@ jobs:
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_collection_recovery_ui.cjs site collection-recovery-browser
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_saved_filters_ui.cjs site saved-filters-browser
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_position_comparison_ui.cjs site position-comparison-browser
+          BROWSER_PATH="$(command -v google-chrome)" node tools/test_issue_workflow_ui.cjs site issue-browser
           CHROME_BINARY="$(command -v google-chrome)" python tools/test_meeting_quick_reader_ui.py quick-reader-browser
           node tools/preview_meeting_quick_reader.cjs quick-reader-synthetic.html
           CHROME_BINARY="$(command -v google-chrome)" python tools/test_meeting_quick_reader_static.py quick-reader-synthetic.html quick-reader-static
@@ -130,6 +135,7 @@ jobs:
         with:
           name: meeting-quick-reader-synthetic-browser
           path: |
+            issue-browser/
             collection-recovery-browser/
             saved-filters-browser/
             quick-reader-browser/

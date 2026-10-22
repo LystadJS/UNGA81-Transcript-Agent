@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.32.0",
+  "browser_engine": "browser-descriptive-1.33.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-10-22",
   "features": [
+    "Ten-year humanitarian access/civilian protection workflow: independent historical as-of date, current country-position statistics, coverage heatmap, U.S. history, automatic observed country trajectories, source-bound historical import and saved replay; fitted models withheld",
     "Country briefings and documentary exports separate executive policy, congressional analysis, enacted U.S. law and other official evidence; historical status and current gaps remain visible",
     "Qualified universal-jurisdiction support distinguished from conflicting positions without adding agreement scores",
     "Automatic source-linked country\u2013U.S. briefings separating UN statements, shared priorities, historical/dated official documents and current gaps; standalone script-free briefing export",

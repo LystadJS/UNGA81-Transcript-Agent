@@ -10,8 +10,9 @@
     <link href="theme.css" rel="stylesheet">
     <link href="app.css" rel="stylesheet">
     <script defer src="app.js"></script>
-    <link href="analysis.css?v=1.32.0" rel="stylesheet">
-    <script defer src="meeting-scopes.js?v=1.32.0"></script>
+    <link href="analysis.css?v=1.33.0" rel="stylesheet">
+    <link href="issue.css?v=1.33.0" rel="stylesheet">
+    <script defer src="meeting-scopes.js?v=1.33.0"></script>
     <script defer src="mds-core.js?v=1.12.1"></script>
     <script defer src="mds-view.js?v=1.12.1"></script>
     <script defer src="gmm-core.js?v=1.12.1"></script>
@@ -21,21 +22,23 @@
     <script defer src="passage-selection.js?v=1.12.1"></script>
     <script defer src="passage-pilot-core.js?v=1.12.1"></script>
     <script defer src="reviewed-units.js?v=1.12.1"></script>
-    <script defer src="text-units.js?v=1.32.0"></script>
-    <script defer src="meeting-quick-reader.js?v=1.32.0"></script>
-    <script defer src="passage-labels.js?v=1.32.0"></script>
-    <script defer src="position-comparison.js?v=1.32.0"></script>
-    <script defer src="position-view.js?v=1.32.0"></script>
-    <script defer src="analysis-core.js?v=1.32.0"></script>
+    <script defer src="text-units.js?v=1.33.0"></script>
+    <script defer src="meeting-quick-reader.js?v=1.33.0"></script>
+    <script defer src="passage-labels.js?v=1.33.0"></script>
+    <script defer src="position-comparison.js?v=1.33.0"></script>
+    <script defer src="position-view.js?v=1.33.0"></script>
+    <script defer src="issue-workflow.js?v=1.33.0"></script>
+    <script defer src="issue-view.js?v=1.33.0"></script>
+    <script defer src="analysis-core.js?v=1.33.0"></script>
     <script defer src="nmf-view.js?v=1.12.1"></script>
-    <script defer src="collector.js?v=1.32.0"></script>
+    <script defer src="collector.js?v=1.33.0"></script>
     <script defer src="stability-view.js?v=1.12.1"></script>
     <script defer src="comparison-view.js?v=1.12.1"></script>
     <script defer src="hierarchy-view.js?v=1.12.1"></script>
     <script defer src="cluster-view.js?v=1.12.1"></script>
     <script defer src="meeting-picker-core.js?v=1.12.1"></script>
     <script defer src="meeting-picker.js?v=1.12.1"></script>
-    <script defer src="analysis-ui.js?v=1.32.0"></script>
+    <script defer src="analysis-ui.js?v=1.33.0"></script>
   </head>
 
   <body>
@@ -63,6 +66,7 @@
     <nav aria-label="Main">
       <a href="/un/">← UN Projects</a>
       <a href="#analyze">Build a report</a>
+      <a href="issue.html">Ten-year humanitarian issue report</a>
       <a href="latent.html">Compare latent structure</a>
       <a href="research.html">Research methods (experimental)</a>
       <a href="#review">Review passages</a>
@@ -79,6 +83,7 @@
       </section>
 
       <section class="visualization-routes" aria-label="Choose a visualization">
+        <a href="issue.html"><strong>Ten-year humanitarian issue workflow</strong><span>Country opinion statistics, source coverage and automatic country–U.S. histories, independent of the briefing dates.</span></a>
         <a href="#analyze"><strong>Country positions in every report</strong><span>Compare an explicit policy question with the U.S. baseline. Missing evidence stays visible.</span></a>
         <a href="#visualizationMethods"><strong>Volume, timing and language</strong><span>Explore dates, passage lengths, terms and textual similarity in the report.</span></a>
         <a href="latent.html"><strong>Latent language patterns</strong><span>Compare PCA, LSA and NMF, then inspect the source passages. These patterns do not establish political agreement.</span></a>

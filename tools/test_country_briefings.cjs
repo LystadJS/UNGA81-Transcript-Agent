@@ -13,3 +13,5 @@ const duplicateRows=[...rows,own];const duplicateOverview=P.overview(duplicateRo
 console.log('PASS country briefings: automatic countries, separate UN/doc evidence, shared-priority labels, dated sources, historical/current gaps, collective abstention, repetition invariance, unchanged scores and escaped output (synthetic only)');
 
 require('./test_document_evidence_sections.cjs');
+
+require('./test_issue_workflow.cjs');
