@@ -1,0 +1,23 @@
+name: Historical issue store checks
+on:
+  pull_request:
+    paths:
+      - 'research/issue_history/**'
+      - '.github/workflows/issue-history-checks.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-store-and-refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate synthetic store, ingestion and refresh contracts
+        run: |
+          python -m unittest research.issue_history.store.test_store research.issue_history.ingest.test_ingest research.issue_history.refresh.test_refresh research.issue_history.benchmark.test_review research.issue_history.benchmark.test_assessment -v

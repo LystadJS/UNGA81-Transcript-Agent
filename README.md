@@ -124,3 +124,7 @@ English transcript tracks may include interpretation or automatic transcription.
 The browser release is recorded in [`site/release.json`](site/release.json) (**1.14.0** at this revision); the saved-run comparison engine is **1.1.0**. For reproducible local checks, start with [`REPRODUCE.md`](REPRODUCE.md). Historical acceptance records are labeled by their original run and should not be mistaken for a new full-system test.
 
 <sub>Public reports are analytical aids. Verify quotations, transcription, speaker attribution, coverage, and conclusions against the linked UN records before citing or circulating findings.</sub>
+
+## Historical issue infrastructure (1.34.0)
+
+The [implementation ledger](docs/implementation-agenda/STATUS.md) records progress toward the three-input, ten-year issue workflow. The new `issue-archive.html` workspace consumes verified, versioned historical bundles and saves frozen reports. The public archive is not provisioned; use the existing saved-collection issue page while source acquisition and empirical assessment remain incomplete. Maintainer store/ingestion modules use Python standard libraries; end users need only a browser. Experimental model code is not a calibrated production trajectory.
