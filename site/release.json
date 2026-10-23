@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.33.1",
+  "browser_engine": "browser-descriptive-1.34.0",
   "comparison_engine": "latent-comparison-1.1.0",
-  "date": "2026-10-22",
+  "date": "2026-10-23",
   "features": [
+    "Historical issue infrastructure: versioned maintainer store, source-free bundles, verified browser cache, country-first archive report, reproducible saved results; archive not provisioned and fitted models unavailable",
     "Ten-year humanitarian access/civilian protection workflow: independent historical as-of date, current country-position statistics, coverage heatmap, U.S. history, automatic observed country trajectories, source-bound historical import and saved replay; fitted models withheld",
     "Country briefings and documentary exports separate executive policy, congressional analysis, enacted U.S. law and other official evidence; historical status and current gaps remain visible",
     "Qualified universal-jurisdiction support distinguished from conflicting positions without adding agreement scores",
@@ -93,5 +94,12 @@
     "added_in_1_25_0": 16,
     "added_in_1_26_0": 2,
     "added_in_1_27_0": 3
+  },
+  "issue_archive": {
+    "status": "not_provisioned",
+    "entry": "issue-archive.html",
+    "model_status": "observed_only",
+    "remote_source_formats": "unverified",
+    "empirical_acceptance": "not_run"
   }
 }
