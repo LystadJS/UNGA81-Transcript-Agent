@@ -21,3 +21,6 @@ const html=V.render(a);for(const s of ['Current opinion climate','U.S. reference
 console.log('PASS ten-year independent window, current source selection, country denominators, exact context/date comparisons, missingness, no fabricated models, duplication invariance, source conflicts and source-linked visual report');
 const A=require('../site/analysis-core');
 (async()=>{const saved={...corpus,collection:{humanitarian_issue:{schema:'un.humanitarian-issue-settings.v1',settings,history}}};const p={start:settings.start,end:settings.end,scope:'all',region:'All regions',topic:'',phrases:[],exclude:[],excludeUnresolved:true,methods:['frequency']};const result=await A.analyze(saved,p);assert.deepEqual(result.humanitarian_issue,a);const baseline=await A.analyze(corpus,p);assert.deepEqual(result.counts,baseline.counts);console.log('PASS saved issue workflow automatically integrates into the main report without importing historical sources into current transcript statistics');})().catch(e=>{console.error(e);process.exitCode=1});
+
+const countryChart=html.match(/<svg[^>]*aria-label="Kenya observed direction[\s\S]*?<\/svg>/)[0];
+assert.ok(!countryChart.includes('>2017</text>'), 'partial first-year and January ticks must not overlap');
