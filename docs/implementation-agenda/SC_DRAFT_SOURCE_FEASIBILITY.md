@@ -1,5 +1,7 @@
 # Security Council draft-vote source: bounded discovery
 
+This discovery record is superseded by [the 24 October source acceptance](SC_DRAFT_SOURCE_ACCEPTANCE.md): the normal official catalog download was acquired, verified and imported privately. The original discovery and its then-open gates remain below for provenance.
+
 The [official Security Council voting-records page](https://main.un.org/securitycouncil/en/content/voting-records-1992) describes a separate dataset covering draft resolutions from January 1992 onward, including member votes, outcomes, agenda items and meeting records. It links to the [Peace and Security Data Hub DPPA-SCVOTES catalog](https://psdata.un.org/dataset/DPPA-SCVOTES). The official page describes agenda-based topic categories as informational; those categories are not source-validated humanitarian policy bindings.
 
 The catalog returned a JavaScript application shell. A usable download endpoint, actual header/schema and record-level completeness have not yet been verified. This discovery does not establish that a full ten-year rejected/vetoed-draft archive has been acquired, and no adapter or policy bindings were created.

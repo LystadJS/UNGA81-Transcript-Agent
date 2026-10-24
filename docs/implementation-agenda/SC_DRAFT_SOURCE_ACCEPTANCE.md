@@ -16,7 +16,9 @@ The update date recorded by the source is 23 October 2026.
 
 The frozen window is 24 October 2016 through 23 October 2026. It contains 581
 events, 8713 catalog member entries and two separately sourced nonparticipation
-notes. The outcome distribution is:
+notes. Imported event dates run from 31 October 2016 through 20 October 2026;
+these endpoints describe this source, not verified absence outside them. The
+outcome distribution is:
 
 | Exact source outcome | Events |
 |---|---:|
