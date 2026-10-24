@@ -1,0 +1,9 @@
+# Source-linked issue summary acceptance
+
+The archive report now includes a frozen `un.issue-summary.v1` object, produced by `country-issue-summary-1` from already materialized, source-bound national expressions. It explains the supported humanitarian policy object, groups named countries by their latest current expression, retains conditions, and links the country and U.S. evidence for each exact-date comparison. The latest U.S. expression is separately identified. Earlier historical evidence and current gaps remain distinct.
+
+This deterministic summary does not infer proposals from topic mentions, descriptions of conditions, collective statements, votes or official documents. Its scope is the supported humanitarian access and civilian protection objects, rather than an unrestricted narrative of all meeting content. Qualified positions without recorded conditions are visibly marked. Matching direction does not establish exact policy agreement. No fitted trajectory or complete historical archive is implied.
+
+Different conditions in the same source are preserved without increasing a country's weight. Summary construction is independent of input order, source repetition and country selection. Source URLs, context and method provenance remain bound to accepted report observations. Frozen reports retain the summary, its version, filters, exclusions and results; reopening an older report does not regenerate a new summary.
+
+Local Node summary, report, client, adversarial and model checks passed. Two actual-browser acceptance suites now require visible source-linked summaries and exact saving/reopening; script-free HTML must retain them. Browser CI and published acceptance are pending. The separate BROWSER_PERFORMANCE.md describes the fictional ten-year workload and host-specific budgets; these engineering tests establish no empirical policy accuracy or production archive completeness.
