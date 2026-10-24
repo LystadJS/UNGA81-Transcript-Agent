@@ -10,6 +10,7 @@ import os
 from pathlib import Path
 import sqlite3
 import tempfile
+from contextlib import contextmanager
 
 
 def canonical_bytes(value):
@@ -32,11 +33,29 @@ class IssueStore:
     def __init__(self, path):
         self.db = sqlite3.connect(path)
         self.db.row_factory = sqlite3.Row
+        self._write_depth = 0
         self.db.execute("PRAGMA foreign_keys=ON")
         self.migrate()
 
     def close(self):
         self.db.close()
+
+    @contextmanager
+    def transaction(self):
+        """Batch idempotent writes atomically without per-record disk commits."""
+        if self._write_depth:
+            self._write_depth += 1
+            try:
+                yield
+            finally:
+                self._write_depth -= 1
+        else:
+            self._write_depth = 1
+            try:
+                with self.db:
+                    yield
+            finally:
+                self._write_depth = 0
 
     def backup(self, destination):
         """Create a consistent rollback copy before a future schema upgrade."""
@@ -96,7 +115,7 @@ class IssueStore:
         payload.pop("revision", None)
         revision = hashlib.sha256(canonical_bytes(payload)).hexdigest()
         payload["revision"] = revision
-        with self.db:
+        with self.transaction():
             previous = self.db.execute("SELECT revision FROM sources WHERE id=?", (source["id"],)).fetchone()
             self.db.execute("INSERT OR IGNORE INTO source_revisions VALUES(?,?,?)", (source["id"], revision, canonical_bytes(payload).decode()))
             if previous and previous[0] != revision:
@@ -126,8 +145,10 @@ class IssueStore:
         if kind == "vote" and any(not item.get(k) for k in ("resolution", "resolution_version", "stage")):
             raise ValueError("Resolution version and voting stage required")
         if kind == "vote":
-            if item["stage"] not in ("adopted_resolution", "draft_resolution", "amendment", "procedural"):
+            if item["stage"] not in ("adopted_resolution", "adopted_decision", "draft_resolution", "amendment", "procedural"):
                 raise ValueError("Invalid voting stage")
+            if (item["stage"] == "adopted_decision") != item["resolution"].startswith("A/DEC/"):
+                raise ValueError("Adopted decisions require an explicit A/DEC symbol")
             if item.get("eligible") is not None and type(item["eligible"]) is not bool:
                 raise ValueError("Invalid voting eligibility")
             if item["vote"] == "not_eligible" and item.get("eligible") is not False:
@@ -135,7 +156,7 @@ class IssueStore:
             if item["vote"] in ("yes", "no", "abstain", "absent") and item.get("eligible") is not True:
                 raise ValueError("Vote requires explicit eligibility")
         encoded = canonical_bytes(item).decode()
-        with self.db:
+        with self.transaction():
             old = self.db.execute("SELECT payload FROM evidence WHERE id=?", (item["id"],)).fetchone()
             if old and old[0] != encoded:
                 self._invalidate(item["id"])
@@ -151,7 +172,7 @@ class IssueStore:
         _date(starts)
         if ends is not None and _date(ends) < starts:
             raise ValueError("Membership ends before it begins")
-        with self.db:
+        with self.transaction():
             exact = self.db.execute("SELECT ends,eligible FROM memberships WHERE country=? AND body=? AND starts=?", (country, body, starts)).fetchone()
             if exact and exact[0] == ends and exact[1] == int(eligible):
                 return
@@ -173,7 +194,7 @@ class IssueStore:
                 valid = valid and evidence[0] == evidence[1]
             elif not source:
                 raise ValueError("Artifact dependency does not exist: " + dep)
-        with self.db:
+        with self.transaction():
             self.db.execute("INSERT OR IGNORE INTO artifacts VALUES(?,?,?,?)", (artifact_id, kind, int(valid), canonical_bytes(payload).decode()))
             for dep in set(dependencies):
                 self.db.execute("INSERT OR IGNORE INTO dependencies VALUES(?,?)", (artifact_id, dep))
@@ -182,6 +203,24 @@ class IssueStore:
     def artifact_valid(self, artifact_id):
         row = self.db.execute("SELECT valid FROM artifacts WHERE id=?", (artifact_id,)).fetchone()
         return bool(row and row[0])
+
+    def put_policy_binding(self, binding, *, published_date, body):
+        """Keep reviewed resolution relevance separate from country vote rows.
+
+        Assistant provisional is preserved; this does not infer clause agreement
+        or mutate unbound votes. Binding documents remain private by default.
+        """
+        from ..ingest.adapters import bind_resolution
+        validated = bind_resolution(binding)
+        if not binding.get("source_sha256") or not binding.get("source_anchor"):
+            raise ValueError("Binding requires exact document hash and anchor")
+        source_id = stable_id("un-resolution-document", validated["resolution_id"], validated["resolution_version"])
+        with self.transaction():
+            revision = self.upsert_source({"id":source_id,"published_date":published_date,"body":body,
+                "family":"un_resolution_document","url":binding["source_url"],
+                "content_hash":binding["source_sha256"],"access":"private"})
+            return self.put_artifact("resolution_policy_binding", {**validated,"source_id":source_id,
+                "source_revision":revision,"publication":"private_only"}, [source_id])
 
     def export_bundle(self, directory, snapshot_id, coverage=None, *, partition=False, max_rows=1000, max_bytes=2_000_000):
         """Publish immutable content file first, then atomically replace manifest.

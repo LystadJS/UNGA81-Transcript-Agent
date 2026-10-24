@@ -1,8 +1,9 @@
 # Historical store and browser export contract (v1)
 
-Status: executable SQLite prototype and synthetic validation. No hosted database,
-historical source ingestion, operational scheduler, or empirical model acceptance
-is implied. The maintainer runs this component; readers need only the browser.
+Status: executable SQLite prototype, synthetic validation and a first private
+official-vote import. No hosted database, complete historical issue archive,
+operational remote scheduler, or empirical model acceptance is implied. The
+maintainer runs this component; readers need only the browser.
 
 ## Identity and versions
 
@@ -36,7 +37,9 @@ Canonical country identifiers should be used by production adapters.
 Votes require the same identity/date/policy/context fields and `vote`,
 `resolution`, `resolution_version`, `stage`, and `eligible` (boolean or null).
 Recorded yes/no/abstain/absent require eligibility true; not_eligible requires
-false. Stages are adopted_resolution/draft_resolution/amendment/procedural.
+false. Stages are adopted_resolution/adopted_decision/draft_resolution/amendment/procedural.
+An adopted_decision requires an explicit A/DEC symbol; A/DEC cannot be stored as
+adopted_resolution. Decisions remain a separate comparison stage.
 Categories are `yes`, `no`, `abstain`, `absent`,
 `not_eligible`, and `unknown`. Consensus adoption is never converted to individual
 yes votes. Resolution includes its version; stage separates amendment,
@@ -107,6 +110,29 @@ Access defaults to private; publishing requires explicit caller approval.
 The input snapshot is immutable across resumes. Source-side watermark is supplied
 by the approved feed; successful processing alone cannot establish freshness.
 A private checkpoint contains diagnostic reasons and must not be published.
+The private `refresh.vote_cli` command validates the downloaded source SHA-256
+and a normalized JSON shard of at most 500 rows before persisting votes. The
+`refresh.csv_cli` command scans a verified CSV once and commits bounded batches,
+retaining an exact CSV stream offset for later invocations. Checkpoint identity
+pins the source digest, source family, date window, adapter code, shared
+normalizer and country-mapper code hashes, and country registry digest. It handles
+quoted multiline fields; the durable cursor advances
+only after the database commit. A crash between commit and cursor publication
+retries idempotent rows. The store exposes `transaction()` for these atomic
+batches and tests rollback after a sink failure.
+
+The CSV command accepts gzip sources while verifying the decompressed original
+SHA-256. It stops before the next batch threatens the default 200 MiB operating
+reserve, allowing another 5 MB for that batch's temporary journal. Synthetic
+tests mock capacity and separately test this low-storage gate.
+
+Native country codes define stable source identities; canonical country labels
+come from the explicit country registry. Recorded names and codes remain in
+private evidence. Unmapped codes remain visibly unmapped. Raw non-voting X codes
+remain unknown with eligibility unset. Unbound votes use policy `unbound` and
+their resolution ID as context; no keyword silently assigns humanitarian policy.
+All sources created by these commands are private, and neither command exports
+them. Approval of a source URL is not automatic permission to publish the ledger.
 The GitHub `Historical issue store checks` workflow runs synthetic engineering
 checks only. No remote feed, credentials, production refresh schedule, database
 host or ten-year coverage is configured. Production rollout requires a verified
@@ -116,6 +142,49 @@ upgrading, back up the database and retain the last valid manifest/content files
 rollback points readers to that exact earlier immutable manifest.
 
 ## Combined validation
+
+On 23 October 2026 the private ledger reached 105740 unbound vote records:
+98000 General Assembly rows (partial input scan; observed selected dates from
+30 November 2016 through 19 December 2023) and 7740 Security Council rows covering
+all 516 adopted-resolution groups in that dataset's selected rolling window
+(31 October 2016 through 29 September 2026). All imported countries joined the
+explicit registry; there were 1023 United States vote rows. These are vote
+records, not inferred expressed national positions. Four source-PDF-bound
+assistant-provisional humanitarian relevance records were stored separately via
+`put_policy_binding`; raw votes remain unbound. The binding API preserves source
+hash, anchor, review state and limitations; it does not infer clause agreement.
+
+The verified [GA v6 source](https://digitallibrary.un.org/record/4060887) was
+368130256 original bytes, SHA-256
+`8c2e1c6aaf427c685835e7fdf74833375ed711a28d1ee9e393163903e99e11a5`.
+The verified [SC v7 source](https://digitallibrary.un.org/record/4055387) was
+15561944 original bytes, SHA-256
+`c73e8d7b61ee1323e8a48af2fcbb5b8d14ab05619030862793a79ecfb0cbb5c2`.
+All original records, compressed downloads, databases and source-bearing review
+notes remain outside this public repository. No data publication is implied.
+
+GA ingestion stopped cleanly at source row 787951, with 98000 selected/accepted,
+689951 out of window, zero quarantines and an incomplete cursor. Selected
+2024–2026 GA coverage is not yet imported. Disk capacity reached the reserve.
+Only task-generated superseded/reproducible files were removed after digest
+verification; original download bytes remain recoverable in gzip files.
+Final measured free capacity after recovery was 222015488 bytes (about 211.7 MiB).
+Further bulk ingestion requires more capacity. The private reconciliation and
+durable cursor preserve the next step. This is not ten-year issue coverage.
+The original GA cursor predated the shared-code pins and initially required
+review. `refresh.review_cursor` subsequently replayed the entire 787951-row
+processed prefix read-only from the exact compressed source. All 98000 selected
+normalized outputs matched current source content hashes, native identities and
+exact evidence fields; 689951 exclusions, counts and CSV offset also matched.
+The engineering replay receipt hashes this ordered output sequence as
+`dfa15df7846923a23928d4e67bd6f69e30bf3816184d32403c2f07f734210447`.
+A tiny original-cursor backup and receipt preserve lineage. Only after successful
+verification were current adapter/helper hashes established as a new baseline;
+offset and counts were retained. This is `engineering_replay_verified`, never
+owner confirmation or a claim about unrecorded historical helper hashes. A
+failed replay leaves the cursor unchanged. Automatic resume still requires
+adequate disk capacity. The partial GA ledger has 507 complete 193-country
+groups and one 149-row partial group.
 
 On 23 October 2026 a single synthetic local run on Windows, Python 3.11.9,
 8 logical processors, with 1000 sources and 1000 observations produced 20 shards

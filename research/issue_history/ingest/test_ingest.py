@@ -85,4 +85,9 @@ class IngestionTests(unittest.TestCase):
         with self.assertRaises(ValueError):transcript_inventory(json.dumps(data).encode(),"2026-10-01")
         empty=transcript_inventory(json.dumps(dict(page=1,total=0,hasMore=False,meetings=[])).encode(),"2016-09-22")
         self.assertEqual(empty["availability"],"no_entries_returned_not_verified_absence")
+    def test_decision_stage_requires_exact_symbol(self):
+        row=dict(resolution_id="A/DEC/80/506",resolution_version="as_adopted",stage="adopted_decision",country_id="Kenya",date="2025-01-01",source_url="https://digitallibrary.un.org/record/fixture",eligible=True,vote="yes")
+        self.assertEqual(vote_record(row)["stage"],"adopted_decision")
+        with self.assertRaises(SourceError):vote_record({**row,"stage":"adopted_resolution"})
+        with self.assertRaises(SourceError):vote_record({**row,"resolution_id":"A/RES/80/506"})
 if __name__=="__main__": unittest.main()
