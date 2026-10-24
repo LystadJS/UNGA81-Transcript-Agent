@@ -31,9 +31,13 @@ class RefreshTests(unittest.TestCase):
                 manifest_path = base / "public" / "manifest.json"
                 published = manifest_path.read_bytes()
                 manifest = json.loads(published)
-                shard = json.loads((base / "public" / manifest["shards"][0]["url"]).read_bytes())
-                self.assertEqual(2, len(shard["observations"]))
-                self.assertEqual(shard["sources"][0]["revision"], shard["observations"][0]["source_revision"])
+                shards = [json.loads((base / "public" / spec["url"]).read_bytes()) for spec in manifest["shards"]]
+                observations = [row for shard in shards for row in shard["observations"]]
+                sources = {row["id"]:row for shard in shards for row in shard["sources"]}
+                self.assertEqual(2, len(observations))
+                for observation in observations:
+                    self.assertEqual(sources[observation["source_id"]]["revision"], observation["source_revision"])
+                self.assertEqual(2,sum(row["source_count"] for shard in shards for row in shard["roster"]))
                 self.assertNotIn(text, (base / "health.json").read_text())
                 bad = {**row, "text": "corrupted private text"}
                 failed = refresh(**{**options, "rows": [bad], "checkpoint": base / "bad-cursor.json", "snapshot_id": "bad"})

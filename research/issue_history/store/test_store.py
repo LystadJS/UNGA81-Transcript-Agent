@@ -116,7 +116,7 @@ class StoreTests(unittest.TestCase):
         shards = [json.loads((dest / s["url"]).read_bytes()) for s in manifest["shards"]]
         for spec, shard in zip(manifest["shards"], shards):
             self.assertLessEqual(spec["bytes"], 3000)
-            self.assertLessEqual(sum(len(shard[k]) for k in ("sources", "observations", "votes", "memberships")), 2)
+            self.assertLessEqual(sum(len(shard[k]) for k in ("sources", "observations", "votes", "memberships", "roster")), 2)
         snapshot = {"manifest": manifest, **{key: [row for shard in shards for row in shard[key]] for key in ("sources", "observations", "votes")}}
         script = "const H=require('./site/issue-history-client.js');let s='';process.stdin.on('data',x=>s+=x);process.stdin.on('end',()=>console.log(JSON.stringify(H.query(JSON.parse(s),{start:'2024-01-01',end:'2024-12-31',bodies:['SC'],policies:['humanitarian_access']}))));"
         result = subprocess.run(["node", "-e", script], input=json.dumps(snapshot), capture_output=True, text=True, check=True)
@@ -126,6 +126,35 @@ class StoreTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.store.export_bundle(dest, "too-small", partition=True, max_rows=1)
         self.assertEqual(previous, (dest / "manifest.json").read_bytes())
+
+    def test_selective_roster_and_version_provenance(self):
+        self.store.put_observation({**self.observation,"ontology_version":"ontology-1","extractor_version":"rules-1"})
+        self.store.put_observation({**self.observation,"id":"other-policy","policy":"civilian_protection"})
+        self.store.upsert_source({**self.source,"id":"without-positions","countries":["ThirdExample"],"private_note":"DO NOT EXPORT"})
+        self.store.upsert_source({**self.source,"id":"private-roster","countries":["PrivateOnly"],"access":"private"})
+        dest=Path(self.temp.name)/"selective"
+        manifest=self.store.export_bundle(dest,"selective",partition=True,max_rows=2,max_bytes=3000)
+        self.assertEqual("policy-year-body-v1",manifest["selection_protocol"])
+        self.assertEqual(["legacy","ontology-1"],manifest["versions"]["ontology_version"])
+        self.assertEqual(["legacy","rules-1"],manifest["versions"]["extractor_version"])
+        selected=[spec for spec in manifest["shards"] if spec["policy"] in ("_roster","humanitarian_access")]
+        shards=[json.loads((dest/spec["url"]).read_bytes()) for spec in selected]
+        roster=[row for shard in shards for row in shard["roster"]]
+        self.assertEqual([{"date":"2024-01-01","body":"SC","family":"synthetic","countries":["Example","ThirdExample","UnknownExample"],"source_count":2}],roster)
+        observed=[row for shard in shards for row in shard["observations"]]
+        self.assertEqual(1,len(observed))
+        self.assertEqual("ontology-1",observed[0]["ontology_version"])
+        self.assertNotIn("PrivateOnly",json.dumps(shards))
+        self.assertNotIn("DO NOT EXPORT",json.dumps(shards))
+        legacy=self.store.export_bundle(Path(self.temp.name)/"all","unpartitioned")
+        all_shard=json.loads((Path(self.temp.name)/"all"/legacy["shards"][0]["url"]).read_bytes())
+        self.assertEqual(roster,all_shard["roster"])
+        self.assertNotIn("selection_protocol",legacy)
+        prior=(dest/"manifest.json").read_bytes()
+        self.store.put_observation({**self.observation,"ontology_version":"https://private.invalid/not-an-id"})
+        with self.assertRaisesRegex(ValueError,"Version identities"):
+            self.store.export_bundle(dest,"unsafe",partition=True)
+        self.assertEqual(prior,(dest/"manifest.json").read_bytes())
 
 
 if __name__ == "__main__":
