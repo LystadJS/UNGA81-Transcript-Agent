@@ -82,13 +82,14 @@ def build_register(*,as_of,frame,entries,expected_frame_sha256=FRAME_PIN):
         date_guard=channel and e['date'] in ('2026-10-05','2026-10-06')
         authoritative='evaluation' if reserved else 'unknown'
         eligible_frame=bool(m and m.get('split')=='development' and m.get('has_transcript') is True and _body(native) and '2026-10-01'<=m['date']<='2026-10-04')
-        if eligible_frame and not reserved and not date_guard:authoritative='product_development'
+        if m and m.get('split')=='development' and not reserved and not date_guard:authoritative='product_development'
         effective=role if role in ('source_quality_audit','evaluation','restricted_research') else authoritative
         reason='historical_provenance_and_exclusion_coverage_unknown';eligible=False
         receipt_pinned=False
         if reserved or date_guard:effective='evaluation';reason='reserved_source_blocked'
         elif not start<=date<=end:reason='outside_rolling_window'
         elif role in ('source_quality_audit','evaluation','restricted_research'):reason='restrictive_declared_role'
+        elif authoritative=='product_development' and not (eligible_frame and family=='statement' and kind=='transcripts_un_asr'):reason='unsupported_development_source_scope'
         elif eligible_frame and family=='statement' and kind=='transcripts_un_asr':
             exact=(e['date']==m['date'] and e['source_url']==m.get('json_url') and e['body']==_body(native) and m.get('body')==BODY[_body(native)] and e['language']=='en')
             required={'schema':'un.fresh-development-source-receipt.v1','source_role':'product_development','meeting_id':native,'frame_date':m['date'],'frame_sha256':frame_hash,'source_url':m.get('json_url'),'final_url':m.get('json_url'),'sha256':e['original_sha256']}

@@ -225,6 +225,21 @@ class HistoricalRegisterTests(unittest.TestCase):
             with self.assertRaises(ValueError):R.save_register(self.path,out,**self.kw)
         self.assertEqual(b'invented concurrent snapshot',self.path.read_bytes())
 
+    def test_known_development_role_preserved_outside_supported_candidate_scope(self):
+        for changes in ({'meeting_id':'ecosoc/2026/9999','body':'Economic and Social Council'},
+                        {'has_transcript':False}):
+            kw=fixture();m=kw['frame']['meetings'][0];m.update(changes)
+            m['json_url']='https://transcripts.un.org/en/'+m['meeting_id']+'.json'
+            kw['frame']['sha256']=digest({k:v for k,v in kw['frame'].items() if k!='sha256'});kw['expected_frame_sha256']=kw['frame']['sha256']
+            e=kw['entries'][0];e.update(native_id=m['meeting_id'],source_url=m['json_url'])
+            e['receipt'].update(meeting_id=m['meeting_id'],source_url=m['json_url'],final_url=m['json_url'],frame_sha256=kw['frame']['sha256'])
+            e['provenance_sha256']=[kw['frame']['sha256'],digest(e['receipt'])]
+            row=self.build(kw)['entries'][0]
+            with self.subTest(changes=changes):
+                self.assertEqual('product_development',row['authoritative_role']);self.assertEqual('product_development',row['effective_role'])
+                self.assertFalse(row['intake_eligible']);self.assertTrue(row['raw_verification_required'])
+                self.assertEqual('unsupported_development_source_scope',row['eligibility_reason'])
+
     def test_save_refuses_changed_input_reuse_without_replacing_old_bytes(self):
         out=self.build();R.save_register(self.path,out,**self.kw);before=self.path.read_bytes()
         self.kw['as_of']='2026-10-25';new=self.build()
