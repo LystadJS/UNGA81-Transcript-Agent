@@ -33,3 +33,5 @@ research/issue_history/ingest/statement_coverage.py text eol=lf
 research/issue_history/ingest/statement_identity.py text eol=lf
 
 research/issue_history/ingest/transcripts_un_audit.py text eol=lf
+
+research/issue_history/ingest/transcripts_un_batch.py text eol=lf
