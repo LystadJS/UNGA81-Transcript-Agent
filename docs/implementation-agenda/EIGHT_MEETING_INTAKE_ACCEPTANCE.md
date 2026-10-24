@@ -1,0 +1,11 @@
+# Eight-meeting development intake and committee-role safeguards
+
+All five previously missing eligible development artifacts were acquired normally from their exact declared transcripts.un.org JSON URLs. Full-frame, byte hash, final URL, date, native slug and existing source-format audit checks passed independently. These are automatic speech-recognition artifacts, not official UN records or documents. The 37 reserved meetings remain unopened.
+
+A new private metadata database contains all eight meetings in the sealed October 1–4 development cohort: 354 artifact-bound segments, 362 source metadata records and zero opinion observations. Repeated complete-artifact intake and database reopening were exact. The earlier accepted databases, source inputs, cursors, original review packets and frozen frame remain unchanged. Capacity stays unknown in the source ledger. This bounded supplied-frame completion does not establish full UN archive coverage or ten-year statement availability; SC is not represented in this declared cohort.
+
+Source inspection identified Vice-Chair and Rapporteur roles. A separate version3 review wrapper blocks those roles from supplying national-capacity proposals while preserving supported procedural, collective and uncertain classifications. A separate version2 cohort ledger uses that wrapper and pins all inherited methods; existing validators and earlier saved reports remain unchanged. Source-supported non-national roles do not automatically become procedural or country opinions.
+
+All 263 local Python tests passed, with three Windows link-creation skips. Existing Node issue-report and SC draft checks passed. Linux publication checks and the newly acquired artifacts' complete provisional semantic-review acceptance remain pending. Private source/review material is excluded from publication. No public browser assets changed; no new live browser acceptance or mirror deployment is claimed.
+
+Next: complete source-local provisional review of all newly acquired segments, separately narrow policy objects and attribution, revalidate the complete eight-meeting report, and verify exact private saving/reopening. Context binding, owner-confirmed labels, accepted U.S. comparisons, historical archive provisioning and model acceptance remain open.
