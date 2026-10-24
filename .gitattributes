@@ -22,3 +22,6 @@ research/issue_history/ingest/sc_primary_review.py text eol=lf
 research/issue_history/ingest/sc_event_selection.py text eol=lf
 research/issue_history/refresh/sc_action_cache.py text eol=lf
 research/issue_history/refresh/sc_action_cache_cli.py text eol=lf
+
+research/issue_history/refresh/sc_action_refresh.py text eol=lf
+research/issue_history/refresh/sc_action_refresh_cli.py text eol=lf
