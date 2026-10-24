@@ -1,4 +1,6 @@
-# Statement coverage reconciliation: next bounded step
+# Statement coverage reconciliation: implementation boundary
+
+The metadata-only reconciliation boundary below is now implemented; see STATEMENT_COVERAGE_ACCEPTANCE.md. Native meeting/speaker identity and real source acquisition remain separate next steps.
 
 A statement archive needs a meeting-level coverage ledger independent of position extraction and vote coverage. The current `ingest.discovery.transcript_inventory` validates one official inventory page for one day. It does not reconcile all pages or all dates. `refresh.runner.refresh` reports completion of supplied input rows; this is not verified meeting or archive completeness.
 

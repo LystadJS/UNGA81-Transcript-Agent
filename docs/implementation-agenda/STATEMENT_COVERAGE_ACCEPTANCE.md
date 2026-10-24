@@ -1,0 +1,15 @@
+# Private statement coverage reconciliation
+
+`ingest.statement_coverage.reconcile_coverage` is a pure metadata-only reconciler. It reads no source files, fetches no URLs, modifies no store and exports no public bundle. It accepts an explicit date window and exact body codes, validated inventory-page metadata and separately supplied artifact-status receipts.
+
+Catalog totals are reconciled across every supplied body before body filtering. Contiguous pages from page one through a unique terminal page and stable distinct-meeting totals establish only consistency of the supplied catalog. Missing pages stay incomplete; missing or empty days stay unknown. The output always marks historical archive completeness as unknown. GA means plenary exactly; GA_C1 through GA_C6 must be selected explicitly.
+
+Receipt declarations distinguish retrieval, matching expected/retrieved hashes and extraction completion. Inventory hash, native meeting ID/date/body, exact artifact URL, raw and normalized hashes and extraction method are linked. The module does not recompute source content hashes: its verification scope explicitly says provided receipts, not recomputed content. Contradictory receipts are rejected; repeated receipts and multiple artifacts cannot add meeting weight. An extraction-complete receipt does not imply national attribution, an explicit policy position or extractor accuracy. Those are separate acceptance steps.
+
+All receipt and inventory fields use bounded allowlists. Original recorded body/category metadata remains separate from the body derived from the native meeting identity. No raw transcript wording, speaker records, country positions or political statistics are processed. The output is private-only, with request/page/receipt fingerprints and a versioned contract.
+
+Twenty new source-free tests plus the full local 160-test Python suite passed; three Windows link-creation tests were skipped. Existing Node report/draft checks passed. Independent read-only review accepted the conservative completeness, receipt and denominator semantics. A separate invented three-date, three-body example preserved exact JSON save/reopen and deterministic replay, counted three meetings despite multiple artifact receipts, retained six unknown day/body cells, and left all eight original vote inputs unchanged. This is engineering acceptance, not live-browser or populated historical archive validation.
+
+No public browser assets changed. Website version 1.36.0 and previous app collection save/reopen acceptance remain unchanged. Publication and Linux checks are recorded in STATUS.md.
+
+Next bounded step: a new versioned statement-identity adapter linking parent meeting, native speaker-record key and source artifact revision. Preserve raw provenance and national/collective/unknown attribution metadata; reject meeting-level source-ID reuse across speakers. Keep inherited adapters and durable dependency pins unchanged until an explicit migration/replay is accepted. No owner-confirmed labels, public data or fitted model is accepted by this module.
