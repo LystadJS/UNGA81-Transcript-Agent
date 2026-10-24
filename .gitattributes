@@ -10,3 +10,8 @@ reports/hlw-cuba/r_*.txt -text
 reports/hlw-cuba/w_* -text
 # Preserve the vendored numerical bundle hash across checkout platforms.
 site/numerics.js -text
+
+# Durable import cursors pin these exact source bytes across platforms.
+research/issue_history/ingest/ga_votes.py text eol=lf
+research/issue_history/ingest/countries.py text eol=lf
+research/issue_history/ingest/adapters.py text eol=lf
