@@ -17,3 +17,4 @@ research/issue_history/ingest/countries.py text eol=lf
 research/issue_history/ingest/adapters.py text eol=lf
 
 research/issue_history/ingest/sc_drafts.py text eol=lf
+research/issue_history/ingest/sc_crosswalk.py text eol=lf
