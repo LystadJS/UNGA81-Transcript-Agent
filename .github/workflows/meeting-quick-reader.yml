@@ -11,6 +11,8 @@ on:
       - 'site/analysis-ui.js'
       - 'site/issue*'
       - 'tools/test_issue*'
+      - 'site/sc-drafts*'
+      - 'tools/test_sc_draft*'
       - 'site/analysis-core.js'
       - 'site/position-comparison.js'
       - 'site/position-view.js'
@@ -54,6 +56,8 @@ on:
       - 'site/analysis-ui.js'
       - 'site/issue*'
       - 'tools/test_issue*'
+      - 'site/sc-drafts*'
+      - 'tools/test_sc_draft*'
       - 'site/analysis-core.js'
       - 'site/position-comparison.js'
       - 'site/position-view.js'
@@ -123,6 +127,7 @@ jobs:
           node tools/test_issue_models.cjs
           node tools/test_issue_report.cjs
           node tools/test_issue_summary.cjs
+          node tools/test_sc_drafts.cjs
           node research/issue_history/ingest/test_extraction.cjs
       - name: Install browser harness only
         run: python -m pip install --disable-pip-version-check playwright==1.55.0
@@ -136,6 +141,7 @@ jobs:
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_issue_workflow_ui.cjs site issue-browser
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_issue_archive_ui.cjs site issue-archive-browser
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_issue_selective_ui.cjs site
+          BROWSER_PATH="$(command -v google-chrome)" node tools/test_sc_draft_ui.cjs site
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_issue_performance_ui.cjs site issue-performance-browser/metrics.json
           CHROME_BINARY="$(command -v google-chrome)" python tools/test_meeting_quick_reader_ui.py quick-reader-browser
           node tools/preview_meeting_quick_reader.cjs quick-reader-synthetic.html

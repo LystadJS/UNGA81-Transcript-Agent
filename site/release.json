@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.35.1",
+  "browser_engine": "browser-descriptive-1.36.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-10-24",
   "features": [
+    "Separate private-file Security Council draft-voting review with recorded veto/insufficient outcomes, unverified unanimity, source-linked nonparticipation notes, five saved filters and exact frozen replay; no issue-position inference",
     "Readable trajectory captions use a valid ASCII separator; frozen report data and all summary/filter results remain unchanged",
     "Source-linked country-first humanitarian issue summaries retain conditions, separate latest U.S. expressions from exact dated comparisons, preserve frozen summaries, and add bounded ten-year synthetic browser performance acceptance; historical archive remains unprovisioned",
     "Selective ten-year policy/body bundles with independent country coverage, immutable subset caches, method-version comparison gaps and bounded saved-report replay; public historical archive remains unprovisioned",
