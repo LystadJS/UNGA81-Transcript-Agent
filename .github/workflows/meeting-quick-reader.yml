@@ -143,6 +143,7 @@ jobs:
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_issue_selective_ui.cjs site
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_sc_draft_ui.cjs site
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_issue_performance_ui.cjs site issue-performance-browser/metrics.json
+          BROWSER_PATH="$(command -v google-chrome)" node tools/test_issue_reopen_profile_ui.cjs site issue-reopen-profile/metrics.json
           CHROME_BINARY="$(command -v google-chrome)" python tools/test_meeting_quick_reader_ui.py quick-reader-browser
           node tools/preview_meeting_quick_reader.cjs quick-reader-synthetic.html
           CHROME_BINARY="$(command -v google-chrome)" python tools/test_meeting_quick_reader_static.py quick-reader-synthetic.html quick-reader-static
@@ -154,6 +155,7 @@ jobs:
             issue-browser/
             issue-archive-browser/
             issue-performance-browser/
+            issue-reopen-profile/
             collection-recovery-browser/
             saved-filters-browser/
             quick-reader-browser/
