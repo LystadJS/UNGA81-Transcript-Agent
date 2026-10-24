@@ -1,0 +1,15 @@
+# Source-local context proposal validation
+
+A separate read-only validator links every existing provisional policy candidate to either a literal source-local context proposal or an explicit unresolved reason. It first reproduces the current version3 review overlay against the exact private artifact batch. Object quotations must be subsets of the existing policy evidence; context quotations must resolve inside the same source segment and paragraph, in the same or immediately adjacent sentence. Complete candidate coverage, unique identities, source links, current batch and method pins are checked.
+
+The output retains pointer/hash metadata, original capacity and discourse labels. It does not publish quotation text, assign canonical context IDs, accept country positions or enable comparisons. Literal adjacency is a structural check, not proof of a semantic or causal relation. Source-local proposals remain assistant-provisional and require separate semantic review. Earlier unresolved contexts, methods, review packets, databases and reports are preserved.
+
+All 17 new context tests and all 280 local Python tests passed, with three Windows link-creation skips in the full suite. Existing Node report and SC draft checks passed. Independent source-free contract review passed. Linux CI40119899771 passed all 280 tests without skips. Separate bounded semantic peer review covered all 119 existing candidates across eight supplied development meetings. Create-only corrections narrowed mixed-object quotations, preserving original packets. No empirical accuracy claim follows from these development checks.
+
+No public browser assets changed. The live browser release and its accepted saving/reopening results remain unchanged; no new live acceptance is claimed. Source text, country-specific review findings and private packets remain outside the repository.
+
+Actual acceptance reproduced all 119 candidate identities: 89 have exact local context anchors and 30 remain unresolved. Anchors cover only the selected object fragments; they do not bind other objects in the original mixed candidate. The report retains all 89 original national-capacity candidates, with literal anchors on proposals from 26 countries, including requested-action proposals from 17 countries. These are source-coverage counts, not opinion prevalence, semantic agreement or accepted contexts. Collective and institutional evidence remains separate.
+
+Exact private report replay and JSON reopening passed against the unchanged metadata database and earlier reports. An independent final replay matched the selected packet/index identities and all source, review and method pins. All original source and review pins remain intact. Canonical contexts, accepted positions and comparisons remain zero.
+
+Next: establish a separately versioned product-source register from authoritative role/permission metadata, with explicit audit/evaluation exclusions and source-window identities. Use it to plan permitted historical coverage while keeping unknown provenance ineligible for body intake. No frozen holdout, unverified country-position series or fitted model is promoted by this milestone.
