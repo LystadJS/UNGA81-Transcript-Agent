@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.34.1",
+  "browser_engine": "browser-descriptive-1.34.2",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-10-23",
   "features": [
+    "Selective ten-year policy/body bundles with independent country coverage, immutable subset caches, method-version comparison gaps and bounded saved-report replay; public historical archive remains unprovisioned",
     "Verified GA v6 and SC v7 vote adapters, canonical country identities, bounded resumable private imports and disk-reserve guard; verified report-result cache and readable archive controls",
     "Historical issue infrastructure: versioned maintainer store, source-free bundles, verified browser cache, country-first archive report, reproducible saved results; archive not provisioned and fitted models unavailable",
     "Ten-year humanitarian access/civilian protection workflow: independent historical as-of date, current country-position statistics, coverage heatmap, U.S. history, automatic observed country trajectories, source-bound historical import and saved replay; fitted models withheld",

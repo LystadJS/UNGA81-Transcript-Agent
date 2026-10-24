@@ -143,6 +143,48 @@ rollback points readers to that exact earlier immutable manifest.
 
 ## Combined validation
 
+### Selective policy loading and independent recorded affiliations
+
+Partitioned manifests declare `selection_protocol: "policy-year-body-v1"`.
+Top-level shard references retain `policy`, `year` and `body` dimensions. Alongside
+policy evidence and eligibility shards, reserved `_roster` shards are grouped by
+year/body and contain an independent `roster` array. Each row contains only
+`date`, `body`, `family`, sorted unique `countries`, and `source_count`.
+The latter counts distinct current, publication-approved source IDs in that
+date/body/family group across all policies, including sources without detected
+positions. Sources repeated in multiple policy shards do not add to this count.
+
+Clients selecting one policy must still load applicable `_roster` shards for
+their dates and bodies. A country recorded only in another policy remains in
+the denominator as having no matching explicit position. Scope and source-family
+filters apply to the roster independently: documentary evidence must not create
+UN-statement coverage. Consumers use this independent roster when present and
+fall back to source metadata only for legacy bundles; adding both would double
+count coverage. The roster records affiliations, not verified national stances.
+The protocol describes complete coverage of the approved exported source
+snapshot, not completeness of all UN meetings or countries in the world.
+
+Every shard includes `roster`, possibly empty. Unpartitioned legacy loading also
+receives the roster but has no selection protocol because its references lack
+selection dimensions. Row and byte bounds include roster records; an indivisible
+oversized roster row fails export before the manifest switches. Privacy
+allowlists still exclude source text, private source IDs, review notes and
+arbitrary metadata from roster rows.
+
+Exported observations preserve optional `ontology_version` and
+`extractor_version` only as bounded identifiers (letters, digits, underscores,
+dots, hyphens and colons). Unsafe values fail export. Manifest `versions` lists
+the distinct identities for each field, using `legacy` wherever identity is
+undeclared. A missing identity is never replaced with the current implementation
+version or treated as accepted empirical provenance. These are declarations,
+not authentication of the model or extraction result.
+
+Synthetic checks compare full versus selected exporter rosters, retain a country
+without any detected position, deduplicate source coverage across policies,
+exclude private affiliations and notes, preserve version identities and reject
+unsafe versions without replacing the prior manifest. No private historical
+database or source files are read by these checks.
+
 On 23 October 2026 the private ledger reached 105740 unbound vote records:
 98000 General Assembly rows (partial input scan; observed selected dates from
 30 November 2016 through 19 December 2023) and 7740 Security Council rows covering

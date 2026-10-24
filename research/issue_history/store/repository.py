@@ -10,6 +10,7 @@ import os
 from pathlib import Path
 import sqlite3
 import tempfile
+import re
 from contextlib import contextmanager
 
 
@@ -240,7 +241,16 @@ class IssueStore:
             sources.append({k: item[k] for k in ("id", "revision", "published_date", "body", "family", "url", "content_hash")})
             if "countries" in item:
                 sources[-1]["countries"] = sorted(set(item["countries"]))
+        roster_groups = {}
+        for source in sources:
+            key = (source["published_date"], source["body"], source["family"])
+            group = roster_groups.setdefault(key, {"date":key[0], "body":key[1], "family":key[2], "countries":set(), "source_ids":set()})
+            group["countries"].update(source.get("countries", []))
+            group["source_ids"].add(source["id"])
+        roster = [{"date":g["date"], "body":g["body"], "family":g["family"], "countries":sorted(g["countries"]), "source_count":len(g["source_ids"])}
+                  for _,g in sorted(roster_groups.items())]
         observations, votes = [], []
+        versions = {"ontology_version":set(), "extractor_version":set()}
         for row in self.db.execute("SELECT kind,payload FROM evidence ORDER BY id"):
             item = json.loads(row["payload"])
             if allowed.get(item["source_id"]) != item["source_revision"]:
@@ -249,6 +259,13 @@ class IssueStore:
             keys += ["stance", "review_state", "attribution"] if row["kind"] == "observation" else ["vote", "resolution", "resolution_version", "stage", "eligible"]
             (observations if row["kind"] == "observation" else votes).append({k: item[k] for k in keys})
             if row["kind"] == "observation":
+                for key in versions:
+                    value = item.get(key, "legacy")
+                    if not isinstance(value, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}", value):
+                        raise ValueError("Version identities must be bounded safe identifiers")
+                    versions[key].add(value)
+                    if key in item:
+                        observations[-1][key] = value
                 # Codes only: never export free-form notes or quoted qualifications.
                 for key in ("qualification_codes", "unresolved"):
                     if key in item:
@@ -266,10 +283,10 @@ class IssueStore:
                     raise ValueError("Coverage status must be an identifier")
             elif type(value) is not int or value < 0:
                 raise ValueError("Coverage counts must be nonnegative integers")
-        def make_bundle(ss, oo, vv, mm):
+        def make_bundle(ss, oo, vv, mm, rr=None):
             return {"schema": "un.issue-history.shard.v1", "snapshot_id": snapshot_id, "sources": ss,
-                "observations": oo, "votes": vv, "memberships": mm, "coverage": safe_coverage or {"status": "not_assessed"}}
-        chunks = [("all", make_bundle(sources, observations, votes, memberships), {})]
+                "observations": oo, "votes": vv, "memberships": mm, "roster": rr or [], "coverage": safe_coverage or {"status": "not_assessed"}}
+        chunks = [("all", make_bundle(sources, observations, votes, memberships, roster), {})]
         if partition:
             if type(max_rows) is not int or max_rows < 1 or type(max_bytes) is not int or max_bytes < 256:
                 raise ValueError("Invalid shard bounds")
@@ -287,12 +304,14 @@ class IssueStore:
                     groups.setdefault(("_coverage", source["published_date"][:4], source["body"]), []).append(("sources", source))
             for member in memberships:
                 groups.setdefault(("_eligibility", "all", member["body"]), []).append(("memberships", member))
+            for group in roster:
+                groups.setdefault(("_roster", group["date"][:4], group["body"]), []).append(("roster", group))
             chunks = []
             for key, units in sorted(groups.items()):
                 current = make_bundle([], [], [], [])
                 index = 0
                 def add_unit(target, kind, item):
-                    result = {**target, **{k: list(target[k]) for k in ("sources", "observations", "votes", "memberships")}}
+                    result = {**target, **{k: list(target[k]) for k in ("sources", "observations", "votes", "memberships", "roster")}}
                     result[kind].append(item)
                     if kind in ("observations", "votes"):
                         source = source_map[item["source_id"]]
@@ -301,14 +320,14 @@ class IssueStore:
                     return result
                 for kind, item in units:
                     candidate = add_unit(current, kind, item)
-                    count = sum(len(candidate[k]) for k in ("sources", "observations", "votes", "memberships"))
+                    count = sum(len(candidate[k]) for k in ("sources", "observations", "votes", "memberships", "roster"))
                     if count > max_rows or len(canonical_bytes(candidate)) > max_bytes:
-                        if not any(current[k] for k in ("sources", "observations", "votes", "memberships")):
+                        if not any(current[k] for k in ("sources", "observations", "votes", "memberships", "roster")):
                             raise ValueError("Single evidence unit exceeds shard bounds")
                         chunks.append((stable_id("shard", key, index), current, {"policy": key[0], "year": key[1], "body": key[2]}))
                         index += 1
                         candidate = add_unit(make_bundle([], [], [], []), kind, item)
-                        if sum(len(candidate[k]) for k in ("sources", "observations", "votes", "memberships")) > max_rows or len(canonical_bytes(candidate)) > max_bytes:
+                        if sum(len(candidate[k]) for k in ("sources", "observations", "votes", "memberships", "roster")) > max_rows or len(canonical_bytes(candidate)) > max_bytes:
                             raise ValueError("Single evidence unit exceeds shard bounds")
                     current = candidate
                 chunks.append((stable_id("shard", key, index), current, {"policy": key[0], "year": key[1], "body": key[2]}))
@@ -323,7 +342,10 @@ class IssueStore:
             payloads.append((filename, content))
             shard_refs.append({"id": shard_id, "url": filename, "sha256": digest, "bytes": len(content), **dimensions})
         manifest = {"schema": "un.issue-history.manifest.v1", "snapshot_id": snapshot_id,
-                    "shards": shard_refs, "counts": {"sources": len(sources), "observations": len(observations), "votes": len(votes)}}
+                    "shards": shard_refs, "versions": {k:sorted(v) or ["legacy"] for k,v in versions.items()},
+                    "counts": {"sources": len(sources), "observations": len(observations), "votes": len(votes)}}
+        if partition:
+            manifest["selection_protocol"] = "policy-year-body-v1"
         frozen = directory / ("snapshot-" + hashlib.sha256(str(snapshot_id).encode()).hexdigest() + ".json")
         if frozen.exists() and frozen.read_bytes() != canonical_bytes(manifest):
             raise ValueError("A snapshot identifier cannot be reused for changed content")

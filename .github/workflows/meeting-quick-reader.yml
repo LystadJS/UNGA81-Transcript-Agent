@@ -134,6 +134,7 @@ jobs:
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_position_comparison_ui.cjs site position-comparison-browser
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_issue_workflow_ui.cjs site issue-browser
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_issue_archive_ui.cjs site issue-archive-browser
+          BROWSER_PATH="$(command -v google-chrome)" node tools/test_issue_selective_ui.cjs site
           CHROME_BINARY="$(command -v google-chrome)" python tools/test_meeting_quick_reader_ui.py quick-reader-browser
           node tools/preview_meeting_quick_reader.cjs quick-reader-synthetic.html
           CHROME_BINARY="$(command -v google-chrome)" python tools/test_meeting_quick_reader_static.py quick-reader-synthetic.html quick-reader-static
