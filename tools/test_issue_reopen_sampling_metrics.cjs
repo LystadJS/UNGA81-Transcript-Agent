@@ -38,4 +38,3 @@ assert.equal(traced.events.RunTask.union_ms,0);
 assert.throws(()=>timeline([{name:'begin',ts:5,pid:1,tid:2},{name:'end',ts:4,pid:1,tid:2}],'begin','end'));
 assert.throws(()=>timeline([{name:'begin',ts:1,pid:1,tid:2},{name:'end',ts:4,pid:1,tid:3}],'begin','end'));
 console.log('PASS CPU weighted-interval attribution, explicit tail, strict script identity and clipped trace unions');
-
