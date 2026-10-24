@@ -47,3 +47,5 @@ research/issue_history/ingest/transcript_cohort_v2.py text eol=lf
 research/issue_history/ingest/transcript_context.py text eol=lf
 
 research/issue_history/ingest/historical_source_register.py text eol=lf
+
+research/issue_history/ingest/historical_exclusion_manifest.py text eol=lf
