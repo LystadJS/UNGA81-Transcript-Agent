@@ -38,3 +38,23 @@ assert.equal(traced.events.RunTask.union_ms,0);
 assert.throws(()=>timeline([{name:'begin',ts:5,pid:1,tid:2},{name:'end',ts:4,pid:1,tid:2}],'begin','end'));
 assert.throws(()=>timeline([{name:'begin',ts:1,pid:1,tid:2},{name:'end',ts:4,pid:1,tid:3}],'begin','end'));
 console.log('PASS CPU weighted-interval attribution, explicit tail, strict script identity and clipped trace unions');
+const {captureCpu}=require('./issue_sampling_aggregate.cjs');
+const accepted=captureCpu(profile,[url]);
+assert.equal(accepted.status,'usable_capture');
+assert.deepEqual(Object.fromEntries(Object.entries(accepted).filter(([key])=>key!=='status')),result);
+for(const changes of [{timeDeltas:[1000,-2000,3000,4000,1000,2000,3000]},{timeDeltas:[1000,NaN,3000,4000,1000,2000,3000]},{timeDeltas:[1000]},{endTime:0}]){
+ const input={...profile,...changes};
+ const before=structuredClone(input);
+ const rejected=captureCpu(input,[url]);
+ assert.equal(rejected.status,'unusable_capture');
+ for(const key of ['rows','weighted_interval_ms','profile_elapsed_ms','unrepresented_tail_ms'])assert.equal(rejected[key],null,'invalid capture must not expose quantified '+key);
+ assert.ok(rejected.reason.length<=240);
+ assert.deepEqual(input,before,'failed capture never repairs input');
+ assert.equal(JSON.stringify(rejected).includes('untrusted.example'),false,'failure diagnostics contain no captured script URLs');
+}
+const negative=captureCpu({...profile,timeDeltas:[1000,-2000,3000,4000,1000,2000,3000]},[url]);
+assert.equal(negative.diagnostics.negative_interval_count,1);
+assert.equal(negative.diagnostics.minimum_negative_interval_us,-2000);
+assert.equal(negative.diagnostics.sample_count,7);
+assert.equal(captureCpu({...profile,timeDeltas:[NaN]},[url]).diagnostics.has_nonfinite_interval,true);
+console.log('PASS unusable CPU captures remain null, unrepaired and distinct from functional parity');

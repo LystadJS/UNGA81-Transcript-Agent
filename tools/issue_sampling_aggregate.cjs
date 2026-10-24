@@ -28,4 +28,11 @@ function timeline(events,beginName,endName){
  }
  return output;
 }
-module.exports={cpu,timeline};
+function captureCpu(profile,allowedScripts){
+ try{return {status:'usable_capture',...cpu(profile,allowedScripts)};}
+ catch(error){
+  const deltas=Array.isArray(profile?.timeDeltas)?profile.timeDeltas:[],negative=deltas.filter(v=>Number.isFinite(v)&&v<0);
+  return {status:'unusable_capture',reason:String(error.message).slice(0,240),diagnostics:{sample_count:Array.isArray(profile?.samples)?profile.samples.length:null,delta_count:Array.isArray(profile?.timeDeltas)?profile.timeDeltas.length:null,negative_interval_count:negative.length,minimum_negative_interval_us:negative.length?negative.reduce((a,b)=>Math.min(a,b),0):null,has_nonfinite_interval:deltas.some(v=>!Number.isFinite(v)),has_invalid_profile_bounds:!Number.isFinite(profile?.startTime)||!Number.isFinite(profile?.endTime)||profile.endTime<profile.startTime},rows:null,weighted_interval_ms:null,profile_elapsed_ms:null,unrepresented_tail_ms:null,notes:'Strict CPU-profile reduction failed. No interval is clamped, repaired or attributed. Functional and timeline checks are separate from CPU capture acceptance.'};
+ }
+}
+module.exports={cpu,timeline,captureCpu};
