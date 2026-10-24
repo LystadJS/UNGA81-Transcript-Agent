@@ -29,3 +29,5 @@ research/issue_history/refresh/sc_action_refresh_cli.py text eol=lf
 research/issue_history/ingest/sc_policy_candidates.py text eol=lf
 
 research/issue_history/ingest/statement_coverage.py text eol=lf
+
+research/issue_history/ingest/statement_identity.py text eol=lf
