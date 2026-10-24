@@ -1,0 +1,45 @@
+{
+  "schema": "un.issue-browser-performance-receipt.v1",
+  "version": "1.35.0",
+  "status": "passed",
+  "kind": "fictional_source_free_engineering",
+  "source_commit": "b0cb5fc1e9759fe44e9dfeb579f704db05880886",
+  "ci_run": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/40059987149",
+  "ci_artifact": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/40059987149/artifacts/12547047334",
+  "browser": "Google Chrome 155.0.8059.39",
+  "node": "22.23.3",
+  "workload": {
+    "country_labels": 193,
+    "observations": 4246,
+    "source_identities": 2123,
+    "calendar_year_portions": 11,
+    "rolling_window_years": 10
+  },
+  "results": {
+    "cold_ms": 695.6711059999999,
+    "cold_shard_requests": 33,
+    "selected_bytes": 2654961,
+    "save_download_ms": 306.9605999999999,
+    "report_bytes": 5743349,
+    "warm_ms": 548.4914220000001,
+    "reopen_ms": 708.0515489999998,
+    "reopen_empty_browser_cache": true,
+    "desktop": {
+      "dom_nodes": 56981,
+      "svg_count": 772,
+      "page_fits": true,
+      "report_text_characters": 782172
+    },
+    "mobile": {
+      "dom_nodes": 56981,
+      "svg_count": 772,
+      "page_fits": true,
+      "report_text_characters": 782172
+    }
+  },
+  "limitations": [
+    "Single CI-host run; not a promise for arbitrary computers or production archive scale.",
+    "Fictional records do not establish historical source completeness or policy accuracy.",
+    "Public historical archive remains unprovisioned; fitted models remain unavailable."
+  ]
+}

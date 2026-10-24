@@ -1,6 +1,6 @@
 # Ten-year issue workflow execution ledger
 
-Updated 24 October 2026. Engineering checks use invented metadata; they are not empirical model acceptance. The public archive is not provisioned. Official GA/SC vote files are verified in private staging; the private GA import is capacity-limited at98,000 accepted rows and 7,740 SC rows are stored. Source acquisition, owner-confirmed evaluation and operational deployment remain release gates for the desired end state.
+Updated 24 October 2026. Engineering checks use invented metadata; they are not empirical model acceptance. The public archive is not provisioned. Official GA/SC vote files are verified in private staging; the private GA import is checkpointed at98,000 accepted rows and 7,740 SC rows are stored. Source acquisition, owner-confirmed evaluation and operational deployment remain release gates for the desired end state.
 
 | Task | Implemented result | Remaining work |
 | --- | --- | --- |
@@ -16,7 +16,7 @@ Updated 24 October 2026. Engineering checks use invented metadata; they are not 
 | B6 | Source-linked resolution/policy binding validation | Reviewed actual resolution bindings |
 | B7 | Bounded resumable ingestion, retry/quarantine/checkpoints | Source-specific network acquisition |
 | B8 | Incremental refresh and atomic publication/health safeguards | Approved feed, host, scheduler and live freshness |
-| B9 | 7,740 SC rows/516 resolutions reconciled; private 98,000 GA rows imported with durable cursor | Remaining GA import paused at200 MiB free-space reserve; more storage required |
+| B9 | 7,740 SC rows/516 resolutions reconciled; private 98,000 GA rows imported with durable cursor | Remaining GA import checkpointed; storage threshold now met, recheck before resuming |
 | C1 | Bounded policy/year/body bundles, independent affiliation rosters, method provenance, hashes, privacy allowlists | Populated permitted historical snapshot |
 | C2 | IndexedDB cache, verified reuse/recovery, resumable shards | Production browser acceptance on real scale |
 | C3 | Selective policy/year/body transport, exact query filters, immutable subset identities and legacy fallback | Real-data database/query parity |
@@ -43,9 +43,9 @@ Updated 24 October 2026. Engineering checks use invented metadata; they are not 
 | F6 | Automatic observed country charts and explicit gaps | Accepted-model estimates/uncertainty overlay |
 | F7 | Worker-based single-button archive report orchestrator | Historical snapshot provisioning; normal path currently unavailable |
 | F8 | Frozen report envelope, exclusions, inputs/results and source versions | Production real-snapshot replay acceptance |
-| G1 | Source-free actual-browser acceptance passed for 1.34.2 | Real populated archive replay |
-| G2 | Maintainer store/export checks and bounded ten-year synthetic browser timing harness | Actual CI timings pending; production data/device budgets remain unmeasured |
-| G3 | 1.34.2 source and mirror merged; deployment/live hashes passed | Full public data/model release withheld |
+| G1 | Source-free actual-browser acceptance passed for 1.35.0 | Real populated archive replay |
+| G2 | Maintainer store/export checks and bounded ten-year synthetic browser timing harness | Cold/warm/save/reopen CI budgets passed for fictional 193-country workload; production data/device budgets remain unmeasured |
+| G3 | 1.35.0 source and mirror merged; deployment/live hashes and live fictional replay passed | Full public data/model release withheld |
 
 Next execution sequence: finish integration/browser acceptance; publish the source-free engineering milestone; obtain and verify permitted source-family downloads; ingest bounded reconciled year/body shards; collect owner-confirmed evaluation labels; assess extraction and compatible models; provision the historical snapshot; verify the normal three-input workflow against actual evidence. No manual prompt is needed to advance an unblocked engineering dependency. External access and actual owner labeling cannot be replaced by fabricated evidence.
 
@@ -65,4 +65,10 @@ Release acceptance: source PR137 merged (f5f7c5651702e5a84032b18d150dd6c8d2d301a
 
 Next unblocked engineering: improve the source-linked substantive issue overview (F3) and add browser performance budgets/acceptance at representative synthetic historical scale (G2), preserving observed-only fallback and all empirical gates. Continue automatically. Bulk import remains stopped at its durable 98,000-GA/7,740-SC checkpoint until C: has at least1 GiB free; last check191,012,864 bytes.
 
-Current update (23 October local time): country-first source-linked summaries and ten-year synthetic browser performance acceptance implemented. Current country and U.S. qualifications survive deduplication; summary comparison dates and sources remain explicit and distinct from the latest U.S. expression. Report indexes replace repeated country/date scans; the deterministic fixture retained the exact pre-optimization report hash. Local summary/report/client/model checks passed; actual-browser performance, save/reopen and publication remain pending for 1.35.0. No private staging, source imports, reserved transcripts or model acceptance changed.
+Current update (23 October local time): country-first source-linked summaries and ten-year synthetic browser performance acceptance implemented. Current country and U.S. qualifications survive deduplication; summary comparison dates and sources remain explicit and distinct from the latest U.S. expression. Report indexes replace repeated country/date scans; the deterministic fixture retained the exact pre-optimization report hash. Local summary/report/client/model checks passed; actual-browser performance, save/reopen and publication passed for 1.35.0. No private staging, source imports, reserved transcripts or model acceptance changed.
+
+Completed update: source PR139 merged as6fc0e2e4d1eeb5529e9b7f202eb826f20df4689b after all three relevant workflows passed. Actual-Chrome run40059987149 verified the new summaries, qualifications, source links, exclusions and exact frozen replay. The ten-year fictional fixture passed cold695.67ms, warm548.49ms, save306.96ms and fresh-context reopen708.05ms; these are single-host engineering timings. Website PR53 preserved concurrently merged typography changes, passed refreshed regression40060387120 and audit40060387160, and merged aseceefc6defbe19c8f15619144fe17918a00fea75. Deployment40060614186 and live asset verifier40060614682 passed. Eleven live asset hashes matched the checked-in mirror. A live fictional report was opened, saved, reopened after reload, and exported again with exact summary/filter/evidence/result equality.
+
+Storage gate changed during this update: C: reported6,161,264,640bytes free. No bulk source import was performed during the summaries/performance task. Next automatic historical-data step may resume the pinned GA cursor only after rechecking at least1 GiB free and preserving200 MiB plus next-batch margin. All prior original-source/cursor/adapter/registry pins and publication/owner-label/model gates still apply. Private checkpoint remains98,000GA +7,740SC rows. The public historical archive is still not provisioned.
+
+Next agenda steps: resume the authorized bounded historical import if capacity remains sufficient; reconcile actual coverage; verify approved data and source-supported policy bindings before public archive provisioning. Browser acceptance on a permitted populated archive, owner-confirmed benchmark and empirical model assessment remain open. The substantive-summary/performance/publication request is complete; overall end-state readiness remains gated. Minor inherited presentation follow-up: replace the malformed separator in older trajectory captions with ASCII without modifying frozen analytical results.
