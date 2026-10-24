@@ -1,0 +1,23 @@
+# Durable private selected-action cache
+
+The selected Security Council voting-action report now has a durable, offline private cache. This is a maintainer data component; it does not publish a historical browser snapshot, enable political comparisons or change original source records. The live browser application is unchanged.
+
+## Reuse and invalidation
+
+The cache identity binds resolved source locations and complete bytes for the DPPAcollection, DDLdatabase and compressed source, the independently verified decompressed source hash, the selected date window, schema/options, current method versions, every algorithm dependency, the country registry, the cache implementation and all review/envelope/evidence hashes. A change produces a different content key. Warm reuse still rehashes inputs and validates strict dated review receipts; it skips source enrichment, crosswalk construction and event selection. SQLite sidecars are rejected to avoid treating a main-file hash as a complete snapshot while a writer is active.
+
+Each generation has a content hash and embedded identity. Its report provenance, method/source/proof identities, versions and selected-input fingerprints must agree with the current request. Corrupt or unsupported entries cannot return stale results. Within an owned cache, recoverable corrupt pointers are retained separately and a fresh generation is built. Immutable generations remain available; a complete entry is written and synced before the active pointer is atomically replaced. Inputs and privacy guards are checked again immediately before publication. A failed refresh preserves the previous valid pointer and result.
+
+The cache must be outside repository trees and cannot contain or alias an input, proof or implementation file. It requires an ownership marker before replacing cache metadata and rejects unsafe links. Because the workspace itself has a repository ancestor, the actual cache uses a separate authorized local directory; its exact location remains in the private acceptance receipt. Source data and reviews stay in their existing staging location. Storage checks preserve a200MiBreserve plus the write margin and bounded temporary-artifact capacity. Low storage blocks writes while valid read-only reuse remains available. No user files or original collections are deleted.
+
+## Maintainer entry point
+
+`python -m research.issue_history.refresh.sc_action_cache_cli` accepts the existing collection/database/raw-source pins and optional primary review, plus an explicit private cache directory. `--refresh` builds a new generation under the same current identity while preserving older generations. Output contains status, private artifact location and descriptive counts; it does not print the original records. This requires no new package installation. End-user browser workflows are unaffected.
+
+## Newly executed acceptance
+
+The actual private collection passed cold build, fresh-process warm reuse and a forced refresh. Cache reuse was also executed with the crosswalk builder deliberately forbidden, proving the hit avoided recomputation. Both cache generations reproduce the existing frozen selected report exactly, with581actions:516matched adopted, three DPPA-only adopted and62failed drafts. The old generation remained intact. An injected refresh failure left every cache file unchanged. Independent read-only inspection verified the index-to-entry hash, full current identity, all30review/proof hashes, source/method provenance and exact report equality.
+
+All eight original source-file hashes and the frozen selected-action report remain unchanged. Unverified ballots, nonparticipation notes, policy-unbound status and comparison exclusions are preserved. Actual receipts and cache contents remain private under the recorded external root; no cache payloads or actual reviews are in this repository.
+
+Twenty source-free cache tests cover warm builder bypass; source/database/dependency/review/proof invalidation; mismatched raw pins; corrupt/truncated/future entries; corrupt pointers; wrong but rehashed provenance; failed or interrupted refresh; source changes during entry publication; deterministic refresh; reserves; ownership and input aliases; repository placement; and SQLite sidecars. The full local suite ran105checks successfully with one hardlink-creation test skipped because of the Windows sandbox. Existing draft/report Node checks also passed. Linux repository checks exercise the same suite; final publication acceptance is recorded in STATUS.md. On restricted Windows runners, `SC_ACTION_TEST_ROOT` can select a writable temporary base outside Git without weakening the production guard.
