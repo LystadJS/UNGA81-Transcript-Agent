@@ -1,6 +1,6 @@
 # Selective historical evidence: source-free acceptance
 
-Status: source-free Node acceptance passed; actual-browser CI acceptance pending. All records in these tests are fictional. No private database was written, actual source row read, transcript downloaded, reserved meeting opened or scientific model accepted.
+Status: source-free Node and actual-browser CI acceptance passed for source commit 08bdef0bff31317b216bf7b792e2878d59d69d70. All records in these tests are fictional. No private database was written, actual source row read, transcript downloaded, reserved meeting opened or scientific model accepted.
 
 ## Required parity
 
@@ -21,11 +21,13 @@ Method provenance checks require compatible ontology/extractor pairs for an exac
 ## Execution record
 
 - Existing report safeguards: passed on the initial implementation tree.
-- New full-versus-selected parity test: initially failed as intended against the pre-integration report. Selected loading removed France and Ghana from the roster, shrinking the comparison denominator from four countries to two, and reduced 2026 source coverage from four sources to two. The report integrator was notified; this is a release gate until corrected.
-- Browser test syntax check: passed. Actual browser execution: not run in this worker; CI execution is required before browser acceptance is claimed.
+- New full-versus-selected parity test: initially failed as intended against the pre-integration report. Selected loading removed France and Ghana from the roster, shrinking the comparison denominator from four countries to two, and reduced 2026 source coverage from four sources to two. Corrected by the independent roster integration; parity assertions now pass.
+- Browser test syntax check: passed. Actual browser execution: passed in GitHub CI run40057277533; no local browser dependency was installed.
 - After integration, `node tools/test_issue_report.cjs` passed all existing and new assertions, including visible legacy and method-gap notices.
 - `node tools/test_issue_history_client.cjs` passed selective/full retrieval, independent roster, body hierarchy, endpoint years, byte limits, legacy fallback, immutable subset identity, cache integrity and cancellation checks.
 - Independent review found and corrected two additional integration defects: legacy shards without roster metadata were being represented as authoritative empty rosters, and duplicate removal discarded differing extractor versions before compatibility assessment. The client now distinguishes absent from explicitly empty roster metadata; report duplicate identity includes method versions.
-- The dedicated browser case is wired into the existing meeting quick-reader workflow after archive UI acceptance. Its execution remains a CI release gate; syntax validation alone is not browser acceptance.
+- The dedicated browser case is wired into the existing meeting quick-reader workflow after archive UI acceptance. Its actual-browser execution passed in run40057277533; syntax validation alone was not counted as browser acceptance.
 
 This document records engineering acceptance only. Successful fictional tests do not certify historical source completeness, deployment, public data permissions, owner-confirmed labels, calibrated trajectory estimates or scientific readiness.
+
+Verified release checks: source PR137 passed all four workflows. Browser job120762919765 explicitly recorded the selective fetch/full-report parity/save-reopen PASS, alongside IndexedDB recovery, cancellation/failure preservation, exclusions and responsive layout. The 40 Python checks passed. Source PR137 merged as f5f7c5651702e5a84032b18d150dd6c8d2d301a6. Website PR52 passed regression40057353371 and mirror audit40057353303, then merged as b08af2fb19f4d0e634f1d4746d72195df3d664cb. Deployment40057594264 and live asset verifier40057594452 passed. A separate ten-asset live hash check and visible controls/availability safeguard verified release1.34.2. The archive remains unprovisioned, so production real-data save/reopen is not claimed.
