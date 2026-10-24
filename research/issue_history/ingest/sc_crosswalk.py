@@ -124,7 +124,9 @@ def build_crosswalk(collection,ddl_votes):
     links.sort(key=lambda r:(r['ddl_event_key'],r['dppa_event_id']))
     summary={'dppa_events':len(events),'ddl_event_groups':len(ddl),'identity_links':len(links),'ballot_statuses':dict(sorted(Counter(r['ballot_status'] for r in links).items())),
         'deduplication_eligible':sum(r['deduplication_eligible'] for r in links),'unmatched_dppa':len(unmatched_dppa),'unmatched_ddl':len(unmatched_ddl),'conflicts':len(conflicts)}
-    return {'schema':'un.sc-event-crosswalk.v1','version':VERSION,'summary':summary,'links':links,
+    canonical=lambda value:json.dumps(value,sort_keys=True,separators=(',',':'),ensure_ascii=False,allow_nan=False)
+    fingerprints={'collection_sha256':hashlib.sha256(canonical(collection).encode('utf-8')).hexdigest(),'ddl_votes_sha256':hashlib.sha256(canonical(sorted(canonical(row) for row in ddl_votes)).encode('utf-8')).hexdigest()}
+    return {'schema':'un.sc-event-crosswalk.v1','version':VERSION,'input_fingerprints':fingerprints,'summary':summary,'links':links,
         'unmatched_dppa':sorted(unmatched_dppa,key=lambda r:(str(r.get('dppa_event_id')),r['reason'])),
         'unmatched_ddl':sorted(unmatched_ddl,key=lambda r:(str(r.get('ddl_event_key',r.get('ddl_row_id'))),r['reason'])),
         'conflicts':sorted(conflicts,key=lambda r:(r['ddl_event_key'],r['reason'])),
@@ -148,7 +150,7 @@ def _source_hash(path):
     return h.hexdigest()
 
 
-def crosswalk_files(collection_file,ddl_database,output_file,*,ddl_raw_csv=None,expected_ddl_source_sha256=None,review_file=None):
+def crosswalk_files(collection_file,ddl_database,output_file,*,ddl_raw_csv=None,expected_ddl_source_sha256=None,review_file=None,select_events=False):
     target=Path(output_file).resolve()
     for input_path in (collection_file,ddl_database,ddl_raw_csv,review_file):
         if input_path is not None:
@@ -171,6 +173,7 @@ def crosswalk_files(collection_file,ddl_database,output_file,*,ddl_raw_csv=None,
     dependency_paths={name:Path(__file__).with_name(name) for name in ('sc_drafts.py','adapters.py','countries.py')}
     if ddl_raw_csv is not None:dependency_paths['un_sc_csv.py']=Path(__file__).with_name('un_sc_csv.py')
     if review_file is not None:dependency_paths['sc_primary_review.py']=Path(__file__).with_name('sc_primary_review.py')
+    if select_events:dependency_paths['sc_event_selection.py']=Path(__file__).with_name('sc_event_selection.py')
     dependency_paths['country_registry']=Path(__file__).resolve().parents[3]/'un/config/countries.csv'
     dependencies={name:_hash(path) for name,path in dependency_paths.items()}
     provenance={'collection_sha256':hashlib.sha256(collection_bytes).hexdigest(),'ddl_database_sha256':database_hash,'raw_reference_enrichment':False,'algorithm_sha256':_hash(__file__),'dependency_sha256':dependencies}
@@ -202,6 +205,9 @@ def crosswalk_files(collection_file,ddl_database,output_file,*,ddl_raw_csv=None,
         provenance['review_input_sha256']=review_hashes
     report=build_crosswalk(collection,rows);report['input_provenance']=provenance
     if reviewed is not None:report['primary_review']={'summary':review_summary,'corrections':reviewed['corrections'],'limits':'Assistant-provisional correction view only; original source records and ballots remain unchanged.'}
+    if select_events:
+        from .sc_event_selection import select_events as select_actions
+        report['event_selection']=select_actions(collection,rows,report)
     if any(_hash(path)!=sha for path,sha in review_hashes.items()):raise ValueError('Primary review inputs changed during computation')
     if _hash(collection_file)!=provenance['collection_sha256'] or _hash(ddl_database)!=database_hash:raise ValueError('Read-only crosswalk input changed during computation')
     if ddl_raw_csv is not None and _source_hash(ddl_raw_csv)!=expected_ddl_source_sha256:raise ValueError('Raw reference source changed during computation')
@@ -221,6 +227,6 @@ if __name__=='__main__':
     import argparse
     parser=argparse.ArgumentParser(description=__doc__)
     for name in ('collection-file','ddl-database','output-file'):parser.add_argument('--'+name,required=True)
-    parser.add_argument('--ddl-raw-csv');parser.add_argument('--expected-ddl-source-sha256');parser.add_argument('--review-file')
+    parser.add_argument('--ddl-raw-csv');parser.add_argument('--expected-ddl-source-sha256');parser.add_argument('--review-file');parser.add_argument('--select-events',action='store_true')
     result=crosswalk_files(**vars(parser.parse_args()))
     print(json.dumps(result['summary'],indent=2))
