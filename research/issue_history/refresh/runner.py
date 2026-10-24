@@ -56,3 +56,13 @@ def refresh(*, rows, adapter, persist, store, checkpoint, bundle_directory,
         health["status"] = "failed"
         store._atomic_write(health_path, canonical_bytes(health))
         raise
+
+
+def refresh_private_actions(**options):
+    """Refresh selected voting actions privately; never ingest or export bundles.
+
+    Completed source ingestion is a prerequisite. The accepted cache verifies
+    its own dependencies; this lane advances only a separate private pointer.
+    """
+    from .sc_action_refresh import refresh_selected_actions
+    return refresh_selected_actions(**options)
