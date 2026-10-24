@@ -4,7 +4,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright'),R=require('../site/issue-report');
 const directory=path.resolve(process.argv[2]||'site'),snapshotId='fictional-selective-ui';
 const source=(id,body,countries)=>({id,revision:'one',published_date:'2026-10-01',body,family:'un_statement',countries,url:'https://example.invalid/'+id});
-const observation=(id,source,country,policy)=>({id,source_id:source,source_revision:'one',country,date:'2026-10-01',policy,context:'sudan',stance:'support',attribution:'national',review_state:'assistant_provisional'});
+const observation=(id,source,country,policy)=>({id,source_id:source,source_revision:'one',country,date:'2026-10-01',policy,context:'sudan',stance:country==='Kenya'?'qualified':'support',qualifications:country==='Kenya'?['Only with consent']:[],attribution:'national',review_state:'assistant_provisional'});
 const selectedSource=source('access-SC','SC',['Kenya','United States']),otherSource=source('other-SC','SC',['Ghana']),gaSource=source('access-GA','GA_C3',['Nigeria']);
 const empty={schema:'un.issue-history.shard.v1',snapshot_id:snapshotId,sources:[],observations:[],votes:[]};
 const definitions=[
@@ -28,10 +28,12 @@ const requested=[];let manifestRequests=0;
  await page.locator('#archiveStart').fill('2026-10-01');await page.locator('#archiveEnd').fill('2026-10-23');await page.locator('#archiveTopic').fill('Humanitarian access');await page.locator('#archiveBody').selectOption('SC');await page.locator('details').first().locator('summary').click();await page.locator('#archiveAsOf').fill('2026-10-23');
  await page.locator('#archiveRun').click();await page.waitForFunction(()=>document.getElementById('archiveStatus').textContent.startsWith('Report ready.'));
  assert.deepEqual([...requested].sort(),['/access-sc.json','/roster-sc.json'],'UI requests selected policy/body plus independent country roster only');
+ assert.equal(await page.locator('#archiveIssueSummary').isVisible(),true);assert.equal(await page.locator('#archiveIssueSummary').getByRole('heading',{name:'Issue overview',exact:true}).count(),1);
  const [download]=await Promise.all([page.waitForEvent('download'),page.locator('#archiveSave').click()]);const saved=JSON.parse(fs.readFileSync(await download.path(),'utf8'));
  const full={manifest,sources:[selectedSource,otherSource,gaSource],observations:definitions.flatMap(d=>d.observations||[]),votes:[]},expected=R.build(full,saved.inputs);
  for(const key of ['roster','questions','coverage'])assert.deepEqual(saved.results[key],expected[key],'browser selective '+key+' equals full-fixture report');
  assert.equal(saved.results.questions[0].population,2);assert.equal(saved.results.questions[0].counts.missing,1);
+ assert.equal(saved.results.issue_summary.schema,'un.issue-summary.v1');const summary=saved.results.issue_summary,section=summary.sections.find(s=>s.policy_id==='humanitarian_access'&&s.context_id==='sudan');assert.ok(section.gaps.unknown_countries.includes('Ghana'));const qualified=section.groups.find(g=>g.state==='qualified').countries.find(c=>c.country==='Kenya');assert.ok(qualified.qualifications.includes('Only with consent'));assert.ok(qualified.source_references.some(s=>s.source_id==='access-SC'&&s.observation_id==='kenya'&&s.url==='https://example.invalid/access-SC'));assert.match(await page.locator('#archiveOutput').innerText(),/Only with consent/);
  // Exercise prefetch validation beyond the normal HTML length guard.
  const previousHTML=await page.locator('#archiveOutput').innerHTML(),previousRequests=manifestRequests;
  await page.locator('#archiveTopic').evaluate(input=>input.removeAttribute('maxlength'));
@@ -42,7 +44,9 @@ const requested=[];let manifestRequests=0;
 
  const reopened=await context.newPage();await reopened.goto('http://127.0.0.1:'+server.address().port+'/issue-archive.html');await reopened.locator('details').first().locator('summary').click();await reopened.locator('#archiveOpen').setInputFiles({name:'selective-saved.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(saved))});await reopened.waitForFunction(()=>document.getElementById('archiveStatus').textContent.startsWith('Saved report reopened'));
  assert.match(await reopened.locator('#archiveOutput').innerText(),/Ghana/);assert.equal(await reopened.locator('#archiveBody').inputValue(),'SC');
- const [again]=await Promise.all([reopened.waitForEvent('download'),reopened.locator('#archiveSave').click()]);assert.deepEqual(JSON.parse(fs.readFileSync(await again.path(),'utf8')),saved,'reopening preserves frozen selective report and all stored provenance');
+ assert.equal(await reopened.locator('#archiveIssueSummary').isVisible(),true);
+ const [again]=await Promise.all([reopened.waitForEvent('download'),reopened.locator('#archiveSave').click()]);const roundtrip=JSON.parse(fs.readFileSync(await again.path(),'utf8'));assert.deepEqual(roundtrip,saved,'reopening preserves frozen selective report and all stored provenance');assert.deepEqual(roundtrip.results.issue_summary,summary,'selective issue summary reopens exactly, including unknown-country gaps and qualified source references');assert.match(await reopened.locator('#archiveOutput').innerText(),/Only with consent/);
+ const [htmlDownload]=await Promise.all([reopened.waitForEvent('download'),reopened.locator('#archiveHTML').click()]);const html=fs.readFileSync(await htmlDownload.path(),'utf8');assert.ok(!/<script\b/i.test(html),'standalone briefing remains script free');assert.ok(html.includes('Content-Security-Policy'));assert.ok(html.includes('Only with consent'));assert.ok(html.includes('https://example.invalid/access-SC'));
  assert.deepEqual(errors,[]);console.log('PASS actual-browser fictional selective fetch, independent unknown-country roster, full-report parity and frozen save/reopen');
  }finally{await browser?.close();await new Promise(resolve=>server.close(resolve));}
 })().catch(error=>{console.error(error);process.exitCode=1;});

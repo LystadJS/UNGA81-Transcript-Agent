@@ -37,14 +37,14 @@ Updated 24 October 2026. Engineering checks use invented metadata; they are not 
 | E8 | Versioned artifact/dependency contracts | Durable production accepted-artifact materialization |
 | F1 | Canonical policy/context resolver; unsupported qualifiers withheld | Broader validated topic coverage |
 | F2 | Country-count opinion climate including recorded unknowns | Real snapshot acceptance |
-| F3 | Source-linked deterministic issue overview | Substantive dispute/proposal synthesis beyond climate counts |
+| F3 | Source-linked issue overview with named country positions, conditions, dated U.S. comparisons and historical/current gaps | Broader source-supported proposal detail and real archive acceptance |
 | F4 | Opinion distributions and country/policy matrix | Production-scale usability evaluation |
 | F5 | Historical coverage and dated U.S. reference observations | Membership/eligibility visualization and certified coverage |
 | F6 | Automatic observed country charts and explicit gaps | Accepted-model estimates/uncertainty overlay |
 | F7 | Worker-based single-button archive report orchestrator | Historical snapshot provisioning; normal path currently unavailable |
 | F8 | Frozen report envelope, exclusions, inputs/results and source versions | Production real-snapshot replay acceptance |
 | G1 | Source-free actual-browser acceptance passed for 1.34.2 | Real populated archive replay |
-| G2 | Maintainer synthetic store/export benchmark | Full cold/warm browser production budgets |
+| G2 | Maintainer store/export checks and bounded ten-year synthetic browser timing harness | Actual CI timings pending; production data/device budgets remain unmeasured |
 | G3 | 1.34.2 source and mirror merged; deployment/live hashes passed | Full public data/model release withheld |
 
 Next execution sequence: finish integration/browser acceptance; publish the source-free engineering milestone; obtain and verify permitted source-family downloads; ingest bounded reconciled year/body shards; collect owner-confirmed evaluation labels; assess extraction and compatible models; provision the historical snapshot; verify the normal three-input workflow against actual evidence. No manual prompt is needed to advance an unblocked engineering dependency. External access and actual owner labeling cannot be replaced by fabricated evidence.
@@ -64,3 +64,5 @@ A read-only engineering replay reproduced all 98,000 imported GA normalized outp
 Release acceptance: source PR137 merged (f5f7c5651702e5a84032b18d150dd6c8d2d301a6); all four source workflows passed, including actual-browser run40057277533 and store run40057277497. Website PR52 merged (b08af2fb19f4d0e634f1d4746d72195df3d664cb) after regression40057353371 and mirror audit40057353303 passed. Deployment40057594264, live verifier40057594452 and postmerge mirror audit40057594449 passed. A separate ten-asset hash check and visible live controls/availability safeguard confirmed 1.34.2. Synthetic save/reopen acceptance is distinct from actual populated archive acceptance. Current engineering agenda remains approximately60% complete; no empirical model or archive completeness claim follows.
 
 Next unblocked engineering: improve the source-linked substantive issue overview (F3) and add browser performance budgets/acceptance at representative synthetic historical scale (G2), preserving observed-only fallback and all empirical gates. Continue automatically. Bulk import remains stopped at its durable 98,000-GA/7,740-SC checkpoint until C: has at least1 GiB free; last check191,012,864 bytes.
+
+Current update (23 October local time): country-first source-linked summaries and ten-year synthetic browser performance acceptance implemented. Current country and U.S. qualifications survive deduplication; summary comparison dates and sources remain explicit and distinct from the latest U.S. expression. Report indexes replace repeated country/date scans; the deterministic fixture retained the exact pre-optimization report hash. Local summary/report/client/model checks passed; actual-browser performance, save/reopen and publication remain pending for 1.35.0. No private staging, source imports, reserved transcripts or model acceptance changed.
