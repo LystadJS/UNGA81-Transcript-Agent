@@ -1,6 +1,6 @@
 'use strict';
-importScripts('numerics.js', 'meeting-scopes.js?v=1.35.1', 'mds-core.js?v=1.12.1','gmm-core.js?v=1.12.1','cluster-options.js?v=1.12.1',
-  'nmf-options.js?v=1.12.1', 'passage-selection.js?v=1.12.1', 'text-units.js?v=1.35.1', 'passage-labels.js?v=1.35.1', 'position-comparison.js?v=1.35.1', 'issue-workflow.js?v=1.35.1', 'analysis-core.js?v=1.35.1', 'lsa-core.js?v=1.12.1', 'representation-metrics.js?v=1.12.1',
+importScripts('numerics.js', 'meeting-scopes.js?v=1.36.0', 'mds-core.js?v=1.12.1','gmm-core.js?v=1.12.1','cluster-options.js?v=1.12.1',
+  'nmf-options.js?v=1.12.1', 'passage-selection.js?v=1.12.1', 'text-units.js?v=1.36.0', 'passage-labels.js?v=1.36.0', 'position-comparison.js?v=1.36.0', 'issue-workflow.js?v=1.36.0', 'analysis-core.js?v=1.36.0', 'lsa-core.js?v=1.12.1', 'representation-metrics.js?v=1.12.1',
   'cluster-algorithms.js?v=1.12.1', 'hdbscan-core.js?v=1.12.1', 'cluster-core.js?v=1.12.1', 'cluster-stability.js?v=1.12.1');
 onmessage = async ({data}) => {
   try {

@@ -78,3 +78,19 @@ Next agenda steps: resume the authorized bounded historical import if capacity r
 Continuation acceptance: full source-output replay matched all205,738selected normalized GA rows with0mismatches across954,382scanned, preserving database and cursor checksums. Source PR141 merged asfa60c10fc3ad3a3b873a26c22b3809cd8f705c4f after all three relevant source workflows passed, including actual-browser run40061432590. Forty Python checks passed locally. Website PR54 passed regression40061499719 and mirror audit40061499762, then merged asaca43b0ed9e68d43eddee5c9ead2a8d2b7440ba4. Deployment40061759466 and live verifier40061759598 passed. Eleven live asset hashes matched, and the live app reopened/exported a1.35.0fictional frozen report exactly with original summaries, filters, exclusions and results retained and clean captions. Latest reported free space2,646,843,392bytes; source guards remain required for further bulk work.
 
 Next narrow acquisition: use the official DPPA-SCVOTES catalog interface to inspect metadata and at most45member rows from one vetoed, one otherwise unsuccessful and one adopted draft. No actual download endpoint or schema has yet been verified. See SC_DRAFT_SOURCE_FEASIBILITY.md. Broader failed/procedural/committee voting and statement coverage, policy bindings, owner-confirmed evaluation, permitted archive provisioning and empirical models remain open. Automatic continuation prompt was updated to reflect the completed GA cursor and to avoid unnecessary re-ingestion.
+
+24 October DPPA continuation: actual official CSV schema and source bytes were
+verified, then 581 draft events were imported into a separate private ledger:
+8713 catalog member entries plus two separately sourced nonparticipation notes.
+Outcomes are 400 unanimous, 119 majority, 36 source-labelled veto failures and
+26 other failures for insufficient votes. The 6000 unanimous-event member
+entries remain unknown ballots because this source category may include no
+formal vote; no fifteenth ballot was added to either 14-member event. All
+entries remain policy-unbound and private. Full event/member parity, foreign
+keys and integrity checks passed; six new synthetic tests passed. Primary-note
+hash scopes distinguish browser-rendered text from tool-extracted metadata,
+without claiming original HTML/PDF hashes or owner confirmation. The completed
+GA/SC ledger checksum is unchanged. See SC_DRAFT_SOURCE_ACCEPTANCE.md for
+aggregate acceptance and limitations. Public archive provisioning, cross-source
+voting-action deduplication, broader sources, owner labels and empirical models
+remain open; this source milestone does not resolve those gates.
