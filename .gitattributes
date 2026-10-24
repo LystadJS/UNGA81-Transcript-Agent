@@ -37,3 +37,6 @@ research/issue_history/ingest/transcripts_un_audit.py text eol=lf
 research/issue_history/ingest/transcripts_un_batch.py text eol=lf
 
 research/issue_history/ingest/transcript_review.py text eol=lf
+
+research/issue_history/ingest/transcript_review_v2.py text eol=lf
+research/issue_history/ingest/transcript_cohort.py text eol=lf

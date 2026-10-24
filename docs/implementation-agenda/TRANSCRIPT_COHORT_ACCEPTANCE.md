@@ -1,0 +1,11 @@
+# Development cohort coverage acceptance
+
+A read-only ledger reconciles the full sealed development frame against separately supplied artifacts, pinned receipts, source-format audits, current private batches and complete provisional review linkage. It retains all eight eligible October 1–4 GA meetings, including five missing artifacts. Three supplied artifacts contain 178 artifact-bound segments; two Third Committee artifacts add 109 segments. No SC meeting occurs in this declared cohort; this is not UN-wide absence or archive completeness.
+
+A separately versioned review wrapper excludes Chair/Co-Chair roles from national-capacity proposals while retaining the unchanged version1 validator and its original records. Source-local review withheld one collective direct-request proposal; the corrected review retains one country request candidate and two country condition descriptions, with unresolved context. Country-specific findings, original wording and review packets remain private.
+
+Actual private acceptance created a new 181-source metadata database, zero evidence observations. Exact idempotent batch intake, read-only reconciliation and database/JSON reopening passed. All eight original voting inputs, the earlier accepted database and original review packets remain unchanged. The sealed frame and version1 validator are unchanged. Capacity and national opinions are not inferred from source affiliations. Thirty distinct national-capacity candidates remain provisional; accepted positions and U.S. comparisons are zero.
+
+All 247 local Python tests passed with three Windows link-creation skips. Existing Node issue-report and SC draft checks passed. Independent source-free cohort and role-guard review passed. Linux repository checks remain pending. No public browser assets changed, so the website mirror and live1.36.0 release are unchanged; no new browser acceptance is claimed.
+
+Next: review the two newly imported development artifacts for explicit issue positions and source-local attribution, retaining collective/unknown capacity and missing comparable U.S. evidence as gaps. Expand only within permitted development sources. Owner-confirmed labels, historical archive provisioning and fitted-model acceptance remain open.
