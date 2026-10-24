@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.34.0",
+  "browser_engine": "browser-descriptive-1.34.1",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-10-23",
   "features": [
+    "Verified GA v6 and SC v7 vote adapters, canonical country identities, bounded resumable private imports and disk-reserve guard; verified report-result cache and readable archive controls",
     "Historical issue infrastructure: versioned maintainer store, source-free bundles, verified browser cache, country-first archive report, reproducible saved results; archive not provisioned and fitted models unavailable",
     "Ten-year humanitarian access/civilian protection workflow: independent historical as-of date, current country-position statistics, coverage heatmap, U.S. history, automatic observed country trajectories, source-bound historical import and saved replay; fitted models withheld",
     "Country briefings and documentary exports separate executive policy, congressional analysis, enacted U.S. law and other official evidence; historical status and current gaps remain visible",
@@ -99,7 +100,7 @@
     "status": "not_provisioned",
     "entry": "issue-archive.html",
     "model_status": "observed_only",
-    "remote_source_formats": "unverified",
+    "remote_source_formats": "GA v6 and SC v7 vote formats verified; historical transcript coverage incomplete",
     "empirical_acceptance": "not_run"
   }
 }

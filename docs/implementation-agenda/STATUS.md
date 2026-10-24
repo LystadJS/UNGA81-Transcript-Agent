@@ -1,6 +1,6 @@
 # Ten-year issue workflow execution ledger
 
-Updated 23 October 2026. Engineering checks use invented metadata; they are not empirical model acceptance. The archive is not provisioned. Source acquisition, owner-confirmed evaluation and operational deployment remain release gates for the desired end state.
+Updated 23 October 2026. Engineering checks use invented metadata; they are not empirical model acceptance. The public archive is not provisioned. Official GA/SC vote files are verified in private staging; the private GA import is capacity-limited at98,000 accepted rows and 7,740 SC rows are stored. Source acquisition, owner-confirmed evaluation and operational deployment remain release gates for the desired end state.
 
 | Task | Implemented result | Remaining work |
 | --- | --- | --- |
@@ -10,17 +10,17 @@ Updated 23 October 2026. Engineering checks use invented metadata; they are not 
 | A4 | Same-estimand temporal/source-separated assessment contract | Owner-confirmed empirical benchmark |
 | B1 | SQLite schema migration and rollback backup | Hosted operational migration acceptance |
 | B2 | Immutable revisions, idempotent writes, transitive invalidation | Production-scale evaluation |
-| B3 | Official source-family feasibility inventory | Verified remote bytes/formats/year/body permissions |
+| B3 | Official GA v6/SC v7 vote bytes/headers inspected; recent transcript inventory adapter | Historical transcript/committee coverage and publication permissions |
 | B4 | Strict normalized transcript adapter and hash checks | Remote format adapters after inspecting actual formats |
-| B5 | Normalized vote adapter with version/stage/eligibility | Verified official download header adapter |
+| B5 | Actual GA/SC CSV adapters, recorded-vote modality, exact country joins, decision/subpart preservation | Other voting families |
 | B6 | Source-linked resolution/policy binding validation | Reviewed actual resolution bindings |
 | B7 | Bounded resumable ingestion, retry/quarantine/checkpoints | Source-specific network acquisition |
 | B8 | Incremental refresh and atomic publication/health safeguards | Approved feed, host, scheduler and live freshness |
-| B9 | Bounded shard processing contract | Actual reconciled year/body ingestion; catalog access currently fails |
+| B9 | 7,740 SC rows/516 resolutions reconciled; private 98,000 GA rows imported with durable cursor | Remaining GA import paused at200 MiB free-space reserve; more storage required |
 | C1 | Bounded policy/year/body bundles, hashes, privacy allowlists | Populated permitted historical snapshot |
 | C2 | IndexedDB cache, verified reuse/recovery, resumable shards | Production browser acceptance on real scale |
 | C3 | Browser queries with policy/context/body/date/as-of filters | Real-data database/query parity |
-| C4 | Fully versioned analytical cache identities | Production accepted-artifact reuse |
+| C4 | Fully versioned, hash-verified browser result cache and targeted invalidation | Production accepted-model artifacts |
 | D1 | Empty owner-review packets and source/temporal splits | Actual owner-confirmed labels |
 | D2 | Existing conservative rule extractor adapter | Representative empirical assessment |
 | D3 | Audit checkpoint remains segregated | Resource-approved production classifier and benchmark |
@@ -43,8 +43,18 @@ Updated 23 October 2026. Engineering checks use invented metadata; they are not 
 | F6 | Automatic observed country charts and explicit gaps | Accepted-model estimates/uncertainty overlay |
 | F7 | Worker-based single-button archive report orchestrator | Historical snapshot provisioning; normal path currently unavailable |
 | F8 | Frozen report envelope, exclusions, inputs/results and source versions | Production real-snapshot replay acceptance |
-| G1 | Source-free browser acceptance scenarios authored | CI/live acceptance recorded in release notes |
+| G1 | Source-free actual-browser acceptance passed for 1.34.0 | Real populated archive replay and 1.34.1 CI |
 | G2 | Maintainer synthetic store/export benchmark | Full cold/warm browser production budgets |
-| G3 | Integration/release in progress | Verified CI, publication, live checks; full data/model release withheld |
+| G3 | 1.34.0 source and mirror merged; deployment/live hashes passed | 1.34.1 integration; full public data/model release withheld |
 
 Next execution sequence: finish integration/browser acceptance; publish the source-free engineering milestone; obtain and verify permitted source-family downloads; ingest bounded reconciled year/body shards; collect owner-confirmed evaluation labels; assess extraction and compatible models; provision the historical snapshot; verify the normal three-input workflow against actual evidence. No manual prompt is needed to advance an unblocked engineering dependency. External access and actual owner labeling cannot be replaced by fabricated evidence.
+
+Storage: only C: is available; the import preserves200 MiB headroom. The368,130,256-byte GA download was replaced by an11,307,870-byte gzip after its decompressed SHA-256 matched exactly. Only our superseded/reproducible scratch artifacts were removed. Existing user collections were untouched. Resume bulk import only with at least1 GiB free and the saved source/window/adapter identity. Private rows remain unbound to policy; full-resolution votes never become isolated policy positions.
+
+Automatic continuation is active hourly in the owning chat. It advances unblocked dependencies, stays quiet when conditions are unchanged, and resumes bulk ingestion only when at least 1 GiB is free. The remaining public archive and empirical model gates are unchanged.
+
+The full GA CSV window reconciles 205,738 rows in 1,066 resolution/decision groups, with no blank totals, duplicate country codes or mismatched publisher totals. The private database contains only 98,000 of those rows; 107,738 remain to import. Input reconciliation does not establish complete database coverage or a policy position.
+
+The GA database currently has 507 complete 193-country groups plus a partial 149-of-193 group for A/RES/77/208. That partial group is not a complete published vote distribution. The full-file reconciliation and the partial database are distinct results.
+
+A read-only engineering replay reproduced all 98,000 imported GA normalized outputs against the authoritative source hashes and evidence fields. The cursor was explicitly rebaselined to the current dependency hashes without changing offsets or counts; its original backup and review receipt preserve lineage. This engineering verification is not owner-confirmed policy annotation.

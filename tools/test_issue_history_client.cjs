@@ -13,6 +13,7 @@ async function run(){
  assert.deepEqual(await client.reopen('one'),snapshot);
  const spec={snapshot_id:'one',ontology_version:'1',extractor_version:'1',model_version:'1',estimand:'explicit',policy:'access',context:'Sudan',start:'2020-01-01',end:'2020-02-01',as_of:'2020-02-01',scope:'SC',parameters:{b:2,a:1}};
  assert.equal(H.cacheKey(spec),H.cacheKey({...spec,parameters:{a:1,b:2}}));assert.notEqual(H.cacheKey(spec),H.cacheKey({...spec,snapshot_id:'two'}));assert.throws(()=>H.cacheKey({}),/Incomplete/);
+ await H.putAnalysis(cache,spec,{answer:1});assert.deepEqual(await H.getAnalysis(cache,spec),{answer:1});const entry=await cache.get('analysis:'+H.cacheKey(spec));entry.value.answer=2;await cache.put('analysis:'+H.cacheKey(spec),entry);assert.equal(await H.getAnalysis(cache,spec),null);assert.equal(await H.getAnalysis(cache,{...spec,snapshot_id:'other'}),null);
  const report=H.freezeReport({inputs:spec,snapshot_id:'one',versions:{schema:1},evidence:snapshot,results:{model:'observed'},exclusions:['unresolved']});assert.deepEqual(H.reopenReport(JSON.parse(JSON.stringify(report))),report);
  const badClient=new H.Client({cache:new H.MemoryCache(),fetcher:async url=>url.endsWith('manifest.json')?{ok:true,json:async()=>manifest}:{ok:true,headers:{get:()=>null},arrayBuffer:async()=>Buffer.from('bad')}});
  await assert.rejects(badClient.load('https://example.org/manifest.json'),/integrity/);await assert.rejects(badClient.reopen('one'),/unavailable/);

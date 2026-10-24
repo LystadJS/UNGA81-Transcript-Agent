@@ -9,7 +9,7 @@ const registry=Object.freeze([
  {id:'dynamic_vote_v1',estimand:'dated_resolution_vote',status:'not_implemented'}
 ]);
 const date=x=>typeof x==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(x)&&!isNaN(Date.parse(x))&&new Date(x).toISOString().slice(0,10)===x;
-const us=x=>/^(USA|US|United States(?: of America)?)$/.test(x);
+const us=x=>/^(USA|US|United States(?: of America)?)$/i.test(x);
 function canonical(x){if(Array.isArray(x))return '['+x.map(v=>v===undefined?'null':canonical(v)).join(',')+']';if(x&&typeof x==='object')return '{'+Object.keys(x).filter(k=>x[k]!==undefined).sort().map(k=>JSON.stringify(k)+':'+canonical(x[k])).join(',')+'}';return JSON.stringify(x);}
 function state(rows){const values=[...new Set(rows.map(r=>r.stance))];return values.length===0?'missing':values.length===1?values[0]:'conflicting';}
 function panel(events,options={}){

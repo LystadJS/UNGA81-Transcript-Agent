@@ -87,6 +87,25 @@ class StoreTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             canonical_bytes({"unsupported": float("nan")})
 
+    def test_bulk_transaction_rollback(self):
+        with self.assertRaises(RuntimeError):
+            with self.store.transaction():
+                self.store.upsert_source({**self.source, "id": "rolled-back"})
+                raise RuntimeError("synthetic sink failure")
+        self.assertIsNone(self.store.db.execute("SELECT id FROM sources WHERE id='rolled-back'").fetchone())
+
+    def test_provisional_binding_separate_from_votes(self):
+        binding = dict(resolution_id="S/RES/EXAMPLE",resolution_version="as_adopted",stage="adopted_resolution",
+            policy_id="humanitarian_access",context_id="thematic_armed_conflict",source_url="https://digitallibrary.un.org/record/fixture",
+            rationale="Invented operative access requirement",review_state="assistant_provisional",source_sha256="a"*64,source_anchor="Synthetic paragraph 1")
+        artifact = self.store.put_policy_binding(binding,published_date="2024-01-01",body="SC")
+        self.assertEqual(artifact,self.store.put_policy_binding(binding,published_date="2024-01-01",body="SC"))
+        self.assertTrue(self.store.artifact_valid(artifact))
+        self.assertEqual(0,self.store.db.execute("SELECT count(*) FROM evidence").fetchone()[0])
+        self.assertEqual(1,self.store.export_bundle(Path(self.temp.name)/"public-binding-test","binding-test")["counts"]["sources"])
+        with self.assertRaises(ValueError):
+            self.store.put_policy_binding({**binding,"review_state":"owner_confirmed"},published_date="2024-01-01",body="SC")
+
     def test_bounded_partitions_and_browser_query_parity(self):
         for i in range(4):
             source = {**self.source, "id": "source-" + str(i), "published_date": f"202{3 + i % 2}-01-01", "body": "SC" if i % 2 else "GA"}

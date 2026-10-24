@@ -1,0 +1,45 @@
+# Historical transcript intake: metadata-only feasibility assessment
+
+23 October 2026. No original speech, PDF, archive member, private ledger or reserved transcript was opened. No acquisition, extraction, numerical fit or empirical publication was performed for this assessment. Existing frozen files remain unchanged.
+
+## Finding
+
+The existing General Debate work provides a plausible source-authentication route for a separately versioned, provisional observed-position ledger. It is not an immediately publishable ten-year issue database. Existing source-linked research packages remain private, the source-quality audit split remains excluded from method selection, and source coverage cannot stand in for explicit humanitarian positions. A fresh product intake must preserve these boundaries and verify public redistribution permissions before exporting any events.
+
+The latest aggregate source audit reports 1,574 verified of 1,584 expected country-year opportunities for a fixed 99-affiliation frame during 2008–2023. Those numbers are inherited aggregate audit results, not newly replayed here, not a UN membership census and not 1,574 humanitarian policy observations. Ten opportunities remain unresolved or structurally not at risk; they cannot become neutral positions, absences or zero-valued trajectories.
+
+For a report frozen as of 23 October 2026, the rolling window starts 24 October 2016. The annual September 2016 General Debate falls outside that window. The documented 2016–2023 collection therefore supplies potential in-window annual evidence from 2017–2023, subject to exact source dates and issue relevance. It does not establish 2024–2026 coverage, any Security Council series, or GA committee coverage. Harvard 2024/2025 modalities were explicitly excluded from the frozen primary research population and cannot be silently appended.
+
+## Available metadata and interfaces
+
+| Repository reference | What it establishes | What it does not establish |
+| --- | --- | --- |
+| `docs/parallel-work/W4_P2_2008_2023_INDEPENDENT_SOURCE_AUDIT_ACCEPTANCE_2026-10-13.md` | Restricted source-quality results, corrected derived inventory and remaining gaps | Newly authenticated source bytes in this task; explicit policy labels; public empirical release |
+| `docs/parallel-work/W4_P1_P2_MAIN_INTEGRATION_REVIEW_2026-10-15.md` | Main integration accepted source tools and aggregate receipts; distinct 90+28 and 64-PV designs | Permission to combine their sampling weights or consume the 28 audit meetings for method tuning |
+| `docs/parallel-work/P2_W1_SOURCE_AUTH_REVALIDATION_2026-10-12.md` | Exact original TAR-member binding repair and 790/792 restricted 2016–2023 source cells | Calibrated country-position inference; source-independent replication |
+| `research/source_acquisition/w4_2008_2015/encrypted_original_pv_intake.py` | Hard-coded official pre-2016 PV ranges, immutable split digest, approved document hosts and encrypted intake boundary | A general ten-year source catalog or authorization to execute intake in this metadata-only task |
+| `research/source_acquisition/w4_2008_2015/independent_quality_audit_28.py` | Exact source-quality audit purpose and exclusion from model selection | Product training material or a substitute for the 37 sealed October 2026 evaluation meetings |
+| `research/source_acquisition/general_debate/p2_w1_authenticated.py` | Read-only private source bridge checking exact TAR members, PV manifest, dates and affiliation correspondence | A public browser bundle adapter; output remains publication-ineligible |
+| `research/source_acquisition/general_debate/p2_expansion_38_meetings.txt` | Existing acquisition index path identified by code | Contents were not opened in this assessment and are not a new product sampling frame |
+
+The private bridge expects user-supplied panel, P2 ZIP, original-PV ZIP, Harvard TAR and upstream provenance paths. Exact absolute private locations are not established by the public metadata and were not searched. Within the private ZIP contract, it references `private_reconciliation/private_W4_candidate_99_by_8_observation_grid.csv` and `private_reconciliation/private_full_original_pdf_byte_manifest.csv`; original PDFs use `original_UN_GA_PV/<symbol_with_underscores>.pdf`. These are interface descriptions only: none of those private members was opened. Public aggregate JSON contains commitments and totals, not a reconstructable approved country/source/year roster.
+
+The historical TAR filename documented by the audit is `UNGDC_1946-2025.tar.gz`, version 14, with pinned SHA-256 `55077dccf7242cdf544aa95c4797c68e443b0c37344c9c112a2e2392ddfcf8e5`. A whole-TAR hash alone is insufficient: each selected `ISO3_session_year.txt` member must match its original member hash and independently corroborated complete official PV source. The original flaw allowed a caller-supplied text/hash pair despite an authentic archive; the corrected bridge fails that attack. Do not replace that boundary with the new normalized-record validator alone.
+
+## Safe next implementation sequence
+
+1. Establish a separate product source register containing permitted public official URLs, exact original hashes, dates, language/translation authority, body and recorded affiliation. Reuse audited code contracts and public aggregate commitments, without copying private source-linked research rows or treating an old fit as a policy observation.
+2. Register source roles before extraction: product development, source-quality audit, evaluation and restricted research. Refuse the 37 reserved October 5–6 2026 meeting IDs. Keep the 28 historical quality-audit PVs out of dictionary, classifier and model selection. Preserve the separately frozen 64-PV design and its weights.
+3. Obtain a permitted development-source allowlist from the authoritative provenance records. In a bounded private staging job, replay complete original PV bytes, exact archive member correspondence, date and recorded-affiliation checks. Preserve all missing/failed cells and source modality distinctions. Do not mutate frozen hashes, labels or research partitions.
+4. Run the independent humanitarian rule adapter only on eligible source-bound development material. Store explicit national policy/context observations as assistant-provisional, with original source pointers, qualifications, ontology/extractor versions and registry mapping. Collective wording, descriptions of conditions, generic aid and unresolved wording remain excluded from national stance comparisons. No historical latent vector or cluster becomes a policy label.
+5. Check event fidelity and coverage separately. Distinguish General Debate genre, translation and source selection from missing policy evidence. Repeated statements cannot weight a country more heavily. Exact-date U.S. comparison may remain sparse; do not fill gaps with a frozen lexical distance or unsupported carry-forward estimate.
+6. Independently acquire and verify missing 2024–2026, GA committee and Security Council source families if available. Their inclusion must not rewrite the frozen research primary population. The four current transcript-inventory probes in SOURCE_FEASIBILITY.md do not establish earlier source availability.
+7. Export only source-access-approved fields after provenance/privacy review in the new product ledger. Existing research packages and empirical outputs remain private under their original gates. Public observed-event release must not be described as accepted W4 inference, model calibration, representative national opinion or complete UN coverage.
+
+## Permissions and scientific gates
+
+Official-source accessibility is distinct from permission to republish source-derived material. The inspected historical audit documents do not establish a comprehensive license for republishing Harvard speech text, private reconciliation rows or research outputs. No such permission is inferred. The current GA voting dataset's separate non-commercial attribution terms do not automatically apply to transcript/PDF/Harvard families.
+
+The readiness report's early NOT RUN source status was superseded for restricted source coverage by the later P2 audit; its inferential failures and unrun calibration/selection/genre gates remain. The public main-integration review also explicitly withheld real country positions and empirical publication. No merge, valid hash, descriptive event adapter or source-free test changes those scientific decisions. The new product's observed-position pathway can be engineered separately, but cannot claim legacy model readiness or bypass source/publication boundaries.
+
+Current disposition: metadata-backed feasibility only. The next executable task is a small permitted development-source allowlist and provenance-only intake manifest, followed by separately authorized source replay. No private source-body access is required to complete this document. Storage is currently constrained; no new archive download or bulky write is warranted during recovery.

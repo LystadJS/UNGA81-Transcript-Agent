@@ -31,8 +31,9 @@ def vote_record(row):
     date.fromisoformat(row["date"])
     if row.get("vote") not in ("yes","no","abstain","absent","not_eligible","unknown"):
         raise SourceError("Unknown vote category; consensus must not become an individual yes")
-    if row.get("stage") not in ("adopted_resolution","draft_resolution","amendment","procedural"):
+    if row.get("stage") not in ("adopted_resolution","adopted_decision","draft_resolution","amendment","procedural"):
         raise SourceError("Unknown resolution stage")
+    if (row["stage"]=="adopted_decision")!=row["resolution_id"].startswith("A/DEC/"): raise SourceError("Adopted decision stage requires an exact A/DEC source symbol")
     if row.get("eligible") is not None and type(row.get("eligible")) is not bool: raise SourceError("Invalid eligibility")
     if row["vote"]=="not_eligible" and row.get("eligible") is not False: raise SourceError("Non-eligibility requires explicit evidence")
     if row["vote"] in ("yes","no","abstain","absent") and row.get("eligible") is not True: raise SourceError("Recorded vote requires eligibility")
@@ -46,7 +47,8 @@ def bind_resolution(row):
     required=("resolution_id","resolution_version","stage","policy_id","context_id","source_url","rationale","review_state")
     if any(not isinstance(row.get(k),str) or not row[k].strip() for k in required): raise SourceError("Incomplete policy binding provenance")
     if row["policy_id"] not in ("humanitarian_access","civilian_protection"): raise SourceError("Unsupported humanitarian policy")
-    if row["stage"] not in ("adopted_resolution","draft_resolution","amendment","procedural"): raise SourceError("Invalid binding stage")
+    if row["stage"] not in ("adopted_resolution","adopted_decision","draft_resolution","amendment","procedural"): raise SourceError("Invalid binding stage")
+    if (row["stage"]=="adopted_decision")!=row["resolution_id"].startswith("A/DEC/"): raise SourceError("Decision binding stage/source symbol mismatch")
     if row["review_state"] not in ("assistant_provisional","owner_confirmed"): raise SourceError("Unknown review state")
     if row["review_state"]=="owner_confirmed" and not row.get("owner_confirmation_id"): raise SourceError("Owner confirmation receipt required")
     url=urlparse(row["source_url"])
