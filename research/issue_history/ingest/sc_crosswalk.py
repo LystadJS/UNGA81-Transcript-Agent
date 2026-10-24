@@ -148,9 +148,9 @@ def _source_hash(path):
     return h.hexdigest()
 
 
-def crosswalk_files(collection_file,ddl_database,output_file,*,ddl_raw_csv=None,expected_ddl_source_sha256=None):
+def crosswalk_files(collection_file,ddl_database,output_file,*,ddl_raw_csv=None,expected_ddl_source_sha256=None,review_file=None):
     target=Path(output_file).resolve()
-    for input_path in (collection_file,ddl_database,ddl_raw_csv):
+    for input_path in (collection_file,ddl_database,ddl_raw_csv,review_file):
         if input_path is not None:
             source=Path(input_path).resolve()
             if os.path.normcase(str(target))==os.path.normcase(str(source)) or target.exists() and source.exists() and target.samefile(source):raise ValueError('Crosswalk output must not overwrite an input')
@@ -170,6 +170,7 @@ def crosswalk_files(collection_file,ddl_database,output_file,*,ddl_raw_csv=None,
     finally:connection.close()
     dependency_paths={name:Path(__file__).with_name(name) for name in ('sc_drafts.py','adapters.py','countries.py')}
     if ddl_raw_csv is not None:dependency_paths['un_sc_csv.py']=Path(__file__).with_name('un_sc_csv.py')
+    if review_file is not None:dependency_paths['sc_primary_review.py']=Path(__file__).with_name('sc_primary_review.py')
     dependency_paths['country_registry']=Path(__file__).resolve().parents[3]/'un/config/countries.csv'
     dependencies={name:_hash(path) for name,path in dependency_paths.items()}
     provenance={'collection_sha256':hashlib.sha256(collection_bytes).hexdigest(),'ddl_database_sha256':database_hash,'raw_reference_enrichment':False,'algorithm_sha256':_hash(__file__),'dependency_sha256':dependencies}
@@ -189,7 +190,19 @@ def crosswalk_files(collection_file,ddl_database,output_file,*,ddl_raw_csv=None,
                 draft,meeting=next(iter(values));row.update(draft=draft,meeting_record=meeting)
             elif len(values)>1:row.update(draft='conflicting_raw_references',meeting_record='conflicting_raw_references')
         provenance.update(raw_reference_enrichment=True,ddl_original_source_sha256=expected_ddl_source_sha256)
+    reviewed=None;review_hashes={}
+    if review_file is not None:
+        if ddl_raw_csv is None:raise ValueError('Primary reviews require pinned original DDL references')
+        from .sc_primary_review import load_review,_apply_review
+        reviewed,review_hashes=load_review(review_file,provenance)
+        for input_path in review_hashes:
+            source=Path(input_path).resolve()
+            if os.path.normcase(str(target))==os.path.normcase(str(source)) or target.exists() and target.samefile(source):raise ValueError('Crosswalk output must not overwrite review evidence')
+        collection,rows,review_summary=_apply_review(collection,rows,reviewed)
+        provenance['review_input_sha256']=review_hashes
     report=build_crosswalk(collection,rows);report['input_provenance']=provenance
+    if reviewed is not None:report['primary_review']={'summary':review_summary,'corrections':reviewed['corrections'],'limits':'Assistant-provisional correction view only; original source records and ballots remain unchanged.'}
+    if any(_hash(path)!=sha for path,sha in review_hashes.items()):raise ValueError('Primary review inputs changed during computation')
     if _hash(collection_file)!=provenance['collection_sha256'] or _hash(ddl_database)!=database_hash:raise ValueError('Read-only crosswalk input changed during computation')
     if ddl_raw_csv is not None and _source_hash(ddl_raw_csv)!=expected_ddl_source_sha256:raise ValueError('Raw reference source changed during computation')
     if _hash(__file__)!=provenance['algorithm_sha256']:raise ValueError('Crosswalk algorithm changed during computation')
@@ -208,6 +221,6 @@ if __name__=='__main__':
     import argparse
     parser=argparse.ArgumentParser(description=__doc__)
     for name in ('collection-file','ddl-database','output-file'):parser.add_argument('--'+name,required=True)
-    parser.add_argument('--ddl-raw-csv');parser.add_argument('--expected-ddl-source-sha256')
+    parser.add_argument('--ddl-raw-csv');parser.add_argument('--expected-ddl-source-sha256');parser.add_argument('--review-file')
     result=crosswalk_files(**vars(parser.parse_args()))
     print(json.dumps(result['summary'],indent=2))
