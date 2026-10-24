@@ -19,3 +19,4 @@ research/issue_history/ingest/adapters.py text eol=lf
 research/issue_history/ingest/sc_drafts.py text eol=lf
 research/issue_history/ingest/sc_crosswalk.py text eol=lf
 research/issue_history/ingest/sc_primary_review.py text eol=lf
+research/issue_history/ingest/sc_event_selection.py text eol=lf

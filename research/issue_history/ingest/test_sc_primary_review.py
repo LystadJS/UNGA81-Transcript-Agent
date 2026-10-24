@@ -80,6 +80,31 @@ class PrimaryReviewTests(unittest.TestCase):
                 r['corrections'][0]['source']['sha256']=hashlib.sha256(evidence.read_bytes()).hexdigest();path.write_text(json.dumps(r),encoding='utf-8')
                 with self.assertRaises(ValueError):load_review(path,PINS)
 
+    def test_malformed_resolution_requires_exact_primary_date_draft_and_meeting(self):
+        c,rows=fixture();c['events'][0]['resolution']='9999 (2024'
+        with tempfile.TemporaryDirectory(dir=Path.cwd()) as folder:
+            root=Path(folder);path,r=review(root,field='resolution',before='9999 (2024',after='9999 (2024)')
+            item=r['corrections'][0];item['event'].update(draft='S/2024/9999',meeting_record='S/PV.9999')
+            evidence=root/'facts.json';facts=json.loads(evidence.read_text(encoding='utf-8'));facts['facts'].update(resolution='S/RES/9999(2024)',draft='S/2024/9999',meeting_record='S/PV.9999');evidence.write_text(json.dumps(facts),encoding='utf-8');item['source']['sha256']=hashlib.sha256(evidence.read_bytes()).hexdigest();path.write_text(json.dumps(r),encoding='utf-8')
+            loaded,_=load_review(path,PINS);view,ddl,_=_apply_review(c,rows,loaded)
+            self.assertEqual('9999 (2024)',view['events'][0]['resolution']);self.assertEqual('9999 (2024',c['events'][0]['resolution']);self.assertEqual(1,len(build_crosswalk(view,ddl)['links']))
+            loaded['corrections'][0]['event']['meeting_record']='S/PV.9998'
+            with self.assertRaises(ValueError):_apply_review(c,rows,loaded)
+
+    def test_valid_resolution_numbers_cannot_be_reassigned(self):
+        c,rows=fixture()
+        with tempfile.TemporaryDirectory(dir=Path.cwd()) as folder:
+            _,r=review(Path(folder),field='resolution',before='9999 (2024)',after='9998 (2024)');r['corrections'][0]['event'].update(resolution='S/RES/9998(2024)',draft='S/2024/9999',meeting_record='S/PV.9999')
+            with self.assertRaises(ValueError):_apply_review(c,rows,r)
+
+    def test_legacy_review_version_preserves_original_field_scope(self):
+        c,rows=fixture()
+        with tempfile.TemporaryDirectory(dir=Path.cwd()) as folder:
+            root=Path(folder);path,r=review(root);r['version']='sc-primary-review-1';path.write_text(json.dumps(r),encoding='utf-8')
+            loaded,_=load_review(path,PINS);view,_,_=_apply_review(c,rows,loaded);self.assertEqual('S/2024/9998',view['events'][0]['draft'])
+            r['corrections'][0].update(field='resolution',before='9999 (2024',after='9999 (2024)');path.write_text(json.dumps(r),encoding='utf-8')
+            with self.assertRaises(ValueError):load_review(path,PINS)
+
     def test_evidence_cannot_escape_review_directory(self):
         with tempfile.TemporaryDirectory(dir=Path.cwd()) as folder:
             root=Path(folder);path,r=review(root);r['corrections'][0]['source']['evidence_file']='../outside.json';path.write_text(json.dumps(r),encoding='utf-8')
