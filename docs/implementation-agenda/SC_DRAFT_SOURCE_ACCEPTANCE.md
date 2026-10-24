@@ -107,3 +107,7 @@ a full draft does not establish agreement with every clause. Procedural votes,
 withdrawn proposals, other committees and statement coverage remain separate
 source-feasibility and acceptance work. This import does not establish complete
 UN deliberation coverage or an accepted longitudinal model.
+
+## Published browser acceptance
+
+Version1.36.0 is live with a separate private-file draft viewer. Source-free actual-browser CI passed, including five-filter restoration, full frozen replay, script-free export, invalid-family recovery and desktop/mobile layout. A separate live check used the actual private581-event collection: all8713catalog entries,twoseparate notes, date bounds, outcome, query, displayed-country filter and results survived save/reload/reopen/export with exact JSON equality. The final caption/cache correction also passed that replay; no historical opinion inference or public data provisioning follows. Deployment40064972175 and live asset verification40064972260 passed.
