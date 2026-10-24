@@ -94,3 +94,5 @@ GA/SC ledger checksum is unchanged. See SC_DRAFT_SOURCE_ACCEPTANCE.md for
 aggregate acceptance and limitations. Public archive provisioning, cross-source
 voting-action deduplication, broader sources, owner labels and empirical models
 remain open; this source milestone does not resolve those gates.
+
+SC draft acceptance: source PR143 merged as95460e02364b3a96d93efe725e8ed8ae814be8ca after all four workflows passed, including actual-browser40064018657 and historical-store40064018704. Website PR56 passed regression40064062845 and audit40064062759, then merged as351dab9b51982eefe29dc6d2995d2e9965f8929b. Deployment40064301012 and live byte verifier40064300884 passed. Live private-file review opened all581events/8713catalogentries/twoseparatenotes, applied allfivefilters, saved, reloaded, reopened and exported an exactly equal full collection/filter/result envelope. A presentation-only follow-up removes the malformed-adopted-reference caption when a rejected draft has no adopted resolution; frozen analytical results are unchanged. Follow-up publication verification remains pending.
