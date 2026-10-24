@@ -25,3 +25,5 @@ research/issue_history/refresh/sc_action_cache_cli.py text eol=lf
 
 research/issue_history/refresh/sc_action_refresh.py text eol=lf
 research/issue_history/refresh/sc_action_refresh_cli.py text eol=lf
+
+research/issue_history/ingest/sc_policy_candidates.py text eol=lf
