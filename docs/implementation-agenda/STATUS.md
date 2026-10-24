@@ -1,6 +1,6 @@
 # Ten-year issue workflow execution ledger
 
-Updated 24 October 2026. Engineering checks use invented metadata; they are not empirical model acceptance. The public archive is not provisioned. Official GA/SC vote files are verified in private staging; the private GA import is checkpointed at98,000 accepted rows and 7,740 SC rows are stored. Source acquisition, owner-confirmed evaluation and operational deployment remain release gates for the desired end state.
+Updated 24 October 2026. Engineering checks use invented metadata; they are not empirical model acceptance. The public archive is not provisioned. Official GA/SC vote files are verified in private staging; the private GA import is complete for the pinned file window at205,738 accepted rows and 7,740 SC rows are stored. Source acquisition, owner-confirmed evaluation and operational deployment remain release gates for the desired end state.
 
 | Task | Implemented result | Remaining work |
 | --- | --- | --- |
@@ -16,7 +16,7 @@ Updated 24 October 2026. Engineering checks use invented metadata; they are not 
 | B6 | Source-linked resolution/policy binding validation | Reviewed actual resolution bindings |
 | B7 | Bounded resumable ingestion, retry/quarantine/checkpoints | Source-specific network acquisition |
 | B8 | Incremental refresh and atomic publication/health safeguards | Approved feed, host, scheduler and live freshness |
-| B9 | 7,740 SC rows/516 resolutions reconciled; private 98,000 GA rows imported with durable cursor | Remaining GA import checkpointed; storage threshold now met, recheck before resuming |
+| B9 | 7,740 SC rows/516 groups and all205,738 GA rows/1,066 complete groups privately stored and independently reconciled | Other source families, policy bindings and public-release acceptance |
 | C1 | Bounded policy/year/body bundles, independent affiliation rosters, method provenance, hashes, privacy allowlists | Populated permitted historical snapshot |
 | C2 | IndexedDB cache, verified reuse/recovery, resumable shards | Production browser acceptance on real scale |
 | C3 | Selective policy/year/body transport, exact query filters, immutable subset identities and legacy fallback | Real-data database/query parity |
@@ -72,3 +72,5 @@ Completed update: source PR139 merged as6fc0e2e4d1eeb5529e9b7f202eb826f20df4689b
 Storage gate changed during this update: C: reported6,161,264,640bytes free. No bulk source import was performed during the summaries/performance task. Next automatic historical-data step may resume the pinned GA cursor only after rechecking at least1 GiB free and preserving200 MiB plus next-batch margin. All prior original-source/cursor/adapter/registry pins and publication/owner-label/model gates still apply. Private checkpoint remains98,000GA +7,740SC rows. The public historical archive is still not provisioned.
 
 Next agenda steps: resume the authorized bounded historical import if capacity remains sufficient; reconcile actual coverage; verify approved data and source-supported policy bindings before public archive provisioning. Browser acceptance on a permitted populated archive, owner-confirmed benchmark and empirical model assessment remain open. The substantive-summary/performance/publication request is complete; overall end-state readiness remains gated. Minor inherited presentation follow-up: replace the malformed separator in older trajectory captions with ASCII without modifying frozen analytical results.
+
+24 October automatic continuation: the pinned GA import completed without identity changes:954,382scanned,205,738selected=accepted,748,644outofwindow,0quarantined. Independent read-only reconciliation confirmed1,066complete193-countryGA groups, publisher code totals, no partial groups,0stale revisions,0FK errors and0public approvals. Combined GA/SC votes213,478remain private and unbound. The actual GA source ends17September2026; SC ends29September2026. This is complete pinned-file-window ingestion, not complete archive or policy coverage. Detailed aggregate acceptance and remaining gates are in GA_IMPORT_ACCEPTANCE.md. Exact LF byte restoration resolved checkout-only hash drift; new checkout rules preserve those source pins. Forty Python checks and report/summary/client Node checks passed. Caption encoding was repaired without changing frozen analytical results; 1.35.1 browser CI/publication pending.

@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.35.0",
+  "browser_engine": "browser-descriptive-1.35.1",
   "comparison_engine": "latent-comparison-1.1.0",
-  "date": "2026-10-23",
+  "date": "2026-10-24",
   "features": [
+    "Readable trajectory captions use a valid ASCII separator; frozen report data and all summary/filter results remain unchanged",
     "Source-linked country-first humanitarian issue summaries retain conditions, separate latest U.S. expressions from exact dated comparisons, preserve frozen summaries, and add bounded ten-year synthetic browser performance acceptance; historical archive remains unprovisioned",
     "Selective ten-year policy/body bundles with independent country coverage, immutable subset caches, method-version comparison gaps and bounded saved-report replay; public historical archive remains unprovisioned",
     "Verified GA v6 and SC v7 vote adapters, canonical country identities, bounded resumable private imports and disk-reserve guard; verified report-result cache and readable archive controls",

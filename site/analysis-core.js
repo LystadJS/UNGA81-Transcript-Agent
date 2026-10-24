@@ -21,7 +21,7 @@
   const PassageLabels = typeof module !== 'undefined' && module.exports ? require('./passage-labels.js') : root.UNPassageLabels;
   const Positions = typeof module !== 'undefined' && module.exports ? require('./position-comparison.js') : root.UNPositions;
   const IssueWorkflow = typeof module !== 'undefined' && module.exports ? require('./issue-workflow.js') : root.UNIssueWorkflow;
-  const VERSION = 'browser-descriptive-1.35.0';
+  const VERSION = 'browser-descriptive-1.35.1';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters', 'nmf'];
 
