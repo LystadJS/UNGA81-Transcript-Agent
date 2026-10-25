@@ -14,6 +14,7 @@ on:
       - 'tools/research/private_review_html.cjs'
       - 'tools/research/private_review_corrections_html.cjs'
       - 'tools/research/private_review_primary_verification_html.cjs'
+      - 'tools/research/private_review_primary_verification_v2_html.cjs'
       - 'tools/issue_sampling_aggregate.cjs'
       - 'site/sc-drafts*'
       - 'tools/test_sc_draft*'
@@ -63,6 +64,7 @@ on:
       - 'tools/research/private_review_html.cjs'
       - 'tools/research/private_review_corrections_html.cjs'
       - 'tools/research/private_review_primary_verification_html.cjs'
+      - 'tools/research/private_review_primary_verification_v2_html.cjs'
       - 'tools/issue_sampling_aggregate.cjs'
       - 'site/sc-drafts*'
       - 'tools/test_sc_draft*'
@@ -157,6 +159,7 @@ jobs:
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_issue_private_review_ui.cjs private-owner-review-browser
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_issue_private_review_corrections_ui.cjs private-review-corrections-browser
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_issue_private_review_primary_verification_ui.cjs private-review-primary-browser
+          BROWSER_PATH="$(command -v google-chrome)" node tools/test_issue_private_review_primary_verification_v2_ui.cjs private-review-primary-v2-browser
           CHROME_BINARY="$(command -v google-chrome)" python tools/test_meeting_quick_reader_ui.py quick-reader-browser
           node tools/preview_meeting_quick_reader.cjs quick-reader-synthetic.html
           CHROME_BINARY="$(command -v google-chrome)" python tools/test_meeting_quick_reader_static.py quick-reader-synthetic.html quick-reader-static
@@ -173,6 +176,7 @@ jobs:
             private-owner-review-browser/
             private-review-corrections-browser/
             private-review-primary-browser/
+            private-review-primary-v2-browser/
             collection-recovery-browser/
             saved-filters-browser/
             quick-reader-browser/
