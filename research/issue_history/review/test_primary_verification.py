@@ -65,5 +65,3 @@ class PrimaryVerificationTests(unittest.TestCase):
             with self.assertRaises(ValueError):V.load_packet(path,**changed)
             changed_packet=V.build_packet(**changed)
             with self.assertRaises(ValueError):V.load_decisions(dpath,packet=changed_packet)
-
-
