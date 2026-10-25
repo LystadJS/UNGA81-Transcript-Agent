@@ -55,3 +55,5 @@ research/issue_history/ingest/historical_register_bridge.py text eol=lf
 research/issue_history/ingest/official_record_verification.py text eol=lf
 
 research/issue_history/review/private_packet.py text eol=lf
+
+research/issue_history/review/corrections.py text eol=lf
