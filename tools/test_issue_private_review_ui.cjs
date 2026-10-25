@@ -11,7 +11,8 @@ packet.packet_id=require('node:crypto').createHash('sha256').update(canonical(pa
 for(const mutate of [p=>p.rows[0].evidence[0].quote='Changed source quote',p=>p.rows[1].id=p.rows[0].id,p=>p.rows[0].owner_decision='confirm',p=>p.accepted_positions=true,p=>p.private_only=false]){const changed=JSON.parse(JSON.stringify(packet));mutate(changed);assert.throws(()=>render(changed));}
 for(const mutate of [p=>p.rows[1].id=p.rows[0].id,p=>p.rows[0].owner_decision='confirm']){const changed=JSON.parse(JSON.stringify(packet));mutate(changed);delete changed.packet_id;changed.packet_id=require('node:crypto').createHash('sha256').update(canonical(changed)).digest('hex');assert.throws(()=>render(changed));}
 (async()=>{
- const dir=fs.mkdtempSync(path.join(process.argv[2]||os.tmpdir(),'private-review-synthetic-')),html=path.join(dir,'synthetic-review.html');fs.writeFileSync(html,render(packet));let browser;
+ const requestedBase=path.resolve(process.argv[2]||os.tmpdir());fs.mkdirSync(requestedBase,{recursive:true});const base=fs.realpathSync(requestedBase);
+ const dir=fs.mkdtempSync(path.join(base,'private-review-synthetic-')),html=path.join(dir,'synthetic-review.html');fs.writeFileSync(html,render(packet));let browser;
  try{
   browser=await chromium.launch({headless:true,...(process.env.BROWSER_PATH?{executablePath:process.env.BROWSER_PATH}:{})});
   const context=await browser.newContext({acceptDownloads:true}),page=await context.newPage(),errors=[],network=[];page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(!r.url().startsWith('file:'))network.push(r.url());});await page.goto(require('node:url').pathToFileURL(html).href);
@@ -24,5 +25,5 @@ for(const mutate of [p=>p.rows[1].id=p.rows[0].id,p=>p.rows[0].owner_decision='c
   for(const mutate of [x=>x.packet_id='f'.repeat(64),x=>x.choices[0].row_id='wrong',x=>x.choices[0].label='accepted',x=>x.accepted_positions=true,x=>x.filters.country='wrong',x=>x.choices.reverse()]){const wrong=JSON.parse(bytes);mutate(wrong);await page.locator('#open').setInputFiles({name:'wrong.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(wrong))});await page.waitForFunction(()=>document.getElementById('status').textContent.startsWith('Reopen rejected'));assert.deepEqual(JSON.parse(await save()),saved);}
   await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);assert.deepEqual(errors,[]);assert.deepEqual(network,[]);
   console.log('PASS private-review synthetic browser: null defaults, safe quotes, source links, exact reopen/filter parity, six invalid imports rejected, mobile fit, no network');await context.close();
- }finally{await browser?.close();fs.rmSync(dir,{recursive:true,force:true});}
+ }finally{await browser?.close();assert.equal(path.dirname(fs.realpathSync(dir)),base,'cleanup stays in the test output directory');assert.ok(path.basename(dir).startsWith('private-review-synthetic-'));fs.rmSync(dir,{recursive:true,force:true});}
 })().catch(e=>{console.error(e);process.exitCode=1;});
