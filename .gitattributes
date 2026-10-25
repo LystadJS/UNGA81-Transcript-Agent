@@ -57,3 +57,5 @@ research/issue_history/ingest/official_record_verification.py text eol=lf
 research/issue_history/review/private_packet.py text eol=lf
 
 research/issue_history/review/corrections.py text eol=lf
+
+research/issue_history/review/primary_verification.py text eol=lf
