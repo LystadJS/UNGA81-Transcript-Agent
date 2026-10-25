@@ -12,6 +12,7 @@ on:
       - 'site/issue*'
       - 'tools/test_issue*'
       - 'tools/research/private_review_html.cjs'
+      - 'tools/research/private_review_corrections_html.cjs'
       - 'tools/issue_sampling_aggregate.cjs'
       - 'site/sc-drafts*'
       - 'tools/test_sc_draft*'
@@ -59,6 +60,7 @@ on:
       - 'site/issue*'
       - 'tools/test_issue*'
       - 'tools/research/private_review_html.cjs'
+      - 'tools/research/private_review_corrections_html.cjs'
       - 'tools/issue_sampling_aggregate.cjs'
       - 'site/sc-drafts*'
       - 'tools/test_sc_draft*'
@@ -151,6 +153,7 @@ jobs:
           node tools/test_issue_reopen_sampling_metrics.cjs
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_issue_reopen_sampling_ui.cjs site issue-reopen-sampling/metrics.json
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_issue_private_review_ui.cjs private-owner-review-browser
+          BROWSER_PATH="$(command -v google-chrome)" node tools/test_issue_private_review_corrections_ui.cjs private-review-corrections-browser
           CHROME_BINARY="$(command -v google-chrome)" python tools/test_meeting_quick_reader_ui.py quick-reader-browser
           node tools/preview_meeting_quick_reader.cjs quick-reader-synthetic.html
           CHROME_BINARY="$(command -v google-chrome)" python tools/test_meeting_quick_reader_static.py quick-reader-synthetic.html quick-reader-static
@@ -165,6 +168,7 @@ jobs:
             issue-reopen-profile/
             issue-reopen-sampling/
             private-owner-review-browser/
+            private-review-corrections-browser/
             collection-recovery-browser/
             saved-filters-browser/
             quick-reader-browser/
