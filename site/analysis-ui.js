@@ -386,6 +386,7 @@
     `;
 
     if(report.country_positions&&report.nearby_comparisons)html+='<nav aria-label="Report sections"><a href="#countryPositionOverview">Country positions</a> · <a href="#nearbyComparisons">Nearby-date comparisons</a></nav>';
+    if(report.day_summary)html+=UNDaySummaryView.render(report.day_summary);
     if(report.country_briefings)html+='<p><a href="#countryBriefings">Country–U.S. briefings</a></p>';
     if(report.humanitarian_issue)html+=UNIssueView.render(report.humanitarian_issue);
     if(report.country_briefings)html+=UNPositionView.renderBriefings(report.country_briefings);
