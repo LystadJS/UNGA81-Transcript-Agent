@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.37.0",
+  "browser_engine": "browser-descriptive-1.38.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-05",
   "features": [
+    "Deterministic day-level proceedings summaries preserve meeting distinctions, group narrow policy-question synonyms, separate procedural language, and attach transcript evidence to proposals, disagreements and consequential developments without treating coverage volume as importance",
     "New York daily reporting defaults, all-inventory scope, explicit transcript availability, partial collection retry and newly published source checks, bounded source-version archives and offline hash verification",
     "Separate private-file Security Council draft-voting review with recorded veto/insufficient outcomes, unverified unanimity, source-linked nonparticipation notes, five saved filters and exact frozen replay; no issue-position inference",
     "Readable trajectory captions use a valid ASCII separator; frozen report data and all summary/filter results remain unchanged",

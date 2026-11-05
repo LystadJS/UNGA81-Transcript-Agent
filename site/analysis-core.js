@@ -16,12 +16,14 @@
     ? require('./reviewed-units.js') : root.UNReviewedUnits;
   const MeetingQuickReader = typeof module !== 'undefined' && module.exports
     ? require('./meeting-quick-reader.js') : root.UNMeetingQuickReader;
+  const DaySummary = typeof module !== 'undefined' && module.exports
+    ? require('./day-summary.js') : root.UNDaySummary;
   const TextUnits = typeof module !== 'undefined' && module.exports
     ? require('./text-units.js') : root.UNTextUnits;
   const PassageLabels = typeof module !== 'undefined' && module.exports ? require('./passage-labels.js') : root.UNPassageLabels;
   const Positions = typeof module !== 'undefined' && module.exports ? require('./position-comparison.js') : root.UNPositions;
   const IssueWorkflow = typeof module !== 'undefined' && module.exports ? require('./issue-workflow.js') : root.UNIssueWorkflow;
-  const VERSION = 'browser-descriptive-1.37.0';
+  const VERSION = 'browser-descriptive-1.38.0';
 
   const METHODS = ['frequency', 'timeline', 'length', 'tfidf', 'similarity', 'clusters', 'nmf'];
 
@@ -393,6 +395,9 @@
     }
     result.passage_labels = PassageLabels.snapshot(matched);
     result.briefing = briefing(records, matched, duplicates, corpus, p);
+    if(p.start===p.end&&!identity&&!corpus.reviewed_units&&!corpus.records.some(r=>r.parent_id)){
+      result.day_summary=DaySummary.build(eligible,{date:p.start,scope:p.scope,region:p.region});
+    }
     if(identity){
       result.quick_reader=MeetingQuickReader.build(wholeMeeting,identity);
     }
