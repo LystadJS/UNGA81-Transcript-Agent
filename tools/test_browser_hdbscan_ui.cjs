@@ -12,7 +12,7 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
     await page.locator('#analysisForm > details summary').click();
     await page.locator('#corpusSource').selectOption('import');await page.locator('#corpusFile').setInputFiles(corpus);
     await page.locator('#startDate').fill('2026-09-22');await page.locator('#endDate').fill('2026-09-28');await page.locator('#topic').fill('');
-    await page.locator('#clusterMethod').check();await page.locator('#clusterAlgorithm').selectOption('hdbscan');
+    await page.locator('#advancedMethods').evaluate(e=>e.open=true);await page.locator('#clusterMethod').check();await page.locator('#clusterAlgorithm').selectOption('hdbscan');
     assert.equal(await page.locator('#clusterCount').isDisabled(),true);assert.equal(await page.locator('#clusterSeed').isDisabled(),true);
     await page.locator('#representation').selectOption('compare');await page.locator('#stabilityEnabled').check();
     const validation={url,cases:[],browser_errors:errors};let reference=null;

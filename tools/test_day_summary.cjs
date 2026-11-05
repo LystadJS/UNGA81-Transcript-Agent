@@ -1,6 +1,8 @@
 'use strict';
 
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
 const DaySummary = require('../site/day-summary.js');
 const DaySummaryView = require('../site/day-summary-view.js');
 
@@ -173,6 +175,55 @@ check('accessible view renders evidence links and explicit coverage caveat', () 
   assert.match(html, /does not measure political importance/);
   assert.match(html, /rel="noopener noreferrer"/);
   assert.doesNotMatch(html, /<script/i);
+});
+
+check('automatic visualizations declare passages, countries, and meetings', () => {
+  const charts = result.visualizations;
+  assert.equal(charts.topic_distribution.unit, 'distinct supporting passages');
+  assert.match(charts.topic_country_matrix.unit, /country participation/);
+  assert.match(charts.meeting_topic_overview.unit, /passages/);
+  assert.equal(charts.topic_distribution.status, 'available');
+  assert.equal(charts.topic_country_matrix.status, 'available');
+  assert.equal(charts.meeting_topic_overview.status, 'available');
+});
+
+check('repeated passages cannot inflate national participation', () => {
+  const repeated = DaySummary.build([...records, {...records[0], id: `${meetingA}#repeat`}], {date});
+  const chart = repeated.visualizations.topic_country_matrix;
+  const cell = chart.cells.find(item => item.country === 'Country A' && item.topic_id === ceasefire.id);
+  assert.equal(cell.value, 1);
+  assert.match(chart.deduplication, /at most once per topic/i);
+  const baseRow = result.visualizations.topic_distribution.rows.find(row => row.topic_id === ceasefire.id);
+  const repeatedRow = repeated.visualizations.topic_distribution.rows.find(row => row.topic_id === ceasefire.id);
+  assert.equal(repeatedRow.value, baseRow.value, 'exact duplicate wording should not inflate distinct-passage distribution');
+});
+
+check('unavailable chart data is explicit', () => {
+  const empty = DaySummary.build([records.at(-1)], {date});
+  assert.equal(empty.visualizations.topic_distribution.status, 'insufficient');
+  assert.ok(empty.visualizations.topic_distribution.reason);
+  const html = DaySummaryView.render(empty);
+  assert.match(html, /Insufficient data/);
+});
+
+check('every automatic chart has a table alternative and source drill-down', () => {
+  const html = DaySummaryView.automaticVisualizations(result);
+  assert.equal((html.match(/Readable table alternative/g) || []).length, 3);
+  assert.equal((html.match(/source drill-down/g) || []).length, 3);
+  assert.match(html, /Topic distribution/);
+  assert.match(html, /Topic by country/);
+  assert.match(html, /Meeting by topic/);
+  assert.match(html, /https:\/\/transcripts\.un\.org/);
+});
+
+check('PCA, clustering and lexical methods are inside advanced controls', () => {
+  const html = fs.readFileSync(path.join(__dirname, '../site/index.html'), 'utf8');
+  const start = html.indexOf('<details id="advancedMethods">');
+  const end = html.indexOf('</details>', html.indexOf('id="nmfSettings"'));
+  assert.ok(start > -1 && end > start);
+  const advanced = html.slice(start, end);
+  for (const id of ['clusterMethod', 'representation', 'nmfMethod']) assert.match(advanced, new RegExp(`id="${id}"`));
+  assert.doesNotMatch(html, /checked name="method" type="checkbox" value="(?:clusters|nmf|tfidf|similarity)"/);
 });
 
 console.log(JSON.stringify({status: 'PASS', checks, synthetic: true}));

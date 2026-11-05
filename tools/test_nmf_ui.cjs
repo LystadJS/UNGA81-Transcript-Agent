@@ -21,7 +21,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
     await page.locator('#passagePolicy').selectOption('substantive');await page.locator('#passageReviewFile').setInputFiles(review);
     await page.locator('#topic').fill('');await page.locator('#startDate').fill('2026-09-22');await page.locator('#endDate').fill('2026-09-28');
     for(const e of await page.locator('input[name=method]').all())await e.uncheck();
-    await page.locator('#nmfMethod').check();await page.locator('#nmfStability').check();await page.locator('#nmfReplicates').fill('10');
+    await page.locator('#advancedMethods').evaluate(e=>e.open=true);await page.locator('#nmfMethod').check();await page.locator('#nmfStability').check();await page.locator('#nmfReplicates').fill('10');
     await page.locator('#runAnalysis').click();await page.locator('#analysisOutput').waitFor({state:'visible',timeout:240000});
     assert.match(await page.locator('#analysisReport').textContent(),/194 of 460 passages/);
     assert.equal(await page.locator('.nmf-component').count(),6);assert.equal(await page.locator('#exportNMF').isVisible(),true);
