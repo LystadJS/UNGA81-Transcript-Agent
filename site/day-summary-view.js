@@ -21,7 +21,10 @@
     const rows=evidenceItems(claim);
     return rows.map(item=>{
       const url=safeURL(item.source_url||item.url);
-      const label=[item.country,item.meeting_title||item.meeting,item.date,item.record_id]
+      const actor=item.attribution_kind==='collective'
+        ? `Collective: ${item.country}${item.recorded_country?` · recorded affiliation ${item.recorded_country}`:''}`
+        : item.country;
+      const label=[actor,item.meeting_title||item.meeting,item.date,item.record_id]
         .filter(Boolean).join(' · ')||'Source transcript';
       return `<li><blockquote>${esc(item.excerpt||item.passage||'Source passage')}</blockquote><p><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a></p></li>`;
     }).join('');
@@ -42,7 +45,8 @@
     const c=topic.coverage||{};
     const meetings=count(c.meetings??topic.meeting_count),segments=count(c.segments??topic.segment_count??topic.passage_count);
     const countries=count(c.countries??topic.country_count??list(topic.participants).length);
-    return `${meetings} meeting${meetings===1?'':'s'} · ${segments} source segment${segments===1?'':'s'} · ${countries} recorded countr${countries===1?'y':'ies'}`;
+    const collectives=count(c.collectives??list(topic.participating_collectives).length);
+    return `${meetings} meeting${meetings===1?'':'s'} · ${segments} source segment${segments===1?'':'s'} · ${countries} recorded countr${countries===1?'y':'ies'} · ${collectives} collective group${collectives===1?'':'s'}`;
   }
 
   function meetingRows(summary){
@@ -57,12 +61,14 @@
 
   function topic(topic,index){
     const participants=unique(topic.participants||topic.countries);
+    const collectives=unique(topic.participating_collectives);
     const question=topic.policy_question||topic.question||topic.label||'Policy question not labeled';
     return `<article class="day-topic" aria-labelledby="day-topic-${index}">
       <h4 id="day-topic-${index}">${esc(topic.label||question)}</h4>
       <p><strong>Policy question:</strong> ${esc(question)}</p>
       <p class="method-note"><strong>Coverage:</strong> ${esc(coverage(topic))}. Coverage describes where this question appears; it does not measure political importance.</p>
       <p><strong>Participating recorded countries:</strong> ${esc(participants.join(', ')||'No national attribution established')}</p>
+      ${collectives.length?`<p><strong>Collective statements:</strong> ${esc(collectives.join(', '))}. These are excluded from national participation counts.</p>`:''}
       ${claims('Principal proposals',topic.proposals,'No source-linked proposal was identified.')}
       ${claims('Disagreements and reservations',topic.disagreements||topic.reservations,'No source-linked disagreement was identified.')}
       ${claims('Consequential developments',topic.consequential_developments||topic.developments,'No explicit action, outcome or material change was identified by the consequential-development rules.')}

@@ -12,6 +12,17 @@
   }
   function proceduralSentence(sentence){
     const text=sentence.trim().replace(/^and\s+/i,'').replace(/^(?:distinguished delegates|dear colleagues),\s*/i,'');
+    // Document editing, credentials and same-meeting logistics are procedure even
+    // when automatic punctuation leaves them as long sentences. Keep broader
+    // institutional reform proposals outside these narrow forms.
+    if (/\b(?:propose|suggest|request)\b[^.!?]{0,90}\b(?:technical (?:addition|amendment|edit)|there (?:to|should) be a (?:period|comma)|move (?:the )?(?:text|sentence|paragraph)|add the following)\b/i.test(text)) return true;
+    if (/\b(?:footnote|paragraph|document)\b[^.!?]{0,100}\b(?:top of (?:the )?(?:page|document)|on (?:the )?screen|located|read at dictation speed)\b/i.test(text)) return true;
+    if (/\b(?:representatives?|states parties)\b[^.!?]{0,120}\b(?:credentials (?:are|be) submitted|participate provisionally)\b/i.test(text)) return true;
+    if (/\b(?:time limits? for statements?|speaking time limit|list of speakers)\b/i.test(text)) return true;
+    if (/\b(?:bureau|committee|meeting) proposes?\b[^.!?]{0,80}\b(?:held in person|meet in person|hybrid format|virtual format)\b/i.test(text)) return true;
+    if (/\b(?:take up|begin|resume) the (?:enhanced )?(?:interactive dialogue|general debate)\b[^.!?]{0,100}\b(?:defer|tomorrow|this (?:morning|afternoon))\b/i.test(text)) return true;
+    if (/\breport of workshop\b[^.!?]{0,180}\b(?:brought to the attention|adopted by the plenary|organization of work)\b/i.test(text)) return true;
+    if (/\bcommittee should consider\b[^.!?]{0,160}\b(?:programme|program) (?:plans?|budget)\b[^.!?]{0,100}\bagenda item\b/i.test(text)) return true;
     if (wordCount(text)>65) return false;
     // Do not remove policy-bearing courtesy clauses or mixed action sentences.
     if (/\b(?:support\w*|oppos\w*|reject\w*|condemn\w*|urg\w*|call for|endors\w*|welcome|express\w*|believ\w*|recogniz\w*|must|should|because|but|however)\b/i.test(text)) return false;
@@ -42,10 +53,12 @@
     // Meeting logistics may name a policy subject without discussing that subject.
     if(proceduralSentence(line) || /^(?:i|we) thank\b/i.test(line.trim()))return false;
     if (/^(?:i call to order\b|i invite (?:the )?committee to (?:continue|begin|resume) its consideration\b|(?:excellencies,? )?(?:ladies and gentlemen,? )?(?:once again,? )?i (?:warmly )?welcome you to\b)/i.test(line.trim())) return false;
+    if (/\b(?:propose|suggest|request)\b[^.!?]{0,90}\b(?:technical (?:addition|amendment|edit)|there (?:to|should) be a (?:period|comma)|add the following)\b/i.test(line)) return false;
     // Career introductions mention policy fields without discussing policy.
     if (/\b(?:he|she|his|her|ambassador|minister|director|secretary|president|chairperson)\b/i.test(line) &&
-        /\b(?:previously served|has served|had served|served as|serves as|experience in|experience of|career|was appointed|was elected|was nominated|qualifications)\b/i.test(line) &&
+        /\b(?:previously served|has served|had served|served as|serves as|having worked as|worked as|works as|experience in|experience of|career|was appointed|was elected|was nominated|qualifications)\b/i.test(line) &&
         !/\b(?:support\w*|oppos\w*|reject\w*|condemn\w*|urg\w*|call(?:s|ed)? for|must|should)\b/i.test(line)) return false;
+    if (/^(?:a couple of|several|some)\s+[^.!?]{0,80}\bupdates?\b/i.test(line.trim())) return false;
     return !/^(?:in accordance with the (?:program|programme) of work|following the exchanges|this will be followed by|(?:distinguished delegates,? )?the next meeting|it is now my pleasure to extend a warm welcome|with this,? i now invite)\b/i.test(line.trim());
   }
   const unclearWording = line => /\b(?:guarantee an impeded humanitarian access|protection of civilians[.!?]?\s+(?:including[^.!?]{0,100})?must cease|multiple for safe)\b/i.test(line);
