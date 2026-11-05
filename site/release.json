@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.36.0",
+  "browser_engine": "browser-descriptive-1.37.0",
   "comparison_engine": "latent-comparison-1.1.0",
-  "date": "2026-10-24",
+  "date": "2026-11-05",
   "features": [
+    "New York daily reporting defaults, all-inventory scope, explicit transcript availability, partial collection retry and newly published source checks, bounded source-version archives and offline hash verification",
     "Separate private-file Security Council draft-voting review with recorded veto/insufficient outcomes, unverified unanimity, source-linked nonparticipation notes, five saved filters and exact frozen replay; no issue-position inference",
     "Readable trajectory captions use a valid ASCII separator; frozen report data and all summary/filter results remain unchanged",
     "Source-linked country-first humanitarian issue summaries retain conditions, separate latest U.S. expressions from exact dated comparisons, preserve frozen summaries, and add bounded ten-year synthetic browser performance acceptance; historical archive remains unprovisioned",
@@ -106,5 +107,12 @@
     "model_status": "observed_only",
     "remote_source_formats": "GA v6 and SC v7 vote formats verified; historical transcript coverage incomplete",
     "empirical_acceptance": "not_run"
+  },
+  "daily_collection": {
+    "record": "docs/DAILY_COLLECTION.md",
+    "reporting_timezone": "America/New_York",
+    "default_scope": "all",
+    "source_provenance": "un.browser.source-provenance.v1",
+    "validation_scope": "synthetic engineering acceptance; no new live UN collection or scientific validation"
   }
 }

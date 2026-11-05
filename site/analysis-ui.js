@@ -40,7 +40,7 @@
   recoveryPanel.id = 'collectionRecovery';
   recoveryPanel.hidden = true;
   recoveryPanel.setAttribute('aria-label', 'Saved collection recovery');
-  recoveryPanel.innerHTML = '<h3>Collected transcripts</h3><p id="collectionRecoveryStatus" role="status"></p><button type="button" id="saveRetainedCorpus">Save collected transcripts</button> <button type="button" id="saveOriginalCollection" hidden>Save original collection</button> <button type="button" id="analyzeRetainedCorpus">Analyze this collection</button> <button type="button" id="retryCollection">Retry collection gaps</button><p class="method-note">Kept in this browser tab only. Save the collection before closing or reloading. Retrying checks the original dates and meeting selection and keeps completed responses.</p>';
+  recoveryPanel.innerHTML = '<h3>Collected transcripts</h3><p id="collectionRecoveryStatus" role="status"></p><button type="button" id="saveRetainedCorpus">Save collected transcripts</button> <button type="button" id="saveOriginalCollection" hidden>Save original collection</button> <button type="button" id="analyzeRetainedCorpus">Analyze this collection</button> <button type="button" id="retryCollection">Retry collection gaps</button> <button type="button" id="refreshCollection">Check for newly published transcripts</button><p class="method-note">Kept in this browser tab only. Save before closing or reloading. Retry keeps the original meeting selection. Checking for newly published transcripts also adds newly listed meetings within the original dates and scope. Both keep successfully collected responses.</p>';
   el('analysisOutput').before(recoveryPanel);
 
   function updateRecovery() {
@@ -55,6 +55,7 @@
     el('saveOriginalCollection').disabled = !retained.file;
     el('analyzeRetainedCorpus').disabled = !!controller;
     el('retryCollection').disabled = !!controller || !retained.live || !(gaps + pending);
+    el('refreshCollection').disabled = !!controller || !retained.live;
   }
 
   function retainCollection(value, file, ledger, parameters, live) {
@@ -68,6 +69,7 @@
   el('saveOriginalCollection').onclick = () => { if (retained?.file) save(retained.file, retained.ledger ? 'reviewed-analysis.json' : 'un-transcripts-original.json', 'application/json'); };
   el('analyzeRetainedCorpus').onclick = () => { if (!controller && retained) { nextRun = 'retained'; el('analysisForm').requestSubmit(); nextRun = null; } };
   el('retryCollection').onclick = () => { if (!controller && retained?.live) { nextRun = 'retry'; el('analysisForm').requestSubmit(); nextRun = null; } };
+  el('refreshCollection').onclick = () => { if (!controller && retained?.live) { nextRun = 'refresh'; el('analysisForm').requestSubmit(); nextRun = null; } };
   let ready = false;
   let stale = false;
   let datesEdited = false;
@@ -201,17 +203,7 @@
 
 
   function recentDates() {
-    // Use the UN New York calendar date, not the visitor's timezone or UTC day.
-    const parts = new Intl.DateTimeFormat('en-US', {
-      timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit'
-    }).formatToParts(new Date());
-
-    const part = type => parts.find(item => item.type === type).value;
-    const end = `${part('year')}-${part('month')}-${part('day')}`;
-    const start = new Date(end + 'T12:00:00Z');
-    start.setUTCDate(start.getUTCDate() - 6);
-
-    return { start: start.toISOString().slice(0, 10), end };
+    return UNReportingDate.range('week');
   }
 
 
@@ -225,6 +217,16 @@
 
   el('topic').addEventListener('input', updateTopicMode);
   updateTopicMode();
+
+  const initialDates = UNReportingDate.range('today');
+  setDates(initialDates.start, initialDates.end, 'Today (America/New_York):');
+  for (const [id, mode, label] of [['todayDate', 'today', 'Today'], ['yesterdayDate', 'yesterday', 'Yesterday']]) {
+    el(id).onclick = () => {
+      const dates = UNReportingDate.range(mode);
+      datesEdited = true;
+      setDates(dates.start, dates.end, label + ' (America/New_York):');
+    };
+  }
 
   for (const id of ['startDate', 'endDate']) {
     el(id).addEventListener('input', () => {
@@ -241,20 +243,11 @@
 
   el('debateDates').onclick = () => {
     datesEdited = true;
-    setDates(el('startDate').defaultValue, el('endDate').defaultValue,
+    setDates('2026-09-22', '2026-09-28',
       'General Debate dates; committee proceedings may fall outside this period:');
   };
 
   el('meetingScope').addEventListener('change', () => {
-    const untouched = !datesEdited &&
-      el('startDate').value === el('startDate').defaultValue &&
-      el('endDate').value === el('endDate').defaultValue;
-
-    if (untouched && (el('meetingScope').value.startsWith('committee_') || ['ga_sc','ga_sc_formal'].includes(el('meetingScope').value))) {
-      const dates = recentDates();
-      setDates(dates.start, dates.end, 'Switched untouched General Debate defaults to recent dates for the selected meeting scope:');
-    }
-
     invalidate();
   });
 
@@ -388,6 +381,8 @@
         ${single?'':`<p><strong>Meeting scope:</strong> ${esc(UNMeetingScopes.label(p.scope))}</p>
         <p>${all?'No topic filter; passages follow the selected dates, scope, region and inclusion policy.':`Any phrase: ${esc(p.phrases.join(' | '))}. Phrase exclusions: ${esc(p.exclude.join(' | ') || 'None')}.`}</p>`}
         <p class="method-note">Prepared ${esc(report.created_at.slice(0, 10))} · English transcripts</p>
+        <p id="collectionCheckedAt"><strong>Collection checked:</strong> ${esc(report.collection?.checked_at || report.collection?.collected_at || 'Not recorded in this saved collection')}${report.collection?.checked_at || report.collection?.collected_at ? ' (UTC)' : ''}.</p>
+        <p id="transcriptStatusCounts">${['available','pending','unavailable','failed'].map(state => `${state.charAt(0).toUpperCase()+state.slice(1)}: ${report.coverage.filter(row => row.slug && (row.transcript_status || ({collected:'available',empty_transcript:'available',excluded_language:'available',failed:'failed',unavailable:'unavailable',pending:'pending'}[row.status])) === state).length}`).join(' · ')}. Availability describes the source; only usable English passages enter this briefing.</p>
     `;
 
     if(report.country_positions&&report.nearby_comparisons)html+='<nav aria-label="Report sections"><a href="#countryPositionOverview">Country positions</a> · <a href="#nearbyComparisons">Nearby-date comparisons</a></nav>';
@@ -511,10 +506,11 @@
     if (report.collection?.meeting_groups) html += `<details><summary>Formal meetings and resumed parts</summary>${table(['Meeting identifier','Original source entries'],report.collection.meeting_groups.map(group=>[group.meeting,group.source_slugs.join(', ')]))}</details>`;
     html += table(['Status', 'Entries'], Object.entries(byStatus));
     html += table(
-      ['Date', 'Meeting / day', 'Status', 'Detail'],
+      ['Date', 'Meeting / day', 'Transcript availability', 'Collection result', 'Detail'],
       report.coverage.map(entry => [
         entry.date,
         entry.title || 'Daily inventory',
+        entry.transcript_status || ({collected:'available',empty_transcript:'available',excluded_language:'available',failed:'failed',unavailable:'unavailable',pending:'pending'}[entry.status]) || 'Inventory failed',
         entry.status,
         entry.error || entry.language || ''
       ])
@@ -828,7 +824,7 @@
 
       const mode = nextRun; nextRun = null;
       if (!mode && el('corpusSource').value === 'import') await restoreImportedFilters(el('corpusFile').files[0]);
-      const p = mode === 'retry' ? retained.parameters : settings();
+      const p = ['retry','refresh'].includes(mode) ? retained.parameters : settings();
       const previous = mode ? retained : null;
       controller = new AbortController();
 
@@ -849,9 +845,9 @@
         audioLedger = previous.ledger;
         // Preserve reviewed inclusion decisions bound to the saved source bytes.
         if (previous.parameters.passageSelection) p.passageSelection = previous.parameters.passageSelection;
-      } else if (mode === 'retry') {
+      } else if (mode === 'retry' || mode === 'refresh') {
         corpus = await UNCollector.collect(p, countries, {
-          signal: controller.signal, progress: status, resume: previous.corpus,
+          signal: controller.signal, progress: status, resume: previous.corpus, refresh: mode === 'refresh',
           checkpoint: value => retainCollection(value, null, null, p, true)
         });
       } else if (el('corpusSource').value === 'import') {
@@ -866,6 +862,7 @@
         corpus = UNAnalysis.validateCorpus(JSON.parse(savedText.replace(/^\uFEFF/,'')));
         importedCorpusFile = file;
 
+        await UNCollector.verifyProvenance(corpus);
         for (const record of corpus.records) {
           if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
 
@@ -903,7 +900,7 @@
       status('Analyzing collected text…');
       await pause();
 
-      retainCollection(corpus, importedCorpusFile, audioLedger, p, mode === 'retry' || (mode === 'retained' ? previous.live : el('corpusSource').value === 'live'));
+      retainCollection(corpus, importedCorpusFile, audioLedger, p, ['retry','refresh'].includes(mode) || (mode === 'retained' ? previous.live : el('corpusSource').value === 'live'));
       result = await UNAnalysis.analyze(corpus, p, async message => {
         status(message);
         await pause();

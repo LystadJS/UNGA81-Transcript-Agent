@@ -65,9 +65,13 @@
         chunks.push(value);
       }
 
-      const raw = await new Blob(chunks).text();
+      const bytes=new Uint8Array(size);let offset=0;
+      for(const chunk of chunks){bytes.set(chunk,offset);offset+=chunk.length;}
+      // Preserve a UTF-8 BOM in the hashed archive; reject malformed bytes rather
+      // than silently replacing them and claiming an exact response-byte hash.
+      const raw = new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(bytes);
 
-      return { data: JSON.parse(raw), hash: await sha(raw) };
+      return { data: JSON.parse(raw.replace(/^\uFEFF/,'')), hash: await sha(raw), raw, retrieved_at:new Date().toISOString(), etag:response.headers.get('etag'), last_modified:response.headers.get('last-modified') };
     } finally {
       clearTimeout(timeout);
       signal?.removeEventListener('abort', abort);
@@ -75,10 +79,12 @@
   }
 
 
-  async function collect(p, countries, { signal, progress = () => {}, request = readJSON, resume = null, checkpoint = () => {} } = {}) {
+  async function collect(p, countries, { signal, progress = () => {}, request = readJSON, resume = null, refresh = false, checkpoint = () => {} } = {}) {
     if (!Scopes.isValid(p.scope)) throw Error('Invalid meeting scope.');
     if (p.meeting_slug !== undefined && (typeof p.meeting_slug !== 'string' || !/^[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+){1,5}$/.test(p.meeting_slug) || p.start !== p.end || p.meeting_date !== p.start || !/^\d{4}-\d{2}-\d{2}$/.test(p.start) || !Number.isFinite(Date.parse(p.start)) || new Date(p.start).toISOString().slice(0,10)!==p.start)) throw Error('Select one meeting on one valid date.');
     if (resume && (resume.schema !== 'un.browser.corpus.v1' || resume.collection?.start !== p.start || resume.collection?.end !== p.end || resume.collection?.scope !== p.scope || (resume.collection.selected_meeting_slug || '') !== (p.meeting_slug || ''))) throw Error('Retry requires the original collection dates and meeting selection.');
+    if (resume?.provenance) await verifyProvenance(resume);
+    if (refresh && !resume) throw Error('Checking for new transcripts requires a saved collection.');
     const matchesSelection = meeting => Scopes.matchesMeeting(meeting, p.scope) && (!p.meeting_slug || meeting.slug === p.meeting_slug);
 
     const alias = new Map();
@@ -95,6 +101,21 @@
     const records = [];
     const inventoryDays = [];
     let chars = 0;
+    const startedAt = new Date().toISOString();
+    const sources = new Map((resume?.provenance?.sources || []).map(source => [source.source_id+'|'+source.sha256, {...source}]));
+    let rawBytes = [...sources.values()].reduce((n,s)=>n+new TextEncoder().encode(s.raw || '').length,0);
+    function retainSource(source_id, response, kind) {
+      const source_version='sha256:'+response.hash, key=source_id+'|'+response.hash;
+      const metadata={source_id,source_url:source_id,kind,sha256:response.hash,source_version,retrieved_at:response.retrieved_at || new Date().toISOString(),etag:response.etag || null,last_modified:response.last_modified || null};
+      if (!sources.has(key)) {
+        if(typeof response.raw==='string'){const bytes=new TextEncoder().encode(response.raw).length;if(rawBytes+bytes>25000000)throw Error('Saved raw-source archive exceeds the 25 MB collection limit; narrow the dates.');metadata.raw=response.raw;}
+        const serialized=new TextEncoder().encode(JSON.stringify({sources:[...sources.values(),metadata],records,meetings,coverage,days,inventoryDays})).length;
+        if(serialized>24000000)throw Error('Saved collection exceeds the 25 MB reproducible archive limit; narrow the dates.');
+        sources.set(key,metadata);
+        rawBytes+=new TextEncoder().encode(metadata.raw || '').length;
+      }
+      return metadata;
+    }
 
     const check = () => {
       if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
@@ -118,10 +139,9 @@
         for (let page = 1; page <= 50; page++) {
           check();
 
-          const { data, hash } = await request(
-            `${BASE}/en/meetings.json?date=${date}&xlang=1&page=${page}`,
-            signal
-          );
+          const inventoryURL=`${BASE}/en/meetings.json?date=${date}&xlang=1&page=${page}`;
+          const response=await request(inventoryURL,signal);
+          const { data, hash }=response;
 
           if (!Array.isArray(data.meetings) || data.page !== page ||
               !Number.isInteger(data.total) || data.total < 0 ||
@@ -132,7 +152,8 @@
           if (expected === null) expected = data.total;
           if (expected !== data.total) throw Error('Inventory changed during collection.');
 
-          days.push({ date, page, sha256: hash });
+          const provenance=retainSource(inventoryURL,response,'inventory');
+          days.push({ date, page, sha256: hash, source_url:inventoryURL, source_version:provenance.source_version, retrieved_at:provenance.retrieved_at });
           found.push(...data.meetings);
 
           if (!data.hasMore) {
@@ -168,15 +189,27 @@
     // not download every other committee and hide its passages afterward.
     const originalSlugs = resume?.collection?.selected_meeting_slugs;
     const failedDays = new Set((resume?.collection?.inventory_days || []).filter(day => day.status !== 'ok').map(day => day.date));
-    const selected = meetings.filter(meeting => matchesSelection(meeting) && (!Array.isArray(originalSlugs) || originalSlugs.includes(meeting.slug) || failedDays.has(meeting.date.slice(0, 10))));
+    const selected = meetings.filter(meeting => matchesSelection(meeting) && (refresh || !Array.isArray(originalSlugs) || originalSlugs.includes(meeting.slug) || failedDays.has(meeting.date.slice(0, 10))));
     const selectedSlugs = [...new Set([...(Array.isArray(originalSlugs) ? originalSlugs : []), ...selected.map(meeting => meeting.slug)])];
     // Keep completed responses from the original run; retry only missing responses.
     // Fresh inventory is still verified and selection is applied before any download.
     const completed = new Map((resume?.coverage || [])
-      .filter(row => ['collected', 'empty_transcript', 'excluded_language'].includes(row.status))
+      .filter(row => ['collected', 'excluded_language', ...(!refresh ? ['empty_transcript'] : [])].includes(row.status))
       .map(row => [row.slug, row]));
-    for (const row of completed.values()) coverage.push({...row});
-    records.push(...(resume?.records || []).filter(record => completed.has(record.meeting_slug)));
+    for (const row of completed.values()) coverage.push({...row,transcript_status:row.transcript_status || 'available'});
+    // Preserve unresolved entries when a fresh inventory cannot be obtained.
+    for(const row of resume?.coverage || [])if(row.slug && !completed.has(row.slug) && !selected.some(m=>m.slug===row.slug))coverage.push({...row,inventory_current:false});
+    records.push(...(resume?.records || []).filter(record => completed.has(record.meeting_slug)).map(record=>({...record})));
+    // Older exports retain text/raw hashes but did not name their JSON endpoint.
+    for(const record of records)if(!record.source_id){
+      const meeting=meetings.find(m=>m.slug===record.meeting_slug);
+      const endpoint=meeting?.jsonUrl;
+      if(endpoint&&/^[a-f0-9]{64}$/.test(record.raw_sha256)){
+        record.source_id=sourceURL(endpoint);record.source_version='sha256:'+record.raw_sha256;
+        const key=record.source_id+'|'+record.raw_sha256;
+        if(!sources.has(key))sources.set(key,{source_id:record.source_id,source_url:record.source_id,kind:'transcript',sha256:record.raw_sha256,source_version:record.source_version,retrieved_at:resume.collection.collected_at,legacy_hash_only:true});
+      }else record.legacy_provenance_unavailable=true;
+    }
     chars = records.reduce((sum, record) => sum + record.text.length, 0);
     if(p.meeting_slug && (inventoryDays.some(d=>d.status!=='ok') || selected.length!==1)) throw Error('The selected meeting could not be verified in the complete inventory. Search the date again; no other meeting was substituted.');
 
@@ -204,14 +237,19 @@
         slug: meeting.slug,
         scope,
         source_url: sourceURL(meeting.pageUrl),
-        status: 'unavailable'
+        status: 'unavailable',
+        transcript_status: /^(pending|processing|queued|preparing)$/i.test(String(meeting.transcriptStatus || meeting.transcript_status || '')) ? 'pending' : 'unavailable',
+        inventory_has_transcript:meeting.hasTranscript === true,
+        inventory_source_status:meeting.transcriptStatus || meeting.transcript_status || null
       };
 
       coverage.push(row);
       if (!meeting.hasTranscript) { checkpoint(snapshot()); continue; }
 
       try {
-        const { data, hash } = await request(sourceURL(meeting.jsonUrl), signal);
+        const transcriptURL=sourceURL(meeting.jsonUrl);
+        const response=await request(transcriptURL, signal);
+        const { data, hash }=response;
         check();
 
         if (data.video?.slug !== meeting.slug ||
@@ -219,8 +257,11 @@
           throw Error('Transcript identity or date mismatch.');
         }
 
+        const provenance=retainSource(transcriptURL,response,'transcript');
+        Object.assign(row,{source_id:transcriptURL,source_json_url:transcriptURL,source_version:provenance.source_version,retrieved_at:provenance.retrieved_at,raw_sha256:hash,etag:provenance.etag,last_modified:provenance.last_modified});
         if (!data.transcript || !Array.isArray(data.transcript.data)) {
           row.status = 'unavailable';
+          row.transcript_status = 'pending';
           row.error = 'Meeting found, but the requested transcript is not ready or has no segment data.';
           continue;
         }
@@ -229,6 +270,7 @@
         row.language = data.transcript.language;
         row.timestamps_flagged = !!data.transcript.timestamps_flagged;
 
+        row.transcript_status='available';
         if (row.language !== 'en') {
           row.status = 'excluded_language';
           continue;
@@ -264,6 +306,8 @@
             source_url: sourceURL(segment.pageUrl || meeting.pageUrl),
             text_sha256: await sha(text),
             raw_sha256: hash,
+            source_id:transcriptURL,
+            source_version:provenance.source_version,
             json_pointer: '/transcript/data/' + segmentIndex,
             timestamps_flagged: row.timestamps_flagged,
             // Original source labels are retained without inventing personal identity.
@@ -285,14 +329,17 @@
           throw Error('Collection size limit exceeded; narrow the dates.');
         }
 
+        if(new TextEncoder().encode(JSON.stringify({sources:[...sources.values()],records:[...records,...batch],meetings,coverage,days,inventoryDays})).length>24000000)throw Error('Saved collection exceeds the 25 MB reproducible archive limit; narrow the dates.');
         chars += added;
         records.push(...batch);
         row.status = batch.length ? 'collected' : 'empty_transcript';
+        row.transcript_status = batch.length ? 'available' : 'unavailable';
         row.segments = batch.length;
         if (!batch.length) row.error = 'Transcript response contains no usable text.';
       } catch (error) {
         check();
         row.status = 'failed';
+        row.transcript_status = 'failed';
         row.error = error.message;
       } finally {
         // Exportable checkpoints contain only complete responses, never an unfinished batch.
@@ -311,6 +358,12 @@
         end: p.end,
         scope: p.scope,
         collected_at: new Date().toISOString(),
+        first_collected_at:resume?.collection?.first_collected_at || resume?.collection?.collected_at || startedAt,
+        checked_at:startedAt,
+        operation:refresh?'refresh':resume?'retry':'collect',
+        partial:coverage.some(row=>row.status==='failed'||row.status==='inventory_failed') || inventoryDays.some(day=>day.status!=='ok'),
+        transcript_status_counts:Object.fromEntries(['available','pending','unavailable','failed'].map(status=>[status,coverage.filter(row=>row.slug&&row.transcript_status===status).length])),
+        inventory_meetings_snapshot:meetings.map(m=>({slug:m.slug,date:m.date,title:m.title,pageUrl:m.pageUrl,jsonUrl:m.jsonUrl || null,hasTranscript:m.hasTranscript,transcript_status:m.transcriptStatus || m.transcript_status || null})),
         inventory_meetings: meetings.length,
         selected_meetings: selectedSlugs.length,
         ...(p.scope === 'ga_sc_formal' ? {formal_meetings:new Set([...selected, ...coverage].map(Scopes.formalMeetingKey).filter(Boolean)).size,meeting_groups:[...new Set([...selected, ...coverage].map(Scopes.formalMeetingKey).filter(Boolean))].map(key=>({meeting:key,source_slugs:selectedSlugs.filter(slug=>Scopes.formalMeetingKey({slug})===key)}))} : {}),
@@ -324,13 +377,41 @@
         unit: 'Original UN transcript source segment; may include procedural and non-national interventions',
         english_only: true
       },
+      provenance:{schema:'un.browser.source-provenance.v1',hash_algorithm:'SHA-256',version_basis:'Exact response-byte hash; not a source-supplied publication revision.',sources:[...sources.values()].map(source=>({...source}))},
       coverage: coverage.map(row => ({...row})),
       records: records.slice()
     }; }
   }
 
 
-  const api = { collect, sha, sourceURL, readJSON };
+  async function verifyProvenance(corpus) {
+    const manifest=corpus.provenance;
+    const sources=new Map(), parsedSources=new Map();
+    if(manifest){
+      if(manifest.schema!=='un.browser.source-provenance.v1'||!Array.isArray(manifest.sources))throw Error('Unsupported source provenance.');
+      for(const source of manifest.sources){
+        if(sourceURL(source.source_id)!==source.source_id||!/^[a-f0-9]{64}$/.test(source.sha256)||source.source_version!=='sha256:'+source.sha256)throw Error('Invalid source identity or version.');
+        const key=source.source_id+'|'+source.sha256;if(sources.has(key))throw Error('Duplicate source version.');sources.set(key,source);
+        if(typeof source.raw==='string'&&await sha(source.raw)!==source.sha256)throw Error('Saved raw source hash mismatch.');
+      }
+    }
+    for(const record of corpus.records || []){
+      if((manifest&&!record.text_sha256)||(record.text_sha256 && await sha(record.text)!==record.text_sha256))throw Error('Saved transcript text hash mismatch.');
+      if(!manifest || record.legacy_provenance_unavailable)continue;
+      const source=sources.get(record.source_id+'|'+record.raw_sha256);
+      if(!source||source.kind!=='transcript'||record.source_version!==source.source_version)throw Error('Saved record is not bound to a source version.');
+      if(typeof source.raw==='string'){
+        let parsed=parsedSources.get(source.source_id+'|'+source.sha256);
+        if(!parsed){try{parsed=JSON.parse(source.raw.replace(/^\uFEFF/,''));}catch{throw Error('Saved raw source is not valid JSON.');}parsedSources.set(source.source_id+'|'+source.sha256,parsed);}
+        const index=Number(String(record.json_pointer).match(/^\/transcript\/data\/(\d+)$/)?.[1]);
+        const segment=parsed.transcript?.data?.[index];
+        const text=(segment?.paragraphs || []).flatMap(p=>p.sentences || []).map(s=>s.text).join(' ');
+        if(!segment||parsed.video?.slug!==record.meeting_slug||record.text!==text)throw Error('Saved record does not match its raw source passage.');
+      }
+    }
+    return {status:'verified',provenance:manifest&&!(corpus.records || []).some(r=>r.legacy_provenance_unavailable)?'source_bound':'legacy_text_hashes_only',raw_sources_verified:[...sources.values()].filter(s=>typeof s.raw==='string').length};
+  }
+  const api = { collect, sha, sourceURL, readJSON, verifyProvenance };
 
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = api;

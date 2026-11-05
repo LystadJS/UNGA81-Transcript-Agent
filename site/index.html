@@ -10,9 +10,9 @@
     <link href="theme.css" rel="stylesheet">
     <link href="app.css" rel="stylesheet">
     <script defer src="app.js"></script>
-    <link href="analysis.css?v=1.36.0" rel="stylesheet">
-    <link href="issue.css?v=1.36.0" rel="stylesheet">
-    <script defer src="meeting-scopes.js?v=1.36.0"></script>
+    <link href="analysis.css?v=1.37.0" rel="stylesheet">
+    <link href="issue.css?v=1.37.0" rel="stylesheet">
+    <script defer src="meeting-scopes.js?v=1.37.0"></script>
     <script defer src="mds-core.js?v=1.12.1"></script>
     <script defer src="mds-view.js?v=1.12.1"></script>
     <script defer src="gmm-core.js?v=1.12.1"></script>
@@ -22,23 +22,24 @@
     <script defer src="passage-selection.js?v=1.12.1"></script>
     <script defer src="passage-pilot-core.js?v=1.12.1"></script>
     <script defer src="reviewed-units.js?v=1.12.1"></script>
-    <script defer src="text-units.js?v=1.36.0"></script>
-    <script defer src="meeting-quick-reader.js?v=1.36.0"></script>
-    <script defer src="passage-labels.js?v=1.36.0"></script>
-    <script defer src="position-comparison.js?v=1.36.0"></script>
-    <script defer src="position-view.js?v=1.36.0"></script>
-    <script defer src="issue-workflow.js?v=1.36.0"></script>
-    <script defer src="issue-view.js?v=1.36.0"></script>
-    <script defer src="analysis-core.js?v=1.36.0"></script>
+    <script defer src="text-units.js?v=1.37.0"></script>
+    <script defer src="meeting-quick-reader.js?v=1.37.0"></script>
+    <script defer src="passage-labels.js?v=1.37.0"></script>
+    <script defer src="position-comparison.js?v=1.37.0"></script>
+    <script defer src="position-view.js?v=1.37.0"></script>
+    <script defer src="issue-workflow.js?v=1.37.0"></script>
+    <script defer src="issue-view.js?v=1.37.0"></script>
+    <script defer src="analysis-core.js?v=1.37.0"></script>
     <script defer src="nmf-view.js?v=1.12.1"></script>
-    <script defer src="collector.js?v=1.36.0"></script>
+    <script defer src="collector.js?v=1.37.0"></script>
     <script defer src="stability-view.js?v=1.12.1"></script>
     <script defer src="comparison-view.js?v=1.12.1"></script>
     <script defer src="hierarchy-view.js?v=1.12.1"></script>
     <script defer src="cluster-view.js?v=1.12.1"></script>
     <script defer src="meeting-picker-core.js?v=1.12.1"></script>
     <script defer src="meeting-picker.js?v=1.12.1"></script>
-    <script defer src="analysis-ui.js?v=1.36.0"></script>
+    <script defer src="reporting-date.js?v=1.37.0"></script>
+    <script defer src="analysis-ui.js?v=1.37.0"></script>
   </head>
 
   <body>
@@ -79,8 +80,8 @@
 
       <section class="intro">
         <p class="eyebrow">GENERAL DEBATE &amp; UN PROCEEDINGS</p>
-        <h2>Generate Record</h2>
-        <p>Define the dates and meeting scope. Every report includes country positions and comparison with the U.S. Add a topic to focus the analysis, or leave it blank for the full selection.</p>
+        <h2>Generate a daily briefing</h2>
+        <p>Start with today in New York, choose yesterday, or enter dates below. The daily scope includes every meeting listed by the UN transcript service for those dates; analysis uses available English transcripts. Every report includes country positions and comparison with the U.S. Leave Topic blank for the full selection.</p>
       </section>
 
       <section class="visualization-routes" aria-label="Choose a visualization">
@@ -121,12 +122,12 @@
 
             <label>
               From
-              <input id="startDate" required type="date" value="2026-09-22">
+              <input aria-describedby="dateRangeNote" id="startDate" required type="date">
             </label>
 
             <label>
               Through
-              <input id="endDate" required type="date" value="2026-09-28">
+              <input aria-describedby="dateRangeNote" id="endDate" required type="date">
             </label>
 
             <label>
@@ -139,8 +140,8 @@
             <label>
               Meeting scope
               <select aria-describedby="meetingScopeHelp" id="meetingScope">
+                <option value="all" selected>Daily scope — all UN meetings in the inventory</option>
                 <option value="general_debate">General Debate meetings</option>
-                <option value="all">All UN meetings in the inventory</option>
                 <option value="ga_sc">General Assembly + Security Council only</option>
                 <option value="ga_sc_formal">GA + Security Council — formal meetings only</option>
 
@@ -158,17 +159,19 @@
 
           </div>
 
-          <p class="hint" id="meetingScopeHelp">Body and committee filters use meeting identifiers and titles, not mentions within speeches. Choose dates when the committee met; a General Debate-only saved collection cannot supply committee proceedings.</p>
+          <p class="hint" id="meetingScopeHelp">Daily scope includes every meeting listed in the date-specific UN inventory, across bodies and committees. It does not establish complete UN proceedings coverage. Body and committee filters use meeting identifiers and titles, not mentions within speeches. A saved collection can supply only the proceedings it contains.</p>
           <p class="hint">Up to 31 days. Region refers to speaker affiliation, not textual mentions.</p>
 
           <div class="actions">
+            <button class="secondary" id="todayDate" type="button">Today (New York)</button>
+            <button class="secondary" id="yesterdayDate" type="button">Yesterday</button>
             <button class="secondary" id="recentDates" type="button">Last 7 days</button>
             <button class="secondary" id="debateDates" type="button">General Debate dates</button>
           </div>
 
           <p aria-live="polite" class="hint" id="dateRangeNote">
-            Default dates cover the 2026 General Debate. Selecting a committee switches
-            untouched defaults to the last 7 days. Dates you enter are never changed automatically.
+            Reporting dates use America/New_York. Today is selected when the application opens.
+            Use the date pickers for another day or a range; changing scope preserves your dates.
           </p>
 
           <label>Nearby-date window (days)<input id="nearbyDays" type="number" min="0" max="14" step="1" value="7"></label>

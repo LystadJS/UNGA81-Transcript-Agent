@@ -2,7 +2,7 @@
 
 Open the [report builder](https://lystadjs.github.io/un/transcript-agent/#analyze). No installation, account or coding is required.
 
-Current browser version: **1.14.0**. Select **One individual meeting**, enter its date, and choose from the returned meeting list to analyze just that meeting. See [individual-meeting analysis](INDIVIDUAL_MEETINGS.md). The [latent comparison workspace](LATENT_COMPARISON.md) adds saved-run replay, parent/excerpt comparisons and reusable settings.
+Current browser version: **1.37.0**. Select **One individual meeting**, enter its date, and choose from the returned meeting list to analyze just that meeting. See [individual-meeting analysis](INDIVIDUAL_MEETINGS.md). The [latent comparison workspace](LATENT_COMPARISON.md) adds saved-run replay, parent/excerpt comparisons and reusable settings.
 
  Text clustering offers k-means, PAM,
 hierarchical Ward/average linkage, HDBSCAN and regularized Gaussian mixtures on either PCA or LSA, including
@@ -17,8 +17,8 @@ aligned membership changes alongside highest-membership cluster stability.
    segment matches any phrase; optional exclusion phrases remove the entire
    segment. Matching is case-insensitive over Unicode word tokens. It does not
    infer relevance, sentiment or stance. Abbreviations need human checking.
-2. Select inclusive start/end dates, speaker region and meeting scope.
-3. Choose descriptive methods and select **Collect transcripts & generate report**.
+2. Accept today in America/New_York, choose Yesterday, or select inclusive start/end dates. Daily scope includes all meetings listed in the date-specific UN inventory; change scope or speaker region if needed.
+3. Keep the default descriptive methods or choose alternatives, then select **Generate report**.
 4. Inspect collection coverage, denominators and source evidence before sharing.
 5. Download the standalone visual HTML report, analysis JSON, collected transcript
    JSON or matched-segment CSV. Use Print / save PDF for a printable copy.
@@ -29,7 +29,7 @@ The opening briefing is deterministic and runs on your device. It describes the 
 
 Save the collected transcript JSON to preserve source text and provenance for later import. A standalone HTML report preserves the rendered readout; analysis JSON records calculations and settings. On JSON import, saved report filters are restored into the controls when present; inspect the topic, dates, scope and methods before generating a new report. Older collections without saved filters restore collection dates and scope, with all regions and all passages selected. Keep a local copy before closing the page.
 
-The **Collected transcripts** panel remains available if analysis fails or collection is cancelled. Use **Save collected transcripts** to download completed source batches, **Analyze this collection** to retry analysis, or **Retry collection gaps** to resume the original source selection. Retry skips completed sources and rechecks unavailable or unfinished material. The checkpoint lives only in the current tab until downloaded; closing the tab loses an unsaved checkpoint.
+The **Collected transcripts** panel remains available if analysis fails or collection is cancelled. Use **Save collected transcripts** to download completed source batches, **Analyze this collection** to retry analysis, or **Retry collection gaps** to resume the original source selection. Retry skips completed sources and rechecks unavailable or unfinished material. Use **Check for newly published transcripts** to recheck the original dates and scope and include newly listed meetings. Both actions preserve successfully collected source responses. The report displays the collection check timestamp and available, pending, unavailable and failed source counts. Pending requires an explicit source cue or an advertised transcript without segment data; unavailable does not imply a future publication date. The checkpoint lives only in the current tab until downloaded; closing the tab loses an unsaved checkpoint.
 
 ## Words, procedural text and expressions
 
@@ -80,7 +80,7 @@ text. Speaker region is the existing analytical geography in
 `un/config/countries.csv`, not official UN group membership or topic geography.
 
 Limits: 31 inclusive days, 300 selected meetings, 15,000 segments, 20 million text
-characters, 25 MB per source response, 45-second request timeout. A failed daily
+characters, 25 MB per source response, a bounded reproducible source archive, and a 45-second request timeout. See [daily collection and provenance](DAILY_COLLECTION.md) for archive and replay behavior. A failed daily
 inventory or failed meeting is explicit in coverage. Data collected within limits
 may still produce a partial report, with a coverage warning. No missing source is
 treated as a non-match. Cancel releases no partial report. Transcript publication

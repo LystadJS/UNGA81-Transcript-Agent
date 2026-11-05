@@ -90,9 +90,11 @@ def main():
             check('Blank Topic is valid without HTML required', page.locator('#topic').input_value() == ''
                   and page.locator('#topic').get_attribute('required') is None)
             check('Blank Topic disables related phrases', page.locator('#phrases').is_disabled())
+            default_dates = (page.locator('#startDate').input_value(), page.locator('#endDate').input_value())
+            check('Default daily scope covers all inventory meetings', page.locator('#meetingScope').input_value() == 'all')
             page.locator('#meetingScope').select_option('committee_3')
-            check('Committee selection updates untouched historic dates',
-                  'Switched untouched' in page.locator('#dateRangeNote').inner_text())
+            check('Committee selection preserves daily dates',
+                  (page.locator('#startDate').input_value(), page.locator('#endDate').input_value()) == default_dates)
             page.locator('#startDate').fill('2026-10-01')
             page.locator('#endDate').fill('2026-10-01')
             page.locator('#meetingScope').select_option('committee_2')
