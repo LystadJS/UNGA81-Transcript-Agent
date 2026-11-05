@@ -12,7 +12,7 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
     await page.goto(url);await page.waitForFunction(()=>document.querySelector('#region').options.length>1);
     await page.locator('#analysisForm > details summary').click();
     await page.locator('#corpusSource').selectOption('import');await page.locator('#corpusFile').setInputFiles(corpus);
-    await page.locator('#clusterMethod').check();await page.locator('#representation').selectOption('compare');
+    await page.locator('#advancedMethods').evaluate(e=>e.open=true);await page.locator('#clusterMethod').check();await page.locator('#representation').selectOption('compare');
     await page.locator('#stabilityEnabled').check();
     const started=Date.now();await page.locator('#runAnalysis').click();
     await page.locator('#analysisOutput').waitFor({state:'visible',timeout:240000});

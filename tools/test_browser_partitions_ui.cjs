@@ -14,7 +14,7 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
     await page.locator('#analysisForm > details summary').click();
     await page.locator('#corpusSource').selectOption('import');await page.locator('#corpusFile').setInputFiles(corpus);
     await page.locator('#topic').fill('');await page.locator('#startDate').fill(dates[0]);await page.locator('#endDate').fill(dates.at(-1));
-    await page.locator('#clusterMethod').check();await page.locator('#representation').selectOption('compare');await page.locator('#stabilityEnabled').check();
+    await page.locator('#advancedMethods').evaluate(e=>e.open=true);await page.locator('#clusterMethod').check();await page.locator('#representation').selectOption('compare');await page.locator('#stabilityEnabled').check();
     const validation={url,cases:[],browser_errors:errors};let reference=null;
     for(const mode of ['pam','ward','average']){
       const out=path.join(directory,mode);fs.mkdirSync(out,{recursive:true});
