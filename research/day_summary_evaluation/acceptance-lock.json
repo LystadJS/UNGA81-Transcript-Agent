@@ -1,0 +1,131 @@
+{
+  "schema": "un.day-summary-evaluation-lock.v1",
+  "version": "1.0.0",
+  "status": "frozen_before_untouched_test",
+  "locked_at": "2026-11-05T18:11:28Z",
+  "evaluation_role": {
+    "mode": "owner_single_reviewer_and_finalizer",
+    "owner_confirmed_is_human_review": true,
+    "independent_gold": false,
+    "inter_rater_agreement": false
+  },
+  "scope": {
+    "engine_family": "un.day-summary",
+    "task": "complete_daily_summary_and_default_visualizations",
+    "language": "en",
+    "reserved_october_5_6_2026_transcripts_allowed": false,
+    "reserved_transcripts_opened_at_lock": 0,
+    "untouched_manifest_required_before_content_or_output_review": true,
+    "untouched_sources": "separately_authorized_non_reserved_only"
+  },
+  "metrics": {
+    "unsupported_claim_rate": {
+      "numerator": "generated_substantive_claims_labeled_unsupported",
+      "denominator": "generated_substantive_claims_labeled_supported_or_unsupported",
+      "maximum": 0.05,
+      "uncertain_excluded_and_reported": true
+    },
+    "missed_substantive_topic_rate": {
+      "numerator": "owner_identified_substantive_policy_questions_absent_after_allowed_synonym_matching",
+      "denominator": "owner_identified_substantive_policy_questions_labeled_present_or_missed",
+      "maximum": 0.15,
+      "uncertain_excluded_and_reported": true
+    },
+    "incorrect_grouping_rate": {
+      "numerator": "reviewed_grouping_decisions_incorrect",
+      "denominator": "reviewed_grouping_decisions_correct_or_incorrect",
+      "maximum": 0.05,
+      "uncertain_excluded_and_reported": true
+    },
+    "attribution_error_rate": {
+      "numerator": "generated_recorded_country_attributions_labeled_incorrect",
+      "denominator": "generated_recorded_country_attributions_labeled_correct_or_incorrect",
+      "maximum": 0.05,
+      "uncertain_collective_and_unresolved_excluded_and_reported": true
+    }
+  },
+  "critical_error_maximum": 0,
+  "critical_errors": [
+    "displayed_substantive_claim_without_retained_passage_and_allowed_source_link",
+    "source_or_meeting_identity_not_bound_to_saved_collection",
+    "explicit_collective_statement_assigned_to_one_country",
+    "owner_locked_distinct_policy_questions_merged_into_one_country_position",
+    "repeated_passages_increase_country_topic_participation_above_binary_presence",
+    "required_summary_or_visualization_silently_absent_after_success"
+  ],
+  "minimum_coverage": {
+    "development": {
+      "days": 3,
+      "un_bodies": 3,
+      "meeting_types": 4,
+      "meetings": 12,
+      "generated_substantive_claims": 40,
+      "owner_substantive_topics": 30,
+      "grouping_decisions": 25,
+      "country_attribution_decisions": 30
+    },
+    "untouched_test": {
+      "days": 2,
+      "un_bodies": 2,
+      "meeting_types": 3,
+      "meetings": 6,
+      "generated_substantive_claims": 25,
+      "owner_substantive_topics": 20,
+      "grouping_decisions": 15,
+      "country_attribution_decisions": 20,
+      "multi_body_day_required": true,
+      "multi_meeting_type_day_required": true,
+      "maximum_single_body_share": 0.7
+    }
+  },
+  "one_action_browser_gate": {
+    "activation": "Generate report",
+    "required_completion_rate": 1,
+    "uncaught_javascript_errors_maximum": 0,
+    "document_overflow_maximum": 0,
+    "viewports": [
+      {
+        "width": 1440,
+        "height": 1000
+      },
+      {
+        "width": 390,
+        "height": 900
+      }
+    ],
+    "required_outputs": [
+      "day_level_summary",
+      "meeting_specific_distinctions",
+      "topic_distribution",
+      "topic_by_country_matrix",
+      "meeting_by_topic_overview",
+      "chart_counting_units",
+      "chart_table_alternatives",
+      "chart_source_drilldowns_or_explicit_insufficient_data"
+    ],
+    "saved_json_and_standalone_html_parity_required": true,
+    "advanced_methods_not_required": [
+      "pca",
+      "lsa",
+      "clustering",
+      "nmf",
+      "similarity",
+      "tfidf"
+    ]
+  },
+  "decision_rule": "pass_only_if_all_rate_thresholds_all_critical_gates_all_minimum_coverage_and_one_action_browser_gate_pass_on_the_untouched_test",
+  "changes_after_lock": "create_a_new_protocol_version_and_use_a_new_untouched_sample",
+  "scientific_limits": [
+    "operational_acceptance_not_population_accuracy",
+    "owner_review_not_independent_gold",
+    "no_verified_government_position_or_speaker_identity",
+    "no_unattended_publication_authorization"
+  ],
+  "sample_commitments": {
+    "development_sample_ids": [],
+    "untouched_test_sample_id": null,
+    "status": "pending_owner_reviewed_daily_sample_registration",
+    "empty_commitments_are_insufficient_not_passing": true
+  },
+  "canonical_sha256": "dcda875773ff09cdee12a5097da25ccbb8ed4d271406e0f8828259fa450397d2"
+}

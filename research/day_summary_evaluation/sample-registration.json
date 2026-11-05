@@ -1,0 +1,7 @@
+{
+  "schema": "un.day-summary-sample-registration.v1",
+  "created_at": "2026-11-05T18:11:28Z",
+  "threshold_lock_sha256": "dcda875773ff09cdee12a5097da25ccbb8ed4d271406e0f8828259fa450397d2",
+  "samples": [],
+  "canonical_sha256": "a733fa990daa0b910b923262943b0e713bbb94f1828e8c6e06d33ede2141f667"
+}

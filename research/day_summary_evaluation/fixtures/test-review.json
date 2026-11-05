@@ -1,0 +1,163 @@
+{
+  "schema": "un.day-summary-owner-review.v1",
+  "sample_id": "synthetic-untouched-test",
+  "split": "test",
+  "evaluation_started_at": "2026-10-03T12:00:00.000Z",
+  "reviewed_at": "2026-10-03T13:00:00.000Z",
+  "owner_review": {
+    "reviewer_mode": "owner_single_reviewer",
+    "owner_confirmation": true
+  },
+  "days": [
+    {
+      "day_id": "synthetic-test-day-1",
+      "date": "2026-09-30",
+      "summary_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "bodies": [
+        "General Assembly",
+        "Security Council"
+      ],
+      "meeting_types": [
+        "plenary",
+        "formal council meeting"
+      ],
+      "meetings": [
+        {
+          "id": "synthetic-test-ga",
+          "body": "General Assembly",
+          "meeting_type": "plenary"
+        },
+        {
+          "id": "synthetic-test-sc",
+          "body": "Security Council",
+          "meeting_type": "formal council meeting"
+        }
+      ],
+      "claim_reviews": [
+        {
+          "id": "claim-1",
+          "verdict": "supported",
+          "meeting_id": "synthetic-test-ga",
+          "body": "General Assembly",
+          "meeting_type": "plenary"
+        },
+        {
+          "id": "claim-2",
+          "verdict": "supported",
+          "meeting_id": "synthetic-test-sc",
+          "body": "Security Council",
+          "meeting_type": "formal council meeting"
+        },
+        {
+          "id": "claim-3",
+          "verdict": "unreviewable",
+          "meeting_id": "synthetic-test-ga",
+          "body": "General Assembly",
+          "meeting_type": "plenary"
+        }
+      ],
+      "topic_reviews": [
+        {
+          "id": "topic-1",
+          "verdict": "found",
+          "meeting_id": "synthetic-test-sc",
+          "body": "Security Council",
+          "meeting_type": "formal council meeting"
+        },
+        {
+          "id": "topic-2",
+          "verdict": "missed",
+          "meeting_id": "synthetic-test-ga",
+          "body": "General Assembly",
+          "meeting_type": "plenary"
+        }
+      ],
+      "grouping_reviews": [
+        {
+          "id": "group-1",
+          "verdict": "correct",
+          "meeting_id": "synthetic-test-ga",
+          "body": "General Assembly",
+          "meeting_type": "plenary"
+        },
+        {
+          "id": "group-2",
+          "verdict": "correct",
+          "meeting_id": "synthetic-test-sc",
+          "body": "Security Council",
+          "meeting_type": "formal council meeting"
+        }
+      ],
+      "attribution_reviews": [
+        {
+          "id": "attr-1",
+          "verdict": "correct",
+          "meeting_id": "synthetic-test-sc",
+          "body": "Security Council",
+          "meeting_type": "formal council meeting"
+        },
+        {
+          "id": "attr-2",
+          "verdict": "incorrect",
+          "meeting_id": "synthetic-test-ga",
+          "body": "General Assembly",
+          "meeting_type": "plenary"
+        }
+      ]
+    },
+    {
+      "day_id": "synthetic-test-day-2",
+      "date": "2026-10-01",
+      "summary_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "bodies": [
+        "Human Rights Council"
+      ],
+      "meeting_types": [
+        "interactive dialogue"
+      ],
+      "meetings": [
+        {
+          "id": "synthetic-test-hrc",
+          "body": "Human Rights Council",
+          "meeting_type": "interactive dialogue"
+        }
+      ],
+      "claim_reviews": [
+        {
+          "id": "claim-4",
+          "verdict": "supported",
+          "meeting_id": "synthetic-test-hrc",
+          "body": "Human Rights Council",
+          "meeting_type": "interactive dialogue"
+        }
+      ],
+      "topic_reviews": [
+        {
+          "id": "topic-3",
+          "verdict": "found",
+          "meeting_id": "synthetic-test-hrc",
+          "body": "Human Rights Council",
+          "meeting_type": "interactive dialogue"
+        }
+      ],
+      "grouping_reviews": [
+        {
+          "id": "group-3",
+          "verdict": "incorrect",
+          "meeting_id": "synthetic-test-hrc",
+          "body": "Human Rights Council",
+          "meeting_type": "interactive dialogue"
+        }
+      ],
+      "attribution_reviews": [
+        {
+          "id": "attr-3",
+          "verdict": "correct",
+          "meeting_id": "synthetic-test-hrc",
+          "body": "Human Rights Council",
+          "meeting_type": "interactive dialogue"
+        }
+      ]
+    }
+  ]
+}
