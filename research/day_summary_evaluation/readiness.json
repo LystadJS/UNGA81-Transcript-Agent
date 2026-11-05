@@ -1,0 +1,11 @@
+{
+  "schema": "un.day-summary-evaluation-readiness.v1",
+  "status": "not_evaluated_missing_owner_samples",
+  "missing": [
+    "registered owner-reviewed development daily-summary sample",
+    "registered untouched owner-reviewed test daily-summary sample"
+  ],
+  "reserved_transcripts_opened": 0,
+  "lock_sha256": "dcda875773ff09cdee12a5097da25ccbb8ed4d271406e0f8828259fa450397d2",
+  "registration_sha256": "a733fa990daa0b910b923262943b0e713bbb94f1828e8c6e06d33ede2141f667"
+}

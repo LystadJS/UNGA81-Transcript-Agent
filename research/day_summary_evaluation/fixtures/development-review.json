@@ -1,0 +1,88 @@
+{
+  "schema": "un.day-summary-owner-review.v1",
+  "sample_id": "synthetic-development",
+  "split": "development",
+  "evaluation_started_at": "2026-10-01T12:00:00.000Z",
+  "reviewed_at": "2026-10-01T13:00:00.000Z",
+  "owner_review": {
+    "reviewer_mode": "owner_single_reviewer",
+    "owner_confirmation": true
+  },
+  "days": [
+    {
+      "day_id": "synthetic-dev-day",
+      "date": "2026-09-29",
+      "summary_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "bodies": [
+        "General Assembly",
+        "Security Council"
+      ],
+      "meeting_types": [
+        "plenary",
+        "formal council meeting"
+      ],
+      "meetings": [
+        {
+          "id": "synthetic-ga",
+          "body": "General Assembly",
+          "meeting_type": "plenary"
+        },
+        {
+          "id": "synthetic-sc",
+          "body": "Security Council",
+          "meeting_type": "formal council meeting"
+        }
+      ],
+      "claim_reviews": [
+        {
+          "id": "claim-1",
+          "verdict": "supported",
+          "meeting_id": "synthetic-ga",
+          "body": "General Assembly",
+          "meeting_type": "plenary"
+        },
+        {
+          "id": "claim-2",
+          "verdict": "unsupported",
+          "meeting_id": "synthetic-sc",
+          "body": "Security Council",
+          "meeting_type": "formal council meeting"
+        }
+      ],
+      "topic_reviews": [
+        {
+          "id": "topic-1",
+          "verdict": "found",
+          "meeting_id": "synthetic-sc",
+          "body": "Security Council",
+          "meeting_type": "formal council meeting"
+        },
+        {
+          "id": "topic-2",
+          "verdict": "found",
+          "meeting_id": "synthetic-ga",
+          "body": "General Assembly",
+          "meeting_type": "plenary"
+        }
+      ],
+      "grouping_reviews": [
+        {
+          "id": "group-1",
+          "verdict": "correct",
+          "meeting_id": "synthetic-ga",
+          "body": "General Assembly",
+          "meeting_type": "plenary"
+        }
+      ],
+      "attribution_reviews": [
+        {
+          "id": "attr-1",
+          "verdict": "correct",
+          "meeting_id": "synthetic-sc",
+          "body": "Security Council",
+          "meeting_type": "formal council meeting"
+        }
+      ]
+    }
+  ]
+}

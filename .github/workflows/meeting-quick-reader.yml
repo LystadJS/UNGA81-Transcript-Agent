@@ -7,6 +7,9 @@ on:
       - 'site/day-summary*.js'
       - 'docs/DAY_SUMMARY_METHOD.md'
       - 'tools/test_day_summary.cjs'
+      - 'tools/test_daily_summary_generation_ui.cjs'
+      - 'docs/DAY_SUMMARY_EVALUATION*.md'
+      - 'research/day_summary_evaluation/**'
       - 'site/text-units.js'
       - 'tools/test_text_units.cjs'
       - 'tools/test_object_expressions.cjs'
@@ -63,6 +66,9 @@ on:
       - 'site/day-summary*.js'
       - 'docs/DAY_SUMMARY_METHOD.md'
       - 'tools/test_day_summary.cjs'
+      - 'tools/test_daily_summary_generation_ui.cjs'
+      - 'docs/DAY_SUMMARY_EVALUATION*.md'
+      - 'research/day_summary_evaluation/**'
       - 'site/text-units.js'
       - 'tools/test_text_units.cjs'
       - 'tools/test_object_expressions.cjs'
@@ -141,6 +147,7 @@ jobs:
           node tools/test_browser_analysis.cjs
           node tools/test_browser_briefing.cjs
           node tools/test_day_summary.cjs
+          node research/day_summary_evaluation/test_evaluate.cjs
           node tools/test_text_units.cjs
           node tools/test_object_expressions.cjs
           node tools/test_collection_recovery.cjs
@@ -161,6 +168,7 @@ jobs:
           export PLAYWRIGHT_MODULE="$(python -c 'import pathlib, playwright; print(pathlib.Path(playwright.__file__).parent / "driver" / "package")')"
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_collection_recovery_ui.cjs site collection-recovery-browser
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_daily_collection_ui.cjs site work/daily-collection-browser
+          BROWSER_PATH="$(command -v google-chrome)" node tools/test_daily_summary_generation_ui.cjs site work/day-summary-generation-browser
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_saved_filters_ui.cjs site saved-filters-browser
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_position_comparison_ui.cjs site position-comparison-browser
           BROWSER_PATH="$(command -v google-chrome)" node tools/test_issue_workflow_ui.cjs site issue-browser
@@ -194,6 +202,7 @@ jobs:
             private-review-primary-v2-browser/
             collection-recovery-browser/
             work/daily-collection-browser/
+            work/day-summary-generation-browser/
             saved-filters-browser/
             quick-reader-browser/
             quick-reader-static/
