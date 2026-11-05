@@ -15,8 +15,7 @@
     const single=$('meetingSelectionMode').value==='single';$('singleMeetingControls').hidden=!single;
     $('findMeetings').disabled=!!lookup;$('cancelMeetingLookup').disabled=!lookup;
     $('individualMeeting').disabled=!inventory||!!lookup;
-    if(single){$('startDate').disabled=true;$('endDate').disabled=true;$('meetingScope').disabled=true;$('recentDates').disabled=true;$('debateDates').disabled=true;}
-    else{for(const id of ['startDate','endDate','meetingScope','recentDates','debateDates'])$(id).disabled=false;}
+    for(const id of ['startDate','endDate','meetingScope','todayDate','yesterdayDate','recentDates','debateDates'])$(id).disabled=single;
   }
   function apply(){
     if(!selected)return;
