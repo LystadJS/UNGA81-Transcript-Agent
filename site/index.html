@@ -10,7 +10,7 @@
     <link href="theme.css" rel="stylesheet">
     <link href="app.css" rel="stylesheet">
     <script defer src="app.js"></script>
-    <link href="analysis.css?v=1.37.0" rel="stylesheet">
+    <link href="analysis.css?v=1.39.0" rel="stylesheet">
     <link href="issue.css?v=1.37.0" rel="stylesheet">
     <script defer src="meeting-scopes.js?v=1.37.0"></script>
     <script defer src="mds-core.js?v=1.12.1"></script>
@@ -23,15 +23,15 @@
     <script defer src="passage-pilot-core.js?v=1.12.1"></script>
     <script defer src="reviewed-units.js?v=1.12.1"></script>
     <script defer src="text-units.js?v=1.37.0"></script>
-    <script defer src="day-summary.js?v=1.38.0"></script>
-    <script defer src="day-summary-view.js?v=1.38.0"></script>
+    <script defer src="day-summary.js?v=1.39.0"></script>
+    <script defer src="day-summary-view.js?v=1.39.0"></script>
     <script defer src="meeting-quick-reader.js?v=1.37.0"></script>
     <script defer src="passage-labels.js?v=1.37.0"></script>
     <script defer src="position-comparison.js?v=1.37.0"></script>
     <script defer src="position-view.js?v=1.37.0"></script>
     <script defer src="issue-workflow.js?v=1.37.0"></script>
     <script defer src="issue-view.js?v=1.37.0"></script>
-    <script defer src="analysis-core.js?v=1.38.0"></script>
+    <script defer src="analysis-core.js?v=1.39.0"></script>
     <script defer src="nmf-view.js?v=1.12.1"></script>
     <script defer src="collector.js?v=1.37.0"></script>
     <script defer src="stability-view.js?v=1.12.1"></script>
@@ -229,8 +229,11 @@
             </div>
           </details>
 
+          <details id="advancedMethods">
+            <summary id="visualizationMethods">Advanced exploratory methods (optional)</summary>
+            <p class="hint">Daily topic, country and meeting visualizations are included automatically. Open these controls only for additional volume, lexical, PCA, clustering or component analysis.</p>
           <fieldset>
-            <legend id="visualizationMethods">Methods</legend>
+            <legend>Descriptive and lexical methods</legend>
 
             <div class="analysis-grid">
 
@@ -250,7 +253,7 @@
               </label>
 
               <label class="check">
-                <input checked name="method" type="checkbox" value="tfidf">
+                <input name="method" type="checkbox" value="tfidf">
                 TF-IDF term ranking
               </label>
 
@@ -336,6 +339,7 @@
               <label>Repetitions<input id="nmfReplicates" type="number" min="10" max="100" value="30" step="1"></label>
             </div><p class="hint">Retain 80% of groups, leaving at least one out; seed 31415. Refit TF-IDF and NMF, align components by term weights, then compare shared passage mixtures. At least three groups are required.</p></div>
           </div>
+          </details>
           <button id="runAnalysis" type="submit">Generate report</button>
           <button class="secondary" disabled id="cancelAnalysis" type="button">Cancel</button>
         </form>

@@ -54,6 +54,12 @@ The coverage view orders or tabulates topics by distinct supporting segments and
 
 The consequential-development view is separate. It requires explicit outcome or change cues and presents the attached source wording without deriving an importance score from passage counts. A development mentioned once can appear there, while a frequently mentioned subject may have no consequential development. Neither view establishes real-world impact without source review.
 
+## Automatic visualizations
+
+Every day summary includes three visual views when the retained sources support them: topic distribution, topic by recorded country, and meeting by topic. Each view names its unit. Topic distribution and meeting-topic cells count distinct supporting passages; exact repeated wording does not add another passage within the stated grouping. Country-topic cells are binary participation indicators, so one country counts at most once for a topic regardless of repeated passages. Participation does not establish support, opposition, or position strength.
+
+Each chart includes a readable table alternative and a drill-down to the retained source passages. When topics, mapped country attribution, or meeting evidence are unavailable, the corresponding chart displays an insufficient-data reason instead of an empty or zero-filled result. PCA, clustering, NMF, lexical ranking, and related exploratory methods remain optional under advanced controls and do not determine these automatic descriptive views.
+
 ## Browser and backend requirements
 
 The report builder needs no application backend, database, account, hosted classifier, or generative AI API for this summary. A modern browser runs the JavaScript engine after the existing collector retrieves public UN records. Static hosting is sufficient.

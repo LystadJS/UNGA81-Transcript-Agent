@@ -70,6 +70,36 @@
     </article>`;
   }
 
+  function sourceDrilldown(title,rows,label){
+    const supported=list(rows).filter(row=>list(row.evidence).some(item=>safeURL(item?.source_url)));
+    if(!supported.length)return `<details><summary>${esc(title)} source drill-down</summary><p>Supporting source passages are unavailable.</p></details>`;
+    return `<details><summary>${esc(title)} source drill-down</summary>${supported.map(row=>`<section><h5>${esc(label(row))}</h5><ol>${list(row.evidence).filter(item=>safeURL(item?.source_url)).map(item=>`<li><a href="${esc(safeURL(item.source_url))}" target="_blank" rel="noopener noreferrer">${esc(item.country||item.meeting_title||item.record_id||'Source transcript')}</a><blockquote>${esc(item.excerpt||'Source passage')}</blockquote></li>`).join('')}</ol></section>`).join('')}</details>`;
+  }
+
+  function distributionChart(chart){
+    if(chart?.status!=='available')return `<section class="automatic-chart"><h4>Topic distribution</h4><p class="warning"><strong>Insufficient data.</strong> ${esc(chart?.reason||'No topic distribution is available.')}</p></section>`;
+    const rows=list(chart.rows),max=Math.max(1,...rows.map(row=>count(row.value)));
+    return `<section class="automatic-chart" aria-labelledby="topicDistributionTitle"><h4 id="topicDistributionTitle">Topic distribution</h4><p><strong>Counts:</strong> ${esc(chart.unit)}. ${esc(chart.deduplication)}</p><figure><figcaption>Distinct source passages by topic</figcaption><div class="bar-chart" role="img" aria-label="Topic distribution counting ${esc(chart.unit)}">${rows.map(row=>`<div class="bar-row"><span>${esc(row.label)}</span><span class="bar-track"><span class="bar-fill" style="width:${Math.round(100*count(row.value)/max)}%"></span></span><strong>${count(row.value)}</strong></div>`).join('')}</div></figure><details><summary>Readable table alternative</summary><div class="table-wrap"><table><thead><tr><th scope="col">Topic</th><th scope="col">${esc(chart.unit)}</th></tr></thead><tbody>${rows.map(row=>`<tr><th scope="row">${esc(row.label)}</th><td>${count(row.value)}</td></tr>`).join('')}</tbody></table></div></details>${sourceDrilldown('Topic distribution',rows,row=>row.label)}</section>`;
+  }
+
+  function matrixChart(chart,kind){
+    const title=kind==='country'?'Topic by country':'Meeting by topic';
+    if(chart?.status!=='available')return `<section class="automatic-chart"><h4>${title}</h4><p class="warning"><strong>Insufficient data.</strong> ${esc(chart?.reason||`${title} is unavailable.`)}</p></section>`;
+    const rowDefs=kind==='country'?list(chart.countries).map(value=>({id:value,label:value})):list(chart.meetings);
+    const topics=list(chart.topics),cells=list(chart.cells),key=kind==='country'?'country':'meeting_id';
+    const cell=(row,topic)=>cells.find(item=>item[key]===row.id&&item.topic_id===topic.id)||{value:0,evidence:[]};
+    const sourceRows=[];
+    for(const row of rowDefs)for(const topic of topics){const value=cell(row,topic);if(count(value.value))sourceRows.push({...value,row_label:row.label,topic_label:topic.label});}
+    const headings=`<th scope="col">${kind==='country'?'Recorded country':'Meeting'}</th>${topics.map(topic=>`<th scope="col">${esc(topic.label)}</th>`).join('')}`;
+    const body=rowDefs.map(row=>`<tr><th scope="row">${esc(row.label)}</th>${topics.map(topic=>{const value=count(cell(row,topic).value);return `<td class="matrix-cell ${value?'has-data':'no-data'}">${value}</td>`;}).join('')}</tr>`).join('');
+    return `<section class="automatic-chart" aria-label="${title}"><h4>${title}</h4><p><strong>Counts:</strong> ${esc(chart.unit)}. ${esc(chart.deduplication)}</p><figure><figcaption>${esc(title)} overview</figcaption><div class="matrix-chart" role="img" aria-label="${esc(title)} counting ${esc(chart.unit)}"><table><thead><tr>${headings}</tr></thead><tbody>${body}</tbody></table></div></figure><details><summary>Readable table alternative</summary><div class="table-wrap"><table><thead><tr>${headings}</tr></thead><tbody>${body}</tbody></table></div><p>Zero means no qualifying source passage was identified; it does not establish absence from the full proceedings.</p></details>${sourceDrilldown(title,sourceRows,row=>`${row.row_label} · ${row.topic_label}`)}</section>`;
+  }
+
+  function automaticVisualizations(summary){
+    const charts=summary.visualizations||{};
+    return `<section class="automatic-visualizations" aria-label="Automatic day visualizations"><h3>Automatic visualizations</h3><p>Each chart states its counting unit, includes a table alternative, and links to the supporting transcript passages. Missing evidence remains visible.</p>${distributionChart(charts.topic_distribution)}${matrixChart(charts.topic_country_matrix,'country')}${matrixChart(charts.meeting_topic_overview,'meeting')}</section>`;
+  }
+
   function render(summary){
     if(!summary)return '';
     const topics=list(summary.topics),procedural=summary.procedural||summary.processing||{};
@@ -86,6 +116,7 @@
       <h3>${esc(date)} proceedings</h3>
       <p><strong>${list(summary.meetings).length} meeting${list(summary.meetings).length===1?'':'s'} combined with meeting distinctions retained.</strong> ${substantive} substantive passage${substantive===1?'':'s'} entered topic synthesis; ${excluded} narrowly identified procedural or ceremonial passage${excluded===1?'':'s'} remained outside substantive claims.</p>
       ${summary.overview?`<p>${esc(summary.overview)}</p>`:''}
+      ${automaticVisualizations(summary)}
       <details open><summary>Meetings covered</summary><p>Each row preserves the source meeting. A topic that appears in several rows is combined at day level only when it maps to the same policy question.</p>${meetingRows(summary)}</details>
       <h4>Substantive topics</h4>
       <p class="method-note">Topics are ordered for navigation by descriptive coverage. Passage volume does not determine importance, consequence or agreement.</p>
@@ -105,7 +136,7 @@
     </section>`;
   }
 
-  const api={render,safeURL,evidenceItems,supportedClaims};
+  const api={render,safeURL,evidenceItems,supportedClaims,automaticVisualizations};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;
   else root.UNDaySummaryView=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
