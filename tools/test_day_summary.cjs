@@ -226,4 +226,63 @@ check('PCA, clustering and lexical methods are inside advanced controls', () => 
   assert.doesNotMatch(html, /checked name="method" type="checkbox" value="(?:clusters|nmf|tfidf|similarity)"/);
 });
 
+check('source-derived topics require a self-contained policy object', () => {
+  const guarded = DaySummary.build([
+    record(meetingA, 20, 'Country A', 'We call for this to be swiftly verified by the relevant mechanisms.', 'Synthetic fragment guard'),
+    record(meetingA, 21, 'Country A', 'We propose there to be a period and then we would add the following.', 'Synthetic procedure guard'),
+    record(meetingA, 22, 'Country A', 'We call for negotiations on a legally binding treaty prohibiting autonomous weapons without meaningful human control.', 'Synthetic valid source topic')
+  ], {date});
+  assert.ok(guarded.topics.some(topic => /autonomous weapons/i.test(topic.label)));
+  assert.ok(!guarded.topics.some(topic => /swiftly verified|period|add the following/i.test(topic.label)));
+  assert.equal(DaySummary.actionObject('We call for this to be swiftly verified by the relevant mechanisms.'), null);
+});
+
+check('broad subjects split into distinct policy questions', () => {
+  const split = DaySummary.build([
+    record(meetingA, 30, 'Country A', 'We request suspension of troop rotations in United Nations peace operations.', 'Synthetic policy split'),
+    record(meetingA, 31, 'Country B', 'The Security Council must give the peacekeeping mission resources required for its civilian-protection mandate.', 'Synthetic policy split'),
+    record(meetingA, 32, 'Country C', 'Our action plan targets the prevention and eradication of human trafficking.', 'Synthetic policy split'),
+    record(meetingA, 33, 'Country D', 'We call for progress in the implementation review mechanism of the UN Convention against Transnational Organized Crime.', 'Synthetic policy split')
+  ], {date});
+  for (const id of ['peacekeeping_troop_participation','peacekeeping_mandate_resources','human_trafficking','untoc_review']) assert.ok(split.topics.some(topic => topic.id === id), id);
+  assert.ok(!split.topics.some(topic => topic.id === 'peacekeeping' && topic.coverage.source_segments === 2));
+  assert.ok(!split.topics.some(topic => topic.id === 'organized_crime' && topic.coverage.source_segments === 2));
+});
+
+check('meeting administration is withheld before topic and claim extraction', () => {
+  const procedural = DaySummary.build([
+    record(meetingA, 40, 'Country A', 'Before proceeding further, I propose that the time limit for statements in this debate be five minutes for individual delegations.', 'Synthetic meeting procedure'),
+    record(meetingA, 41, 'Country B', 'I want to point out that the footnote is at the very top of the document and should be shown on screen.', 'Synthetic document procedure'),
+    record(meetingA, 42, 'Country C', 'The Bureau proposes that the meeting be held in person.', 'Synthetic meeting procedure'),
+    record(meetingA, 43, 'Country D', 'We propose a technical addition to the draft report and will read it at dictation speed.', 'Synthetic document procedure')
+  ], {date});
+  assert.equal(procedural.topics.length, 0);
+  assert.ok(procedural.stats.procedural_sentences >= 4);
+});
+
+check('collective statements retain the group and never enter country participation', () => {
+  const collective = {...record(meetingA, 50, 'Country A', 'The regional group calls for unhindered humanitarian access through all crossings.', 'Synthetic collective'),speaker_metadata:{affiliation:'CTA',affiliation_full:'Country A',function:'Representative',group:'Regional Group'}};
+  const national = record(meetingA, 51, 'Country B', 'We call for unhindered humanitarian access through all crossings.', 'Synthetic national');
+  const grouped = DaySummary.build([collective,national], {date});
+  const topic = grouped.topics.find(row => row.id === 'humanitarian_access');
+  assert.deepEqual(topic.participating_countries, ['Country B']);
+  assert.deepEqual(topic.participating_collectives, ['Regional Group']);
+  assert.ok(topic.claims.some(item => item.text.startsWith('Regional Group records')));
+  assert.ok(topic.supporting_passages.some(item => item.attribution_kind === 'collective' && item.recorded_country === 'Country A'));
+  assert.ok(!grouped.visualizations.topic_country_matrix.countries.includes('Country A'));
+  assert.ok(grouped.visualizations.topic_country_matrix.countries.includes('Country B'));
+  const rendered = DaySummaryView.render(grouped);
+  assert.match(rendered, /Collective statements:<\/strong> Regional Group/);
+  assert.match(rendered, /Collective: Regional Group · recorded affiliation Country A/);
+});
+
+check('requested condemnation is one proposal rather than a duplicate disagreement', () => {
+  const one = DaySummary.build([
+    record(meetingA, 60, 'Country A', 'We call for the Council to condemn the attack on civilians and demand that it not be repeated.', 'Synthetic claim cue')
+  ], {date});
+  const topic = one.topics.find(row => row.id === 'civilian_protection');
+  assert.equal(topic.proposals.length, 1);
+  assert.equal(topic.disagreements.length, 0);
+});
+
 console.log(JSON.stringify({status: 'PASS', checks, synthetic: true}));

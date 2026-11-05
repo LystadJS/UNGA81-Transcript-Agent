@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.39.0",
+  "browser_engine": "browser-descriptive-1.40.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-05",
   "features": [
+    "Owner-reviewed day-summary repair: self-contained source-derived policy objects, narrower catalog boundaries, expanded meeting-procedure filtering, and explicit collective attribution excluded from national participation",
     "Automatic topic distribution, topic-by-country and meeting-by-topic charts declare their units, deduplicate participation, expose insufficient data, and include readable tables plus source drill-downs; optional exploratory methods are grouped under advanced controls",
     "Deterministic day-level proceedings summaries preserve meeting distinctions, group narrow policy-question synonyms, separate procedural language, and attach transcript evidence to proposals, disagreements and consequential developments without treating coverage volume as importance",
     "New York daily reporting defaults, all-inventory scope, explicit transcript availability, partial collection retry and newly published source checks, bounded source-version archives and offline hash verification",
@@ -16,9 +17,9 @@
     "Ten-year humanitarian access/civilian protection workflow: independent historical as-of date, current country-position statistics, coverage heatmap, U.S. history, automatic observed country trajectories, source-bound historical import and saved replay; fitted models withheld",
     "Country briefings and documentary exports separate executive policy, congressional analysis, enacted U.S. law and other official evidence; historical status and current gaps remain visible",
     "Qualified universal-jurisdiction support distinguished from conflicting positions without adding agreement scores",
-    "Automatic source-linked country\u2013U.S. briefings separating UN statements, shared priorities, historical/dated official documents and current gaps; standalone script-free briefing export",
+    "Automatic source-linked country–U.S. briefings separating UN statements, shared priorities, historical/dated official documents and current gaps; standalone script-free briefing export",
     "Separate source-bound documentary policy reviews: historical dates, official document links, saved review notes, no contribution to UN statement statistics or agreement scores",
-    "Automatic nearby-date comparisons: signed date differences, exact policy direction versus shared child-protection, climate-finance, UNCAT-accession, human-rights-institution and renewable-energy priorities, nearest-date ties, saved 0\u201314-day window, separate from same-day scores",
+    "Automatic nearby-date comparisons: signed date differences, exact policy direction versus shared child-protection, climate-finance, UNCAT-accession, human-rights-institution and renewable-energy priorities, nearest-date ties, saved 0–14-day window, separate from same-day scores",
     "National implementation priorities, bounded adjacent renewable-energy targets and climate-finance appeals; qualified domestic commitments remain outside U.S. agreement scoring",
     "three-country source review: 125 questions, qualified recognition of specific OHCHR functions, human rights framing, and explicit AOSIS attribution without national inference",
     "source-reviewed country coverage across 123 questions; explicit positions with unspecified context remain visible and never establish U.S. agreement",
@@ -90,7 +91,8 @@
       "script_free_report": 8,
       "live_browser": 27,
       "recent_saved_source_replay": "PASS",
-      "public_build_scanner_findings": 0
+      "public_build_scanner_findings": 0,
+      "day_summary_synthetic": 23
     }
   },
   "position_catalogue": {
@@ -115,6 +117,6 @@
     "reporting_timezone": "America/New_York",
     "default_scope": "all",
     "source_provenance": "un.browser.source-provenance.v1",
-    "validation_scope": "synthetic engineering acceptance; no new live UN collection or scientific validation"
+    "validation_scope": "Synthetic engineering acceptance plus owner-reviewed three-day development replay; no untouched-test or reserved transcript access"
   }
 }
