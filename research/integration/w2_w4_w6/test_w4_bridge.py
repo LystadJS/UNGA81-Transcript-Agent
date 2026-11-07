@@ -32,6 +32,7 @@ class W4W6Acceptance(unittest.TestCase):
         self.assertEqual(p["status"], "ready")
         self.assertEqual(p["alignments"][0]["mode"], "rigid_full_refit")
         self.assertGreaterEqual(p["alignments"][0]["anchors"], 4)
+        self.assertEqual(p["alignments"][0]["status"], "passed")
         self.assertEqual(p["periods"], ["p0", "p1"])
         self.assertEqual(p["coverage"]["frame"], envelope["cohort"]["total_in_frame"])
         self.assertEqual(p["coverage"]["eligible"], envelope["cohort"]["eligible"])
@@ -143,6 +144,13 @@ class W4W6Acceptance(unittest.TestCase):
         copy["producer"]["fixture_kind"] = "private_development"
         with self.assertRaisesRegex(ValueError, "Real development"):
             validate_source(raw, comparison, copy)
+
+
+def load_tests(loader, tests, pattern):
+    # Add the new source-free coordinator sidecar suite; retain all original tests.
+    from research.integration.w2_w4_w6.waggoner.run_tests import suite
+    tests.addTests(suite(loader))
+    return tests
 
 
 if __name__ == "__main__":
