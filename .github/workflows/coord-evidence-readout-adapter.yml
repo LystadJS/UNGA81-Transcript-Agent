@@ -1,0 +1,252 @@
+name: Coordinator source to readout synthetic interoperability (nonpublishing)
+on:
+  push:
+    branches: [coord/evidence-first-readout-adapter]
+    paths:
+      - 'research/integration/diplomatic_readouts/**'
+      - '.github/workflows/coord-evidence-readout-adapter.yml'
+  pull_request:
+    paths:
+      - 'research/integration/diplomatic_readouts/**'
+      - '.github/workflows/coord-evidence-readout-adapter.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline-contract-and-bridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONHASHSEED: '0'
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - name: Checkout coordinator adapter
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Checkout unmodified PR70 readout implementation
+        uses: actions/checkout@v4
+        with:
+          ref: 028e3d26f707401cbff498593ab27f64e2cc072a
+          path: pr70
+          persist-credentials: false
+      - name: Verify pinned readout dependency
+        run: |
+          test "$(git -C pr70 rev-parse HEAD)" = 028e3d26f707401cbff498593ab27f64e2cc072a
+          test ! -e research/diplomatic_readouts/readout.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install pinned synthetic schema validator
+        run: python3 -m pip install --disable-pip-version-check -r research/integration/diplomatic_readouts/requirements-dev.txt
+      - name: Official native source and interchange regressions
+        run: |
+          set -euo pipefail
+          node docs/parallel-work/validate-contract.cjs
+          node research/validation_framework/tests/test_schema.cjs
+          node research/validation_framework/tests/test_framework.cjs
+          node tools/test_passage_corpus.cjs
+          node tools/test_latent.cjs
+      - name: Coordinator bridge regression against actual pinned source and readout contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="$GITHUB_WORKSPACE/pr70/research/diplomatic_readouts:$GITHUB_WORKSPACE/research/integration/diplomatic_readouts"
+          python3 -m unittest discover -s research/integration/diplomatic_readouts/tests -v
+          python3 -m unittest discover -s pr70/research/diplomatic_readouts/tests -v
+      - name: Two independent synthetic readout generations and output/privacy checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="$GITHUB_WORKSPACE/pr70/research/diplomatic_readouts:$GITHUB_WORKSPACE/research/integration/diplomatic_readouts"
+          python3 research/integration/diplomatic_readouts/examples.py --output "$RUNNER_TEMP/readout-bridge-a"
+          python3 research/integration/diplomatic_readouts/examples.py --output "$RUNNER_TEMP/readout-bridge-b"
+          diff -rq "$RUNNER_TEMP/readout-bridge-a" "$RUNNER_TEMP/readout-bridge-b"
+          R_TEMP="$RUNNER_TEMP" python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          p = Path(os.environ['R_TEMP'])/'readout-bridge-a'
+          m = json.loads((p/'manifest.json').read_text())
+          assert m['publication_eligible'] is False and len(m['cases']) == 5
+          assert m['cases']['descriptive']['state'] == 'descriptive_only'
+          assert all(v['state']=='withheld' for k,v in m['cases'].items() if k!='descriptive')
+          for output in p.rglob('readout.json'):
+              obj=json.loads(output.read_text())
+              assert obj['publication_eligible'] is False
+              assert 'original_bytes' not in obj
+              assert 'raw_source' not in obj
+          assert len(list(p.rglob('readout.json'))) == 5
+          PY
+      - name: Verify metadata-only registry preflight and deterministic refusal receipts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 research/integration/diplomatic_readouts/examples_registry.py --output "$RUNNER_TEMP/registry-preflight-a"
+          python3 research/integration/diplomatic_readouts/examples_registry.py --output "$RUNNER_TEMP/registry-preflight-b"
+          diff -rq "$RUNNER_TEMP/registry-preflight-a" "$RUNNER_TEMP/registry-preflight-b"
+          PREFLIGHT_TEMP="$RUNNER_TEMP" python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ["PREFLIGHT_TEMP"]) / "registry-preflight-a"
+          manifest = json.loads((root / "manifest.json").read_text())
+          assert manifest["synthetic_only"] is True
+          assert manifest["authorized"] is False and manifest["publication_eligible"] is False
+          assert manifest["delivery_eligible"] is False and manifest["transcripts_opened"] == 0
+          assert len(manifest["cases"]) == 7
+          for name in manifest["cases"]:
+              value = json.loads((root / (name + ".json")).read_text())
+              assert value["authority"] == "none"
+              assert value["authorized"] is False and value["can_read_source"] is False
+              assert value["publication_eligible"] is False and value["delivery_eligible"] is False
+              assert value["holdout_lock"]["transcripts_opened"] == 0
+              assert len(value["gate_status"]) == 13
+              assert set(value["gate_status"].values()) == {"NOT_RUN"}
+              assert "records" not in value and "original_bytes" not in value
+              if name == "consistent_metadata_not_authorized":
+                  assert value["metadata_status"] == "metadata_consistent"
+              else:
+                  assert value["metadata_status"] == "withheld"
+          print("PASS 7 synthetic registry preflight cases, no granted authority")
+          PY
+      - name: Two-signer synthetic Ed25519 revocation, reproducible no-access examples and benchmark
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="$GITHUB_WORKSPACE/research/integration/diplomatic_readouts"
+          python3 research/integration/diplomatic_readouts/examples_signatures.py --output "$RUNNER_TEMP/signed-a"
+          python3 research/integration/diplomatic_readouts/examples_signatures.py --output "$RUNNER_TEMP/signed-b"
+          diff -rq "$RUNNER_TEMP/signed-a" "$RUNNER_TEMP/signed-b"
+          python3 research/integration/diplomatic_readouts/benchmark_signatures.py --iterations 200 --warmup 20 --output "$RUNNER_TEMP/signature-benchmark.json"
+          SIGNATURE_TEMP="$RUNNER_TEMP" python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          root=Path(os.environ["SIGNATURE_TEMP"])
+          manifest=json.loads((root/"signed-a"/"manifest.json").read_text())
+          assert manifest["synthetic_only"] is True and manifest["authority"] == "none"
+          assert manifest["authorized"] is False and manifest["publication_eligible"] is False
+          assert manifest["delivery_eligible"] is False and manifest["transcripts_opened"] == 0
+          assert len(manifest["cases"]) == 10
+          positive={"valid_no_authority","rotation_unrevoked_key_no_authority"}
+          for name in manifest["cases"]:
+              content=json.loads((root/"signed-a"/(name+".json")).read_text())
+              assert (content["status"]=="synthetic_signatures_verified_no_authority") == (name in positive)
+              assert content["authority"]=="none" and content["can_read_source"] is False
+              assert content["authorized"] is False and content["publication_eligible"] is False
+              assert len(content["gate_status"]) == 13
+              assert set(content["gate_status"].values())=={"NOT_RUN"}
+              assert content["holdout_lock"]["transcripts_opened"]==0
+              assert "signature_b64" not in content and "records" not in content
+          benchmark=json.loads((root/"signature-benchmark.json").read_text())
+          assert benchmark["synthetic_only"] is True and benchmark["authorized"] is False
+          assert benchmark["publication_eligible"] is False and benchmark["iterations_per_mode"]==200
+          assert benchmark["metadata_preflight"]["median_ms"]>0
+          assert benchmark["ed25519_revocation_preflight"]["median_ms"]>0
+          print("PASS Ed25519 two-role crypto, 10 fictional cases, 13 unchanged holds, benchmark no SLA gate")
+          PY
+      - name: Rehearse persistent revocation and signer compromise without source access
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="$GITHUB_WORKSPACE/research/integration/diplomatic_readouts"
+          python3 research/integration/diplomatic_readouts/stress_persistence.py --output "$RUNNER_TEMP/restart-a"
+          python3 research/integration/diplomatic_readouts/stress_persistence.py --output "$RUNNER_TEMP/restart-b"
+          diff -rq "$RUNNER_TEMP/restart-a" "$RUNNER_TEMP/restart-b"
+          RESTART_TEMP="$RUNNER_TEMP" python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ["RESTART_TEMP"]) / "restart-a"
+          m = json.loads((root / "manifest.json").read_text())
+          assert m["synthetic_only"] is True and m["authority"] == "none"
+          assert m["authorized"] is False and m["can_read_source"] is False
+          assert m["publication_eligible"] is False and m["delivery_eligible"] is False
+          assert m["transcripts_opened"] == 0
+          assert len(m["cases"]) == 8
+          expected = {"fresh_pinned_restart",
+                      "rotated_key_new_checkpoint_no_authority",
+                      "two_signers_and_observer_compromised_known_limit"}
+          for name, entry in m["cases"].items():
+              report = json.loads((root / (name + ".json")).read_text())
+              assert (report["status"] ==
+                      "synthetic_checkpoint_consistent_no_authority") == (name in expected)
+              assert report["authority"] == "none" and report["authorized"] is False
+              assert report["can_read_source"] is False
+              assert report["publication_eligible"] is False
+              assert report["delivery_eligible"] is False
+              assert report["holdout_lock"]["transcripts_opened"] == 0
+              assert len(report["gate_status"]) == 13
+              assert set(report["gate_status"].values()) == {"NOT_RUN"}
+              assert "original_bytes" not in report and "source_url" not in report
+          print("PASS synthetic restart/revocation rollback and dual-root compromise matrix")
+          PY
+      - name: Independent four-host quorum, observer-fork and append-only audit stress
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="$GITHUB_WORKSPACE/research/integration/diplomatic_readouts"
+          python3 research/integration/diplomatic_readouts/stress_multi_host.py --iterations 300 --seed 81081 --output "$RUNNER_TEMP/multi-host-a"
+          python3 research/integration/diplomatic_readouts/stress_multi_host.py --iterations 300 --seed 81081 --output "$RUNNER_TEMP/multi-host-b"
+          diff -rq "$RUNNER_TEMP/multi-host-a" "$RUNNER_TEMP/multi-host-b"
+          MULTI_HOST_TEMP="$RUNNER_TEMP" python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          root=Path(os.environ["MULTI_HOST_TEMP"])/"multi-host-a"
+          receipt=json.loads((root/"stress-manifest.json").read_text())
+          assert receipt["schema"]=="un.synthetic-multi-host-witness-stress.v0"
+          assert receipt["fixture_kind"]=="synthetic"
+          assert receipt["iterations"]==300 and receipt["failures"]==0
+          assert receipt["authorized"] is False and receipt["source_access_granted"] is False
+          assert receipt["publication_eligible"] is False and receipt["delivery_eligible"] is False
+          assert receipt["transcripts_opened"]==0
+          assert len(receipt["cases"])==15
+          assert sum(v["attempted"] for v in receipt["cases"].values())==300
+          assert all(v["failures"]==0 for v in receipt["cases"].values())
+          assert receipt["cases"]["compromised_quorum_and_pins"]["expected"]=="no_authority"
+          print("PASS 4 witness keys, quorum 3, 2 independent observer pins, bounded append-only log, 300 seeded fictional cases")
+          PY
+      - name: Four-host partitions, signer restart and signed equivocation evidence (source-free)
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="$GITHUB_WORKSPACE/research/integration/diplomatic_readouts"
+          python3 research/integration/diplomatic_readouts/stress_partition.py --iterations 360 --seed 81081 --output "$RUNNER_TEMP/partition-a"
+          python3 research/integration/diplomatic_readouts/stress_partition.py --iterations 360 --seed 81081 --output "$RUNNER_TEMP/partition-b"
+          diff -rq "$RUNNER_TEMP/partition-a" "$RUNNER_TEMP/partition-b"
+          PARTITION_ROOT="$RUNNER_TEMP/partition-a" python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          result=json.loads((Path(os.environ["PARTITION_ROOT"])/"manifest.json").read_text())
+          assert result["schema"] == "un.synthetic-witness-partition-stress.v0"
+          assert result["synthetic_only"] is True
+          assert result["iterations"] == 360 and result["seed"] == 81081
+          assert result["failures"] == 0 and len(result["cases"]) == 18
+          assert sum(case["attempted"] for case in result["cases"].values()) == 360
+          assert all(case["failures"] == 0 for case in result["cases"].values())
+          assert result["authority"] == "none"
+          assert result["authorized"] is False and result["source_access"] is False
+          assert result["publication_eligible"] is False and result["delivery_eligible"] is False
+          assert result["transcripts_opened"] == 0 and result["security_certified"] is False
+          assert result["residual_risk"] == "witness_quorum_or_external_pin_compromise_not_prevented"
+          print("PASS 18 synthetic partition/equivocation classes, 360 seeded trials, zero access")
+          PY
+      - name: Native W1 to W2 saved source-envelope regression (synthetic only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          node research/integration/w1_w2/make-synthetic.cjs "$RUNNER_TEMP/w1-w2-readout"
+          export PYTHONPATH="$GITHUB_WORKSPACE/pr70/research/diplomatic_readouts:$GITHUB_WORKSPACE/research/integration/diplomatic_readouts"
+          W1_SYNTHETIC="$RUNNER_TEMP/w1-w2-readout/w1-v1-interchange.json" python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          from bridge import UpstreamValidation, digest, validate_interchange
+          e=json.loads(Path(os.environ['W1_SYNTHETIC']).read_text())
+          u=e['upstream']
+          receipt=UpstreamValidation(digest(e),u['source_schema'],u['source_hash_basis'],u['source_sha256'],u['selection_sha256'])
+          # v1 analytical contract remains separate from source/reviewer authority.
+          info=validate_interchange(e,receipt)
+          assert len(info['eligible'])==e['coverage']['eligible']
+          print('PASS native-W1-v1 source frame and fit ledger; NOT a readout authorization',len(info['eligible']))
+          PY

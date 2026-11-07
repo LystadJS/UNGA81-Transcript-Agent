@@ -1,0 +1,156 @@
+{
+  "schema": "un.synthetic-security-review-freeze-candidate.v0",
+  "status": "PROPOSED_NOT_APPROVED",
+  "evaluation_role": "synthetic_engineering_only",
+  "authority": "none",
+  "authorized": false,
+  "can_read_source": false,
+  "can_issue_review": false,
+  "statistical_eligible": false,
+  "publication_eligible": false,
+  "delivery_eligible": false,
+  "holdout": {
+    "meetings_reserved": 37,
+    "transcripts_opened": 0,
+    "access_granted": false,
+    "d1_o1_o5": "frozen"
+  },
+  "gates": {
+    "source_registry": "NOT_RUN",
+    "original_bytes": "NOT_RUN",
+    "text_transform": "NOT_RUN",
+    "original_offsets": "NOT_RUN",
+    "selection_and_duplicates": "NOT_RUN",
+    "source_dependence": "NOT_RUN",
+    "country_attribution": "NOT_RUN",
+    "proposition_stance": "NOT_RUN",
+    "owner_review": "NOT_RUN",
+    "privacy": "NOT_RUN",
+    "statistical_identification": "NOT_RUN",
+    "reserved_holdout": "NOT_RUN",
+    "d1_publication": "NOT_RUN"
+  },
+  "scope": {
+    "branch": "coord/evidence-first-readout-adapter",
+    "owned_prefix": "research/integration/diplomatic_readouts/",
+    "readout_dependency_sha": "028e3d26f707401cbff498593ab27f64e2cc072a",
+    "source_split": "synthetic",
+    "no_original_transcript_rows": true
+  },
+  "required_attacks": [
+    {
+      "case": "T01",
+      "threat": "revoked_custodian_key_alias",
+      "expected": "withheld"
+    },
+    {
+      "case": "T02",
+      "threat": "revoked_revocation_key_alias",
+      "expected": "withheld"
+    },
+    {
+      "case": "T03",
+      "threat": "compromised_custodian_rewrites_audit",
+      "expected": "withheld"
+    },
+    {
+      "case": "T04",
+      "threat": "key_id_collision_across_roles",
+      "expected": "withheld"
+    },
+    {
+      "case": "T05",
+      "threat": "compromised_revocation_key_rolls_back_pinned_revocations",
+      "expected": "withheld"
+    },
+    {
+      "case": "T06",
+      "threat": "signed_revocation_wrong_audit_tip",
+      "expected": "withheld"
+    },
+    {
+      "case": "T07",
+      "threat": "signed_revocation_wrong_policy",
+      "expected": "withheld"
+    },
+    {
+      "case": "T08",
+      "threat": "signed_revocation_wrong_registry",
+      "expected": "withheld"
+    },
+    {
+      "case": "T09",
+      "threat": "compromised_custodian_changes_policy",
+      "expected": "withheld"
+    },
+    {
+      "case": "T10",
+      "threat": "externally_pinned_unrevoked_key_rotation",
+      "expected": "verified_no_authority"
+    },
+    {
+      "case": "T11",
+      "threat": "revocation_key_as_custody_key",
+      "expected": "withheld"
+    },
+    {
+      "case": "T12",
+      "threat": "revocation_permission_escalation",
+      "expected": "withheld"
+    },
+    {
+      "case": "T13",
+      "threat": "checkpoint_sequence_rollback",
+      "expected": "withheld"
+    }
+  ],
+  "source_blob_sha1": {
+    "synthetic_signatures.py": "ab32cd35b3ca12cbf8710101e0375d612c24e784",
+    "signed_metadata.v0.schema.json": "56df66dfdc5050b8c8c5d987ac693524b7431c7b",
+    "synthetic_signatures.v0.schema.json": "2ac7d4e6704d4b59586ee56a19e765feea881cb1",
+    "registry_preflight.py": "47d0c36cfbf936f420bfad02f586fcf537a09f47",
+    "private_source_contract.py": "a4e3f233019a53dc0e4a33a26db2a7d5080a6df0",
+    "tests/test_synthetic_signatures.py": "878ef0d6aa544f1d984a581ccb52149c61f9a9e8",
+    "tests/test_signature_redteam.py": "68f8568976f64ecb8352949c6c24e4d026730c1b",
+    "examples_signatures.py": "1ccd2f2a57bf23e89ef49272217c5cd4dfc81196",
+    "benchmark_signatures.py": "5570edc34051fb3aa8f0ef9fde6e8a9797125cb5"
+  },
+  "deterministic_manifest_sha256": {
+    "signed_scenarios": "fc8a91ef261375f32954359564b4f701dddd00e79640a3f290e3586c7d6bab27",
+    "registry_scenarios": "4fda005f6655dc83d84ac6441a2be3bd26309d41c58e6a7aa2aa5ec5ce6d0b2b",
+    "readout_bridge_scenarios": "7d9e3d3303cb00eb3f088a3260e58c18cc2164ffabb20e8793e32124f1f75ffb"
+  },
+  "observed_ci": {
+    "attack_reproduction_run_id": 38791494790,
+    "attack_failures": 4,
+    "remediated_push_run_id": 38792058578,
+    "remediated_pr_run_id": 38792067101,
+    "coordinator_tests": 156,
+    "renderer_tests": 46
+  },
+  "runtime": {
+    "python": "3.13",
+    "node": "22",
+    "cryptography": "46.0.4",
+    "jsonschema": "4.26.0",
+    "fixture_kind": "synthetic",
+    "seed": null
+  },
+  "future_review_requirements": [
+    "independent_second_reviewer_review_of_attacks",
+    "independent_pin_and_checkpoint_custody_provenance",
+    "secure_monotonic_counter_and_clock",
+    "signed_audit_log_completeness_or_transparency",
+    "signer_compromise_response",
+    "secure_key_storage_and_rotation",
+    "real_source_eligibility_separate_human_authorization",
+    "no_empirical_or_publication_release"
+  ],
+  "limitations": [
+    "collusion_or_compromise_of_all_signing_keys_and_external_pins_is_not_preventable_here",
+    "signatures_do_not_authenticate_real_source_custodians_or_original_un_text",
+    "synthetic_consistency_is_not_source_access_rights",
+    "legacy_synthetic_v0_signatures_without_key_id_binding_are_incompatible",
+    "security_review_freeze_candidate_is_not_owner_or_independent_signoff"
+  ]
+}

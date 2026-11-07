@@ -1,0 +1,249 @@
+{
+  "$id": "urn:unga81:synthetic-custodian-signature-receipt:v0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "withheld"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "checkpoint_sequence": {
+            "type": "null"
+          },
+          "reason_codes": {
+            "minItems": 1
+          },
+          "registry_sha256": {
+            "type": "null"
+          },
+          "revocation_verified": {
+            "const": false
+          },
+          "signature_verified": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "synthetic_signatures_verified_no_authority"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "checkpoint_sequence": {
+            "minimum": 2,
+            "type": "integer"
+          },
+          "reason_codes": {
+            "maxItems": 0
+          },
+          "registry_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "revocation_verified": {
+            "const": true
+          },
+          "signature_verified": {
+            "const": true
+          }
+        }
+      }
+    }
+  ],
+  "properties": {
+    "authority": {
+      "const": "none"
+    },
+    "authorized": {
+      "const": false
+    },
+    "can_issue_review": {
+      "const": false
+    },
+    "can_read_source": {
+      "const": false
+    },
+    "checkpoint_sequence": {
+      "anyOf": [
+        {
+          "minimum": 2,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "delivery_eligible": {
+      "const": false
+    },
+    "fixture_kind": {
+      "const": "synthetic"
+    },
+    "gate_status": {
+      "additionalProperties": false,
+      "properties": {
+        "country_attribution": {
+          "const": "NOT_RUN"
+        },
+        "d1_publication": {
+          "const": "NOT_RUN"
+        },
+        "original_bytes": {
+          "const": "NOT_RUN"
+        },
+        "original_offsets": {
+          "const": "NOT_RUN"
+        },
+        "owner_review": {
+          "const": "NOT_RUN"
+        },
+        "privacy": {
+          "const": "NOT_RUN"
+        },
+        "proposition_stance": {
+          "const": "NOT_RUN"
+        },
+        "reserved_holdout": {
+          "const": "NOT_RUN"
+        },
+        "selection_and_duplicates": {
+          "const": "NOT_RUN"
+        },
+        "source_dependence": {
+          "const": "NOT_RUN"
+        },
+        "source_registry": {
+          "const": "NOT_RUN"
+        },
+        "statistical_identification": {
+          "const": "NOT_RUN"
+        },
+        "text_transform": {
+          "const": "NOT_RUN"
+        }
+      },
+      "required": [
+        "country_attribution",
+        "d1_publication",
+        "original_bytes",
+        "original_offsets",
+        "owner_review",
+        "privacy",
+        "proposition_stance",
+        "reserved_holdout",
+        "selection_and_duplicates",
+        "source_dependence",
+        "source_registry",
+        "statistical_identification",
+        "text_transform"
+      ],
+      "type": "object"
+    },
+    "holdout_lock": {
+      "additionalProperties": false,
+      "properties": {
+        "access_granted": {
+          "const": false
+        },
+        "d1_o1_o5": {
+          "const": "frozen"
+        },
+        "reserved_meetings": {
+          "const": 37
+        },
+        "transcripts_opened": {
+          "const": 0
+        }
+      },
+      "required": [
+        "access_granted",
+        "d1_o1_o5",
+        "reserved_meetings",
+        "transcripts_opened"
+      ],
+      "type": "object"
+    },
+    "publication_eligible": {
+      "const": false
+    },
+    "reason_codes": {
+      "items": {
+        "pattern": "^[a-z0-9_]{3,80}$",
+        "type": "string"
+      },
+      "maxItems": 2,
+      "type": "array"
+    },
+    "registry_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "revocation_verified": {
+      "type": "boolean"
+    },
+    "schema": {
+      "const": "un.synthetic-custodian-signature-preflight.v0"
+    },
+    "signature_verified": {
+      "type": "boolean"
+    },
+    "source_rows_exported": {
+      "const": false
+    },
+    "source_text_included": {
+      "const": false
+    },
+    "statistical_eligible": {
+      "const": false
+    },
+    "status": {
+      "enum": [
+        "withheld",
+        "synthetic_signatures_verified_no_authority"
+      ]
+    }
+  },
+  "required": [
+    "authority",
+    "authorized",
+    "can_issue_review",
+    "can_read_source",
+    "checkpoint_sequence",
+    "delivery_eligible",
+    "fixture_kind",
+    "gate_status",
+    "holdout_lock",
+    "publication_eligible",
+    "reason_codes",
+    "registry_sha256",
+    "revocation_verified",
+    "schema",
+    "signature_verified",
+    "source_rows_exported",
+    "source_text_included",
+    "statistical_eligible",
+    "status"
+  ],
+  "title": "Synthetic signature verification, zero-authority receipt",
+  "type": "object"
+}
