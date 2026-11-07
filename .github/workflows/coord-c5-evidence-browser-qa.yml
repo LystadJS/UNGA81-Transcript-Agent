@@ -161,3 +161,129 @@ jobs:
             ${{ runner.temp }}/c5-w4/w4-receipt.json
           if-no-files-found: warn
           retention-days: 7
+
+  # Independent PR69 exact-head validation on a coordinator-only, unmerged branch.
+  # No Pages/portfolio or release workflow, secrets, or write permissions.
+  pr69-native-and-strict-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    env:
+      PYTHONHASHSEED: "0"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - name: Checkout exact merged C5 baseline
+        uses: actions/checkout@v4
+        with:
+          ref: "93b17c8779d959f5dd5559adb7f56381210f2f89"
+          path: baseline
+          persist-credentials: false
+      - name: Checkout exact PR69 worker head
+        uses: actions/checkout@v4
+        with:
+          ref: "c32399a305c01cb4859cd6db5aa554f4e5f5848d"
+          path: worker
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Verify immutable input SHAs and compose source-compatible synthetic tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C baseline rev-parse HEAD)" = "93b17c8779d959f5dd5559adb7f56381210f2f89"
+          test "$(git -C worker rev-parse HEAD)" = "c32399a305c01cb4859cd6db5aa554f4e5f5848d"
+          test ! -e baseline/site/experimental/research-validation-v2
+          mkdir -p baseline/site/experimental/research-validation-v2
+          cp -a worker/site/experimental/research-validation-v2/. baseline/site/experimental/research-validation-v2/
+          for f in renderer.js adapter.js browser_smoke.py native-c5-regression.cjs tests.cjs fixture.json index.html style.css; do
+            cmp "worker/site/experimental/research-validation-v2/$f" "baseline/site/experimental/research-validation-v2/$f"
+          done
+          node --check baseline/site/experimental/research-validation-v2/renderer.js
+          node --check baseline/site/experimental/research-validation-v2/adapter.js
+          node --check baseline/site/experimental/research-validation-v2/native-c5-regression.cjs
+          python -m py_compile baseline/site/experimental/research-validation-v2/browser_smoke.py
+      - name: Install pinned native W4 and Chromium bindings
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install -r baseline/research/longitudinal/requirements.txt
+          python -m pip install playwright==1.55.0
+          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium)" >> "$GITHUB_ENV"
+      - name: Generate original C5 W1-W2 and W4 synthetic source bundles
+        shell: bash
+        working-directory: baseline
+        run: |
+          set -euo pipefail
+          node research/integration/w1_w2/make-synthetic.cjs "$RUNNER_TEMP/pr69-w2"
+          python -m research.integration.w2_w4_w6.run_synthetic --output "$RUNNER_TEMP/pr69-w4"
+          python -m research.integration.w2_w4_w6.run_synthetic --pinned --output "$RUNNER_TEMP/pr69-w4-pinned"
+          python -m research.integration.w2_w4_w6.run_synthetic --missing-late-family --output "$RUNNER_TEMP/pr69-w4-missing"
+          for name in SHA256.json w4-source-panel.json w4-analysis.json w4-envelope.json w4-panel.json; do
+            test -s "$RUNNER_TEMP/pr69-w4/$name"
+          done
+      - name: Full native exact-head C5 and v2 source/interchange regressions
+        shell: bash
+        working-directory: baseline
+        env:
+          C5_W2_FIXTURES: "${{ runner.temp }}/pr69-w2"
+          C5_W4_FIXTURES: "${{ runner.temp }}/pr69-w4"
+          C5_W4_PINNED: "${{ runner.temp }}/pr69-w4-pinned"
+          C5_W4_MISSING: "${{ runner.temp }}/pr69-w4-missing"
+        run: |
+          set -euo pipefail
+          node --test site/experimental/research-validation-v2/tests.cjs
+          node --test site/experimental/research-validation-v2/native-c5-regression.cjs
+          node --test research/integration/test_c5_browser_bridge.cjs
+          node research/integration/test_w2_browser_bridge.cjs
+          node --test research/integration/w2_w4_w6/test_evidence_renderer.cjs
+          node --test research/integration/w2_w4_w6/test_w2_bridge.cjs
+          python -m unittest research.integration.w2_w4_w6.test_w4_bridge -v
+          node --test site/experimental/evidence-viz/tests.cjs
+          node docs/parallel-work/validate-contract.cjs
+          node docs/parallel-work/test-w1-w2-inference-readiness.cjs
+      - name: Strict served Chromium 1440x900 and 390x844 (no injection fallback)
+        shell: bash
+        working-directory: baseline
+        run: |
+          set -euo pipefail
+          python site/experimental/research-validation-v2/browser_smoke.py \
+            --browser "$CHROME_BIN" \
+            --require-served-navigation \
+            --output "$RUNNER_TEMP/pr69-browser-qa"
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])/'pr69-browser-qa'
+          receipt=json.loads((root/'receipt.json').read_text())
+          assert receipt['schema']=='un.research-browser-v2.qa.v1'
+          assert receipt['fixture_kind']=='synthetic'
+          assert receipt['publication_eligible'] is False
+          assert receipt['served_navigation_verified'] is True
+          assert receipt['acceptance_mode']=='served'
+          assert receipt['heldout_transcripts_opened']==0
+          assert len(receipt['viewports'])==2
+          assert all(r['served_navigation'] is True and
+                     r['unexpected_requests']==r['uncaught_page_errors']==r['horizontal_overflow_px']==0
+                     for r in receipt['viewports'])
+          print('PASS: native-source-bound strict served Chromium; no fallback')
+          PY
+      - name: Upload synthetic-only screenshots and aggregate receipts (no source rows)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr69-c5-native-strict-chromium-receipt
+          path: |
+            ${{ runner.temp }}/pr69-browser-qa/full-1440x900.png
+            ${{ runner.temp }}/pr69-browser-qa/full-390x844.png
+            ${{ runner.temp }}/pr69-browser-qa/receipt.json
+            ${{ runner.temp }}/pr69-w2/receipt.json
+            ${{ runner.temp }}/pr69-w4/w4-receipt.json
+          if-no-files-found: warn
+          retention-days: 7
