@@ -1,0 +1,76 @@
+diff --git a/site/research.html b/site/research.html
+--- a/site/research.html
++++ b/site/research.html
+@@ -33,6 +33,7 @@
+     <a href="latent.html">Latent comparison</a>
+     <a href="#w2">Consensus evidence</a>
+     <a href="#w4">Longitudinal evidence</a>
++    <a href="experimental/research-validation-v2/index.html">Research QA v2 · synthetic only</a>
+     <a href="#w3">Graph source inspection</a>
+     <a href="#w5">Method lab</a>
+     <a href="#w6">Evidence visualizations</a>
+diff --git a/tools/build_pages.py b/tools/build_pages.py
+--- a/tools/build_pages.py
++++ b/tools/build_pages.py
+@@ -31,7 +31,9 @@
+         'experimental/evidence-viz': (
+             'index.html', 'styles.css', 'fixture.js',
+             'evidence-viz.js', 'demo.js'),
++        'experimental/research-validation-v2': (
++            'index.html', 'style.css', 'renderer.js', 'adapter.js', 'fixture.json'),
+     }
+     for relative, names in reviewed_research_assets.items():
+         source_dir = repo/'site'/relative
+         target_dir = output/relative
+diff --git a/.github/workflows/coord-c5-evidence-browser-qa.yml b/.github/workflows/coord-c5-evidence-browser-qa.yml
+--- a/.github/workflows/coord-c5-evidence-browser-qa.yml
++++ b/.github/workflows/coord-c5-evidence-browser-qa.yml
+@@ -8,4 +8,5 @@
+       - "site/research-evidence.js"
+       - "site/research-wiring.css"
++      - "site/experimental/research-validation-v2/**"
+       - "tools/build_pages.py"
+       - "research/integration/w2_w4_w6/evidence_renderer.cjs"
+@@ -84,5 +85,17 @@
+           node docs/parallel-work/validate-contract.cjs
+           node docs/parallel-work/test-w1-w2-inference-readiness.cjs
++      - name: Native merged C5 to read-only v2 acceptance (synthetic only)
++        shell: bash
++        env:
++          C5_W2_FIXTURES: "${{ runner.temp }}/c5-w2"
++          C5_W4_FIXTURES: "${{ runner.temp }}/c5-w4"
++        run: |
++          set -euo pipefail
++          node --test site/experimental/research-validation-v2/tests.cjs
++          node --test site/experimental/research-validation-v2/native-c5-regression.cjs
++          node --check site/experimental/research-validation-v2/renderer.js
++          node --check site/experimental/research-validation-v2/adapter.js
++          python -m py_compile site/experimental/research-validation-v2/browser_smoke.py
+       - name: Build a disposable Pages preview from an explicit asset allowlist
+         shell: bash
+         run: |
+@@ -101,5 +114,11 @@
+           test ! -e "$RUNNER_TEMP/c5-site/SHA256.json"
+           test ! -e "$RUNNER_TEMP/c5-site/research/integration/test_c5_browser_bridge.cjs"
++          test -s "$RUNNER_TEMP/c5-site/experimental/research-validation-v2/index.html"
++          cmp site/experimental/research-validation-v2/renderer.js \
++            "$RUNNER_TEMP/c5-site/experimental/research-validation-v2/renderer.js"
++          test ! -e "$RUNNER_TEMP/c5-site/experimental/research-validation-v2/tests.cjs"
++          test ! -e "$RUNNER_TEMP/c5-site/experimental/research-validation-v2/native-c5-regression.cjs"
++          test ! -e "$RUNNER_TEMP/c5-site/experimental/research-validation-v2/COORDINATOR_PATCH.md"
+       - name: Real desktop/mobile Chromium, source inspector, SVG/HTML, tamper and no-network QA
+         shell: bash
+         run: |
+@@ -113,5 +132,12 @@
+             --browser "$CHROME_BIN" \
+             --output "$RUNNER_TEMP/c5-browser-qa"
++      - name: V2 served desktop/mobile Chromium replay and failure QA
++        shell: bash
++        run: |
++          set -euo pipefail
++          python site/experimental/research-validation-v2/browser_smoke.py \
++            --browser "$CHROME_BIN" --require-served-navigation \
++            --output "$RUNNER_TEMP/rv2-browser-qa"
+       - name: Confirm W2 and W4 are still source-safe, synthetic-only and unpublished
+         shell: bash
+         run: |
