@@ -1,0 +1,115 @@
+name: Coordinator PR82 pinned US-reference review
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/coord-pr82-us-reference-review.yml'
+      - 'research/integration/w2_w4_w6/pr82_review/**'
+      - 'docs/parallel-work/PR82_US_REFERENCE_ENGINEERING_REVIEW_2026-10-15.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pinned-synthetic-review:
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [head, effective-tree]
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PYTHONHASHSEED: '0'
+      OPENBLAS_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: review
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: '81110db49786a05f9c8f8ce4d5103c92fe255586'
+          path: candidate
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Provision native R and pinned W4 dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends r-base-core
+          Rscript --vanilla -e 'stopifnot(getRversion() >= "4.3.0"); cat(R.version.string, "\n")'
+          python -m pip install -r candidate/research/longitudinal/requirements.txt
+      - name: Verify candidate and create a disposable effective tree without merging any branch
+        shell: bash
+        env:
+          REVIEW_MODE: ${{ matrix.mode }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/pr82-review"
+          cd candidate
+          test "$(git rev-parse HEAD)" = 81110db49786a05f9c8f8ce4d5103c92fe255586
+          git fetch --no-tags origin 5f0a872cff0899819b21326e6c18b7af794556c5
+          if [ "$REVIEW_MODE" = effective-tree ]; then
+            TREE=$(git merge-tree --write-tree HEAD 5f0a872cff0899819b21326e6c18b7af794556c5)
+            git read-tree --reset -u "$TREE"
+          else
+            TREE=$(git rev-parse 'HEAD^{tree}')
+          fi
+          printf '%s\n' "candidate_head=81110db49786a05f9c8f8ce4d5103c92fe255586" \
+            "review_base=5f0a872cff0899819b21326e6c18b7af794556c5" "mode=$REVIEW_MODE" "tested_tree=$TREE" \
+            > "$RUNNER_TEMP/pr82-review/identity.txt"
+          git diff --name-status 5f0a872cff0899819b21326e6c18b7af794556c5 "$TREE" \
+            > "$RUNNER_TEMP/pr82-review/tree_diff.txt"
+          cat "$RUNNER_TEMP/pr82-review/identity.txt"
+          python --version
+          node --version
+          Rscript --version
+      - name: Phase 1 suite and retained regressions with mandatory R and zero skips
+        working-directory: candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          GITHUB_SHA="$(git rev-parse HEAD)" \
+            python -m research.integration.w2_w4_w6.waggoner.run_tests --require-complete \
+            --receipt "$RUNNER_TEMP/pr82-review/original_suite.json"
+      - name: Native W4, source, interchange and existing adapter regressions
+        working-directory: candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/longitudinal -p 'test_*.py' -v
+          python -m unittest research.integration.w2_w4_w6.test_w4_bridge -v
+          node --test research/validation_framework/tests/test_group_refits.cjs
+          node --test research/integration/w1_w2/test-integration.cjs
+          node --test research/integration/w2_w4_w6/test_w2_bridge.cjs
+          node --test research/integration/w2_w4_w6/test_evidence_renderer.cjs
+          node --test site/experimental/evidence-viz/tests.cjs
+          node docs/parallel-work/validate-contract.cjs
+          node docs/parallel-work/test-w1-w2-inference-readiness.cjs
+      - name: Independent source-identity and accepted-input boundary probes
+        shell: bash
+        env:
+          PR82_REVIEW_MODE: ${{ matrix.mode }}
+        run: |
+          set -euo pipefail
+          export PR82_CANDIDATE_ROOT="$GITHUB_WORKSPACE/candidate"
+          export PR82_REVIEW_RECEIPT="$RUNNER_TEMP/pr82-review/independent_review.json"
+          python review/research/integration/w2_w4_w6/pr82_review/test_independent.py
+      - name: Retain only synthetic aggregate review evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr82-review-${{ matrix.mode }}
+          path: ${{ runner.temp }}/pr82-review
+          if-no-files-found: error
+          retention-days: 14
