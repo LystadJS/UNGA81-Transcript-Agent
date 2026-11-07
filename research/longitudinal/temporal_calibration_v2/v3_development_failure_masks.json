@@ -1,0 +1,152 @@
+{
+  "schema": "un.w4.v3.development-failure-bitmask.v1",
+  "status": "DEVELOPMENT_ONLY_NOT_HOLDOUT",
+  "repetitions": 60,
+  "bit_index": "Bit i indicates independent development replicate i, i=0..59. No source identities.",
+  "gamma_methods": [
+    "year_score_lag0",
+    "year_score_lag1",
+    "year_score_lag2",
+    "circular_year_block4"
+  ],
+  "reason_labels": {
+    "NONPOS": "IdentificationFailure:nonpositive lag moments; AR1/nugget not identified",
+    "NEGVAR": "IdentificationFailure:negative implied variance component",
+    "OUTRHO": "IdentificationFailure:rho moment ratio outside allowable support",
+    "AUDITABSENT": "IdentificationFailure:independent randomized missing-outcome audit absent",
+    "AUDITSUPPORT": "IdentificationFailure:insufficient independently recovered response strata"
+  },
+  "gamma": [
+    [
+      "no_audit_T16",
+      "AUDITABSENT",
+      "fffffffffffffff"
+    ],
+    [
+      "weak_audit_T16",
+      "AUDITSUPPORT",
+      "fffffffffffffff"
+    ]
+  ],
+  "covariance": [
+    [
+      "T16_rho0.05_nugget0.0",
+      "NEGVAR",
+      "000000000000004"
+    ],
+    [
+      "T16_rho0.05_nugget0.0",
+      "NONPOS",
+      "ffffffffb7ffffb"
+    ],
+    [
+      "T16_rho0.05_nugget0.025",
+      "NEGVAR",
+      "000000000000800"
+    ],
+    [
+      "T16_rho0.05_nugget0.025",
+      "NONPOS",
+      "fdfffefafeff7ff"
+    ],
+    [
+      "T16_rho0.05_nugget0.025",
+      "OUTRHO",
+      "000001040100000"
+    ],
+    [
+      "T16_rho0.65_nugget0.0",
+      "NEGVAR",
+      "288008048042018"
+    ],
+    [
+      "T16_rho0.65_nugget0.0",
+      "NONPOS",
+      "d73de3f27fbdfe7"
+    ],
+    [
+      "T16_rho0.65_nugget0.0",
+      "OUTRHO",
+      "000204090000000"
+    ],
+    [
+      "T16_rho0.65_nugget0.025",
+      "NEGVAR",
+      "000008000000000"
+    ],
+    [
+      "T16_rho0.65_nugget0.025",
+      "NONPOS",
+      "fdfef7ffffffffd"
+    ],
+    [
+      "T16_rho0.65_nugget0.025",
+      "OUTRHO",
+      "000000000000002"
+    ],
+    [
+      "T32_rho0.05_nugget0.0",
+      "NEGVAR",
+      "000200000000001"
+    ],
+    [
+      "T32_rho0.05_nugget0.0",
+      "NONPOS",
+      "f9fdffffffff6fe"
+    ],
+    [
+      "T32_rho0.05_nugget0.0",
+      "OUTRHO",
+      "040000000000800"
+    ],
+    [
+      "T32_rho0.05_nugget0.025",
+      "NEGVAR",
+      "004000000000000"
+    ],
+    [
+      "T32_rho0.05_nugget0.025",
+      "NONPOS",
+      "ffaf6bfdff37fff"
+    ],
+    [
+      "T32_rho0.05_nugget0.025",
+      "OUTRHO",
+      "001004020048000"
+    ],
+    [
+      "T32_rho0.65_nugget0.0",
+      "NEGVAR",
+      "4b4731bc11a126b"
+    ],
+    [
+      "T32_rho0.65_nugget0.0",
+      "NONPOS",
+      "84884001a656c94"
+    ],
+    [
+      "T32_rho0.65_nugget0.0",
+      "OUTRHO",
+      "302002400000000"
+    ],
+    [
+      "T32_rho0.65_nugget0.025",
+      "NEGVAR",
+      "007800804300018"
+    ],
+    [
+      "T32_rho0.65_nugget0.025",
+      "NONPOS",
+      "be86de2fb8d57e7"
+    ],
+    [
+      "T32_rho0.65_nugget0.025",
+      "OUTRHO",
+      "010100000422000"
+    ]
+  ],
+  "total_failed_method_attempts": 931,
+  "full_synthetic_failure_ledger_sha256_local_py313_numpy235": "e4cfc4387e37eeac35f3dccd5e6d93254b5f15b63fcf5b66722986cc3d8091f3",
+  "holdout_attempted": 0,
+  "statistical_acceptance": false
+}
