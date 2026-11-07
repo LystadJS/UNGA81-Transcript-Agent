@@ -1,0 +1,72 @@
+/** Independent security review: no operational keys, original sources, or model fitting.
+ * C0_REVIEW_SOURCE optionally selects an immutable older source directory for red/green replay.
+ */
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createHash,generateKeyPairSync,sign} from 'node:crypto';
+import {resolve,dirname} from 'node:path';
+import {fileURLToPath,pathToFileURL} from 'node:url';
+const source=process.env.C0_REVIEW_SOURCE || dirname(fileURLToPath(import.meta.url));
+const api=await import(pathToFileURL(resolve(source,'contracts.mjs')));
+const {fixture,NOW,H}=await import(pathToFileURL(resolve(source,'fixtures.mjs')));
+const pair=generateKeyPairSync('ed25519');
+const authority={key_id:'independent_ephemeral',spki_base64:pair.publicKey.export({format:'der',type:'spki'}).toString('base64'),gates:[...api.GATES],destinations:['local_view','local_export']};
+const kinds={engineering:'coordinator_acceptance',source:'source_validation',comparability:'comparability_review',review:'owner_review',inference:'statistical_acceptance',display:'display_validation',export:'output_authorization'};
+// Independent clean-fixture serializer, not used as a validator of hostile objects.
+function wire(v){if(Array.isArray(v))return '['+v.map(wire).join(',')+']';if(v!==null&&typeof v==='object')return '{'+Object.keys(v).sort().map(k=>JSON.stringify(k)+':'+wire(v[k])).join(',')+'}';return JSON.stringify(v);}
+const hash=v=>createHash('sha256').update(wire(v)).digest('hex');
+const setHash=rs=>hash({schema:'un.product-active-decisions.v1',receipts:rs.map(wire).sort()});
+function bind(p){return {product_sha256:hash(p),query_sha256:p.query_sha256,capability_sha256:p.capability_sha256,source_sha256:p.upstream.source_sha256,selection_sha256:p.upstream.selection_sha256,fit_population_sha256:p.fit_population.sha256,display_population_sha256:p.display_population.sha256,worker_sha:p.provenance.worker_sha,effective_tree_sha:p.provenance.effective_tree_sha};}
+function decision(f,gate,{verdict='pass',section_id='all',destination='local_view',id=`review_${gate}_${section_id}_${destination}`}={}){
+ const payload={schema:'un.product-decision.v1',contract_version:api.VERSION,id,key_id:authority.key_id,gate,verdict,section_id,destination,binding:bind(f.product),issued_at:'2000-02-01T11:00:00Z',expires_at:'2000-02-02T12:00:00Z',evidence_kind:kinds[gate],evidence_sha256:H};
+ return {payload,signature:sign(null,Buffer.from(wire(payload)),pair.privateKey).toString('base64')};
+}
+function authorize(f,gates=['engineering','source','review','export'],destination='local_view'){
+ const receipts=gates.map(g=>decision(f,g,{destination}));
+ return {...f,receipts,trustedKeys:[structuredClone(authority)],trustedReceiptSetSha256:setHash(receipts),destination,now:NOW};
+}
+const pin=x=>{x.trustedReceiptSetSha256=setHash(x.receipts);return x;}; // Synthetic trusted ledger operation, NEVER applied to attacker input.
+function concealed(r){assert.equal(r.state,'withheld');assert.equal(r.can_export,false);assert.ok(r.sections.every(s=>s.findings.length===0&&s.evidence.length===0&&s.result===null&&s.display===null));}
+
+test('independent signature and canonical binding positive control',async()=>{const f=await fixture();assert.deepEqual(await api.bindingFor(f.product),bind(f.product));assert.equal((await api.assess(authorize(f))).state,'ready');});
+test('independent receipt set commitment matches the domain-separated algorithm',async()=>{const x=authorize(await fixture());assert.equal(typeof api.receiptSetDigest,'function');assert.equal(await api.receiptSetDigest(x.receipts),setHash(x.receipts));});
+test('uncommitted signed passes are not an authoritative current ledger',async()=>{const x=authorize(await fixture());delete x.trustedReceiptSetSha256;concealed(await api.assess(x));});
+for(const bad of ['a'.repeat(63),'z'.repeat(64),null,42]) test(`invalid trusted receipt commitment ${String(bad).slice(0,8)}`,async()=>{const x=authorize(await fixture());x.trustedReceiptSetSha256=bad;assert.equal((await api.assess(x)).valid,false);});
+test('omitting a valid signed source veto cannot restore readiness',async()=>{const f=await fixture(),x=authorize(f);x.receipts.push(decision(f,'source',{verdict:'fail',id:'review_source_veto'}));pin(x);const denied=await api.assess(x);assert.equal(denied.sections[0].gates.source,'conflict');x.receipts=x.receipts.filter(r=>r.payload.verdict!=='fail');concealed(await api.assess(x));});
+test('omitting an unrelated current decision is detected, not silently tolerated',async()=>{const x=authorize(await fixture(),[...api.GATES]);x.receipts=x.receipts.filter(r=>r.payload.gate!=='inference');assert.equal((await api.assess(x)).valid,false);});
+test('adding an independently valid receipt cannot alter the pinned ledger',async()=>{const f=await fixture(),x=authorize(f);x.receipts.push(decision(f,'comparability'));assert.equal((await api.assess(x)).valid,false);});
+test('receipt transport order does not alter complete ledger identity',async()=>{const x=authorize(await fixture());x.receipts.reverse();assert.equal((await api.assess(x)).state,'ready');});
+test('explicit trusted-ledger adjudication can supersede a conflict',async()=>{const f=await fixture(),x=authorize(f);x.receipts.push(decision(f,'source',{verdict:'fail',id:'veto'}));pin(x);concealed(await api.assess(x));x.receipts=x.receipts.filter(r=>r.payload.verdict!=='fail');pin(x);assert.equal((await api.assess(x)).state,'ready');});
+test('wrong ledger cannot be substituted across products',async()=>{const f=await fixture(),first=authorize(f);f.product.run_id='synthetic_second_run';const second=authorize(f);second.trustedReceiptSetSha256=first.trustedReceiptSetSha256;assert.equal((await api.assess(second)).valid,false);});
+test('current host key removal still revokes an intact receipt set',async()=>{const x=authorize(await fixture());x.trustedKeys=[];assert.equal((await api.assess(x)).valid,false);});
+test('an invalid signature still fails after the host pins those exact bytes',async()=>{const x=authorize(await fixture());x.receipts[0].signature='A'.repeat(86)+'==';pin(x);assert.equal((await api.assess(x)).valid,false);});
+test('receipts with current but wrong evidence authority fail independently of commitment',async()=>{const f=await fixture(),x=authorize(f);const p=x.receipts[1].payload;p.evidence_kind='coordinator_acceptance';x.receipts[1].signature=sign(null,Buffer.from(wire(p)),pair.privateKey).toString('base64');pin(x);assert.equal((await api.assess(x)).valid,false);});
+test('unexpired ledger commitment does not excuse expired individual decisions',async()=>{const x=authorize(await fixture());x.now='2000-02-03T00:00:00Z';assert.equal((await api.assess(x)).valid,false);});
+test('a product cannot embed its own trusted commitment',async()=>{const x=authorize(await fixture());x.product.trustedReceiptSetSha256=x.trustedReceiptSetSha256;assert.equal((await api.assess(x)).valid,false);});
+for(const kind of ['overview','evidence','comparison','trend','map']) {
+ test(`${kind}: any display reference requires display authority`,async()=>{const f=await fixture();f.product.sections[0].kind=kind;f.product.sections[0].display=structuredClone(f.product.sections[0].result);const x=authorize(f,['engineering','source','review','export','comparability']);const r=await api.assess(x);concealed(r);assert.ok(r.sections[0].blocked_gates.includes('display'));});
+ test(`${kind}: qualified display remains available`,async()=>{const f=await fixture();f.product.sections[0].kind=kind;f.product.sections[0].display=structuredClone(f.product.sections[0].result);assert.equal((await api.assess(authorize(f,[...api.GATES]))).state,'ready');});
+}
+for(const template of ['language_comparison','period_comparison']) for(const kind of ['overview','evidence']) {
+ test(`${template} cannot avoid comparability inside ${kind}`,async()=>{const f=await fixture();f.product.findings[0].template=template;f.product.sections[0].kind=kind;const r=await api.assess(authorize(f));concealed(r);assert.ok(r.sections[0].blocked_gates.includes('comparability'));});
+ test(`${template} is usable when comparability is accepted in ${kind}`,async()=>{const f=await fixture();f.product.findings[0].template=template;f.product.sections[0].kind=kind;assert.equal((await api.assess(authorize(f,['engineering','source','review','export','comparability']))).state,'ready');});
+}
+for(const schema of ['un.us-relative-trajectories.v1','un.latent-comparison.v1']) test(`${schema} numerical reference retains comparability floor`,async()=>{const f=await fixture();f.product.sections[0].result.schema=schema;f.product.findings[0].result.schema=schema;const r=await api.assess(authorize(f));concealed(r);assert.ok(r.sections[0].blocked_gates.includes('comparability'));});
+test('sensitivity display remains comparative rather than calibrated inference',async()=>{const f=await fixture();f.product.sections[0].uncertainty='sensitivity';concealed(await api.assess(authorize(f)));const r=await api.assess(authorize(f,['engineering','source','review','export','comparability']));assert.equal(r.state,'ready');assert.equal(r.sections[0].gates.inference,'not_run');});
+test('optional unapproved display does not destroy another descriptive section',async()=>{const f=await fixture();const extra=structuredClone(f.product.sections[0]);extra.id='chart';extra.kind='evidence';extra.finding_ids=[];extra.display=structuredClone(extra.result);f.product.sections.push(extra);const r=await api.assess(authorize(f));assert.equal(r.state,'partial');assert.equal(r.sections[0].state,'ready');assert.equal(r.sections[1].display,null);});
+for(const enumerable of [false,true]) test(`required object getter (${enumerable}) never executes`,async()=>{const f=await fixture();let calls=0;Object.defineProperty(f.query,'timezone',{get(){calls++;return 'America/New_York';},enumerable});const r=await api.assess({...f,now:NOW});assert.equal(r.valid,false);assert.equal(calls,0);});
+for(const location of ['query','receipts','trustedKeys']) test(`array accessor in ${location} never executes`,async()=>{const x=authorize(await fixture());const arr=location==='query'?x.query.requested.countries:x[location];const original=arr[0];let calls=0;Object.defineProperty(arr,'0',{get(){calls++;return original;},enumerable:true});const r=await api.assess(x);assert.equal(r.valid,false);assert.equal(calls,0);});
+for(const location of ['query','receipts']) test(`array toJSON in ${location} never executes`,async()=>{const x=authorize(await fixture());const arr=location==='query'?x.query.requested.countries:x.receipts;let calls=0;Object.defineProperty(arr,'toJSON',{value(){calls++;return []},enumerable:false});const r=await api.assess(x);assert.equal(r.valid,false);assert.equal(calls,0);});
+for(const attack of ['sparse','subclass','symbol','extra','method']) test(`closed array shape rejects ${attack}`,async()=>{const f=await fixture();let a=f.product.fit.ledger;if(attack==='sparse')a=new Array(1);else if(attack==='subclass')a=Object.setPrototypeOf(a,Object.create(Array.prototype));else if(attack==='symbol')a[Symbol('hidden')]=1;else if(attack==='extra')a.private=1;else a.forEach=()=>{};f.product.fit.ledger=a;assert.throws(()=>api.validateShape('product',f.product));});
+test('canonicalization refuses hidden metadata rather than hashing its omission',()=>{const x={a:1};Object.defineProperty(x,'hidden',{value:'hidden'});assert.throws(()=>api.canonical(x));});
+test('canonicalization never invokes an object getter',()=>{let calls=0;const x={};Object.defineProperty(x,'field',{get(){calls++;return 1},enumerable:true});assert.throws(()=>api.canonical(x));assert.equal(calls,0);});
+test('assessment context getters do not execute before error handling',async()=>{let calls=0;const x={};Object.defineProperty(x,'query',{get(){calls++;throw Error('must not execute')},enumerable:true});const r=await api.assess(x);assert.equal(r.valid,false);assert.equal(calls,0);});
+test('export context getters do not execute through object spread',async()=>{let calls=0;const x={};Object.defineProperty(x,'product',{get(){calls++;return {}},enumerable:true});assert.equal((await api.exportReadModel(x)).ok,false);assert.equal(calls,0);});
+test('canonicalization rejects a recursive cycle with a controlled depth error',()=>{const x={};x.child=x;assert.throws(()=>api.canonical(x),/wire_depth/);});
+test('maximal opaque source identifier is preserved through signed verification',async()=>{const f=await fixture();f.product.evidence[0].meeting_id='0'.repeat(160);const r=await api.assess(authorize(f));assert.equal(r.state,'ready');assert.equal(r.sections[0].evidence[0].meeting_id,'0'.repeat(160));});
+test('empty parsed collections and frozen ordinary data remain valid',async()=>{const f=await fixture();Object.freeze(f.query.requested.countries);const r=await api.assess(authorize(f));assert.equal(r.state,'ready');});
+test('direct asynchronous product validation snapshots before yielding',async()=>{const f=await fixture();const p=api.validateProduct(f.product,f.query,f.capability);f.product.fit_population.frame=999;assert.equal(await p,true);});
+test('binding computation snapshots every field consistently',async()=>{const f=await fixture(),expected=bind(f.product);const p=api.bindingFor(f.product);f.product.provenance.worker_sha='f'.repeat(40);assert.deepEqual(await p,expected);});
+test('all is reserved for global decision scope, never a section ID',async()=>{const f=await fixture();f.product.sections[0].id='all';await assert.rejects(api.validateProduct(f.product,f.query,f.capability));});
+test('safe export rejects omitted veto with destination already authorized',async()=>{const f=await fixture(),x=authorize(f,undefined,'local_export');x.receipts.push(decision(f,'source',{verdict:'fail',destination:'local_export',id:'export_veto'}));pin(x);x.receipts=x.receipts.filter(r=>r.payload.verdict!=='fail');assert.equal((await api.exportReadModel(x)).utf8,null);});
+test('clear-on-invalid import prevents a stripped-ledger result restoring earlier output',async()=>{const f=await fixture(),x=authorize(f),s=api.createSession();await s.load(x);assert.equal(s.snapshot().state,'ready');x.receipts.push(decision(f,'source',{verdict:'fail',id:'session_veto'}));pin(x);x.receipts=x.receipts.filter(r=>r.payload.verdict!=='fail');await s.load(x);assert.equal(s.snapshot().state,'withheld');assert.equal(s.snapshot().sections.length,0);});
