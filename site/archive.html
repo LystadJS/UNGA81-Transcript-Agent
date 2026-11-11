@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://huggingface.co https://*.huggingface.co https://*.hf.co https://raw.githubusercontent.com; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Meeting archive · UN Transcript Agent</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="archive.css">
+  <script defer src="archive.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to archive</a>
+  <header><div class="masthead"><span class="mark" aria-hidden="true">UN<br>81</span><div><p class="eyebrow">UN TRANSCRIPT AGENT</p><h1>Meeting archive</h1><p>Follow proceedings, inspect expressed positions, and download evidence.</p></div></div></header>
+  <nav aria-label="Main">
+    <a href="index.html">Report builder</a>
+    <a href="#meetings">Meetings</a>
+    <a href="#positions">Issues and countries</a>
+    <a href="#downloads">Explore and download</a>
+  </nav>
+  <main id="main">
+    <section aria-labelledby="overviewHeading">
+      <h2 id="overviewHeading">The published collection</h2>
+      <p class="intro">Browse the meetings selected for collection. A source link lets you check the original record; a missing transcript or position remains a visible gap.</p>
+      <div id="archiveStatus" class="notice" role="status" aria-live="polite">Checking archive availability…</div>
+      <dl class="archive-stats" id="archiveStats" hidden>
+        <div><dt>Last published update</dt><dd id="lastUpdate">Unavailable</dd></div>
+        <div><dt>Meetings in this snapshot</dt><dd id="meetingCount">0</dd></div>
+        <div><dt>Collection coverage</dt><dd id="coverageSummary">Unknown</dd></div>
+      </dl>
+      <p id="freshness" class="hint" hidden></p>
+      <p id="modelStatus" class="notice">Automatic stance estimates are unavailable until a model has passed evaluation.</p>
+    </section>
+    <section id="meetings" aria-labelledby="meetingsHeading">
+      <h2 id="meetingsHeading">Meetings</h2>
+      <fieldset id="filters" disabled><legend>Filter the published collection</legend>
+        <div class="archive-filters">
+          <label for="archiveSearch">Meeting or issue<input id="archiveSearch" type="search" autocomplete="off" placeholder="Search meeting titles or issues"></label>
+          <label for="archiveBody">UN venue<select id="archiveBody"><option value="">All recorded venues</option></select></label>
+          <label for="archiveStart">From<input id="archiveStart" type="date"></label>
+          <label for="archiveEnd">Through<input id="archiveEnd" type="date"></label>
+        </div>
+        <button type="button" id="clearFilters" class="secondary">Clear filters</button>
+        <button type="button" id="exportSelection">Download meeting list CSV</button>
+      </fieldset>
+      <p id="filterStatus" role="status" aria-live="polite">No archive is loaded.</p>
+      <div class="archive-table-wrap" tabindex="0" role="region" aria-label="Meeting results, scroll horizontally when needed"><table><caption>Published meeting coverage</caption><thead><tr><th scope="col">Date</th><th scope="col">Meeting and source</th><th scope="col">Venue</th><th scope="col">Availability</th><th scope="col">Source segments</th></tr></thead><tbody id="meetingRows"></tbody></table></div>
+      <button type="button" id="moreMeetings" class="secondary" hidden>Show more meetings</button>
+      <p class="hint">Source segments are not necessarily complete speeches. Availability describes this collection; it does not establish that a meeting or issue did not occur.</p>
+    </section>
+    <section id="positions" aria-labelledby="positionsHeading">
+      <h2 id="positionsHeading">Issues and countries</h2>
+      <p>All recorded countries appear automatically when eligible estimates are available. Labels describe an expressed position on a specific proposition and date. They are not a general judgment about a country.</p>
+      <p id="positionStatus" role="status">No evaluated stance estimates are available.</p>
+      <div class="archive-table-wrap" tabindex="0" role="region" aria-label="Country position results, scroll horizontally when needed"><table><caption>Source-linked model estimates for the selected meetings</caption><thead><tr><th scope="col">Date</th><th scope="col">Country or recorded group</th><th scope="col">Policy proposition</th><th scope="col">Estimate or gap</th><th scope="col">Evidence</th></tr></thead><tbody id="positionRows"></tbody></table></div>
+      <p class="hint">Neutral means an expressed neutral position. No expressed position, conditions, conflicting statements, and uncertain attribution are shown separately. Repetition does not make an estimate stronger.</p>
+    </section>
+    <section id="downloads" aria-labelledby="downloadsHeading">
+      <h2 id="downloadsHeading">Explore and download</h2>
+      <h3>Issues in the selected meetings</h3>
+      <p id="issueStatus">No source-linked issue metadata is available.</p>
+      <ul id="issueList"></ul>
+      <p class="hint">Issue presence describes selected language, not support or opposition. Retrieval candidates can be incomplete or incorrect. Meeting counts show coverage, not importance.</p>
+      <p>Download the published datasets with their version and provenance. Raw source files and private annotations are not included in these public downloads.</p>
+      <ul id="downloadList"></ul>
+      <p id="downloadStatus" role="status" aria-live="polite">No published downloads are available.</p>
+      <details><summary>Explore patterns in saved collections</summary><p>The <a href="index.html#analyze">report builder</a> and <a href="latent.html">latent-structure comparison workspace</a> support source-linked exploratory analysis. Open a compatible saved collection there; this archive does not automatically transfer private or unpublished inputs.</p><p>Similarity, components, and clusters describe selected language. They do not establish policy agreement, influence, or causation.</p></details>
+      <details><summary>Snapshot and verification details</summary><dl class="snapshot-details"><dt>Snapshot</dt><dd id="snapshotId">Unavailable</dd><dt>Verification</dt><dd id="verificationStatus">No data loaded.</dd></dl><p>Downloads are checked against this snapshot’s byte counts and SHA-256 hashes before saving. These checks establish consistency with the published manifest, not the truth of the source or model output.</p></details>
+    </section>
+  </main>
+  <footer>Public, read-only archive. Maintainers control collection selections and publication. Reporting dates are displayed as recorded; update times use your browser’s local time.</footer>
+</body>
+</html>

@@ -1,0 +1,78 @@
+name: Daily transcript warehouse
+
+on:
+  schedule:
+    - cron: '17 11 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Training uploads use this same group. Never cancel a writer mid-publication.
+concurrency:
+  group: operational-store
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      PYTHONPATH: src
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      HF_DATASET_REPO: ${{ vars.HF_DATASET_REPO }}
+      HF_PUBLIC_DATASET_REPO: ${{ vars.HF_PUBLIC_DATASET_REPO }}
+      HF_ACCEPTED_MODEL_PATH: ${{ vars.HF_ACCEPTED_MODEL_PATH }}
+      HF_ACCEPTED_MODEL_REVISION: ${{ vars.HF_ACCEPTED_MODEL_REVISION }}
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require durable private storage
+        shell: bash
+        run: |
+          if [[ -z "$HF_TOKEN" || -z "$HF_DATASET_REPO" ]]; then
+            echo '::error::Set HF_TOKEN secret and HF_DATASET_REPO variable before running collection. No transient-only collection will be performed.'
+            exit 1
+          fi
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned storage client
+        run: python -m pip install --disable-pip-version-check huggingface-hub==0.36.0
+      - name: Load explicitly configured accepted local model
+        if: env.HF_ACCEPTED_MODEL_PATH != '' || env.HF_ACCEPTED_MODEL_REVISION != ''
+        run: |
+          python -m pip install --disable-pip-version-check numpy==2.2.6 onnxruntime==1.22.1 transformers==4.53.3 safetensors==0.5.3 tokenizers==0.21.4
+          python - <<'PY'
+          import json, os, pathlib, re
+          from huggingface_hub import snapshot_download
+          from un_transcript.snapshots import HFStorage
+          from un_transcript.models.runtime import load_accepted_model
+          path=os.environ['HF_ACCEPTED_MODEL_PATH']; revision=os.environ['HF_ACCEPTED_MODEL_REVISION']
+          if not re.fullmatch(r'[0-9a-f]{40}',revision): raise SystemExit('Accepted model requires an immutable dataset revision')
+          if not re.fullmatch(r'[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_.-]+)*',path) or any(p in ('.','..') for p in path.split('/')): raise SystemExit('Invalid accepted model path')
+          HFStorage(os.environ['HF_DATASET_REPO']).info()
+          local=pathlib.Path(os.environ['RUNNER_TEMP'])/'un-approved-model'
+          snapshot_download(os.environ['HF_DATASET_REPO'],repo_type='dataset',revision=revision,token=os.environ['HF_TOKEN'],local_dir=local,allow_patterns=[path+'/*'])
+          load_accepted_model(local/path,json.loads(pathlib.Path('config/issues.json').read_text()))
+          PY
+      - name: Restore, collect, validate and publish one snapshot
+        shell: bash
+        run: |
+          args=(run --config config/collection.json --workspace "$RUNNER_TEMP/un-warehouse" --remote hf --repo "$HF_DATASET_REPO" --publish-public "$RUNNER_TEMP/un-public")
+          if [[ -n "$HF_PUBLIC_DATASET_REPO" ]]; then
+            args+=(--public-repo "$HF_PUBLIC_DATASET_REPO")
+          fi
+          if [[ -n "$HF_ACCEPTED_MODEL_PATH" ]]; then
+            args+=(--model-dir "$RUNNER_TEMP/un-approved-model/$HF_ACCEPTED_MODEL_PATH")
+          fi
+          python -m un_transcript "${args[@]}"
+      # No upload-artifact step: the database, raw text and private CSVs must
+      # remain in the private durable store rather than public Actions artifacts.
+      - name: Record operational result
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          printf 'Daily warehouse job: %s\n\n' "$JOB_STATUS" >> "$GITHUB_STEP_SUMMARY"
+          printf '%s\n' 'Durable snapshots are retained in the configured dataset repository. A failed or delayed job does not imply fresh source coverage. Check the published manifest timestamp and coverage before use.' >> "$GITHUB_STEP_SUMMARY"

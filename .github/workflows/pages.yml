@@ -59,6 +59,8 @@ jobs:
       - name: Test reviewed-unit analysis imports and correction provenance
         run: node tools/test_browser_reviewed_units.cjs
       - name: Build public site
+        env:
+          ARCHIVE_MANIFEST_URL: ${{ vars.ARCHIVE_MANIFEST_URL }}
         run: python3 tools/build_pages.py _site
       - uses: actions/upload-pages-artifact@v3
         with:

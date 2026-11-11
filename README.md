@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="docs/BROWSER_ANALYSIS.md"><img alt="JavaScript browser application" src="https://img.shields.io/badge/JavaScript-browser-062135?style=flat-square" /></a>
-  <a href="site/release.json"><img alt="Browser engine version 1.39.0" src="https://img.shields.io/badge/Browser-v1.39.0-002D74?style=flat-square" /></a>
+  <a href="site/release.json"><img alt="Browser release record" src="https://img.shields.io/badge/Browser-release_record-002D74?style=flat-square" /></a>
   <a href="docs/LATENT_COMPARISON.md"><img alt="Node.js 22 for tests" src="https://img.shields.io/badge/Node.js-22%20tests-062135?style=flat-square" /></a>
   <a href="research/README.md"><img alt="Python 3.11 or newer for optional research" src="https://img.shields.io/badge/Python-3.11%2B%20optional-062135?style=flat-square" /></a>
 </p>
@@ -41,6 +41,7 @@ On its _https://transcripts.un.org/en_ website, the United Nations has built a c
 | Workflow | Use it for | Entry point |
 | --- | --- | --- |
 | **Browser report builder** | Collect published transcripts on demand; analyze a meeting, topic, date range, or region; export visual reports and evidence. No installation or external AI API required. | [Open workspace](https://lystadjs.github.io/un/transcript-agent/) |
+| **Daily transcript archive** | Browse a maintainer-configured, versioned collection with source coverage and research downloads. The archive remains explicitly unconfigured until durable storage and a public manifest are supplied. | [Archive](https://lystadjs.github.io/un/transcript-agent/archive.html) · [Operations](docs/OPERATIONS.md) |
 | **Latent-structure comparison** | Reopen saved runs; compare PCA/LSA, clustering, and component settings; inspect reviewed excerpts against their parent speeches. | [Open comparison](https://lystadjs.github.io/un/transcript-agent/latent.html) |
 | **Local R / Shiny briefing** | Run the controlled D1 analysis, set tracked issues, review the five-slot briefing, and save an unsent Outlook draft. | [Local setup](un/ui/START_HERE.md) |
 
@@ -51,7 +52,15 @@ On its _https://transcripts.un.org/en_ website, the United Nations has built a c
 3. Select the available descriptive, clustering, or component methods, then choose **Generate report**. The report records collection coverage, source links, excluded or unavailable material, and the settings used.
 4. Inspect the source passages before drawing conclusions. Download the standalone HTML report, transcript and analysis JSON, or evidence CSV; use the browser's print function to save a PDF.
 
-The browser requests inventory and transcript records from [transcripts.un.org](https://transcripts.un.org/en). Date and public source requests reach the UN service; topic filtering and numerical analysis run on the user's device. There is no account, hosted model endpoint, scheduled collection, or automatic email send. The [collection and method guide](docs/BROWSER_ANALYSIS.md) records source, language, resource, and export limits. The [individual-meeting guide](docs/INDIVIDUAL_MEETINGS.md) explains the date-first selector and its source checks.
+The report builder requests inventory and transcript records from [transcripts.un.org](https://transcripts.un.org/en). Date and public source requests reach the UN service; topic filtering and numerical analysis run on the user's device. This interactive workflow requires no account or external AI API and does not automatically send email. The separate operational pipeline below supplies scheduled persistence. The [collection and method guide](docs/BROWSER_ANALYSIS.md) records source, language, resource, and export limits. The [individual-meeting guide](docs/INDIVIDUAL_MEETINGS.md) explains the date-first selector and its source checks.
+
+## Daily operational pipeline
+
+The production package adds configured daily collection, immutable raw-source and SQLite revisions, research CSV snapshots, and a read-only public archive interface. GitHub Actions provides bounded daily processing; an owner-controlled **private Hugging Face dataset repository** provides durable storage. Public publication uses a separate allowlisted export and public repository. The code does not purchase services or activate an account automatically.
+
+**Five-level automatic stance remains gated on actual owner-reviewed labels, a trained checkpoint, and empirical acceptance.** Model preparation, training and evaluation interfaces do not supply a validated classifier. Uncertain, missing, conditional and collective evidence remains separate from neutral stance. Existing exploratory methods remain available independently.
+
+Start with [operations and setup](docs/OPERATIONS.md), [architecture](docs/ARCHITECTURE.md), the [capability matrix](docs/CAPABILITIES.md), and the [model card](docs/MODEL_CARD.md). The capability matrix distinguishes implemented engineering, external configuration, deployment, and empirical acceptance. No fourteen-day operating record or diplomat usability acceptance is claimed by committing these files.
 
 ## Optional developer and local R workflows
 
@@ -116,12 +125,13 @@ English transcript tracks may include interpretation or automatic transcription.
 | Path | Contents |
 | --- | --- |
 | [`site/`](site/) | Browser collector, local numerical analysis, report builder, and comparison workspace |
+| [`src/`](src/) · [`config/`](config/) · [`tests/`](tests/) | Operational collection, persistence, export and model contracts; versioned maintainer settings; source-free tests |
 | [`un/`](un/) | R analytical pipeline, Shiny UI, email templates, configuration, and frozen policies |
 | [`research/`](research/) | Development-only text, representation, and evaluation methods with explicit validation boundaries |
 | [`docs/`](docs/) | Method contracts, operating guides, acceptance records, and research roadmap |
 | [`reports/`](reports/) · [`examples/`](examples/) | Evidence-oriented examples and historical reports |
 
-The browser release is recorded in [`site/release.json`](site/release.json) (**1.39.0** at this revision); the saved-run comparison engine is **1.1.0**. For reproducible local checks, start with [`REPRODUCE.md`](REPRODUCE.md). Historical acceptance records are labeled by their original run and should not be mistaken for a new full-system test.
+The browser and comparison releases are recorded in [`site/release.json`](site/release.json). For reproducible local checks, start with [`REPRODUCE.md`](REPRODUCE.md). Historical acceptance records are labeled by their original run and should not be mistaken for a new full-system test. See [open-PR triage](docs/PR_TRIAGE.md) before reusing unmerged work.
 
 <sub>Public reports are analytical aids. Verify quotations, transcription, speaker attribution, coverage, and conclusions against the linked UN records before citing or circulating findings.</sub>
 

@@ -1,0 +1,17 @@
+{
+  "schema": "un.collection.v1",
+  "start_date": "2026-09-08",
+  "end_date": null,
+  "selection_mode": "subscription",
+  "meetings": [],
+  "bodies": [],
+  "refresh_days": 14,
+  "reconcile_weekday": 6,
+  "max_inventory_days": 21,
+  "max_meetings_per_run": 100,
+  "max_bytes_per_run": 100000000,
+  "max_response_bytes": 25000000,
+  "max_inventory_pages": 50,
+  "timeout_seconds": 45,
+  "request_attempts": 3
+}

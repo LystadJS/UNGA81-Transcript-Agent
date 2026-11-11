@@ -109,6 +109,11 @@ def main():
             check('Blank Topic disables stale exclusions', page.locator('#excludePhrases').is_disabled())
             # Live monitoring checks collection plus the five descriptive methods.
             # Expensive exploratory kernels have separate deterministic acceptance.
+            check('Advanced methods start collapsed',
+                  page.locator('#advancedMethods').get_attribute('open') is None)
+            page.locator('#advancedMethods > summary').click()
+            check('Advanced methods open through the visible summary control',
+                  page.locator('#advancedMethods').get_attribute('open') is not None)
             descriptive_methods = {'frequency', 'timeline', 'length', 'tfidf', 'similarity'}
             for control in page.locator('input[name=method]').all():
                 control.set_checked(control.get_attribute('value') in descriptive_methods)
