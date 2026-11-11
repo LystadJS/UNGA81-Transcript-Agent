@@ -1,6 +1,8 @@
 name: Check live browser collection
 
 on:
+  pull_request:
+    paths: ['.github/workflows/browser-collection-check.yml', 'tools/test_live_browser.py']
   # External-service monitoring is separate from release acceptance.
   schedule:
     - cron: '17 11 * * 1'
