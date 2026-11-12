@@ -1,6 +1,8 @@
 """Anonymous real-browser checks; public metadata only, never UN source requests."""
 from datetime import datetime, timezone
+import csv
 import hashlib
+import io
 import json
 import os
 from pathlib import Path
@@ -69,12 +71,40 @@ def verify_site(browser, name, url, width, cutoff=None):
         data = Path(download.value.path()).read_bytes()
         assert len(data) == descriptor['bytes'] and hashlib.sha256(data).hexdigest() == descriptor['sha256']
         expect(page.locator('#downloadStatus')).to_have_text('Verified download saved.')
+        csv_rows = list(csv.DictReader(io.StringIO(data.decode('utf-8'))))
+        assert len(csv_rows) == count and len({row['meeting_id'] for row in csv_rows}) == count, 'Meeting CSV grain/count differs from archive'
+        # Exercise real inventory-only records when present. No source links
+        # are opened, and no titles/identities enter the source-free receipt.
+        inventory_examples = [row for row in csv_rows if row['segments'] == '0'
+            and row['date'] and row['body'] and row['source_url']
+            and row['status'] in ('unavailable','pending','deferred','failed','no_longer_listed')]
+        checked_examples = 0
+        for row in inventory_examples[:2]:
+            page.locator('#archiveSearch').fill(row['meeting_id'])
+            page.locator('#archiveStart').fill(row['date'])
+            page.locator('#archiveEnd').fill(row['date'])
+            # Public CSV protects spreadsheet formulas; JSON/DOM preserves
+            # the recorded venue, so remove only that documented prefix.
+            body = row['body']
+            if body.startswith("'") and body[1:].lstrip(' \t\r\n').startswith(('=','+','-','@')):
+                body = body[1:]
+            page.locator('#archiveBody').select_option(body)
+            expect(page.locator('#meetingRows tr').first).to_be_visible()
+            matches = page.locator('#meetingRows tr').evaluate_all('rows => rows.map(row => ({cells:Array.from(row.cells, c=>c.textContent),url:row.querySelector("a")?.href}))')
+            matches = [item['cells'] for item in matches if item['url'] == row['source_url']]
+            assert len(matches) == 1, 'Known inventory metadata disappeared under date/venue filters'
+            cells = matches[0]
+            assert cells[0] == row['date'] and cells[2] == body and cells[3] == 'No text archived' and cells[5] == '0', 'Inventory metadata incorrectly implies archived text'
+            checked_examples += 1
+            page.locator('#clearFilters').click()
         assert not forbidden and not errors, 'Unexpected source/write/credential request or page error'
         return {'site':name, 'width':width, 'snapshot_id':manifest['snapshot_id'],
                 'generated_at':manifest['generated_at'], 'known_meetings':count,
                 'model_accepted':accepted, 'hash_verified_download':True, 'source_requests':0,
                 'availability_columns_verified':True,'visible_availability_rows_verified':len(visible_rows),
-                'meetings_with_archived_text':int(match[1])}
+                'meetings_with_archived_text':int(match[1]), 'meeting_csv_rows_verified':len(csv_rows),
+                'inventory_metadata_examples_available':len(inventory_examples),
+                'inventory_metadata_filter_examples_verified':checked_examples}
     finally:
         context.close()
 
