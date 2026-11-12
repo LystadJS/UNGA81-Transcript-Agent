@@ -1,6 +1,6 @@
 # Operational implementation and activation verification — 12 November 2026 (UTC)
 
-This record distinguishes new execution from inherited evidence. Code and source-site deployment are complete for the operational implementation milestone. Two actual private archive publications succeeded, including restoration and continued collection on a fresh runner. Empirical model acceptance and sustained operational acceptance remain open. Activation dates, workflow timestamps and snapshot identifiers in this record use UTC.
+This record distinguishes new execution from inherited evidence. Code and source-site deployment are complete for the operational implementation milestone. Six actual private archive publications succeeded, including restoration and continued collection on fresh runners and a combined private/public publication. Empirical model acceptance and sustained operational acceptance remain open. Activation dates, workflow timestamps and snapshot identifiers in this record use UTC.
 
 ## Executed locally
 
@@ -54,3 +54,9 @@ This complements the isolated real-provider interrupted-publication drill. It es
 [Anonymous live browser run 43200525651](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/43200525651) passed on source and portfolio sites at widths 1440 and 390. All four cases loaded the same actual 683-meeting snapshot, matched its identity/freshness, exercised filters and keyboard focus, checked mobile overflow, downloaded a byte/hash-verified CSV and confirmed that unaccepted stances remain withheld. No UN source or authenticated requests occurred. Receipt contains only aggregate engineering evidence; human usability acceptance remains false.
 
 Combined warehouse run 43199258075 failed without a private success receipt. The valid prior public snapshot remained accessible during verification. Operation-level diagnostics in PR #203 preserve provider privacy and the existing two-phase activation safeguards. Sustained private/public publication and the observation period remain open until verified operational evidence is recorded.
+
+## Combined publication and monitoring implementation
+
+[Run 43200795553](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/43200795553) published snapshot `20261112T103158Z-197cd641468a` privately and publicly. It stores 454 distinct meetings out of 843 known, with 31,548 segments; 37 reserved meetings remain excluded. Automatically triggered [browser check 43202107662](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/43202107662) passed desktop/mobile checks on both sites against that new snapshot. The original prior failure's provider cause remains unknown.
+
+The monitoring receipt, scheduled-date ledger and run inspector are implemented through PRs #209–212. They report actual workflow outcomes separately from snapshot freshness and mark missing evidence explicitly. Read-only observation at 11:20 UTC found no scheduled run yet for today's 11:17 UTC slot; this remains awaiting start within the documented reporting grace period. Manual successes do not fill that date. The new read-only restore/re-export audit (43208166363) passed after metadata batching: immutable HF revision `9fe3ff41c7df925e7f8e5d7cfc0ab4538ba6ce23`, 23 files, 17 CSVs and 94,734 rows across private tables reproduced byte for byte; SQLite integrity and foreign keys passed. The row sum is not a meeting count. First new monitoring-artifact acceptance is pending. No elapsed fourteen-day or model acceptance follows from these engineering changes.
