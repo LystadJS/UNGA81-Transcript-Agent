@@ -328,6 +328,19 @@ class HFStorage:
             raise ValueError('Repository history storage usage unavailable; refusing an unbudgeted write')
         return info, used
 
+    def budget_info(self):
+        """Use measured Git history as well as the provider meter before writes."""
+        from .capacity import measure_capacity, CapacityIncomplete
+        report = measure_capacity(self)
+        info, provider_bytes = self.info()
+        if info.sha.lower() != report['revision']:
+            raise CapacityIncomplete('Repository changed after capacity measurement')
+        used = max(provider_bytes, report['reachable_unique_large_bytes']) + report['reachable_unique_git_blob_bytes']
+        report['provider_reported_bytes'] = max(provider_bytes, report['provider_reported_bytes'])
+        report['budget_basis_bytes'] = max(used, report['budget_basis_bytes'])
+        self.last_capacity_measurement = report
+        return info, report['budget_basis_bytes']
+
     def _entries(self, paths, revision):
         # Metadata is reusable only at an immutable commit, never at a branch.
         if not isinstance(revision, str) or not re.fullmatch(r'[a-fA-F0-9]{40}', revision):
@@ -395,7 +408,7 @@ class HFStorage:
             raise ValueError('Canonical snapshots require private storage')
         directory = Path(directory)
         manifest = verify_snapshot(directory)
-        info, used = self.info()
+        info, used = self.budget_info()
         snapshot_id = manifest['snapshot_id']; prefix = 'snapshots/' + snapshot_id + '/'
         self._immutable_prefix(prefix, info.sha)
         self._entries([item['path'] for item in manifest['files'] if item['path'].startswith('raw/')], info.sha)
@@ -482,7 +495,7 @@ class HFStorage:
             raise ValueError('Public reports require a separate public dataset')
         manifest, files, latest = prepare_public_bundle(public_directory)
         snapshot_id = manifest['snapshot_id']; prefix = 'snapshots/' + snapshot_id + '/'
-        info, used = self.info()
+        info, used = self.budget_info()
         self._immutable_prefix(prefix, info.sha)
         if used + sum(_size(value) for value in files.values()) + len(encode(latest)) + 1_000_000 > self.budget_bytes:
             raise ValueError('Public free storage budget would be exceeded')

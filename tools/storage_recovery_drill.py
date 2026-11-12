@@ -47,8 +47,9 @@ def fixture(root, name, cursor):
 def main():
     repo=os.environ['HF_DATASET_REPO']; identity=os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT']
     prefix='drills/'+identity+'/'
-    live=HFStorage(repo); info,used_before=live.info()
-    if used_before+100_000_000>live.budget_bytes:raise ValueError('Insufficient drill budget reserve')
+    live=HFStorage(repo); info,budget_before=live.budget_info()
+    used_before=live.last_capacity_measurement['provider_reported_bytes']
+    if budget_before+100_000_000>live.budget_bytes:raise ValueError('Insufficient drill budget reserve')
     canonical_before=live.read('latest.json',info.sha,1024*1024)
     pointer=json.loads(canonical_before)
     manifest_raw=live.read(pointer['manifest_path'],pointer['revision'],16*1024*1024)

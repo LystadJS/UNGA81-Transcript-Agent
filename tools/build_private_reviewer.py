@@ -41,7 +41,7 @@ def main():
     receipt={**identity,'schema':'un.private-reviewer.v1','examples':len(draft['rows']),'html_sha256':file_sha(html)}
     file=out/'manifest.json';file.write_bytes(encode(receipt))
     files={destination+'training-review.html':html,destination+'manifest.json':file}
-    info,used=storage.info()
+    info,used=storage.budget_info()
     if used+sum(p.stat().st_size for p in files.values())+1_000_000>storage.budget_bytes:raise ValueError('Storage budget exceeded')
     storage._immutable_prefix(destination,info.sha)
     commit=storage._commit(files,info.sha,'Add private offline owner reviewer')
