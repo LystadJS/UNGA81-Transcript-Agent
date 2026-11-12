@@ -41,7 +41,7 @@ On its _https://transcripts.un.org/en_ website, the United Nations has built a c
 | Workflow | Use it for | Entry point |
 | --- | --- | --- |
 | **Browser report builder** | Collect published transcripts on demand; analyze a meeting, topic, date range, or region; export visual reports and evidence. No installation or external AI API required. | [Open workspace](https://lystadjs.github.io/un/transcript-agent/) |
-| **Daily transcript archive** | Browse a maintainer-configured, versioned collection with source coverage and research downloads. The archive remains explicitly unconfigured until durable storage and a public manifest are supplied. | [Archive](https://lystadjs.github.io/un/transcript-agent/archive.html) · [Operations](docs/OPERATIONS.md) |
+| **Daily transcript archive** | Browse the published, versioned collection with source coverage and permitted metadata downloads. Coverage remains partial; automatic stance estimates are withheld pending acceptance. | [Archive](https://lystadjs.github.io/un/transcript-agent/archive.html) · [Operations](docs/OPERATIONS.md) |
 | **Latent-structure comparison** | Reopen saved runs; compare PCA/LSA, clustering, and component settings; inspect reviewed excerpts against their parent speeches. | [Open comparison](https://lystadjs.github.io/un/transcript-agent/latent.html) |
 | **Local R / Shiny briefing** | Run the controlled D1 analysis, set tracked issues, review the five-slot briefing, and save an unsent Outlook draft. | [Local setup](un/ui/START_HERE.md) |
 
@@ -56,7 +56,7 @@ The report builder requests inventory and transcript records from [transcripts.u
 
 ## Daily operational pipeline
 
-The production package adds configured daily collection, immutable raw-source and SQLite revisions, research CSV snapshots, and a read-only public archive interface. GitHub Actions provides bounded daily processing; an owner-controlled **private Hugging Face dataset repository** provides durable storage. Public publication uses a separate allowlisted export and public repository. The code does not purchase services or activate an account automatically.
+The production package adds configured daily collection, immutable raw-source and SQLite revisions, research CSV snapshots, and a read-only public archive interface. GitHub Actions provides bounded daily processing; an owner-controlled **private Hugging Face dataset repository** provides durable storage. The deployed public archive uses a separate allowlisted metadata export and public repository; canonical transcripts, private research CSVs and annotations remain in private storage. The code does not purchase services or activate an account automatically.
 
 **Five-level automatic stance remains gated on actual owner-reviewed labels, a trained checkpoint, and empirical acceptance.** Model preparation, training and evaluation interfaces do not supply a validated classifier. Uncertain, missing, conditional and collective evidence remains separate from neutral stance. Existing exploratory methods remain available independently.
 
@@ -137,4 +137,4 @@ The browser and comparison releases are recorded in [`site/release.json`](site/r
 
 ## Historical issue infrastructure (1.34.0)
 
-The [implementation ledger](docs/implementation-agenda/STATUS.md) records progress toward the three-input, ten-year issue workflow. The new `issue-archive.html` workspace consumes verified, versioned historical bundles and saves frozen reports. The public archive is not provisioned; use the existing saved-collection issue page while source acquisition and empirical assessment remain incomplete. Maintainer store/ingestion modules use Python standard libraries; end users need only a browser. Experimental model code is not a calibrated production trajectory.
+The [implementation ledger](docs/implementation-agenda/STATUS.md) records progress toward the three-input, ten-year issue workflow. The new `issue-archive.html` workspace consumes verified, versioned historical bundles and saves frozen reports. The separate historical issue archive is not provisioned; use the existing saved-collection issue page while historical source acquisition and empirical assessment remain incomplete. The current-session meeting archive above is deployed. Maintainer store/ingestion modules use Python standard libraries; end users need only a browser. Experimental model code is not a calibrated production trajectory.
