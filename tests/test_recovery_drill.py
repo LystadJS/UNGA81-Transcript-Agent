@@ -8,7 +8,7 @@ m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
 
 class Isolation(unittest.TestCase):
     def test_every_read_and_commit_stays_under_drill_namespace(self):
-        api=Mock();download=Mock();store=m.DrillStorage('owner/private','drills/12-1/store/',api=api,downloader=download)
+        api=Mock();api.get_paths_info.return_value=[];download=Mock();store=m.DrillStorage('owner/private','drills/12-1/store/',api=api,downloader=download)
         store._entries(['latest.json','snapshots/x/snapshot.json'],'a'*40)
         self.assertEqual(api.get_paths_info.call_args.args[1],['drills/12-1/store/latest.json','drills/12-1/store/snapshots/x/snapshot.json'])
         store.downloader('raw/test.json','a'*40)

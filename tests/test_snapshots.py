@@ -153,9 +153,11 @@ class Snapshots(unittest.TestCase):
         revision = remote.revisions[pointer['revision']]
         manifest = json.loads(revision[pointer['manifest_path']])
         transform(manifest)
-        revision[pointer['manifest_path']] = encode(manifest)
+        # A changed remote tree has a new commit identity, as on the real hub.
+        forged = remote._commit({pointer['manifest_path']: encode(manifest)}, remote.head, 'Synthetic invalid manifest')
+        pointer['revision'] = forged
         pointer['manifest_sha256'] = hashlib.sha256(encode(manifest)).hexdigest()
-        remote.revisions[remote.head]['latest.json'] = encode(pointer)
+        remote._commit({'latest.json': encode(pointer)}, forged, 'Point to synthetic invalid manifest')
 
     def test_inventory_original_is_required_sealed_and_restored(self):
         raw_hash = hashlib.sha256(self.inventory_raw).hexdigest()
@@ -204,6 +206,17 @@ class Snapshots(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'pointer identity'):remote.restore(self.root/'invalid')
         self.assertEqual(remote.downloads,['latest.json'])
 
+    def test_restore_pointer_cannot_use_mutable_branch_revision(self):
+        remote=FakeRemote();remote.publish(self.snapshot)
+        pointer=json.loads(remote.revisions[remote.head]['latest.json'])
+        pointer['revision']='main'
+        remote._commit({'latest.json':encode(pointer)},remote.head,'Synthetic mutable pointer')
+        remote.downloads.clear()
+        with self.assertRaisesRegex(ValueError,'pointer identity'):
+            remote.restore(self.root/'mutable-pointer')
+        self.assertEqual(remote.downloads,['latest.json'])
+        self.assertFalse((self.root/'mutable-pointer/data').exists())
+
     def test_negative_bool_and_oversized_descriptors_refused_before_artifact_download(self):
         for size in (-1,True,MAX_FILE_BYTES+1):
             remote=FakeRemote();remote.publish(self.snapshot)
@@ -226,6 +239,7 @@ class Snapshots(unittest.TestCase):
         with patch('un_transcript.snapshots.shutil.disk_usage',return_value=SimpleNamespace(free=DISK_RESERVE_BYTES)):
             with self.assertRaisesRegex(ValueError,'disk reserve'):remote.restore(self.root/'low-disk')
         self.assertFalse((self.root/'low-disk'/'data').exists())
+        remote._entry_cache.clear()  # Fresh runner: no previously verified metadata.
         remote.get_paths_info=lambda *a,**kw:(_ for _ in ()).throw(ConnectionError('metadata unavailable'))
         with self.assertRaises(ConnectionError):remote.restore(self.root/'unavailable')
 
