@@ -110,10 +110,15 @@ jobs:
           if receipt.exists():
               result=json.loads(receipt.read_text())
               coverage=result.get('coverage',{})
+              inventory=result.get('inventory_progress',{})
               lines=[
                   'Snapshot: `'+result['run_id']+'`',
                   'Snapshot generated at (UTC): '+result['generated_at'],
                   'Collection coverage: **'+result['status']+'**',
+                  'Inventory reconciliation complete: '+str(inventory.get('complete','unavailable')),
+                  'Inventory dates pending this week: '+str(inventory.get('pending_dates','unavailable'))+' / '+str(inventory.get('selected_dates','unavailable')),
+                  'Nominal weekly inventory capacity sufficient: '+str(inventory.get('nominal_weekly_capacity_sufficient','unavailable')),
+                  'Selection checkpoint reset: '+str(result.get('selection_reset','unavailable')),
                   'Stored distinct meetings: '+str(coverage.get('stored_meetings','unavailable')),
                   'Current transcript segments: '+str(coverage.get('segments','unavailable')),
                   'Meetings downloaded this run (includes refreshes): '+str(result['meetings_downloaded']),

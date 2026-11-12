@@ -29,6 +29,23 @@ def storage_measurement(value):
             'budget_bytes': integer(value['storage_budget_bytes'])}
 
 
+def inventory_progress(value):
+    fields={'week_start','selected_dates','pending_dates','recent_dates','complete',
+            'max_dates_per_run','nominal_weekly_capacity_sufficient'}
+    if not isinstance(value,dict) or set(value)!=fields:
+        raise ValueError('Unexpected inventory progress fields')
+    if not isinstance(value['week_start'],str) or not re.fullmatch(r'\d{4}-\d{2}-\d{2}',value['week_start']):
+        raise ValueError('Invalid reconciliation week')
+    datetime.fromisoformat(value['week_start'])
+    selected,pending,recent,limit=(integer(value[k]) for k in ('selected_dates','pending_dates','recent_dates','max_dates_per_run'))
+    if pending>selected or recent>selected or not 0<=recent<limit<=365:
+        raise ValueError('Inventory progress counts do not reconcile')
+    expected={'complete':pending==0,'nominal_weekly_capacity_sufficient':selected-recent<=7*(limit-recent)}
+    if any(type(value[k]) is not bool or value[k]!=v for k,v in expected.items()):
+        raise ValueError('Inventory progress claims do not match counts')
+    return dict(value)
+
+
 def operational_receipt(result, *, run_id, attempt, event, processing_status,
                         before=None, after_private=None, after_public=None, recorded_at=None):
     if not re.fullmatch(r'[1-9][0-9]*', str(run_id)) or not re.fullmatch(r'[1-9][0-9]*', str(attempt)):
@@ -72,6 +89,11 @@ def operational_receipt(result, *, run_id, attempt, event, processing_status,
                 'bytes_downloaded': integer(result['bytes_downloaded']),
                 'private_publication': result['private_publication'],
                 'public_publication': result['public_publication'], 'model_accepted': model_accepted}
+    if 'inventory_progress' in result:
+        snapshot['inventory_progress']=inventory_progress(result['inventory_progress'])
+    if 'selection_reset' in result:
+        if type(result['selection_reset']) is not bool:raise ValueError('Invalid selection reset indicator')
+        snapshot['selection_reset']=result['selection_reset']
     if result.get('public_storage_operation') in OPERATIONS:
         snapshot['public_storage_operation'] = result['public_storage_operation']
     code = result.get('public_http_status')
@@ -95,7 +117,7 @@ def validate_operational_receipt(value, *, run_id, attempt, event):
                 'generated_at':snapshot['generated_at'],'status':snapshot['coverage_status'],
                 'coverage':snapshot['coverage'],'model_status':{'accepted':snapshot['model_accepted']},
                 **{k:snapshot[k] for k in ('meetings_downloaded','bytes_downloaded','private_publication','public_publication')}}
-        for key in ('public_storage_operation','public_http_status'):
+        for key in ('public_storage_operation','public_http_status','inventory_progress','selection_reset'):
             if key in snapshot:result[key]=snapshot[key]
     storage=value['storage']
     def measured(key):

@@ -3,7 +3,7 @@ import copy
 import hashlib
 import json
 import unittest
-from datetime import date
+from datetime import date, timedelta
 from urllib.parse import parse_qs, urlsplit
 from unittest.mock import patch
 
@@ -127,6 +127,19 @@ class CollectionTests(unittest.TestCase):
         self.assertEqual(len(result["inventory"]), 2)
         self.assertIn("2026-11-04", result["state"]["pending_dates"])
 
+    def test_inventory_pagination_reserves_bytes_before_each_request(self):
+        calls=[]
+        def paged(url):
+            calls.append(url)
+            page=int(parse_qs(urlsplit(url).query)['page'][0])
+            return encode({'page':page,'total':3,'hasMore':True,'meetings':[], 'padding':'x'*800})
+        result=Collector(config(max_response_bytes=1024,max_bytes_per_run=2048,max_inventory_days=70),paged).collect('2026-11-04')
+        self.assertEqual(len(calls),2)
+        self.assertLessEqual(result['bytes_downloaded'],2048)
+        self.assertEqual(result['items'],[])
+        self.assertFalse(result['inventory_progress']['complete'])
+        self.assertIn('2026-11-04',result['state']['pending_dates'])
+
     def test_duplicate_inventory_id_rejected(self):
         row = meeting(); result = Collector(config(), Transport([row, row])).collect("2026-11-04")
         self.assertEqual(result["items"], [])
@@ -189,6 +202,55 @@ class CollectionTests(unittest.TestCase):
         self.assertEqual(transport.calls, [])
         Collector(conf, transport).collect("2026-11-08", first["state"])
         self.assertEqual(len(transport.calls), 1)
+
+    def test_weekly_capacity_exposes_small_budget_and_covers_a_year_with_seventy_dates(self):
+        for days, start, anchor, expected in (
+                (21,date(2026,9,8),date(2026,11,15),False),
+                (70,date(2026,9,6),date(2027,9,5),True)):
+            conf=config(start_date=start.isoformat(),end_date=None,max_inventory_days=days)
+            state=None;transport=Transport()
+            for offset in range(7):
+                transport.calls.clear()
+                result=Collector(conf,transport).collect(anchor+timedelta(days=offset),state)
+                state=result['state']
+                queried=[parse_qs(urlsplit(url).query)['date'][0] for url in transport.calls]
+                self.assertLessEqual(len(set(queried)),days)
+                self.assertNotIn('2026-10-05',queried);self.assertNotIn('2026-10-06',queried)
+            self.assertEqual(result['inventory_progress']['complete'],expected)
+            self.assertEqual(result['inventory_progress']['nominal_weekly_capacity_sufficient'],expected)
+            self.assertEqual(bool(state['inventory_pending_dates']),not expected)
+
+    def test_inventory_progress_is_separate_from_unavailable_transcripts(self):
+        row=meeting();row['hasTranscript']=False
+        result=Collector(config(),Transport([row])).collect('2026-11-04')
+        self.assertTrue(result['inventory_progress']['complete'])
+        self.assertTrue(result['state']['pending_dates'])
+        self.assertEqual(result['state']['inventory_pending_dates'],[])
+        transport=Transport();transport.fail_dates={'2026-11-04'}
+        failed=Collector(config(),transport).collect('2026-11-04')
+        self.assertFalse(failed['inventory_progress']['complete'])
+        self.assertEqual(failed['inventory_progress']['pending_dates'],1)
+
+    def test_runtime_limits_preserve_checked_meetings_but_selection_changes_reset(self):
+        old_config=config(max_meetings_per_run=1)
+        first=Collector(old_config,Transport([meeting()])).collect('2026-11-04')
+        previous=copy.deepcopy(first['state'])
+        result=Collector(config(max_inventory_days=70),Transport()).collect('2026-11-04',previous)
+        self.assertFalse(result['selection_reset'])
+        self.assertEqual(result['state']['checked_meetings'],previous['checked_meetings'])
+        self.assertEqual(previous,first['state'])
+        changed=Collector(config(bodies=['sc']),Transport()).collect('2026-11-04',previous)
+        self.assertTrue(changed['selection_reset'])
+
+    def test_legacy_migration_requires_exact_previous_config_binding(self):
+        old_config=config();first=Collector(old_config,Transport([meeting()])).collect('2026-11-04')
+        previous=copy.deepcopy(first['state']);previous.pop('selection_sha256');previous.pop('inventory_pending_dates')
+        result=Collector(config(max_inventory_days=70),Transport()).collect('2026-11-04',previous,prior_config=old_config)
+        self.assertFalse(result['selection_reset'])
+        self.assertEqual(result['state']['checked_meetings'],first['state']['checked_meetings'])
+        for prior in (None,config(bodies=['sc'])):
+            result=Collector(config(max_inventory_days=70),Transport()).collect('2026-11-04',previous,prior_config=prior)
+            self.assertTrue(result['selection_reset'])
 
     def test_invalid_utf8_and_over_budget_responses_fail_without_items(self):
         row = meeting()

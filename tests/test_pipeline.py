@@ -63,6 +63,39 @@ class Pipeline(unittest.TestCase):
             for path in public.rglob('*'):
                 if path.is_file():self.assertNotIn(b'We support unhindered',path.read_bytes())
 
+    def test_legacy_snapshot_configuration_binds_runtime_limit_migration(self):
+        first=self.run_pipeline()
+        state_file=self.root/'runtime/data/state.json'
+        state=json.loads(state_file.read_bytes());state.pop('selection_sha256');state.pop('inventory_pending_dates')
+        state_file.write_text(json.dumps(state))
+        self.config['max_inventory_days']=71
+        self.config_path.write_text(json.dumps(self.config))
+        second=self.run_pipeline()
+        self.assertFalse(second['selection_reset'])
+        self.assertTrue(second['inventory_progress']['complete'])
+        verify_snapshot(second['snapshot'])
+        with Warehouse(self.root/'runtime/data/warehouse.sqlite3') as db:
+            self.assertEqual(db.db.execute('SELECT COUNT(*) FROM source_revisions').fetchone()[0],1)
+
+    def test_fresh_remote_restore_preserves_legacy_cursor_when_only_limits_change(self):
+        from test_snapshots import FakeRemote
+        from un_transcript.collection import Collector
+        remote=FakeRemote(budget=80_000_000_000)
+        original=Collector.collect
+        def legacy(collector,*args,**kwargs):
+            result=original(collector,*args,**kwargs)
+            result['state'].pop('selection_sha256');result['state'].pop('inventory_pending_dates')
+            return result
+        with patch.object(Collector,'collect',legacy):
+            run_pipeline(self.config_path,self.root/'first',as_of=date(2026,11,10),transport=self.transport,remote=remote)
+        self.config['max_inventory_days']=71;self.config_path.write_text(json.dumps(self.config))
+        result=run_pipeline(self.config_path,self.root/'restored',as_of=date(2026,11,10),transport=self.transport,remote=remote)
+        self.assertFalse(result['selection_reset'])
+        self.assertTrue(result['inventory_progress']['complete'])
+        with Warehouse(self.root/'restored/data/warehouse.sqlite3') as db:
+            self.assertEqual(db.db.execute('SELECT COUNT(*) FROM source_revisions').fetchone()[0],1)
+        verify_snapshot(result['snapshot'])
+
     def test_inventory_outage_retains_prior_sources_and_reports_partial(self):
         first=self.run_pipeline()
         def broken(url):raise TimeoutError('synthetic outage')

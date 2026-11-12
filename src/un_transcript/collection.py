@@ -108,6 +108,15 @@ def validate_config(value):
     return config
 
 
+def config_digest(config):
+    return _sha(json.dumps(config, sort_keys=True, separators=(",", ":")).encode())
+
+
+def selection_digest(config):
+    return config_digest({key: config[key] for key in
+                         ("schema", "start_date", "end_date", "selection_mode", "meetings", "bodies")})
+
+
 def load_config(path):
     return validate_config(json.loads(Path(path).read_text(encoding="utf-8")))
 
@@ -273,7 +282,7 @@ class Collector:
         self._bytes += len(raw)
         return {"raw": raw, "headers": response.get("headers", {}), "retrieved_at": response.get("retrieved_at", _now()), "sha256": _sha(raw)}
 
-    def collect(self, as_of: date, state=None):
+    def collect(self, as_of: date, state=None, *, prior_config=None):
         if isinstance(as_of, str):
             as_of = _date(as_of)
         if not isinstance(as_of, date):
@@ -282,8 +291,16 @@ class Collector:
         previous = copy.deepcopy(state or {})
         if previous and previous.get("schema") != STATE_SCHEMA:
             raise ValueError("Unsupported collection checkpoint")
-        digest = _sha(json.dumps(config, sort_keys=True, separators=(",", ":")).encode())
-        reset = bool(previous and previous.get("config_sha256") != digest)
+        digest = config_digest(config)
+        selection = selection_digest(config)
+        prior_selection = previous.get("selection_sha256")
+        # Legacy checkpoints may inherit a selection only from the exact config
+        # recorded for their verified snapshot, bound by the original digest.
+        if prior_selection is None and prior_config is not None:
+            prior_config = validate_config(prior_config)
+            if config_digest(prior_config) == previous.get("config_sha256"):
+                prior_selection = selection_digest(prior_config)
+        reset = bool(previous and previous.get("config_sha256") != digest and prior_selection != selection)
         if reset:
             previous = {}
         start = _date(config["start_date"])
@@ -297,8 +314,11 @@ class Collector:
         completed = set(previous.get("completed_dates", [])) & allowed_dates
         pending = (set(previous.get("pending_dates", [])) & allowed_dates) | (allowed_dates - completed)
         week = (as_of - timedelta(days=(as_of.weekday() - config["reconcile_weekday"]) % 7)).isoformat()
+        inventory_pending = (set(previous.get("inventory_pending_dates", allowed_dates)) & allowed_dates) | (allowed_dates - completed)
         if previous.get("reconciliation_week") != week:
             pending |= allowed_dates
+            inventory_pending |= allowed_dates
+        pending |= inventory_pending
         date_checks = previous.get("checked_dates", {})
         pending_order = sorted(pending - set(recent), key=lambda day: (date_checks.get(day, ""), day))
         selected_dates = (recent + pending_order)[:config["max_inventory_days"]]
@@ -313,7 +333,7 @@ class Collector:
                     if RESERVED_MEETING_DATES[mid] == day and (config["selection_mode"] != "meetings" or exact.get(mid) == day):
                         coverage.append({"meeting_id": mid, "date": day, "status": "excluded_reserved", "detail": "Sealed evaluation meeting; no source request"})
                 coverage.append({"meeting_id": "inventory:" + day, "date": day, "status": "excluded_reserved", "detail": "Reserved date excluded before network access, including possible alias routes"})
-                completed.add(day); pending.discard(day)
+                completed.add(day); pending.discard(day); inventory_pending.discard(day)
                 continue
             if self._bytes + config["max_response_bytes"] > config["max_bytes_per_run"]:
                 pending.add(day)
@@ -342,7 +362,7 @@ class Collector:
                 if len(found) != total or len({row["meeting_id"] for row in found}) != total:
                     raise ValueError("Inventory count or duplicate identity mismatch")
                 inventory.extend(pages)
-                completed.add(day); pending.discard(day)
+                completed.add(day); pending.discard(day); inventory_pending.discard(day)
                 eligible = []
                 for row in found:
                     is_exact = exact.get(row["meeting_id"]) == day
@@ -392,8 +412,16 @@ class Collector:
                     row.update(status="failed", detail=type(error).__name__ + ": " + str(error)[:300])
                     pending.add(meeting["date"])
             coverage.append(row)
-        next_state = {"schema": STATE_SCHEMA, "config_sha256": digest, "completed_dates": sorted(completed),
+        next_state = {"schema": STATE_SCHEMA, "config_sha256": digest, "selection_sha256": selection, "completed_dates": sorted(completed),
                       "pending_dates": sorted(pending), "checked_meetings": checked, "known_meetings": seen,
-                      "reconciliation_week": week, "reconciliation_pending": bool(pending), "as_of": as_of.isoformat(), "checked_dates": date_checks}
+                      "reconciliation_week": week, "reconciliation_pending": bool(pending),
+                      "inventory_pending_dates": sorted(inventory_pending), "as_of": as_of.isoformat(), "checked_dates": date_checks}
+        historical = len(allowed_dates - set(recent))
+        historical_slots = config["max_inventory_days"] - len(recent)
+        progress = {"week_start": week, "selected_dates": len(allowed_dates),
+                    "pending_dates": len(inventory_pending), "recent_dates": len(recent), "complete": not inventory_pending,
+                    "max_dates_per_run": config["max_inventory_days"],
+                    "nominal_weekly_capacity_sufficient": historical <= 7 * historical_slots}
         return {"items": items, "coverage": coverage, "state": next_state, "inventory": inventory,
+                "inventory_progress": progress,
                 "bytes_downloaded": self._bytes, "selection_reset": reset}
