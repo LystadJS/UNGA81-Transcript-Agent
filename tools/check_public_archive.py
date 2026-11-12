@@ -43,6 +43,16 @@ def verify_site(browser, name, url, width, cutoff=None):
             assert stamp >= cutoff, 'Public snapshot predates the successful warehouse run'
         count = int(page.locator('#meetingCount').inner_text().replace(',',''))
         assert count == manifest['coverage']['meetings'] and count > 0
+        expect(page.get_by_role('columnheader',name='Archived text',exact=True)).to_be_visible()
+        expect(page.get_by_role('columnheader',name='Latest collection check',exact=True)).to_be_visible()
+        visible_rows=page.locator('#meetingRows tr').evaluate_all('(rows) => rows.map(row => Array.from(row.cells, cell => cell.textContent))')
+        assert visible_rows, 'No actual meeting rows for availability verification'
+        for cells in visible_rows:
+            assert len(cells)==6 and cells[5].isdigit(), 'Unexpected availability table contract'
+            assert cells[3]==('Text archived' if int(cells[5])>0 else 'No text archived'), 'Archived text confused with collection attempt'
+        overview=page.locator('#coverageSummary').inner_text()
+        match=re.fullmatch(r'(\d+) meetings with archived text\. Latest collection checks: .+\.',overview)
+        assert match and 0<=int(match[1])<=count, 'Missing separate archive/attempt coverage'
         accepted = manifest['model_status'] in ('accepted','evaluated_accepted')
         if not accepted:
             expect(page.locator('#modelStatus')).to_contain_text('withheld')
@@ -62,7 +72,9 @@ def verify_site(browser, name, url, width, cutoff=None):
         assert not forbidden and not errors, 'Unexpected source/write/credential request or page error'
         return {'site':name, 'width':width, 'snapshot_id':manifest['snapshot_id'],
                 'generated_at':manifest['generated_at'], 'known_meetings':count,
-                'model_accepted':accepted, 'hash_verified_download':True, 'source_requests':0}
+                'model_accepted':accepted, 'hash_verified_download':True, 'source_requests':0,
+                'availability_columns_verified':True,'visible_availability_rows_verified':len(visible_rows),
+                'meetings_with_archived_text':int(match[1])}
     finally:
         context.close()
 
