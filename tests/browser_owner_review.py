@@ -1,5 +1,6 @@
 """Synthetic-only offline browser review acceptance."""
 import importlib.util
+import re
 import json
 import os
 from pathlib import Path
@@ -7,7 +8,7 @@ import tempfile
 import functools
 import http.server
 import threading
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, expect
 
 ROOT=Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('reviewer',ROOT/'tools/build_private_reviewer.py')
@@ -46,13 +47,13 @@ def main():
             with page.expect_download() as download:page.locator('#save').click()
             progress=root/'progress.json';download.value.save_as(progress)
             saved=json.loads(progress.read_text());assert saved['rows'][0]['label'] is None and saved['owner_confirmed'] is False
-            page.locator('#import').set_input_files(progress);page.wait_for_function("document.querySelector('#message').textContent.startsWith('Imported')")
+            page.locator('#import').set_input_files(progress);expect(page.locator('#message')).to_have_text(re.compile(r'^Imported'))
             assert page.locator('#notes').input_value()=='Borderline intensity'
             tampered=json.loads(progress.read_text());tampered['rows'][0]['text']='changed';bad=root/'bad.json';bad.write_text(json.dumps(tampered))
-            page.locator('#import').set_input_files(bad);page.wait_for_function("document.querySelector('#message').textContent.includes('were changed')")
+            page.locator('#import').set_input_files(bad);expect(page.locator('#message')).to_contain_text('were changed')
             assert page.locator('#text').inner_text()==rows[0]['text']
             tampered=json.loads(progress.read_text());tampered['rows'].append(tampered['rows'][0]);bad.write_text(json.dumps(tampered))
-            page.locator('#import').set_input_files(bad);page.wait_for_function("document.querySelector('#message').textContent.includes('duplicated')")
+            page.locator('#import').set_input_files(bad);expect(page.locator('#message')).to_contain_text('duplicated')
             for width in (390,1440):
                 page.set_viewport_size({'width':width,'height':900})
                 overflow=page.evaluate('document.documentElement.scrollWidth > innerWidth + 1')

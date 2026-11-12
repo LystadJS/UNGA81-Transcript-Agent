@@ -92,3 +92,7 @@ Restore refuses individual artifacts above 512 MiB, manifests above 16 MiB, and 
 ## Meeting versus inventory coverage
 
 Public meeting partitions and meeting totals exclude `inventory:<date>` coverage records. Those rows describe date-level inventory checks and remain in private `coverage.csv` for audit. New manifests report their latest-per-date counts separately as `coverage.inventory_dates` and `coverage.inventory_statuses`; their statuses do not enter meeting denominators. Older snapshots remain immutable and may include inventory checks in their meeting totals. Distinct stored-meeting and current-segment counts were unaffected by that export defect.
+
+## Restore and regenerate the real research exports
+
+Manually dispatch **Verify restored research exports** (`restored-export-audit.yml`) to restore the current private snapshot, open SQLite in read-only mode, check integrity and foreign keys, and regenerate all private and public export files into a separate temporary directory. Every file must match the sealed snapshot byte for byte. This checks database/export coherence beyond downloaded-file checksums; a sealed but stale CSV fails. The job makes no remote writes and publishes only aggregate verification metadata. Use the matching exporter code for an older snapshot; a method/schema change may correctly fail exact reproduction. Never update archived bytes to make a failed audit pass.
