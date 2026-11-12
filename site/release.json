@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.46.0",
+  "browser_engine": "browser-descriptive-1.47.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-12",
   "features": [
+    "Passage-specific analyst notes with exact source IDs, bounded local editing, separate user interpretation in HTML and JSON, unchanged source evidence/CSV, and v1/v2/v3 saved-report compatibility",
     "Source-linked custom evidence appendices across all report templates, with exact passage IDs, unchanged whole-meeting summaries and full evidence CSV, strict v2 saved-report validation and v1 compatibility",
     "Reusable mission preferences: explicit bounded JSON export/import of format, mission, title and priority words, excluding sources, meeting selections and analyst notes; applying preferences invalidates stale report exports",
     "Archive-to-report selection of up to five public meeting identities across dates, with explicit inventory verification and source loading, retained filter selection, unavailable-source gaps and reserved-meeting exclusions",
@@ -137,7 +138,7 @@
   },
   "meeting_reporting": {
     "entry": "meeting-reports.html",
-    "schema": "un.meeting-report.v2",
+    "schema": "un.meeting-report.v3",
     "status": "local_engineering_pass",
     "external_ai_calls": 0,
     "model_status": "withheld_not_accepted",
@@ -146,7 +147,8 @@
     "preferences_schema": "un.mission-preferences.v1",
     "readable_schemas": [
       "un.meeting-report.v1",
-      "un.meeting-report.v2"
+      "un.meeting-report.v2",
+      "un.meeting-report.v3"
     ]
   }
 }

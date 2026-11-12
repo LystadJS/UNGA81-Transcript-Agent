@@ -5,7 +5,8 @@
   const Collector=node?require('./collector.js'):root.UNCollector;
   const Reader=node?require('./meeting-quick-reader.js'):root.UNMeetingQuickReader;
   const Picker=node?require('./meeting-picker-core.js'):root.UNMeetingPickerCore;
-  const VERSION='un.meeting-report.v2',LEGACY_VERSION='un.meeting-report.v1';
+  const VERSION='un.meeting-report.v3',LEGACY_VERSION='un.meeting-report.v1',APPENDIX_VERSION='un.meeting-report.v2';
+  const NOTE_LIMIT=2000,NOTES_LIMIT=100;
   const TEMPLATES=Object.freeze({brief:'Mission briefing',negotiation:'Negotiation record',evidence:'Evidence digest'});
   const LIMIT=25000000;
   const PREFERENCES_VERSION='un.mission-preferences.v1',PREFERENCES_LIMIT=8192,PREFERENCE_KEYS=['template','mission','title','priorities'];
@@ -90,29 +91,41 @@
     const chosen=new Set(value.record_ids);
     return {mode:value.mode,record_ids:records.filter(r=>chosen.has(r.id)).map(r=>r.id)};
   }
+  function passageNotes(value=[],records){
+    const known=new Set(records.map(r=>r.id)),notes=new Map();
+    if(!Array.isArray(value)||value.length>NOTES_LIMIT)throw Error('Use at most '+NOTES_LIMIT+' passage notes.');
+    for(const item of value){
+      if(!item||Object.keys(item).length!==2||typeof item.record_id!=='string'||!known.has(item.record_id)||notes.has(item.record_id)||typeof item.text!=='string'||!item.text.trim()||item.text.length>NOTE_LIMIT)throw Error('Passage notes must be unique, source-bound and between 1 and '+NOTE_LIMIT+' characters.');
+      notes.set(item.record_id,item.text);
+    }
+    return records.filter(r=>notes.has(r.id)).map(r=>({record_id:r.id,text:notes.get(r.id)}));
+  }
   async function openSaved(value,policy,countries){
-    let corpora,prefs=null,selected=null,appendix;
-    if([VERSION,LEGACY_VERSION].includes(value?.schema)){
+    let corpora,prefs=null,selected=null,appendix,notes=[];
+    if([VERSION,LEGACY_VERSION,APPENDIX_VERSION].includes(value?.schema)){
       corpora=value.corpora;prefs=settings(value.settings);selected=value.selected_meetings;
-      if(value.schema===VERSION){if(!Object.hasOwn(value,'appendix'))throw Error('Saved report is missing its appendix selection.');appendix=value.appendix;}
+      if(value.schema!==LEGACY_VERSION){if(!Object.hasOwn(value,'appendix'))throw Error('Saved report is missing its appendix selection.');appendix=value.appendix;}
       else if(Object.hasOwn(value,'appendix'))throw Error('A v1 report cannot contain a v2 appendix selection.');
+      if(value.schema===VERSION){if(!Array.isArray(value.passage_notes))throw Error('Saved report is missing its passage notes.');notes=value.passage_notes;}
+      else if(Object.hasOwn(value,'passage_notes'))throw Error('Passage notes require saved-report version 3.');
     }else if(value?.schema==='un.browser.corpus.v1')corpora=[value];else throw Error('Unsupported saved report or collection version.');
     await validateCorpora(corpora,policy,countries);
     const ids=meetingSelection(corpora,value.schema==='un.browser.corpus.v1'?corpora.flatMap(c=>c.coverage).filter(r=>r.slug).map(r=>r.slug):selected);
-    appendix=appendixSelection(appendix,corpora.flatMap(c=>c.records).filter(r=>ids.has(r.meeting_slug)));
-    return {corpora,settings:prefs,selected:[...ids],appendix};
+    const records=corpora.flatMap(c=>c.records).filter(r=>ids.has(r.meeting_slug));
+    appendix=appendixSelection(appendix,records);notes=passageNotes(notes,records);
+    return {corpora,settings:prefs,selected:[...ids],appendix,passage_notes:notes};
   }
   function savedReport(report,corpora){
-    return {schema:VERSION,engine:report.engine,generated_at:report.generated_at,settings:report.settings,selected_meetings:report.selected_meetings,appendix:report.appendix,corpora};
+    return {schema:VERSION,engine:report.engine,generated_at:report.generated_at,settings:report.settings,selected_meetings:report.selected_meetings,appendix:report.appendix,passage_notes:report.passage_notes,corpora};
   }
-  function build(corpora,selected,options={},appendix){
+  function build(corpora,selected,options={},appendix,notes=[]){
     const prefs=settings(options),ids=meetingSelection(corpora,selected),coverage=corpora.flatMap(c=>c.coverage).filter(r=>ids.has(r.slug));
     if(!coverage.length)throw Error('Select at least one loaded meeting.');
     const records=corpora.flatMap(c=>c.records).filter(r=>ids.has(r.meeting_slug));
     const chosen=appendixSelection(appendix,records),appendixIds=new Set(chosen.record_ids);
     const meetings=coverage.map(m=>({slug:m.slug,date:m.date,title:m.title||m.slug,status:m.status,source_url:Reader.safeURL(m.source_url),
       summary:Reader.build(records,{meeting_slug:m.slug,meeting_date:m.date,title:m.title})}));
-    return {schema:VERSION,engine:'source-bound-reporting-1.1',generated_at:new Date().toISOString(),settings:prefs,appendix:chosen,
+    return {schema:VERSION,engine:'source-bound-reporting-1.2',generated_at:new Date().toISOString(),settings:prefs,appendix:chosen,passage_notes:passageNotes(notes,records),
       appendix_records:chosen.mode==='selected'?records.filter(r=>appendixIds.has(r.id)):prefs.template==='evidence'?records:[],
       selected_meetings:meetings.map(m=>m.slug),meetings,records,priority_evidence:search(records,prefs.priorities),
       collections:corpora.map(c=>({collected_at:c.collection.collected_at,checked_at:c.collection.checked_at,partial:c.collection.partial})),
@@ -146,6 +159,7 @@
     return '<h1>'+escape(p.title)+'</h1><p>'+escape(p.mission||'Mission not specified')+' · '+escape(TEMPLATES[p.template])+'</p><p>'+meetings.length+' selected meetings; '+records.length+' English source segments. Prepared '+escape(report.generated_at)+'.</p><p class="notice">Source-linked draft. Automatic five-class stance estimates remain withheld. Review the evidence before circulation.</p>'+body+
       (p.priorities?'<section><h2>Mission priority evidence</h2><p>Literal search: '+escape(p.priorities)+'. '+report.priority_evidence.length+' matching source segments; this does not change the all-meeting overview.</p>'+appendix(report.priority_evidence)+'</section>':'')+
       (report.appendix.mode==='selected'||p.template==='evidence'?'<section class="evidence-appendix"><h2>Evidence appendix</h2><p>'+(report.appendix.mode==='selected'?'Analyst-selected passages: ':'All passages: ')+report.appendix_records.length+' of '+records.length+' source segments from the selected meetings. The overview, country expressions and coverage counts use all '+records.length+' segments.</p>'+(report.appendix_records.length?appendix(report.appendix_records):'<p>No appendix passages selected. This does not establish absence of relevant evidence.</p>')+'</section>':'')+
+      (report.passage_notes.length?'<section class="passage-notes"><h2>Analyst notes on source passages</h2><p>User-authored interpretation and follow-up, separate from the quoted source text. These notes do not change the meeting overview or country expressions.</p>'+report.passage_notes.map(n=>'<div class="passage-note">'+evidenceHTML([records.find(r=>r.id===n.record_id)])+'<h3>Analyst note</h3><p class="analyst-notes">'+escape(n.text)+'</p></div>').join('')+'</section>':'')+
       '<section><h2>Analyst notes</h2><p class="analyst-notes">'+escape(p.notes||'No analyst notes supplied.')+'</p><p>User-authored; not extracted from the transcript.</p></section><section><h2>Methods and coverage</h2><p>'+escape(report.method)+'</p><ul>'+report.limitations.map(x=>'<li>'+escape(x)+'</li>').join('')+'</ul><p>Source checks: '+escape(report.collections.map(c=>c.checked_at||c.collected_at||'Unknown').join('; '))+'. '+report.collections.filter(c=>c.partial).length+' collection bundles report incomplete retrieval.</p></section>';
   }
   function standalone(report){return '<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src \'unsafe-inline\'; base-uri \'none\'; form-action \'none\'"><title>'+escape(report.settings.title)+'</title><style>body{font:16px/1.6 system-ui;max-width:1050px;margin:32px auto;padding:20px;color:#182b40}table{border-collapse:collapse;width:100%}td,th{padding:12px;border:1px solid #cbd5df;text-align:left;vertical-align:top}blockquote{white-space:pre-wrap;margin:16px 0;padding:16px;background:#f4f6f8}.report-table{overflow:auto}p,td,th{overflow-wrap:anywhere}.analyst-notes{white-space:pre-wrap}.notice{border-left:4px solid #805900;padding:12px;background:#fff7e8}section{margin-top:30px}@media print{details{display:block}section{break-inside:auto}}</style>'+reportHTML(report)+'</html>';}
@@ -154,6 +168,6 @@
     const cell=x=>'"'+String(/^[\s]*[=+\-@]/.test(String(x??''))?"'"+x:x??'').replace(/"/g,'""')+'"';
     return [cols,...records.map(r=>cols.map(k=>r[k]))].map(row=>row.map(cell).join(',')).join('\r\n');
   }
-  const api={VERSION,LEGACY_VERSION,TEMPLATES,LIMIT,PREFERENCES_VERSION,PREFERENCES_LIMIT,exportPreferences,importPreferences,settings,exclusions,allowed,validateCorpora,search,meetingSelection,appendixSelection,openSaved,savedReport,build,reportHTML,evidenceHTML,standalone,evidenceCSV};
+  const api={VERSION,LEGACY_VERSION,APPENDIX_VERSION,NOTE_LIMIT,NOTES_LIMIT,TEMPLATES,LIMIT,PREFERENCES_VERSION,PREFERENCES_LIMIT,exportPreferences,importPreferences,settings,exclusions,allowed,validateCorpora,search,meetingSelection,appendixSelection,passageNotes,openSaved,savedReport,build,reportHTML,evidenceHTML,standalone,evidenceCSV};
   if(node)module.exports=api;else root.UNMeetingReport=api;
 })(globalThis);
