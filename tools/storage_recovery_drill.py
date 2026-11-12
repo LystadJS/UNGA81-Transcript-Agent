@@ -17,6 +17,7 @@ class DrillStorage(HFStorage):
             raise ValueError('An isolated drill namespace is required')
         super().__init__(repo, **kwargs)
         self.prefix=prefix; self.interrupt=False
+        self.interrupt_after_batch=None; self.stage_batches=0
         download=self.downloader
         self.downloader=lambda path, revision: download(self.prefix+path,revision)
 
@@ -26,7 +27,12 @@ class DrillStorage(HFStorage):
     def _commit(self, files, parent, message):
         if self.interrupt and 'latest.json' in files:
             raise SimulatedInterruption('Injected stop before isolated pointer activation')
-        return super()._commit({self.prefix+k:v for k,v in files.items()},parent,'Synthetic recovery drill: '+message)
+        revision=super()._commit({self.prefix+k:v for k,v in files.items()},parent,'Synthetic recovery drill: '+message)
+        if 'latest.json' not in files:
+            self.stage_batches+=1
+            if self.interrupt_after_batch==self.stage_batches:
+                raise SimulatedInterruption('Injected response loss after accepted staging batch')
+        return revision
 
 
 def fixture(root, name, cursor):
@@ -40,6 +46,9 @@ def fixture(root, name, cursor):
         db.finish_run(name,'complete',stamp)
         target=root/name
         export_snapshot(db,target,name,stamp)
+        extra=target/'synthetic-batch-fixtures';extra.mkdir()
+        for index in range(205):
+            (extra/f'{index}.json').write_bytes(encode({'synthetic_only':True,'index':index}))
         seal_snapshot(db,target,{'synthetic':True,'cursor':cursor},name,stamp)
     return target
 
@@ -71,6 +80,17 @@ def main():
     restored=root/'restore-after-failure/data'
     if verify_snapshot(restored)!=verify_snapshot(baseline):raise AssertionError('Restored manifest differs')
     if json.loads((restored/'state.json').read_bytes())['cursor']!=1:raise AssertionError('Cursor advanced on failure')
+    midbatch=fixture(root,'midbatch',2);store.stage_batches=0;store.interrupt_after_batch=2
+    try:store.publish(midbatch)
+    except SimulatedInterruption:pass
+    else:raise AssertionError('Expected second-batch interruption')
+    if store.stage_batches!=2:raise AssertionError('Incorrect interruption boundary')
+    store.interrupt_after_batch=None
+    head,_=store.info()
+    if store.read('latest.json',head.sha)!=old_pointer:raise AssertionError('Partial staging changed the pointer')
+    store.restore(root/'restore-after-midbatch')
+    if verify_snapshot(root/'restore-after-midbatch/data')!=verify_snapshot(baseline):
+        raise AssertionError('Partial staging restore differs')
     retry=fixture(root,'retry',2);store.publish(retry);store.restore(root/'restore-after-retry')
     if verify_snapshot(root/'restore-after-retry/data')!=verify_snapshot(retry):raise AssertionError('Retry restore differs')
     final,used_after=live.info()
@@ -78,6 +98,8 @@ def main():
     result={'schema':'un.recovery-drill.v1','status':'passed','synthetic_only':True,'canonical_pointer_unchanged':True,
             'interruption':'after verified staging, before isolated pointer activation','old_snapshot_restored':True,
             'retry_snapshot_restored':True,'csv_and_artifact_hashes_reproduced':True,
+            'midbatch_interruption_after_accepted_commits':2,'midbatch_old_snapshot_restored':True,
+            'synthetic_extra_files_per_snapshot':205,
             'canonical_snapshot':pointer['snapshot_id'],'canonical_snapshot_bytes':sum(f['bytes'] for f in manifest['files']),
             'largest_artifact_bytes':max(f['bytes'] for f in manifest['files']),
             'retained_bytes_before':used_before,'retained_bytes_after':used_after,

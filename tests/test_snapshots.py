@@ -112,6 +112,58 @@ class Snapshots(unittest.TestCase):
             self.assertEqual(db.current_segments()[0]['text'],'Synthetic text only')
         self.assertEqual(remote.commits,2)
 
+    def large_snapshot(self, name):
+        directory=self.root/name
+        export_snapshot(self.warehouse,directory,name,'2026-11-11T00:00:02Z')
+        extra=directory/'synthetic';extra.mkdir()
+        for index in range(205):(extra/f'{index}.json').write_text(json.dumps({'synthetic':index}))
+        seal_snapshot(self.warehouse,directory,{'cursor':2},name,'2026-11-11T00:00:02Z')
+        return directory
+
+    def test_batched_staging_verifies_all_files_at_final_revision_before_pointer(self):
+        remote=FakeRemote();directory=self.large_snapshot('large')
+        sizes=[];commit=remote._commit
+        def tracked(files,parent,message):
+            sizes.append(len(files))
+            return commit(files,parent,message)
+        with patch.object(remote,'_commit',side_effect=tracked):pointer=remote.publish(directory)
+        self.assertEqual(sizes[:2],[100,100]);self.assertTrue(all(n<=100 for n in sizes))
+        self.assertEqual(sizes[-1],1)
+        self.assertEqual(pointer['revision'],f'{len(sizes)-1:040x}')
+        for index in range(205):
+            self.assertIn(f'snapshots/large/synthetic/{index}.json',remote.downloads)
+        remote.restore(self.root/'large-restored')
+        self.assertEqual(verify_snapshot(self.root/'large-restored/data'),verify_snapshot(directory))
+
+    def test_interrupted_second_batch_retains_old_snapshot_and_retry_requires_new_identity(self):
+        remote=FakeRemote();remote.publish(self.snapshot)
+        old=remote.revisions[remote.head]['latest.json'];commit=remote._commit;calls=[]
+        failed=self.large_snapshot('failed')
+        def interrupted(files,parent,message):
+            calls.append(len(files));revision=commit(files,parent,message)
+            if len(calls)==2:raise TimeoutError('Synthetic response lost after accepted second batch')
+            return revision
+        with patch.object(remote,'_commit',side_effect=interrupted):
+            with self.assertRaises(TimeoutError):remote.publish(failed)
+        self.assertEqual(calls,[100,100])
+        self.assertEqual(remote.revisions[remote.head]['latest.json'],old)
+        remote.restore(self.root/'after-batch-failure')
+        self.assertEqual(verify_snapshot(self.root/'after-batch-failure/data'),verify_snapshot(self.snapshot))
+        with self.assertRaises(FileExistsError):remote.publish(failed)
+        retry=self.large_snapshot('retry');remote.publish(retry);remote.restore(self.root/'after-batch-retry')
+        self.assertEqual(verify_snapshot(self.root/'after-batch-retry/data'),verify_snapshot(retry))
+
+    def test_concurrent_writer_between_batches_rejects_stale_parent(self):
+        remote=FakeRemote();remote.publish(self.snapshot);old=remote.revisions[remote.head]['latest.json']
+        commit=remote._commit;calls=[]
+        def concurrent(files,parent,message):
+            calls.append(len(files))
+            if len(calls)==2:commit({'synthetic-other-writer':b'x'},parent,'concurrent fixture')
+            return commit(files,parent,message)
+        with patch.object(remote,'_commit',side_effect=concurrent):
+            with self.assertRaisesRegex(ValueError,'Concurrent'):remote.publish(self.large_snapshot('concurrent'))
+        self.assertEqual(remote.revisions[remote.head]['latest.json'],old)
+
     def test_remote_corruption_keeps_previous_pointer(self):
         remote = FakeRemote(); remote.corrupt = True
         with self.assertRaisesRegex(ValueError,'latest pointer unchanged'):
