@@ -55,3 +55,9 @@ Also report probability calibration and uncertainty. A zero-emission model fails
 ASR errors, interpretation, collective speakers, quotations, conditionals, cross-sentence referents and changing policy objects can alter meaning. Source linkage establishes traceability, not semantic truth. An inference is not an official UN record, government policy certification, alliance measure or causal finding. Category codes are ordinal; default reports must not average them as equal-interval measurements.
 
 Public stance remains unavailable until the required real labels, trained artifacts and passing source-bound acceptance receipt exist. Collection and exploratory reporting continue independently.
+
+## Upstream license retention
+
+New candidates preserve the exact pinned upstream `LICENSE`, model card and any supplied `NOTICE` as hash-bound candidate artifacts before training begins. The manifest records the model card's declared license identifier, upstream revision, source URL and notice hashes. Missing or ambiguous notice evidence stops training; resuming cannot silently replace a candidate's notices. These notices describe the upstream model, not redistribution rights for UN transcripts or owner annotations.
+
+On 12 November 2026, a read-only check of `distilbert/distilbert-base-uncased` at revision `12040accade4e8a0f71eabdb258fecc2e7e948be` found declared license `apache-2.0`, LICENSE SHA-256 `43070e2d4e532684de521b885f385d0841030efa2b1a20bafb76133a5e1379c1` and model-card SHA-256 `b925a22d8efd7a29608a0e10d3f2fb33d5d80df7de4ac6e34093853cd8e0274e`. This check downloaded notices only, not weights, and did not train or accept a model. Training still requires an explicit immutable revision and actual owner-reviewed labels; the frozen pilot policy and registration are unchanged.

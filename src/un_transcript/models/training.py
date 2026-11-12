@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 from .contracts import LABELS, STATUSES, check_labels, digest, read_json, write_json
 from .runtime import source_windows
+from .notices import load_upstream_notices, preserve_upstream_notices
 
 
 def train(labels, registration, base_model, revision, policy, output, epochs=3, batch_size=8, resume=None):
@@ -22,6 +23,7 @@ def train(labels, registration, base_model, revision, policy, output, epochs=3, 
     base = Path(base_model)
     if not base.is_dir():
         raise ValueError('Pretrained model/tokenizer must already exist locally')
+    license_record, upstream_notices = load_upstream_notices(base, revision)
     out = Path(output)
     if out.exists() and not resume:
         raise ValueError('Use a new candidate directory, or explicitly resume a checkpoint')
@@ -83,6 +85,7 @@ def train(labels, registration, base_model, revision, policy, output, epochs=3, 
             raise ValueError('Gold focal span does not fit any window: '+row['pair_id'])
     if not examples: raise ValueError('No gold focal spans fit a context window; supply narrower reviewed focal spans')
     out.mkdir(parents=True,exist_ok=True)
+    preserve_upstream_notices(out, upstream_notices)
     losses=[]
     for epoch in range(start_epoch,epochs):
         model.train(); order=list(range(len(examples))); random.Random(20261111+epoch).shuffle(order)
@@ -118,6 +121,7 @@ def train(labels, registration, base_model, revision, policy, output, epochs=3, 
     artifacts={p.name:digest(p.read_bytes()) for p in out.iterdir() if p.is_file() and p.name!='checkpoint.pt'}
     manifest={'schema':'un.stance-model.v1','model_id':'distilbert-'+digest(artifacts)[:20],
               'candidate':'distilbert/distilbert-base-uncased','upstream_revision':revision,
+              'upstream_license':license_record,
               'registration_sha256':digest(registration),'training_labels_sha256':digest(labels),
               'policy_sha256':digest(policy),
               'attribution_method_version':attribution['attribution_method_version'],
