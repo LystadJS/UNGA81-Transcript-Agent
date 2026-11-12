@@ -151,3 +151,10 @@ Changing only runtime bounds preserves the selection cursor and known-meeting ch
 ### Inventory metadata and database version
 
 The operational working copy now uses additive SQLite schema version 2. Complete validated inventories supply metadata for selected meetings whose transcripts are unavailable or deferred. Private bundles add `inventory_meetings.csv`; public fields and stored-source revision metadata remain unchanged. Historical schema-1 snapshots replay under their original export behavior. See [inventory metadata and compatibility](INVENTORY_METADATA.md) before rollback or research joins.
+
+
+### Failed monitoring lookups
+
+The scheduled observer never overwrites its prior report when the GitHub workflow inventory is inaccessible, malformed or incomplete. It exits nonzero and writes a separate `OUTPUT.error.json` receipt containing the failed observation time, fixed operation/reason, numeric HTTP status when available, and whether the prior report was preserved. Provider bodies, URLs, stderr and credentials are excluded. Compare observation timestamps: a retained successful report is old evidence, and an older error sidecar can remain after a later successful check.
+
+If workflow inventory succeeds but the public manifest fails, the current report retains workflow evidence, marks public freshness unavailable, and records only the public operation/error type/HTTP status. Neither case grants service acceptance or fills a missing scheduled date. The observer does not dispatch collection, change scheduling or read private archive contents.
