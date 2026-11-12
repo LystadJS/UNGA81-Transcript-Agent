@@ -1,4 +1,4 @@
 {
   "schema": "un.archive-config.v1",
-  "manifest_url": null
+  "manifest_url": "https://huggingface.co/datasets/LystadJS/UN-Transcript-Agent-Public/resolve/main/latest.json"
 }

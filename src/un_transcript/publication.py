@@ -65,3 +65,19 @@ def provision_public(private_repo, public_repo, public_directory, *, api, storag
             'public_repo': public_repo, 'snapshot_id': latest['snapshot_id'],
             'manifest_url': 'https://huggingface.co/datasets/' + public_repo + '/resolve/main/latest.json',
             'source_text_published': False, 'model_status': latest['model_status']}
+
+
+def load_publication_config(path, private_repo, configured_repo=''):
+    import json
+    from pathlib import Path
+    config = json.loads(Path(path).read_bytes())
+    if not isinstance(config, dict) or set(config) != {'schema', 'public_repo', 'manifest_url'} or config['schema'] != 'un.publication.v1':
+        raise ValueError('Invalid public publication configuration')
+    repo = config['public_repo']
+    validate_target(private_repo, repo)
+    expected = 'https://huggingface.co/datasets/' + repo + '/resolve/main/latest.json'
+    if config['manifest_url'] != expected:
+        raise ValueError('Public manifest URL must match the configured repository')
+    if configured_repo and configured_repo != repo:
+        raise ValueError('HF_PUBLIC_DATASET_REPO conflicts with versioned public configuration')
+    return config

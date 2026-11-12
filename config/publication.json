@@ -1,0 +1,5 @@
+{
+  "schema": "un.publication.v1",
+  "public_repo": "LystadJS/UN-Transcript-Agent-Public",
+  "manifest_url": "https://huggingface.co/datasets/LystadJS/UN-Transcript-Agent-Public/resolve/main/latest.json"
+}

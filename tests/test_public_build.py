@@ -2,6 +2,8 @@
 import importlib.util
 from pathlib import Path
 import unittest
+import json
+import tempfile
 
 SPEC = importlib.util.spec_from_file_location('public_build', Path(__file__).resolve().parents[1] / 'tools/build_pages.py')
 BUILD = importlib.util.module_from_spec(SPEC)
@@ -32,3 +34,12 @@ class PublicBuildConfigurationTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+class CheckedArchiveTests(unittest.TestCase):
+    def test_build_uses_versioned_endpoint_and_rejects_conflicting_override(self):
+        repo = Path(__file__).resolve().parents[1]
+        expected = json.loads((repo/'site/archive-config.json').read_bytes())
+        self.assertEqual(BUILD.configured_archive(repo, ''), expected)
+        self.assertEqual(BUILD.configured_archive(repo, expected['manifest_url']), expected)
+        with self.assertRaises(ValueError):
+            BUILD.configured_archive(repo, 'https://huggingface.co/datasets/other/unrelated/resolve/main/latest.json')
