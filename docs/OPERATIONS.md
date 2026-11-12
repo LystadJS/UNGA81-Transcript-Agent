@@ -96,3 +96,9 @@ Public meeting partitions and meeting totals exclude `inventory:<date>` coverage
 ## Restore and regenerate the real research exports
 
 Manually dispatch **Verify restored research exports** (`restored-export-audit.yml`) to restore the current private snapshot, open SQLite in read-only mode, check integrity and foreign keys, and regenerate all private and public export files into a separate temporary directory. Every file must match the sealed snapshot byte for byte. This checks database/export coherence beyond downloaded-file checksums; a sealed but stale CSV fails. The job makes no remote writes and publishes only aggregate verification metadata. Use the matching exporter code for an older snapshot; a method/schema change may correctly fail exact reproduction. Never update archived bytes to make a failed audit pass.
+
+## Provision the public metadata dataset
+
+The manually dispatched **Provision public metadata archive** workflow uses the existing `HF_TOKEN` and `HF_DATASET_REPO` settings. It permits only the same owner's dedicated `UN-Transcript-Agent-Public` dataset. It restores the current private snapshot, validates every public field and file before creating a repository, and publishes only the allowlisted projection. It never changes an existing private repository's visibility or adopts an unrelated nonempty repository. Permission failures stop provisioning without changing the private archive. It verifies an anonymous manifest read after publication; no private restore or source-bearing log artifact is uploaded.
+
+Successful provisioning alone does not configure daily public refresh or the browser URL. Record its verified manifest URL, then configure those through a separate reviewed source change. Repeating setup for an already published snapshot verifies its existing remote bytes rather than adding duplicate commits. Account-wide quota acceptance remains separate; no paid storage request is made.

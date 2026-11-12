@@ -37,3 +37,7 @@ Source PRs #187–190 merged. Two real private archive runs published and restor
 ## Blockers and reporting
 
 Skip human-dependent items and continue independent work. Owner labels, genuine diplomat usability judgments, and any unavailable account permissions remain external dependencies. Do not infer human confirmation from assistant accuracy or self-review. Keep source-bearing reports private; commit only source-free engineering checkpoints. At the report deadline summarize completed/deployed work, verification, still-running work, exact owner blockers, and recommended next steps. Do not certify scientific readiness from engineering checks.
+
+## 05:00 New York activation — public metadata setup
+
+Read live state at 10:04 UTC: no active source archive writer or current engineering PR; prior recovery/replay and mirror repairs are complete. Public provisioning is being implemented on `feat/public-metadata-provision` using only existing Actions credentials. The tool enforces the public allowlist before any repository creation and refuses private visibility changes or unrelated repository adoption. Real provider permission and anonymous access remain unverified until its workflow receipt. Do not configure the public browser endpoint before that verification.

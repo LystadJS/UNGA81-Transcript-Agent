@@ -1,0 +1,30 @@
+name: Provision public metadata archive
+on:
+  workflow_dispatch:
+    inputs:
+      public_repo:
+        description: Same-owner UN-Transcript-Agent-Public dataset (metadata only)
+        required: true
+        default: LystadJS/UN-Transcript-Agent-Public
+permissions:
+  contents: read
+concurrency:
+  group: operational-store
+  cancel-in-progress: false
+jobs:
+  provision:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PYTHONPATH: src
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      HF_DATASET_REPO: ${{ vars.HF_DATASET_REPO }}
+      PUBLIC_METADATA_REPO: ${{ inputs.public_repo }}
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check huggingface-hub==0.36.0
+      - run: python tools/provision_public_metadata.py
