@@ -90,3 +90,29 @@ jobs:
         run: |
           printf 'Daily warehouse job: %s\n\n' "$JOB_STATUS" >> "$GITHUB_STEP_SUMMARY"
           printf '%s\n' 'Durable snapshots are retained in the configured dataset repository. A failed or delayed job does not imply fresh source coverage. Check the published manifest timestamp and coverage before use.' >> "$GITHUB_STEP_SUMMARY"
+
+          python - <<'PYCODE'
+          import json, os
+          from pathlib import Path
+          receipt=Path(os.environ['RUNNER_TEMP'])/'un-warehouse/last-run.json'
+          if receipt.exists():
+              result=json.loads(receipt.read_text())
+              coverage=result.get('coverage',{})
+              lines=[
+                  'Snapshot: `'+result['run_id']+'`',
+                  'Snapshot generated at (UTC): '+result['generated_at'],
+                  'Collection coverage: **'+result['status']+'**',
+                  'Stored distinct meetings: '+str(coverage.get('stored_meetings','unavailable')),
+                  'Current transcript segments: '+str(coverage.get('segments','unavailable')),
+                  'Meetings downloaded this run (includes refreshes): '+str(result['meetings_downloaded']),
+                  'Private publication: '+result['private_publication'],
+                  'Public metadata publication: '+result['public_publication'],
+                  'Stance model: '+result['model_status']['status'],
+                  'Download counts across runs must not be added as unique meeting coverage.'
+              ]
+              with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as out:
+                  out.write('\n\n'.join(lines)+'\n')
+          else:
+              with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as out:
+                  out.write('No completed run receipt is available. Inspect the failed step and the last valid durable snapshot; do not infer freshness from this job.\n')
+          PYCODE

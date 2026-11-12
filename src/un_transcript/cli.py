@@ -113,6 +113,7 @@ def run_pipeline(config_path, workspace, *, as_of=None, transport=None, remote=N
         receipt = {'schema':'un.pipeline-run.v1','run_id':run_id,'status':status,'generated_at':end,
                    'snapshot':str(directory),'meetings_downloaded':len(collection['items']),
                    'bytes_downloaded':collection['bytes_downloaded'],'model_status':analysis['model_status'],
+                   'coverage':manifest['coverage'],
                    'private_publication':'published' if remote else 'local_only','public_publication':public_status}
         atomic_json(workspace / 'last-run.json', receipt)
         return receipt

@@ -49,6 +49,10 @@ class Pipeline(unittest.TestCase):
             self.assertEqual(db.db.execute('SELECT COUNT(*) FROM source_revisions').fetchone()[0],2)
             self.assertEqual(db.current_segments()[0]['text'],self.text)
         for result in (first,second,third):
+            self.assertEqual(result['coverage']['stored_meetings'],1)
+            self.assertEqual(result['coverage']['segments'],1)
+            public_manifest=json.loads((Path(result['snapshot'])/'public/manifest.json').read_bytes())
+            self.assertEqual(result['coverage'],public_manifest['coverage'])
             public=Path(result['snapshot'])/'public'
             for path in public.rglob('*'):
                 if path.is_file():self.assertNotIn(b'We support unhindered',path.read_bytes())
@@ -58,6 +62,8 @@ class Pipeline(unittest.TestCase):
         def broken(url):raise TimeoutError('synthetic outage')
         failed=run_pipeline(self.config_path,self.root/'runtime',as_of=date(2026,11,10),transport=broken)
         self.assertEqual(failed['status'],'partial')
+        self.assertEqual(failed['coverage']['stored_meetings'],1)
+        self.assertEqual(failed['meetings_downloaded'],0)
         with Warehouse(self.root/'runtime/data/warehouse.sqlite3') as db:
             self.assertEqual(len(db.current_segments()),1)
         verify_snapshot(failed['snapshot']);verify_snapshot(first['snapshot'])
