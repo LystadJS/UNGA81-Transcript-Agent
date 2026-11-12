@@ -39,6 +39,20 @@ jobs:
           python-version: '3.12'
       - name: Install pinned storage client
         run: python -m pip install --disable-pip-version-check huggingface-hub==0.36.0
+      - name: Verify private archive connection
+        run: |
+          python - <<'PY'
+          import json, os
+          from un_transcript.snapshots import HFStorage
+          storage = HFStorage(os.environ['HF_DATASET_REPO'])
+          info, used = storage.info()
+          if used >= storage.budget_bytes:
+              raise SystemExit('Private archive storage budget exhausted; collection remains stopped.')
+          entries = storage.api.get_paths_info(storage.repo_id, ['latest.json'], repo_type='dataset', revision=info.sha)
+          print(json.dumps({'private': info.private, 'immutable_revision_verified': True,
+                            'retained_storage_bytes': used, 'storage_budget_bytes': storage.budget_bytes,
+                            'existing_snapshot_pointer': bool(entries)}))
+          PY
       - name: Load explicitly configured accepted local model
         if: env.HF_ACCEPTED_MODEL_PATH != '' || env.HF_ACCEPTED_MODEL_REVISION != ''
         run: |

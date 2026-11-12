@@ -19,8 +19,8 @@ class EntryNotFoundError(Exception):
 
 class FakeRemote(HFStorage):
     def __init__(self, *, private=True, budget=10_000_000):
-        self.revisions = {'r0':{}}
-        self.head = 'r0'
+        self.head = '0' * 40
+        self.revisions = {self.head:{}}
         self.used = 0
         self.visibility = private
         self.corrupt = False
@@ -54,7 +54,7 @@ class FakeRemote(HFStorage):
         if parent != self.head:
             raise ValueError('Concurrent writer conflict')
         self.commits += 1
-        new = f'r{self.commits}'
+        new = f'{self.commits:040x}'
         self.committed_values.extend(files.values())
         uploaded = {p: v.read_bytes() if isinstance(v,Path) else v for p,v in files.items()}
         self.revisions[new] = {**self.revisions[parent],**uploaded}
@@ -293,6 +293,41 @@ class Snapshots(unittest.TestCase):
             manifest_path.write_bytes(encode(manifest));remote=FakeRemote(private=False)
             with self.assertRaisesRegex(ValueError,'reference IDs'):remote.publish_public(self.snapshot/'public')
             self.assertEqual(remote.commits,0)
+
+
+
+    def test_invalid_remote_head_cannot_restore_or_publish_without_parent(self):
+        invalid = (None, '', 'main', 'a' * 39, 'a' * 41, 'z' * 40, 123, True)
+        for revision in invalid:
+            for private in (True, False):
+                remote = FakeRemote(private=private)
+                remote.repo_info = lambda *a, **kw: SimpleNamespace(private=private, sha=revision, usedStorage=0)
+                with patch.object(remote, 'get_paths_info') as metadata:
+                    publish = remote.publish if private else remote.publish_public
+                    directory = self.snapshot if private else self.snapshot / 'public'
+                    with self.subTest(revision=revision, private=private), self.assertRaisesRegex(ValueError, 'initialize a new dataset'):
+                        publish(directory)
+                    if private:
+                        with self.assertRaisesRegex(ValueError, 'immutable commit SHA'):
+                            remote.restore(self.root / 'invalid-head')
+                    metadata.assert_not_called()
+                self.assertEqual(remote.commits, 0)
+                self.assertEqual(remote.downloads, [])
+        self.assertFalse((self.root / 'invalid-head' / 'data').exists())
+
+    def test_remote_head_accepts_full_lowercase_and_uppercase_hex(self):
+        for revision in ('abcdef0123456789' * 2 + 'abcdef01', 'ABCDEF0123456789' * 2 + 'ABCDEF01'):
+            remote = FakeRemote()
+            remote.repo_info = lambda *a, **kw: SimpleNamespace(private=True, sha=revision, usedStorage=0)
+            info, used = remote.info()
+            self.assertEqual(info.sha, revision)
+            self.assertEqual(used, 0)
+
+    def test_valid_head_does_not_turn_unknown_storage_into_zero(self):
+        remote = FakeRemote(); remote.used = None
+        with self.assertRaisesRegex(ValueError, 'storage usage unavailable'):
+            remote.publish(self.snapshot)
+        self.assertEqual(remote.commits, 0)
 
 
 if __name__=='__main__': unittest.main()

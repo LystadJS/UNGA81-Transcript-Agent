@@ -296,6 +296,14 @@ class HFStorage:
         info = self.api.repo_info(self.repo_id, repo_type='dataset', expand=['private','sha','usedStorage'])
         if getattr(info, 'private', None) is not self.private:
             raise ValueError('Dataset visibility does not match its configured role')
+        revision = getattr(info, 'sha', None)
+        if not isinstance(revision, str) or not re.fullmatch(r'[0-9a-fA-F]{40}', revision):
+            raise ValueError(
+                'Dataset has no valid immutable commit SHA; initialize a new dataset with a '
+                'README or .gitattributes commit, then retry. If it is already initialized, '
+                'verify repository access and metadata availability. Refusing unpinned reads '
+                'or a write without optimistic concurrency protection.'
+            )
         used = getattr(info, 'used_storage', getattr(info, 'usedStorage', None))
         if type(used) is not int or used < 0:
             raise ValueError('Repository history storage usage unavailable; refusing an unbudgeted write')

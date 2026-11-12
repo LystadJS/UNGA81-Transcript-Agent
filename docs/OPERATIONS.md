@@ -26,6 +26,16 @@ The main portfolio mirror uses the same public manifest URL in its deployment co
 
 Set both accepted-model variables only after real model acceptance. The workflow verifies pinned artifacts, catalog identity and the owner-confirmed acceptance receipt before collection. With neither variable set, collection continues with stance withheld. Supplying only one or a mismatched artifact fails visibly; no floating model revision is selected automatically.
 
+## First archive run
+
+After the operational workflow is merged into the default branch, open **Actions → Daily transcript warehouse → Run workflow**, choose `main`, and start the run. The manual control may be absent until that merge. Saving the Actions settings alone does not start collection.
+
+The **Verify private archive connection** step checks authenticated access, private visibility, an immutable repository revision, and retained storage usage before collection. Its output contains only operational metadata. It does not prove write access; that is established by successful snapshot publication. An initialized dataset without `latest.json` is a normal first run. If repository metadata has no valid commit SHA, add an initial README or `.gitattributes` through Hugging Face and retry; do not disable the revision check. Missing storage usage remains a blocker.
+
+For this project's archive, the owner supplied `LystadJS/UN-Transcript-Agent-Private` and reported saving `HF_TOKEN` and `HF_DATASET_REPO`. Treat the connection as unverified until the workflow succeeds. Leave public-repository and accepted-model settings unset until those separate capabilities are ready.
+
+Success requires the **Restore, collect, validate and publish one snapshot** step to complete and the private dataset to contain `latest.json` pointing to its verified `snapshots/<id>/snapshot.json`. A second manual run should restore that snapshot and continue the bounded collection. Record both run URLs and snapshot IDs privately for the recovery/observation record. The configured daily schedule then applies at 11:17 UTC.
+
 ## Select meetings and run
 
 Edit `config/collection.json` through a reviewed source change. The current-session default begins 8 September 2026, uses English records from available venues, and ends dynamically. Exact meeting selection and body/date subscription are separate configuration modes. Source availability, not requested scope, determines actual coverage.
