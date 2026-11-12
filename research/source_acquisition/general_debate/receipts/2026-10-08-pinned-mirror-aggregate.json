@@ -1,0 +1,74 @@
+{
+  "schema": "un.p0p1.public-aggregate-receipt.v1",
+  "receipt_scope": "third_party_mirror_2016_2022_only",
+  "source_repository": "https://github.com/Jihyeonbae/UNGDC",
+  "source_snapshot_commit": "62df50941fd7afc00cb75256e1f91fe1ae690011",
+  "source_file": "data/interim/UNGDC.rds",
+  "source_git_blob_sha1": "1325ee6b0d6ff2d8a85b11807a514b9fb7d86871",
+  "acquired_sha256": "d7d9c74c1ad8a5f107bffd296ff035e2efa3deedb2f7c0870e564be5664428b1",
+  "observed_GitHub_Action_run": "https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/37812061233",
+  "upstream_frame_rows": 10568,
+  "within_2016_2022_valid_iso3_rows": 1354,
+  "within_window_unresolved_iso3_rows": 7,
+  "rows_outside_requested_2016_2025": 9207,
+  "duplicate_retained_country_session_keys": 0,
+  "country_year_counts": [
+    {
+      "year": 2016,
+      "session": 71,
+      "valid_country_session_keys": 193
+    },
+    {
+      "year": 2017,
+      "session": 72,
+      "valid_country_session_keys": 195
+    },
+    {
+      "year": 2018,
+      "session": 73,
+      "valid_country_session_keys": 195
+    },
+    {
+      "year": 2019,
+      "session": 74,
+      "valid_country_session_keys": 194
+    },
+    {
+      "year": 2020,
+      "session": 75,
+      "valid_country_session_keys": 192
+    },
+    {
+      "year": 2021,
+      "session": 76,
+      "valid_country_session_keys": 193
+    },
+    {
+      "year": 2022,
+      "session": 77,
+      "valid_country_session_keys": 192
+    }
+  ],
+  "uncollected_years": [
+    2023,
+    2024,
+    2025
+  ],
+  "validation": {
+    "exact_Git_blob_identity_verified": true,
+    "source_text_matches_original_UN": false,
+    "corpus_matches_Harvard_v14": false,
+    "UN_index_crosswalk_complete": false,
+    "historical_UN_membership_denominator_verified": false,
+    "personal_speaker_identity_verified": false,
+    "W4_empirical_eligible": false,
+    "publication_eligible": false
+  },
+  "caveats": [
+    "Source is a derived third-party GitHub RDS, not the pinned current Harvard release.",
+    "Invalid ISO3 observations require manual investigation and must not be silently dropped from inventory.",
+    "A zero in 2023-2025 means outside source coverage, not no speech delivered.",
+    "Retained country-session counts can include observers or historical entities, not exactly 193 UN member states.",
+    "No 37 reserved October 5-6 2026 transcripts were accessed."
+  ]
+}
