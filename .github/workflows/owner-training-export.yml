@@ -1,0 +1,37 @@
+name: Export encrypted owner training reviewer
+on:
+  workflow_dispatch:
+    inputs:
+      recipient_public_key:
+        description: Base64-encoded RSA-4096 PEM public key; never a private key
+        type: string
+        required: true
+permissions:
+  contents: read
+concurrency:
+  group: owner-training-export
+  cancel-in-progress: false
+jobs:
+  export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: src
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      HF_DATASET_REPO: ${{ vars.HF_DATASET_REPO }}
+      OWNER_RECIPIENT_PUBLIC_KEY: ${{ inputs.recipient_public_key }}
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check huggingface-hub==0.36.0 cryptography==46.0.3
+      - name: Verify pinned training inputs and encrypt in memory
+        run: python tools/export_owner_training.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recipient-encrypted-training
+          path: ${{ runner.temp }}/owner-training.encrypted
+          retention-days: 1
+          if-no-files-found: error

@@ -2,10 +2,10 @@ name: Operational pipeline contracts
 
 on:
   pull_request:
-    paths: ['src/**', 'tests/**', 'config/**', 'site/archive*', 'tools/build_pages.py', 'tools/measure_storage_capacity.py', '.github/workflows/storage-capacity.yml', 'tools/write_operational_receipt.py', 'tools/observe_operational_runs.py', 'tools/inspect_operational_run.py', 'tools/storage_recovery_drill.py', 'tools/audit_private_exports.py', 'tools/provision_public_metadata.py', '.github/workflows/public-metadata-provision.yml', '.github/workflows/restored-export-audit.yml', '.github/workflows/storage-recovery.yml', 'tools/*reviewer*', 'tests/browser_owner_review.py', '.github/workflows/owner-reviewer.yml', 'requirements-model.txt', '.github/workflows/operational*.yml', '.github/workflows/model-training.yml']
+    paths: ['tools/export_owner_training.py', '.github/workflows/owner-training-export.yml', 'src/**', 'tests/**', 'config/**', 'site/archive*', 'tools/build_pages.py', 'tools/measure_storage_capacity.py', '.github/workflows/storage-capacity.yml', 'tools/write_operational_receipt.py', 'tools/observe_operational_runs.py', 'tools/inspect_operational_run.py', 'tools/storage_recovery_drill.py', 'tools/audit_private_exports.py', 'tools/provision_public_metadata.py', '.github/workflows/public-metadata-provision.yml', '.github/workflows/restored-export-audit.yml', '.github/workflows/storage-recovery.yml', 'tools/*reviewer*', 'tests/browser_owner_review.py', '.github/workflows/owner-reviewer.yml', 'requirements-model.txt', '.github/workflows/operational*.yml', '.github/workflows/model-training.yml']
   push:
     branches: [main]
-    paths: ['src/**', 'tests/**', 'config/**', 'site/archive*', 'tools/build_pages.py', 'tools/measure_storage_capacity.py', '.github/workflows/storage-capacity.yml', 'tools/write_operational_receipt.py', 'tools/observe_operational_runs.py', 'tools/inspect_operational_run.py', 'tools/storage_recovery_drill.py', 'tools/audit_private_exports.py', 'tools/provision_public_metadata.py', '.github/workflows/public-metadata-provision.yml', '.github/workflows/restored-export-audit.yml', '.github/workflows/storage-recovery.yml', 'tools/*reviewer*', 'tests/browser_owner_review.py', '.github/workflows/owner-reviewer.yml', 'requirements-model.txt', '.github/workflows/operational*.yml', '.github/workflows/model-training.yml']
+    paths: ['tools/export_owner_training.py', '.github/workflows/owner-training-export.yml', 'src/**', 'tests/**', 'config/**', 'site/archive*', 'tools/build_pages.py', 'tools/measure_storage_capacity.py', '.github/workflows/storage-capacity.yml', 'tools/write_operational_receipt.py', 'tools/observe_operational_runs.py', 'tools/inspect_operational_run.py', 'tools/storage_recovery_drill.py', 'tools/audit_private_exports.py', 'tools/provision_public_metadata.py', '.github/workflows/public-metadata-provision.yml', '.github/workflows/restored-export-audit.yml', '.github/workflows/storage-recovery.yml', 'tools/*reviewer*', 'tests/browser_owner_review.py', '.github/workflows/owner-reviewer.yml', 'requirements-model.txt', '.github/workflows/operational*.yml', '.github/workflows/model-training.yml']
   workflow_dispatch:
 
 permissions:
@@ -25,6 +25,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Install pinned owner-transfer cryptography
+        run: python -m pip install --disable-pip-version-check cryptography==46.0.3
       - name: Source-free collection, persistence, publication and model contracts
         run: python -m unittest discover -s tests -p 'test_*.py' -v
       - name: Install pinned browser harness
