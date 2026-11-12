@@ -1,8 +1,8 @@
 """Verified immutable checkpoints and optimistic, two-phase remote publication.
 
-Repository usedStorage includes repository history, not other repositories owned
-by the account. Defaults reserve 80 GB private + 10 GB public; maintainers must
-check other account usage separately. No paid capacity is requested here.
+Writes account for provider usage and reachable Git/large-file history. Defaults
+reserve 80 GB private + 10 GB public; maintainers must check other account usage
+separately. No paid capacity is requested here.
 """
 from __future__ import annotations
 
@@ -22,6 +22,7 @@ from urllib.parse import urlsplit
 MAX_FILE_BYTES = 512 * 1024 * 1024
 MAX_MANIFEST_BYTES = 16 * 1024 * 1024
 MAX_FILES = 100_000
+STAGING_BATCH_FILES = 100
 DISK_RESERVE_BYTES = 1024 ** 3
 HEX = re.compile(r'[a-f0-9]{64}')
 IDENTITY = re.compile(r'[A-Za-z0-9][A-Za-z0-9._-]{0,127}')
@@ -390,6 +391,16 @@ class HFStorage:
         result = _provider_call(operation, self.api.create_commit, self.repo_id, repo_type='dataset', operations=operations, parent_commit=parent, commit_message=message)
         return result.oid
 
+    def _stage(self, files, parent, message):
+        """Bound HTTP commits; retain one parent chain and defer pointer activation."""
+        entries = list(files.items())
+        if not entries or len(entries) > MAX_FILES or 'latest.json' in files:
+            raise ValueError('Invalid staging file set')
+        for start in range(0, len(entries), STAGING_BATCH_FILES):
+            batch = dict(entries[start:start + STAGING_BATCH_FILES])
+            parent = self._commit(batch, parent, message)
+        return parent
+
     def _immutable_prefix(self, prefix, revision):
         # Any existing prefix, even a failed staging attempt, is immutable. A new
         # run gets a fresh identity instead of overwriting partial publication.
@@ -427,7 +438,7 @@ class HFStorage:
         files[prefix + 'snapshot.json'] = manifest_file
         if used + sum(_size(value) for value in files.values()) + 1_000_000 > self.budget_bytes:
             raise ValueError('Free storage budget would be exceeded; previous snapshot retained')
-        staged = self._commit(files, info.sha, 'Stage immutable transcript snapshot ' + snapshot_id)
+        staged = self._stage(files, info.sha, 'Stage immutable transcript snapshot ' + snapshot_id)
         self._verify_remote(files, staged)
         pointer = {'schema':'un.snapshot-pointer.v1','snapshot_id':snapshot_id,'manifest_path':prefix+'snapshot.json','manifest_sha256':file_sha(manifest_file),'revision':staged}
         self._commit({'latest.json':encode(pointer)}, staged, 'Activate verified transcript snapshot ' + snapshot_id)
@@ -499,7 +510,7 @@ class HFStorage:
         self._immutable_prefix(prefix, info.sha)
         if used + sum(_size(value) for value in files.values()) + len(encode(latest)) + 1_000_000 > self.budget_bytes:
             raise ValueError('Public free storage budget would be exceeded')
-        staged = self._commit(files, info.sha, 'Stage public transcript report ' + snapshot_id)
+        staged = self._stage(files, info.sha, 'Stage public transcript report ' + snapshot_id)
         self._verify_remote(files, staged)
         self._commit({'latest.json':encode(latest)}, staged, 'Activate public transcript report ' + snapshot_id)
         return latest
