@@ -1,13 +1,13 @@
 # Daily transcript warehouse operations
 
-The operational pipeline collects configured meetings, keeps immutable source revisions, and generates consistent research CSV snapshots. The browser application remains usable without configuring this service. This project's first actual private archive publication succeeded on 12 November 2026 (UTC); the account setup below is now verified for that run. Scheduled reliability and recovery acceptance remain separate checks.
+The operational pipeline collects configured meetings, keeps immutable source revisions, and generates consistent research CSV snapshots. The browser application remains usable without configuring this service. Private and public metadata publication are verified, including a combined run on 12 November 2026 (UTC). The capability matrix records current coverage and evidence. Scheduled reliability, account-wide capacity and model acceptance remain separate checks.
 
 ## Storage and account setup
 
-Use pre-existing Hugging Face dataset repositories under an account you control:
+Use Hugging Face dataset repositories under your existing account:
 
 1. A **private** dataset repository for the SQLite warehouse, raw sources, state, private CSVs and optional model artifacts.
-2. A separate **public** dataset repository only if public metadata publication is desired. It must never contain the private warehouse, transcript text or annotations.
+2. A separate **public** dataset repository for allowlisted metadata. This project uses `LystadJS/UN-Transcript-Agent-Public`, created through the authorized provisioning workflow. It must never contain the private warehouse, transcript text or annotations.
 
 Configure these GitHub Actions settings in this source repository:
 
@@ -15,14 +15,14 @@ Configure these GitHub Actions settings in this source repository:
 | --- | --- | --- |
 | `HF_TOKEN` | Secret | Least-privilege write access to the configured dataset repositories; never a browser credential |
 | `HF_DATASET_REPO` | Variable | Private `owner/dataset` repository |
-| `HF_PUBLIC_DATASET_REPO` | Optional variable | Different public `owner/dataset` repository for allowlisted exports |
-| `ARCHIVE_MANIFEST_URL` | Optional variable | `https://huggingface.co/datasets/OWNER/PUBLIC_DATASET/resolve/main/latest.json` |
+| `HF_PUBLIC_DATASET_REPO` | Optional consistency check | If set, must match the public target in `config/publication.json`; no additional variable is required for this deployment |
+| `ARCHIVE_MANIFEST_URL` | Optional consistency check | If set, must match the checked-in `site/archive-config.json` endpoint |
 | `HF_ACCEPTED_MODEL_PATH` | Optional variable | Directory of an owner-approved model within the private dataset |
 | `HF_ACCEPTED_MODEL_REVISION` | Optional variable | Immutable 40-character commit SHA containing that model and its acceptance receipt |
 
 The service does not create accounts, enter billing details, enable paid tiers, or purchase compute. Free-provider quotas and availability can change. Count retained history in storage budgets. Missing credentials, wrong repository visibility, or an exhausted budget must fail before transient-only collection or unsafe publication.
 
-The main portfolio mirror uses the same public manifest URL in its deployment configuration. The repository's Pages build reads `ARCHIVE_MANIFEST_URL`; no token belongs in this URL. Without it the archive screen says it is not configured.
+The source Pages site and portfolio mirror use the same checked-in public manifest endpoint. The Pages build preserves `site/archive-config.json` when no environment override is present; a supplied override must match. The daily job loads the versioned target from `config/publication.json`. No token belongs in either public configuration file.
 
 Set both accepted-model variables only after real model acceptance. The workflow verifies pinned artifacts, catalog identity and the owner-confirmed acceptance receipt before collection. With neither variable set, collection continues with stance withheld. Supplying only one or a mismatched artifact fails visibly; no floating model revision is selected automatically.
 
