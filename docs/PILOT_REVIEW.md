@@ -27,3 +27,9 @@ Complete training review first. Freeze codebook changes before reviewing `review
 The total pilot is 300 pairs across all three stages, not 300 immediately available training labels. Later comprehensive acceptance requires a separately expanded benchmark. `novel-issue-draft.json` is an optional discovery list, not additional labeled pilot examples or an accepted issue catalog.
 
 CSV text starting with spreadsheet formula characters has a protective apostrophe. Original text remains in the JSON drafts and is bound by the registration hashes. Packet checksums and source snapshot are recorded in `packet-manifest.json`. Keep all originals for reconciliation; never edit the sealed registration to accommodate a changed source.
+
+## Offline browser review
+
+The separate **Build private browser reviewer** workflow converts the pinned original training packet into a private `training-review.html`; it does not resample examples or load calibration/test files. Download the HTML while signed into Hugging Face and open the local file in your browser. Enter a reviewer ID, choose a status and any applicable stance, then confirm each reviewed example. Edits clear confirmation.
+
+**Export reviewed JSON** includes confirmed examples only, retaining original source fields and the registration hash. Upload that JSON to the private assistant conversation for validation, codebook adaptation and reconciliation before any training. **Save progress JSON** includes unfinished work; import it into the same HTML to resume. The HTML makes no automatic network requests and uses no browser storage. Save a progress file before closing. Source-changing, duplicate or mismatched imports are rejected. This training reviewer intentionally excludes all 60 calibration and 60 sealed test examples.
