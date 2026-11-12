@@ -2,10 +2,10 @@ name: Operational pipeline contracts
 
 on:
   pull_request:
-    paths: ['src/**', 'tests/**', 'config/**', 'site/archive*', 'tools/build_pages.py', 'requirements-model.txt', '.github/workflows/operational*.yml', '.github/workflows/model-training.yml']
+    paths: ['src/**', 'tests/**', 'config/**', 'site/archive*', 'tools/build_pages.py', 'tools/*reviewer*', 'tests/browser_owner_review.py', '.github/workflows/owner-reviewer.yml', 'requirements-model.txt', '.github/workflows/operational*.yml', '.github/workflows/model-training.yml']
   push:
     branches: [main]
-    paths: ['src/**', 'tests/**', 'config/**', 'site/archive*', 'tools/build_pages.py', 'requirements-model.txt', '.github/workflows/operational*.yml', '.github/workflows/model-training.yml']
+    paths: ['src/**', 'tests/**', 'config/**', 'site/archive*', 'tools/build_pages.py', 'tools/*reviewer*', 'tests/browser_owner_review.py', '.github/workflows/owner-reviewer.yml', 'requirements-model.txt', '.github/workflows/operational*.yml', '.github/workflows/model-training.yml']
   workflow_dispatch:
 
 permissions:
@@ -37,5 +37,7 @@ jobs:
           export PLAYWRIGHT_MODULE="$(python -c 'import pathlib, playwright; print(pathlib.Path(playwright.__file__).parent / "driver" / "package")')"
           export BROWSER_PATH="$(python -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
           node tests/test_archive_ui.cjs
+      - name: Browser owner review round-trip with synthetic passages
+        run: python tests/browser_owner_review.py
       - name: Build allowlisted public site
         run: python tools/build_pages.py "$RUNNER_TEMP/operational-site"
