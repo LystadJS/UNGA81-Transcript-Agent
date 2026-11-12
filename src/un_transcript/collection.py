@@ -262,6 +262,29 @@ def parse_transcript(meeting, raw):
     return result, "collected" if result else "empty_transcript"
 
 
+def ordered_candidates(candidates, checked, stored_meeting_ids=None, *, missing_first=True):
+    """Alternate missing-source retries and refreshes under unchanged run caps."""
+    ordered = sorted(candidates.items(), key=lambda item: (checked.get(item[0], ""), item[1]["date"], item[0]))
+    if stored_meeting_ids is None:
+        return ordered  # Compatibility for callers without a verified warehouse.
+    stored = frozenset(stored_meeting_ids)
+    missing, refresh, unavailable = [], [], []
+    for item in ordered:
+        mid, meeting = item
+        if not meeting['has_transcript'] or mid in RESERVED_MEETINGS or meeting['date'] in RESERVED_DATES:
+            unavailable.append(item)
+        elif mid in stored:
+            refresh.append(item)
+        else:
+            missing.append(item)
+    result = []
+    queues = (missing, refresh) if missing_first else (refresh, missing)
+    for index in range(max(len(missing), len(refresh))):
+        for queue in queues:
+            if index < len(queue): result.append(queue[index])
+    return result + unavailable
+
+
 class Collector:
     def __init__(self, config, transport=None):
         self.config = validate_config(config)
@@ -282,7 +305,7 @@ class Collector:
         self._bytes += len(raw)
         return {"raw": raw, "headers": response.get("headers", {}), "retrieved_at": response.get("retrieved_at", _now()), "sha256": _sha(raw)}
 
-    def collect(self, as_of: date, state=None, *, prior_config=None):
+    def collect(self, as_of: date, state=None, *, prior_config=None, stored_meeting_ids=None):
         if isinstance(as_of, str):
             as_of = _date(as_of)
         if not isinstance(as_of, date):
@@ -388,7 +411,9 @@ class Collector:
                 coverage.append({"meeting_id": "inventory:" + day, "date": day, "status": "inventory_failed", "detail": type(error).__name__ + ": " + str(error)[:300]})
         # Deferred and failed dates are inventoried again before retrying sources.
         attempted = 0
-        for mid, meeting in sorted(candidates.items(), key=lambda item: (checked.get(item[0], ""), item[1]["date"], item[0])):
+        stored = None if stored_meeting_ids is None else frozenset(stored_meeting_ids)
+        next_queue = previous.get('next_source_queue', 'missing')
+        for mid, meeting in ordered_candidates(candidates, checked, stored, missing_first=next_queue != 'refresh'):
             row = {"meeting_id": mid, "date": meeting["date"], "status": "unavailable", "detail": ""}
             if mid in RESERVED_MEETINGS or meeting["date"] in RESERVED_DATES:
                 row.update(status="excluded_reserved", detail="Sealed evaluation meeting; no source request")
@@ -400,6 +425,8 @@ class Collector:
                 pending.add(meeting["date"])
             else:
                 attempted += 1
+                if stored is not None:
+                    next_queue = 'missing' if mid in stored else 'refresh'
                 checked[mid] = _now()
                 try:
                     response = self._request(safe_url(meeting["json_url"], meeting_id=mid))
@@ -416,6 +443,8 @@ class Collector:
                       "pending_dates": sorted(pending), "checked_meetings": checked, "known_meetings": seen,
                       "reconciliation_week": week, "reconciliation_pending": bool(pending),
                       "inventory_pending_dates": sorted(inventory_pending), "as_of": as_of.isoformat(), "checked_dates": date_checks}
+        if stored is not None:
+            next_state['next_source_queue'] = next_queue
         historical = len(allowed_dates - set(recent))
         historical_slots = config["max_inventory_days"] - len(recent)
         progress = {"week_start": week, "selected_dates": len(allowed_dates),
