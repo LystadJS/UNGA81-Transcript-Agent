@@ -63,7 +63,7 @@ The remote private snapshot is authoritative. Runner files, caches and Actions a
 
 On failure, inspect the Actions status and the last valid manifest's timestamp and coverage. Do not infer freshness from a green Pages deployment. Retry a failed run through manual dispatch; preserve the remote snapshot and checkpoint rather than deleting them.
 
-Actual remote restoration and continued publication were verified by the second successful Actions run above. For continuing recovery checks, use the CLI's `restore`, `verify` and `status` commands in a fresh private workspace; use their `--help` output for exact options. Verify that restored CSV keys, counts and source hashes reproduce the published private manifest. An interrupted-publication recovery drill remains outstanding: an interrupted write must not replace the previous valid pointer.
+Actual remote restoration and continued publication were verified by the second successful Actions run above. For continuing recovery checks, use the CLI's `restore`, `verify` and `status` commands in a fresh private workspace; use their `--help` output for exact options. Verify that restored CSV keys, counts and source hashes reproduce the published private manifest. The isolated real-provider interruption drill passed in run 43184679678: an interrupted staged write retained the previous pointer and both recovery/retry reproduced the artifacts. Production data stayed untouched; continue failure-mode recovery checks.
 
 Source corrections create new revisions. Old predictions remain attached to old revisions and are not silently treated as current. Reprocessing after a model change creates a new method version. The existing source and model history remain inspectable.
 
@@ -79,7 +79,7 @@ Use a valid private model/label store with sufficient free space before training
 
 ## Operational acceptance record
 
-Keep a private fourteen-day observation record with scheduled start, actual start, completion, source availability, pending work, retained-storage size, errors and published snapshot ID. Record missed jobs as missed. Actual restore/continuation passed on the second manual run; complete the separate interrupted-publication recovery test and capacity assessment. Owner labeling, representative diplomat usability sessions, real model acceptance, and this observation period are external work; passing synthetic CI does not complete them.
+Keep a private fourteen-day observation record with scheduled start, actual start, completion, source availability, pending work, retained-storage size, errors and published snapshot ID. Record missed jobs as missed. Actual restore/continuation passed on the second manual run; the isolated interruption drill also passed in run 43184679678. Complete account-wide capacity assessment and continue recovery observation. Owner labeling, representative diplomat usability sessions, real model acceptance, and this observation period are external work; passing synthetic CI does not complete them.
 
 The separate `Check live browser collection` workflow uses a fixed authorized development date. Its pinned Ubuntu 24.04/Python 3.12 environment repairs the earlier Ubuntu 26.04/Playwright mismatch. The actual live check passed among the six checks for merged source PR #187. That result establishes collection health at the observed run, not continuing external-service availability.
 

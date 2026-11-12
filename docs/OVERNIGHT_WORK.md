@@ -4,7 +4,9 @@ Authorized 12 November 2026, America/New_York. Continue engineering tasks, valid
 
 ## Current task
 
-Implement and execute an isolated real-Hugging-Face interrupted-publication drill using synthetic data. Production `latest.json` must remain byte-identical. Verify old-snapshot recovery after staged-write interruption, then retry and compare all CSV/artifact hashes. Record actual storage measurements without claiming account-wide capacity acceptance. Code is in `tools/storage_recovery_drill.py`, workflow `storage-recovery.yml`; status: implementation and local validation in progress. Update this paragraph with actual PR/run evidence before proceeding.
+Recovery implementation merged in PR #191; CI 43184532330 passed. Actual private run [43184679678](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/43184679678) passed: injected interruption after verified staging, previous pointer preserved, old and retried snapshots restored with identical CSV/artifact hashes, and production pointer unchanged. The fixture stayed under an isolated private drill namespace. This is a real-provider synthetic failure-injection exercise, not a deliberate production outage. Account-wide capacity acceptance remains open.
+
+Next completed implementation: owner review intake in `src/un_transcript/models/review_intake.py`; 102 production tests passed locally. PR/CI publication is pending in the active `feat/owner-review-intake` branch; inspect GitHub before repeating work. No actual owner labels have been returned, so only synthetic intake verification is claimed. After this PR is merged, proceed to operational summaries/freshness and portfolio mirror diagnosis.
 
 ## Ordered queue
 
