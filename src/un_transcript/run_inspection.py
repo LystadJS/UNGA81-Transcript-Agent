@@ -1,5 +1,7 @@
 """Read one canonical workflow attempt and its explicitly allowlisted artifact."""
 import io
+import hashlib
+import re
 import json
 import subprocess
 import zipfile
@@ -31,7 +33,7 @@ def receipt_from_zip(data, *, run_id, attempt, event):
     return validate_operational_receipt(value,run_id=run_id,attempt=attempt,event=event)
 
 
-def inspect_run(run_id, attempt=None, *, api=api_json, binary=api_bytes):
+def inspect_run(run_id, attempt=None, *, api=api_json, binary=api_bytes, receipt_zip=None):
     if type(run_id) is not int or run_id<=0 or (attempt is not None and (type(attempt) is not int or attempt<=0)):
         raise ValueError('Invalid workflow attempt identity')
     prefix=f'repos/{REPOSITORY}/actions/runs/{run_id}'
@@ -51,7 +53,7 @@ def inspect_run(run_id, attempt=None, *, api=api_json, binary=api_bytes):
             'created_at':iso(moment(run['created_at'])),
             'run_started_at':iso(moment(run['run_started_at'])) if run.get('run_started_at') else None,
             'last_job_completed_at':None,'job_timing_available':False,
-            'receipt_state':'missing','receipt':None,'operational_acceptance':False}
+            'receipt_state':'missing','receipt':None,'receipt_artifact':None,'operational_acceptance':False}
     jobs=api(prefix+f'/attempts/{attempt}/jobs?per_page=100')
     if not isinstance(jobs.get('jobs'),list) or jobs.get('total_count')!=len(jobs['jobs']) or len(jobs['jobs'])>100:
         raise ValueError('Incomplete job timing inventory')
@@ -72,7 +74,26 @@ def inspect_run(run_id, attempt=None, *, api=api_json, binary=api_bytes):
             if type(size) is not int or not 0<=size<=262144:raise ValueError('Monitoring artifact exceeds size bound')
             identifier=item['id']
             if type(identifier) is not int or identifier<=0:raise ValueError('Invalid artifact identity')
-            data=binary(f'repos/{REPOSITORY}/actions/artifacts/{identifier}/zip',limit=262144)
-            result['receipt']=receipt_from_zip(data,run_id=run_id,attempt=attempt,event=run['event'])
+            digest=item.get('digest')
+            if digest is not None and (not isinstance(digest,str) or not re.fullmatch('sha256:[a-f0-9]{64}',digest)):
+                raise ValueError('Invalid provider artifact digest')
+            result['receipt_artifact']={'id':identifier,'bytes':size,'sha256':digest[7:] if digest else None}
+            try:
+                if receipt_zip is not None:
+                    if digest is None:raise ValueError('Offline receipt requires a provider digest')
+                    data=receipt_zip
+                else:
+                    data=binary(f'repos/{REPOSITORY}/actions/artifacts/{identifier}/zip',limit=262144)
+            except (RuntimeError,OSError,subprocess.SubprocessError):
+                result['receipt_state']='unavailable'
+                return result
+            try:
+                if digest is not None and hashlib.sha256(data).hexdigest()!=digest[7:]:
+                    raise ValueError('Artifact digest mismatch')
+                validated=receipt_from_zip(data,run_id=run_id,attempt=attempt,event=run['event'])
+            except (ValueError,zipfile.BadZipFile,KeyError,TypeError,RuntimeError,EOFError):
+                result['receipt_state']='invalid'
+                return result
+            result['receipt']=validated
             result['receipt_state']='verified'
     return result
