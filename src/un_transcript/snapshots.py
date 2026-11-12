@@ -309,6 +309,7 @@ class HFStorage:
                 # before the hub download and the local file is rechecked after.
                 return Path(hf_hub_download(repo_id=repo_id, filename=path, repo_type='dataset', revision=revision, token=token))
         self.api, self.downloader = api, downloader
+        self._entry_cache = {}
 
     def info(self):
         info = _provider_call('repository_metadata', self.api.repo_info, self.repo_id, repo_type='dataset', expand=['private','sha','usedStorage'])
@@ -328,7 +329,30 @@ class HFStorage:
         return info, used
 
     def _entries(self, paths, revision):
-        return _provider_call('path_metadata', self.api.get_paths_info, self.repo_id, paths, repo_type='dataset', revision=revision)
+        # Metadata is reusable only at an immutable commit, never at a branch.
+        if not isinstance(revision, str) or not re.fullmatch(r'[a-fA-F0-9]{40}', revision):
+            raise ValueError('Path metadata requires an immutable commit SHA')
+        paths = [safe_path(path) for path in paths]
+        if len(paths) > MAX_FILES:
+            raise ValueError('Metadata request exceeds bounded file count')
+        if len(self._entry_cache) + len(paths) > MAX_FILES:
+            self._entry_cache.clear()
+        missing = list(dict.fromkeys(path for path in paths if (revision, path) not in self._entry_cache))
+        for start in range(0, len(missing), 100):
+            batch = missing[start:start+100]
+            entries = _provider_call('path_metadata', self.api.get_paths_info, self.repo_id, batch,
+                                     repo_type='dataset', revision=revision)
+            found = {}
+            for entry in entries:
+                path = getattr(entry, 'path', None)
+                if not isinstance(path, str) or path not in batch or path in found:
+                    raise ValueError('Unexpected or duplicated remote metadata path')
+                found[path] = entry
+            # Cache absence only after a successful, validated metadata response.
+            for path in batch:
+                self._entry_cache[(revision, path)] = found.get(path)
+        return [self._entry_cache[(revision, path)] for path in paths
+                if self._entry_cache[(revision, path)] is not None]
 
     def _download(self, path, revision, limit=MAX_FILE_BYTES):
         path = safe_path(path)
@@ -360,6 +384,7 @@ class HFStorage:
             raise FileExistsError('Snapshot prefix already exists; use a new snapshot ID')
 
     def _verify_remote(self, files, revision):
+        self._entries(list(files), revision)
         for path, value in files.items():
             actual = self._download(path, revision)
             if _size(actual) != _size(value) or _hash(actual) != _hash(value):
@@ -373,6 +398,7 @@ class HFStorage:
         info, used = self.info()
         snapshot_id = manifest['snapshot_id']; prefix = 'snapshots/' + snapshot_id + '/'
         self._immutable_prefix(prefix, info.sha)
+        self._entries([item['path'] for item in manifest['files'] if item['path'].startswith('raw/')], info.sha)
         files = {}
         for item in manifest['files']:
             remote = item['path'] if item['path'].startswith('raw/') else prefix + item['path']
@@ -411,7 +437,7 @@ class HFStorage:
             raise ValueError('Invalid remote pointer')
         snapshot_id = _identity(pointer.get('snapshot_id'))
         prefix = 'snapshots/' + snapshot_id + '/'
-        if pointer.get('manifest_path') != prefix + 'snapshot.json' or not isinstance(pointer.get('revision'),str) or not re.fullmatch(r'[A-Za-z0-9_-]{1,128}',pointer['revision']) or not isinstance(pointer.get('manifest_sha256'),str) or not HEX.fullmatch(pointer['manifest_sha256']):
+        if pointer.get('manifest_path') != prefix + 'snapshot.json' or not isinstance(pointer.get('revision'),str) or not re.fullmatch(r'[a-fA-F0-9]{40}',pointer['revision']) or not isinstance(pointer.get('manifest_sha256'),str) or not HEX.fullmatch(pointer['manifest_sha256']):
             raise ValueError('Invalid remote pointer identity/path')
         revision = pointer['revision']
         raw_manifest = self.read(pointer['manifest_path'], revision, MAX_MANIFEST_BYTES)
@@ -427,6 +453,8 @@ class HFStorage:
         # Account for both hub download cache and restored files on one volume.
         if shutil.disk_usage(workspace).free < 2 * total + DISK_RESERVE_BYTES:
             raise ValueError('Insufficient disk reserve for verified restoration')
+        self._entries([item['path'] if item['path'].startswith('raw/') else prefix + item['path']
+                       for item in manifest['files']], revision)
         with tempfile.TemporaryDirectory(prefix='.restore-', dir=workspace) as temporary:
             target = Path(temporary) / 'data'; target.mkdir()
             for item in manifest['files']:
