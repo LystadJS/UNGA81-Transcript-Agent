@@ -433,56 +433,8 @@ class HFStorage:
     def publish_public(self, public_directory):
         if self.private:
             raise ValueError('Public reports require a separate public dataset')
-        directory = Path(public_directory)
-        manifest_file = directory / 'manifest.json'
-        if manifest_file.is_symlink() or manifest_file.stat().st_size > MAX_MANIFEST_BYTES:
-            raise ValueError('Unsafe public manifest')
-        manifest = json.loads(manifest_file.read_bytes())
-        _keys(manifest, PUBLIC_MANIFEST_FIELDS)
-        if manifest.get('schema') != 'un.archive.v1':
-            raise ValueError('Unsupported public archive')
-        snapshot_id = _identity(manifest.get('snapshot_id')); prefix = 'snapshots/' + snapshot_id + '/'
-        for key in PUBLIC_MANIFEST_FIELDS - {'coverage','partitions','downloads'}:
-            _scalar(manifest.get(key))
-        _keys(manifest.get('coverage'), PUBLIC_COVERAGE_FIELDS)
-        coverage = manifest['coverage']
-        if 'inventory_dates' in coverage or 'inventory_statuses' in coverage:
-            _integer(coverage.get('inventory_dates'), 100_000_000)
-            inventory = coverage.get('inventory_statuses')
-            _keys(inventory, {'inventory_complete','inventory_failed','excluded_reserved','deferred'})
-            for count in inventory.values():
-                _integer(count, 100_000_000)
-            if sum(inventory.values()) != coverage['inventory_dates']:
-                raise ValueError('Inventory date counts do not reconcile')
-        for key in ('meetings','stored_meetings','segments'):
-            _integer(manifest['coverage'].get(key),100_000_000)
-        _scalar(manifest['coverage'].get('latest_run_status'))
-        statuses = manifest['coverage'].get('statuses')
-        if not isinstance(statuses,dict) or any(not isinstance(k,str) or type(v) is not int or v < 0 for k,v in statuses.items()):
-            raise ValueError('Invalid public coverage counts')
-        files, seen = {}, set()
-        for group in ('partitions','downloads'):
-            if not isinstance(manifest.get(group),list) or len(manifest[group]) > MAX_FILES:
-                raise ValueError('Invalid public artifact list')
-            for item in manifest[group]:
-                _descriptor(item); path = item['path']
-                if path in seen:
-                    raise ValueError('Duplicate public artifact path')
-                seen.add(path)
-                file = directory / path
-                if file.is_symlink() or not file.resolve().is_relative_to(directory.resolve()):
-                    raise ValueError('Unsafe public artifact')
-                if file.stat().st_size != item['bytes'] or file_sha(file) != item['sha256']:
-                    raise ValueError('Public artifact integrity failed')
-                _public_payload(file, path)
-                files[prefix + path] = file
-        # The immutable manifest keeps relative paths so it can be reopened at
-        # snapshots/<id>/manifest.json. Only root latest.json needs prefixes.
-        files[prefix + 'manifest.json'] = manifest_file
-        latest = copy.deepcopy(manifest)
-        for group in ('partitions','downloads'):
-            for item in latest[group]:
-                item['path'] = prefix + item['path']
+        manifest, files, latest = prepare_public_bundle(public_directory)
+        snapshot_id = manifest['snapshot_id']; prefix = 'snapshots/' + snapshot_id + '/'
         info, used = self.info()
         self._immutable_prefix(prefix, info.sha)
         if used + sum(_size(value) for value in files.values()) + len(encode(latest)) + 1_000_000 > self.budget_bytes:
@@ -491,3 +443,58 @@ class HFStorage:
         self._verify_remote(files, staged)
         self._commit({'latest.json':encode(latest)}, staged, 'Activate public transcript report ' + snapshot_id)
         return latest
+
+
+def prepare_public_bundle(public_directory):
+    """Validate the complete public allowlist before any remote operation."""
+    directory = Path(public_directory)
+    manifest_file = directory / 'manifest.json'
+    if manifest_file.is_symlink() or manifest_file.stat().st_size > MAX_MANIFEST_BYTES:
+        raise ValueError('Unsafe public manifest')
+    manifest = json.loads(manifest_file.read_bytes())
+    _keys(manifest, PUBLIC_MANIFEST_FIELDS)
+    if manifest.get('schema') != 'un.archive.v1':
+        raise ValueError('Unsupported public archive')
+    snapshot_id = _identity(manifest.get('snapshot_id')); prefix = 'snapshots/' + snapshot_id + '/'
+    for key in PUBLIC_MANIFEST_FIELDS - {'coverage','partitions','downloads'}:
+        _scalar(manifest.get(key))
+    _keys(manifest.get('coverage'), PUBLIC_COVERAGE_FIELDS)
+    coverage = manifest['coverage']
+    if 'inventory_dates' in coverage or 'inventory_statuses' in coverage:
+        _integer(coverage.get('inventory_dates'), 100_000_000)
+        inventory = coverage.get('inventory_statuses')
+        _keys(inventory, {'inventory_complete','inventory_failed','excluded_reserved','deferred'})
+        for count in inventory.values():
+            _integer(count, 100_000_000)
+        if sum(inventory.values()) != coverage['inventory_dates']:
+            raise ValueError('Inventory date counts do not reconcile')
+    for key in ('meetings','stored_meetings','segments'):
+        _integer(manifest['coverage'].get(key),100_000_000)
+    _scalar(manifest['coverage'].get('latest_run_status'))
+    statuses = manifest['coverage'].get('statuses')
+    if not isinstance(statuses,dict) or any(not isinstance(k,str) or type(v) is not int or v < 0 for k,v in statuses.items()):
+        raise ValueError('Invalid public coverage counts')
+    files, seen = {}, set()
+    for group in ('partitions','downloads'):
+        if not isinstance(manifest.get(group),list) or len(manifest[group]) > MAX_FILES:
+            raise ValueError('Invalid public artifact list')
+        for item in manifest[group]:
+            _descriptor(item); path = item['path']
+            if path in seen:
+                raise ValueError('Duplicate public artifact path')
+            seen.add(path)
+            file = directory / path
+            if file.is_symlink() or not file.resolve().is_relative_to(directory.resolve()):
+                raise ValueError('Unsafe public artifact')
+            if file.stat().st_size != item['bytes'] or file_sha(file) != item['sha256']:
+                raise ValueError('Public artifact integrity failed')
+            _public_payload(file, path)
+            files[prefix + path] = file
+    # The immutable manifest keeps relative paths so it can be reopened at
+    # snapshots/<id>/manifest.json. Only root latest.json needs prefixes.
+    files[prefix + 'manifest.json'] = manifest_file
+    latest = copy.deepcopy(manifest)
+    for group in ('partitions','downloads'):
+        for item in latest[group]:
+            item['path'] = prefix + item['path']
+    return manifest, files, latest
