@@ -1,0 +1,115 @@
+name: Train private stance candidate
+
+on:
+  workflow_dispatch:
+    inputs:
+      dataset_revision:
+        description: 'Immutable commit SHA of private reviewed-label dataset'
+        required: true
+        type: string
+      base_revision:
+        description: 'Immutable upstream DistilBERT commit SHA'
+        required: true
+        type: string
+      labels_path:
+        description: 'Reviewed training labels JSON path in private dataset'
+        default: 'labels/training.json'
+        required: true
+        type: string
+      registration_path:
+        description: 'Frozen source/split registration JSON path in private dataset'
+        default: 'labels/registration.json'
+        required: true
+        type: string
+      epochs:
+        description: 'Training epochs (1–10); this creates a candidate only'
+        default: 1
+        required: true
+        type: number
+      resume_path:
+        description: 'Optional private checkpoint.pt path at the pinned dataset revision'
+        default: ''
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: operational-store
+  cancel-in-progress: false
+
+jobs:
+  train:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    env:
+      PYTHONPATH: src
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      HF_DATASET_REPO: ${{ vars.HF_DATASET_REPO }}
+      DATASET_REVISION: ${{ inputs.dataset_revision }}
+      BASE_REVISION: ${{ inputs.base_revision }}
+      LABELS_PATH: ${{ inputs.labels_path }}
+      REGISTRATION_PATH: ${{ inputs.registration_path }}
+      TRAIN_EPOCHS: ${{ inputs.epochs }}
+      RESUME_PATH: ${{ inputs.resume_path }}
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned optional model tools
+        run: |
+          python -m pip install --disable-pip-version-check --index-url https://download.pytorch.org/whl/cpu torch==2.7.1
+          python -m pip install --disable-pip-version-check -r requirements-model.txt huggingface-hub==0.36.0
+      - name: Fetch only registered private inputs and pinned base model
+        run: |
+          python - <<'PY'
+          import os, pathlib, re, shutil
+          from huggingface_hub import HfApi, hf_hub_download, snapshot_download
+          from un_transcript.snapshots import HFStorage
+          repo=os.environ['HF_DATASET_REPO']; token=os.environ['HF_TOKEN']
+          if not repo or not token: raise SystemExit('Configure private HF_DATASET_REPO and HF_TOKEN first')
+          api=HfApi(token=token)
+          _, used=HFStorage(repo).info()
+          if used + 2_000_000_000 > 80_000_000_000: raise SystemExit('Insufficient private model storage budget')
+          for key in ('DATASET_REVISION','BASE_REVISION'):
+              if not re.fullmatch(r'[0-9a-f]{40}',os.environ[key]): raise SystemExit(key+' must be an immutable SHA')
+          if not 1 <= int(os.environ['TRAIN_EPOCHS']) <= 10: raise SystemExit('epochs outside 1–10')
+          work=pathlib.Path(os.environ['RUNNER_TEMP'])/'un-model'; work.mkdir()
+          for key, target in [('LABELS_PATH','labels.json'),('REGISTRATION_PATH','registration.json')]:
+              source=pathlib.PurePosixPath(os.environ[key])
+              if source.is_absolute() or '..' in source.parts or not str(source).endswith('.json'): raise SystemExit('Invalid private input path')
+              downloaded=hf_hub_download(repo, str(source), repo_type='dataset', revision=os.environ['DATASET_REVISION'], token=token)
+              shutil.copyfile(downloaded,work/target)
+          if os.environ.get('RESUME_PATH'):
+              source=pathlib.PurePosixPath(os.environ['RESUME_PATH'])
+              if source.is_absolute() or '..' in source.parts or source.name!='checkpoint.pt': raise SystemExit('Invalid checkpoint path')
+              downloaded=hf_hub_download(repo,str(source),repo_type='dataset',revision=os.environ['DATASET_REVISION'],token=token)
+              shutil.copyfile(downloaded,work/'checkpoint.pt')
+          snapshot_download('distilbert/distilbert-base-uncased',revision=os.environ['BASE_REVISION'],local_dir=work/'base',allow_patterns=['config.json','model.safetensors','tokenizer.json','tokenizer_config.json','vocab.txt','special_tokens_map.json','LICENSE'])
+          PY
+      - name: Train local candidate without automatic evaluation or promotion
+        shell: bash
+        run: |
+          args=(train --labels "$RUNNER_TEMP/un-model/labels.json" --registration "$RUNNER_TEMP/un-model/registration.json" --base-model "$RUNNER_TEMP/un-model/base" --revision "$BASE_REVISION" --policy config/model-policy.json --output "$RUNNER_TEMP/un-model/candidate" --epochs "$TRAIN_EPOCHS")
+          if [[ -n "$RESUME_PATH" ]]; then args+=(--resume "$RUNNER_TEMP/un-model/checkpoint.pt"); fi
+          python -m un_transcript.models "${args[@]}"
+      - name: Retain candidate and resumable checkpoints privately
+        if: always()
+        run: |
+          python - <<'PY'
+          import os, pathlib
+          from huggingface_hub import HfApi
+          from un_transcript.snapshots import HFStorage
+          candidate=pathlib.Path(os.environ['RUNNER_TEMP'])/'un-model/candidate'
+          if not candidate.is_dir(): raise SystemExit(0)
+          api=HfApi(token=os.environ['HF_TOKEN']); repo=os.environ['HF_DATASET_REPO']
+          info,used=HFStorage(repo).info()
+          required=sum(p.stat().st_size for p in candidate.rglob('*') if p.is_file())
+          if used+required+1_000_000 > 80_000_000_000: raise SystemExit('Candidate exceeds private storage budget')
+          api.upload_folder(repo_id=repo,repo_type='dataset',folder_path=candidate,path_in_repo='models/candidates/'+os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT'],parent_commit=info.sha,commit_message='Store unaccepted training candidate')
+          PY
+      # Never upload annotations, weights, or private training outputs as
+      # public Actions artifacts. Acceptance and release remain separate.

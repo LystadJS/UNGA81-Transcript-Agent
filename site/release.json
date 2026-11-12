@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.40.0",
+  "browser_engine": "browser-descriptive-1.41.0",
   "comparison_engine": "latent-comparison-1.1.0",
-  "date": "2026-11-05",
+  "date": "2026-11-11",
   "features": [
+    "Read-only versioned operational archive with verified partitions and explicit freshness/coverage; durable daily pipeline and local model evaluation tooling, pending external storage setup and owner-reviewed stance acceptance",
     "Owner-reviewed day-summary repair: self-contained source-derived policy objects, narrower catalog boundaries, expanded meeting-procedure filtering, and explicit collective attribution excluded from national participation",
     "Automatic topic distribution, topic-by-country and meeting-by-topic charts declare their units, deduplicate participation, expose insufficient data, and include readable tables plus source drill-downs; optional exploratory methods are grouped under advanced controls",
     "Deterministic day-level proceedings summaries preserve meeting distinctions, group narrow policy-question synonyms, separate procedural language, and attach transcript evidence to proposals, disagreements and consequential developments without treating coverage volume as importance",
@@ -118,5 +119,15 @@
     "default_scope": "all",
     "source_provenance": "un.browser.source-provenance.v1",
     "validation_scope": "Synthetic engineering acceptance plus owner-reviewed three-day development replay; no untouched-test or reserved transcript access"
+  },
+  "operational_archive": {
+    "schema": "un.archive.v1",
+    "entry": "archive.html",
+    "status": "implemented_pending_storage_configuration",
+    "pipeline_version": "0.1.0",
+    "schedule_utc": "11:17 daily",
+    "model_status": "not_evaluated_missing_labels",
+    "operational_observation": "not_started",
+    "heldout_37_meetings_opened": false
   }
 }

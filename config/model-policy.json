@@ -1,0 +1,36 @@
+{
+  "schema": "un.stance-model-policy.v1",
+  "version": "1.0.0",
+  "status": "proposed_acceptance_requirements_not_achieved",
+  "candidate": "distilbert/distilbert-base-uncased",
+  "candidate_revision": null,
+  "revision_requirement": "Explicit immutable commit and local asset hashes required before training",
+  "runtime": "onnxruntime_cpu",
+  "max_length": 512,
+  "window_overlap_tokens": 64,
+  "labels": ["strongly_oppose", "oppose", "neutral", "support", "strongly_support"],
+  "thresholds": {
+    "overall_precision": 0.9,
+    "per_class_precision": 0.85,
+    "max_polarity_reversal": 0.02,
+    "end_to_end_recall": 0.65,
+    "emission_coverage": 0.75,
+    "macro_f1": 0.7,
+    "max_ece": 0.05,
+    "max_attribution_error": 0.01,
+    "minimum_slice_precision": 0.8
+  },
+  "minimums": {
+    "emitted_per_class": 100,
+    "test_meetings": 30,
+    "complete_source_meetings": 20,
+    "policy_areas": 8,
+    "assessable_per_body": 100,
+    "assessable_per_area": 150,
+    "assessable_per_issue": 30
+  },
+  "production_threshold_default": 0.9,
+  "production_status_threshold": 0.9,
+  "neutral_definition": "Explicit neutrality on a defined proposition; never missing or unexpressed evidence",
+  "production_accepted": false
+}

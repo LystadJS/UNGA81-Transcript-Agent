@@ -6,3 +6,13 @@
 __pycache__/
 /review-work/
 /tools/browser-deps/node_modules/
+
+# Production runtime state and optional model environments (never source data).
+/.venv/
+/.runtime/
+/dist/
+/build/
+/src/*.egg-info/
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm

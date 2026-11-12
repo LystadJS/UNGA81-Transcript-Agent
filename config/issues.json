@@ -1,0 +1,1545 @@
+{
+  "schema": "un.issue-catalog.v1",
+  "version": "2026-11-05.1",
+  "source": "site/position-comparison.js",
+  "source_sha256": "00e521a0aaa59b7b0007a3059c533e03dc7e417c206c80f2efdf0ce44c7e3a15",
+  "status": "retrieval_catalog_not_validated_stance_ontology",
+  "issues": [
+    {
+      "id": "humanitarian_access",
+      "label": "Allow humanitarian access",
+      "proposition": "Allow humanitarian access",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\b(?:humanitarian access|aid access|(?:unhindered|unimpeded|unrestricted|safe) (?:delivery|provision|distribution) of humanitarian (?:aid|assistance))\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "civilian_protection",
+      "label": "Protect civilians",
+      "proposition": "Protect civilians",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\b(?:protect(?:ing)? civilians|protection of civilians|civilian protection)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "ceasefire",
+      "label": "Establish a ceasefire",
+      "proposition": "Establish a ceasefire",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\b(?:ceasefire|cessation of hostilities)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "two_state",
+      "label": "A two-state solution",
+      "proposition": "A two-state solution",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\btwo[ -]state solutions?\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "tpnw",
+      "label": "Treaty on the Prohibition of Nuclear Weapons",
+      "proposition": "Treaty on the Prohibition of Nuclear Weapons",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\b(?:TPNW|Treaty (?:on the Prohibition|for the Prohibition) of Nuclear Weapons)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "ctbt",
+      "label": "Comprehensive Nuclear-Test-Ban Treaty",
+      "proposition": "Comprehensive Nuclear-Test-Ban Treaty",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\b(?:CTBT|Comprehensive (?:Nuclear[ -])?Test[ -]Ban Treaty)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "cuba_embargo",
+      "label": "Lift the embargo on Cuba",
+      "proposition": "Lift the embargo on Cuba",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\b(?:lift(?:ing)?|end(?:ing)?|remov(?:e|ing|al of))\\b[^.!?]{0,55}\\b(?:embargo|blockade)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "npt",
+      "label": "Nuclear Non-Proliferation Treaty",
+      "proposition": "Nuclear Non-Proliferation Treaty",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\b(?:NPT|(?:Treaty on (?:the )?Non[ -]?Proliferation of Nuclear Weapons)|(?:Nuclear )?Non[ -]?Proliferation Treaty)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "iaea_additional_protocol",
+      "label": "Adopt the IAEA Additional Protocol",
+      "proposition": "Adopt the IAEA Additional Protocol",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\b(?:IAEA(?:'s)? Additional Protocol|Additional Protocol to (?:the )?(?:NPT|(?:Nuclear )?Non[ -]?Proliferation Treaty))\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "bwc",
+      "label": "Biological Weapons Convention",
+      "proposition": "Biological Weapons Convention",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\b(?:BWC|Biological (?:and Toxin )?Weapons Convention)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "cwc",
+      "label": "Chemical Weapons Convention",
+      "proposition": "Chemical Weapons Convention",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\b(?:CWC|Chemical Weapons Convention)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "arms_trade_treaty",
+      "label": "Arms Trade Treaty",
+      "proposition": "Arms Trade Treaty",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\bArms Trade Treaty\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "small_arms_programme",
+      "label": "UN Programme of Action on Small Arms",
+      "proposition": "UN Programme of Action on Small Arms",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\b(?:UN|United Nations) Programme of Action(?: on Small Arms(?: and Light Weapons)?)?\\b|\\bProgramme of Action on Small Arms(?: and Light Weapons)?\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "nuclear_disarmament",
+      "label": "Pursue nuclear disarmament",
+      "proposition": "Pursue nuclear disarmament",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\b(?:nuclear disarmament|world without nuclear weapons|(?:elimination|abolition) of (?:all )?nuclear weapons)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "pelindaba",
+      "label": "Treaty of Pelindaba",
+      "proposition": "Treaty of Pelindaba",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\b(?:Treaty of Pelindaba|Pelindaba Treaty|African Nuclear[ -]Weapon[ -]Free[ -]Zone Treaty)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "fissile_material_treaty",
+      "label": "Negotiate a fissile material cut-off treaty",
+      "proposition": "Negotiate a fissile material cut-off treaty",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\b(?:FMCT|fissile material (?:cut[ -]off )?treaty|treaty (?:banning|prohibiting) (?:the )?production of fissile material)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "paris_agreement",
+      "label": "Paris Agreement",
+      "proposition": "Paris Agreement",
+      "policy_area": "Climate and environment",
+      "patterns": [
+        "\\bParis Agreement\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "climate_finance",
+      "label": "Provide climate finance",
+      "proposition": "Provide climate finance",
+      "policy_area": "Climate and environment",
+      "patterns": [
+        "\\bclimate financ(?:e|ing)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "loss_damage_fund",
+      "label": "Loss and Damage Fund",
+      "proposition": "Loss and Damage Fund",
+      "policy_area": "Climate and environment",
+      "patterns": [
+        "\\b(?:Loss and Damage Fund|Fund for Responding to Loss and Damage)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "sdgs",
+      "label": "2030 Agenda and SDGs",
+      "proposition": "2030 Agenda and SDGs",
+      "policy_area": "Development and finance",
+      "patterns": [
+        "\\b(?:2030 (?:Development )?Agenda(?: for Sustainable Development)?|Sustainable Development Goals|SDGs)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "disaster_protection_treaty",
+      "label": "Conclude a treaty protecting persons in disasters",
+      "proposition": "Conclude a treaty protecting persons in disasters",
+      "policy_area": "Climate and environment",
+      "patterns": [
+        "\\b(?:legally binding instrument|treaty|convention) on (?:the )?protection of persons in (?:the event of )?disasters\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "icc",
+      "label": "International Criminal Court",
+      "proposition": "International Criminal Court",
+      "policy_area": "Institutions and digital governance",
+      "patterns": [
+        "\\bInternational Criminal Court\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "death_penalty_abolition",
+      "label": "Abolish the death penalty",
+      "proposition": "Abolish the death penalty",
+      "policy_area": "Human rights and inclusion",
+      "patterns": [
+        "\\b(?:abolition of (?:the )?death penalty|abolish(?:ing)? (?:the )?death penalty)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "death_penalty_moratorium",
+      "label": "Establish a global death-penalty moratorium",
+      "proposition": "Establish a global death-penalty moratorium",
+      "policy_area": "Human rights and inclusion",
+      "patterns": [
+        "\\b(?:global|universal|worldwide) moratorium on (?:the (?:use|application) of )?(?:the )?(?:death penalty|executions)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "security_council_reform",
+      "label": "Reform the Security Council",
+      "proposition": "Reform the Security Council",
+      "policy_area": "Institutions and digital governance",
+      "patterns": [
+        "\\b(?:reform(?:ing)? (?:of )?(?:the )?(?:UN |United Nations )?Security Council|Security Council reform)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "security_council_expansion",
+      "label": "Expand Security Council membership",
+      "proposition": "Expand Security Council membership",
+      "policy_area": "Institutions and digital governance",
+      "patterns": [
+        "\\b(?:expansion of (?:the )?(?:UN |United Nations )?Security Council(?: membership)?|enlargement of (?:the )?(?:UN |United Nations )?Security Council)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "palestine_recognition",
+      "label": "Recognize the State of Palestine",
+      "proposition": "Recognize the State of Palestine",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\b(?:recognition of (?:the )?(?:State of )?Palestine|recogniz(?:e|ing) (?:the )?State of Palestine)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "unrwa",
+      "label": "UNRWA",
+      "proposition": "UNRWA",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\b(?:UNRWA|United Nations Relief and Works Agency(?: for Palestine Refugees(?: in the Near East)?)?)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "korean_denuclearization",
+      "label": "Denuclearize the Korean Peninsula",
+      "proposition": "Denuclearize the Korean Peninsula",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\bdenuclearization of (?:the )?Korean Peninsula\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "cuba_terrorism_removal",
+      "label": "Remove Cuba from the U.S. terrorism-sponsor list",
+      "proposition": "Remove Cuba from the U.S. terrorism-sponsor list",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\b(?:remov(?:e|ing|al of)|delist(?:ing)?)\\b[^!?]{0,25}\\bCuba\\b[^!?]{0,40}\\b(?:state sponsors? of terrorism|(?:terrorism|terrorist)[ -]sponsor(?:s)?(?: list)?|list of (?:state )?sponsors? of terrorism)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "mine_ban",
+      "label": "Anti-Personnel Mine Ban Convention",
+      "proposition": "Anti-Personnel Mine Ban Convention",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\b(?:Anti[ -]Personnel Mine Ban Convention|Ottawa Convention|Mine Ban Treaty)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "cluster_munitions",
+      "label": "Convention on Cluster Munitions",
+      "proposition": "Convention on Cluster Munitions",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\bConvention on Cluster Munitions\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "conventional_weapons",
+      "label": "Convention on Certain Conventional Weapons",
+      "proposition": "Convention on Certain Conventional Weapons",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\bConvention on Certain Conventional Weapons\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "nuclear_test_moratorium",
+      "label": "Maintain a nuclear-test moratorium",
+      "proposition": "Maintain a nuclear-test moratorium",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\b(?:moratorium on nuclear (?:weapons? )?test(?:ing|s)|nuclear[ -]test moratorium)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "no_first_use",
+      "label": "Commit to no first use of nuclear weapons",
+      "proposition": "Commit to no first use of nuclear weapons",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\bno[ -]first[ -]use (?:of nuclear weapons|policy for nuclear weapons|nuclear policy)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "negative_security_assurances",
+      "label": "Provide negative security assurances to non-nuclear states",
+      "proposition": "Provide negative security assurances to non-nuclear states",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\bnegative security assurances to non[ -]nuclear[ -]weapon states\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "outer_space_arms_race",
+      "label": "Prevent an arms race in outer space",
+      "proposition": "Prevent an arms race in outer space",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\b(?:prevention of an arms race in outer space|prevent(?:ing)? an arms race in outer space)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "autonomous_weapons_treaty",
+      "label": "Negotiate a treaty on autonomous weapons",
+      "proposition": "Negotiate a treaty on autonomous weapons",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\b(?:legally binding instrument|treaty|convention) on (?:lethal )?autonomous weapons(?: systems)?\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "cybercrime_convention",
+      "label": "UN Convention against Cybercrime",
+      "proposition": "UN Convention against Cybercrime",
+      "policy_area": "Institutions and digital governance",
+      "patterns": [
+        "\\b(?:United Nations|UN) Convention against Cybercrime\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "un_peacekeeping",
+      "label": "Support UN peacekeeping operations",
+      "proposition": "Support UN peacekeeping operations",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\b(?:United Nations|UN) peacekeeping operations\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "oda_target",
+      "label": "Meet the 0.7% official-development-assistance target",
+      "proposition": "Meet the 0.7% official-development-assistance target",
+      "policy_area": "Development and finance",
+      "patterns": [
+        "\\b0[.,]7\\s*(?:per cent|percent|%)\\s*(?:of (?:GNI|gross national income)\\s*)?(?:ODA|official development assistance)(?: target)?\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "debt_restructuring",
+      "label": "Restructure sovereign debt",
+      "proposition": "Restructure sovereign debt",
+      "policy_area": "Development and finance",
+      "patterns": [
+        "\\b(?:sovereign debt restructuring|restructuring of sovereign debt)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "debt_cancellation",
+      "label": "Cancel sovereign debt",
+      "proposition": "Cancel sovereign debt",
+      "policy_area": "Development and finance",
+      "patterns": [
+        "\\b(?:cancellation of sovereign debt|sovereign debt cancellation)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "concessional_finance",
+      "label": "Provide concessional finance",
+      "proposition": "Provide concessional finance",
+      "policy_area": "Development and finance",
+      "patterns": [
+        "\\bconcessional financ(?:e|ing)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "social_protection",
+      "label": "Strengthen social protection",
+      "proposition": "Strengthen social protection",
+      "policy_area": "Development and finance",
+      "patterns": [
+        "\\bsocial protection(?: systems)?\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "technology_transfer",
+      "label": "Facilitate technology transfer",
+      "proposition": "Facilitate technology transfer",
+      "policy_area": "Development and finance",
+      "patterns": [
+        "\\btechnology transfer\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "illicit_financial_flows",
+      "label": "Combat illicit financial flows",
+      "proposition": "Combat illicit financial flows",
+      "policy_area": "Development and finance",
+      "patterns": [
+        "\\b(?:combat(?:ing|ting)?|curb(?:ing)?|tackl(?:e|ing)) illicit financial flows\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "tax_cooperation_convention",
+      "label": "UN framework convention on international tax cooperation",
+      "proposition": "UN framework convention on international tax cooperation",
+      "policy_area": "Development and finance",
+      "patterns": [
+        "\\b(?:United Nations|UN) Framework Convention on International Tax Cooperation\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "wto",
+      "label": "World Trade Organization",
+      "proposition": "World Trade Organization",
+      "policy_area": "Development and finance",
+      "patterns": [
+        "\\bWorld Trade Organi[sz]ation\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "doha_ldc",
+      "label": "Doha Programme of Action for least developed countries",
+      "proposition": "Doha Programme of Action for least developed countries",
+      "policy_area": "Development and finance",
+      "patterns": [
+        "\\bDoha Programme of Action(?: for (?:the )?Least Developed Countries)?\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "adaptation_finance",
+      "label": "Provide climate-adaptation finance",
+      "proposition": "Provide climate-adaptation finance",
+      "policy_area": "Climate and environment",
+      "patterns": [
+        "\\b(?:climate[ -])?adaptation financ(?:e|ing)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "fossil_fuel_transition",
+      "label": "Transition away from fossil fuels",
+      "proposition": "Transition away from fossil fuels",
+      "policy_area": "Climate and environment",
+      "patterns": [
+        "\\btransition(?:ing)? away from fossil fuels\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "renewable_energy",
+      "label": "Expand renewable energy",
+      "proposition": "Expand renewable energy",
+      "policy_area": "Climate and environment",
+      "patterns": [
+        "\\b(?:expansion of renewable energy|expand(?:ing)? renewable energy)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "biodiversity_framework",
+      "label": "Kunming-Montreal Global Biodiversity Framework",
+      "proposition": "Kunming-Montreal Global Biodiversity Framework",
+      "policy_area": "Climate and environment",
+      "patterns": [
+        "\\bKunming[ -]Montreal Global Biodiversity Framework\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "bbnj",
+      "label": "Biodiversity Beyond National Jurisdiction Agreement",
+      "proposition": "Biodiversity Beyond National Jurisdiction Agreement",
+      "policy_area": "Climate and environment",
+      "patterns": [
+        "\\b(?:BBNJ Agreement|Biodiversity Beyond National Jurisdiction Agreement|Agreement on (?:the )?Conservation and Sustainable Use of Marine Biological Diversity of Areas Beyond National Jurisdiction)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "plastics_treaty",
+      "label": "Negotiate a treaty on plastic pollution",
+      "proposition": "Negotiate a treaty on plastic pollution",
+      "policy_area": "Climate and environment",
+      "patterns": [
+        "\\b(?:legally binding instrument|treaty|convention) (?:on|to end) plastic pollution\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "sendai",
+      "label": "Sendai Framework for Disaster Risk Reduction",
+      "proposition": "Sendai Framework for Disaster Risk Reduction",
+      "policy_area": "Climate and environment",
+      "patterns": [
+        "\\bSendai Framework(?: for Disaster Risk Reduction)?\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "early_warning",
+      "label": "Provide multi-hazard early-warning systems",
+      "proposition": "Provide multi-hazard early-warning systems",
+      "policy_area": "Climate and environment",
+      "patterns": [
+        "\\bmulti[ -]hazard early[ -]warning systems\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "gender_equality",
+      "label": "Advance gender equality",
+      "proposition": "Advance gender equality",
+      "policy_area": "Human rights and inclusion",
+      "patterns": [
+        "\\bgender equality\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "women_peace_security",
+      "label": "Women, Peace and Security agenda",
+      "proposition": "Women, Peace and Security agenda",
+      "policy_area": "Human rights and inclusion",
+      "patterns": [
+        "\\b(?:Women,? Peace and Security agenda|WPS agenda)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "women_peace_participation",
+      "label": "Include women in peace processes",
+      "proposition": "Include women in peace processes",
+      "policy_area": "Human rights and inclusion",
+      "patterns": [
+        "\\b(?:women(?:\\x27s)? (?:full,? equal and meaningful )?participation in peace processes|participation of women in peace processes)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "end_child_marriage",
+      "label": "End child marriage",
+      "proposition": "End child marriage",
+      "policy_area": "Human rights and inclusion",
+      "patterns": [
+        "\\b(?:end(?:ing)?|eliminat(?:e|ing|ion of)) child(?:, early and forced)? marriage\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "torture_convention",
+      "label": "Convention against Torture",
+      "proposition": "Convention against Torture",
+      "policy_area": "Human rights and inclusion",
+      "patterns": [
+        "\\bConvention against Torture\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "disappearances_convention",
+      "label": "Convention protecting all persons from enforced disappearance",
+      "proposition": "Convention protecting all persons from enforced disappearance",
+      "policy_area": "Human rights and inclusion",
+      "patterns": [
+        "\\b(?:International )?Convention for the Protection of All Persons from Enforced Disappearance\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "refugee_convention",
+      "label": "1951 Refugee Convention",
+      "proposition": "1951 Refugee Convention",
+      "policy_area": "Migration and displacement",
+      "patterns": [
+        "\\b(?:1951 (?:Refugee Convention|Convention (?:relating to|on) the Status of Refugees))\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "migration_compact",
+      "label": "Global Compact for Migration",
+      "proposition": "Global Compact for Migration",
+      "policy_area": "Migration and displacement",
+      "patterns": [
+        "\\bGlobal Compact for (?:Safe,? Orderly and Regular )?Migration\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "refugees_compact",
+      "label": "Global Compact on Refugees",
+      "proposition": "Global Compact on Refugees",
+      "policy_area": "Migration and displacement",
+      "patterns": [
+        "\\bGlobal Compact on Refugees\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "disability_rights",
+      "label": "Convention on the Rights of Persons with Disabilities",
+      "proposition": "Convention on the Rights of Persons with Disabilities",
+      "policy_area": "Human rights and inclusion",
+      "patterns": [
+        "\\b(?:Convention on the Rights of Persons with Disabilities|CRPD)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "un80",
+      "label": "UN80 Initiative",
+      "proposition": "UN80 Initiative",
+      "policy_area": "Institutions and digital governance",
+      "patterns": [
+        "\\bUN80 Initiative\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "veto_restraint",
+      "label": "Restrain Security Council veto use in mass atrocities",
+      "proposition": "Restrain Security Council veto use in mass atrocities",
+      "policy_area": "Institutions and digital governance",
+      "patterns": [
+        "\\b(?:restraint (?:on|in) (?:the )?(?:use of (?:the )?)?(?:Security Council )?veto in (?:cases of )?mass atrocities|veto restraint in (?:cases of )?mass atrocities)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "african_permanent_seats",
+      "label": "Permanent African seats on the Security Council",
+      "proposition": "Permanent African seats on the Security Council",
+      "policy_area": "Institutions and digital governance",
+      "patterns": [
+        "\\b(?:permanent African seats on (?:the )?Security Council|permanent seats for Africa on (?:the )?Security Council)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "icj",
+      "label": "International Court of Justice",
+      "proposition": "International Court of Justice",
+      "policy_area": "Institutions and digital governance",
+      "patterns": [
+        "\\bInternational Court of Justice\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "unclos",
+      "label": "UN Convention on the Law of the Sea",
+      "proposition": "UN Convention on the Law of the Sea",
+      "policy_area": "Institutions and digital governance",
+      "patterns": [
+        "\\b(?:UNCLOS|(?:United Nations|UN) Convention on the Law of the Sea)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "ai_human_rights",
+      "label": "Human-rights-based AI governance",
+      "proposition": "Human-rights-based AI governance",
+      "policy_area": "Institutions and digital governance",
+      "patterns": [
+        "\\bhuman[ -]rights[ -]based (?:AI|artificial intelligence) governance\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "universal_health",
+      "label": "Provide universal health coverage",
+      "proposition": "Provide universal health coverage",
+      "policy_area": "Health",
+      "patterns": [
+        "\\buniversal health coverage\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "release_hostages",
+      "label": "Release all hostages",
+      "proposition": "Release all hostages",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\b(?:release of all hostages|releas(?:e|ing) all hostages)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "libya_elections",
+      "label": "Hold national elections in Libya",
+      "proposition": "Hold national elections in Libya",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\b(?:national elections in Libya|Libyan national elections)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "russian_withdrawal",
+      "label": "Withdraw Russian forces from Ukraine",
+      "proposition": "Withdraw Russian forces from Ukraine",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\b(?:withdrawal of Russian (?:forces|troops) from Ukraine|withdraw(?:ing)? Russian (?:forces|troops) from Ukraine)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "cuba_extraterritorial",
+      "label": "End extraterritorial application of the Cuba embargo",
+      "proposition": "End extraterritorial application of the Cuba embargo",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\b(?:end(?:ing)?|remov(?:e|ing|al of)) (?:the )?extraterritorial application of (?:the )?(?:embargo|blockade) (?:on|against) Cuba\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "end_unilateral_measures",
+      "label": "Lift unilateral coercive measures",
+      "proposition": "Lift unilateral coercive measures",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\b(?:lift(?:ing)?|remov(?:e|ing|al of)|end(?:ing)?) (?:all |the )?unilateral coercive measures\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "ihl_compliance",
+      "label": "Respect international humanitarian law",
+      "proposition": "Respect international humanitarian law",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\b(?:international humanitarian law|IHL)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "poverty_eradication",
+      "label": "Eradicate poverty",
+      "proposition": "Eradicate poverty",
+      "policy_area": "Development and finance",
+      "patterns": [
+        "\\b(?:poverty eradication|eradicat(?:e|ing|ion of) (?:extreme )?poverty)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "food_security",
+      "label": "Achieve food security",
+      "proposition": "Achieve food security",
+      "policy_area": "Development and finance",
+      "patterns": [
+        "\\bfood security\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "cyprus_good_offices",
+      "label": "Support the Secretary-General good-offices mission in Cyprus",
+      "proposition": "Support the Secretary-General good-offices mission in Cyprus",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\b(?:Secretary[ -]General(?:'s|’s)? Good Offices Mission in Cyprus|(?:UN|United Nations) good[ -]offices mission in Cyprus)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "global_alliance_human_rights",
+      "label": "Global Alliance for Human Rights",
+      "proposition": "Global Alliance for Human Rights",
+      "policy_area": "Human rights and inclusion",
+      "patterns": [
+        "\\bGlobal Alliance for Human Rights\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "civil_society_cooperation",
+      "label": "Cooperate with civil society",
+      "proposition": "Cooperate with civil society",
+      "policy_area": "Human rights and inclusion",
+      "patterns": [
+        "\\bcooperation with civil society\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "end_golan_occupation",
+      "label": "End Israeli occupation of the Syrian Golan",
+      "proposition": "End Israeli occupation of the Syrian Golan",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\bend(?:ing)? (?:the )?(?:Israeli )?occupation of (?:the )?(?:occupied )?Syrian Golan\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "human_rights_defenders",
+      "label": "Support human rights defenders",
+      "proposition": "Support human rights defenders",
+      "policy_area": "Human rights and inclusion",
+      "patterns": [
+        "\\bhuman rights defenders\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "international_crime_accountability",
+      "label": "Combat impunity for international crimes",
+      "proposition": "Combat impunity for international crimes",
+      "policy_area": "Institutions and digital governance",
+      "patterns": [
+        "\\b(?:combat(?:ing)? impunity|end(?:ing)? impunity|fight against impunity|accountability for (?:the )?(?:most serious )?international crimes|zero tolerance toward impunity)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "nuclear_deterrence",
+      "label": "Maintain nuclear deterrence",
+      "proposition": "Maintain nuclear deterrence",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\bnuclear deterrence\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "freedom_navigation",
+      "label": "Protect freedom of navigation",
+      "proposition": "Protect freedom of navigation",
+      "policy_area": "Institutions and digital governance",
+      "patterns": [
+        "\\bfreedom of navigation\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "unsc_2803",
+      "label": "Implement Security Council Resolution 2803",
+      "proposition": "Implement Security Council Resolution 2803",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\b(?:(?:UN |United Nations )?Security Council )?[Rr]esolution 2803\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "human_rights_treaty_bodies",
+      "label": "Support UN human rights treaty bodies",
+      "proposition": "Support UN human rights treaty bodies",
+      "policy_area": "Human rights and inclusion",
+      "patterns": [
+        "\\b(?:UN |United Nations )?human rights treaty body system\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "human_centric_ai",
+      "label": "Human rights safeguards for AI governance",
+      "proposition": "Human rights safeguards for AI governance",
+      "policy_area": "Human rights and inclusion",
+      "patterns": [
+        "\\bhuman[ -]centric AI governance\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "resident_coordinator",
+      "label": "Support the Resident Coordinator system",
+      "proposition": "Support the Resident Coordinator system",
+      "policy_area": "Development and finance",
+      "patterns": [
+        "\\bResident Coordinator [Ss]ystem\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "national_development_ownership",
+      "label": "National ownership of development cooperation",
+      "proposition": "National ownership of development cooperation",
+      "policy_area": "Development and finance",
+      "patterns": [
+        "\\bnational ownership\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "universal_jurisdiction",
+      "label": "Exercise universal jurisdiction",
+      "proposition": "Exercise universal jurisdiction",
+      "policy_area": "Institutions and digital governance",
+      "patterns": [
+        "\\b(?:exercise of )?universal jurisdiction\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "resilient_food_systems",
+      "label": "Build resilient food systems",
+      "proposition": "Build resilient food systems",
+      "policy_area": "Development and finance",
+      "patterns": [
+        "\\b(?:resilient food systems|resilience of food systems)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "civil_society_participation",
+      "label": "Include civil society in international processes",
+      "proposition": "Include civil society in international processes",
+      "policy_area": "Human rights and inclusion",
+      "patterns": [
+        "\\b(?:effective |meaningful |full )?participation of civil society\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "nuclear_weapon_free_zones",
+      "label": "Establish nuclear-weapon-free zones",
+      "proposition": "Establish nuclear-weapon-free zones",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\bnuclear[ -]weapons?[ -]free zones\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "peaceful_nuclear_energy",
+      "label": "Use nuclear energy for peaceful purposes",
+      "proposition": "Use nuclear energy for peaceful purposes",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\b(?:use of nuclear energy for peaceful purposes|peaceful uses? of nuclear energy)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "food_supply_chains",
+      "label": "Stabilize food and fertilizer supply chains",
+      "proposition": "Stabilize food and fertilizer supply chains",
+      "policy_area": "Development and finance",
+      "patterns": [
+        "\\b(?:fertilizer and food supply chains|food and fertilizer supply chains)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "libya_un_mediation",
+      "label": "UN mediation in Libya",
+      "proposition": "UN mediation in Libya",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\b(?:UNSMIL|UN[ -]facilitated (?:political )?process|UN[ -]facilitated Libyan political process)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "libya_territorial_integrity",
+      "label": "Respect Libya sovereignty and territorial integrity",
+      "proposition": "Respect Libya sovereignty and territorial integrity",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\b(?:unity, sovereignty, independence and territorial integrity of Libya|Libya(?:'s|’s)? sovereignty independence, territorial integrity)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "lebanon_1701",
+      "label": "Implement Security Council Resolution 1701",
+      "proposition": "Implement Security Council Resolution 1701",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\b(?:(?:UN |United Nations )?Security Council )?[Rr]esolution 1701\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "lebanon_sovereignty",
+      "label": "Respect Lebanon independence and territorial integrity",
+      "proposition": "Respect Lebanon independence and territorial integrity",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\bLebanon(?:'s|’s) independence, unity, and territorial integrity\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "iran_iaea_cooperation",
+      "label": "Iran cooperation with IAEA safeguards",
+      "proposition": "Iran cooperation with IAEA safeguards",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\b(?:(?:Iran|Tehran) to (?:fully cooperate|cooperate fully|cooperate) with the IAEA|(?:full )?cooperation (?:by|of) Iran with the IAEA)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "ohchr_work",
+      "label": "Support the UN human rights High Commissioner’s work",
+      "proposition": "Support the UN human rights High Commissioner’s work",
+      "policy_area": "Human rights and inclusion",
+      "patterns": [
+        "\\b(?:High Commissioner|OHCHR|Office of the (?:UN|United Nations) High Commissioner for Human Rights)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "disaster_risk_reduction",
+      "label": "Reduce disaster risks",
+      "proposition": "Reduce disaster risks",
+      "policy_area": "Climate and environment",
+      "patterns": [
+        "\\b(?:reduce disaster risks|disaster risk reduction|prevention of disasters)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "disaster_assistance_consent",
+      "label": "Require affected-state consent for international assistance",
+      "proposition": "Require affected-state consent for international assistance",
+      "policy_area": "Institutions and digital governance",
+      "patterns": [
+        "\\bassistance must[^.!?]{0,100}be provided with the consent of the affected states\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "predictable_development_finance",
+      "label": "Provide predictable, accessible development finance",
+      "proposition": "Provide predictable, accessible development finance",
+      "policy_area": "Development and finance",
+      "patterns": [
+        "\\b(?:financing that is predictable, affordable, and easier to access|predictable development financ(?:e|ing)|adequate, stable and predictable financial resources for development)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "state_sovereignty",
+      "label": "Respect state sovereignty",
+      "proposition": "Respect state sovereignty",
+      "policy_area": "Institutions and digital governance",
+      "patterns": [
+        "\\brespect (?:for |of (?:the )?)state sovereignty\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "peaceful_dispute_settlement",
+      "label": "Settle international disputes by peaceful means",
+      "proposition": "Settle international disputes by peaceful means",
+      "policy_area": "Institutions and digital governance",
+      "patterns": [
+        "\\b(?:peaceful means for (?:the )?settlement of disputes|peaceful settlement of (?:international )?disputes)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "iran_no_nuclear_weapon",
+      "label": "Prevent Iran from acquiring a nuclear weapon",
+      "proposition": "Prevent Iran from acquiring a nuclear weapon",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\b(?:prevent Iran from acquiring a nuclear weapon|Iran (?:must|should) never acquire a nuclear weapon)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "palestinian_statehood",
+      "label": "Support Palestinian statehood",
+      "proposition": "Support Palestinian statehood",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\b(?:Palestinian statehood|Palestinian people have the right to establish a Palestinian state)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "poverty_reduction",
+      "label": "Reduce poverty",
+      "proposition": "Reduce poverty",
+      "policy_area": "Development and finance",
+      "patterns": [
+        "\\b(?:poverty reduction|reduc(?:e|ing) poverty|tackling the problem of poverty)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "development_cooperation_framework",
+      "label": "Use nationally agreed UN development cooperation frameworks",
+      "proposition": "Use nationally agreed UN development cooperation frameworks",
+      "policy_area": "Development and finance",
+      "patterns": [
+        "\\b(?:United Nations |UN )?Sustainable Development Cooperation Framework\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "opcw_mandate",
+      "label": "Support the OPCW mandate",
+      "proposition": "Support the OPCW mandate",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\b(?:Organization for the Prohibition of Chemical Weapons|OPCW)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "russian_nuclear_threats",
+      "label": "Russian threats of nuclear weapons use",
+      "proposition": "Russian threats of nuclear weapons use",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\bRussia[’']s[^.!?]{0,180}\\bthreats of nuclear weapons use\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "outer_space_militarization",
+      "label": "Militarization of outer space",
+      "proposition": "Militarization of outer space",
+      "policy_area": "Security and disarmament",
+      "patterns": [
+        "\\bmilitarization of outer space\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "abandon_unilateral_measures",
+      "label": "Abandon measures described as illegitimate unilateral measures",
+      "proposition": "Abandon measures described as illegitimate unilateral measures",
+      "policy_area": "Institutions and digital governance",
+      "patterns": [
+        "\\babandon (?:illegitimate )?unilateral measures\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "treaty_implementation_assistance",
+      "label": "Training and technical assistance for treaty implementation (instrument unspecified)",
+      "proposition": "Training and technical assistance for treaty implementation (instrument unspecified)",
+      "policy_area": "Human rights and inclusion",
+      "patterns": [
+        "\\bstates parties to these mechanisms need training and technical assistance\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "halt_settlement_expansion",
+      "label": "Halt settlement expansion",
+      "proposition": "Halt settlement expansion",
+      "policy_area": "Regional peace and protection",
+      "patterns": [
+        "\\b(?:end to|halt(?:ing)?|stop(?:ping)?) settlement expansion\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "ohchr_technical_functions",
+      "label": "OHCHR technical assistance, capacity building and reporting",
+      "proposition": "OHCHR technical assistance, capacity building and reporting",
+      "policy_area": "Human rights and inclusion",
+      "patterns": [
+        "\\b(?:Office of (?:the )?High Commissioner (?:on|for) Human Rights|OHCHR)[^.!?]{0,100}\\btechnical assistance, capacity building, and (?:comprehensive )?reporting\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "human_rights_framing",
+      "label": "Move beyond negative framing of human rights as a partisan or luxury agenda",
+      "proposition": "Move beyond negative framing of human rights as a partisan or luxury agenda",
+      "policy_area": "Human rights and inclusion",
+      "patterns": [
+        "\\bmov(?:e|ing) beyond (?:the )?(?:negative (?:framing|narrative) (?:of|on) human rights|narrative on human rights that is too often negative)\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "national_ombudsman",
+      "label": "Restore a national Ombudsman while building human-rights institutions",
+      "proposition": "Restore a national Ombudsman while building human-rights institutions",
+      "policy_area": "Human rights and inclusion",
+      "patterns": [
+        "\\bOffice of the Ombudsman\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "national_child_protection_strategy",
+      "label": "Develop a comprehensive national child-protection strategy",
+      "proposition": "Develop a comprehensive national child-protection strategy",
+      "policy_area": "Human rights and inclusion",
+      "patterns": [
+        "\\bcomprehensive national child protection strategy\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    },
+    {
+      "id": "national_renewable_target_2050",
+      "label": "National target: 100% renewable-energy transition by 2050",
+      "proposition": "National target: 100% renewable-energy transition by 2050",
+      "policy_area": "Climate and environment",
+      "patterns": [
+        "\\b100% renewable energy transition by 2050\\b"
+      ],
+      "case_insensitive": true,
+      "classification_enabled": false,
+      "proposition_status": "requires_benchmark_definition"
+    }
+  ]
+}

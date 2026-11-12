@@ -1,6 +1,8 @@
 name: Check live browser collection
 
 on:
+  pull_request:
+    paths: ['.github/workflows/browser-collection-check.yml', 'tools/test_live_browser.py']
   # External-service monitoring is separate from release acceptance.
   schedule:
     - cron: '17 11 * * 1'
@@ -11,7 +13,8 @@ permissions:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
+    # Playwright 1.57 supports this image; ubuntu-latest advanced to 26.04.
+    runs-on: ubuntu-24.04
     timeout-minutes: 12
 
     steps:
@@ -20,6 +23,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
 
       - name: Deterministic analysis and committee regression tests
         run: node tools/test_browser_analysis.cjs
@@ -38,5 +45,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: browser-collection-acceptance
-          path: live-check
+          # Raw transcripts, source-bearing reports and screenshots stay on the
+          # ephemeral runner. Publish only source-free acceptance receipts.
+          path: |
+            live-check/browser/result.json
+            live-check/browser/failure.json
           retention-days: 7

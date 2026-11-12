@@ -1,8 +1,14 @@
 # Day-summary evaluation status
 
-## Result
+## Current result
 
-The requested semantic evaluation is **not evaluated because the workspace contains no owner-reviewed daily-summary sample spanning multiple UN bodies and meeting types**. No error rate is reported as zero, and the untouched test remains unopened. The machine-readable status is [`research/day_summary_evaluation/readiness.json`](../research/day_summary_evaluation/readiness.json).
+**The repaired daily summary has not passed empirical acceptance.** A finalized owner-reviewed three-day development sample now exists in the private project workspace: 12 meetings and 439 retained source segments. It informed the 1.40.0 repair described in [DAY_SUMMARY_DEVELOPMENT_REPAIR_2026-11-05.md](DAY_SUMMARY_DEVELOPMENT_REPAIR_2026-11-05.md). The repaired output still needs a new owner review; development replay counts are not accuracy rates on untouched data.
+
+The checked-in `readiness.json` and empty sample registration below are the earlier protocol-setup receipt. They are preserved as historical evidence, not a claim that the later private owner review never occurred. No private labels or source-bearing review files are reproduced here, and the frozen thresholds are unchanged. The new five-level stance model has its own [model card](MODEL_CARD.md) and does not inherit daily-summary acceptance.
+
+## Earlier protocol-setup result
+
+At protocol setup, the requested semantic evaluation was **not evaluated because that workspace contained no owner-reviewed daily-summary sample spanning multiple UN bodies and meeting types**. No error rate was reported as zero. The historical machine-readable receipt is [`research/day_summary_evaluation/readiness.json`](../research/day_summary_evaluation/readiness.json).
 
 The available owner-reviewed artifacts cannot supply the four required denominators:
 
@@ -14,7 +20,7 @@ The available owner-reviewed artifacts cannot supply the four required denominat
 | `docs/passage-type-reviewed-mask.json` | Structural passage types across six General Debate assets | Can inform procedural filtering, but contains no topic, claim, grouping or attribution decisions |
 | `docs/reviewed-units-validation.json` | Boundaries and audio decisions for 12 excerpts from three speeches | General Debate only and no complete-summary semantic labels |
 
-All visible owner-reviewed samples are General Debate or national-address material. None covers a Security Council meeting, Main Committee, Human Rights Council, treaty body, resumed meeting part or multi-body day with complete summary annotations. `research/validation/i9/owner-daily-validation.json` is structural product QA and explicitly says that it does not establish semantic accuracy.
+The samples visible at that earlier protocol-setup stage were General Debate or national-address material. They did not cover a Security Council meeting, Main Committee, Human Rights Council, treaty body, resumed meeting part or multi-body day with complete summary annotations. `research/validation/i9/owner-daily-validation.json` is structural product QA and explicitly says that it does not establish semantic accuracy. This limitation must not be misread as describing the later three-day development review.
 
 ## Locked acceptance criteria
 
@@ -39,4 +45,4 @@ These engineering results confirm the workflow and evaluator. They do not substi
 
 ## Untouched-test state
 
-No untouched daily-summary test was evaluated. The 37 reserved October 5–6 transcripts remain unopened. A future evaluation must first register source-bound owner-reviewed development manifests that satisfy the locked coverage, then register a disjoint non-reserved untouched sample. Any threshold change requires a new protocol version and a new untouched sample.
+No untouched daily-summary test was evaluated. The 37 reserved October 5–6 transcripts remain unopened. Before acceptance, reconcile the private source-bound development manifests with the evaluation protocol, complete owner review of the repaired output, and register a disjoint non-reserved untouched sample. Any threshold change requires a new protocol version and a new untouched sample.

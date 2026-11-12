@@ -2,7 +2,27 @@
 
 ## Use the browser application
 
-Open the [report builder](https://lystadjs.github.io/un/transcript-agent/). No installation or coding is required. Select a meeting or date range, generate a report, inspect its evidence and coverage, then save the transcript JSON to reopen the collection. The [browser guide](docs/BROWSER_ANALYSIS.md) explains the controls and limits. The current application release is **1.37.0**; `site/release.json` is the release record.
+Open the [report builder](https://lystadjs.github.io/un/transcript-agent/). No installation or coding is required. Select a meeting or date range, generate a report, inspect its evidence and coverage, then save the transcript JSON to reopen the collection. The [browser guide](docs/BROWSER_ANALYSIS.md) explains the controls and limits. `site/release.json` is the authoritative application release record.
+
+## Operational pipeline verification
+
+With Python 3.12 and Node.js 22, run the source-free operational suite from the repository root:
+
+```sh
+PYTHONPATH=src python -m unittest discover -s tests -p 'test_*.py' -v
+PYTHONPATH=src python -m un_transcript --help
+PYTHONPATH=src python -m un_transcript.models --help
+```
+
+The archive browser test uses Playwright and an installed Chromium executable:
+
+```sh
+BROWSER_PATH=/path/to/chromium node tests/test_archive_ui.cjs
+```
+
+Set `PLAYWRIGHT_MODULE` if Playwright is installed outside Node's normal module search path. `operational-tests.yml` pins Ubuntu 24.04, Python 3.12, Node 22 and Playwright 1.57.0 and installs the matching browser. All fixture source responses are synthetic. These checks do not establish live UN availability, a trained model's accuracy, or an operational fourteen-day record.
+
+For private durable storage, daily runs, restoration and source-safe public publication, follow [OPERATIONS.md](docs/OPERATIONS.md). Optional model dependencies belong to the separate manual training workflow; the ordinary synthetic contract tests do not download a model.
 
 ## Developer verification
 
