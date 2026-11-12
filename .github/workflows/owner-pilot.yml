@@ -1,0 +1,26 @@
+name: Prepare private owner pilot
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: operational-store
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      PYTHONPATH: src
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      HF_DATASET_REPO: ${{ vars.HF_DATASET_REPO }}
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check huggingface-hub==0.36.0
+      - name: Verify archive, prepare owner packet and retain privately
+        run: python tools/prepare_private_pilot.py
+      # No public artifacts: passages and annotation records remain private.
