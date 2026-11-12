@@ -67,7 +67,11 @@ class InventoryMetadataTests(unittest.TestCase):
         prepare_public_bundle(output/'public')
         seal_snapshot(self.store, output, {}, 'snapshot', STAMP)
         before = file_sha(output/'warehouse.sqlite3')
-        self.assertTrue(audit_restored_exports(output, self.root/'replayed')['byte_identical_exports'])
+        audit = audit_restored_exports(output, self.root/'replayed')
+        self.assertTrue(audit['byte_identical_exports'])
+        self.assertTrue(audit['inventory_provenance_verified'])
+        self.assertEqual(audit['warehouse_schema'], 2)
+        self.assertEqual(audit['inventory_metadata_rows_verified'], 1)
         self.assertEqual(before, file_sha(output/'warehouse.sqlite3'))
 
     def test_partial_inventory_is_retained_but_not_used_as_metadata(self):
@@ -149,6 +153,27 @@ class InventoryMetadataTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'Reserved'):
                 self.store.record_inventory_meetings('reserved', {})
 
+    def test_self_consistent_csv_and_database_cannot_forge_inventory_metadata(self):
+        _, selected = self.inventory()
+        self.store.record_inventory_meetings('run1', selected)
+        with self.store.db:
+            self.store.db.execute("UPDATE inventory_meetings SET title='Fabricated metadata'")
+        output, _ = self.export()
+        seal_snapshot(self.store, output, {}, 'snapshot', STAMP)
+        # All file hashes and CSV/database values agree, but the raw inventory
+        # never made this claim. Replay must detect that provenance failure.
+        with self.assertRaisesRegex(ValueError, 'differs from original'):
+            audit_restored_exports(output, self.root/'forged-replay')
+
+    def test_self_consistent_exports_cannot_promote_partial_inventory(self):
+        _, selected = self.inventory()
+        self.store.record_inventory_meetings('run1', selected)
+        self.store.record_coverage('run1', 'inventory:'+DAY, 'inventory_failed')
+        output, _ = self.export()
+        seal_snapshot(self.store, output, {}, 'snapshot', STAMP)
+        with self.assertRaisesRegex(ValueError, 'original complete receipts'):
+            audit_restored_exports(output, self.root/'partial-replay')
+
     def test_legacy_replay_remains_unchanged_and_working_copy_migration_is_additive(self):
         self.inventory(status='inventory_failed')
         self.store.db.execute('DROP TABLE inventory_meetings')
@@ -163,7 +188,10 @@ class InventoryMetadataTests(unittest.TestCase):
         self.assertEqual(combined, 'f869a1f5de1882b233cc90424e004db0216d0d2ae8ce40b6a220ab060fd0cf92')
         seal_snapshot(self.store, output, {}, 'legacy', STAMP)
         before = file_sha(output/'warehouse.sqlite3')
-        self.assertTrue(audit_restored_exports(output, self.root/'legacy-replayed')['byte_identical_exports'])
+        audit = audit_restored_exports(output, self.root/'legacy-replayed')
+        self.assertTrue(audit['byte_identical_exports'])
+        self.assertEqual(audit['warehouse_schema'], 1)
+        self.assertFalse(audit['inventory_provenance_verified'])
         self.store.close()
         self.store = Warehouse(self.root/'live/warehouse.sqlite3')
         self.assertEqual(self.store.db.execute('PRAGMA user_version').fetchone()[0], 2)
