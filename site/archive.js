@@ -4,7 +4,8 @@
   const MAX_MANIFEST = 1024 * 1024, MAX_PART = 8 * 1024 * 1024, MAX_TOTAL = 64 * 1024 * 1024;
   const PAGE_SIZE = 100, MAX_MEETINGS = 100000;
   const $ = id => document.getElementById(id);
-  const state = {meetings: [], manifest: null, url: null, visible: PAGE_SIZE};
+  const state = {meetings: [], manifest: null, url: null, visible: PAGE_SIZE, reportPolicy:null, reportSelection:new Map()};
+  const H=UNMeetingReportSelection;
   const labels = {strongly_oppose:'Strongly oppose',oppose:'Oppose',neutral:'Neutral',support:'Support',strongly_support:'Strongly support',not_discussed:'Not discussed',no_expressed_position:'No expressed position',insufficient_evidence:'Insufficient evidence',unresolved_attribution:'Unresolved attribution',conditional:'Conditional position',mixed:'Conflicting positions',conflicting:'Conflicting positions',unclear:'Unclear',withheld:'Estimate withheld',not_evaluated:'Not evaluated'};
   const text = value => typeof value === 'string' ? value : '';
   const friendly = value => labels[value] || text(value).replace(/_/g, ' ') || 'Unknown';
@@ -57,9 +58,23 @@
     return state.meetings.filter(m=>(!body || m.body===body)&&(!start || (m.date && m.date>=start))&&(!end || (m.date && m.date<=end))&&(!query || [m.title,m.meeting_id,...m.issues.map(i=>typeof i==='string'?i: i.label||i.proposition||i.issue_id)].join(' ').toLocaleLowerCase().includes(query)));
   }
   function tableRow(cells){const tr=node('tr');for(const content of cells){const td=node('td');td.append(content instanceof Node?content:document.createTextNode(String(content)));tr.append(td);}return tr;}
+  function reportSelectionStatus(){
+    const count=state.reportSelection.size;
+    $('reportSelectionStatus').textContent=state.reportPolicy?count+' of '+H.MAX+' report slots selected. Selection is retained when filters change.':'Report selection unavailable: exclusion policy could not be verified. Archive browsing remains available.';
+    $('prepareSelection').disabled=!state.reportPolicy||!count;$('clearReportSelection').disabled=!count;
+  }
+  function meetingCell(m){
+    const box=node('div');box.append(sourceLink(m.source_url,m.title||m.meeting_id));
+    if(state.reportPolicy&&H.eligible(m,state.reportPolicy)&&m.status!=='excluded_reserved'){
+      const label=node('label',undefined,'report-select'),input=node('input');input.type='checkbox';input.checked=state.reportSelection.has(m.meeting_id);input.setAttribute('aria-label','Select for report: '+(m.title||m.meeting_id));
+      input.onchange=()=>{if(input.checked){if(state.reportSelection.size>=H.MAX){input.checked=false;$('reportSelectionStatus').textContent='Five meetings are already selected. Clear one before adding another.';return;}state.reportSelection.set(m.meeting_id,{meeting_id:m.meeting_id,date:m.date});}else state.reportSelection.delete(m.meeting_id);reportSelectionStatus();};
+      label.append(input,document.createTextNode('Select for report'));box.append(label);
+    }
+    return box;
+  }
   function render() {
     const selected=selectedMeetings();$('meetingRows').replaceChildren();$('positionRows').replaceChildren();
-    for(const m of selected.slice(0,state.visible))$('meetingRows').append(tableRow([m.date||'Date unknown',sourceLink(m.source_url,m.title||m.meeting_id),m.body||'Not recorded',m.segments>0?'Text archived':'No text archived',friendly(m.status),m.segments]));
+    for(const m of selected.slice(0,state.visible))$('meetingRows').append(tableRow([m.date||'Date unknown',meetingCell(m),m.body||'Not recorded',m.segments>0?'Text archived':'No text archived',friendly(m.status),m.segments]));
     const invalid=$('archiveStart').value && $('archiveEnd').value && $('archiveStart').value>$('archiveEnd').value;
     $('filterStatus').textContent=invalid?'Choose a start date on or before the end date.':`${selected.length.toLocaleString()} meetings match. Showing ${Math.min(state.visible,selected.length).toLocaleString()}.`;
     $('moreMeetings').hidden=state.visible>=selected.length;$('exportSelection').disabled=!selected.length;
@@ -97,6 +112,8 @@
     $('downloadStatus').textContent=m.downloads.length?'Select a dataset to verify and download.':'No published downloads are available.';render();
   }
   async function load() {
+    try{state.reportPolicy=H.policy(decode(await bytes('reporting-exclusions.json',16384)));}catch{state.reportPolicy=null;}
+    reportSelectionStatus();
     try {
       const config=decode(await bytes('archive-config.json',16384));
       if(config.schema!=='un.archive-config.v1')throw Error('Unsupported archive configuration.');
@@ -120,6 +137,8 @@
   for(const id of ['archiveSearch','archiveBody','archiveStart','archiveEnd'])$(id).addEventListener('input',()=>{state.visible=PAGE_SIZE;render();});
   $('clearFilters').addEventListener('click',()=>{for(const id of ['archiveSearch','archiveBody','archiveStart','archiveEnd'])$(id).value='';state.visible=PAGE_SIZE;render();});
   $('moreMeetings').addEventListener('click',()=>{state.visible+=PAGE_SIZE;render();});
+  $('clearReportSelection').onclick=()=>{state.reportSelection.clear();reportSelectionStatus();render();};
+  $('prepareSelection').onclick=()=>{try{location.href=H.link({schema:H.SCHEMA,snapshot_id:state.manifest.snapshot_id,meetings:[...state.reportSelection.values()]},state.reportPolicy);}catch(e){$('reportSelectionStatus').textContent=e.message;}};
   $('exportSelection').addEventListener('click',()=>{
     const escape=v=>'"'+String(/^[\s]*[=+\-@]/.test(String(v))?"'"+v:v).replace(/"/g,'""')+'"';
     const columns=['meeting_id','date','title','body','status','segments','source_url'];const lines=[columns,...selectedMeetings().map(m=>columns.map(k=>m[k]??''))];

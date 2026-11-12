@@ -1,0 +1,10 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),H=require('../site/meeting-report-selection.js');
+const policy=JSON.parse(fs.readFileSync(require.resolve('../site/reporting-exclusions.json')));
+const valid={schema:H.SCHEMA,snapshot_id:'snapshot-public-1',meetings:[{date:'2026-11-10',meeting_id:'ga/81/900'},{date:'2026-11-11',meeting_id:'sc/10900'}]};
+assert.deepEqual(H.read(H.link(valid,policy).split('?')[1],policy),valid);assert.equal(H.read('?verify=abc',policy),null);
+for(const slug of policy.meetings)assert.equal(H.eligible({date:'2026-11-10',meeting_id:slug},policy),false);
+for(const m of [{date:'2026-10-05',meeting_id:'ga/81/900'},{date:'2026-02-30',meeting_id:'ga/81/900'},{date:'2026-11-10',meeting_id:'../../private'}])assert.equal(H.eligible(m,policy),false);
+for(const bad of [{...valid,meetings:[]},{...valid,meetings:Array(6).fill(valid.meetings[0])},{...valid,meetings:[valid.meetings[0],valid.meetings[0]]},{...valid,source_url:'https://private.invalid'},{...valid,meetings:[{...valid.meetings[0],text:'not allowed'}]},{...valid,snapshot_id:'<script>'}])assert.throws(()=>H.validate(bad,policy));
+assert.throws(()=>H.read('?selection={}&selection={}',policy));assert.throws(()=>H.read('?selection='+encodeURIComponent('x'.repeat(2501)),policy));
+console.log('PASS: bounded metadata-only handoff, cross-date identities, reserved policy, duplicate/invalid dates and locator/text rejection');

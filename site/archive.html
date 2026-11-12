@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="theme.css">
   <link rel="stylesheet" href="app.css">
   <link rel="stylesheet" href="archive.css">
-  <script defer src="archive.js"></script>
+  <script defer src="meeting-report-selection.js"></script><script defer src="archive.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to archive</a>
@@ -46,6 +46,10 @@
         <button type="button" id="exportSelection">Download meeting list CSV</button>
       </fieldset>
       <p id="filterStatus" role="status" aria-live="polite">No archive is loaded.</p>
+      <p id="reportSelectionStatus" role="status">No meetings selected for a report.</p>
+      <button type="button" id="prepareSelection" disabled>Prepare report from selected meetings</button>
+      <button type="button" id="clearReportSelection" class="secondary" disabled>Clear report selection</button>
+      <p class="hint">Choose up to five meetings, including across dates. This carries public identifiers into the reporting workspace; check current availability and load sources there. The archive does not send private transcript text.</p>
       <div class="archive-table-wrap" tabindex="0" role="region" aria-label="Meeting results, scroll horizontally when needed"><table><caption>Published meeting coverage</caption><thead><tr><th scope="col">Date</th><th scope="col">Meeting and source</th><th scope="col">Venue</th><th scope="col">Archived text</th><th scope="col">Latest collection check</th><th scope="col">Source segments</th></tr></thead><tbody id="meetingRows"></tbody></table></div>
       <button type="button" id="moreMeetings" class="secondary" hidden>Show more meetings</button>
       <p class="hint">A deferred or failed refresh does not remove text already archived. Collection checks describe the latest attempt, not whether the archive holds earlier text. Source segments are not necessarily complete speeches; missing text does not establish that a meeting or issue did not occur.</p>

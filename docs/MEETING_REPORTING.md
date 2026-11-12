@@ -10,7 +10,7 @@ The immediate product target is a PowerTranscript-like reporting workflow, imple
 
 Users can also reopen source-bound `un.browser.corpus.v1` collections and versioned `un.meeting-report.v1` reports. Imported text must match original response bytes, source identity, date, language, JSON pointer, and hashes. Meeting titles, passage identifiers and evidence links must match the original inventory and source; renaming a repeated passage cannot inflate its count. Country and speaker metadata must agree with the original source and current country registry. Unsupported or corrupt inputs leave the existing collection intact. Legacy hash-only collections remain readable in the original advanced workspace; this new workflow requires original response bytes.
 
-The maintained public archive is deliberately source-free. This first delivery links to that archive but does not transfer private warehouse text or change publication allowlists. Fresh browser collection is user-triggered, local, English-only and separate from the scheduled warehouse. A browser can show a newer revision than the last warehouse snapshot; report provenance identifies the actual loaded revision.
+The maintained public archive is deliberately source-free. The archive can hand off up to five selected public meeting identities across dates. Selection survives filters and pagination. The versioned link carries only dates, meeting IDs and the public snapshot ID; no transcript, notes, source URL or credentials. In the reporting workspace, users explicitly check those identities against the current official inventory before loading available sources. Missing and unavailable meetings remain visible; the tool never substitutes another meeting. Invalid/reserved selections are rejected, and missing exclusion policy disables handoff while preserving archive browsing. This does not transfer private warehouse text or change publication allowlists. Fresh browser collection is user-triggered, local, English-only and separate from the scheduled warehouse. A browser can show a newer revision than the last warehouse snapshot; report provenance identifies the actual loaded revision.
 
 ## Templates and interpretation
 
@@ -35,7 +35,7 @@ CSV uses UTF-8, quoted cells and CRLF. Potential spreadsheet formulas are prefix
 ## Next deliveries and acceptance
 
 1. Test representative diplomat tasks against the first workflow; retain actual usability feedback separately from synthetic engineering tests.
-2. Add archive-selection handoff using approved source access, without broadening the public text allowlist implicitly.
+2. Extend the implemented archive-selection handoff only through approved source access, without broadening the public text allowlist implicitly.
 3. Add reusable mission templates and richer report editing while preserving source/user/model distinctions.
 4. Evaluate an optional local generative reporting model separately from the stance classifier. Fluent generation, factual coverage and citation correctness need their own acceptance evidence.
 5. Complete the owner-label pilot and untouched stance evaluation. Reporting remains useful while model estimates stay withheld.

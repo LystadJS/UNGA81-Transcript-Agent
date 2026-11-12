@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' https://transcripts.un.org; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
   <title>Meeting reports · UN Transcript Agent</title>
   <link rel="stylesheet" href="theme.css"><link rel="stylesheet" href="app.css"><link rel="stylesheet" href="meeting-reports.css">
-  <script defer src="meeting-scopes.js"></script><script defer src="collector.js"></script><script defer src="meeting-picker-core.js"></script><script defer src="text-units.js"></script><script defer src="meeting-quick-reader.js"></script><script defer src="meeting-report-core.js"></script><script defer src="meeting-reports.js"></script>
+  <script defer src="meeting-scopes.js"></script><script defer src="collector.js"></script><script defer src="meeting-picker-core.js"></script><script defer src="text-units.js"></script><script defer src="meeting-quick-reader.js"></script><script defer src="meeting-report-core.js"></script><script defer src="meeting-report-selection.js"></script><script defer src="meeting-reports.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to meeting reports</a>
@@ -16,6 +16,7 @@
     <p id="status" class="notice" role="status" aria-live="polite">Preparing the reporting workspace…</p>
     <section aria-labelledby="chooseHeading"><h2 id="chooseHeading">1. Choose meetings</h2>
       <fieldset id="sourceControls" disabled><legend>Find proceedings or reopen your work</legend><div class="report-controls">
+        <div id="archiveSelection" hidden><p id="archiveSelectionInfo"></p><button type="button" id="checkArchiveSelection">Check selected meetings</button></div>
         <label for="meetingDate">Meeting date<input type="date" id="meetingDate"></label><button type="button" id="findMeetings">Find meetings</button>
         <label for="openCollection">Open a saved collection or report JSON<input type="file" id="openCollection" accept=".json,application/json"></label>
       </div></fieldset>

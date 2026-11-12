@@ -2,7 +2,7 @@
 (()=>{
   'use strict';
   const $=id=>document.getElementById(id),Core=UNMeetingReport;
-  let policy,countries,inventory=[],corpora=[],report=null,controller=null,shown=10,dirty=false;
+  let policy,countries,inventory=[],corpora=[],report=null,controller=null,shown=10,dirty=false,handoff=null;
   const setStatus=(message,error=false)=>{$('status').textContent=message;$('status').classList.toggle('error',error);};
   const selected=()=>[...$('loadedMeetings').querySelectorAll('input:checked')].map(e=>e.value);
   const options=()=>({template:$('reportTemplate').value,mission:$('mission').value,title:$('reportTitle').value,priorities:$('priorities').value,notes:$('analystNotes').value});
@@ -30,7 +30,25 @@
     invalidate();shown=10;search();
   }
   function busy(value){$('sourceControls').disabled=value;$('loadMeetings').disabled=value||!document.querySelector('#inventory input:checked');$('cancelLoad').hidden=!value;for(const e of $('inventory').querySelectorAll('input'))e.disabled=value||!inventory.find(m=>m.slug===e.value)?.hasTranscript;}
+  function clearHandoff(){handoff=null;$('archiveSelection').hidden=true;}
+  $('checkArchiveSelection').onclick=async()=>{
+    if(!handoff)return;
+    try{
+      const requested=UNMeetingReportSelection.validate(handoff,policy).meetings;
+      controller=new AbortController();busy(true);inventory=[];$('inventory').replaceChildren();
+      const next=[];
+      for(const date of [...new Set(requested.map(m=>m.date))]){
+        const listed=await UNMeetingPickerCore.list(date,{signal:controller.signal,progress:setStatus});
+        for(const wanted of requested.filter(m=>m.date===date))next.push(listed.meetings.find(m=>m.slug===wanted.meeting_id)||{slug:wanted.meeting_id,date,title:wanted.meeting_id+' (not in current inventory)',hasTranscript:false});
+      }
+      inventory=next;
+      for(const m of inventory)$('inventory').append(checkbox(m,false,m.hasTranscript));
+      const available=inventory.filter(m=>m.hasTranscript).length;
+      setStatus(available+' of '+requested.length+' selected meetings currently list transcripts. '+(requested.length-available)+' are unavailable or absent. Load the checked meetings explicitly; the loaded revision may differ from the archive snapshot.');
+    }catch(e){setStatus(e.name==='AbortError'?'Selection check cancelled.':e.message,true);}finally{controller=null;busy(false);}
+  };
   $('findMeetings').onclick=async()=>{
+    clearHandoff();
     const date=$('meetingDate').value;
     try{
       if(!Core.allowed(date,null,policy))throw Error('Choose an eligible date. The reserved evaluation dates remain closed.');
@@ -41,7 +59,7 @@
       setStatus(inventory.length+' eligible meetings found. Select up to five, then load their transcripts.');
     }catch(e){setStatus(e.name==='AbortError'?'Search cancelled.':e.message,true);}finally{controller=null;busy(false);}
   };
-  $('meetingDate').oninput=()=>{inventory=[];$('inventory').replaceChildren();$('loadMeetings').disabled=true;};
+  $('meetingDate').oninput=()=>{clearHandoff();inventory=[];$('inventory').replaceChildren();$('loadMeetings').disabled=true;};
   $('loadMeetings').onclick=async()=>{
     const ids=new Set([...$('inventory').querySelectorAll('input:checked')].map(e=>e.value)),chosen=inventory.filter(m=>ids.has(m.slug));
     if(!chosen.length||chosen.length>5){setStatus('Select between one and five meetings per load.',true);return;}
@@ -82,6 +100,9 @@
     const read=async path=>{const r=await fetch(path,{credentials:'omit'});if(!r.ok)throw Error('Reporting setup unavailable.');return r.json();};
     [policy,countries]=await Promise.all([read('reporting-exclusions.json'),read('countries.json')]);Core.exclusions(policy);
     const now=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());$('meetingDate').value=now;
-    $('sourceControls').disabled=false;setStatus('Ready. Choose a meeting date or open a saved collection.');
+    $('sourceControls').disabled=false;
+    try{handoff=UNMeetingReportSelection.read(location.search,policy);}catch(e){setStatus('Could not open meeting selection: '+e.message+' Choose a date or saved collection instead.',true);return;}
+    if(handoff){$('archiveSelection').hidden=false;$('archiveSelectionInfo').textContent=handoff.meetings.length+' meetings selected'+(handoff.snapshot_id?' from archive snapshot '+handoff.snapshot_id:'')+'. Check the current official inventory before loading. Only public identifiers were transferred.';setStatus('Ready. Check the selected meetings. No transcript has been requested.');}
+    else setStatus('Ready. Choose a meeting date or open a saved collection.');
   }catch(e){setStatus(e.message,true);}})();
 })();
