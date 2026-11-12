@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.43.0",
+  "browser_engine": "browser-descriptive-1.44.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-12",
   "features": [
+    "Archive-to-report selection of up to five public meeting identities across dates, with explicit inventory verification and source loading, retained filter selection, unavailable-source gaps and reserved-meeting exclusions",
     "Meeting-first reporting workspace: explicit selected-source loading, original-bound evidence search, mission templates, source-linked deterministic briefings and script-free HTML, replayable JSON and documented CSV exports; all 37 reserved meetings remain closed",
     "Published read-only operational archive with verified partitions, explicit freshness, archived-text availability separate from the latest collection attempt, and withheld unvalidated stance estimates",
     "Owner-reviewed day-summary repair: self-contained source-derived policy objects, narrower catalog boundaries, expanded meeting-procedure filtering, and explicit collective attribution excluded from national participation",
@@ -138,6 +139,7 @@
     "status": "local_engineering_pass",
     "external_ai_calls": 0,
     "model_status": "withheld_not_accepted",
-    "empirical_usability_acceptance": "not_run"
+    "empirical_usability_acceptance": "not_run",
+    "selection_schema": "un.meeting-selection.v1"
   }
 }
