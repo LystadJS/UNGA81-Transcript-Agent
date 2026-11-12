@@ -1,6 +1,6 @@
-# Operational implementation verification — 11 November 2026
+# Operational implementation and activation verification — 12 November 2026 (UTC)
 
-This record distinguishes new execution from inherited evidence. Code implements the proposed operational pipeline; external service activation and empirical model acceptance remain open.
+This record distinguishes new execution from inherited evidence. Code and source-site deployment are complete for the operational implementation milestone. Two actual private archive publications succeeded, including restoration and continued collection on a fresh runner. Empirical model acceptance and sustained operational acceptance remain open. Activation dates, workflow timestamps and snapshot identifiers in this record use UTC.
 
 ## Executed locally
 
@@ -10,8 +10,27 @@ This record distinguishes new execution from inherited evidence. Code implements
 - Optional ML dependencies were exercised with a tiny, randomly initialized **synthetic-only** DistilBERT: 30 fictional training pairs, 25 separate calibration pairs, 10 test pairs, TF-IDF baseline, safetensors serialization, and ONNX inference. Dynamic ONNX/PyTorch parity at two sequence lengths differed by at most `2.384185791015625e-07`. The insufficient benchmark correctly failed acceptance. This is software validation, not a trained UN model.
 - The public build succeeds without copying private runtime data.
 
-## Current limits
+## GitHub and first actual archive publication
 
-Hugging Face repositories and token are not configured in this execution environment, so remote round-trip behavior has been exercised against an injected deterministic service, not the owner's account. GitHub's live-browser monitor was repaired for its runner and collapsed controls; local Chromium reaches the collection step but the environment's proxy certificate is not trusted by that browser. No TLS bypass was used. Check the PR's runner result for fresh external-service acceptance.
+- [Source PR #187](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/187) merged as `17232d06a71f7ca187062ae66f51522bb3c4bf73`. All six checks passed, including actual live collection. This supersedes the earlier local-browser certificate limitation for the verified GitHub run; no TLS bypass was required.
+- [Source Pages deployment 43154122421](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/43154122421) succeeded.
+- [First actual Hugging Face archive run 43154577386](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/43154577386) succeeded against the owner-controlled private dataset `LystadJS/UN-Transcript-Agent-Private`. The initial connection check reported private visibility, retained storage usage of zero and no existing pointer. Those values describe the empty repository before publication.
+- The run published private snapshot `20261112T042431Z-98493e2e5511`, reporting 87 meetings and 76,284,090 downloaded bytes. Coverage was **partial**. Public storage was **not configured**, and model status was **`not_evaluated_missing_labels`**. No accepted stance model or public transcript archive is implied by this success.
+
+The first run establishes actual collection and private write/publication behavior. Because there was no previous pointer, it does not establish restoration of an existing remote archive.
+
+## Second-run recovery verification
+
+[Actual run 43155142584](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/43155142584) **succeeded**, with all steps completed. Preflight confirmed an existing snapshot pointer, private repository visibility, an immutable repository revision and 40,446,080 retained bytes against the configured 80,000,000,000-byte budget. This storage reading preceded the second run and does not measure account-wide remaining capacity.
+
+The fresh Actions runner restored `20261112T042431Z-98493e2e5511` before opening the warehouse, continued bounded collection from its persisted state, and published `20261112T043029Z-314632fa4d79`. The second receipt reports 78 downloaded meetings, 75,470,172 bytes and **partial** coverage. Private publication succeeded; public storage remained unconfigured and model status remained `not_evaluated_missing_labels`.
+
+This verifies actual remote restoration and continued publication. The two per-run meeting counts must not be summed as unique coverage because refreshes can overlap. Partial collection still does not establish complete historical acquisition, source completeness or model acceptance.
+
+## Portfolio mirror and remaining acceptance
+
+The portfolio [mirror update in PR #151](https://github.com/LystadJS/LystadJS.github.io/pull/151) remains unmerged. Its [mirror audit](https://github.com/LystadJS/LystadJS.github.io/actions/runs/43153975946) passed at commit prefix `57106b1`; the [portfolio regression run](https://github.com/LystadJS/LystadJS.github.io/actions/runs/43153975951) reported 27 inherited failures while the relevant tests and assets remained byte-identical to the portfolio main branch. Source Pages success does not establish deployment to the preferred portfolio URL. The mirror needs a separately resolved integration decision.
 
 Actual owner labels, trained model acceptance, broader real-source coverage, diplomat usability sessions, and fourteen days of scheduled operation have not been completed. The 37 reserved meetings remain unopened.
+
+The fourteen-day record must measure actual scheduled starts/completions, pending work, storage use and failures. The successful second manual run establishes remote restore/continuation, but it does not replace that observation period, capacity acceptance, an interrupted-publication recovery drill, or representative usability evaluation. Source-bearing runtime reports and private recovery records stay outside this code repository.

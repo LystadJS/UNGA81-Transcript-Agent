@@ -1,6 +1,6 @@
 # Daily transcript warehouse operations
 
-The operational pipeline collects configured meetings, keeps immutable source revisions, and generates consistent research CSV snapshots. The browser application remains usable without configuring this service. A workflow file is not evidence that collection is active: service activation requires the owner-controlled storage repositories and credentials below.
+The operational pipeline collects configured meetings, keeps immutable source revisions, and generates consistent research CSV snapshots. The browser application remains usable without configuring this service. This project's first actual private archive publication succeeded on 12 November 2026 (UTC); the account setup below is now verified for that run. Scheduled reliability and recovery acceptance remain separate checks.
 
 ## Storage and account setup
 
@@ -32,9 +32,11 @@ After the operational workflow is merged into the default branch, open **Actions
 
 The **Verify private archive connection** step checks authenticated access, private visibility, an immutable repository revision, and retained storage usage before collection. Its output contains only operational metadata. It does not prove write access; that is established by successful snapshot publication. An initialized dataset without `latest.json` is a normal first run. If repository metadata has no valid commit SHA, add an initial README or `.gitattributes` through Hugging Face and retry; do not disable the revision check. Missing storage usage remains a blocker.
 
-For this project's archive, the owner supplied `LystadJS/UN-Transcript-Agent-Private` and reported saving `HF_TOKEN` and `HF_DATASET_REPO`. Treat the connection as unverified until the workflow succeeds. Leave public-repository and accepted-model settings unset until those separate capabilities are ready.
+For this project's archive, `LystadJS/UN-Transcript-Agent-Private` is configured and the [first actual workflow run](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/43154577386) succeeded. Its connection check reported private visibility, `usedStorage: 0` and no existing pointer before collection; successful publication then established write access. The initial zero-byte reading is not a measurement of storage after publication. Public-repository and accepted-model settings remain unset.
 
-Success requires the **Restore, collect, validate and publish one snapshot** step to complete and the private dataset to contain `latest.json` pointing to its verified `snapshots/<id>/snapshot.json`. A second manual run should restore that snapshot and continue the bounded collection. Record both run URLs and snapshot IDs privately for the recovery/observation record. The configured daily schedule then applies at 11:17 UTC.
+Success requires the **Restore, collect, validate and publish one snapshot** step to complete and the private dataset to contain `latest.json` pointing to its verified `snapshots/<id>/snapshot.json`. The first successful snapshot is `20261112T042431Z-98493e2e5511` (UTC), reporting 87 meetings, 76,284,090 downloaded bytes and partial collection coverage. Private publication succeeded; public publication was not configured and stance remained withheld as `not_evaluated_missing_labels`.
+
+The [second actual run](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/43155142584) **succeeded**. On a fresh Actions runner it verified the existing private pointer and immutable repository revision, restored the prior archive, continued collection, and published `20261112T043029Z-314632fa4d79`. Its receipt reports 78 downloaded meetings, 75,470,172 bytes and partial coverage. Preflight retained storage was 40,446,080 bytes against the configured 80,000,000,000-byte budget; this is a pre-run repository reading, not account-wide capacity acceptance. Public publication remained unconfigured and stance remained withheld. Refreshes may overlap the two runs, so their meeting counts are not a unique-meeting total. The configured daily schedule applies at 11:17 UTC; two manual runs do not establish scheduled reliability.
 
 ## Select meetings and run
 
@@ -61,7 +63,7 @@ The remote private snapshot is authoritative. Runner files, caches and Actions a
 
 On failure, inspect the Actions status and the last valid manifest's timestamp and coverage. Do not infer freshness from a green Pages deployment. Retry a failed run through manual dispatch; preserve the remote snapshot and checkpoint rather than deleting them.
 
-Before accepting the service, exercise the CLI's `restore`, `verify` and `status` commands in a fresh private workspace; use their `--help` output for exact options. Verify that restored CSV keys, counts and source hashes reproduce the published private manifest. An interrupted write must not replace the previous valid pointer.
+Actual remote restoration and continued publication were verified by the second successful Actions run above. For continuing recovery checks, use the CLI's `restore`, `verify` and `status` commands in a fresh private workspace; use their `--help` output for exact options. Verify that restored CSV keys, counts and source hashes reproduce the published private manifest. An interrupted-publication recovery drill remains outstanding: an interrupted write must not replace the previous valid pointer.
 
 Source corrections create new revisions. Old predictions remain attached to old revisions and are not silently treated as current. Reprocessing after a model change creates a new method version. The existing source and model history remain inspectable.
 
@@ -77,9 +79,9 @@ Use a valid private model/label store with sufficient free space before training
 
 ## Operational acceptance record
 
-Keep a private fourteen-day observation record with scheduled start, actual start, completion, source availability, pending work, retained-storage size, errors and published snapshot ID. Record missed jobs as missed. Run one restore drill and one interrupted-publication recovery test. Owner labeling, representative diplomat usability sessions, real model acceptance, and this observation period are external work; passing synthetic CI does not complete them.
+Keep a private fourteen-day observation record with scheduled start, actual start, completion, source availability, pending work, retained-storage size, errors and published snapshot ID. Record missed jobs as missed. Actual restore/continuation passed on the second manual run; complete the separate interrupted-publication recovery test and capacity assessment. Owner labeling, representative diplomat usability sessions, real model acceptance, and this observation period are external work; passing synthetic CI does not complete them.
 
-The separate `Check live browser collection` workflow uses a fixed authorized development date. Its pinned Ubuntu 24.04/Python 3.12 environment repairs the earlier Ubuntu 26.04/Playwright mismatch. A fresh successful run is still required to establish live collection health.
+The separate `Check live browser collection` workflow uses a fixed authorized development date. Its pinned Ubuntu 24.04/Python 3.12 environment repairs the earlier Ubuntu 26.04/Playwright mismatch. The actual live check passed among the six checks for merged source PR #187. That result establishes collection health at the observed run, not continuing external-service availability.
 
 ## Free-runner resource limits
 
