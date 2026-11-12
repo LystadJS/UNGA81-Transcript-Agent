@@ -1,0 +1,82 @@
+{
+  "schema": "un.w4.temporal-v3.coordinator-identification-decision.v1",
+  "review_kind": "INDEPENDENT_METHOD_AND_CODE_REVIEW_NOT_HUMAN_SIGNOFF",
+  "decision": "STATISTICAL_FREEZE_NOT_ACCEPTED",
+  "engineering_status": "SOURCE_SAFE_FALSIFICATION_EVIDENCE_REVIEWABLE",
+  "review_scope": [
+    "conditional_vs_marginal_gamma",
+    "MNAR_no_audit_identification",
+    "year_AR1_fixed_effects_uncertainty",
+    "calendar_nugget_and_measurement_alias",
+    "finite_nuisance_grid",
+    "real_source_audit",
+    "protocol_freeze_and_seeds"
+  ],
+  "source_safe": true,
+  "holding_v2_thresholds_unchanged": true,
+  "v3_holdout_executed": false,
+  "real_inference_authorized": false,
+  "pr_merge_authorized": false,
+  "numerical_development": {
+    "gamma_method_attempts": 540,
+    "gamma_completed": 312,
+    "gamma_refused": 228,
+    "covariance_attempts": 540,
+    "covariance_completed": 450,
+    "covariance_refused": 90,
+    "all_failed_fit_ids_retained": 318,
+    "correlated_year_T16": {
+      "completed_panels": 29,
+      "attempted_panels": 30,
+      "gamma_pooled_bias": 0.411,
+      "gamma_year_FE_bias": -0.039,
+      "gamma_estimated_AR1_smoothing_bias": 0.158,
+      "year_FE_diagnostic_true_hits": 25,
+      "year_FE_diagnostic_fit_denominator": 29,
+      "year_FE_diagnostic_interval_calibrated": false
+    },
+    "covariance_T16_rho065": {
+      "method_attempts_per_world": 30,
+      "wide_diagnostic_hits": 26,
+      "narrow_diagnostic_hits": 26,
+      "external_diagnostic_hits": 26,
+      "wide_median_width": 1.044,
+      "narrow_median_width": 0.903,
+      "external_median_width": 0.819,
+      "frequentist_interval_validated": false
+    }
+  },
+  "formal_counterexamples": {
+    "conditional_logit_gamma": -1.25,
+    "marginal_mixture_logit_slope": -0.7948343916886047,
+    "unaudited_missing_outcome_compatible_gamma_positive": 2.2335922215070942,
+    "unaudited_missing_outcome_compatible_gamma_negative": -0.5389965007326873,
+    "intrinsic_nugget_variance_first": 0.025,
+    "intrinsic_nugget_variance_second": 0.015,
+    "measurement_error_variance_first": 0.0144,
+    "measurement_error_variance_second": 0.0244,
+    "annual_covariance_equal_under_transfer": true,
+    "narrow_nugget_grid_max": 0.45,
+    "synthetic_effective_nugget_truth": 0.49622166246851385
+  },
+  "gates": {
+    "exclusive_owned_namespace": "PASS",
+    "existing_v2_freeze_unchanged": "PASS_REFERENCED_GIT_BLOB",
+    "source_free_counterexamples": "PASS",
+    "v3_approval_signed": "NOT_OBTAINED",
+    "conditional_gamma_target": "CONDITIONAL_ONLY",
+    "marginal_gamma_identified": "FAIL",
+    "real_randomized_missing_outcome_audit": "NOT_VERIFIED",
+    "finite_year_serial_gamma_interval": "NOT_CALIBRATED",
+    "calendar_year_nugget_from_annual_data": "FAIL",
+    "independent_external_measurement_source": "NOT_VERIFIED",
+    "continuous_partial_identification_set": "NOT_IMPLEMENTED",
+    "uniform_coverage_under_nuisance": "NOT_ESTABLISHED",
+    "final_v3_thresholds": "NOT_FROZEN",
+    "independent_v3_holdout_generator": "NOT_FROZEN",
+    "historical_inference": "WITHHELD"
+  },
+  "required_next_statistical_task": "New prospectively reviewed development-only design for response-year conditional gamma uncertainty and defensible continuous covariance sensitivity bounds",
+  "reviewer_approval_record": "NONE_NO_INDEPENDENT_HUMAN_STATISTICIAN_SIGNOFF",
+  "provenance_note": "No private original source records, reserved 2026 transcripts, or v3 confirmatory holdout accessed."
+}

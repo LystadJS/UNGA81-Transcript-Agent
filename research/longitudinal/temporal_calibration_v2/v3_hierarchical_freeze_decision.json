@@ -1,0 +1,89 @@
+{
+  "schema": "un.w4.v3.hierarchical-external-coordinator-freeze.v1",
+  "decision": "STATISTICAL_FREEZE_NOT_ACCEPTED",
+  "review_kind": "INDEPENDENT_CODE_AND_METHOD_REVIEW_NOT_HUMAN_STATISTICAL_APPROVAL",
+  "engineering_evidence": "SOURCE_SAFE_DEVELOPMENT_PASS_PENDING_FINAL_EXACT_HEAD_VALIDATION",
+  "studies": {
+    "gamma": {
+      "attempts": 216,
+      "completed": 138,
+      "refused": 78,
+      "worlds": 6,
+      "reps_per_world": 12,
+      "methods": [
+        "pooled",
+        "conditional_year_FE",
+        "hierarchical_AR1_EB"
+      ],
+      "correlated_T16": {
+        "rho_true_evaluator_only": 0.65,
+        "gamma_true_evaluator_only": -1.25,
+        "pooled_bias": 0.348513888943014,
+        "conditional_FE_bias": -0.022113066339412412,
+        "hierarchical_bias": 0.01806839098228351,
+        "conditional_FE_diagnostic_hits": 10,
+        "hierarchical_diagnostic_hits": 8,
+        "completed_panels": 12,
+        "hierarchical_weak_nuisance_profiles": 12,
+        "hierarchical_rho_median": 0.88
+      },
+      "gamma_interval_calibrated": false,
+      "nuisance_recovery_accepted": false
+    },
+    "covariance": {
+      "attempts": 168,
+      "completed": 120,
+      "refused": 48,
+      "worlds": 7,
+      "reps_per_world": 12,
+      "methods": [
+        "continuous_wide",
+        "continuous_narrow"
+      ],
+      "external_calibration_worlds": 40,
+      "external_calibration_alpha": 0.025,
+      "gaussian_contrast_alpha": 0.075,
+      "algebraic_total_alpha": 0.1,
+      "empirical_external_scale_authenticated": false,
+      "matched_development_world": {
+        "matched_calibration_scale_truth_covered": 11,
+        "total_worlds": 12,
+        "wide_diagnostic_beta_hits": 12,
+        "narrow_diagnostic_beta_hits": 11
+      },
+      "continuous_rho_nugget_range_coverage_is_conditional": true,
+      "intrinsic_year_nugget_identified": false
+    }
+  },
+  "all_failed_fit_records_retained": 126,
+  "failure_ledger_repository_file": "v3_hierarchical_external_failure_masks.json",
+  "development_receipt_repository_file": "v3_hierarchical_external_development_receipt.json",
+  "source_original_v2_frozen_receipt_sha256": "8a3abd19198332dc58c19299301c5ce1f0bd61749ef724e6093f2027bdf970fd",
+  "gates": {
+    "exclusive_worker_namespace": "ENGINEERING_PASS",
+    "original_v2_freeze_and_pinned_producer_hashes": "PASS",
+    "new_synthetic_development_replay": "PASS_SOURCE_SAFE_CI_EVIDENCE",
+    "all_failed_fit_retention": "PASS",
+    "conditional_gamma_estimand": "CONDITIONAL_ONLY",
+    "integrated_year_AR1_Bernoulli_random_effect_likelihood": "NOT_IMPLEMENTED",
+    "annual_effect_nuisance_identification": "FAIL_WEAK_PROFILES",
+    "serial_year_meeting_actor_gamma_interval": "NOT_CALIBRATED",
+    "genuine_external_total_year_scale_source": "NOT_AUTHENTICATED",
+    "intrinsic_year_nugget_identification": "FAIL",
+    "conditional_continuous_covariance_bound": "MATHEMATICAL_PASS_ONLY",
+    "UN_original_meeting_sample_pi": "NOT_VERIFIED",
+    "UN_randomized_nonrespondent_outcome_recovery_q": "NOT_VERIFIED",
+    "genre_translation_roster_and_era_comparability": "NOT_VERIFIED",
+    "v3_final_method_threshold_seed_holdout_freeze": "NOT_FROZEN",
+    "independent_statistical_reviewer_signature": "NOT_OBTAINED",
+    "real_2008_2023_fitting": "WITHHELD"
+  },
+  "v3_holdout_attempted": 0,
+  "v2_files_modified": false,
+  "real_original_sources_opened": 0,
+  "real_fit_authorized": false,
+  "statistical_freeze_accepted": false,
+  "coordinator_merge_authorized": false,
+  "release_authorized": false,
+  "next_statistical_decision": "independently authorize integrated conditional response-year model and authentic external scale/audit proof, or register principled nonidentification refusal; freeze a new protocol before any holdout"
+}
