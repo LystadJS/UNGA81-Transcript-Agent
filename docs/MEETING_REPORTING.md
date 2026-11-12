@@ -56,7 +56,7 @@ CSV uses UTF-8, quoted cells and CRLF. Potential spreadsheet formulas are prefix
 
 ## Next deliveries and acceptance
 
-1. Test representative diplomat tasks against the first workflow; retain actual usability feedback separately from synthetic engineering tests.
+1. Run the [representative-diplomat usability session](REPORTING_USABILITY.md); retain actual participant findings separately from synthetic engineering tests. The guide is prepared, and actual sessions remain uncompleted.
 2. Extend the implemented archive-selection handoff only through approved source access, without broadening the public text allowlist implicitly.
 3. Add an explicit passage-context reader and clearer recorded speaking-capacity details, preserving source boundaries and distinguishing recorded affiliation from national or collective capacity.
 4. Evaluate an optional local generative reporting model separately from the stance classifier. Fluent generation, factual coverage and citation correctness need their own acceptance evidence.
