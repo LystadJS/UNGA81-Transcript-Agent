@@ -52,15 +52,18 @@ jobs:
         run: |
           python - <<'PY'
           import json, os
+          from pathlib import Path
           from un_transcript.snapshots import HFStorage
           storage = HFStorage(os.environ['HF_DATASET_REPO'])
           info, used = storage.info()
           if used >= storage.budget_bytes:
               raise SystemExit('Private archive storage budget exhausted; collection remains stopped.')
           entries = storage.api.get_paths_info(storage.repo_id, ['latest.json'], repo_type='dataset', revision=info.sha)
-          print(json.dumps({'private': info.private, 'immutable_revision_verified': True,
-                            'retained_storage_bytes': used, 'storage_budget_bytes': storage.budget_bytes,
-                            'existing_snapshot_pointer': bool(entries)}))
+          measured = {'private': info.private, 'immutable_revision_verified': True,
+                      'retained_storage_bytes': used, 'storage_budget_bytes': storage.budget_bytes,
+                      'existing_snapshot_pointer': bool(entries)}
+          (Path(os.environ['RUNNER_TEMP'])/'storage-preflight.json').write_text(json.dumps(measured))
+          print(json.dumps(measured))
           PY
       - name: Load explicitly configured accepted local model
         if: env.HF_ACCEPTED_MODEL_PATH != '' || env.HF_ACCEPTED_MODEL_REVISION != ''
@@ -90,8 +93,8 @@ jobs:
             args+=(--model-dir "$RUNNER_TEMP/un-approved-model/$HF_ACCEPTED_MODEL_PATH")
           fi
           python -m un_transcript "${args[@]}"
-      # No upload-artifact step: the database, raw text and private CSVs must
-      # remain in the private durable store rather than public Actions artifacts.
+      # Only the explicit source-free receipt below may be uploaded as an
+      # Actions artifact. Database, raw text and private CSVs stay private.
       - name: Record operational result
         if: always()
         env:
@@ -128,3 +131,36 @@ jobs:
               with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as out:
                   out.write('No completed run receipt is available. Inspect the failed step and the last valid durable snapshot; do not infer freshness from this job.\n')
           PYCODE
+      - name: Measure retained private and public repository storage
+        if: always()
+        continue-on-error: true
+        run: |
+          python - <<'PYCODE'
+          import json, os
+          from pathlib import Path
+          from un_transcript.snapshots import HFStorage
+          for role, key in [('private','HF_DATASET_REPO'), ('public','HF_PUBLIC_DATASET_REPO')]:
+              repo = os.environ.get(key)
+              if not repo: continue
+              try:
+                  storage = HFStorage(repo, private=role=='private')
+                  _, used = storage.info()
+                  value = {'retained_storage_bytes':used, 'storage_budget_bytes':storage.budget_bytes}
+                  (Path(os.environ['RUNNER_TEMP'])/('storage-after-'+role+'.json')).write_text(json.dumps(value))
+              except Exception:
+                  # No provider exception strings: they may include signed URLs.
+                  print('Storage measurement unavailable for '+role+' repository')
+          PYCODE
+      - name: Write source-free monitoring receipt
+        if: always()
+        env:
+          PROCESSING_STATUS: ${{ job.status }}
+        run: python tools/write_operational_receipt.py
+      - name: Retain source-free monitoring receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: operational-receipt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/operational-receipt.json
+          if-no-files-found: warn
+          retention-days: 30

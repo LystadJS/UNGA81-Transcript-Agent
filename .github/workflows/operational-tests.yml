@@ -2,10 +2,10 @@ name: Operational pipeline contracts
 
 on:
   pull_request:
-    paths: ['src/**', 'tests/**', 'config/**', 'site/archive*', 'tools/build_pages.py', 'tools/storage_recovery_drill.py', 'tools/audit_private_exports.py', 'tools/provision_public_metadata.py', '.github/workflows/public-metadata-provision.yml', '.github/workflows/restored-export-audit.yml', '.github/workflows/storage-recovery.yml', 'tools/*reviewer*', 'tests/browser_owner_review.py', '.github/workflows/owner-reviewer.yml', 'requirements-model.txt', '.github/workflows/operational*.yml', '.github/workflows/model-training.yml']
+    paths: ['src/**', 'tests/**', 'config/**', 'site/archive*', 'tools/build_pages.py', 'tools/write_operational_receipt.py', 'tools/observe_operational_runs.py', 'tools/storage_recovery_drill.py', 'tools/audit_private_exports.py', 'tools/provision_public_metadata.py', '.github/workflows/public-metadata-provision.yml', '.github/workflows/restored-export-audit.yml', '.github/workflows/storage-recovery.yml', 'tools/*reviewer*', 'tests/browser_owner_review.py', '.github/workflows/owner-reviewer.yml', 'requirements-model.txt', '.github/workflows/operational*.yml', '.github/workflows/model-training.yml']
   push:
     branches: [main]
-    paths: ['src/**', 'tests/**', 'config/**', 'site/archive*', 'tools/build_pages.py', 'tools/storage_recovery_drill.py', 'tools/audit_private_exports.py', 'tools/provision_public_metadata.py', '.github/workflows/public-metadata-provision.yml', '.github/workflows/restored-export-audit.yml', '.github/workflows/storage-recovery.yml', 'tools/*reviewer*', 'tests/browser_owner_review.py', '.github/workflows/owner-reviewer.yml', 'requirements-model.txt', '.github/workflows/operational*.yml', '.github/workflows/model-training.yml']
+    paths: ['src/**', 'tests/**', 'config/**', 'site/archive*', 'tools/build_pages.py', 'tools/write_operational_receipt.py', 'tools/observe_operational_runs.py', 'tools/storage_recovery_drill.py', 'tools/audit_private_exports.py', 'tools/provision_public_metadata.py', '.github/workflows/public-metadata-provision.yml', '.github/workflows/restored-export-audit.yml', '.github/workflows/storage-recovery.yml', 'tools/*reviewer*', 'tests/browser_owner_review.py', '.github/workflows/owner-reviewer.yml', 'requirements-model.txt', '.github/workflows/operational*.yml', '.github/workflows/model-training.yml']
   workflow_dispatch:
 
 permissions:
