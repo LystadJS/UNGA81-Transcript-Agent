@@ -78,3 +78,31 @@ def operational_receipt(result, *, run_id, attempt, event, processing_status,
         snapshot['public_http_status'] = code
     receipt['snapshot'] = snapshot
     return receipt
+
+
+def validate_operational_receipt(value, *, run_id, attempt, event):
+    """Re-project downloaded receipts and reject extra fields or identity drift."""
+    if value.get('schema') != 'un.operational-receipt.v1' or value.get('workflow_run_id') != run_id or value.get('workflow_attempt') != attempt or value.get('event') != event:
+        raise ValueError('Monitoring receipt does not match the workflow attempt')
+    completed=value.get('completed_pipeline_receipt')
+    if type(completed) is not bool:
+        raise ValueError('Invalid completion evidence')
+    snapshot=value.get('snapshot');result=None
+    if completed:
+        if not isinstance(snapshot,dict):raise ValueError('Missing completed snapshot receipt')
+        result={'schema':'un.pipeline-run.v1','run_id':snapshot['snapshot_id'],
+                'generated_at':snapshot['generated_at'],'status':snapshot['coverage_status'],
+                'coverage':snapshot['coverage'],'model_status':{'accepted':snapshot['model_accepted']},
+                **{k:snapshot[k] for k in ('meetings_downloaded','bytes_downloaded','private_publication','public_publication')}}
+        for key in ('public_storage_operation','public_http_status'):
+            if key in snapshot:result[key]=snapshot[key]
+    storage=value['storage']
+    def measured(key):
+        item=storage.get(key)
+        return None if item is None else {'retained_storage_bytes':item['retained_bytes'],'storage_budget_bytes':item['budget_bytes']}
+    projected=operational_receipt(result,run_id=run_id,attempt=attempt,event=event,
+        processing_status=value['processing_status'],recorded_at=value['recorded_at'],
+        before=measured('private_before'),after_private=measured('private_after'),after_public=measured('public_after'))
+    if projected != value:
+        raise ValueError('Monitoring receipt contains unexpected or inconsistent fields')
+    return projected
