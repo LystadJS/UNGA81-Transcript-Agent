@@ -6,13 +6,17 @@ Authorized 12 November 2026, America/New_York. Continue engineering tasks, valid
 
 Recovery implementation merged in PR #191; CI 43184532330 passed. Actual private run [43184679678](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/43184679678) passed: injected interruption after verified staging, previous pointer preserved, old and retried snapshots restored with identical CSV/artifact hashes, and production pointer unchanged. The fixture stayed under an isolated private drill namespace. This is a real-provider synthetic failure-injection exercise, not a deliberate production outage. Account-wide capacity acceptance remains open.
 
-Next completed implementation: owner review intake in `src/un_transcript/models/review_intake.py`; 102 production tests passed locally. Merged as PR #192 after CI 43185341610 passed; no need to repeat this implementation. No actual owner labels have been returned, so only synthetic intake verification is claimed. Operational receipt/summary improvements are now in `feat/operational-run-summaries`: unique stored counts are bound to the same export manifest and are explicitly distinguished from refreshed download counts. Inspect the latest PR/CI before repeating work; after merge, verify a real run or the next scheduled run, then proceed to portfolio mirror diagnosis.
+Owner review intake merged as PR #192 after CI 43185341610 passed (102 production tests). No actual owner labels have been returned, so only synthetic intake verification is claimed.
+
+Operational summaries merged as PR #193 after CI 43185830637 passed. Counts now come from the same verified export manifest and distinguish distinct stored meetings from repeated downloads. Real backfill/summary verification run [43186157631](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/43186157631) was started and was still in progress at this checkpoint. **First resumption action: inspect that run and its aggregate receipt; do not dispatch a duplicate while it is active.** Record any genuine failure or the verified counts, then continue to portfolio mirror diagnosis and the next unblocked task.
+
+The initial interactive session has handed continuation to the scheduled worker; no uncommitted source changes are expected. Read live GitHub state rather than treating this timestamped checkpoint as a current job status.
 
 ## Ordered queue
 
-1. Finish recovery drill and record evidence; never delete production history or mutate the production pointer for a drill.
-2. Add validated owner-review JSON intake/reconciliation against frozen pilot registration, including partial review handling, duplicate/conflicting returns and source tampering tests. No human labels have been returned yet.
-3. Improve operational run summaries and freshness evidence, preserve skipped/failed/delayed distinctions, assess real CSV/coverage and retained-storage measurements. The existing fourteen-day monitor remains active.
+1. Completed: isolated real-provider recovery drill, PR #191 / run 43184679678. Continue recovery observation; never mutate production history for testing.
+2. Completed: owner-review intake, PR #192, with partial/repeat/conflict/tampering tests. Applying actual labels awaits owner returns; no human labels have been supplied.
+3. Implemented: run summaries, PR #193. Verify live run 43186157631 and assess its real CSV/coverage and retained-storage evidence. Preserve skipped/failed/delayed distinctions. The existing fourteen-day monitor remains active.
 4. Diagnose portfolio mirror PR [#151](https://github.com/LystadJS/LystadJS.github.io/pull/151). Mirror audit passed; broad portfolio tests had 27 inherited failures. Reproduce and repair legitimate expectation/product defects without weakening assertions or rewriting unrelated design. Merge only after appropriate checks pass.
 5. Prepare public metadata publication using the explicit allowlist. Attempt provisioning only with existing authorized credentials. If account permission or redistribution decisions block it, record and skip; never expose private sources, annotations or tokens.
 6. Improve model feasibility tooling and synthetic challenge coverage; assistant provisional QA must remain distinct from actual owner labels. Do not open sealed test examples or the 37 reserved meetings, or promote an unvalidated model.
