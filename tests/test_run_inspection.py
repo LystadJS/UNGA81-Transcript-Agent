@@ -1,4 +1,5 @@
 import io
+import hashlib
 import json
 import unittest
 from unittest.mock import Mock
@@ -76,3 +77,51 @@ class Inspection(unittest.TestCase):
             return value
         with self.assertRaises(ValueError):inspect_run(123,api=truncated,binary=binary)
         binary.assert_not_called()
+
+    def test_transport_failure_retains_outcome_without_claiming_receipt_absence(self):
+        api,binary=self.apis();binary.side_effect=RuntimeError('SECRET signed URL')
+        value=inspect_run(123,api=api,binary=binary)
+        self.assertEqual(value['receipt_state'],'unavailable')
+        self.assertEqual(value['conclusion'],'success');self.assertTrue(value['job_timing_available'])
+        self.assertEqual(value['receipt_artifact']['id'],456)
+        self.assertIsNone(value['receipt']);self.assertNotIn('SECRET',json.dumps(value))
+
+    def test_connector_download_requires_matching_live_digest_and_strict_receipt(self):
+        original,binary=self.apis();data=binary.return_value
+        def api(endpoint):
+            value=original(endpoint)
+            if '/artifacts?' in endpoint:value['artifacts'][0]['digest']='sha256:'+hashlib.sha256(data).hexdigest()
+            return value
+        value=inspect_run(123,api=api,binary=binary,receipt_zip=data)
+        self.assertEqual(value['receipt_state'],'verified');binary.assert_not_called()
+        value=inspect_run(123,api=api,binary=binary,receipt_zip=data+b'tampered')
+        self.assertEqual(value['receipt_state'],'invalid');self.assertIsNone(value['receipt'])
+        with self.assertRaisesRegex(ValueError,'provider digest'):
+            inspect_run(123,api=original,binary=binary,receipt_zip=data)
+
+    def test_nonzip_response_and_private_receipt_remain_invalid_not_success(self):
+        api,binary=self.apis()
+        for data in (b'Forbidden',zipped({**receipt(),'private_annotations':['SECRET']})):
+            binary.return_value=data
+            value=inspect_run(123,api=api,binary=binary)
+            self.assertEqual(value['receipt_state'],'invalid');self.assertIsNone(value['receipt'])
+            self.assertFalse(value['operational_acceptance']);self.assertNotIn('SECRET',json.dumps(value))
+
+    def test_cli_reports_failed_evidence_without_losing_run_status(self):
+        import importlib.util
+        import tempfile
+        from pathlib import Path
+        from contextlib import redirect_stdout
+        from unittest.mock import patch
+        spec=importlib.util.spec_from_file_location('inspection_cli',Path(__file__).resolve().parents[1]/'tools/inspect_operational_run.py')
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        api,binary=self.apis();binary.side_effect=RuntimeError('Unavailable')
+        value=inspect_run(123,api=api,binary=binary)
+        with tempfile.TemporaryDirectory() as tmp:
+            output=Path(tmp)/'result.json'
+            for state in ('unavailable','invalid'):
+                value['receipt_state']=state
+                with patch('sys.argv',['inspect','--run-id','123','--output',str(output)]), patch.object(module,'inspect_run',return_value=value), redirect_stdout(io.StringIO()):
+                    self.assertEqual(module.main(),1)
+                saved=json.loads(output.read_text())
+                self.assertEqual(saved['conclusion'],'success');self.assertIsNone(saved['receipt'])
