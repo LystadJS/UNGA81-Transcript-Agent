@@ -10,7 +10,7 @@ from un_transcript.cli import run_pipeline, main
 from unittest.mock import Mock, patch
 from contextlib import redirect_stdout
 import io
-from un_transcript.snapshots import verify_snapshot
+from un_transcript.snapshots import verify_snapshot, StorageRequestError
 from un_transcript.warehouse import Warehouse
 
 
@@ -94,6 +94,24 @@ class Pipeline(unittest.TestCase):
         self.assertNotIn('secret signed URL', json.dumps(receipt))
         self.assertEqual(json.loads((self.root/'runtime/latest.json').read_bytes())['snapshot_id'], result['run_id'])
         verify_snapshot(result['snapshot'])
+
+    def test_public_provider_failure_retains_sanitized_diagnostics(self):
+        private = Mock(repo_id='owner/private', budget_bytes=80_000_000_000)
+        private.info.return_value = (None, 0)
+        private.publish.side_effect = lambda directory: {'snapshot_id': directory.name}
+        public = Mock(repo_id='owner/public')
+        error = StorageRequestError('activate_pointer', 429)
+        error.response = {'body':'PRIVATE', 'url':'https://host/?token=SECRET'}
+        public.publish_public.side_effect = error
+        result = run_pipeline(self.config_path, self.root/'runtime', as_of=date(2026,11,10),
+                              transport=self.transport, remote=private, public_remote=public)
+        self.assertEqual(result['private_publication'], 'published')
+        self.assertEqual(result['public_publication'], 'failed')
+        self.assertEqual(result['public_storage_operation'], 'activate_pointer')
+        self.assertEqual(result['public_http_status'], 429)
+        self.assertNotIn('PRIVATE', json.dumps(result))
+        self.assertNotIn('SECRET', json.dumps(result))
+        self.assertEqual(json.loads((self.root/'runtime/last-run.json').read_bytes()), result)
 
     def test_private_failure_does_not_attempt_public_publication(self):
         private = Mock(repo_id='owner/private', budget_bytes=80_000_000_000)
