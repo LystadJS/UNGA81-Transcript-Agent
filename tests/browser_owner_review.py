@@ -54,6 +54,21 @@ def main():
             assert page.locator('#text').inner_text()==rows[0]['text']
             tampered=json.loads(progress.read_text());tampered['rows'].append(tampered['rows'][0]);bad.write_text(json.dumps(tampered))
             page.locator('#import').set_input_files(bad);expect(page.locator('#message')).to_contain_text('duplicated')
+            tampered=json.loads(progress.read_text());tampered['reviewer_id']='Different synthetic reviewer';bad.write_text(json.dumps(tampered))
+            page.locator('#import').set_input_files(bad);expect(page.locator('#message')).to_contain_text('Different reviewer identity')
+            assert page.locator('#reviewer').input_value()=='Owner synthetic test' and page.locator('#confirmed').is_checked()
+            tampered=json.loads(progress.read_text());tampered['rows'][0]['status']='clear';tampered['rows'][0]['label']='oppose';bad.write_text(json.dumps(tampered))
+            page.locator('#import').set_input_files(bad);expect(page.locator('#message')).to_contain_text('Conflicting confirmed choices')
+            assert page.locator('#status').input_value()=='conditional' and page.locator('#confirmed').is_checked()
+            page.locator('#reviewer').fill('Renamed synthetic reviewer')
+            assert not page.locator('#confirmed').is_checked()
+            assert page.locator('#status').input_value()=='conditional' and page.locator('#notes').input_value()=='Borderline intensity'
+            expect(page.locator('#counts')).to_contain_text('0 of 3')
+            page.locator('#confirmed').check()
+            with page.expect_download() as download:page.locator('#export').click()
+            changed=root/'renamed.json';download.value.save_as(changed)
+            changed_data=json.loads(changed.read_text());assert changed_data['reviewer_id']=='Renamed synthetic reviewer'
+            assert len(changed_data['rows'])==1 and changed_data['rows'][0]['owner_confirmed'] is True
             for width in (390,1440):
                 page.set_viewport_size({'width':width,'height':900})
                 overflow=page.evaluate('document.documentElement.scrollWidth > innerWidth + 1')
