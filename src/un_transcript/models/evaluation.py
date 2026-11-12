@@ -37,7 +37,7 @@ def evaluate(labels, registration, predictions, policy, manifest, catalog):
             reversals += int((LABELS.index(label) < 2) != (LABELS.index(row['label']) < 2))
         attribution_errors += int(row.get('national_attribution_valid') is not True)
         confidence = p.get('confidence')
-        if not isinstance(confidence, (int, float)) or not 0 <= confidence <= 1:
+        if type(confidence) not in (int, float) or not 0 <= confidence <= 1:
             raise ValueError('Emitted prediction needs a finite probability confidence')
         scores.append((confidence, int(right)))
         for group in ('body', 'policy_area'):
@@ -137,7 +137,15 @@ def evaluate(labels, registration, predictions, policy, manifest, catalog):
     if not isinstance(predictions,dict) or predictions.get('catalog_sha256') != digest(catalog):
         reasons.append('prediction_catalog_binding')
     baseline_rows = predictions.get('baseline_predictions',[]) if isinstance(predictions,dict) else []
+    if not isinstance(baseline_rows, list) or any(not isinstance(p, dict) or not isinstance(p.get('pair_id'), str) or not p['pair_id'] for p in baseline_rows):
+        raise ValueError('Invalid baseline prediction records')
     baseline_by_id={p['pair_id']:p for p in baseline_rows}
+    if len(baseline_by_id) != len(baseline_rows):
+        raise ValueError('Duplicate baseline pair IDs')
+    if not set(baseline_by_id).issubset({r['pair_id'] for r in rows}):
+        raise ValueError('Baseline contains unregistered test pairs')
+    if any(p.get('label') is not None and p['label'] not in LABELS for p in baseline_rows):
+        raise ValueError('Unknown baseline label')
     baseline_metrics=None
     if len(baseline_by_id)!=len(rows) or set(baseline_by_id)!={r['pair_id'] for r in rows}:
         reasons.append('missing_matched_baseline')

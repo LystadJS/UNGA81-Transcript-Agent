@@ -147,6 +147,33 @@ class ModelsTests(unittest.TestCase):
         self.assertEqual(result['metrics']['overall_precision'],1)
         self.assertEqual(result['uncertainty']['overall_precision'],[1,1])
 
+    def test_duplicate_baseline_cannot_distort_comparison(self):
+        cat,reg,gold,manifest,pred,policy=fixtures()
+        pred['baseline_predictions'].append(dict(pred['baseline_predictions'][0]))
+        with self.assertRaisesRegex(ValueError, 'Duplicate baseline'):
+            evaluate(gold,reg,pred,policy,manifest,cat)
+
+    def test_unknown_baseline_pairs_and_labels_fail_closed(self):
+        for change in ({'pair_id':'unregistered'}, {'label':'invented_label'}):
+            with self.subTest(change=change):
+                cat,reg,gold,manifest,pred,policy=fixtures()
+                pred['baseline_predictions'][0].update(change)
+                with self.assertRaises(ValueError):
+                    evaluate(gold,reg,pred,policy,manifest,cat)
+
+    def test_missing_baseline_remains_an_acceptance_failure(self):
+        cat,reg,gold,manifest,pred,policy=fixtures()
+        pred['baseline_predictions'].pop()
+        result=evaluate(gold,reg,pred,policy,manifest,cat)
+        self.assertEqual(result['status'],'fail')
+        self.assertIn('missing_matched_baseline',result['reasons'])
+
+    def test_boolean_confidence_is_not_a_probability(self):
+        cat,reg,gold,manifest,pred,policy=fixtures()
+        pred['predictions'][0]['confidence']=True
+        with self.assertRaisesRegex(ValueError, 'finite probability'):
+            evaluate(gold,reg,pred,policy,manifest,cat)
+
     def test_missing_complete_source_coverage_blocks_acceptance(self):
         cat,reg,gold,manifest,pred,policy=fixtures();gold['complete_source_review']['owner_confirmed']=False
         pred['labels_sha256']=digest(gold)
