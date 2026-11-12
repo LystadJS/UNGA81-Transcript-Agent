@@ -406,3 +406,10 @@ Archive handoff [source PR #257](https://github.com/LystadJS/UNGA81-Transcript-A
 The independent read-only observation at **22:19:14 UTC** verified the public snapshot `20261112T190420Z-2ea924daf41c`, age **11,354 seconds**, with **891 stored / 1,135 known meetings / 62,689 segments**, partial coverage and no accepted stance model. One scheduled date has successful evidence; thirteen are not due. No storage writer, recovery drill, model-training job or private annotation intake was launched.
 
 Next task: reusable mission preferences, explicitly saved/imported as a bounded versioned file containing the template, mission, report title and priority query only. Keep source text, selected meeting identities and analyst notes out of that reusable file; reject unknown fields and invalidate stale prepared exports when preferences change. Retain source-bearing report JSON as a separate existing format.
+
+
+## Next task in the 22:02 activation — reusable mission preferences
+
+After source PR #257, mirror PR #156 and all their live/post-merge checks completed, reread the checkpoint and started `feat/mission-report-preferences` from source `be021fc32ac3f3725d56fdc6291477308cec0391` and mirror `f1155e8ac958a9699bb067810e2071667915748d`. Release 1.45.0 adds explicit JSON export/import of four reusable mission settings, available before source loading. It excludes source text, selected meeting identities and analyst notes; strict schema/field/type/length validation precedes any UI mutation. Applying preferences preserves current notes/sources/selection and invalidates stale prepared exports. Invalid or oversized files preserve prior work. No automatic browser storage, upload, model change or new data dependency is introduced.
+
+Synthetic preference contracts and full browser checks pass, including pre-collection use with zero UN requests, sensitive-field exclusion, preserving loaded notes and selection, rejecting corrupt/oversized files, disabling stale exports and retaining the existing source-bound report round-trip. The archive handoff regression still passes. Await CI and both-site deployment before marking this second increment published.

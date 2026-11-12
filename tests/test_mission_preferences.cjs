@@ -1,0 +1,6 @@
+'use strict';
+const assert=require('node:assert/strict'),R=require('../site/meeting-report-core.js');
+const input={template:'negotiation',mission:'Example mission',title:'Weekly briefing',priorities:'humanitarian access',notes:'PRIVATE-NOTE',corpora:[{text:'PRIVATE-SOURCE'}],selected_meetings:['ga/81/900']},before=JSON.stringify(input);
+const saved=R.exportPreferences(input);assert.deepEqual(saved,{schema:'un.mission-preferences.v1',settings:{template:'negotiation',mission:'Example mission',title:'Weekly briefing',priorities:'humanitarian access'}});assert(!JSON.stringify(saved).includes('PRIVATE'));assert.equal(JSON.stringify(input),before);assert.deepEqual(R.importPreferences(saved),saved.settings);
+for(const bad of [{...saved,schema:'un.meeting-report.v1'},{...saved,notes:'leak'},{...saved,settings:{...saved.settings,notes:'leak'}},{...saved,settings:{...saved.settings,mission:false}},{...saved,settings:{...saved.settings,template:'unknown'}},{...saved,settings:{...saved.settings,title:'x'.repeat(201)}},{...saved,settings:{template:'brief'}}])assert.throws(()=>R.importPreferences(bad));
+console.log('PASS: mission preferences allowlist, source/note exclusion, strict fields and types, schema, length and input immutability');

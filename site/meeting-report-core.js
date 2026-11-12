@@ -8,6 +8,7 @@
   const VERSION='un.meeting-report.v1';
   const TEMPLATES=Object.freeze({brief:'Mission briefing',negotiation:'Negotiation record',evidence:'Evidence digest'});
   const LIMIT=25000000;
+  const PREFERENCES_VERSION='un.mission-preferences.v1',PREFERENCES_LIMIT=8192,PREFERENCE_KEYS=['template','mission','title','priorities'];
   const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function settings(value={}){
     const out={template:value.template||'brief',mission:value.mission||'',title:value.title||'Meeting briefing',priorities:value.priorities||'',notes:value.notes||''};
@@ -18,6 +19,15 @@
   function exclusions(value){
     if(value?.schema!=='un.reporting-exclusions.v1'||!Array.isArray(value.dates)||!Array.isArray(value.meetings)||value.meetings.length!==37||new Set(value.meetings).size!==37||value.dates.some(d=>!Picker.dateOK(d))||value.meetings.some(m=>!Picker.validSlug(m)))throw Error('Reporting exclusions could not be verified.');
     return value;
+  }
+  function exportPreferences(options){
+    const checked=settings(Object.fromEntries(PREFERENCE_KEYS.map(k=>[k,options[k]])));
+    return {schema:PREFERENCES_VERSION,settings:Object.fromEntries(PREFERENCE_KEYS.map(k=>[k,checked[k]]))};
+  }
+  function importPreferences(value){
+    if(!value||value.schema!==PREFERENCES_VERSION||Object.keys(value).some(k=>!['schema','settings'].includes(k))||!value.settings||Object.keys(value.settings).length!==PREFERENCE_KEYS.length||PREFERENCE_KEYS.some(k=>!Object.hasOwn(value.settings,k)||typeof value.settings[k]!=='string')||!Object.hasOwn(TEMPLATES,value.settings.template))throw Error('Use a supported mission-preferences file with only format, mission, title and priority words.');
+    if(new TextEncoder().encode(JSON.stringify(value)).length>PREFERENCES_LIMIT)throw Error('Mission preferences exceed 8 KiB.');
+    return exportPreferences(value.settings).settings;
   }
   function allowed(date,slug,policy){
     exclusions(policy);
@@ -114,6 +124,6 @@
     const cell=x=>'"'+String(/^[\s]*[=+\-@]/.test(String(x??''))?"'"+x:x??'').replace(/"/g,'""')+'"';
     return [cols,...records.map(r=>cols.map(k=>r[k]))].map(row=>row.map(cell).join(',')).join('\r\n');
   }
-  const api={VERSION,TEMPLATES,LIMIT,settings,exclusions,allowed,validateCorpora,search,build,reportHTML,evidenceHTML,standalone,evidenceCSV};
+  const api={VERSION,TEMPLATES,LIMIT,PREFERENCES_VERSION,PREFERENCES_LIMIT,exportPreferences,importPreferences,settings,exclusions,allowed,validateCorpora,search,build,reportHTML,evidenceHTML,standalone,evidenceCSV};
   if(node)module.exports=api;else root.UNMeetingReport=api;
 })(globalThis);

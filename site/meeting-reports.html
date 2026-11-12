@@ -30,12 +30,14 @@
       <div id="evidenceResults"></div><button type="button" id="moreEvidence" class="secondary" hidden>Show more passages</button>
     </section>
     <section aria-labelledby="templateHeading"><h2 id="templateHeading">3. Prepare the report</h2>
-      <fieldset id="reportControls" disabled><legend>Mission preferences</legend><div class="report-controls">
+      <fieldset id="missionControls"><legend>Mission preferences</legend><div class="report-controls">
         <label for="reportTemplate">Report template<select id="reportTemplate"><option value="brief">Mission briefing</option><option value="negotiation">Negotiation record</option><option value="evidence">Evidence digest with full appendix</option></select></label>
         <label for="mission">Mission or team<input id="mission" maxlength="160" placeholder="Your mission or reporting team"></label>
         <label for="reportTitle">Report title<input id="reportTitle" maxlength="200" value="Meeting briefing"></label>
         <label for="priorities">Priority evidence search<input id="priorities" maxlength="300" placeholder="Optional: financing development"></label>
-      </div><label for="analystNotes">Your assessment and follow-up notes<textarea id="analystNotes" maxlength="8000" rows="4" placeholder="These notes will be identified as your assessment, separate from source evidence."></textarea></label>
+      </div><div class="report-controls"><button type="button" id="savePreferences">Save mission preferences</button><label for="openPreferences">Open mission preferences JSON<input type="file" id="openPreferences" accept=".json,application/json"></label></div>
+      <p id="preferencesStatus" role="status">Reuse the format, mission, title and priority words across reports. This file excludes transcripts, meeting selections and analyst notes; it is saved only when you choose.</p></fieldset>
+      <fieldset id="reportControls" disabled><legend>Assessment and report</legend><label for="analystNotes">Your assessment and follow-up notes<textarea id="analystNotes" maxlength="8000" rows="4" placeholder="These notes will be identified as your assessment, separate from source evidence."></textarea></label>
       <button type="button" id="prepareReport">Prepare report</button></fieldset>
       <p id="reportState" role="status">Choose at least one loaded meeting.</p>
       <div class="report-controls"><button type="button" id="downloadReport" disabled>Download HTML report</button><button type="button" id="saveReport" disabled>Save report JSON</button><button type="button" id="downloadEvidence" disabled>Download selected evidence CSV</button></div>
