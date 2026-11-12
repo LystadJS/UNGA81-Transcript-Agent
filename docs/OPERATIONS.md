@@ -88,3 +88,7 @@ The separate `Check live browser collection` workflow uses a fixed authorized de
 The private/public repository budgets default to 80 GB and 10 GB respectively. Provider `usedStorage` accounts for repository history; it does not establish the account's remaining allowance when other repositories exist. Check the account storage dashboard before activation and keep the combined usage inside the free allowance. The service never upgrades the account or purges original evidence automatically.
 
 Restore refuses individual artifacts above 512 MiB, manifests above 16 MiB, and insufficient local disk space (twice the transfer size plus a 1 GiB reserve). A verified restore installs the complete `workspace/data/` directory atomically. These are explicit free-runner limits; exceeding them requires repartitioning or a different execution host, not silently dropping records.
+
+## Meeting versus inventory coverage
+
+Public meeting partitions and meeting totals exclude `inventory:<date>` coverage records. Those rows describe date-level inventory checks and remain in private `coverage.csv` for audit. New manifests report their latest-per-date counts separately as `coverage.inventory_dates` and `coverage.inventory_statuses`; their statuses do not enter meeting denominators. Older snapshots remain immutable and may include inventory checks in their meeting totals. Distinct stored-meeting and current-segment counts were unaffected by that export defect.
