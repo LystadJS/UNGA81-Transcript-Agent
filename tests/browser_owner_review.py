@@ -76,6 +76,21 @@ def main():
                     print(page.evaluate("Array.from(document.querySelectorAll('body *')).filter(e=>e.getBoundingClientRect().right>innerWidth+1).map(e=>({tag:e.tagName,id:e.id,width:e.getBoundingClientRect().width})).slice(0,20)"))
                 assert not overflow
             assert not [r for r in requests if r.startswith(('http://','https://')) and r!=url]
+            # A continuation removes completed rows but exports the original
+            # frame size so the frozen-packet intake remains compatible.
+            continuation=root/'continuation.html'
+            continuation.write_text(module.render({**draft,'rows':rows[1:]},{},{'split':'train','test':'synthetic'},total_examples=3))
+            page.goto(f'http://127.0.0.1:{server.server_port}/continuation.html' if server else continuation.as_uri())
+            assert page.locator('#jump option').count()==2
+            page.locator('#reviewer').fill('Owner synthetic test')
+            page.locator('#status').select_option('clear');page.locator('#label').select_option('support')
+            page.locator('#confirmed').check()
+            with page.expect_download() as download:page.locator('#export').click()
+            target=root/'continuation-export.json';download.value.save_as(target)
+            resumed=json.loads(target.read_text())
+            assert resumed['review_export']['total_examples']==3
+            assert resumed['rows'][0]['pair_id']=='1'
+            assert len(resumed['rows'])==1
             browser.close()
         if server: server.shutdown()
     print('Offline reviewer acceptance passed: source safety, confirmation, JSON round-trip, tamper rejection, mobile and no network')
