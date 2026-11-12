@@ -4,7 +4,7 @@ The immediate product target is a PowerTranscript-like reporting workflow, imple
 
 ## First delivery
 
-[Open the reporting workspace](https://lystadjs.github.io/un/transcript-agent/meeting-reports.html). Release 1.43.0 is deployed through source PR #255 and mirror PR #155; the verified engineering evidence is recorded in [the current checkpoint](OVERNIGHT_WORK.md). Diplomat usability and scientific acceptance remain separate.
+[Open the reporting workspace](https://lystadjs.github.io/un/transcript-agent/meeting-reports.html). Release 1.44.0 is deployed through source PR #257 and mirror PR #156; the verified engineering evidence is recorded in [the current checkpoint](OVERNIGHT_WORK.md). Diplomat usability and scientific acceptance remain separate.
 
 `site/meeting-reports.html` is a focused browser workspace. A date search verifies the complete official inventory without downloading transcripts. Users explicitly select up to five meetings per load; only those transcripts are requested. The 37 reserved identities and both reserved dates are blocked before collection. A synthetic regression binds the browser exclusions to the production collector's exact policy.
 
