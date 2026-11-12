@@ -1,9 +1,10 @@
 import json
 from pathlib import Path
 import tempfile
+import sqlite3
 import unittest
 from un_transcript.exports import export_snapshot
-from un_transcript.restore_audit import audit_restored_exports
+from un_transcript.restore_audit import audit_restored_exports, summarize_backfill
 from un_transcript.snapshots import atomic_json, file_sha, seal_snapshot
 from un_transcript.warehouse import Warehouse
 
@@ -51,3 +52,35 @@ class RestoreAuditTests(unittest.TestCase):
     def test_refuses_replay_inside_immutable_snapshot(self):
         with self.assertRaisesRegex(ValueError, 'outside the immutable snapshot'):
             audit_restored_exports(self.snapshot, self.snapshot/'reproduced')
+
+
+class BackfillSummaryTests(unittest.TestCase):
+    def test_last_inventory_claim_and_stored_identity_define_disjoint_counts(self):
+        with sqlite3.connect(':memory:') as db:
+            db.row_factory=sqlite3.Row
+            db.executescript("""
+                PRAGMA user_version=2;
+                CREATE TABLE collection_runs(run_id TEXT, started_at TEXT);
+                CREATE TABLE inventory_receipts(receipt_id TEXT, run_id TEXT, page INTEGER);
+                CREATE TABLE inventory_meetings(receipt_id TEXT, meeting_id TEXT, has_transcript INTEGER);
+                CREATE TABLE meetings(meeting_id TEXT PRIMARY KEY);
+                INSERT INTO collection_runs VALUES ('old','2026-11-10'),('new','2026-11-11');
+                INSERT INTO inventory_receipts VALUES ('r1','old',1),('r2','new',1);
+                INSERT INTO inventory_meetings VALUES
+                    ('r1','retained',1),('r1','revised',1),
+                    ('r2','retained',1),('r2','revised',0),('r2','backfill',1),('r2','unavailable',0);
+                INSERT INTO meetings VALUES ('retained'),('revised');
+            """)
+            result=summarize_backfill(db)
+            self.assertEqual(result['inventory_meetings'],4)
+            for key in ('advertised_with_stored_source','advertised_without_stored_source',
+                        'not_advertised_with_stored_source','not_advertised_without_stored_source'):
+                self.assertEqual(result[key],1)
+            self.assertFalse(result['current_download_availability_verified'])
+            self.assertNotIn('retained',json.dumps(result))
+
+    def test_legacy_schema_reports_unknown_instead_of_zero_backlog(self):
+        with sqlite3.connect(':memory:') as db:
+            db.execute('PRAGMA user_version=1')
+            self.assertEqual(summarize_backfill(db),
+                             {'available':False,'reason':'inventory_metadata_not_recorded'})
