@@ -55,7 +55,10 @@ def main():
             page.locator('#import').set_input_files(bad);page.wait_for_function("document.querySelector('#message').textContent.includes('duplicated')")
             for width in (390,1440):
                 page.set_viewport_size({'width':width,'height':900})
-                assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1')
+                overflow=page.evaluate('document.documentElement.scrollWidth > innerWidth + 1')
+                if overflow:
+                    print(page.evaluate("Array.from(document.querySelectorAll('body *')).filter(e=>e.getBoundingClientRect().right>innerWidth+1).map(e=>({tag:e.tagName,id:e.id,width:e.getBoundingClientRect().width})).slice(0,20)"))
+                assert not overflow
             assert not [r for r in requests if r.startswith(('http://','https://')) and r!=url]
             browser.close()
         if server: server.shutdown()
