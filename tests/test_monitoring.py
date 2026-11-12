@@ -64,6 +64,16 @@ class Monitoring(unittest.TestCase):
         item=fixture();item['coverage']['statuses']['SECRET']=1
         with self.assertRaises(ValueError):self.project(item)
 
+    def test_absent_and_removed_inventory_meetings_remain_visible(self):
+        item=fixture()
+        del item['coverage']['statuses']['failed']
+        del item['coverage']['statuses']['pending']
+        item['coverage']['statuses'].update(not_in_inventory=1,no_longer_listed=1)
+        result=self.project(item)
+        self.assertEqual(result['snapshot']['coverage']['statuses']['not_in_inventory'],1)
+        self.assertEqual(result['snapshot']['coverage']['statuses']['no_longer_listed'],1)
+        self.assertEqual(result['snapshot']['coverage']['meetings'],8)
+
     def test_private_path_cannot_be_snapshot_identity(self):
         item=fixture();item['run_id']='/private/SECRET'
         with self.assertRaises(ValueError) as error:self.project(item)
