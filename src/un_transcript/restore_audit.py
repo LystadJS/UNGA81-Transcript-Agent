@@ -71,6 +71,39 @@ def audit_inventory_provenance(db, raw_directory):
     return report
 
 
+def summarize_backfill(db):
+    """Count distinct latest inventory claims against stored source identities.
+
+    Historical metadata is a last-known source claim, not proof that a download
+    will succeed. Latest attempt statuses (including deferred refreshes) do not
+    define this denominator. No source text or meeting identities are emitted.
+    """
+    if db.execute('PRAGMA user_version').fetchone()[0] != 2:
+        return {'available': False, 'reason': 'inventory_metadata_not_recorded'}
+    rows = db.execute('''
+        WITH ranked AS (
+            SELECT m.meeting_id, m.has_transcript,
+                   ROW_NUMBER() OVER (PARTITION BY m.meeting_id
+                       ORDER BY c.started_at DESC, c.run_id DESC, r.page DESC) AS rank
+            FROM inventory_meetings m
+            JOIN inventory_receipts r ON r.receipt_id=m.receipt_id
+            JOIN collection_runs c ON c.run_id=r.run_id
+        )
+        SELECT i.has_transcript, CASE WHEN s.meeting_id IS NULL THEN 0 ELSE 1 END AS stored,
+               COUNT(*) AS count
+        FROM ranked i LEFT JOIN meetings s ON s.meeting_id=i.meeting_id
+        WHERE i.rank=1 GROUP BY i.has_transcript, stored
+    ''').fetchall()
+    counts={(r['has_transcript'],r['stored']):r['count'] for r in rows}
+    return {'available': True, 'inventory_meetings': sum(counts.values()),
+            'advertised_with_stored_source': counts.get((1,1),0),
+            'advertised_without_stored_source': counts.get((1,0),0),
+            'not_advertised_with_stored_source': counts.get((0,1),0),
+            'not_advertised_without_stored_source': counts.get((0,0),0),
+            'basis': 'distinct_meetings_latest_recorded_inventory_claim',
+            'current_download_availability_verified': False}
+
+
 def audit_restored_exports(snapshot, output):
     snapshot, output = Path(snapshot), Path(output)
     if output.resolve().is_relative_to(snapshot.resolve()):
@@ -88,6 +121,7 @@ def audit_restored_exports(snapshot, output):
         if db.execute('PRAGMA foreign_key_check').fetchone():
             raise ValueError('Restored database foreign keys failed')
         inventory = audit_inventory_provenance(db, snapshot/'raw')
+        backfill = summarize_backfill(db)
         export_snapshot(SimpleNamespace(db=db), output, manifest['snapshot_id'], manifest['generated_at'])
     actual = {file.relative_to(output).as_posix(): file_sha(file)
               for file in output.rglob('*') if file.is_file()}
@@ -98,6 +132,7 @@ def audit_restored_exports(snapshot, output):
     private = json.loads((snapshot/'private/manifest.json').read_bytes())
     return {'schema': 'un.restored-export-audit.v1', 'status': 'passed', **inventory,
             'snapshot_id': manifest['snapshot_id'], 'generated_at': manifest['generated_at'],
+            'backfill': backfill,
             'export_files_verified': len(expected),
             'csv_files_verified': sum(path.endswith('.csv') for path in expected),
             'csv_rows_verified': sum(table['rows'] for table in private['tables']),
