@@ -32,20 +32,27 @@
     for(const c of corpora){
       if(c?.schema!=='un.browser.corpus.v1'||!Array.isArray(c.records)||!Array.isArray(c.coverage)||!Array.isArray(c.provenance?.sources))throw Error('A source-bound browser collection is required.');
       if(!Picker.dateOK(c.collection?.start)||!Picker.dateOK(c.collection?.end)||c.collection.start>c.collection.end||policy.dates.some(d=>d>=c.collection.start&&d<=c.collection.end))throw Error('Reserved or invalid collection dates are not eligible for reporting.');
-      const sources=new Map(c.provenance.sources.map(s=>[s.source_id+'|'+s.sha256,s]));
+      const sources=new Map(c.provenance.sources.map(s=>[s.source_id+'|'+s.sha256,s])),parsed=new Map(),inventory=new Map();
+      for(const s of sources.values())if(typeof s.raw==='string'){
+        const original=JSON.parse(s.raw.replace(/^\uFEFF/,''));parsed.set(s.source_id+'|'+s.sha256,original);
+        if(s.kind==='inventory')for(const m of original.meetings||[])inventory.set(m.slug,m);
+      }
       const coverage=new Map();
       for(const row of c.coverage){
         if(!row.slug)continue;
         if(!allowed(row.date,row.slug,policy)||row.date<c.collection.start||row.date>c.collection.end||meetingIds.has(row.slug)||coverage.has(row.slug))throw Error('Reserved, invalid or duplicated meeting.');
+        const original=inventory.get(row.slug);
+        if(!original||original.date?.slice(0,10)!==row.date||original.title!==row.title||Collector.sourceURL(original.pageUrl)!==row.source_url)throw Error('Meeting metadata differs from its original inventory.');
         coverage.set(row.slug,row);meetingIds.add(row.slug);
       }
       for(const r of c.records){
         const source=sources.get(r.source_id+'|'+r.raw_sha256),row=coverage.get(r.meeting_slug);
-        if(!row||row.date!==r.date||!allowed(r.date,r.meeting_slug,policy)||r.language!=='en'||typeof r.id!=='string'||recordIds.has(r.id)||typeof r.text!=='string'||!source||typeof source.raw!=='string')throw Error('Passage lacks an eligible original source or unique meeting identity.');
+        if(!row||row.date!==r.date||!allowed(r.date,r.meeting_slug,policy)||r.language!=='en'||r.legacy_provenance_unavailable||typeof r.id!=='string'||recordIds.has(r.id)||typeof r.text!=='string'||!source||typeof source.raw!=='string')throw Error('Passage lacks an eligible original source or unique meeting identity.');
         if(!Reader.safeURL(r.source_url))throw Error('Unsupported passage source link.');
-        const original=JSON.parse(source.raw.replace(/^\uFEFF/,''));
+        const original=parsed.get(r.source_id+'|'+r.raw_sha256);
         if(original.video?.date?.slice(0,10)!==r.date||original.transcript?.language!=='en')throw Error('Passage date or language differs from its original source.');
         const index=Number(String(r.json_pointer).match(/^\/transcript\/data\/(\d+)$/)?.[1]),speaker=original.transcript.data?.[index]?.speaker||{};
+        if(r.id!==r.meeting_slug+'#'+index||r.meeting!==row.title||r.source_url!==Collector.sourceURL(original.transcript.data?.[index]?.pageUrl||row.source_url)||r.source_id!==Collector.sourceURL(inventory.get(r.meeting_slug).jsonUrl))throw Error('Passage identity or locator differs from its original source.');
         const affiliation=speaker.affiliation||speaker.affiliation_full||'',country=aliases.get(affiliation.toLowerCase())||aliases.get((speaker.affiliation_full||'').toLowerCase());
         if(r.country!==(country?.country||affiliation||'Unidentified')||r.region!==(country?.region||'Unmapped')||r.attribution?.country_status!==(country?'registry_mapped':'unresolved'))throw Error('Recorded affiliation differs from the source and registry.');
         for(const key of ['affiliation','affiliation_full','function','group','name','id'])if((r.speaker_metadata?.[key]??null)!==(typeof speaker[key]==='string'?speaker[key].slice(0,240):null))throw Error('Recorded speaker metadata differs from the original source.');

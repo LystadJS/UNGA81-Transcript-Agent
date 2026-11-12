@@ -8,7 +8,7 @@ const clone=x=>JSON.parse(JSON.stringify(x));
  await R.validateCorpora([a,b],policy,F.countries);
  assert.equal(R.allowed('2026-10-05',null,policy),false);
  for(const slug of policy.meetings)assert.equal(R.allowed(F.date,slug,policy),false);
- for(const bad of ['source','text','country','speaker','date','duplicate','reserved']){
+ for(const bad of ['source','text','country','speaker','date','duplicate','reserved','legacy','identity','locator','meeting']){
   const c=clone(a);
   if(bad==='source')c.provenance.sources.find(s=>s.kind==='transcript').raw+=' ';
   if(bad==='text')c.records[0].text='invented';
@@ -18,6 +18,10 @@ const clone=x=>JSON.parse(JSON.stringify(x));
   if(bad==='date')c.records[0].date='2026-11-09';
   if(bad==='duplicate')c.records.push(c.records[0]);
   if(bad==='reserved')c.collection.start='2026-10-05';
+  if(bad==='legacy')c.records[0].legacy_provenance_unavailable=true;
+  if(bad==='identity')c.records.push({...c.records[0],id:'invented-copy'});
+  if(bad==='locator')c.records[0].source_url='https://transcripts.un.org/en/sc/10900';
+  if(bad==='meeting')c.coverage[0].title='Invented meeting';
   await assert.rejects(R.validateCorpora([c],policy,F.countries),undefined,bad);
  }
  await assert.rejects(R.validateCorpora([a,a],policy,F.countries));
