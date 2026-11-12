@@ -31,7 +31,7 @@ PUBLIC_REFERENCE_FIELDS = {'source_revision_ids','source_segment_ids','evidence_
 PUBLIC_ISSUE_FIELDS = {'id','label','kind'}
 PUBLIC_CSV_COLUMNS = ['meeting_id','date','title','body','source_url','status','segments']
 PUBLIC_MANIFEST_FIELDS = {'schema','snapshot_id','generated_at','status','model_status','csv_text_safety','coverage','partitions','downloads'}
-PUBLIC_COVERAGE_FIELDS = {'meetings','stored_meetings','segments','statuses','latest_run_status'}
+PUBLIC_COVERAGE_FIELDS = {'meetings','stored_meetings','segments','statuses','latest_run_status','inventory_dates','inventory_statuses'}
 
 
 class RemoteEntryMissing(FileNotFoundError):
@@ -445,6 +445,15 @@ class HFStorage:
         for key in PUBLIC_MANIFEST_FIELDS - {'coverage','partitions','downloads'}:
             _scalar(manifest.get(key))
         _keys(manifest.get('coverage'), PUBLIC_COVERAGE_FIELDS)
+        coverage = manifest['coverage']
+        if 'inventory_dates' in coverage or 'inventory_statuses' in coverage:
+            _integer(coverage.get('inventory_dates'), 100_000_000)
+            inventory = coverage.get('inventory_statuses')
+            _keys(inventory, {'inventory_complete','inventory_failed','excluded_reserved','deferred'})
+            for count in inventory.values():
+                _integer(count, 100_000_000)
+            if sum(inventory.values()) != coverage['inventory_dates']:
+                raise ValueError('Inventory date counts do not reconcile')
         for key in ('meetings','stored_meetings','segments'):
             _integer(manifest['coverage'].get(key),100_000_000)
         _scalar(manifest['coverage'].get('latest_run_status'))

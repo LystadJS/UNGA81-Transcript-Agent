@@ -315,6 +315,17 @@ class Snapshots(unittest.TestCase):
                 self.assertEqual(remote.downloads, [])
         self.assertFalse((self.root / 'invalid-head' / 'data').exists())
 
+    def test_inventory_aggregate_cannot_smuggle_private_fields_or_wrong_counts(self):
+        path=self.snapshot/'public/manifest.json'
+        original=json.loads(path.read_bytes())
+        for values in ({'private transcript':1},{'inventory_complete':'private text'},{'inventory_complete':2}):
+            m=json.loads(json.dumps(original));m['coverage'].update(inventory_dates=1,inventory_statuses=values)
+            path.write_bytes(encode(m))
+            remote=FakeRemote(private=False)
+            with self.assertRaises(ValueError):remote.publish_public(self.snapshot/'public')
+            self.assertEqual(remote.commits,0)
+        path.write_bytes(encode(original))
+
     def test_remote_head_accepts_full_lowercase_and_uppercase_hex(self):
         for revision in ('abcdef0123456789' * 2 + 'abcdef01', 'ABCDEF0123456789' * 2 + 'ABCDEF01'):
             remote = FakeRemote()

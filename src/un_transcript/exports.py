@@ -199,7 +199,7 @@ def export_snapshot(warehouse, output: Path, snapshot_id, generated_at):
             "source_text":"Original normalized text; import text columns explicitly in spreadsheet software.",
             "missingness":"Missing, failed, unknown, collective and abstained are not neutral stances.",
             "current_predictions":"Join predictions.revision_id to meetings.current_revision; old predictions remain historical only.",
-            "joins":["meetings.current_revision = source_revisions.revision_id", "segments.revision_id = source_revisions.revision_id", "segments.actor_id = actors.actor_id", "predictions.(revision_id,segment_id) = segments.(revision_id,segment_id)", "predictions.(issue_id,issue_version) = issues.(issue_id,version)", "evidence.prediction_id = predictions.prediction_id", "coverage.run_id = collection_runs.run_id"],
+            "joins":["meetings.current_revision = source_revisions.revision_id", "segments.revision_id = source_revisions.revision_id", "segments.actor_id = actors.actor_id", "predictions.(revision_id,segment_id) = segments.(revision_id,segment_id)", "predictions.(issue_id,issue_version) = issues.(issue_id,version)", "evidence.prediction_id = predictions.prediction_id", "coverage.run_id = collection_runs.run_id", "coverage.meeting_id beginning inventory: identifies a date-level inventory check, not a meeting"],
             "tables":{t:{"description":TABLES[t],"columns":schemas[t]} for t in TABLES}}
         _write_json(private / "dictionary.json",dictionary)
         private_manifest = {"schema":"un.research-csv-snapshot.v1","snapshot_id":snapshot_id,
@@ -215,6 +215,13 @@ def export_snapshot(warehouse, output: Path, snapshot_id, generated_at):
         latest_coverage = {}
         for row in sorted(data["coverage"],key=lambda r:(run_by_id[r["run_id"]]["started_at"],r["run_id"],r["meeting_id"])):
             latest_coverage[row["meeting_id"]] = row
+        # Inventory checks are date-level collection outcomes, not meetings.
+        # Preserve all originals in private coverage.csv while separating grain.
+        inventory_coverage = {mid:row for mid,row in latest_coverage.items() if mid.startswith("inventory:")}
+        latest_coverage = {mid:row for mid,row in latest_coverage.items() if not mid.startswith("inventory:")}
+        inventory_statuses = {}
+        for row in inventory_coverage.values():
+            inventory_statuses[row["status"]] = inventory_statuses.get(row["status"],0)+1
         public_meetings = []
         for row in data["meetings"]:
             revision = revision_by_id.get(row["current_revision"])
@@ -302,7 +309,8 @@ def export_snapshot(warehouse, output: Path, snapshot_id, generated_at):
             "csv_text_safety":"Potential spreadsheet formulas are prefixed with an apostrophe in public CSV; JSON metadata preserves original values.",
             "coverage":{"meetings":len(public_meetings),"stored_meetings":len(stored_ids),
                         "segments":sum(r["segments"] for r in public_meetings),"statuses":statuses,
-                        "latest_run_status":latest_run["status"] if latest_run else None},
+                        "latest_run_status":latest_run["status"] if latest_run else None,
+                        "inventory_dates":len(inventory_coverage),"inventory_statuses":inventory_statuses},
             "partitions":partitions,"downloads":[_receipt(public_csv,public,rows=len(public_meetings))]}
         _write_json(public / "manifest.json",manifest)
         # Rename the complete directory only; a failed export cannot expose a

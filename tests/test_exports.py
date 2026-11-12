@@ -44,6 +44,23 @@ class ExportTests(unittest.TestCase):
         partition = json.loads((output/"public"/manifest["partitions"][0]["path"]).read_text())
         self.assertTrue(all(r["positions"] == [] for r in partition["meetings"]))
 
+    def test_inventory_checks_are_not_meetings_and_history_is_preserved(self):
+        self.store.record_coverage('run1','inventory:2026-11-01','inventory_failed','private inventory error')
+        self.store.start_run('run2',{},'2026-11-02T00:00:00Z')
+        self.store.record_coverage('run2','inventory:2026-11-01','inventory_complete','private inventory count')
+        self.store.record_coverage('run2','inventory:2026-11-02','deferred','private budget')
+        self.store.finish_run('run2','partial','2026-11-02T00:01:00Z')
+        out=self.root/'inventory';m=export_snapshot(self.store,out,'inventory','2026-11-02T00:02:00Z')
+        self.assertEqual(m['coverage']['meetings'],2)
+        self.assertEqual(m['coverage']['stored_meetings'],1)
+        self.assertEqual(m['coverage']['inventory_dates'],2)
+        self.assertEqual(m['coverage']['inventory_statuses'],{'inventory_complete':1,'deferred':1})
+        self.assertNotIn('inventory_complete',m['coverage']['statuses'])
+        with (out/'public/meetings.csv').open() as f:
+            self.assertFalse(any(r['meeting_id'].startswith('inventory:') for r in csv.DictReader(f)))
+        with (out/'private/coverage.csv').open() as f:
+            self.assertEqual(sum(r['meeting_id'].startswith('inventory:') for r in csv.DictReader(f)),3)
+
     def test_immutable_export_and_repeatability(self):
         one,two = self.root/"one",self.root/"two"
         first = export_snapshot(self.store,one,"fixed","2026-11-01T12:02:00Z")

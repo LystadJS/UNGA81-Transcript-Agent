@@ -50,6 +50,9 @@ class Pipeline(unittest.TestCase):
             self.assertEqual(db.current_segments()[0]['text'],self.text)
         for result in (first,second,third):
             self.assertEqual(result['coverage']['stored_meetings'],1)
+            self.assertEqual(result['coverage']['meetings'],1)
+            self.assertEqual(result['coverage']['inventory_dates'],1)
+            self.assertEqual(result['coverage']['inventory_statuses'],{'inventory_complete':1})
             self.assertEqual(result['coverage']['segments'],1)
             public_manifest=json.loads((Path(result['snapshot'])/'public/manifest.json').read_bytes())
             self.assertEqual(result['coverage'],public_manifest['coverage'])
@@ -64,6 +67,8 @@ class Pipeline(unittest.TestCase):
         self.assertEqual(failed['status'],'partial')
         self.assertEqual(failed['coverage']['stored_meetings'],1)
         self.assertEqual(failed['meetings_downloaded'],0)
+        self.assertEqual(failed['coverage']['inventory_statuses'],{'inventory_failed':1})
+        self.assertNotIn('inventory_failed',failed['coverage']['statuses'])
         with Warehouse(self.root/'runtime/data/warehouse.sqlite3') as db:
             self.assertEqual(len(db.current_segments()),1)
         verify_snapshot(failed['snapshot']);verify_snapshot(first['snapshot'])
