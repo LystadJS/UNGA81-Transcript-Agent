@@ -56,6 +56,50 @@ def config(**overrides):
 
 
 class CollectionTests(unittest.TestCase):
+    def test_failed_unstored_retry_and_oldest_refresh_share_bounded_run(self):
+        rows=[meeting('ga/81/'+str(i)) for i in range(1,5)]
+        conf=config(max_meetings_per_run=2,request_attempts=1)
+        initial=Collector(conf,Transport(rows)).collect('2026-11-04')
+        state=initial['state']
+        state['checked_meetings']={r['slug']:'2026-11-04T00:00:00Z' for r in rows}
+        state['checked_meetings'][rows[3]['slug']]='2026-11-05T00:00:00Z'
+        for failing in (False,True):
+            transport=Transport(rows)
+            if failing:transport.sources[rows[3]['slug']]=OSError('synthetic retry failure')
+            result=Collector(conf,transport).collect('2026-11-04',state,
+                stored_meeting_ids={r['slug'] for r in rows[:3]})
+            requests=[urlsplit(u).path[4:-5] for u in transport.calls if '/meetings.json?' not in u]
+            self.assertEqual(requests,[rows[3]['slug'],rows[0]['slug']])
+            self.assertEqual(len(result['items']),1 if failing else 2)
+            self.assertEqual(sum(r['status']=='deferred' for r in result['coverage']),2)
+            self.assertFalse(result['selection_reset'])
+
+    def test_single_attempt_budget_rotates_after_a_failed_missing_source(self):
+        rows=[meeting('ga/81/1'),meeting('ga/81/2')]
+        transport=Transport(rows)
+        transport.sources[rows[1]['slug']]=OSError('synthetic unavailable source')
+        conf=config(max_meetings_per_run=1,request_attempts=1)
+        first=Collector(conf,transport).collect('2026-11-04',stored_meeting_ids={rows[0]['slug']})
+        self.assertEqual(first['state']['next_source_queue'],'refresh')
+        transport.calls.clear()
+        second=Collector(conf,transport).collect('2026-11-04',first['state'],stored_meeting_ids={rows[0]['slug']})
+        requests=[urlsplit(u).path[4:-5] for u in transport.calls if '/meetings.json?' not in u]
+        self.assertEqual(requests,[rows[0]['slug']])
+        self.assertEqual(second['state']['next_source_queue'],'missing')
+
+    def test_fair_order_preserves_each_queue_and_excludes_reserved_requests(self):
+        from un_transcript.collection import ordered_candidates
+        rows=[meeting('ga/81/'+str(i)) for i in range(1,6)]
+        candidates={r['slug']:{'date':r['date'],'has_transcript':True} for r in rows}
+        reserved=next(iter(RESERVED_MEETINGS))
+        candidates[reserved]={'date':'2026-10-05','has_transcript':True}
+        candidates['ga/81/6']={'date':'2026-11-04','has_transcript':False}
+        ordered=ordered_candidates(candidates,{}, {'ga/81/1','ga/81/2','ga/81/3'})
+        self.assertEqual([mid for mid,_ in ordered[:5]],
+                         ['ga/81/4','ga/81/1','ga/81/5','ga/81/2','ga/81/3'])
+        self.assertEqual(set(mid for mid,_ in ordered[5:]),{reserved,'ga/81/6'})
+        self.assertEqual(len(ordered),len(candidates))
+
     def test_config_rejects_invalid_dates_unknown_keys_and_missing_backfill_capacity(self):
         for override in ({"start_date": "2026-02-30"}, {"request_attempts": True}, {"hostname": "other"},
                          {"max_inventory_days": 14}, {"selection_mode": "meetings"}):

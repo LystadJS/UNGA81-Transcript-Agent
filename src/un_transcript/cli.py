@@ -73,7 +73,9 @@ def run_pipeline(config_path, workspace, *, as_of=None, transport=None, remote=N
             warehouse.start_run(run_id, config, stamp)
             finished = False
             try:
-                collection = Collector(config, transport=transport).collect(as_of or date.today(), state, prior_config=prior_config)
+                stored_ids = {row[0] for row in warehouse.db.execute('SELECT meeting_id FROM meetings')}
+                collection = Collector(config, transport=transport).collect(
+                    as_of or date.today(), state, prior_config=prior_config, stored_meeting_ids=stored_ids)
                 for receipt in collection['inventory']:
                     warehouse.record_inventory(run_id, receipt)
                 for item in collection['items']:

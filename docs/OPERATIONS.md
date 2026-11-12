@@ -158,3 +158,7 @@ The operational working copy now uses additive SQLite schema version 2. Complete
 The scheduled observer never overwrites its prior report when the GitHub workflow inventory is inaccessible, malformed or incomplete. It exits nonzero and writes a separate `OUTPUT.error.json` receipt containing the failed observation time, fixed operation/reason, numeric HTTP status when available, and whether the prior report was preserved. Provider bodies, URLs, stderr and credentials are excluded. Compare observation timestamps: a retained successful report is old evidence, and an older error sidecar can remain after a later successful check.
 
 If workflow inventory succeeds but the public manifest fails, the current report retains workflow evidence, marks public freshness unavailable, and records only the public operation/error type/HTTP status. Neither case grants service acceptance or fills a missing scheduled date. The observer does not dispatch collection, change scheduling or read private archive contents.
+
+### Retry and refresh ordering
+
+The warehouse alternates advertised meetings without a stored source and refreshes of stored meetings, oldest attempt first within each group. Stored identity comes from the verified SQLite archive, not the latest `deferred` status. The checkpoint retains which group should go next, so even a one-attempt run or a failed retry does not permanently crowd out refreshes. Existing response, byte, meeting and reserved-source limits still apply. Inventory claims do not guarantee downloadable English text.
