@@ -1,0 +1,11 @@
+# Private owner-review delivery
+
+The original training reviewer remains in the private HF dataset at its pinned revision. `owner-training-export.yml` provides a read-only delivery path when the owner's current workspace has no HF credential. Maintainers dispatch it with a locally generated RSA-4096 **public** key. The corresponding private key must remain outside Git and must never be sent to Actions.
+
+The runner verifies the pinned reviewer/packet hashes and a strict six-file training-only allowlist. It reads no calibration or sealed-test originals and never restores the whole archive. Only the original 180 unreviewed training examples are eligible. Payload ZIP bytes stay in memory and are encrypted using a fresh AES-256-GCM key, with RSA-OAEP/SHA-256 key wrapping and an authenticated versioned header. The one-day Actions artifact contains ciphertext only. No credentials, passages, owner annotations or decryption keys are logged or attached as plaintext.
+
+The authorized private workspace verifies the GitHub artifact digest, decrypts with its local private key, checks the inner file manifest, and builds the requested user download outside the code repository. The public key can be retained in workflow inputs; possession of it cannot decrypt the artifact. This workflow changes no dataset, collection selection, canonical pointer or model.
+
+Cryptographic operations use the open-source `cryptography` package pinned to 46.0.3 in the runner and CI (Apache-2.0/BSD-3-Clause project licenses). No custom encryption primitive is implemented. Synthetic tests cover authenticated round-trip, ciphertext tampering, wrong recipients, private-key rejection, training-only reads and original-file hash mismatch.
+
+The final owner ZIP should include the browser reviewer, original training provenance, review guidance, the current issue catalog/model policy, and checklists for already identified owner-only operational/usability decisions. Distinguish material ready for review from unavailable or later-stage work. Do not treat delivery, a checkbox, or assistant QA as human gold or scientific acceptance.
