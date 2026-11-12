@@ -34,6 +34,24 @@ PUBLIC_MANIFEST_FIELDS = {'schema','snapshot_id','generated_at','status','model_
 PUBLIC_COVERAGE_FIELDS = {'meetings','stored_meetings','segments','statuses','latest_run_status','inventory_dates','inventory_statuses'}
 
 
+class StorageRequestError(RuntimeError):
+    """Safe provider diagnostics: no URL, response body, headers, or token."""
+    def __init__(self, operation, status_code):
+        self.operation = operation
+        self.status_code = status_code
+        super().__init__('Storage request failed')
+
+
+def _provider_call(operation, function, *args, **kwargs):
+    try:
+        return function(*args, **kwargs)
+    except Exception as error:
+        status = getattr(getattr(error, 'response', None), 'status_code', None)
+        if type(status) is int and 400 <= status <= 599:
+            raise StorageRequestError(operation, status) from None
+        raise
+
+
 class RemoteEntryMissing(FileNotFoundError):
     """A successful remote path metadata query established that no entry exists."""
 
@@ -293,7 +311,7 @@ class HFStorage:
         self.api, self.downloader = api, downloader
 
     def info(self):
-        info = self.api.repo_info(self.repo_id, repo_type='dataset', expand=['private','sha','usedStorage'])
+        info = _provider_call('repository_metadata', self.api.repo_info, self.repo_id, repo_type='dataset', expand=['private','sha','usedStorage'])
         if getattr(info, 'private', None) is not self.private:
             raise ValueError('Dataset visibility does not match its configured role')
         revision = getattr(info, 'sha', None)
@@ -310,7 +328,7 @@ class HFStorage:
         return info, used
 
     def _entries(self, paths, revision):
-        return self.api.get_paths_info(self.repo_id, paths, repo_type='dataset', revision=revision)
+        return _provider_call('path_metadata', self.api.get_paths_info, self.repo_id, paths, repo_type='dataset', revision=revision)
 
     def _download(self, path, revision, limit=MAX_FILE_BYTES):
         path = safe_path(path)
@@ -319,7 +337,7 @@ class HFStorage:
             raise RemoteEntryMissing(path)
         if len(entries) != 1 or type(getattr(entries[0], 'size', None)) is not int or not 0 <= entries[0].size <= limit:
             raise ValueError('Remote artifact exceeds download size bound')
-        value = self.downloader(path, revision)
+        value = _provider_call('artifact_download', self.downloader, path, revision)
         if not isinstance(value, (bytes, Path)) or _size(value) != entries[0].size or _size(value) > limit:
             raise ValueError('Downloaded artifact size differs from remote metadata')
         return value
@@ -331,7 +349,8 @@ class HFStorage:
     def _commit(self, files, parent, message):
         from huggingface_hub import CommitOperationAdd
         operations = [CommitOperationAdd(path_in_repo=safe_path(path), path_or_fileobj=data) for path, data in files.items()]
-        result = self.api.create_commit(self.repo_id, repo_type='dataset', operations=operations, parent_commit=parent, commit_message=message)
+        operation = 'activate_pointer' if set(files) == {'latest.json'} else 'stage_snapshot'
+        result = _provider_call(operation, self.api.create_commit, self.repo_id, repo_type='dataset', operations=operations, parent_commit=parent, commit_message=message)
         return result.oid
 
     def _immutable_prefix(self, prefix, revision):

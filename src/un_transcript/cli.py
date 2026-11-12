@@ -179,5 +179,9 @@ def main(argv=None):
             message = str(error)
         else:
             message = 'Operation failed; previous published snapshot remains available'
-        print(json.dumps({'status':'failed','error_type':type(error).__name__,'message':message}),file=sys.stderr)
+        diagnostic = {'status':'failed','error_type':type(error).__name__,'message':message}
+        from .snapshots import StorageRequestError
+        if isinstance(error, StorageRequestError):
+            diagnostic.update(storage_operation=error.operation, http_status=error.status_code)
+        print(json.dumps(diagnostic),file=sys.stderr)
         return 1
