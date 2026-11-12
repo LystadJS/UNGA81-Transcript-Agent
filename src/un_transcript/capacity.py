@@ -61,7 +61,7 @@ def measure_capacity(storage, *, max_refs=16, max_commits=200, max_entries=50000
         if len(ids)!=len(history) or tip not in ids:raise CapacityIncomplete('Incomplete commit identity inventory')
         commits.update(ids)
         if len(commits)>max_commits:raise CapacityIncomplete('Commit accounting bound exceeded')
-    git_blobs={};large_blobs={};visits=0;current_files=current_bytes=current_git_files=current_large_files=0
+    git_blobs={};large_blobs={};visits=0;current_files=current_bytes=current_git_files=current_large_files=current_largest=0
     def remember(target,identity,size):
         if identity in target and target[identity]!=size:raise CapacityIncomplete('Object size changes across immutable identities')
         target[identity]=size
@@ -84,7 +84,7 @@ def measure_capacity(storage, *, max_refs=16, max_commits=200, max_entries=50000
                 remember(git_blobs,blob,count(large.pointer_size))
                 remember(large_blobs,oid(large.sha256,64),size)
             if revision==head:
-                current_files+=1;current_bytes+=size
+                current_files+=1;current_bytes+=size;current_largest=max(current_largest,size)
                 current_git_files+=int(large is None);current_large_files+=int(large is not None)
     final,final_provider_bytes=storage.info()
     if oid(final.sha)!=head or references(storage,max_refs)!=initial_refs:
@@ -95,6 +95,8 @@ def measure_capacity(storage, *, max_refs=16, max_commits=200, max_entries=50000
             'role':'private' if storage.private else 'public','revision':head,
             'provider_reported_bytes':provider_bytes,'current_tree_files':current_files,
             'current_tree_logical_bytes':current_bytes,'current_tree_regular_files':current_git_files,
+            'current_largest_file_bytes':current_largest,
+            'metadata_scan_limits':{'refs':max_refs,'commits':max_commits,'tree_entries':max_entries},
             'current_tree_large_files':current_large_files,'reachable_refs':len(initial_refs),
             'reachable_commits':len(commits),'metadata_entries_examined':visits,
             'reachable_unique_git_objects':len(git_blobs),'reachable_unique_git_blob_bytes':git_bytes,

@@ -117,3 +117,13 @@ class Capacity(unittest.TestCase):
         self.assertEqual(raised.exception.operation,'capacity_tree')
         self.assertEqual(raised.exception.status_code,503)
         self.assertNotIn('PRIVATE',str(raised.exception))
+
+    def test_largest_current_file_does_not_confuse_deleted_history_with_head(self):
+        storage,trees,_=store()
+        deleted=regular('9'*40,900);deleted.path='PRIVATE/deleted-file'
+        trees[A].append(deleted)
+        value=measure_capacity(storage)
+        self.assertEqual(value['current_largest_file_bytes'],200)
+        self.assertGreater(value['reachable_unique_git_blob_bytes'],900)
+        self.assertEqual(value['metadata_scan_limits'],{'refs':16,'commits':200,'tree_entries':500000})
+        self.assertNotIn('PRIVATE',str(value))
