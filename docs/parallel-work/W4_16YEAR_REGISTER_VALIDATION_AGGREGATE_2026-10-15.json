@@ -1,0 +1,183 @@
+{
+  "schema": "un.w4.16year.genre-translation-roster-source-selection-audit.aggregate.v1",
+  "audit_date": "2026-10-15",
+  "scope": {
+    "years": "2008-2023",
+    "recorded_affiliations": 99,
+    "expected_cells": 1584,
+    "unique_cells": 1584,
+    "source_verified": 1574,
+    "unverified_or_not_at_risk": 10,
+    "pre_admission_structural_nonopportunities": 3,
+    "full_source_verification_fraction": 0.9936868686868687,
+    "at_risk_sensitivity_verification_fraction": 0.9955724225173941
+  },
+  "source_provenance": {
+    "indexed_original_PV_meeting_documents": 223,
+    "locally_rehashed_against_prior_source_manifests": 223,
+    "verified_actor_year_original_source_meeting_date_links": 1574,
+    "inherited_2016_2023_source_identity_hash_rows_unchanged": 792,
+    "preera_audit_split_verified": true,
+    "original_2008_2015_development_meetings": 90,
+    "original_2008_2015_independent_source_quality_meetings": 28,
+    "source_hash_basis_normalization_missing_in_unified_old_rows": 790,
+    "UN_publisher_signed_hash_available": false
+  },
+  "genre": {
+    "UN_speaker_index_rows": 3379,
+    "UN_index_rows_tagged_general_debate": 3379,
+    "UN_index_rows_also_tagged_special_statements": 2096,
+    "source_meetings_with_a_special_statements_index_cotag": 188,
+    "independent_speech_level_genre_adjudications_current_audit": 0,
+    "combined_16year_inventory_has_explicit_genre_field": false,
+    "older_2016_2023_companion_genre_general_debate_rows": 792,
+    "preera_fixed99_country_years_with_multiple_indexed_PV_candidates": 15,
+    "year2020": {
+      "index_rows": 379,
+      "distinct_member_state_labels": 192,
+      "extra_same_state_PV_rows": 187
+    },
+    "year2021": {
+      "index_rows": 278,
+      "distinct_member_state_labels": 193,
+      "extra_same_state_PV_rows": 85
+    }
+  },
+  "translation": {
+    "original_PV_english_version_documents": 223,
+    "spoken_language_per_speech_verified": 0,
+    "translation_method_per_speech_verified": 0,
+    "complete_pdf_language_marker_scan": "NOT_RUN_TIMED_OUT",
+    "absence_of_spoken_language_metadata_is_not_proof_of_english_delivery": true
+  },
+  "roster": {
+    "recorded_affiliations_not_authenticated_humans": 99,
+    "human_speaker_identities_independently_verified": 0,
+    "fixed_99_member_state_at_risk_by_year_complete": false,
+    "pre_admission_structural_nonopportunities": 3,
+    "preera_initial_index_country_label_crosswalk": {
+      "exact": 697,
+      "predeclared_alias": 82,
+      "initially_unmapped": 13
+    },
+    "source_ingestion_canonical_speech_choice_among_competing_sources": "NOT_VERIFIED"
+  },
+  "selection_and_missingness": {
+    "indexed_meeting_acquisition_fraction": 1,
+    "probabilistic_actor_year_inclusion_pi_known": false,
+    "deterministic_90_28_meeting_quality_partition_not_random_sampling": true,
+    "verification_propensity_q_estimated": false,
+    "propensity_min_support_cutoff": 0.1,
+    "propensity_fraction_below_support": null,
+    "weights_capped_fraction": null,
+    "standardized_covariate_max_imbalance": null,
+    "source_weight_positivity_gate": "NOT_RUN",
+    "structural_uniform_99x16_opportunity_positivity": "FAIL_3_NOT_AT_RISK",
+    "MAR_assumption": "NOT_TESTABLE",
+    "MNAR_sensitivity_bounds": "NOT_RUN",
+    "unverified_reasons": {
+      "pre_membership_structural": 3,
+      "unverified_original_source": 4,
+      "full_original_speech_nonmatch": 1,
+      "inherited_prior_source_unverified": 2
+    },
+    "years": [
+      {
+        "year": 2008,
+        "verified": 98,
+        "unverified": 1
+      },
+      {
+        "year": 2009,
+        "verified": 98,
+        "unverified": 1
+      },
+      {
+        "year": 2010,
+        "verified": 96,
+        "unverified": 3
+      },
+      {
+        "year": 2011,
+        "verified": 98,
+        "unverified": 1
+      },
+      {
+        "year": 2012,
+        "verified": 98,
+        "unverified": 1
+      },
+      {
+        "year": 2013,
+        "verified": 98,
+        "unverified": 1
+      },
+      {
+        "year": 2014,
+        "verified": 99,
+        "unverified": 0
+      },
+      {
+        "year": 2015,
+        "verified": 99,
+        "unverified": 0
+      },
+      {
+        "year": 2016,
+        "verified": 99,
+        "unverified": 0
+      },
+      {
+        "year": 2017,
+        "verified": 99,
+        "unverified": 0
+      },
+      {
+        "year": 2018,
+        "verified": 99,
+        "unverified": 0
+      },
+      {
+        "year": 2019,
+        "verified": 99,
+        "unverified": 0
+      },
+      {
+        "year": 2020,
+        "verified": 98,
+        "unverified": 1
+      },
+      {
+        "year": 2021,
+        "verified": 98,
+        "unverified": 1
+      },
+      {
+        "year": 2022,
+        "verified": 99,
+        "unverified": 0
+      },
+      {
+        "year": 2023,
+        "verified": 99,
+        "unverified": 0
+      }
+    ]
+  },
+  "release": {
+    "source_integrity_and_denominator": "PASS",
+    "speech_level_genre_comparability": "NOT_VERIFIED",
+    "spoken_language_translation_comparability": "NOT_VERIFIED",
+    "annual_roster_at_risk_and_canonical_selection": "INCOMPLETE",
+    "source_selection_model_validity": "NOT_VERIFIED",
+    "calibrated_empirical_inference": "FAIL",
+    "public_empirical_release": "FAIL",
+    "source_only_aggregate_regression": "PASS_6_LOCAL_TESTS",
+    "lexical_model_fits": "NOT_RUN",
+    "synthetic_full_36_cell_calibration": "NOT_RUN",
+    "reserved_2026_transcripts_opened": 0,
+    "frozen_release_gates_modified": false
+  },
+  "private_metadata_records_published": false,
+  "original_transcripts_published": false
+}

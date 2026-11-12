@@ -1,0 +1,31 @@
+name: W4 historical genre, translation, roster, source-selection metadata gates
+on:
+  pull_request:
+    paths:
+      - 'docs/parallel-work/W4_16YEAR_REGISTER_*2026-10-15*'
+      - 'docs/parallel-work/test_w4_16year_registers_source_only_20261015.cjs'
+      - '.github/workflows/w4-16year-registers-source-only.yml'
+  push:
+    branches: ['coord/w4-16year-genre-selection-audit-20261015']
+    paths:
+      - 'docs/parallel-work/W4_16YEAR_REGISTER_*2026-10-15*'
+      - 'docs/parallel-work/test_w4_16year_registers_source_only_20261015.cjs'
+      - '.github/workflows/w4-16year-registers-source-only.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-only-register-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify source-only W4 16-year metadata and fail-closed controls
+        run: node docs/parallel-work/test_w4_16year_registers_source_only_20261015.cjs
+      - name: Preserve existing parallel analytical interchange
+        run: node docs/parallel-work/validate-contract.cjs
