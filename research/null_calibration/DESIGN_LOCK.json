@@ -1,0 +1,33 @@
+{
+  "schema": "un.null-calibration.prospective-synthetic-study.v1",
+  "status": "prospective_engineering_only_not_empirical_preregistration",
+  "created": "2026-10-15",
+  "alpha": 0.05,
+  "master_seed": 810081,
+  "scenarios": [
+    "balanced_null",
+    "imbalanced_null",
+    "misspecified_null",
+    "known_structure",
+    "known_structure_moderate",
+    "weak_year",
+    "eight_years",
+    "cross_family",
+    "mnar"
+  ],
+  "development_worlds": 16,
+  "holdout_worlds": 120,
+  "reference_draws": 99,
+  "seed_derivation": "first eight bytes big-endian SHA256 of canonical JSON [master_seed, scenario_name, phase, world_index]; reference draws SHA256 [world_seed, 'reference', draw_index]",
+  "nominal_test": "one-sided upper-tail conditional parametric bootstrap p = (1 + #reference >= observed)/(1 + 99), alpha .05",
+  "selection_statistic": "max(cross-meeting consensus frequency >=0.875, largest residual correlation eigenvalue fraction, concordant two-source-split correlation)",
+  "fitting_search": "kmeans and PAM-like medoids, each k in {2,3}, starts {13,29}, two equal weighted families; no post-hoc winner",
+  "nuisance_model": "observed fitted prevalence/X, meeting, speech, affiliation and AR1 year correlated shocks estimated by pooled source-pair moments; length-conditional bounded Gaussian count emission; nuisance re-estimated in all references",
+  "source_group_policy": "meeting and source-family/parent closure checked; 12 years, two meetings per year, >=24 meeting groups, >=72 synthetic selected observations, source balance effective Kish groups >=12",
+  "failure_policy": "fail closed if source/selection/representation hash invalid, any reference nuisance or model fit fails, weak year parameter identification, rho bound, cross-family, insufficient groups, MNAR; do not impute rejected or withheld as nonrejections",
+  "outer_world_role": "independent synthetic development and independently seeded synthetic holdout; the real reserved October 5-6 meetings remain sealed",
+  "holdout_threshold_selection": "none; alpha, all searched settings and omission rules frozen before holdout",
+  "reported_rates": "false positives, known-structure rejections, no-rejection coverage among complete draws with Wilson95 intervals; mandatory attempts and completion fractions; parameter interval coverage explicitly unavailable",
+  "scientific_gate_policy": "engineering-only; PR57 frozen 1999 references by 1000 worlds unchanged; G01-G13 not passed",
+  "publication_eligible": false
+}
