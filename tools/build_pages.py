@@ -14,9 +14,18 @@ def archive_configuration(manifest_url):
         raise ValueError('ARCHIVE_MANIFEST_URL must be a credential-free public Hugging Face dataset latest.json URL')
     return {'schema': 'un.archive-config.v1', 'manifest_url': manifest_url}
 
+def configured_archive(repo, override=None):
+    config = json.loads((Path(repo)/'site/archive-config.json').read_bytes())
+    if not isinstance(config, dict) or set(config) != {'schema', 'manifest_url'} or config['schema'] != 'un.archive-config.v1':
+        raise ValueError('Invalid checked-in archive configuration')
+    checked = archive_configuration(config['manifest_url'])
+    if override and archive_configuration(override) != checked:
+        raise ValueError('ARCHIVE_MANIFEST_URL conflicts with checked-in archive configuration')
+    return checked
+
 def build(output):
     repo=Path(__file__).resolve().parents[1];output=Path(output)
-    archive_config=archive_configuration(os.environ.get('ARCHIVE_MANIFEST_URL'))
+    archive_config=configured_archive(repo, os.environ.get('ARCHIVE_MANIFEST_URL'))
     numeric_manifest=json.loads((repo/'site/numerics-manifest.json').read_text(encoding='utf-8'))
     if hashlib.sha256((repo/'site/numerics.js').read_bytes()).hexdigest()!=numeric_manifest['sha256']:
         raise ValueError('Numerical bundle hash mismatch; rebuild with tools/browser-deps/build.cjs')

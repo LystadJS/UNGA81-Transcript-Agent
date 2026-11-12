@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from unittest.mock import Mock
 from un_transcript.exports import export_snapshot
-from un_transcript.publication import provision_public, validate_target, CARD
+from un_transcript.publication import provision_public, validate_target, load_publication_config, CARD
 from un_transcript.snapshots import RemoteEntryMissing, prepare_public_bundle
 from un_transcript.warehouse import Warehouse
 
@@ -93,3 +93,19 @@ class PublicationTests(unittest.TestCase):
         for target in ('other/UN-Transcript-Agent-Public', 'owner/UN-Transcript-Agent-Private', 'owner/unrelated'):
             with self.assertRaises(ValueError):
                 validate_target('owner/UN-Transcript-Agent-Private', target)
+
+    def test_versioned_configuration_matches_public_browser_and_private_owner(self):
+        config = load_publication_config('config/publication.json', 'LystadJS/UN-Transcript-Agent-Private')
+        browser = json.loads(Path('site/archive-config.json').read_bytes())
+        self.assertEqual(config['manifest_url'], browser['manifest_url'])
+        with self.assertRaises(ValueError):
+            load_publication_config('config/publication.json', 'other/UN-Transcript-Agent-Private')
+        with self.assertRaises(ValueError):
+            load_publication_config('config/publication.json', 'LystadJS/UN-Transcript-Agent-Private', 'other/public')
+
+    def test_configuration_rejects_credential_bearing_or_mismatched_url(self):
+        path = self.root/'publication.json'
+        path.write_text(json.dumps({'schema':'un.publication.v1', 'public_repo':'owner/UN-Transcript-Agent-Public',
+                                    'manifest_url':'https://user:secret@huggingface.co/datasets/other/latest.json'}))
+        with self.assertRaises(ValueError):
+            load_publication_config(path, 'owner/UN-Transcript-Agent-Private')
