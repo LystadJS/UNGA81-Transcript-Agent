@@ -59,6 +59,13 @@ def fixtures():
 
 
 class ModelsTests(unittest.TestCase):
+    def test_boolean_offsets_rejected_by_label_contract(self):
+        for key in ('start','end','focal_start','focal_end'):
+            _,registration,labels,*_=fixtures()
+            labels['rows'][0][key]=False if key.endswith('start') else True
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                check_labels(labels,registration,'test')
+
     def test_no_model_never_invents_stance(self):
         catalog=fixtures()[0]
         result=analyze_segments([{'segment_id':'s','revision_id':'v','text':'We support a ceasefire.',
