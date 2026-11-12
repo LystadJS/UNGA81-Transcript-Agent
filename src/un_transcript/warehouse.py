@@ -56,7 +56,7 @@ class Warehouse:
         self.db.execute("PRAGMA foreign_keys=ON")
         self.db.execute("PRAGMA busy_timeout=30000")
         version = self.db.execute("PRAGMA user_version").fetchone()[0]
-        if version not in (0, 1):
+        if version not in (0, 1, 2):
             self.db.close()
             raise ValueError("Unsupported warehouse schema version")
         if version == 0:
@@ -138,6 +138,21 @@ class Warehouse:
         elif self.db.execute("SELECT value FROM warehouse_meta WHERE key='schema'").fetchone()[0] != "un.transcript-warehouse.v1":
             self.db.close()
             raise ValueError("Not a production transcript warehouse")
+        if version in (0, 1):
+            # Additive migration affects the working copy only. Sealed snapshots
+            # are opened read-only and exported under their original version.
+            self.db.executescript("""
+                BEGIN;
+                CREATE TABLE inventory_meetings(
+                    receipt_id TEXT NOT NULL REFERENCES inventory_receipts(receipt_id),
+                    meeting_id TEXT NOT NULL, date TEXT NOT NULL, title TEXT NOT NULL,
+                    body TEXT NOT NULL, source_url TEXT NOT NULL, json_url TEXT NOT NULL,
+                    has_transcript INTEGER NOT NULL CHECK(has_transcript IN (0,1)),
+                    source_status TEXT NOT NULL, normalization_version TEXT NOT NULL,
+                    PRIMARY KEY(receipt_id,meeting_id));
+                PRAGMA user_version=2;
+                COMMIT;
+            """)
 
     def close(self):
         self.db.close()
@@ -368,6 +383,66 @@ class Warehouse:
             self.db.execute("INSERT OR IGNORE INTO inventory_receipts VALUES(?,?,?,?,?,?,?,?,?,?)",
                 (rid,run_id,day,page,url,sha,path,len(raw),retrieved,canonical(headers)))
         return rid
+
+    def record_inventory_meetings(self, run_id, selected):
+        """Bind selected metadata to complete, validated original inventory pages.
+
+        The selection checkpoint is only an identity filter. Values come from
+        the original receipt bytes, and must match the collector's normalized
+        values. Failed/partial inventories never produce metadata rows.
+        """
+        from .collection import _meeting, RESERVED_DATES, RESERVED_MEETINGS
+        if not isinstance(selected, dict):
+            raise ValueError("Invalid selected inventory metadata")
+        receipts = self.db.execute("""
+            SELECT i.* FROM inventory_receipts i JOIN coverage c
+            ON c.run_id=i.run_id AND c.meeting_id='inventory:' || i.date
+            WHERE i.run_id=? AND c.status='inventory_complete'
+            ORDER BY i.date,i.page
+        """, (run_id,)).fetchall()
+        by_day = {}
+        for receipt in receipts:
+            if receipt['date'] in RESERVED_DATES:
+                raise ValueError("Reserved inventory date cannot be normalized")
+            by_day.setdefault(receipt['date'], []).append(receipt)
+        values = []
+        for day, pages in by_day.items():
+            seen = set(); total = None
+            for number, receipt in enumerate(pages, 1):
+                path = self.raw_directory / (receipt['raw_sha256'] + '.json')
+                if path.is_symlink():
+                    raise ValueError("Unsafe original inventory")
+                raw = path.read_bytes()
+                if len(raw) != receipt['byte_count'] or digest(raw) != receipt['raw_sha256']:
+                    raise ValueError("Original inventory integrity failed")
+                payload = json.loads(raw.decode('utf-8-sig'))
+                if (not isinstance(payload, dict) or receipt['page'] != number
+                        or type(payload.get('page')) is not int or payload['page'] != number
+                        or type(payload.get('total')) is not int or payload['total'] < 0
+                        or type(payload.get('hasMore')) is not bool
+                        or payload['hasMore'] != (number < len(pages))
+                        or not isinstance(payload.get('meetings'), list)):
+                    raise ValueError("Incomplete original inventory")
+                if total is not None and total != payload['total']:
+                    raise ValueError("Inventory total changed")
+                total = payload['total']
+                for original in payload['meetings']:
+                    row = _meeting(original, day); mid = row['meeting_id']
+                    if mid in seen:
+                        raise ValueError("Duplicate original inventory identity")
+                    seen.add(mid)
+                    if mid not in selected or mid in RESERVED_MEETINGS:
+                        continue
+                    if row != selected[mid]:
+                        raise ValueError("Selected metadata differs from original inventory")
+                    values.append((receipt['receipt_id'], mid, day, row['title'], row['body'],
+                                   row['source_url'], row['json_url'], int(row['has_transcript']),
+                                   row['source_status'], 'un.inventory-normalization.v1'))
+            if len(seen) != total:
+                raise ValueError("Incomplete original inventory count")
+        with self.transaction():
+            self.db.executemany('INSERT OR IGNORE INTO inventory_meetings VALUES(?,?,?,?,?,?,?,?,?,?)', values)
+        return len(values)
 
     def record_analysis(self, analysis, created_at=None, run_id=None):
         """Atomically store reproducible private analysis and acceptance bindings.
