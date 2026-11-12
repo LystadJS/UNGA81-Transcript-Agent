@@ -11,7 +11,7 @@ import shutil
 import sys
 import uuid
 
-from .snapshots import HFStorage, atomic_json, seal_snapshot, verify_snapshot
+from .snapshots import HFStorage, StorageRequestError, atomic_json, seal_snapshot, verify_snapshot
 
 
 def now():
@@ -106,6 +106,7 @@ def run_pipeline(config_path, workspace, *, as_of=None, transport=None, remote=N
             shutil.copytree(directory / 'public', dest)
         public_status = 'not_configured'
         public_error_type = None
+        public_diagnostic = {}
         if public_remote:
             try:
                 public_remote.publish_public(directory / 'public')
@@ -114,12 +115,14 @@ def run_pipeline(config_path, workspace, *, as_of=None, transport=None, remote=N
                 public_status = 'failed'
                 # Provider error messages can include signed URLs or credentials.
                 public_error_type = type(error).__name__
+                if isinstance(error, StorageRequestError):
+                    public_diagnostic = {'public_storage_operation':error.operation, 'public_http_status':error.status_code}
         receipt = {'schema':'un.pipeline-run.v1','run_id':run_id,'status':status,'generated_at':end,
                    'snapshot':str(directory),'meetings_downloaded':len(collection['items']),
                    'bytes_downloaded':collection['bytes_downloaded'],'model_status':analysis['model_status'],
                    'coverage':manifest['coverage'],
                    'private_publication':'published' if remote else 'local_only','public_publication':public_status,
-                   'public_error_type':public_error_type}
+                   'public_error_type':public_error_type, **public_diagnostic}
         atomic_json(workspace / 'last-run.json', receipt)
         return receipt
 
@@ -180,7 +183,6 @@ def main(argv=None):
         else:
             message = 'Operation failed; previous published snapshot remains available'
         diagnostic = {'status':'failed','error_type':type(error).__name__,'message':message}
-        from .snapshots import StorageRequestError
         if isinstance(error, StorageRequestError):
             diagnostic.update(storage_operation=error.operation, http_status=error.status_code)
         print(json.dumps(diagnostic),file=sys.stderr)
