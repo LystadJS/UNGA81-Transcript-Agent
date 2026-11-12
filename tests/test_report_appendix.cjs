@@ -27,7 +27,7 @@ const policy=JSON.parse(fs.readFileSync(require.resolve('../site/reporting-exclu
  }
  const missing={...saved};delete missing.appendix;await assert.rejects(R.openSaved(missing,policy,F.countries));
  for(const selected_meetings of [undefined,null,[],[ids[0],ids[0]],['missing/1']])await assert.rejects(R.openSaved({...saved,selected_meetings},policy,F.countries));
- const legacy={...missing,schema:R.LEGACY_VERSION,derived_summary:'Untrusted invented claim'};
+ const legacy={...missing,schema:R.LEGACY_VERSION,derived_summary:'Untrusted invented claim'};delete legacy.passage_notes;
  const reopened=await R.openSaved(legacy,policy,F.countries),legacyReport=R.build(reopened.corpora,reopened.selected,reopened.settings,reopened.appendix);
  assert.equal(legacyReport.appendix_records.length,4);assert(!R.reportHTML(legacyReport).includes('Untrusted invented claim'));
  await assert.rejects(R.openSaved({...legacy,appendix:saved.appendix},policy,F.countries));

@@ -2,11 +2,12 @@
 (()=>{
   'use strict';
   const $=id=>document.getElementById(id),Core=UNMeetingReport;
-  let policy,countries,inventory=[],corpora=[],report=null,controller=null,shown=10,dirty=false,handoff=null,appendixIds=new Set();
+  let policy,countries,inventory=[],corpora=[],report=null,controller=null,shown=10,dirty=false,handoff=null,appendixIds=new Set(),notes=new Map();
   const setStatus=(message,error=false)=>{$('status').textContent=message;$('status').classList.toggle('error',error);};
   const selected=()=>[...$('loadedMeetings').querySelectorAll('input:checked')].map(e=>e.value);
   const options=()=>({template:$('reportTemplate').value,mission:$('mission').value,title:$('reportTitle').value,priorities:$('priorities').value,notes:$('analystNotes').value});
   const appendix=()=>({mode:$('appendixMode').value,record_ids:[...appendixIds]});
+  const passageNotes=()=>[...notes].map(([record_id,text])=>({record_id,text}));
   function save(data,name,mime){const u=URL.createObjectURL(new Blob([data],{type:mime})),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
   function invalidate(){report=null;$('reportPreview').replaceChildren();for(const id of ['downloadReport','saveReport','downloadEvidence'])$(id).disabled=true;$('reportState').textContent='Settings or selection changed. Prepare the report to update its exports.';dirty=!!corpora.length;}
   function search(){
@@ -19,15 +20,26 @@
       label.className='appendix-choice';input.type='checkbox';input.checked=appendixIds.has(record.id);input.setAttribute('aria-label','Include passage '+record.id+' in appendix');
       input.onchange=()=>{if(input.checked)appendixIds.add(record.id);else appendixIds.delete(record.id);$('appendixMode').value='selected';invalidate();appendixCount();if($('onlySelectedEvidence').checked)search();};
       label.append(input,document.createTextNode('Include in evidence appendix'));article.prepend(label);
+      const details=document.createElement('details'),summary=document.createElement('summary'),noteLabel=document.createElement('label'),note=document.createElement('textarea');
+      details.className='passage-note-editor';details.open=notes.has(record.id);summary.textContent='Your note on this passage';noteLabel.textContent='Your interpretation or follow-up (up to '+Core.NOTE_LIMIT+' characters)';
+      note.rows=3;note.maxLength=Core.NOTE_LIMIT;note.value=notes.get(record.id)||'';note.setAttribute('aria-label','Your note on passage '+record.id);
+      note.oninput=()=>{
+        if(note.value.length>Core.NOTE_LIMIT||(!notes.has(record.id)&&note.value.trim()&&notes.size>=Core.NOTES_LIMIT)){note.value=notes.get(record.id)||'';setStatus('Use at most '+Core.NOTES_LIMIT+' passage notes, each up to '+Core.NOTE_LIMIT+' characters.',true);return;}
+        if(note.value.trim())notes.set(record.id,note.value);else notes.delete(record.id);
+        invalidate();notesCount();
+      };
+      noteLabel.append(note);details.append(summary,noteLabel);article.append(details);
     }
-    appendixCount();
+    appendixCount();notesCount();
   }
+  function notesCount(){$('passageNotesCount').textContent=notes.size+' passage '+(notes.size===1?'note':'notes')+'. Saved in report HTML and JSON, separately from source text. The full evidence CSV and reusable preferences exclude your notes. Removing a meeting removes its notes.';}
   function appendixCount(){
     $('appendixCount').textContent=$('appendixMode').value==='selected'?appendixIds.size+(appendixIds.size===1?' passage selected for the appendix.':' passages selected for the appendix.')+' Summaries, country expressions and the full evidence CSV still use all passages from selected meetings.':'Template default: the evidence digest includes all passages; other templates omit the appendix. Select a passage to create a custom appendix.';
   }
   function pruneAppendix(){
     const meetings=new Set(selected()),known=new Set(corpora.flatMap(c=>c.records).filter(r=>meetings.has(r.meeting_slug)).map(r=>r.id));
     appendixIds=new Set([...appendixIds].filter(id=>known.has(id)));
+    notes=new Map([...notes].filter(([id])=>known.has(id)));
   }
   function checkbox(row,loaded=false,checked=false){
     const label=document.createElement('label'),input=document.createElement('input'),span=document.createElement('span');input.type='checkbox';input.value=row.slug;input.checked=checked;
@@ -37,9 +49,10 @@
     input.addEventListener('change',()=>{if(loaded){pruneAppendix();invalidate();shown=10;search();}else $('loadMeetings').disabled=!document.querySelector('#inventory input:checked');});
     label.append(input,span);return label;
   }
-  function setCollection(next,prefs=null,selection=null,chosen={mode:'template',record_ids:[]}){
+  function setCollection(next,prefs=null,selection=null,chosen={mode:'template',record_ids:[]},passage_notes=[]){
     corpora=next;$('loadedMeetings').replaceChildren();
     appendixIds=new Set(chosen.record_ids);$('appendixMode').value=chosen.mode;$('onlySelectedEvidence').checked=false;
+    notes=new Map(passage_notes.map(n=>[n.record_id,n.text]));
     for(const row of corpora.flatMap(c=>c.coverage).filter(r=>r.slug))$('loadedMeetings').append(checkbox(row,true,!selection||selection.includes(row.slug)));
     if(prefs){for(const [id,key] of [['reportTemplate','template'],['mission','mission'],['reportTitle','title'],['priorities','priorities'],['analystNotes','notes']])$(id).value=prefs[key];}
     $('reportControls').disabled=false;$('evidenceSearch').disabled=false;$('appendixControls').disabled=false;
@@ -99,7 +112,7 @@
     try{
       if(file.size>Core.LIMIT)throw Error('Use a JSON export under 25 MB.');
       const opened=await Core.openSaved(JSON.parse(await file.text()),policy,countries);
-      setCollection(opened.corpora,opened.settings,opened.selected,opened.appendix);setStatus('Saved sources verified. Prepare the report to rebuild its summaries; saved derived claims are not trusted.');
+      setCollection(opened.corpora,opened.settings,opened.selected,opened.appendix,opened.passage_notes);setStatus('Saved sources verified. Prepare the report to rebuild its summaries; saved derived claims are not trusted.');
     }catch(e){setStatus('Could not open file: '+e.message,true);}finally{event.target.value='';}
   };
   for(const id of ['reportTemplate','mission','reportTitle','priorities','analystNotes'])$(id).addEventListener('input',invalidate);
@@ -117,7 +130,7 @@
   $('onlySelectedEvidence').onchange=()=>{shown=10;search();};
   $('appendixMode').onchange=()=>{if($('appendixMode').value==='template')appendixIds.clear();invalidate();search();};
   $('clearAppendix').onclick=()=>{appendixIds.clear();$('appendixMode').value='selected';invalidate();search();};
-  $('prepareReport').onclick=()=>{try{report=Core.build(corpora,selected(),options(),appendix());$('reportPreview').innerHTML=Core.reportHTML(report,{preview:true});for(const id of ['downloadReport','saveReport','downloadEvidence'])$(id).disabled=false;$('reportState').textContent='Report ready: '+report.meetings.length+' meetings. Review source evidence before circulation.';dirty=true;}catch(e){invalidate();setStatus(e.message,true);}};
+  $('prepareReport').onclick=()=>{try{report=Core.build(corpora,selected(),options(),appendix(),passageNotes());$('reportPreview').innerHTML=Core.reportHTML(report,{preview:true});for(const id of ['downloadReport','saveReport','downloadEvidence'])$(id).disabled=false;$('reportState').textContent='Report ready: '+report.meetings.length+' meetings. Review source evidence before circulation.';dirty=true;}catch(e){invalidate();setStatus(e.message,true);}};
   $('downloadReport').onclick=()=>{if(report)save(Core.standalone(report),'un-meeting-report.html','text/html');};
   $('saveReport').onclick=()=>{if(report){const data=JSON.stringify(Core.savedReport(report,corpora));if(new TextEncoder().encode(data).length>Core.LIMIT){setStatus('Report JSON exceeds 25 MB. Load a smaller collection before saving.',true);return;}save(data,'un-meeting-report.json','application/json');dirty=false;}};
   $('downloadEvidence').onclick=()=>{if(report)save(Core.evidenceCSV(report.records),'un-meeting-evidence.csv','text/csv;charset=utf-8');};
