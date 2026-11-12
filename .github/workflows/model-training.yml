@@ -88,7 +88,7 @@ jobs:
               if source.is_absolute() or '..' in source.parts or source.name!='checkpoint.pt': raise SystemExit('Invalid checkpoint path')
               downloaded=hf_hub_download(repo,str(source),repo_type='dataset',revision=os.environ['DATASET_REVISION'],token=token)
               shutil.copyfile(downloaded,work/'checkpoint.pt')
-          snapshot_download('distilbert/distilbert-base-uncased',revision=os.environ['BASE_REVISION'],local_dir=work/'base',allow_patterns=['config.json','model.safetensors','tokenizer.json','tokenizer_config.json','vocab.txt','special_tokens_map.json','LICENSE'])
+          snapshot_download('distilbert/distilbert-base-uncased',revision=os.environ['BASE_REVISION'],local_dir=work/'base',allow_patterns=['config.json','model.safetensors','tokenizer.json','tokenizer_config.json','vocab.txt','special_tokens_map.json','LICENSE','README.md','NOTICE'])
           PY
       - name: Train local candidate without automatic evaluation or promotion
         shell: bash
