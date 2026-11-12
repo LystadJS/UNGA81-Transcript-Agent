@@ -58,3 +58,19 @@ class Intake(unittest.TestCase):
         b['reviewer_id']='different synthetic reviewer'
         with self.assertRaisesRegex(ValueError,'Different reviewer'):reconcile(d,r,b,i,old)
         self.assertEqual(old,saved)
+
+    def test_unknown_label_schema_is_not_silently_reinterpreted(self):
+        for target in ('draft','returned','previous'):
+            d,r,b,i=packet();old=reconcile(d,r,b,i)
+            {'draft':d,'returned':b,'previous':old}[target]['schema']='un.stance-labels.v999'
+            with self.subTest(target=target), self.assertRaisesRegex(ValueError,'label schema'):
+                reconcile(d,r,b,i,old)
+
+    def test_boolean_source_and_focal_offsets_are_not_integer_positions(self):
+        for key in ('start','end','focal_start','focal_end'):
+            d,r,b,i=packet()
+            # False equals integer zero in Python: the frozen-field comparison
+            # alone cannot reject this malformed JSON source coordinate.
+            b['rows'][0][key]=False if key.endswith('start') else True
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                reconcile(d,r,b,i)

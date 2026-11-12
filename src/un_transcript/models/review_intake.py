@@ -13,12 +13,14 @@ IDENTITY=('dataset_revision','packet_prefix','manifest_sha256','split')
 
 
 def reconcile(draft, registration, returned, expected_packet, previous=None):
+    if draft.get('schema')!='un.stance-labels.v1':raise ValueError('Unsupported original label schema')
     if expected_packet.get('split')!='train':raise ValueError('Training review only; sealed evaluation stays separate')
     if draft.get('registration_sha256')!=digest(registration):raise ValueError('Original draft registration mismatch')
     originals={r['pair_id']:r for r in draft['rows']}
     if len(originals)!=len(draft['rows']):raise ValueError('Duplicate original pair')
     merged={}; receipts=[]; reviewers=set(); dates=[]
     for bundle,kind in ([(previous,'reconciled_training')] if previous is not None else [])+[(returned,'reviewed_subset')]:
+        if bundle.get('schema')!='un.stance-labels.v1':raise ValueError('Unsupported returned label schema')
         meta=bundle.get('review_export',{})
         if meta.get('schema')!='un.owner-browser-review.v1' or meta.get('kind')!=kind or meta.get('packet')!=expected_packet:
             raise ValueError('Mismatched packet or unfinished progress export')

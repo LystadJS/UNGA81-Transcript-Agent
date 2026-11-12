@@ -106,10 +106,10 @@ def check_labels(bundle, registration, split):
         if registration.get('propositions',{}).get(row['issue_id']) != row['proposition']:
             raise ValueError('Reviewed proposition differs from the prospective catalog definition')
         start, end = row.get('start'), row.get('end')
-        if not isinstance(start, int) or not isinstance(end, int) or not 0 <= start < end:
+        if type(start) is not int or type(end) is not int or not 0 <= start < end:
             raise ValueError('Original source span required')
         a,b=row.get('focal_start',0),row.get('focal_end',len(text))
-        if not isinstance(a,int) or not isinstance(b,int) or not 0 <= a < b <= len(text):
+        if type(a) is not int or type(b) is not int or not 0 <= a < b <= len(text):
             raise ValueError('Focal span must lie within the original supplied context')
     return rows
 
