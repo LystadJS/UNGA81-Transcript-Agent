@@ -28,7 +28,7 @@ The source repository's Pages deployment succeeded. The preferred portfolio mirr
 2. Complete the fourteen-day scheduled observation record and verify continuing private/public publication. Separate public metadata storage and browser configuration are now active.
 3. Complete the owner-labeled 300-example codebook pilot, then expand benchmark coverage.
 4. Train and assess the candidate on source-disjoint calibration and untouched test data; record failed gates as failures.
-5. Complete representative diplomat usability sessions and the fourteen-day observation period.
+5. Complete representative diplomat usability sessions using the [prepared session guide](REPORTING_USABILITY.md), and finish the fourteen-day observation period. The guide is prepared; actual human sessions remain outstanding.
 
 The operational release may collect and expose permitted descriptive metadata while stance remains withheld. Publication of code is not completion of external account setup, human labeling, model accuracy acceptance or an elapsed observation period.
 
