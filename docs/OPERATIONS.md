@@ -162,3 +162,9 @@ If workflow inventory succeeds but the public manifest fails, the current report
 ### Retry and refresh ordering
 
 The warehouse alternates advertised meetings without a stored source and refreshes of stored meetings, oldest attempt first within each group. Stored identity comes from the verified SQLite archive, not the latest `deferred` status. The checkpoint retains which group should go next, so even a one-attempt run or a failed retry does not permanently crowd out refreshes. Existing response, byte, meeting and reserved-source limits still apply. Inventory claims do not guarantee downloadable English text.
+
+### Delayed schedules and cancelled queued checks
+
+Record each observation at its actual timestamp. A scheduled date that was missing can later receive a delayed run; retain the earlier observation and update the current date status from the run's actual `schedule` event, creation/start time and completed jobs. Never fill it with a manual retry or describe delayed success as on-time service. GitHub does not expose the original scheduled-for timestamp, so the observer's date association remains explicit.
+
+The shared GitHub concurrency group serializes writers and read-only storage checks. `cancel-in-progress: false` protects an active job; it does not guarantee retention of the single pending job when another workflow enters that group. Inspect both active and pending runs before dispatch. A cancelled probe with no jobs is unmeasured, not passed. Preserve the cancellation and last valid measurement, then dispatch one replacement after the group clears. Do not remove serialization to make checks run sooner.
