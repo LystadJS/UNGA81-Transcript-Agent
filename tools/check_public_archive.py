@@ -35,7 +35,7 @@ def verify_site(browser, name, url, width, cutoff=None):
         expect(page.locator('#verificationStatus')).to_contain_text('SHA-256')
         assert manifests, 'No actual public manifest response observed'
         manifest = manifests[-1]
-        assert page.locator('#snapshotId').inner_text() == manifest['snapshot_id']
+        expect(page.locator('#snapshotId')).to_have_text(manifest['snapshot_id'])
         stamp = datetime.fromisoformat(manifest['generated_at'].replace('Z','+00:00'))
         now = datetime.now(timezone.utc)
         assert stamp.tzinfo and -300 <= (now-stamp).total_seconds() <= 48*3600, 'Public snapshot freshness bound failed'
