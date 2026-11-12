@@ -1,12 +1,12 @@
 # Current capability and acceptance matrix
 
-This is the current operational status guide, updated after the first successful private archive publication on 12 November 2026 (UTC). `site/release.json` identifies the released browser version. Historical validation receipts retain their original scope and date; they are not a fresh full-system test.
+This is the current operational status guide, updated after the fifth successful private archive publication and portfolio deployment on 12 November 2026 (UTC). `site/release.json` identifies the released browser version. Historical validation receipts retain their original scope and date; they are not a fresh full-system test.
 
 | Capability | Implementation boundary | Deployment / empirical status |
 | --- | --- | --- |
 | Existing browser collection and reporting | Browser-selected public UN inventory, source links, summaries, recovery and exports | Source PR #187 merged after all six checks passed, including actual live collection; source Pages deployment succeeded |
-| Durable operational collection | Versioned selection, bounded refresh/backfill, immutable source revisions, SQLite warehouse | Four actual runs published to the owner's private Hugging Face dataset; successive fresh runners restored the archive and continued collection |
-| Research CSV snapshots | Consistent keyed exports, dictionary, hashes, source and run history | Four real private snapshots published; latest corrected coverage records 569 known / 314 stored meetings and 22,548 current segments; coverage remains partial |
+| Durable operational collection | Versioned selection, bounded refresh/backfill, immutable source revisions, SQLite warehouse | Five actual runs published to the owner's private Hugging Face dataset; successive fresh runners restored the archive and continued collection |
+| Research CSV snapshots | Consistent keyed exports, dictionary, hashes, source and run history | Five real private snapshots published; latest corrected coverage records 683 known / 381 stored meetings and 26,897 current segments; coverage remains partial; real restored-export run 43192650005 reproduced 23 files (17 CSVs) byte for byte |
 | Public archive | Read-only manifest/partition browser with source and coverage metadata | Unconfigured until a permitted public snapshot URL is supplied |
 | Five-level semantic stance | Candidate training, source-bound inference contract, explicit uncertainty and evaluation policy | **No accepted trained model or owner benchmark is supplied** |
 | Issue discovery | Versioned catalog and source-linked candidate discovery | New candidates do not silently become validated policy propositions |
@@ -17,7 +17,7 @@ This is the current operational status guide, updated after the first successful
 
 The first [actual archive run](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/43154577386) reported 87 meetings and 76,284,090 downloaded bytes, with partial coverage. Its private snapshot ID is `20261112T042431Z-98493e2e5511` (UTC). The [second actual run](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/43155142584) successfully restored that archive and published `20261112T043029Z-314632fa4d79`, reporting 78 downloaded meetings and 75,470,172 bytes. These run counts may overlap through refreshes and must not be added as unique meetings. Both runs had partial coverage, successful private publication, no configured public storage, and model status `not_evaluated_missing_labels`. These are operational receipts, not empirical stance acceptance. See [the acceptance record](OPERATIONAL_ACCEPTANCE.md) for the deployment and recovery boundaries.
 
-The source repository's Pages deployment succeeded. The main portfolio [mirror update in PR #151](https://github.com/LystadJS/LystadJS.github.io/pull/151) remains unmerged: its mirror audit passed, while 27 inherited portfolio tests failed with the relevant tests and assets unchanged from its main branch. The preferred portfolio URL therefore must not be described as having received this operational update.
+The source repository's Pages deployment succeeded. The preferred portfolio mirror was deployed through [PR #151](https://github.com/LystadJS/LystadJS.github.io/pull/151), after all 94 active browser regression tests and its manifest audit passed (44 existing viewport-specific skips). [Live verification 43191396732](https://github.com/LystadJS/LystadJS.github.io/actions/runs/43191396732) passed exact asset hashes and actual desktop/mobile research/comparison/meeting browser checks. [PR #152](https://github.com/LystadJS/LystadJS.github.io/pull/152) repaired a stale version pin in the separate quick-reader monitor; [run 43192489347](https://github.com/LystadJS/LystadJS.github.io/actions/runs/43192489347) verified 32 live assets without requesting transcripts. The archive application is deployed, while its public dataset manifest remains unconfigured.
 
 ## Acceptance dependencies
 
@@ -40,3 +40,7 @@ The codebase includes third-party numerical licenses in `site/NUMERICS_LICENSES.
 The [PR triage](PR_TRIAGE.md) records the disposition recommended for existing unmerged work. It does not merge, close or promote those branches.
 
 The corrected [fourth archive run](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/43188813315) separates 42 inventory dates from 569 known meetings. It stores 314 distinct meetings and 22,548 current segments. PR #195 preserves older immutable snapshots, whose meeting totals could include inventory pseudo-records; use the corrected export grain for subsequent coverage comparisons.
+
+The [fifth archive run](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/43191295000) published `20261112T092603Z-1fd9c19974c2`: 683 known / 381 stored meetings, 26,897 current segments, and 49 inventory dates. All 37 reserved meetings are recorded as excluded. Coverage remains partial. Current counts supersede earlier aggregate receipts without rewriting their snapshots.
+
+The real [restore/re-export audit](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/43192650005) independently regenerated all 23 export files, including 17 CSVs, from restored read-only SQLite and matched every byte. Integrity and foreign-key checks passed. This establishes archive/export coherence for that snapshot and exporter version, not model or statistical acceptance.
