@@ -90,6 +90,16 @@
     }catch(e){setStatus('Could not open file: '+e.message,true);}finally{event.target.value='';}
   };
   for(const id of ['reportTemplate','mission','reportTitle','priorities','analystNotes'])$(id).addEventListener('input',invalidate);
+  $('savePreferences').onclick=()=>{try{save(JSON.stringify(Core.exportPreferences(options()),null,2),'un-mission-preferences.json','application/json');$('preferencesStatus').textContent='Mission preferences saved. Transcript text, selected meetings and analyst notes are excluded.';}catch(e){$('preferencesStatus').textContent=e.message;}};
+  $('openPreferences').onchange=async event=>{
+    const file=event.target.files[0];if(!file)return;
+    try{
+      if(file.size>Core.PREFERENCES_LIMIT)throw Error('Use a mission-preferences JSON file under 8 KiB.');
+      const prefs=Core.importPreferences(JSON.parse(await file.text()));
+      for(const [id,key] of [['reportTemplate','template'],['mission','mission'],['reportTitle','title'],['priorities','priorities']])$(id).value=prefs[key];
+      invalidate();$('preferencesStatus').textContent='Mission preferences applied. Your loaded sources, meeting selection and analyst notes are unchanged. Prepare the report again to update its exports.';
+    }catch(e){$('preferencesStatus').textContent='Could not open mission preferences: '+e.message;}finally{event.target.value='';}
+  };
   $('evidenceSearch').oninput=()=>{shown=10;search();};$('moreEvidence').onclick=()=>{shown+=10;search();};
   $('prepareReport').onclick=()=>{try{report=Core.build(corpora,selected(),options());$('reportPreview').innerHTML=Core.reportHTML(report,{preview:true});for(const id of ['downloadReport','saveReport','downloadEvidence'])$(id).disabled=false;$('reportState').textContent='Report ready: '+report.meetings.length+' meetings. Review source evidence before circulation.';dirty=true;}catch(e){invalidate();setStatus(e.message,true);}};
   $('downloadReport').onclick=()=>{if(report)save(Core.standalone(report),'un-meeting-report.html','text/html');};

@@ -22,6 +22,12 @@ Mission name, title, priority words, and analyst notes are configurable. Priorit
 
 Summaries reuse the existing deterministic quick reader. Country expressions are provisional source-linked rule extracts, not accepted five-class model predictions. Collective statements remain separate from national expressions. U.S. comparison coverage uses matching issue and exact policy-object wording in the same meeting; it assigns no agreement score. Any textual disagreement, conditions, or missing comparable extract must be interpreted through the evidence. User notes are visibly separate from source statements.
 
+## Reusable mission preferences
+
+Save or open `un.mission-preferences.v1` JSON before or after loading meetings. The file contains only `schema` and `settings`; settings contains exactly `template`, `mission`, `title` and `priorities`. Templates retain the three supported report formats. Mission/title/priority strings retain the existing 160/200/300-character bounds, and the file is limited to 8 KiB.
+
+This reusable format excludes source text, meeting identities and analyst notes. Import rejects unknown fields, unsupported schemas, invalid types and oversized files before changing the workspace. Applying valid preferences preserves loaded sources, selected meetings and current analyst notes, but clears the prepared preview and disables stale report exports until the report is prepared again. Invalid files leave the existing report intact. Nothing is saved or uploaded automatically. The source-bearing report JSON below remains a separate format.
+
 ## Export contract
 
 | Export | Contents and use |
@@ -36,7 +42,7 @@ CSV uses UTF-8, quoted cells and CRLF. Potential spreadsheet formulas are prefix
 
 1. Test representative diplomat tasks against the first workflow; retain actual usability feedback separately from synthetic engineering tests.
 2. Extend the implemented archive-selection handoff only through approved source access, without broadening the public text allowlist implicitly.
-3. Add reusable mission templates and richer report editing while preserving source/user/model distinctions.
+3. Extend reusable mission preferences with richer report editing while preserving source/user/model distinctions.
 4. Evaluate an optional local generative reporting model separately from the stance classifier. Fluent generation, factual coverage and citation correctness need their own acceptance evidence.
 5. Complete the owner-label pilot and untouched stance evaluation. Reporting remains useful while model estimates stay withheld.
 
