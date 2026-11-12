@@ -9,6 +9,7 @@ from urllib.error import HTTPError
 from urllib.request import urlopen
 
 from un_transcript.observation import REPOSITORY, observe, public_freshness, moment
+from un_transcript.snapshots import atomic_json
 
 PUBLIC_URL = 'https://huggingface.co/datasets/LystadJS/UN-Transcript-Agent-Public/resolve/main/latest.json'
 
@@ -73,8 +74,7 @@ def main():
                  'http_status':error.http_status if isinstance(error,ObservationAccessError) else None,
                  'previous_report_preserved':args.output.is_file(),'operational_acceptance':False}
         sidecar=args.output.with_name(args.output.name+'.error.json')
-        sidecar.parent.mkdir(parents=True,exist_ok=True)
-        sidecar.write_text(json.dumps(failure,indent=2,sort_keys=True)+'\n')
+        atomic_json(sidecar, failure)
         print(json.dumps(failure))
         return 1
     try:
@@ -89,8 +89,7 @@ def main():
         report['public_manifest_available']=False
         report['public_manifest_error']={'operation':'public_manifest','error_type':type(error).__name__,
                                          'http_status':error.code if isinstance(error,HTTPError) else None}
-    args.output.parent.mkdir(parents=True,exist_ok=True)
-    args.output.write_text(json.dumps(report,indent=2,sort_keys=True)+'\n')
+    atomic_json(args.output, report)
     print(json.dumps({'schema':report['schema'],'output':str(args.output),
                       'scheduled_dates_successful':report['scheduled_dates_successful'],
                       'public_manifest_available':report['public_manifest_available'],

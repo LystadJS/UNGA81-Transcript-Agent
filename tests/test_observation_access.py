@@ -77,3 +77,35 @@ class ObservationAccess(unittest.TestCase):
             self.assertFalse(report['public_manifest_available'])
             self.assertEqual(report['public_manifest_error']['http_status'],503)
             self.assertEqual(len(report['days']),14)
+
+    def test_interrupted_report_replacement_preserves_prior_evidence(self):
+        for failed_inventory in (False, True):
+            with self.subTest(failed_inventory=failed_inventory), tempfile.TemporaryDirectory() as tmp:
+                output=Path(tmp)/'observation.json'
+                sidecar=output.with_name(output.name+'.error.json')
+                output.write_bytes(b'prior successful report\n')
+                sidecar.write_bytes(b'prior failed observation\n')
+                before={p.name:p.read_bytes() for p in Path(tmp).iterdir()}
+                with patch('sys.argv',['observe','--output',str(output)]), redirect_stdout(io.StringIO()), \
+                     patch('tools.observe_operational_runs.fetch_runs',
+                           side_effect=ObservationAccessError('timeout') if failed_inventory else None,
+                           return_value=[]), \
+                     patch('tools.observe_operational_runs.urlopen',side_effect=TimeoutError()), \
+                     patch('un_transcript.snapshots.os.replace',side_effect=OSError('interrupted replacement')):
+                    with self.assertRaises(OSError):main()
+                self.assertEqual({p.name:p.read_bytes() for p in Path(tmp).iterdir()},before)
+
+    def test_recovered_observation_retains_dated_failure_history(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output=Path(tmp)/'observation.json'
+            sidecar=output.with_name(output.name+'.error.json')
+            prior=b'{"observed_at":"2026-11-12T00:00:00Z","status":"unavailable"}\n'
+            sidecar.write_bytes(prior)
+            with patch('sys.argv',['observe','--output',str(output)]), redirect_stdout(io.StringIO()), \
+                 patch('tools.observe_operational_runs.fetch_runs',return_value=[]), \
+                 patch('tools.observe_operational_runs.urlopen',side_effect=TimeoutError()):
+                self.assertEqual(main(),0)
+            self.assertTrue(json.loads(output.read_text())['run_inventory_complete'])
+            self.assertEqual(sidecar.read_bytes(),prior)
+            self.assertEqual(sorted(p.name for p in Path(tmp).iterdir()),
+                             ['observation.json','observation.json.error.json'])
