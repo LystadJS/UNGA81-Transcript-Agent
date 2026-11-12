@@ -5,6 +5,7 @@ are not exact packed disk usage or an account-wide quota certification.
 """
 from datetime import datetime, timezone
 import re
+from .snapshots import _provider_call
 
 
 class CapacityIncomplete(ValueError):
@@ -23,7 +24,7 @@ def oid(value, width=40):
 
 
 def references(storage, max_refs):
-    refs=storage.api.list_repo_refs(storage.repo_id,repo_type='dataset',include_pull_requests=True)
+    refs=_provider_call('capacity_refs',storage.api.list_repo_refs,storage.repo_id,repo_type='dataset',include_pull_requests=True)
     result=[]
     for group in ('branches','tags','converts','pull_requests'):
         entries=getattr(refs,group,None)
@@ -37,13 +38,24 @@ def references(storage, max_refs):
     return sorted(result)
 
 
+def tree_entries(storage, revision):
+    # The SDK paginates lazily: HTTP failures may happen during next(), after
+    # an initial successful response. Sanitize both boundaries identically.
+    entries=iter(_provider_call('capacity_tree',storage.api.list_repo_tree,storage.repo_id,
+                               repo_type='dataset',revision=revision,recursive=True,expand=False))
+    while True:
+        try:entry=_provider_call('capacity_tree',next,entries)
+        except StopIteration:return
+        yield entry
+
+
 def measure_capacity(storage, *, max_refs=16, max_commits=200, max_entries=500000):
     info,provider_bytes=storage.info();head=oid(info.sha)
     initial_refs=references(storage,max_refs)
     tips={head}|{revision for _,revision in initial_refs}
     commits=set()
     for tip in sorted(tips):
-        history=storage.api.list_repo_commits(storage.repo_id,repo_type='dataset',revision=tip)
+        history=_provider_call('capacity_commits',storage.api.list_repo_commits,storage.repo_id,repo_type='dataset',revision=tip)
         if not history or len(history)>max_commits:raise CapacityIncomplete('Commit accounting bound exceeded or history absent')
         ids={oid(item.commit_id) for item in history}
         if len(ids)!=len(history) or tip not in ids:raise CapacityIncomplete('Incomplete commit identity inventory')
@@ -55,7 +67,7 @@ def measure_capacity(storage, *, max_refs=16, max_commits=200, max_entries=50000
         target[identity]=size
     for revision in sorted(commits):
         paths=set()
-        for entry in storage.api.list_repo_tree(storage.repo_id,repo_type='dataset',revision=revision,recursive=True,expand=False):
+        for entry in tree_entries(storage,revision):
             visits+=1
             if visits>max_entries:raise CapacityIncomplete('Tree metadata accounting bound exceeded')
             path=getattr(entry,'path',None)

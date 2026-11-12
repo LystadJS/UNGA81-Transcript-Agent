@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 from un_transcript.capacity import measure_capacity
 from un_transcript.publication import load_publication_config
-from un_transcript.snapshots import HFStorage
+from un_transcript.snapshots import HFStorage, StorageRequestError
 
 
 def main():
@@ -23,5 +23,8 @@ def main():
 if __name__=='__main__':
     try:main()
     except Exception as error:
-        print(json.dumps({'status':'failed','error_type':type(error).__name__}))
+        result={'status':'failed','error_type':type(error).__name__}
+        if isinstance(error,StorageRequestError):
+            result.update(storage_operation=error.operation,http_status=error.status_code)
+        print(json.dumps(result))
         raise SystemExit(1)

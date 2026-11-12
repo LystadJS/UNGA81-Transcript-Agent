@@ -56,6 +56,16 @@ class Monitoring(unittest.TestCase):
         value.update(public_storage_operation='SECRET',public_http_status='SECRET')
         self.assertNotIn('SECRET',json.dumps(self.project(value)))
 
+    def test_capacity_diagnostics_survive_strict_receipt_validation(self):
+        from un_transcript.monitoring import validate_operational_receipt
+        for operation in ('capacity_refs','capacity_commits','capacity_tree'):
+            value=fixture();value.update(public_publication='failed',public_http_status=503,
+                                         public_storage_operation=operation)
+            result=self.project(value)
+            self.assertEqual(result['snapshot']['public_storage_operation'],operation)
+            self.assertEqual(validate_operational_receipt(result,run_id=123,attempt=2,event='schedule'),result)
+            self.assertNotIn('SECRET',json.dumps(result))
+
     def test_unknown_status_and_incoherent_counts_fail_closed(self):
         for field, value in [('meetings',9), ('stored_meetings',9), ('segments',True)]:
             with self.subTest(field=field):

@@ -4,7 +4,8 @@ import re
 
 COLLECTION_STATUSES = {'collected', 'deferred', 'excluded_language', 'excluded_reserved',
                        'unavailable', 'failed', 'pending', 'empty_transcript', 'not_in_inventory', 'no_longer_listed'}
-OPERATIONS = {'repository_metadata', 'path_metadata', 'artifact_download', 'stage_snapshot', 'activate_pointer'}
+OPERATIONS = {'repository_metadata', 'path_metadata', 'artifact_download', 'stage_snapshot', 'activate_pointer',
+              'capacity_refs', 'capacity_commits', 'capacity_tree'}
 
 
 def integer(value):

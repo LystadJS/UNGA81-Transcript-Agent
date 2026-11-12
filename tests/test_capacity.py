@@ -92,3 +92,28 @@ class Capacity(unittest.TestCase):
             _,used=HFStorage.budget_info(storage)
             self.assertEqual(used,1310)
             self.assertEqual(storage.last_capacity_measurement['provider_reported_bytes'],1000)
+
+    def test_metadata_http_failures_include_only_fixed_operation_and_status(self):
+        from un_transcript.snapshots import StorageRequestError
+        class ProviderError(Exception):
+            response=NS(status_code=429,url='https://private/?token=SECRET',text='PRIVATE')
+        for method,operation in (('list_repo_refs','capacity_refs'),('list_repo_commits','capacity_commits'),('list_repo_tree','capacity_tree')):
+            storage,_,_=store()
+            getattr(storage.api,method).side_effect=ProviderError('SECRET PRIVATE')
+            with self.assertRaises(StorageRequestError) as raised:measure_capacity(storage)
+            self.assertEqual(raised.exception.operation,operation)
+            self.assertEqual(raised.exception.status_code,429)
+            self.assertNotIn('SECRET',str(raised.exception))
+            self.assertNotIn('PRIVATE',str(raised.exception))
+
+    def test_lazy_tree_page_failure_keeps_safe_diagnostics(self):
+        from un_transcript.snapshots import StorageRequestError
+        class ProviderError(Exception):response=NS(status_code=503)
+        def pages(*args,**kwargs):
+            yield regular('1'*40,20)
+            raise ProviderError('PRIVATE signed URL')
+        storage,_,_=store();storage.api.list_repo_tree.side_effect=pages
+        with self.assertRaises(StorageRequestError) as raised:measure_capacity(storage)
+        self.assertEqual(raised.exception.operation,'capacity_tree')
+        self.assertEqual(raised.exception.status_code,503)
+        self.assertNotIn('PRIVATE',str(raised.exception))
