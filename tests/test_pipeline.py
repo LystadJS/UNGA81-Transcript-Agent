@@ -6,7 +6,10 @@ import tempfile
 import unittest
 from urllib.parse import urlsplit
 
-from un_transcript.cli import run_pipeline
+from un_transcript.cli import run_pipeline, main
+from unittest.mock import Mock, patch
+from contextlib import redirect_stdout
+import io
 from un_transcript.snapshots import verify_snapshot
 from un_transcript.warehouse import Warehouse
 
@@ -72,6 +75,40 @@ class Pipeline(unittest.TestCase):
         with Warehouse(self.root/'runtime/data/warehouse.sqlite3') as db:
             self.assertEqual(len(db.current_segments()),1)
         verify_snapshot(failed['snapshot']);verify_snapshot(first['snapshot'])
+
+    def test_public_outage_preserves_private_publication_and_failure_receipt(self):
+        private = Mock(repo_id='owner/private', budget_bytes=80_000_000_000)
+        private.info.return_value = (None, 0)
+        private.publish.side_effect = lambda directory: {'snapshot_id': directory.name}
+        public = Mock(repo_id='owner/public')
+        public.publish_public.side_effect = PermissionError('secret signed URL must not reach receipt')
+        result = run_pipeline(self.config_path, self.root/'runtime', as_of=date(2026,11,10),
+                              transport=self.transport, remote=private, public_remote=public)
+        private.publish.assert_called_once()
+        public.info.assert_not_called()
+        self.assertEqual(result['private_publication'], 'published')
+        self.assertEqual(result['public_publication'], 'failed')
+        self.assertEqual(result['public_error_type'], 'PermissionError')
+        receipt = json.loads((self.root/'runtime/last-run.json').read_bytes())
+        self.assertEqual(receipt, result)
+        self.assertNotIn('secret signed URL', json.dumps(receipt))
+        self.assertEqual(json.loads((self.root/'runtime/latest.json').read_bytes())['snapshot_id'], result['run_id'])
+        verify_snapshot(result['snapshot'])
+
+    def test_private_failure_does_not_attempt_public_publication(self):
+        private = Mock(repo_id='owner/private', budget_bytes=80_000_000_000)
+        private.info.return_value = (None, 0)
+        private.publish.side_effect = TimeoutError('synthetic private outage')
+        public = Mock(repo_id='owner/public')
+        with self.assertRaises(TimeoutError):
+            run_pipeline(self.config_path, self.root/'runtime', as_of=date(2026,11,10),
+                         transport=self.transport, remote=private, public_remote=public)
+        public.publish_public.assert_not_called()
+        self.assertFalse((self.root/'runtime/latest.json').exists())
+
+    def test_cli_reports_nonzero_when_only_public_publication_failed(self):
+        with patch('un_transcript.cli.run_pipeline', return_value={'public_publication':'failed'}), redirect_stdout(io.StringIO()):
+            self.assertEqual(main(['run', '--workspace', str(self.root/'cli')]), 1)
 
 
 if __name__=='__main__':unittest.main()

@@ -107,6 +107,7 @@ jobs:
                   'Meetings downloaded this run (includes refreshes): '+str(result['meetings_downloaded']),
                   'Private publication: '+result['private_publication'],
                   'Public metadata publication: '+result['public_publication'],
+                  'Public publication error type: '+str(result.get('public_error_type') or 'none'),
                   'Stance model: '+result['model_status']['status'],
                   'Download counts across runs must not be added as unique meeting coverage.'
               ]
