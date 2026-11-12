@@ -1,6 +1,6 @@
 # Open pull-request triage
 
-Read-only inventory checked 11 November 2026 against the 23 open pull requests returned by GitHub. Twenty-two were drafts. This is a product-integration triage based on titles and recorded scope, not a fresh code review or permission to merge. No pull request was modified, closed or merged.
+Read-only historical inventory rechecked 12 November 2026 at 10:29 UTC: all 23 listed historical pull requests remain open; the only additional open PR was the current diagnostics repair #203, subsequently merged after CI. Twenty-two were drafts. This is a product-integration triage based on titles and recorded scope, not a fresh code review or permission to merge. No pull request was modified, closed or merged.
 
 “Relevant reference” means compare and selectively reuse compatible code/tests in a separately validated change; it does not mean merge the branch wholesale. “Research-only” preserves experimental work and its acceptance limits. “Superseded” identifies planning/release material overtaken by the current operational plan without deleting its history.
 
@@ -30,4 +30,4 @@ Read-only inventory checked 11 November 2026 against the 23 open pull requests r
 | [#66](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/66) Research: offline source-bound semantic representation scaffold | Relevant reference | Semantic representation infrastructure can inform retrieval; it is not the production stance model. |
 | [#25](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/25) P0–P1: historical UN General Debate acquisition and metadata inventory (source-safe) | Relevant later phase | Historical acquisition work is useful after current-session operation; source rights and coverage still need verification. |
 
-Before any integration, fetch current main, inspect the complete diff and ancestry, reproduce the relevant checks, preserve frozen artifacts and verify the new production interface. Do not infer readiness from an old “PASS” in a PR title. Actual trained stance acceptance, public data provisioning and fourteen-day operation remain separate milestones.
+Before any integration, fetch current main, inspect the complete diff and ancestry, reproduce the relevant checks, preserve frozen artifacts and verify the new production interface. Do not infer readiness from an old “PASS” in a PR title. Public metadata provisioning and both-site live checks passed on 12 November 2026. Actual trained stance acceptance and fourteen-day operation remain separate milestones.
