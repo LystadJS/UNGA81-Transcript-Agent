@@ -59,7 +59,7 @@
   function tableRow(cells){const tr=node('tr');for(const content of cells){const td=node('td');td.append(content instanceof Node?content:document.createTextNode(String(content)));tr.append(td);}return tr;}
   function render() {
     const selected=selectedMeetings();$('meetingRows').replaceChildren();$('positionRows').replaceChildren();
-    for(const m of selected.slice(0,state.visible))$('meetingRows').append(tableRow([m.date||'Date unknown',sourceLink(m.source_url,m.title||m.meeting_id),m.body||'Not recorded',friendly(m.status),m.segments]));
+    for(const m of selected.slice(0,state.visible))$('meetingRows').append(tableRow([m.date||'Date unknown',sourceLink(m.source_url,m.title||m.meeting_id),m.body||'Not recorded',m.segments>0?'Text archived':'No text archived',friendly(m.status),m.segments]));
     const invalid=$('archiveStart').value && $('archiveEnd').value && $('archiveStart').value>$('archiveEnd').value;
     $('filterStatus').textContent=invalid?'Choose a start date on or before the end date.':`${selected.length.toLocaleString()} meetings match. Showing ${Math.min(state.visible,selected.length).toLocaleString()}.`;
     $('moreMeetings').hidden=state.visible>=selected.length;$('exportSelection').disabled=!selected.length;
@@ -83,7 +83,7 @@
     const m=state.manifest,stamp=new Date(m.generated_at),age=(Date.now()-stamp.getTime())/86400000;
     $('archiveStats').hidden=false;$('lastUpdate').textContent=stamp.toLocaleString();$('meetingCount').textContent=state.meetings.length.toLocaleString();
     const counts={};for(const meeting of state.meetings)counts[meeting.status]=(counts[meeting.status]||0)+1;
-    $('coverageSummary').textContent=Object.entries(counts).map(([k,v])=>`${v} ${friendly(k)}`).join('; ')||'No meetings in this snapshot';
+    $('coverageSummary').textContent=state.meetings.length?`${state.meetings.filter(m=>m.segments>0).length} meetings with archived text. Latest collection checks: ${Object.entries(counts).map(([k,v])=>`${v} ${friendly(k)}`).join('; ')}.`:'No meetings in this snapshot';
     $('archiveStatus').textContent=m.status==='complete'?'The published collection is available.':`The published snapshot is ${friendly(m.status)}. Coverage gaps remain visible below.`;
     if(m.status!=='complete')$('archiveStatus').classList.add('warning');
     $('freshness').hidden=false;$('freshness').textContent=age>2?'This snapshot is more than two days old. Scheduled updates may be delayed; the last published collection remains available.':'Daily updates are scheduled. The time above is the actual publication time, not a guarantee of source completeness.';
