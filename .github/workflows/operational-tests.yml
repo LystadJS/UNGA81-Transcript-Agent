@@ -2,10 +2,10 @@ name: Operational pipeline contracts
 
 on:
   pull_request:
-    paths: ['tools/continue_owner_review.py', 'tools/export_owner_training.py', '.github/workflows/owner-training-export.yml', 'src/**', 'tests/**', 'config/**', 'site/archive*', 'tools/build_pages.py', 'tools/measure_storage_capacity.py', '.github/workflows/storage-capacity.yml', 'tools/write_operational_receipt.py', 'tools/observe_operational_runs.py', 'tools/inspect_operational_run.py', 'tools/storage_recovery_drill.py', 'tools/audit_private_exports.py', 'tools/provision_public_metadata.py', '.github/workflows/public-metadata-provision.yml', '.github/workflows/restored-export-audit.yml', '.github/workflows/storage-recovery.yml', 'tools/*reviewer*', 'tests/browser_owner_review.py', '.github/workflows/owner-reviewer.yml', 'requirements-model.txt', '.github/workflows/operational*.yml', '.github/workflows/model-training.yml']
+    paths: ['tools/continue_owner_review.py', 'tools/export_owner_training.py', '.github/workflows/owner-training-export.yml', 'src/**', 'tests/**', 'config/**', 'site/archive*', 'site/meeting-report*', 'site/reporting-exclusions.json', 'tools/build_pages.py', 'tools/measure_storage_capacity.py', '.github/workflows/storage-capacity.yml', 'tools/write_operational_receipt.py', 'tools/observe_operational_runs.py', 'tools/inspect_operational_run.py', 'tools/storage_recovery_drill.py', 'tools/audit_private_exports.py', 'tools/provision_public_metadata.py', '.github/workflows/public-metadata-provision.yml', '.github/workflows/restored-export-audit.yml', '.github/workflows/storage-recovery.yml', 'tools/*reviewer*', 'tests/browser_owner_review.py', '.github/workflows/owner-reviewer.yml', 'requirements-model.txt', '.github/workflows/operational*.yml', '.github/workflows/model-training.yml']
   push:
     branches: [main]
-    paths: ['tools/continue_owner_review.py', 'tools/export_owner_training.py', '.github/workflows/owner-training-export.yml', 'src/**', 'tests/**', 'config/**', 'site/archive*', 'tools/build_pages.py', 'tools/measure_storage_capacity.py', '.github/workflows/storage-capacity.yml', 'tools/write_operational_receipt.py', 'tools/observe_operational_runs.py', 'tools/inspect_operational_run.py', 'tools/storage_recovery_drill.py', 'tools/audit_private_exports.py', 'tools/provision_public_metadata.py', '.github/workflows/public-metadata-provision.yml', '.github/workflows/restored-export-audit.yml', '.github/workflows/storage-recovery.yml', 'tools/*reviewer*', 'tests/browser_owner_review.py', '.github/workflows/owner-reviewer.yml', 'requirements-model.txt', '.github/workflows/operational*.yml', '.github/workflows/model-training.yml']
+    paths: ['tools/continue_owner_review.py', 'tools/export_owner_training.py', '.github/workflows/owner-training-export.yml', 'src/**', 'tests/**', 'config/**', 'site/archive*', 'site/meeting-report*', 'site/reporting-exclusions.json', 'tools/build_pages.py', 'tools/measure_storage_capacity.py', '.github/workflows/storage-capacity.yml', 'tools/write_operational_receipt.py', 'tools/observe_operational_runs.py', 'tools/inspect_operational_run.py', 'tools/storage_recovery_drill.py', 'tools/audit_private_exports.py', 'tools/provision_public_metadata.py', '.github/workflows/public-metadata-provision.yml', '.github/workflows/restored-export-audit.yml', '.github/workflows/storage-recovery.yml', 'tools/*reviewer*', 'tests/browser_owner_review.py', '.github/workflows/owner-reviewer.yml', 'requirements-model.txt', '.github/workflows/operational*.yml', '.github/workflows/model-training.yml']
   workflow_dispatch:
 
 permissions:
@@ -39,6 +39,13 @@ jobs:
           export PLAYWRIGHT_MODULE="$(python -c 'import pathlib, playwright; print(pathlib.Path(playwright.__file__).parent / "driver" / "package")')"
           export BROWSER_PATH="$(python -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
           node tests/test_archive_ui.cjs
+      - name: Source-bound meeting report contracts and browser workflow
+        shell: bash
+        run: |
+          export PLAYWRIGHT_MODULE="$(python -c 'import pathlib, playwright; print(pathlib.Path(playwright.__file__).parent / "driver" / "package")')"
+          export BROWSER_PATH="$(python -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          node tests/test_meeting_report.cjs
+          node tests/test_meeting_reports_ui.cjs
       - name: Browser owner review round-trip with synthetic passages
         run: python tests/browser_owner_review.py
       - name: Build allowlisted public site
