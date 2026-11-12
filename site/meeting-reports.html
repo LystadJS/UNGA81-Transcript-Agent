@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' https://transcripts.un.org; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Meeting reports · UN Transcript Agent</title>
+  <link rel="stylesheet" href="theme.css"><link rel="stylesheet" href="app.css"><link rel="stylesheet" href="meeting-reports.css">
+  <script defer src="meeting-scopes.js"></script><script defer src="collector.js"></script><script defer src="meeting-picker-core.js"></script><script defer src="text-units.js"></script><script defer src="meeting-quick-reader.js"></script><script defer src="meeting-report-core.js"></script><script defer src="meeting-reports.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to meeting reports</a>
+  <header><div class="masthead"><span class="mark" aria-hidden="true">UN<br>81</span><div><p class="eyebrow">UN TRANSCRIPT AGENT</p><h1>Meeting reports</h1><p>Choose proceedings, inspect the evidence, and prepare a mission briefing.</p></div></div></header>
+  <nav aria-label="Main"><a href="meeting-reports.html" aria-current="page">Meeting reports</a><a href="archive.html">Maintained archive</a><a href="index.html">Advanced analysis and research</a></nav>
+  <main id="main">
+    <p class="intro">Start with a meeting date or a saved collection. Reports use available English transcripts, retain source links, and show gaps. Automatic five-class stance estimates remain withheld.</p>
+    <p id="status" class="notice" role="status" aria-live="polite">Preparing the reporting workspace…</p>
+    <section aria-labelledby="chooseHeading"><h2 id="chooseHeading">1. Choose meetings</h2>
+      <fieldset id="sourceControls" disabled><legend>Find proceedings or reopen your work</legend><div class="report-controls">
+        <label for="meetingDate">Meeting date<input type="date" id="meetingDate"></label><button type="button" id="findMeetings">Find meetings</button>
+        <label for="openCollection">Open a saved collection or report JSON<input type="file" id="openCollection" accept=".json,application/json"></label>
+      </div></fieldset>
+      <p class="hint">Date search reads the official inventory only. Load transcripts explicitly after selecting up to five meetings. Reserved evaluation meetings cannot be opened here.</p>
+      <div id="inventory" class="meeting-options"></div><button type="button" id="loadMeetings" disabled>Load selected transcripts</button><button type="button" id="cancelLoad" class="secondary" hidden>Cancel loading</button>
+      <p id="collectionStatus" role="status">No collection loaded.</p><div id="loadedMeetings" class="meeting-options"></div>
+    </section>
+    <section aria-labelledby="evidenceHeading"><h2 id="evidenceHeading">2. Search the evidence</h2>
+      <label for="evidenceSearch">Words, country, recorded speaker, or group<input type="search" id="evidenceSearch" placeholder="For example: humanitarian access" disabled maxlength="300"></label>
+      <p id="evidenceCount" role="status">Load a collection to search its passages.</p><p class="hint">All search words must occur in the passage or its recorded metadata. Search does not change the meeting overview or establish a policy position.</p>
+      <div id="evidenceResults"></div><button type="button" id="moreEvidence" class="secondary" hidden>Show more passages</button>
+    </section>
+    <section aria-labelledby="templateHeading"><h2 id="templateHeading">3. Prepare the report</h2>
+      <fieldset id="reportControls" disabled><legend>Mission preferences</legend><div class="report-controls">
+        <label for="reportTemplate">Report template<select id="reportTemplate"><option value="brief">Mission briefing</option><option value="negotiation">Negotiation record</option><option value="evidence">Evidence digest with full appendix</option></select></label>
+        <label for="mission">Mission or team<input id="mission" maxlength="160" placeholder="Your mission or reporting team"></label>
+        <label for="reportTitle">Report title<input id="reportTitle" maxlength="200" value="Meeting briefing"></label>
+        <label for="priorities">Priority evidence search<input id="priorities" maxlength="300" placeholder="Optional: financing development"></label>
+      </div><label for="analystNotes">Your assessment and follow-up notes<textarea id="analystNotes" maxlength="8000" rows="4" placeholder="These notes will be identified as your assessment, separate from source evidence."></textarea></label>
+      <button type="button" id="prepareReport">Prepare report</button></fieldset>
+      <p id="reportState" role="status">Choose at least one loaded meeting.</p>
+      <div class="report-controls"><button type="button" id="downloadReport" disabled>Download HTML report</button><button type="button" id="saveReport" disabled>Save report JSON</button><button type="button" id="downloadEvidence" disabled>Download selected evidence CSV</button></div>
+      <details><summary>What the exports contain</summary><p>HTML is a standalone, script-free report suitable for printing. JSON preserves the original collection, source hashes, meeting selection and mission preferences so the report can be rebuilt here. CSV contains all passages from the selected meetings—not only the search results—with source identifiers and hashes. Potential spreadsheet formulas are prefixed with an apostrophe; JSON retains exact text.</p><p>These files can contain transcript text and your notes. Nothing is uploaded or saved automatically. Save JSON before closing. The maintained archive and research CSV pipeline remain separate.</p></details>
+      <div id="reportPreview" aria-label="Prepared report"></div>
+    </section>
+  </main><footer>Source-linked reporting · Deterministic extracts, not an accepted stance model · No external AI calls</footer>
+</body></html>

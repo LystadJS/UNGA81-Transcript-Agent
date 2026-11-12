@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.42.0",
+  "browser_engine": "browser-descriptive-1.43.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-12",
   "features": [
+    "Meeting-first reporting workspace: explicit selected-source loading, original-bound evidence search, mission templates, source-linked deterministic briefings and script-free HTML, replayable JSON and documented CSV exports; all 37 reserved meetings remain closed",
     "Published read-only operational archive with verified partitions, explicit freshness, archived-text availability separate from the latest collection attempt, and withheld unvalidated stance estimates",
     "Owner-reviewed day-summary repair: self-contained source-derived policy objects, narrower catalog boundaries, expanded meeting-procedure filtering, and explicit collective attribution excluded from national participation",
     "Automatic topic distribution, topic-by-country and meeting-by-topic charts declare their units, deduplicate participation, expose insufficient data, and include readable tables plus source drill-downs; optional exploratory methods are grouped under advanced controls",
@@ -18,9 +19,9 @@
     "Ten-year humanitarian access/civilian protection workflow: independent historical as-of date, current country-position statistics, coverage heatmap, U.S. history, automatic observed country trajectories, source-bound historical import and saved replay; fitted models withheld",
     "Country briefings and documentary exports separate executive policy, congressional analysis, enacted U.S. law and other official evidence; historical status and current gaps remain visible",
     "Qualified universal-jurisdiction support distinguished from conflicting positions without adding agreement scores",
-    "Automatic source-linked country–U.S. briefings separating UN statements, shared priorities, historical/dated official documents and current gaps; standalone script-free briefing export",
+    "Automatic source-linked country\u2013U.S. briefings separating UN statements, shared priorities, historical/dated official documents and current gaps; standalone script-free briefing export",
     "Separate source-bound documentary policy reviews: historical dates, official document links, saved review notes, no contribution to UN statement statistics or agreement scores",
-    "Automatic nearby-date comparisons: signed date differences, exact policy direction versus shared child-protection, climate-finance, UNCAT-accession, human-rights-institution and renewable-energy priorities, nearest-date ties, saved 0–14-day window, separate from same-day scores",
+    "Automatic nearby-date comparisons: signed date differences, exact policy direction versus shared child-protection, climate-finance, UNCAT-accession, human-rights-institution and renewable-energy priorities, nearest-date ties, saved 0\u201314-day window, separate from same-day scores",
     "National implementation priorities, bounded adjacent renewable-energy targets and climate-finance appeals; qualified domestic commitments remain outside U.S. agreement scoring",
     "three-country source review: 125 questions, qualified recognition of specific OHCHR functions, human rights framing, and explicit AOSIS attribution without national inference",
     "source-reviewed country coverage across 123 questions; explicit positions with unspecified context remain visible and never establish U.S. agreement",
@@ -130,5 +131,13 @@
     "operational_observation": "in_progress",
     "heldout_37_meetings_opened": false,
     "scheduled_acceptance": "not_established"
+  },
+  "meeting_reporting": {
+    "entry": "meeting-reports.html",
+    "schema": "un.meeting-report.v1",
+    "status": "local_engineering_pass",
+    "external_ai_calls": 0,
+    "model_status": "withheld_not_accepted",
+    "empirical_usability_acceptance": "not_run"
   }
 }

@@ -1,0 +1,33 @@
+/* Synthetic end-to-end reporting only; no real transcript requests. */
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),http=require('node:http'),path=require('node:path');
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
+const F=require('./meeting_report_fixture.cjs'),root=path.resolve(__dirname,'../site');
+let browser,server;
+(async()=>{
+ server=http.createServer((req,res)=>{const p=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname);if(!p.startsWith(root+path.sep)){res.writeHead(403);return res.end();}try{res.setHeader('Content-Type',p.endsWith('.js')?'text/javascript':p.endsWith('.css')?'text/css':p.endsWith('.json')?'application/json':'text/html');res.end(fs.readFileSync(p));}catch{res.writeHead(404);res.end();}});
+ await new Promise(r=>server.listen(0,'127.0.0.1',r));browser=await chromium.launch({headless:true,executablePath:process.env.BROWSER_PATH||'/usr/bin/chromium'});
+ const page=await browser.newPage({acceptDownloads:true,viewport:{width:1440,height:1000}}),errors=[],sourceRequests=[];
+ page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.dismiss());
+ await page.route('**/countries.json',r=>r.fulfill({json:F.countries}));
+ await page.route('https://transcripts.un.org/**',route=>{sourceRequests.push(route.request().url());const u=new URL(route.request().url());const data=u.pathname.endsWith('meetings.json')?{meetings:F.meetings,page:1,total:2,hasMore:false}:F.transcript(F.meetings.find(m=>u.pathname==='/en/'+m.slug+'.json'));return route.fulfill({json:data,headers:{'access-control-allow-origin':'*'}});});
+ const base=process.argv[2]||`http://127.0.0.1:${server.address().port}/`;
+ await page.goto(new URL('meeting-reports.html',base).href);await page.waitForFunction(()=>document.querySelector('#status').textContent.startsWith('Ready.'));
+ assert.equal(sourceRequests.length,0);
+ await page.locator('#meetingDate').fill('2026-10-05');await page.locator('#findMeetings').click();assert.match(await page.locator('#status').innerText(),/reserved/);assert.equal(sourceRequests.length,0);
+ await page.locator('#meetingDate').fill(F.date);await page.locator('#findMeetings').click();await page.waitForFunction(()=>document.querySelectorAll('#inventory input').length===2);
+ await page.locator('#inventory input').first().check();await page.locator('#loadMeetings').click();await page.waitForFunction(()=>!document.querySelector('#reportControls').disabled);
+ assert.equal(sourceRequests.filter(u=>u.includes('/sc/')).length,0);
+ await page.locator('#evidenceSearch').fill('humanitarian access');assert.match(await page.locator('#evidenceCount').innerText(),/^2 matching/);assert.equal(await page.locator('#evidenceResults img').count(),0);
+ await page.locator('#mission').fill('Synthetic mission');await page.locator('#reportTemplate').selectOption('evidence');await page.locator('#analystNotes').fill('<script>not source evidence</script>');await page.locator('#prepareReport').click();
+ assert.match(await page.locator('#reportPreview').innerText(),/4 English source segments/);assert.equal(await page.locator('#reportPreview script').count(),0);assert.match(await page.locator('#reportPreview').innerText(),/withheld/);
+ const [html]=await Promise.all([page.waitForEvent('download'),page.locator('#downloadReport').click()]);const htmlText=fs.readFileSync(await html.path(),'utf8');assert(!htmlText.includes('<script>'));assert(htmlText.includes('&lt;script&gt;'));
+ const [csv]=await Promise.all([page.waitForEvent('download'),page.locator('#downloadEvidence').click()]);assert(fs.readFileSync(await csv.path(),'utf8').includes('raw_sha256'));
+ const [saved]=await Promise.all([page.waitForEvent('download'),page.locator('#saveReport').click()]);const savedPath=await saved.path(),value=JSON.parse(fs.readFileSync(savedPath));assert.equal(value.schema,'un.meeting-report.v1');assert.equal(value.corpora[0].records.length,4);
+ await page.locator('#mission').fill('Changed');assert.equal(await page.locator('#downloadReport').isDisabled(),true);assert.equal(await page.locator('#reportPreview').innerText(),'');
+ await page.locator('#openCollection').setInputFiles(savedPath);await page.waitForFunction(()=>document.querySelector('#status').textContent.startsWith('Saved sources verified'));assert.equal(await page.locator('#mission').inputValue(),'Synthetic mission');await page.locator('#prepareReport').click();
+ const bad=structuredClone(value);bad.corpora[0].records[0].text='tampered';await page.locator('#openCollection').setInputFiles({name:'tampered.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(bad))});await page.waitForFunction(()=>document.querySelector('#status').textContent.startsWith('Could not open file:'));assert.match(await page.locator('#reportPreview').innerText(),/4 English source segments/);
+ for(const width of [390,1440]){await page.setViewportSize({width,height:900});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));if(process.env.REPORT_SCREENSHOTS)await page.screenshot({path:process.env.REPORT_SCREENSHOTS+'-'+width+'.png',fullPage:true});}
+ await page.locator('#loadedMeetings input').first().uncheck();await page.locator('#prepareReport').click();assert.equal(await page.locator('#downloadReport').isDisabled(),true);
+ assert.deepEqual(errors,[]);console.log('PASS: explicit selected-only loading, reserved-date no-network, evidence search, template/notes, HTML/CSV/JSON round-trip, stale export prevention, corrupt import preservation, mobile and no script execution');
+})().catch(e=>{console.error(e);process.exitCode=1;}).finally(async()=>{if(browser)await browser.close();if(server)await new Promise(r=>server.close(r));});
