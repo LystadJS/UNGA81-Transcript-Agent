@@ -4,9 +4,11 @@ The immediate product target is a PowerTranscript-like reporting workflow, imple
 
 ## First delivery
 
+[Open the reporting workspace](https://lystadjs.github.io/un/transcript-agent/meeting-reports.html). Release 1.43.0 is deployed through source PR #255 and mirror PR #155; the verified engineering evidence is recorded in [the current checkpoint](OVERNIGHT_WORK.md). Diplomat usability and scientific acceptance remain separate.
+
 `site/meeting-reports.html` is a focused browser workspace. A date search verifies the complete official inventory without downloading transcripts. Users explicitly select up to five meetings per load; only those transcripts are requested. The 37 reserved identities and both reserved dates are blocked before collection. A synthetic regression binds the browser exclusions to the production collector's exact policy.
 
-Users can also reopen source-bound `un.browser.corpus.v1` collections and versioned `un.meeting-report.v1` reports. Imported text must match original response bytes, source identity, date, language, JSON pointer, and hashes. Country and speaker metadata must agree with the original source and current country registry. Unsupported or corrupt inputs leave the existing collection intact. Legacy hash-only collections remain readable in the original advanced workspace; this new workflow requires original response bytes.
+Users can also reopen source-bound `un.browser.corpus.v1` collections and versioned `un.meeting-report.v1` reports. Imported text must match original response bytes, source identity, date, language, JSON pointer, and hashes. Meeting titles, passage identifiers and evidence links must match the original inventory and source; renaming a repeated passage cannot inflate its count. Country and speaker metadata must agree with the original source and current country registry. Unsupported or corrupt inputs leave the existing collection intact. Legacy hash-only collections remain readable in the original advanced workspace; this new workflow requires original response bytes.
 
 The maintained public archive is deliberately source-free. This first delivery links to that archive but does not transfer private warehouse text or change publication allowlists. Fresh browser collection is user-triggered, local, English-only and separate from the scheduled warehouse. A browser can show a newer revision than the last warehouse snapshot; report provenance identifies the actual loaded revision.
 
