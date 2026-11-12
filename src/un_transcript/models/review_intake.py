@@ -4,6 +4,7 @@ import copy
 from datetime import datetime
 import hashlib
 import json
+import re
 from pathlib import Path
 from .contracts import check_labels, digest, read_json, write_json
 
@@ -17,10 +18,19 @@ def reconcile(draft, registration, returned, expected_packet, previous=None):
     originals={r['pair_id']:r for r in draft['rows']}
     if len(originals)!=len(draft['rows']):raise ValueError('Duplicate original pair')
     merged={}; receipts=[]; reviewers=set(); dates=[]
-    for bundle in ([previous] if previous is not None else [])+[returned]:
+    for bundle,kind in ([(previous,'reconciled_training')] if previous is not None else [])+[(returned,'reviewed_subset')]:
         meta=bundle.get('review_export',{})
-        if meta.get('kind') not in ('reviewed_subset','reconciled_training') or meta.get('packet')!=expected_packet:
+        if meta.get('schema')!='un.owner-browser-review.v1' or meta.get('kind')!=kind or meta.get('packet')!=expected_packet:
             raise ValueError('Mismatched packet or unfinished progress export')
+        if (type(meta.get('total_examples')) is not int or meta['total_examples']!=len(originals)
+            or type(meta.get('confirmed_examples')) is not int or meta['confirmed_examples']!=len(bundle.get('rows',[]))):
+            raise ValueError('Review export counts do not reconcile with the frozen pilot')
+        if kind=='reconciled_training':
+            hashes=meta.get('input_exports')
+            if (not isinstance(hashes,list) or not hashes
+                or any(not isinstance(h,str) or not re.fullmatch('[a-f0-9]{64}',h) for h in hashes)
+                or len(hashes)!=len(set(hashes))):
+                raise ValueError('Invalid prior review export provenance')
         if not isinstance(bundle.get('reviewer_id'),str) or not bundle['reviewer_id'].strip():
             raise ValueError('A nonempty reviewer identity is required')
         check_labels(bundle,registration,'train')

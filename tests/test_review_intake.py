@@ -15,7 +15,7 @@ def packet():
     identity={'split':'train','dataset_revision':'a'*40,'packet_prefix':'pilots/1-1/','manifest_sha256':'b'*64}
     returned={**copy.deepcopy(draft),'owner_confirmed':True,'reviewer_id':'synthetic-owner','reviewed_at':'2026-11-05T00:00:00Z',
               'rows':[{**rows[0],'status':'clear','label':'support','owner_confirmed':True,'notes':'synthetic'}],
-              'review_export':{'kind':'reviewed_subset','packet':identity}}
+              'review_export':{'schema':'un.owner-browser-review.v1','kind':'reviewed_subset','packet':identity,'total_examples':2,'confirmed_examples':1}}
     return draft,reg,returned,identity
 
 class Intake(unittest.TestCase):
@@ -44,3 +44,17 @@ class Intake(unittest.TestCase):
             if mode=='packet':b['review_export']['packet']={**i,'dataset_revision':'c'*40}
             if mode=='duplicate':b['rows'].append(copy.deepcopy(b['rows'][0]))
             with self.assertRaises(ValueError):reconcile(d,r,b,i)
+
+    def test_export_schema_counts_and_prior_receipt_provenance_are_checked(self):
+        for key,value in (('schema','foreign'),('total_examples',300),('confirmed_examples',True),('kind','reconciled_training')):
+            d,r,b,i=packet();b['review_export'][key]=value
+            with self.assertRaises(ValueError):reconcile(d,r,b,i)
+        for hashes in ([],['not-a-digest'],['a'*64,'a'*64]):
+            d,r,b,i=packet();old=reconcile(d,r,b,i);old['review_export']['input_exports']=hashes
+            with self.assertRaises(ValueError):reconcile(d,r,b,i,old)
+
+    def test_different_reviewer_never_reassigns_previous_confirmations(self):
+        d,r,b,i=packet();old=reconcile(d,r,b,i);saved=copy.deepcopy(old)
+        b['reviewer_id']='different synthetic reviewer'
+        with self.assertRaisesRegex(ValueError,'Different reviewer'):reconcile(d,r,b,i,old)
+        self.assertEqual(old,saved)
