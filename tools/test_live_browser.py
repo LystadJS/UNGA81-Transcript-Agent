@@ -13,7 +13,7 @@ from pathlib import Path
 import threading
 from urllib.parse import urlsplit
 
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import expect, sync_playwright
 
 
 def main():
@@ -131,7 +131,13 @@ def main():
             check('Selected descriptive methods execute', set(all_result['methods']) == descriptive_methods)
             check('All-mode count charts labeled correctly', 'Passages by region' in page.locator('#analysisReport').inner_text()
                   and 'Topic frequency by region' not in page.locator('#analysisReport').inner_text())
-            check('Collector and analysis counts are separate', 'Passages collected' in page.locator('#analysisReport').inner_text())
+            # Source-volume metrics intentionally live behind an accessible
+            # disclosure. Inspect them as a user would, without forcing DOM state.
+            page.get_by_text('Source coverage counts', exact=True).click()
+            check('Collector and analysis counts are separate',
+                  'Passages collected' in page.locator('#analysisReport').inner_text()
+                  and all_result['counts']['input'] == len(raw['records'])
+                  and all_result['counts']['eligible'] <= all_result['counts']['input'])
             rows = list(csv.DictReader(downloaded(page, '#exportCSV', 'all-passages.csv').open(encoding='utf-8-sig')))
             check('CSV contains every included unique passage', len(rows) == all_result['counts']['eligible'])
             html = downloaded(page, '#exportHTML', 'report.html').read_text()
@@ -150,6 +156,9 @@ def main():
             # Reimport the actual collected corpus; no duplicate network downloads.
             page.locator('#corpusSource').select_option('import')
             page.locator('#corpusFile').set_input_files(raw_path)
+            # Import reads and restores saved filters asynchronously. Wait for
+            # its visible completion before entering a new query.
+            expect(page.locator('#analysisStatus')).to_contain_text('Restored saved analysis filters.')
             page.locator('#topic').fill('unmatchablexyz987654321')
             page.locator('#phrases').fill('')
             page.locator('#excludePhrases').fill('')
