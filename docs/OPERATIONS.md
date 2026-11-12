@@ -146,3 +146,8 @@ Production configuration permits up to **70 inventory dates per run**, with the 
 `inventory_progress` in the source-free run/monitoring receipt records the week, selected/recent/pending date counts, actual inventory completion and whether the configured daily date allowance is nominally sufficient for seven runs. Inventory completion is separate from unavailable/deferred transcripts. The configured service may finish its inventory while transcript coverage remains partial. Reserved dates count as explicitly excluded without network access. Larger historical selections require reviewing the nominal-capacity flag and free-service constraints.
 
 Changing only runtime bounds preserves the selection cursor and known-meeting checks. A changed venue, date frame or exact meeting selection still resets selection bookkeeping while preserving stored source history. Legacy checkpoints migrate only when the original snapshot's recorded configuration matches their saved configuration hash and has the same selection; absent/mismatched proof retains the conservative reset behavior. Full configuration hashes remain in the run history.
+
+
+### Inventory metadata and database version
+
+The operational working copy now uses additive SQLite schema version 2. Complete validated inventories supply metadata for selected meetings whose transcripts are unavailable or deferred. Private bundles add `inventory_meetings.csv`; public fields and stored-source revision metadata remain unchanged. Historical schema-1 snapshots replay under their original export behavior. See [inventory metadata and compatibility](INVENTORY_METADATA.md) before rollback or research joins.

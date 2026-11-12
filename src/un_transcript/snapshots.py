@@ -169,6 +169,8 @@ def verify_snapshot(directory):
         schema = db.execute("SELECT value FROM warehouse_meta WHERE key='schema'").fetchone()
         if not schema or schema[0] != 'un.transcript-warehouse.v1':
             raise ValueError('Unexpected database schema')
+        if db.execute('PRAGMA user_version').fetchone()[0] not in (1, 2):
+            raise ValueError('Unsupported database schema version')
         for raw_hash, byte_count in _originals(db):
             if not isinstance(raw_hash, str) or not HEX.fullmatch(raw_hash):
                 raise ValueError('Invalid original source identity')

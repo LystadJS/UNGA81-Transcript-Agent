@@ -63,6 +63,22 @@ class Pipeline(unittest.TestCase):
             for path in public.rglob('*'):
                 if path.is_file():self.assertNotIn(b'We support unhindered',path.read_bytes())
 
+    def test_unavailable_transcript_still_exports_validated_inventory_metadata(self):
+        def inventory_only(url):
+            self.assertEqual(urlsplit(url).path, '/en/meetings.json')
+            response = self.transport(url)
+            payload = json.loads(response['raw'])
+            payload['meetings'][0]['hasTranscript'] = False
+            response['raw'] = json.dumps(payload).encode()
+            return response
+        result = run_pipeline(self.config_path,self.root/'runtime',as_of=date(2026,11,10),transport=inventory_only)
+        snapshot = Path(result['snapshot']); verify_snapshot(snapshot)
+        row = json.loads((snapshot/'public/partitions/meetings-00000.json').read_bytes())['meetings'][0]
+        self.assertEqual((row['date'], row['title'], row['status'], row['segments']),
+                         ('2026-11-10', 'Synthetic proceedings', 'unavailable', 0))
+        self.assertEqual(result['coverage']['stored_meetings'], 0)
+        self.assertTrue((snapshot/'private/inventory_meetings.csv').is_file())
+
     def test_legacy_snapshot_configuration_binds_runtime_limit_migration(self):
         first=self.run_pipeline()
         state_file=self.root/'runtime/data/state.json'

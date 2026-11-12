@@ -175,9 +175,18 @@ def export_snapshot(warehouse, output: Path, snapshot_id, generated_at):
         # writes to the live warehouse or clears historical records.
         warehouse.db.execute("BEGIN")
         try:
+            schema_version = warehouse.db.execute('PRAGMA user_version').fetchone()[0]
+            if schema_version not in (1, 2):
+                raise ValueError('Unsupported warehouse export version')
+            tables = dict(TABLES)
+            if schema_version == 2:
+                tables['inventory_meetings'] = ('Selected meeting metadata from complete inventories; '
+                    'receipt_id joins inventory_receipts, which binds raw hash, date, page and run. '
+                    'Last known metadata is not current availability; has_transcript is a source claim. '
+                    'meeting_id need not occur in meetings until a transcript is stored.')
             data = {}
             schemas = {}
-            for table in TABLES:
+            for table in tables:
                 columns = [dict(r) for r in warehouse.db.execute("PRAGMA table_info(" + table + ")")]
                 schemas[table] = [{"name":c["name"],"sqlite_type":c["type"],"nullable":not bool(c["notnull"]),"primary_key_order":c["pk"]} for c in columns]
                 order = ",".join('"' + c["name"] + '"' for c in columns if c["pk"]) or "rowid"
@@ -200,10 +209,12 @@ def export_snapshot(warehouse, output: Path, snapshot_id, generated_at):
             "missingness":"Missing, failed, unknown, collective and abstained are not neutral stances.",
             "current_predictions":"Join predictions.revision_id to meetings.current_revision; old predictions remain historical only.",
             "joins":["meetings.current_revision = source_revisions.revision_id", "segments.revision_id = source_revisions.revision_id", "segments.actor_id = actors.actor_id", "predictions.(revision_id,segment_id) = segments.(revision_id,segment_id)", "predictions.(issue_id,issue_version) = issues.(issue_id,version)", "evidence.prediction_id = predictions.prediction_id", "coverage.run_id = collection_runs.run_id", "coverage.meeting_id beginning inventory: identifies a date-level inventory check, not a meeting"],
-            "tables":{t:{"description":TABLES[t],"columns":schemas[t]} for t in TABLES}}
+            "tables":{t:{"description":tables[t],"columns":schemas[t]} for t in tables}}
+        if schema_version == 2:
+            dictionary['joins'].append('inventory_meetings.receipt_id = inventory_receipts.receipt_id; inventory_meetings.meeting_id = coverage.meeting_id (many historical observations)')
         _write_json(private / "dictionary.json",dictionary)
         private_manifest = {"schema":"un.research-csv-snapshot.v1","snapshot_id":snapshot_id,
-            "generated_at":generated_at,"warehouse_schema":1,"tables":downloads,
+            "generated_at":generated_at,"warehouse_schema":schema_version,"tables":downloads,
             "dictionary":_receipt(private / "dictionary.json",private),"status":"engineering_snapshot_not_empirical_acceptance"}
         _write_json(private / "manifest.json",private_manifest)
 
@@ -212,6 +223,14 @@ def export_snapshot(warehouse, output: Path, snapshot_id, generated_at):
         for row in data["segments"]:
             counts[row["revision_id"]] = counts.get(row["revision_id"],0)+1
         run_by_id = {r["run_id"]:r for r in data["collection_runs"]}
+        last_inventory = {}
+        if schema_version == 2:
+            receipts = {r['receipt_id']:r for r in data['inventory_receipts']}
+            def inventory_order(row):
+                receipt = receipts[row['receipt_id']]
+                return (run_by_id[receipt['run_id']]['started_at'], receipt['run_id'], receipt['page'])
+            for row in sorted(data['inventory_meetings'], key=inventory_order):
+                last_inventory[row['meeting_id']] = row
         latest_coverage = {}
         for row in sorted(data["coverage"],key=lambda r:(run_by_id[r["run_id"]]["started_at"],r["run_id"],r["meeting_id"])):
             latest_coverage[row["meeting_id"]] = row
@@ -236,8 +255,10 @@ def export_snapshot(warehouse, output: Path, snapshot_id, generated_at):
         stored_ids = {r["meeting_id"] for r in public_meetings}
         for mid,row in latest_coverage.items():
             if mid not in stored_ids:
-                public_meetings.append(dict(meeting_id=mid,date=None,title=mid,body=None,
-                    source_url=None,status=row["status"],segments=0,positions=[],issues=[]))
+                metadata = last_inventory.get(mid, {})
+                public_meetings.append(dict(meeting_id=mid,date=metadata.get('date'),
+                    title=metadata.get('title', mid),body=metadata.get('body'),
+                    source_url=metadata.get('source_url'),status=row["status"],segments=0,positions=[],issues=[]))
         public_meetings.sort(key=lambda r:(r["date"] or "",r["meeting_id"]))
         # Only accepted model releases can expose source-linked prediction
         # metadata. No quotes, speaker names or unvalidated estimates are copied.

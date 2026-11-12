@@ -80,6 +80,7 @@ def run_pipeline(config_path, workspace, *, as_of=None, transport=None, remote=N
                     warehouse.ingest(item['meeting'], item['raw'], item['segments'], item['retrieved_at'], item.get('headers'))
                 for row in collection['coverage']:
                     warehouse.record_coverage(run_id, row['meeting_id'], row['status'], row.get('detail', ''))
+                warehouse.record_inventory_meetings(run_id, collection['state']['known_meetings'])
                 catalog = json.loads(Path(catalog_path).read_bytes())
                 for issue in catalog.get('issues', []):
                     warehouse.upsert_issue({'issue_id':issue['id'],'version':catalog['version'],
