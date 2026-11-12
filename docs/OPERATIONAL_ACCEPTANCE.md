@@ -33,4 +33,10 @@ The portfolio [mirror update in PR #151](https://github.com/LystadJS/LystadJS.gi
 
 Actual owner labels, trained model acceptance, broader real-source coverage, diplomat usability sessions, and fourteen days of scheduled operation have not been completed. The 37 reserved meetings remain unopened.
 
-The fourteen-day record must measure actual scheduled starts/completions, pending work, storage use and failures. The successful second manual run establishes remote restore/continuation, but it does not replace that observation period, capacity acceptance, an interrupted-publication recovery drill, or representative usability evaluation. Source-bearing runtime reports and private recovery records stay outside this code repository.
+The fourteen-day record must measure actual scheduled starts/completions, pending work, storage use and failures. The successful second manual run establishes remote restore/continuation, but it does not replace that observation period, capacity acceptance, continued failure-mode recovery checks, or representative usability evaluation. Source-bearing runtime reports and private recovery records stay outside this code repository.
+
+## Isolated real-provider interruption drill
+
+[Run 43184679678](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/43184679678) passed on 12 November 2026. Synthetic snapshots under `drills/43184679678-1/store/` exercised interruption after staging verification but before pointer activation, recovery of the previous snapshot, and successful retry. Both restores reproduced all manifest-bound CSV and artifact hashes. The production `latest.json` remained byte-identical. This supersedes the pending isolated interruption drill; it did not cause a production outage or terminate an operating production writer.
+
+Measured canonical snapshot size was 269,860,459 bytes, largest artifact 50,728,960 bytes, and provider-reported retained storage grew from 152,339,418 to 152,781,786 bytes across the synthetic drill. These are actual repository measurements against an 80,000,000,000-byte configured budget, not account-wide capacity acceptance or a long-term storage forecast. The verified receipt remains private at `drills/43184679678-1/receipt.json`, revision `d7c0b0435be1a2e5fdb215aa98370abbe83673dd`.
