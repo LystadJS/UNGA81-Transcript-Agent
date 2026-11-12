@@ -1,7 +1,7 @@
 """Synthetic metadata-only accounting; payloads and private paths never escape."""
 from types import SimpleNamespace as NS
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 from un_transcript.capacity import measure_capacity, CapacityIncomplete
 
 A='a'*40;B='b'*40;C='c'*40
@@ -79,3 +79,16 @@ class Capacity(unittest.TestCase):
         self.assertEqual(value['reachable_refs'],2)
         self.assertEqual(value['reachable_commits'],3)
         self.assertEqual(storage.api.list_repo_tree.call_count,3)
+
+    def test_budget_rechecks_head_and_retains_late_provider_increase(self):
+        from un_transcript.snapshots import HFStorage
+        storage,_,_=store()
+        report=measure_capacity(storage)
+        with patch('un_transcript.capacity.measure_capacity',return_value=report.copy()):
+            storage.info.return_value=(NS(sha=B),200)
+            with self.assertRaises(CapacityIncomplete):HFStorage.budget_info(storage)
+        with patch('un_transcript.capacity.measure_capacity',return_value=report.copy()):
+            storage.info.return_value=(NS(sha=C),1000)
+            _,used=HFStorage.budget_info(storage)
+            self.assertEqual(used,1310)
+            self.assertEqual(storage.last_capacity_measurement['provider_reported_bytes'],1000)

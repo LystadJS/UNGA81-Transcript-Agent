@@ -53,7 +53,7 @@ def main():
                 'files': [{'path': path, 'sha256': file_sha(p), 'bytes': p.stat().st_size} for path, p in sorted(files.items())]}
     (packet / 'packet-manifest.json').write_bytes(encode(manifest))
     files[prefix + 'packet-manifest.json'] = packet / 'packet-manifest.json'
-    info, used = storage.info()
+    info, used = storage.budget_info()
     if used + sum(p.stat().st_size for p in files.values()) + 1_000_000 > storage.budget_bytes:
         raise ValueError('Private storage budget exceeded')
     storage._immutable_prefix(prefix, info.sha)

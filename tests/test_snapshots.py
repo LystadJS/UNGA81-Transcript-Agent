@@ -33,6 +33,19 @@ class FakeRemote(HFStorage):
     def repo_info(self,*a,**kw):
         return SimpleNamespace(private=self.visibility,sha=self.head,usedStorage=self.used)
 
+    def list_repo_refs(self,*a,**kw):
+        return SimpleNamespace(branches=[SimpleNamespace(ref='refs/heads/main',target_commit=self.head)],
+                               tags=[],converts=[],pull_requests=[])
+
+    def list_repo_commits(self,*a,**kw):
+        # Fake commits form one linear history, including the initial empty tree.
+        return [SimpleNamespace(commit_id=revision) for revision in sorted(self.revisions,reverse=True)
+                if int(revision,16)<=int(kw['revision'],16)]
+
+    def list_repo_tree(self,*a,**kw):
+        return [SimpleNamespace(path=path,size=len(data),blob_id=hashlib.sha1(data).hexdigest(),lfs=None)
+                for path,data in self.revisions[kw['revision']].items()]
+
     def get_paths_info(self,repo,paths,**kw):
         revision = self.revisions[kw['revision']]
         result = []
@@ -112,6 +125,27 @@ class Snapshots(unittest.TestCase):
         remote = FakeRemote(); remote.visibility=False
         with self.assertRaisesRegex(ValueError,'visibility'): remote.publish(self.snapshot)
         self.assertEqual(remote.commits,0)
+
+    def test_zero_meter_cannot_hide_retained_git_history_from_write_budget(self):
+        for private in (True,False):
+            remote=FakeRemote(private=private,budget=1_500_000)
+            remote._commit({'old':b'x'*2_000_000},remote.head,'old synthetic bytes')
+            remote._commit({'old':b'replaced'},remote.head,'replace old bytes')
+            remote.used=0
+            before=remote.head
+            with self.assertRaisesRegex(ValueError,'budget'):
+                if private:remote.publish(self.snapshot)
+                else:remote.publish_public(self.snapshot/'public')
+            self.assertEqual(remote.head,before)
+            self.assertEqual(remote.commits,2)
+            self.assertGreater(remote.last_capacity_measurement['budget_basis_bytes'],2_000_000)
+
+    def test_reads_remain_available_when_capacity_measurement_is_unavailable(self):
+        remote=FakeRemote();remote.publish(self.snapshot)
+        from un_transcript.capacity import CapacityIncomplete
+        with patch.object(remote,'budget_info',side_effect=CapacityIncomplete('metadata unavailable')):
+            remote.restore(self.root/'read-only')
+        self.assertTrue((self.root/'read-only/data/warehouse.sqlite3').exists())
 
     def test_tamper_fails_before_any_restore_write(self):
         remote=FakeRemote(); remote.publish(self.snapshot); remote.corrupt=True

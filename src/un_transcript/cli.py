@@ -52,7 +52,7 @@ def run_pipeline(config_path, workspace, *, as_of=None, transport=None, remote=N
             if public_remote and remote.repo_id == public_remote.repo_id:
                 raise ValueError('Private and public datasets must be different repositories')
             # Check privacy and accounted history before downloading sources.
-            _, used = remote.info()
+            _, used = remote.budget_info()
             if used + config.get('max_bytes_per_run', 100_000_000) * 3 > remote.budget_bytes:
                 raise ValueError('Insufficient private storage budget for a collection run')
             if not data_directory.exists():

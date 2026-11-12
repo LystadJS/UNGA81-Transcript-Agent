@@ -72,7 +72,7 @@ jobs:
           repo=os.environ['HF_DATASET_REPO']; token=os.environ['HF_TOKEN']
           if not repo or not token: raise SystemExit('Configure private HF_DATASET_REPO and HF_TOKEN first')
           api=HfApi(token=token)
-          _, used=HFStorage(repo).info()
+          _, used=HFStorage(repo).budget_info()
           if used + 2_000_000_000 > 80_000_000_000: raise SystemExit('Insufficient private model storage budget')
           for key in ('DATASET_REVISION','BASE_REVISION'):
               if not re.fullmatch(r'[0-9a-f]{40}',os.environ[key]): raise SystemExit(key+' must be an immutable SHA')
@@ -106,7 +106,7 @@ jobs:
           candidate=pathlib.Path(os.environ['RUNNER_TEMP'])/'un-model/candidate'
           if not candidate.is_dir(): raise SystemExit(0)
           api=HfApi(token=os.environ['HF_TOKEN']); repo=os.environ['HF_DATASET_REPO']
-          info,used=HFStorage(repo).info()
+          info,used=HFStorage(repo).budget_info()
           required=sum(p.stat().st_size for p in candidate.rglob('*') if p.is_file())
           if used+required+1_000_000 > 80_000_000_000: raise SystemExit('Candidate exceeds private storage budget')
           api.upload_folder(repo_id=repo,repo_type='dataset',folder_path=candidate,path_in_repo='models/candidates/'+os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT'],parent_commit=info.sha,commit_message='Store unaccepted training candidate')

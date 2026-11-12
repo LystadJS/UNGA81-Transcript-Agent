@@ -4,7 +4,7 @@ Provider `usedStorage` is recorded as a provider meter, not assumed to equal eve
 
 The manually dispatched **Measure project storage capacity** workflow reads metadata only. It inventories advertised branches, tags, conversion refs and pull-request refs, then deduplicates Git blobs and large-file objects across their reachable commits. It checks that the default head and advertised refs are unchanged at the end. Missing metadata, inconsistent object sizes, changed refs or configured scan bounds fail the measurement rather than producing a complete-capacity claim. It never fetches source/annotation payloads or changes repository history.
 
-The proposed conservative project-budget basis is:
+The conservative project-budget basis used before production ingestion and writes is:
 
 `max(provider_reported_bytes, reachable_unique_large_bytes) + reachable_unique_git_blob_bytes`
 
@@ -12,6 +12,10 @@ This intentionally retains the larger large-object/provider value and adds ordin
 
 The probe is bounded to 16 advertised refs, 200 distinct reachable commits and 500,000 tree-metadata entries per repository, with a 20-minute workflow timeout. The SDK's commit-listing call returns a complete history list before the commit-count bound is checked; expensive per-commit tree scans stop at the declared bound. Raising bounds requires an explicit code/configuration review; deleting or squashing history is not an automatic remedy.
 
-Existing budgets remain 80 GB private and 10 GB public. This initial probe does not change publication guards until real measurements and contract tests support their integration. No paid upgrade, account-plan change or history deletion is performed.
+Existing budgets remain 80 GB private and 10 GB public. Collection, private/public publication, pilot/reviewer uploads and training use this basis. Incomplete or changed metadata blocks new ingestion/writes; read-only restore remains available. The receipt retains the raw provider meter as a separate measurement. No paid upgrade, account-plan change or history deletion is performed.
 
 The provider's [storage documentation](https://github.com/huggingface/hub-docs/blob/main/docs/hub/storage-limits.md), read on 12 November 2026 (file blob `84e1a36b133f104ca39b917b0127e271e4b553f2`), lists a 100 GB free private allowance, best-effort public storage, and separate Git repository/file-count recommendations. Its suggestions to buy storage, contact support or squash history are not this project's operating instructions. This project preserves revisions and stops within its configured free-service limits.
+
+## Verified measurement, 12 November 2026
+
+[Capacity run 43214811857](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/43214811857) passed using metadata only. Private revision `7799d3a8975a628321d54b70f2828469efbccde4` retained 1,701,819,500 unique large-file bytes and 609,077,314 unique Git-blob bytes across 24 commits and one advertised ref: **2,310,896,814 budget-basis bytes**. Its provider meter matched the large-file total in this sample. Public revision `d66384951798e25c026f350994a1a0df897b7e20` retained **1,892,160 Git-blob bytes** across eight commits and one ref, with no large files and a zero provider meter. This is measured repository history, not account-wide capacity certification.

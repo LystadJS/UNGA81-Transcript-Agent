@@ -76,9 +76,23 @@ class Pipeline(unittest.TestCase):
             self.assertEqual(len(db.current_segments()),1)
         verify_snapshot(failed['snapshot']);verify_snapshot(first['snapshot'])
 
+    def test_incomplete_capacity_stops_before_restore_or_source_downloads(self):
+        from un_transcript.capacity import CapacityIncomplete
+        private=Mock(repo_id='owner/private',budget_bytes=80_000_000_000)
+        private.budget_info.side_effect=CapacityIncomplete('metadata unavailable')
+        transport=Mock()
+        with self.assertRaises(CapacityIncomplete):
+            run_pipeline(self.config_path,self.root/'runtime',as_of=date(2026,11,10),
+                         transport=transport,remote=private)
+        transport.assert_not_called()
+        private.restore.assert_not_called()
+        private.publish.assert_not_called()
+        self.assertFalse((self.root/'runtime/data').exists())
+
     def test_public_outage_preserves_private_publication_and_failure_receipt(self):
         private = Mock(repo_id='owner/private', budget_bytes=80_000_000_000)
         private.info.return_value = (None, 0)
+        private.budget_info.return_value = (None, 0)
         private.publish.side_effect = lambda directory: {'snapshot_id': directory.name}
         public = Mock(repo_id='owner/public')
         public.publish_public.side_effect = PermissionError('secret signed URL must not reach receipt')
@@ -98,6 +112,7 @@ class Pipeline(unittest.TestCase):
     def test_public_provider_failure_retains_sanitized_diagnostics(self):
         private = Mock(repo_id='owner/private', budget_bytes=80_000_000_000)
         private.info.return_value = (None, 0)
+        private.budget_info.return_value = (None, 0)
         private.publish.side_effect = lambda directory: {'snapshot_id': directory.name}
         public = Mock(repo_id='owner/public')
         error = StorageRequestError('activate_pointer', 429)
@@ -116,6 +131,7 @@ class Pipeline(unittest.TestCase):
     def test_private_failure_does_not_attempt_public_publication(self):
         private = Mock(repo_id='owner/private', budget_bytes=80_000_000_000)
         private.info.return_value = (None, 0)
+        private.budget_info.return_value = (None, 0)
         private.publish.side_effect = TimeoutError('synthetic private outage')
         public = Mock(repo_id='owner/public')
         with self.assertRaises(TimeoutError):
