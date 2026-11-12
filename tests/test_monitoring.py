@@ -66,6 +66,19 @@ class Monitoring(unittest.TestCase):
             self.assertEqual(validate_operational_receipt(result,run_id=123,attempt=2,event='schedule'),result)
             self.assertNotIn('SECRET',json.dumps(result))
 
+    def test_inventory_reconciliation_roundtrip_is_independent_of_source_coverage(self):
+        from un_transcript.monitoring import validate_operational_receipt
+        value=fixture();value['inventory_progress']={'week_start':'2026-11-08','selected_dates':66,
+            'pending_dates':0,'recent_dates':14,'complete':True,'max_dates_per_run':70,
+            'nominal_weekly_capacity_sufficient':True};value['selection_reset']=False
+        projected=self.project(value)
+        self.assertEqual(projected['snapshot']['coverage_status'],'partial')
+        self.assertTrue(projected['snapshot']['inventory_progress']['complete'])
+        self.assertEqual(validate_operational_receipt(projected,run_id=123,attempt=2,event='schedule'),projected)
+        for key,bad in (('pending_dates',67),('complete',False),('nominal_weekly_capacity_sufficient',False),('SECRET','private')):
+            changed=copy.deepcopy(value);changed['inventory_progress'][key]=bad
+            with self.assertRaises(ValueError):self.project(changed)
+
     def test_unknown_status_and_incoherent_counts_fail_closed(self):
         for field, value in [('meetings',9), ('stored_meetings',9), ('segments',True)]:
             with self.subTest(field=field):

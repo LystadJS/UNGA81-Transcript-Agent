@@ -63,10 +63,17 @@ def run_pipeline(config_path, workspace, *, as_of=None, transport=None, remote=N
         run_id = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ') + '-' + uuid.uuid4().hex[:12]
         directory = workspace / 'snapshots' / run_id
         with Warehouse(data_directory / 'warehouse.sqlite3') as warehouse:
+            prior_config = None
+            checkpoint = workspace / 'latest.json'
+            if not checkpoint.exists(): checkpoint = data_directory / 'restored.json'
+            if state and checkpoint.exists():
+                previous_id = json.loads(checkpoint.read_bytes()).get('snapshot_id')
+                previous_run = warehouse.db.execute('SELECT config_json FROM collection_runs WHERE run_id=?', (previous_id,)).fetchone()
+                if previous_run is not None: prior_config = json.loads(previous_run['config_json'])
             warehouse.start_run(run_id, config, stamp)
             finished = False
             try:
-                collection = Collector(config, transport=transport).collect(as_of or date.today(), state)
+                collection = Collector(config, transport=transport).collect(as_of or date.today(), state, prior_config=prior_config)
                 for receipt in collection['inventory']:
                     warehouse.record_inventory(run_id, receipt)
                 for item in collection['items']:
@@ -120,7 +127,8 @@ def run_pipeline(config_path, workspace, *, as_of=None, transport=None, remote=N
         receipt = {'schema':'un.pipeline-run.v1','run_id':run_id,'status':status,'generated_at':end,
                    'snapshot':str(directory),'meetings_downloaded':len(collection['items']),
                    'bytes_downloaded':collection['bytes_downloaded'],'model_status':analysis['model_status'],
-                   'coverage':manifest['coverage'],
+                   'coverage':manifest['coverage'],'inventory_progress':collection['inventory_progress'],
+                   'selection_reset':collection['selection_reset'],
                    'private_publication':'published' if remote else 'local_only','public_publication':public_status,
                    'public_error_type':public_error_type, **public_diagnostic}
         atomic_json(workspace / 'last-run.json', receipt)
