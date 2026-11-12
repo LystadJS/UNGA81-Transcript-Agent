@@ -8,14 +8,19 @@ from pathlib import Path
 from un_transcript.snapshots import HFStorage, sha, encode, file_sha
 
 
-def render(draft, display, identity):
+def render(draft, display, identity, *, total_examples=None):
     if not draft.get('rows') or any(r.get('split') != 'train' for r in draft['rows']):
         raise ValueError('This reviewer accepts training examples only')
     ids=[r['pair_id'] for r in draft['rows']]
     if len(set(ids)) != len(ids): raise ValueError('Duplicate example identity')
-    payload=json.dumps({'draft':draft,'display':display,'identity':identity},ensure_ascii=True)
+    total_examples=len(ids) if total_examples is None else total_examples
+    if type(total_examples) is not int or total_examples<len(ids):raise ValueError('Invalid original example count')
+    payload=json.dumps({'draft':draft,'display':display,'identity':identity,'total_examples':total_examples},ensure_ascii=True)
     payload=payload.replace('<','\\u003c').replace('>','\\u003e').replace('&','\\u0026')
-    return Path('tools/pilot-reviewer.html').read_text().replace('__PILOT_PACKET_JSON__',payload)
+    html=Path('tools/pilot-reviewer.html').read_text().replace('__PILOT_PACKET_JSON__',payload)
+    if total_examples>len(ids):
+        html=html.replace('Start with the first 30 examples.',f'{total_examples-len(ids)} completed examples have been removed. Review the remaining {len(ids)} examples.')
+    return html
 
 
 def main():

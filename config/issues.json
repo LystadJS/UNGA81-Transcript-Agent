@@ -1,6 +1,6 @@
 {
   "schema": "un.issue-catalog.v1",
-  "version": "2026-11-05.1",
+  "version": "2026-11-12.1",
   "source": "site/position-comparison.js",
   "source_sha256": "00e521a0aaa59b7b0007a3059c533e03dc7e417c206c80f2efdf0ce44c7e3a15",
   "status": "retrieval_catalog_not_validated_stance_ontology",
@@ -1235,7 +1235,7 @@
       "proposition": "UN mediation in Libya",
       "policy_area": "Regional peace and protection",
       "patterns": [
-        "\\b(?:UNSMIL|UN[ -]facilitated (?:political )?process|UN[ -]facilitated Libyan political process)\\b"
+        "\\b(?:UNSMIL|UN[ -]facilitated Libyan political process)\\b"
       ],
       "case_insensitive": true,
       "classification_enabled": false,
