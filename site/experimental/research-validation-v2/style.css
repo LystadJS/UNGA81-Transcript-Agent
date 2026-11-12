@@ -1,0 +1,30 @@
+:root{color-scheme:light;font:15px/1.48 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#1e2b3a;background:#f4f6f8}
+*{box-sizing:border-box}
+body{margin:0}
+.rv-page{max-width:1240px;margin:auto;padding:clamp(.8rem,3vw,2rem)}
+.rv-kicker{text-transform:uppercase;font-weight:700;font-size:.79rem;letter-spacing:.08em;color:#475e74}
+h1{line-height:1.2;font-size:clamp(1.4rem,3vw,2rem)}
+.rv-tools,.rv-panel,details{padding:clamp(.75rem,2vw,1.25rem);border:1px solid #b5c2cd;border-radius:8px;background:#fff;margin:1rem 0;min-width:0}
+.rv-tools{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.rv-tools>p{flex-basis:100%;margin:.2rem 0}
+button,select,input{font:inherit;max-width:100%}
+button,select{border:1px solid #55758f;border-radius:4px;background:#f2f7fa;padding:.45rem .7rem;color:#153652;cursor:pointer}
+button:disabled,select:disabled{opacity:.55;cursor:not-allowed}
+:focus-visible{outline:3px solid #0069bd;outline-offset:3px}
+.rv-panel>h2{font-size:1.15rem;text-transform:capitalize}
+.rv-panel small{font-size:.72rem;color:#42596c;text-transform:uppercase}
+.rv-meta{font-variant-numeric:tabular-nums;color:#394e61}
+.rv-warning{border-left:3px solid #9a592f;padding-left:.75rem}
+.rv-abstain{border:2px solid #934944;padding:1rem;font-weight:700;background:#fff5f3}
+.rv-figure{max-width:100%;overflow-x:auto;padding:.5rem;margin:1rem 0;border:1px solid #cad4db}
+.rv-figure svg{display:block;width:100%;min-width:min(540px,100%);max-height:35rem;height:auto}
+.rv-scroll{max-width:100%;overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.87rem;font-variant-numeric:tabular-nums}
+caption{text-align:left;font-weight:700;padding:.5rem 0}
+th,td{border:1px solid #a3b2bf;padding:.45rem;min-width:4rem;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+th{background:#e8eff4;font-weight:700;color:#182f42}
+tr:nth-child(even) td{background:#f5f8fa}
+summary{font-weight:700;cursor:pointer}
+@media(max-width:600px){.rv-page{padding:.65rem}.rv-tools{align-items:stretch;gap:.5rem}.rv-tools button,.rv-tools select{min-height:42px}.rv-figure{padding:0}th,td{padding:.35rem;font-size:.79rem}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+@media print{body{background:#fff}.rv-tools{display:none}.rv-panel{break-inside:avoid}.rv-scroll{overflow:visible}}

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>UNGA81 Research Validation v2 — Synthetic Only</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="rv-page">
+  <header>
+    <p class="rv-kicker">UNGA81 / experimental evidence inspection</p>
+    <h1>Research visualization and browser validation v2</h1>
+    <p>Invented observations only. Engineering demonstration; no diplomatic positions, private texts, significance tests or numerical refitting.</p>
+  </header>
+  <section class="rv-tools" aria-label="Synthetic replay and export controls">
+    <p><strong>Saved-run replay</strong> accepts this version's synthetic-only JSON. Invalid imports clear all previously displayed evidence and disable exports.</p>
+    <label for="rv-replay">Local synthetic evidence file</label>
+    <input id="rv-replay" type="file" accept=".json,application/json">
+    <button id="rv-reset" type="button">Restore bundled synthetic run</button>
+    <button id="rv-json" type="button" disabled>Export verified JSON</button>
+    <button id="rv-html" type="button" disabled>Export script-free HTML</button>
+    <label for="rv-panel-select">SVG panel</label>
+    <select id="rv-panel-select" aria-label="Select synthetic SVG panel" disabled></select>
+    <button id="rv-svg" type="button" disabled>Export panel SVG</button>
+    <p id="rv-status" role="status" aria-live="polite">Validating bundled synthetic fixture…</p>
+  </section>
+  <div id="rv-output" aria-label="Validated synthetic charts and tables"></div>
+</main>
+<script src="renderer.js"></script>
+<script>
+(function(){
+  'use strict';
+  const $=id=>document.getElementById(id);
+  const ids=['rv-json','rv-html','rv-svg','rv-panel-select'];
+  let active=null, epoch=0;
+  const disable=()=>{active=null;ids.forEach(id=>$(id).disabled=true);$('rv-panel-select').replaceChildren();$('rv-output').replaceChildren();};
+  function save(filename,body,type){
+    if(!active)throw Error('No validated synthetic run');
+    const url=URL.createObjectURL(new Blob([body],{type}));
+    const a=document.createElement('a');a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);
+  }
+  function mount(data){
+    const V=window.UNResearchValidationV2;
+    V.validate(data);
+    V.mount($('rv-output'),data);
+    active=data;
+    $('rv-panel-select').replaceChildren();
+    data.panels.forEach((p,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=p.kind+' — '+p.status;$('rv-panel-select').append(option);});
+    ids.forEach(id=>$(id).disabled=false);
+    $('rv-status').textContent='Verified synthetic run. Source frame: '+data.sources.length+'; missing and failed groups remain in the inventory.';
+  }
+  async function loadBundled(){
+    const current=++epoch;disable();$('rv-status').textContent='Validating bundled synthetic fixture…';
+    try {
+      const response=await fetch('fixture.json',{cache:'no-store'});
+      if(!response.ok)throw Error('Fixture fetch: HTTP '+response.status);
+      const data=await response.json();
+      if(current!==epoch)return;
+      mount(data);
+    } catch(error){if(current===epoch){disable();$('rv-status').textContent='ABSTAIN — '+error.message;}}
+  }
+  $('rv-reset').addEventListener('click',()=>{ $('rv-replay').value='';void loadBundled(); });
+  $('rv-replay').addEventListener('change',async()=>{
+    const current=++epoch;disable();$('rv-status').textContent='Checking local synthetic replay…';
+    try {
+      const file=$('rv-replay').files?.[0];
+      if(!file || file.size===0 || file.size>2*1024*1024)throw Error('Choose synthetic JSON of 1 byte to 2 MiB');
+      const data=JSON.parse(await file.text());
+      if(current!==epoch)return;
+      mount(data);
+    }catch(error){if(current===epoch){disable();$('rv-status').textContent='ABSTAIN — '+error.message;}}
+  });
+  $('rv-json').addEventListener('click',()=>save('research-validation-v2-synthetic.json',window.UNResearchValidationV2.exportJSON(active),'application/json'));
+  $('rv-html').addEventListener('click',()=>save('research-validation-v2-synthetic.html',window.UNResearchValidationV2.htmlDocument(active),'text/html'));
+  $('rv-svg').addEventListener('click',()=>{
+    const p=active.panels[Number($('rv-panel-select').value)];
+    save('research-validation-v2-'+p.kind+'-synthetic.svg',window.UNResearchValidationV2.renderPanel(p),'image/svg+xml');
+  });
+  void loadBundled();
+})();
+</script>
+</body>
+</html>

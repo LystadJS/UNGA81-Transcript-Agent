@@ -1,0 +1,292 @@
+{
+  "schema": "un.research-browser-v2-engineering-validation.v1",
+  "evaluation_role": "engineering_only",
+  "publication_eligible": false,
+  "as_of_utc": "2026-10-15",
+  "source": {
+    "repo": "LystadJS/UNGA81-Transcript-Agent",
+    "main_reviewed": "1af11061e3fa65d51b28d42a1b98bef250b6168b",
+    "c5_merge": "ecfc201ccfcd442c9f29e92777c1d9241beab4d9",
+    "inherited_c5_ci_run": 38458650819,
+    "native_w2_eligible": 24,
+    "native_w2_frame": 25,
+    "native_w2_unavailable": 1,
+    "native_w2_pair_records": 300,
+    "native_w2_offdiag": 276,
+    "native_w4_source_rows": 176,
+    "native_w4_actors": 13,
+    "native_w4_period_ids": [
+      "p0",
+      "p1"
+    ],
+    "original_private_source_byte_authentication": "NOT_RUN",
+    "main_latest_reconciled": "964ba0899665bb03bbe4fc54b4c65426d7c4d35d"
+  },
+  "local_execution": {
+    "node_version": "22.16.0",
+    "python_version": "3.13.5",
+    "chromium_version": "144.0.7559.96",
+    "native_v2_node_cases": 63,
+    "native_v2_node_passed": 63,
+    "native_v2_node_failed": 0,
+    "node_command": "node --test site/experimental/research-validation-v2/tests.cjs",
+    "chromium_browser_qa": "PASS_WITH_NAVIGATION_FALLBACK",
+    "browser_sizes": [
+      {
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "http_original_asset_parity": "PASS_4_OF_4",
+    "chromium_navigation": "BLOCKED_ERR_BLOCKED_BY_ADMINISTRATOR",
+    "native_c5_source_adapter_regression": "BLOCKED_MISSING_UPSTREAM_CHECKOUT_MODULE_NOT_FOUND_NO_NATIVE_TESTS_EXECUTED",
+    "native_c5_regression_command": "C5_W2_FIXTURES=/tmp/c5-w2 C5_W4_FIXTURES=/tmp/c5-w4 node --test site/experimental/research-validation-v2/native-c5-regression.cjs",
+    "native_c5_regression_syntax": "PASS",
+    "c5_exported_read_model_audit": "PASS_EXPORT_ONLY_NOT_NATIVE_PRODUCER",
+    "coordinator_patch_synthetic_context_git_apply_check": "PASS",
+    "coordinator_patch_actual_main_git_apply_check": "NOT_RUN_FULL_GIT_CHECKOUT_UNAVAILABLE",
+    "strict_served_navigation_gate": "PASS_REFUSES_ADMIN_BLOCKED_NAVIGATION",
+    "browser_receipt_schema": "un.research-browser-v2.qa.v1",
+    "browser_fallback_receipt": {
+      "acceptance_mode": "injected_fallback_not_acceptance",
+      "served_navigation_verified": false,
+      "viewports": 2
+    },
+    "coordinator_patch_in_memory_exact_source_contexts": "PASS_6_OF_6_MATCH_GITHUB_MAIN_964ba0899665bb03bbe4fc54b4c65426d7c4d35d"
+  },
+  "immutable_gates": {
+    "37_reserved_october_meeting_texts_opened": 0,
+    "d1_O1_O5": "UNCHANGED",
+    "w1_w2_inference_G01_G13": "WITHHELD",
+    "historical_w4_inference": "WITHHELD",
+    "public_release": "WITHHELD",
+    "merge": "NOT_PERFORMED",
+    "deployment": "NOT_PERFORMED"
+  },
+  "tested_local_file_blobs": {
+    "renderer.js": {
+      "sha256_bytes": "788c0d54fcd77b83f5dced4447e9adfb0ce5bfec42ea6a3d5b987a8475f2821e",
+      "git_blob_sha1": "5a9798cbbb8e50f9efff1defcaee4b2ded63f8e1",
+      "bytes": 30562
+    },
+    "adapter.js": {
+      "sha256_bytes": "2d078128da1107f43293f44b4e40a9665bd45801d72cae456ee0a67c8c457e9f",
+      "git_blob_sha1": "ffd4deb294f802c8d6623db05d7c32c2cf4cda84",
+      "bytes": 13129
+    },
+    "tests.cjs": {
+      "sha256_bytes": "125b066dde17019008ec07a108d8a4e7e9b81ccd31b5bd8b202ace159dac5357",
+      "git_blob_sha1": "3b51d84d4174e983d6ce32b2a6830fef58e60e58",
+      "bytes": 18988
+    },
+    "native-c5-regression.cjs": {
+      "sha256_bytes": "ea0a57d431c2fe18155314e5b5161c864064319997db129179b4ae923d1a0f90",
+      "git_blob_sha1": "37278996bed6db9bde7937286a4a0e51be385eac",
+      "bytes": 4780
+    },
+    "browser_smoke.py": {
+      "sha256_bytes": "76d0a5debd4a33f4d30d8bf10fa9e1cc16a982b4cd6721906730eda7ff01a03a",
+      "git_blob_sha1": "7bb1a033d3ac3a141b48ab954a97a8affdabd064",
+      "bytes": 10023
+    },
+    "fixture.json": {
+      "sha256_bytes": "29928c916c4b22740f80dfe6bd596d221437923eed30d550cb3e3b0d21c2e57e",
+      "git_blob_sha1": "0cd03f6e7b38cd41260f40d4e77cb64197b7e55a",
+      "bytes": 16698
+    },
+    "index.html": {
+      "sha256_bytes": "e5bda2fb8ed9abedc566eeee26feab21fa2ac1293ae397a1670825ec251d8e46",
+      "git_blob_sha1": "79b963ce1bb5b2ca1b0bee9ac53809cc7b13c5cb",
+      "bytes": 4581
+    },
+    "style.css": {
+      "sha256_bytes": "1658129cb972d059ffad42fb622eba29feb0b86ef1ce4f96cf3034d111385e9c",
+      "git_blob_sha1": "900df2c6471c711b77c8ecb1c84bcbf10984f501",
+      "bytes": 2361
+    },
+    "README.md": {
+      "sha256_bytes": "cc5a490de560a018adac7c75e51434608cc33a7d463b924a4cd566ceef16380f",
+      "git_blob_sha1": "2b56a44b0669afc8cfd3937e6c32556731ef394a",
+      "bytes": 11889
+    },
+    "COORDINATOR_PATCH.md": {
+      "sha256_bytes": "b07837b0cfd3bd4d90e0d6c658a5e5c8bf1bced05a4ed4288e3489ce4c948693",
+      "git_blob_sha1": "f012d492fc5b23f826737112b8f1dc7b1805568d",
+      "bytes": 4617
+    },
+    "coordinator-integration.patch": {
+      "sha256_bytes": "2489be3c242748a2aa44220ea9250effacc0c7ce28329562a6faeaf942f62ceb",
+      "git_blob_sha1": "c4d080502f1f319016d578fd25a5b03bef26f416",
+      "bytes": 3854
+    }
+  },
+  "warnings": [
+    "Attempted native C5 adapter test in isolated local subtree: Node failed to import ../../research-consensus.js (MODULE_NOT_FOUND) before executing tests; full merged C5 repository checkout is unavailable due github.com DNS/network block. Inherited C5 original CI receipts are not new native execution.",
+    "Browser navigation to localhost is blocked by administrator policy. Actual Chromium DOM QA uses exact injected local scripts; HTTP byte parity is independently checked.",
+    "No private original source file bytes were accessed; SHA-256 values in synthetic evidence are fixture commitments only.",
+    "Strict served-navigation acceptance is a separate fail-closed gate: --require-served-navigation rejects Chromium administrator-blocked page.goto. Only injected-fallback DOM and same-origin HTTP asset parity were observed here; coordinator must run strict served navigation in an unrestricted checkout."
+  ],
+  "current_reexecution": {
+    "execution_scope": "Exact prior head ef11b3fa087bd5cb1631ba803b81dee42b06358b; no original source files opened",
+    "main_at_check": "1af11061e3fa65d51b28d42a1b98bef250b6168b",
+    "runtime": {
+      "node": "22.16.0",
+      "python": "3.13.5",
+      "chromium": "144.0.7559.96"
+    },
+    "node_v2": {
+      "status": "PASS",
+      "passed": 63,
+      "failed": 0,
+      "command": "node --test site/experimental/research-validation-v2/tests.cjs",
+      "log_sha256": "c05b19293baf16e3bcf6a5bc0367022f9dbeea2807cd76b871e8d9662c304db4"
+    },
+    "native_c5_syntax": {
+      "status": "PASS",
+      "command": "node --check site/experimental/research-validation-v2/native-c5-regression.cjs"
+    },
+    "native_c5_execution": {
+      "status": "BLOCKED",
+      "code": "MODULE_NOT_FOUND",
+      "missing": "site/research-consensus.js",
+      "command": "C5_W2_FIXTURES=/tmp/nonexistent-c5-w2 C5_W4_FIXTURES=/tmp/nonexistent-c5-w4 node --test site/experimental/research-validation-v2/native-c5-regression.cjs",
+      "reason": "Only v2 subtree mounted; github.com DNS unavailable; no original C5 fixture producer or native test executed",
+      "log_sha256": "7d3ccee9cae49aeecc8a58e93af2a6177b96412efd020c5ffa56f89865f1c7a5"
+    },
+    "real_chromium_dom": {
+      "status": "PASS_WITH_NAVIGATION_FALLBACK",
+      "viewports": [
+        "1440x900",
+        "390x844"
+      ],
+      "command": "python3 site/experimental/research-validation-v2/browser_smoke.py --browser /usr/bin/chromium --output <qa-dir>",
+      "log_sha256": "0675548d0b5dacaad09c95a60a6dde9bf1c9e3d392425c1ec847fe93377f4839",
+      "served_http_asset_sha_parity": "PASS_4_OF_4"
+    },
+    "chromium_served_navigation": {
+      "status": "BLOCKED",
+      "error": "net::ERR_BLOCKED_BY_ADMINISTRATOR",
+      "url_scheme_tests": [
+        "http://127.0.0.1",
+        "https://example.invalid",
+        "https://example.com"
+      ],
+      "note": "Even request-intercepted navigation blocked; DOM QA used page.set_content"
+    },
+    "inherited_c5": {
+      "status": "PASS_HISTORICAL_NOT_EXACT_PR69_HEAD",
+      "run_id": 38458650819,
+      "source_frame": 25,
+      "eligible": 24,
+      "unavailable": 1,
+      "pairs": 300,
+      "off_diagonal": 276,
+      "w4_records": 176,
+      "w4_actors": 13,
+      "source_artifact_sha256": "79195a755f3ff1e28570fd368f94842d6f140d83f0dd1315b5bee567fc6814af"
+    },
+    "coordinator_patch": {
+      "status": "PASS_IN_MEMORY_SOURCE_HUNKS_6_OF_6",
+      "source_main": "964ba0899665bb03bbe4fc54b4c65426d7c4d35d",
+      "patch_blob": "c4d080502f1f319016d578fd25a5b03bef26f416",
+      "actual_git_apply": "NOT_RUN_FULL_GIT_CHECKOUT_UNAVAILABLE",
+      "applied_to_shared_files": false
+    },
+    "acceptance": "WITHHELD_NATIVE_C5_AND_STRICT_SERVED_BROWSER",
+    "merge": "NOT_PERFORMED",
+    "deployment": "NOT_PERFORMED",
+    "new_strict_served_gate": {
+      "status": "PASS_FAIL_CLOSED",
+      "command": "python3 site/experimental/research-validation-v2/browser_smoke.py --require-served-navigation --browser /usr/bin/chromium",
+      "exit_code": 1,
+      "expected_failure": "ERR_BLOCKED_BY_ADMINISTRATOR",
+      "reason": "Server-page acceptance withheld rather than replaced by injected fallback",
+      "log_sha256": "fec27b622149250d50f587166c491980d08e14600361752d4e3caee2fd95197c"
+    },
+    "browser_receipt": {
+      "schema": "un.research-browser-v2.qa.v1",
+      "served_navigation_verified": false,
+      "mode": "injected_fallback_not_acceptance",
+      "viewports": 2
+    }
+  },
+  "latest_exact_head_review": {
+    "prior_head": "10cb9b9ac3c7045eb9f3448a76bbd3e3ad8bb1b2",
+    "main_commit": "93b17c8779d959f5dd5559adb7f56381210f2f89",
+    "reviewed_at_utc": "2026-10-15",
+    "node": {
+      "status": "PASS",
+      "command": "node --test site/experimental/research-validation-v2/tests.cjs",
+      "passed": 63,
+      "failed": 0,
+      "skipped": 0,
+      "node": "v22.16.0",
+      "log_sha256": "76de50eb1a2ee9ebf46b03c77badfd9588f9a541ba1955e8a8ccfbb7771e8c94"
+    },
+    "browser_fallback": {
+      "status": "PASS_INJECTED_DOM_ONLY",
+      "chromium": "144.0.7559.96",
+      "viewports": [
+        "1440x900",
+        "390x844"
+      ],
+      "actual_http_bytes": "PASS_4_OF_4",
+      "served_navigation_verified": false,
+      "acceptance_mode": "injected_fallback_not_acceptance",
+      "page_errors": 0,
+      "unintended_network_requests": 0,
+      "page_overflow_px": 0,
+      "log_sha256": "c3c4a17ece9c6c089e33d12929a5bd1405d13e7ea94be5058df816d71b997048"
+    },
+    "served_browser_strict": {
+      "status": "BLOCKED",
+      "exit_code": 1,
+      "error": "net::ERR_BLOCKED_BY_ADMINISTRATOR",
+      "command": "python3 site/experimental/research-validation-v2/browser_smoke.py --require-served-navigation --browser /usr/bin/chromium",
+      "guard": "PASS_FAIL_CLOSED",
+      "served_qa": "NOT_RUN_SUCCESSFULLY",
+      "log_sha256": "52bf8e4ca945c6b5d1fe72590537cd6bf6a10815dce377b41497e6d817877aa8"
+    },
+    "native_c5": {
+      "status": "BLOCKED",
+      "exit_code": 1,
+      "tests_started": 0,
+      "error_code": "MODULE_NOT_FOUND",
+      "missing_module": "site/research-consensus.js",
+      "source": "Full current GitHub checkout unavailable: git ls-remote cannot resolve github.com; original W1/W2/W4 producer outputs unavailable",
+      "syntax": "PASS",
+      "log_sha256": "4457cc031efb0f3e194a68044fa478a6d1bde751bafabc72dca6701b09d575ae"
+    },
+    "inherited_current_head_ci": {
+      "status": "PASS_INHERITED_WORKFLOW_ONLY",
+      "workflow": "Latent comparison acceptance",
+      "run_id": 38752576846,
+      "conclusion": "success",
+      "native_c5_executed": false,
+      "strict_served_qa_executed": false
+    },
+    "exact_source_scope": {
+      "changed_files": 12,
+      "owned": "site/experimental/research-validation-v2/**",
+      "shared_files_modified": false
+    },
+    "coordinator_patch": {
+      "status": "PREPARED_NOT_APPLIED",
+      "real_main_source_hunks_verified": 6,
+      "full_checkout_git_apply": "NOT_RUN",
+      "strict_served_navigation_required": true
+    },
+    "scientific_release": {
+      "status": "WITHHELD",
+      "private_transcript_contents_opened": 0,
+      "publication_eligible": false,
+      "merging_authorized": false,
+      "deployment_authorized": false
+    },
+    "decision": "ENGINEERING_ACCEPTANCE_WITHHELD_PENDING_NATIVE_C5_AND_STRICT_SERVED_CHROMIUM"
+  }
+}
