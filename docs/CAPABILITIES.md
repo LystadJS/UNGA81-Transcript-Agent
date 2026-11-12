@@ -6,14 +6,14 @@ This is the current operational status guide, updated after verified public meta
 | --- | --- | --- |
 | Existing browser collection and reporting | Browser-selected public UN inventory, source links, summaries, recovery and exports | Source PR #187 merged after all six checks passed, including actual live collection; source Pages deployment succeeded |
 | Durable operational collection | Versioned selection, bounded refresh/backfill, immutable source revisions, SQLite warehouse | Seven actual runs published to the owner's private Hugging Face dataset; successive fresh runners restored the archive and continued collection |
-| Research CSV snapshots | Consistent keyed exports, dictionary, hashes, source and run history | Seven real private snapshots published; latest corrected coverage records 1,017 known / 541 stored meetings and 37,544 current segments; coverage remains partial; real restored-export run 43192650005 reproduced 23 files (17 CSVs) byte for byte |
+| Research CSV snapshots | Consistent keyed exports, dictionary, hashes, source and run history | Seven real private snapshots published; latest corrected coverage records 1,017 known / 541 stored meetings and 37,544 current segments; coverage remains partial; latest real restored-export run 43216908065 reproduced 24 files (17 CSVs, 109,794 relational rows) byte for byte |
 | Public archive | Read-only manifest/partition browser with source and coverage metadata | Allowlisted metadata is published to `LystadJS/UN-Transcript-Agent-Public`; actual anonymous source and portfolio desktop/mobile checks passed in run 43200525651 |
 | Five-level semantic stance | Candidate training, source-bound inference contract, explicit uncertainty and evaluation policy | **No accepted trained model or owner benchmark is supplied** |
 | Issue discovery | Versioned catalog and source-linked candidate discovery | New candidates do not silently become validated policy propositions |
 | Exploratory methods | Existing browser TF-IDF, dimensional methods and clustering remain available | Exploratory patterns do not establish alignment, influence or causation |
 | Historical issue/vote research | Separate private ingestion and research structures | Public historical archive and fitted empirical models remain unaccepted |
 | R/Shiny D1 | Separate preserved local workflow | Twelve executable adapters among 42 registered methods; not 42 operational methods |
-| Daily operation | Scheduled workflow, allowlisted per-attempt receipts, read-only observation and run inspection | Combined private/public publication and automatic browser freshness checks passed. The first scheduled run is awaiting GitHub start as of 12 November 11:32 UTC; fourteen-day scheduled observation and account-wide capacity acceptance remain outstanding |
+| Daily operation | Scheduled workflow, allowlisted per-attempt receipts, read-only observation and run inspection | Combined private/public publication and automatic browser freshness checks passed. The first scheduled run is awaiting GitHub start as of 12 November 12:16 UTC; fourteen-day scheduled observation and account-wide capacity acceptance remain outstanding |
 
 The first [actual archive run](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/43154577386) reported 87 meetings and 76,284,090 downloaded bytes, with partial coverage. Its private snapshot ID is `20261112T042431Z-98493e2e5511` (UTC). The [second actual run](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/43155142584) successfully restored that archive and published `20261112T043029Z-314632fa4d79`, reporting 78 downloaded meetings and 75,470,172 bytes. These run counts may overlap through refreshes and must not be added as unique meetings. Both runs had partial coverage, successful private publication, no configured public storage, and model status `not_evaluated_missing_labels`. These are operational receipts, not empirical stance acceptance. See [the acceptance record](OPERATIONAL_ACCEPTANCE.md) for the deployment and recovery boundaries.
 
@@ -21,7 +21,7 @@ The source repository's Pages deployment succeeded. The preferred portfolio mirr
 
 ## Acceptance dependencies
 
-1. Complete account-wide capacity acceptance and continued recovery observation. Isolated real-provider interruption recovery passed in run 43184679678; production data and its pointer were left untouched.
+1. Complete account-wide capacity acceptance and continued recovery observation. Isolated real-provider interruption recovery passed in runs 43184679678 and 43216326797, including accepted-batch response loss; production data and its pointer were left untouched.
 2. Complete the fourteen-day scheduled observation record and verify continuing private/public publication. Separate public metadata storage and browser configuration are now active.
 3. Complete the owner-labeled 300-example codebook pilot, then expand benchmark coverage.
 4. Train and assess the candidate on source-disjoint calibration and untouched test data; record failed gates as failures.
