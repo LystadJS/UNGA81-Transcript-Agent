@@ -55,8 +55,6 @@ def run_pipeline(config_path, workspace, *, as_of=None, transport=None, remote=N
             _, used = remote.info()
             if used + config.get('max_bytes_per_run', 100_000_000) * 3 > remote.budget_bytes:
                 raise ValueError('Insufficient private storage budget for a collection run')
-            if public_remote:
-                public_remote.info()
             if not data_directory.exists():
                 remote.restore(workspace)
         state_file = data_directory / 'state.json'
@@ -96,8 +94,8 @@ def run_pipeline(config_path, workspace, *, as_of=None, transport=None, remote=N
                 if not finished:
                     warehouse.finish_run(run_id, 'failed', now())
                 raise
-        # A remote failure never advances local cursor or published pointer. A
-        # rerun remains idempotent even when local SQLite contains durable rows.
+        # A private publication failure never advances the local cursor. Public
+        # reporting is downstream; its failure must not erase the private receipt.
         pointer = remote.publish(directory) if remote else {'snapshot_id':run_id,'path':str(directory),'schema':'un.local-snapshot.v1'}
         atomic_json(state_file, collection['state'])
         atomic_json(workspace / 'latest.json', pointer)
@@ -107,14 +105,21 @@ def run_pipeline(config_path, workspace, *, as_of=None, transport=None, remote=N
                 raise FileExistsError('Public output destination must be new')
             shutil.copytree(directory / 'public', dest)
         public_status = 'not_configured'
+        public_error_type = None
         if public_remote:
-            public_remote.publish_public(directory / 'public')
-            public_status = 'published'
+            try:
+                public_remote.publish_public(directory / 'public')
+                public_status = 'published'
+            except Exception as error:
+                public_status = 'failed'
+                # Provider error messages can include signed URLs or credentials.
+                public_error_type = type(error).__name__
         receipt = {'schema':'un.pipeline-run.v1','run_id':run_id,'status':status,'generated_at':end,
                    'snapshot':str(directory),'meetings_downloaded':len(collection['items']),
                    'bytes_downloaded':collection['bytes_downloaded'],'model_status':analysis['model_status'],
                    'coverage':manifest['coverage'],
-                   'private_publication':'published' if remote else 'local_only','public_publication':public_status}
+                   'private_publication':'published' if remote else 'local_only','public_publication':public_status,
+                   'public_error_type':public_error_type}
         atomic_json(workspace / 'last-run.json', receipt)
         return receipt
 
@@ -166,7 +171,7 @@ def main(argv=None):
             if result.get('generated_at'):
                 result['stale'] = datetime.now(timezone.utc) - datetime.fromisoformat(result['generated_at'].replace('Z','+00:00')) > timedelta(hours=36)
         print(json.dumps(result, sort_keys=True))
-        return 0
+        return 1 if result.get('public_publication') == 'failed' else 0
     except Exception as error:
         # Provider error strings may include signed URLs or credentials. Keep
         # details in the operator's private debugger, never CI logs.
