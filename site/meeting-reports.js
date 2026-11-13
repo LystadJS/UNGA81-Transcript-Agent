@@ -9,6 +9,7 @@
   const appendix=()=>({mode:$('appendixMode').value,record_ids:[...appendixIds]});
   const passageNotes=()=>[...notes].map(([record_id,text])=>({record_id,text}));
   function save(data,name,mime){const u=URL.createObjectURL(new Blob([data],{type:mime})),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
+  function reportName(suffix){return 'un-meeting-report-'+report.generated_at.replace(/[-:.]/g,'')+suffix;}
   function invalidate(){report=null;$('expressionEvidence').close();$('expressionEvidenceBody').replaceChildren();$('reportPreview').replaceChildren();for(const id of ['downloadReport','saveReport','downloadEvidence'])$(id).disabled=true;$('reportState').textContent='Settings or selection changed. Prepare the report to update its exports.';dirty=!!corpora.length;}
   function search(){
     const ids=new Set(selected()),all=corpora.flatMap(c=>c.records).filter(r=>ids.has(r.meeting_slug));
@@ -145,9 +146,9 @@
   };
   $('closeExpressionEvidence').onclick=()=>$('expressionEvidence').close();
   $('expressionEvidence').addEventListener('close',()=>{if(!$('expressionEvidence').open)$('expressionEvidenceBody').replaceChildren();});
-  $('downloadReport').onclick=()=>{if(report)save(Core.standalone(report),'un-meeting-report.html','text/html');};
-  $('saveReport').onclick=()=>{if(report){const data=JSON.stringify(Core.savedReport(report,corpora));if(new TextEncoder().encode(data).length>Core.LIMIT){setStatus('Report JSON exceeds 25 MB. Load a smaller collection before saving.',true);return;}save(data,'un-meeting-report.json','application/json');dirty=false;}};
-  $('downloadEvidence').onclick=()=>{if(report)save(Core.evidenceCSV(report.records),'un-meeting-evidence.csv','text/csv;charset=utf-8');};
+  $('downloadReport').onclick=()=>{if(report)save(Core.standalone(report),reportName('.html'),'text/html');};
+  $('saveReport').onclick=()=>{if(report){const data=JSON.stringify(Core.savedReport(report,corpora));if(new TextEncoder().encode(data).length>Core.LIMIT){setStatus('Report JSON exceeds 25 MB. Load a smaller collection before saving.',true);return;}save(data,reportName('.json'),'application/json');dirty=false;}};
+  $('downloadEvidence').onclick=()=>{if(report)save(Core.evidenceCSV(report.records),reportName('-evidence.csv'),'text/csv;charset=utf-8');};
   window.addEventListener('beforeunload',event=>{if(dirty){event.preventDefault();event.returnValue='';}});
   (async()=>{try{
     const read=async path=>{const r=await fetch(path,{credentials:'omit'});if(!r.ok)throw Error('Reporting setup unavailable.');return r.json();};

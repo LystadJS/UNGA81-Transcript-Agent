@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.50.0",
+  "browser_engine": "browser-descriptive-1.51.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-13",
   "features": [
+    "HTML, saved JSON and full evidence CSV downloads share the prepared report UTC timestamp in their filenames; different preparations stay distinguishable without embedding mission names, notes or source text",
     "Selected-meeting navigation with dated titles, loaded-source coverage and keyboard-accessible return links in multi-meeting previews and script-free HTML exports; original evidence, notes and CSV remain unchanged",
     "Country-expression tables open exact source-bound context in a keyboard-accessible local reader; original source links and script-free exports remain available, with no changes to search, notes or appendix selections",
     "Bounded immediate source context with exact meeting/language/revision isolation, visible context gaps and separate recorded speaker/role/group details; collective indications remain distinct from national attribution",
