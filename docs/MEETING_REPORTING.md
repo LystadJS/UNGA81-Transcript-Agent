@@ -32,6 +32,12 @@ Opening context does not select appendix passages, copy notes, change search cou
 
 Country-expression tables offer “Read source context” in the prepared browser report. The control appears only when the extract's segment ID, text hash, original pointer and source URL match one loaded record from that meeting. A local dialog opens that exact segment and its bounded original neighbors, with separate speaker metadata and visible gaps. Keyboard activation, Escape and the close button return focus to the invoking control. The view preserves search filters, appendix choices, notes, comparison gaps and prepared exports; editing the report closes it. HTML downloads remain script-free and retain the original external source links, without inactive browser controls.
 
+## Navigating a report
+
+Reports containing multiple meetings open with a selected-meeting index. Each dated title links to its meeting section, alongside the loaded source-segment count and collection outcome. These describe available evidence, not source completeness or policy importance. Each section links back to the index. Keyboard navigation moves focus to the destination heading; the same links work in the script-free HTML download. A single-meeting report opens directly with its meeting overview.
+
+Navigation does not request sources, select evidence, change notes or alter country expressions and coverage. Meeting order, original source links and the full evidence CSV remain unchanged. The index is rebuilt from verified sources when a saved report reopens; all three saved-report versions remain supported.
+
 ## Selecting an evidence appendix
 
 Check supporting passages while searching. Selections persist across searches, and “Show selected passages only” makes them easy to revisit. Any template can use a custom appendix; its heading identifies the passages as analyst-selected and reports their count against the full selected-meeting denominator. Clearing the selection leaves an explicit empty appendix. Returning to “Template default” clears custom selections. Removing a meeting removes its appendix selections.
