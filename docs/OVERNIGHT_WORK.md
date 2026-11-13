@@ -531,3 +531,12 @@ After finishing this active release, assess a secure recipient-encrypted **inbou
 
 
 At **00:40 UTC**, mirror Pages **43338744088** and the **38-asset check 43338744901** passed. Hosted browser audit **43338745001** and post-merge regression **43338744902** remain running and must be inspected first next activation. The 40-minute session ends with both application releases published and these final checks explicitly pending. No warehouse backfill, training or canonical owner-label write was launched. The hourly continuation remains scheduled for 01:00 UTC; actual execution is not guaranteed.
+
+
+## Activation beginning 13 November 00:55 UTC — finish release, then private intake
+
+Read AGENTS, the current checkpoint, capabilities and reporting contract; fetched both repositories and inspected actual PRs/runs. Source main `9e4be95475fa794bc2ca72c1323a1efaa21e57f4` and mirror main `a05598349d303dd17c9b547582f7205b34255a0c` are clean. No product PR or archive writer is active. Historical queued checks on old commit `1fb3c8b` and unrelated research/portfolio PRs remain untouched.
+
+The two pending release checks completed successfully: [hosted audit 43338745001](https://github.com/LystadJS/LystadJS.github.io/actions/runs/43338745001) at 00:41 UTC and [post-merge regression 43338744902](https://github.com/LystadJS/LystadJS.github.io/actions/runs/43338744902) at 00:43 UTC. Release 1.49.0 is verified on both deployments. No workflow rerun was needed, and this does not constitute representative diplomat usability or model/scientific acceptance.
+
+Next task: implement bounded recipient-encrypted inbound owner-review intake using the existing private HF writer on the authorized runner. Keep private decryption keys and annotation bytes exclusively in private storage/runner memory, send ciphertext only through dispatch, preserve original returned bytes and all frozen-registration checks, and serialize against `operational-store`. Require checksum-verified immutable publication and receipt verification before claiming canonical persistence. No warehouse pointer, sealed source or model acceptance is changed.
