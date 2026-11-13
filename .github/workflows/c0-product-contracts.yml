@@ -1,0 +1,81 @@
+name: C0 product contracts - synthetic exact source and integration
+on:
+  pull_request:
+    paths:
+      - 'research/integration/product_contracts/**'
+      - 'docs/parallel-work/C0_*.md'
+      - 'docs/parallel-work/c0-ownership.json'
+      - '.github/workflows/c0-product-contracts.yml'
+permissions:
+  contents: read
+jobs:
+  contracts:
+    if: github.head_ref == 'coord/c0-product-contracts'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        source: [worker-head, effective-tree]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.source == 'worker-head' && github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Record actual head and tree; verify C0-only changes
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          WORKER_SHA: ${{ github.event.pull_request.head.sha }}
+          SOURCE_MODE: ${{ matrix.source }}
+        run: |
+          set -euo pipefail
+          printf 'mode=%s\nworker=%s\nbase=%s\n' "$SOURCE_MODE" "$WORKER_SHA" "$BASE_SHA"
+          git rev-parse HEAD HEAD^{tree}
+          if [ "$SOURCE_MODE" = worker-head ]; then test "$(git rev-parse HEAD)" = "$WORKER_SHA"; fi
+          python research/integration/product_contracts/guard_changes.py "$BASE_SHA"
+      - name: Install independent JSON Schema validator
+        run: python -m pip install jsonschema==4.23.0
+      - name: Native C0 contracts, signatures, state machine and adversarial controls
+        run: |
+          set -euo pipefail
+          node --test research/integration/product_contracts/test_*.mjs
+          node research/integration/product_contracts/emit_contracts.mjs "$RUNNER_TEMP/c0-generated"
+          python research/integration/product_contracts/check_schemas.py "$RUNNER_TEMP/c0-generated"
+          node research/integration/product_contracts/emit_contracts.mjs "$RUNNER_TEMP/c0-replay"
+          diff -rq "$RUNNER_TEMP/c0-generated" "$RUNNER_TEMP/c0-replay"
+      - name: Preserve independent red evidence against the immutable original source
+        run: |
+          set -euo pipefail
+          baseline="$RUNNER_TEMP/c0-original-source"
+          mkdir -p "$baseline"
+          for file in contracts.mjs schemas.mjs fixtures.mjs; do
+            git show "4ea131fb33ea7735b6543e8ba2110ecb268743ab:research/integration/product_contracts/$file" > "$baseline/$file"
+            test "$(git hash-object "$baseline/$file")" = "$(git rev-parse "4ea131fb33ea7735b6543e8ba2110ecb268743ab:research/integration/product_contracts/$file")"
+          done
+          set +e
+          C0_REVIEW_SOURCE="$baseline" node --test research/integration/product_contracts/test_independent_review.mjs > "$RUNNER_TEMP/c0-original-red.tap" 2>&1
+          rc=$?
+          set -e
+          test "$rc" = 1
+          python - "$RUNNER_TEMP/c0-original-red.tap" <<'PYRED'
+          import re, sys
+          text = open(sys.argv[1], encoding='utf8').read()
+          counts = {k: int(re.search(r'^# ' + k + r' (\d+)$', text, re.M).group(1)) for k in ('tests', 'pass', 'fail', 'skipped')}
+          assert counts == {'tests': 64, 'pass': 21, 'fail': 43, 'skipped': 0}, counts
+          print('Immutable original source has expected independent failures:', counts)
+          PYRED
+      - name: Original native upstream contracts and merged PR71 regressions
+        run: |
+          set -euo pipefail
+          node docs/parallel-work/validate-contract.cjs
+          node docs/parallel-work/test-source-inventory-v1.cjs
+          node --test research/source_comparability/audit.test.cjs research/source_comparability/audit.integration.test.cjs
+          node research/validation_framework/tests/test_historical_link.cjs
+          python -m unittest discover -s research/reproducibility_audit -p 'test_*.py' -v
