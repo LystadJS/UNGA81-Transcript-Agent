@@ -12,6 +12,14 @@ Users can also reopen source-bound `un.browser.corpus.v1` collections and versio
 
 The maintained public archive is deliberately source-free. The archive can hand off up to five selected public meeting identities across dates. Selection survives filters and pagination. The versioned link carries only dates, meeting IDs and the public snapshot ID; no transcript, notes, source URL or credentials. In the reporting workspace, users explicitly check those identities against the current official inventory before loading available sources. Missing and unavailable meetings remain visible; the tool never substitutes another meeting. Invalid/reserved selections are rejected, and missing exclusion policy disables handoff while preserving archive browsing. This does not transfer private warehouse text or change publication allowlists. Fresh browser collection is user-triggered, local, English-only and separate from the scheduled warehouse. A browser can show a newer revision than the last warehouse snapshot; report provenance identifies the actual loaded revision.
 
+## Keeping current work when replacing sources
+
+Opening another valid file or loading new transcripts asks before replacing unsaved work. “Keep current report” is the default; Escape also keeps it. This preserves loaded sources, notes, appendix selections, the prepared preview and available exports. Save report JSON before choosing “Replace report” if you need the current work later. Invalid imports show their validation error and leave the workspace unchanged, without a replacement prompt.
+
+New transcript loading asks before making source requests. Cancelling a load keeps the current workspace even if some bundles have completed. A partial result requires a separate replacement decision when a collection is already loaded; a complete failure preserves it. Edits or report preparation during retrieval or file validation invalidate that pending replacement. An older import cannot overwrite a newer one.
+
+Confirmed fresh collection replaces source-bound notes and appendix choices while retaining reusable mission preferences. A saved-report import restores that file's validated notes and selections. Nothing is uploaded or stored automatically. Close/reload warnings remain separate from these replacement controls.
+
 ## Templates and interpretation
 
 - **Mission briefing:** meeting overview, subjects, all recorded country affiliations, source-linked expressions, U.S. comparison coverage, analyst notes, and limitations.
