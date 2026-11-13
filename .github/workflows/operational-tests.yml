@@ -48,10 +48,12 @@ jobs:
           node tests/test_report_appendix.cjs
           node tests/test_report_passage_notes.cjs
           node tests/test_report_context.cjs
+          node tests/test_report_package.cjs
           node tests/test_meeting_selection.cjs
           node tests/test_mission_preferences.cjs
           node tests/test_meeting_reports_ui.cjs
           node tests/test_report_replacement_ui.cjs
+          node tests/test_report_package_ui.cjs
           node tests/test_archive_reporting_ui.cjs
       - name: Browser owner review round-trip with synthetic passages
         run: python tests/browser_owner_review.py

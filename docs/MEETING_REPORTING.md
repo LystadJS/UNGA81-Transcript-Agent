@@ -68,6 +68,14 @@ Save or open `un.mission-preferences.v1` JSON before or after loading meetings. 
 
 This reusable format excludes source text, meeting identities and analyst notes. Import rejects unknown fields, unsupported schemas, invalid types and oversized files before changing the workspace. Applying valid preferences preserves loaded sources, selected meetings and current analyst notes, but clears the prepared preview and disables stale report exports until the report is prepared again. Invalid files leave the existing report intact. Nothing is saved or uploaded automatically. The source-bearing report JSON below remains a separate format.
 
+## Report package
+
+“Download report package (ZIP)” saves one local, unencrypted archive containing `report.html`, `report.json`, `evidence.csv`, `README.txt` and `manifest.json`. Extract the archive and open `report.json` in the workspace to continue editing. HTML, JSON and CSV use the same preparation and exact content as their individual downloads. JSON retains all loaded source bundles, including unselected meetings; the package can contain source text and analyst notes. Review the contents before sharing. No upload or additional source request occurs.
+
+The field guide explains the CSV grain, columns, formula escaping, source/user/model distinctions and saved-work scope. Manifest schema `un.meeting-report-package.v1` records preparation time, method, selected meeting IDs and segment count, original response revisions, and each other file's encoded byte count and SHA-256. The manifest has no self-checksum. Hashes detect changed bytes; they do not authenticate the source or speaker. ZIP entries use uncompressed storage and a fixed 1980 container timestamp; the preparation date is in the manifest and outer filename.
+
+The complete package, including ZIP headers and manifest, must fit within 25,000,000 bytes. A refusal preserves work and leaves individual exports available. Changing or re-preparing the report while packaging cancels that download, preserving the newer work and unsaved warning. A completed package download counts as saving the report because it contains the full reopenable JSON. Existing individual exports and v1/v2/v3 saved-report readers remain available. The app imports extracted JSON, not ZIP files.
+
 ## Export contract
 
 | Export | Contents and use |
