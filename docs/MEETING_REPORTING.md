@@ -30,6 +30,8 @@ Each passage retains its own source identity, exact text and recorded speaker, r
 
 Opening context does not select appendix passages, copy notes, change search counts, alter country summaries or invalidate a prepared report. The browser context panel is not automatically added to HTML appendices or saved as a new selection. HTML evidence and note sections retain the speaker/capacity details; JSON retains original source records, and the full evidence CSV is unchanged. Report schemas v1/v2/v3 remain supported.
 
+Country-expression tables offer “Read source context” in the prepared browser report. The control appears only when the extract's segment ID, text hash, original pointer and source URL match one loaded record from that meeting. A local dialog opens that exact segment and its bounded original neighbors, with separate speaker metadata and visible gaps. Keyboard activation, Escape and the close button return focus to the invoking control. The view preserves search filters, appendix choices, notes, comparison gaps and prepared exports; editing the report closes it. HTML downloads remain script-free and retain the original external source links, without inactive browser controls.
+
 ## Selecting an evidence appendix
 
 Check supporting passages while searching. Selections persist across searches, and “Show selected passages only” makes them easy to revisit. Any template can use a custom appendix; its heading identifies the passages as analyst-selected and reports their count against the full selected-meeting denominator. Clearing the selection leaves an explicit empty appendix. Returning to “Template default” clears custom selections. Removing a meeting removes its appendix selections.
@@ -66,7 +68,7 @@ CSV uses UTF-8, quoted cells and CRLF. Potential spreadsheet formulas are prefix
 
 1. Run the [representative-diplomat usability session](REPORTING_USABILITY.md); retain actual participant findings separately from synthetic engineering tests. The guide is prepared, and actual sessions remain uncompleted.
 2. Extend the implemented archive-selection handoff only through approved source access, without broadening the public text allowlist implicitly.
-3. Add source-bound navigation from country-expression extracts to the evidence reader, preserving exact segment identifiers and comparison gaps.
+3. Validate the deployed country-expression evidence navigation with representative diplomats; retain exact segment identifiers and comparison gaps.
 4. Evaluate an optional local generative reporting model separately from the stance classifier. Fluent generation, factual coverage and citation correctness need their own acceptance evidence.
 5. Complete the owner-label pilot and untouched stance evaluation. Reporting remains useful while model estimates stay withheld.
 

@@ -47,5 +47,10 @@
       <details><summary>What the exports contain</summary><p>HTML is a standalone, script-free report suitable for printing, with the chosen appendix and your separately labeled notes. JSON preserves the original collection, source hashes, meeting and appendix selections, passage notes and mission preferences so the report can be rebuilt here. CSV contains all source passages from the selected meetings, independently of search and appendix selection; it excludes your notes. Potential spreadsheet formulas are prefixed with an apostrophe; JSON retains exact text.</p><p>These files can contain transcript text and your notes. Nothing is uploaded or saved automatically. Save JSON before closing. The maintained archive and research CSV pipeline remain separate.</p></details>
       <div id="reportPreview" aria-label="Prepared report"></div>
     </section>
-  </main><footer>Source-linked reporting · Deterministic extracts, not an accepted stance model · No external AI calls</footer>
+  </main>
+  <dialog id="expressionEvidence" aria-labelledby="expressionEvidenceTitle">
+    <div class="context-dialog-heading"><h2 id="expressionEvidenceTitle">Source context for the recorded expression</h2><button type="button" id="closeExpressionEvidence" autofocus>Close evidence</button></div>
+    <p>This view does not change your search, appendix, notes or prepared report.</p><div id="expressionEvidenceBody"></div>
+  </dialog>
+  <footer>Source-linked reporting · Deterministic extracts, not an accepted stance model · No external AI calls</footer>
 </body></html>

@@ -506,3 +506,13 @@ The owner's actual returned JSON then passed the unchanged full private `review_
 **Remaining private-intake blocker:** the managed workspace has no authenticated HF write credential, and the available workflow provides only read-only, recipient-encrypted delivery. Canonical private-HF ingestion of the validated return is therefore not claimed. Original inputs, actual return, validated subset and private validation log remain in a protected workspace outside Git; do not send plaintext annotations through public workflow inputs/artifacts. A subsequent authorized private write must preserve the original return and record its hashes and registration provenance.
 
 The existing hourly automation is enabled, with the next activation scheduled for 01:00 UTC, subject to actual execution. Next independent application task: source-bound navigation from country-expression tables to their original evidence, preserving whole-meeting comparisons and capacity qualifications. Do not repeat the completed context release, metadata transfer or original review validation without changed inputs.
+
+
+## Third task in the 00:01 activation — country-expression evidence navigation
+
+After PR #269 recorded the completed 49-example validation, reread the checkpoint and started `feat/country-expression-evidence` from source `c84667f767b1ee0ca223cad43bed146834c9b809`. Release 1.49.0 adds a local context dialog from country-expression extracts. Controls require a unique same-meeting match on segment identity, text digest, original pointer and source URL. The dialog reuses bounded revision-local context and separate speaker/capacity metadata, with keyboard/Escape/close navigation. It leaves searches, appendix choices, notes, prepared reports and source data unchanged. Report changes close stale context. Script-free exports retain original source links and omit browser-only controls. No stance model or policy-agreement claim is added.
+
+Await synthetic/browser validation, pinned CI and both deployments before claiming this increment published. Full owner-transfer main contracts 43337066596 passed; the validated actual review and canonical-HF blocker remain as recorded above.
+
+
+Local source-binding, context, report, appendix, note and preference contracts passed. The full reporting browser workflow passed keyboard activation, exact passage lookup, separate context metadata, Escape/close focus return, mobile bounds, unchanged search/selection/preview/export state and script-free exports; archive handoff also passed. The close-event test waits for the browser's asynchronous dialog-close event before asserting content disposal; no assertion or gate was removed. Actual deployment remains pending.

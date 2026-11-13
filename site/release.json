@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.48.0",
+  "browser_engine": "browser-descriptive-1.49.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-13",
   "features": [
+    "Country-expression tables open exact source-bound context in a keyboard-accessible local reader; original source links and script-free exports remain available, with no changes to search, notes or appendix selections",
     "Bounded immediate source context with exact meeting/language/revision isolation, visible context gaps and separate recorded speaker/role/group details; collective indications remain distinct from national attribution",
     "Passage-specific analyst notes with exact source IDs, bounded local editing, separate user interpretation in HTML and JSON, unchanged source evidence/CSV, and v1/v2/v3 saved-report compatibility",
     "Source-linked custom evidence appendices across all report templates, with exact passage IDs, unchanged whole-meeting summaries and full evidence CSV, strict v2 saved-report validation and v1 compatibility",
