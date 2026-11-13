@@ -3,6 +3,7 @@
   'use strict';
   const $=id=>document.getElementById(id),Core=UNMeetingReport;
   let policy,countries,inventory=[],corpora=[],report=null,controller=null,shown=10,dirty=false,handoff=null,appendixIds=new Set(),notes=new Map();
+  let workspaceRevision=0,replacementSerial=0;
   const setStatus=(message,error=false)=>{$('status').textContent=message;$('status').classList.toggle('error',error);};
   const selected=()=>[...$('loadedMeetings').querySelectorAll('input:checked')].map(e=>e.value);
   const options=()=>({template:$('reportTemplate').value,mission:$('mission').value,title:$('reportTitle').value,priorities:$('priorities').value,notes:$('analystNotes').value});
@@ -10,7 +11,20 @@
   const passageNotes=()=>[...notes].map(([record_id,text])=>({record_id,text}));
   function save(data,name,mime){const u=URL.createObjectURL(new Blob([data],{type:mime})),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
   function reportName(suffix){return 'un-meeting-report-'+report.generated_at.replace(/[-:.]/g,'')+suffix;}
-  function invalidate(){report=null;$('expressionEvidence').close();$('expressionEvidenceBody').replaceChildren();$('reportPreview').replaceChildren();for(const id of ['downloadReport','saveReport','downloadEvidence'])$(id).disabled=true;$('reportState').textContent='Settings or selection changed. Prepare the report to update its exports.';dirty=!!corpora.length;}
+  function invalidate(){workspaceRevision++;report=null;$('expressionEvidence').close();$('expressionEvidenceBody').replaceChildren();$('reportPreview').replaceChildren();for(const id of ['downloadReport','saveReport','downloadEvidence'])$(id).disabled=true;$('reportState').textContent='Settings or selection changed. Prepare the report to update its exports.';dirty=!!corpora.length;}
+  function replacementCurrent(ticket){
+    if(ticket.id!==replacementSerial)return false;
+    if(ticket.revision!==workspaceRevision){setStatus('Your report changed while sources were being checked. Current work kept; try loading again when ready.');return false;}
+    return true;
+  }
+  function confirmReplacement(message,force=false){
+    if(!corpora.length||(!dirty&&!force))return Promise.resolve(true);
+    const dialog=$('replaceReport');if(dialog.open)return Promise.resolve(false);
+    $('replaceReportMessage').textContent=message;dialog.returnValue='keep';
+    return new Promise(resolve=>{dialog.addEventListener('close',()=>resolve(dialog.returnValue==='replace'),{once:true});dialog.showModal();});
+  }
+  $('keepCurrentReport').onclick=()=>$('replaceReport').close('keep');
+  $('replaceCurrentReport').onclick=()=>$('replaceReport').close('replace');
   function search(){
     const ids=new Set(selected()),all=corpora.flatMap(c=>c.records).filter(r=>ids.has(r.meeting_slug));
     const rows=Core.search(all.filter(r=>!$('onlySelectedEvidence').checked||appendixIds.has(r.id)),$('evidenceSearch').value);
@@ -60,6 +74,7 @@
     notes=new Map(passage_notes.map(n=>[n.record_id,n.text]));
     for(const row of corpora.flatMap(c=>c.coverage).filter(r=>r.slug))$('loadedMeetings').append(checkbox(row,true,!selection||selection.includes(row.slug)));
     if(prefs){for(const [id,key] of [['reportTemplate','template'],['mission','mission'],['reportTitle','title'],['priorities','priorities'],['analystNotes','notes']])$(id).value=prefs[key];}
+    else $('analystNotes').value='';
     $('reportControls').disabled=false;$('evidenceSearch').disabled=false;$('appendixControls').disabled=false;
     $('collectionStatus').textContent=corpora.flatMap(c=>c.coverage).filter(r=>r.slug).length+' loaded meeting records; '+corpora.reduce((n,c)=>n+c.records.length,0)+' English source segments. Original response hashes verified. Last source check: '+corpora.map(c=>c.collection.checked_at||c.collection.collected_at||'Unknown').join('; ')+'.';
     invalidate();shown=10;search();
@@ -98,27 +113,41 @@
   $('loadMeetings').onclick=async()=>{
     const ids=new Set([...$('inventory').querySelectorAll('input:checked')].map(e=>e.value)),chosen=inventory.filter(m=>ids.has(m.slug));
     if(!chosen.length||chosen.length>5){setStatus('Select between one and five meetings per load.',true);return;}
-    const next=[];let failure=null;
+    const ticket={id:++replacementSerial,revision:workspaceRevision};
+    if(!await confirmReplacement('Loading these meetings will replace your current sources, appendix selections and notes.')){if(ticket.id===replacementSerial)setStatus('Current report kept. No transcripts requested.');return;}
+    if(!replacementCurrent(ticket))return;
+    const next=[],loading=new AbortController();let failure=null,cancelled=false;
     try{
-      controller=new AbortController();busy(true);
+      controller=loading;busy(true);
       for(const m of chosen){
+        if(loading.signal.aborted||ticket.id!==replacementSerial||ticket.revision!==workspaceRevision)break;
         if(!Core.allowed(m.date.slice(0,10),m.slug,policy))throw Error('Reserved meeting blocked.');
-        const c=await UNCollector.collect(UNMeetingPickerCore.selection(m.date.slice(0,10),m),countries,{signal:controller.signal,progress:setStatus});
+        const c=await UNCollector.collect(UNMeetingPickerCore.selection(m.date.slice(0,10),m),countries,{signal:loading.signal,progress:message=>{if(ticket.id===replacementSerial)setStatus(message);}});
         await Core.validateCorpora([...next,c],policy,countries);next.push(c);
       }
-    }catch(e){failure=e.name==='AbortError'?'Loading cancelled.':e.message;}
-    finally{controller=null;busy(false);}
+    }catch(e){cancelled=e.name==='AbortError';failure=cancelled?'Loading cancelled.':e.message;}
+    finally{if(controller===loading){controller=null;busy(false);}}
+    if(ticket.id!==replacementSerial)return;
+    if(loading.signal.aborted||cancelled){setStatus('Loading cancelled. Current work kept; no replacement applied.');return;}
+    if(!replacementCurrent(ticket))return;
+    const partial=!!failure||next.some(c=>c.collection.partial);
+    if(next.length&&partial&&!await confirmReplacement(next.length+' of '+chosen.length+' meeting bundles loaded; retrieval is incomplete. Replace your current report with these available sources?',true)){if(ticket.id===replacementSerial)setStatus('Current report kept. Incomplete replacement was not applied.');return;}
+    if(!replacementCurrent(ticket))return;
     if(next.length)setCollection(next);
-    setStatus(failure?(failure+' '+next.length+' completed meeting bundles retained; previously loaded work is unchanged if none completed.'):'Retrieval finished. Check each meeting outcome, search available evidence, and prepare a report.',!!failure);
+    setStatus(failure?(failure+' '+next.length+' meeting bundles applied; current work is unchanged if none completed.'):'Retrieval finished.'+(partial?' Coverage is incomplete.':'')+' Check each meeting outcome, search available evidence, and prepare a report.',!!failure);
   };
   $('cancelLoad').onclick=()=>controller?.abort();
   $('openCollection').onchange=async event=>{
     const file=event.target.files[0];if(!file)return;
+    const ticket={id:++replacementSerial,revision:workspaceRevision};setStatus('Checking saved sources…');
     try{
       if(file.size>Core.LIMIT)throw Error('Use a JSON export under 25 MB.');
       const opened=await Core.openSaved(JSON.parse(await file.text()),policy,countries);
+      if(!replacementCurrent(ticket))return;
+      if(!await confirmReplacement('Opening this file will replace your current sources, appendix selections and notes.')){if(ticket.id===replacementSerial)setStatus('Current report kept. The selected file was not applied.');return;}
+      if(!replacementCurrent(ticket))return;
       setCollection(opened.corpora,opened.settings,opened.selected,opened.appendix,opened.passage_notes);setStatus('Saved sources verified. Prepare the report to rebuild its summaries; saved derived claims are not trusted.');
-    }catch(e){setStatus('Could not open file: '+e.message,true);}finally{event.target.value='';}
+    }catch(e){if(ticket.id===replacementSerial)setStatus('Could not open file: '+e.message,true);}finally{if(ticket.id===replacementSerial)event.target.value='';}
   };
   for(const id of ['reportTemplate','mission','reportTitle','priorities','analystNotes'])$(id).addEventListener('input',invalidate);
   $('savePreferences').onclick=()=>{try{save(JSON.stringify(Core.exportPreferences(options()),null,2),'un-mission-preferences.json','application/json');$('preferencesStatus').textContent='Mission preferences saved. Transcript text, selected meetings and analyst notes are excluded.';}catch(e){$('preferencesStatus').textContent=e.message;}};
@@ -135,7 +164,7 @@
   $('onlySelectedEvidence').onchange=()=>{shown=10;search();};
   $('appendixMode').onchange=()=>{if($('appendixMode').value==='template')appendixIds.clear();invalidate();search();};
   $('clearAppendix').onclick=()=>{appendixIds.clear();$('appendixMode').value='selected';invalidate();search();};
-  $('prepareReport').onclick=()=>{try{report=Core.build(corpora,selected(),options(),appendix(),passageNotes());$('reportPreview').innerHTML=Core.reportHTML(report,{preview:true});for(const id of ['downloadReport','saveReport','downloadEvidence'])$(id).disabled=false;$('reportState').textContent='Report ready: '+report.meetings.length+' meetings. Review source evidence before circulation.';dirty=true;}catch(e){invalidate();setStatus(e.message,true);}};
+  $('prepareReport').onclick=()=>{try{report=Core.build(corpora,selected(),options(),appendix(),passageNotes());workspaceRevision++;$('reportPreview').innerHTML=Core.reportHTML(report,{preview:true});for(const id of ['downloadReport','saveReport','downloadEvidence'])$(id).disabled=false;$('reportState').textContent='Report ready: '+report.meetings.length+' meetings. Review source evidence before circulation.';dirty=true;}catch(e){invalidate();setStatus(e.message,true);}};
   $('reportPreview').onclick=event=>{
     const button=event.target.closest('button[data-evidence-id]');
     if(!button||!$('reportPreview').contains(button)||!report)return;
