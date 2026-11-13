@@ -1,0 +1,253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:unga81:synthetic-multi-host-witness-receipt:v0",
+  "title": "Synthetic multi-host witness review — zero-authority output only",
+  "description": "Closed output of offline synthetic audit-log witness consistency checks; not an access token.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "reason_codes",
+    "fixture_kind",
+    "authority",
+    "authorized",
+    "can_read_source",
+    "can_issue_review",
+    "statistical_eligible",
+    "publication_eligible",
+    "delivery_eligible",
+    "gate_status",
+    "holdout_lock",
+    "source_text_included",
+    "source_rows_exported",
+    "epoch",
+    "log_length",
+    "quorum_size",
+    "checkpoint_sha256"
+  ],
+  "properties": {
+    "schema": {
+      "const": "un.synthetic-multi-host-witness-review.v0"
+    },
+    "fixture_kind": {
+      "const": "synthetic"
+    },
+    "status": {
+      "enum": [
+        "withheld",
+        "synthetic_quorum_consistent_no_authority"
+      ]
+    },
+    "reason_codes": {
+      "type": "array",
+      "maxItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z_]{3,80}$"
+      }
+    },
+    "authority": {
+      "const": "none"
+    },
+    "authorized": {
+      "const": false
+    },
+    "can_read_source": {
+      "const": false
+    },
+    "can_issue_review": {
+      "const": false
+    },
+    "statistical_eligible": {
+      "const": false
+    },
+    "publication_eligible": {
+      "const": false
+    },
+    "delivery_eligible": {
+      "const": false
+    },
+    "source_text_included": {
+      "const": false
+    },
+    "source_rows_exported": {
+      "const": false
+    },
+    "gate_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_registry",
+        "original_bytes",
+        "text_transform",
+        "original_offsets",
+        "selection_and_duplicates",
+        "source_dependence",
+        "country_attribution",
+        "proposition_stance",
+        "owner_review",
+        "privacy",
+        "statistical_identification",
+        "reserved_holdout",
+        "d1_publication"
+      ],
+      "properties": {
+        "source_registry": {
+          "const": "NOT_RUN"
+        },
+        "original_bytes": {
+          "const": "NOT_RUN"
+        },
+        "text_transform": {
+          "const": "NOT_RUN"
+        },
+        "original_offsets": {
+          "const": "NOT_RUN"
+        },
+        "selection_and_duplicates": {
+          "const": "NOT_RUN"
+        },
+        "source_dependence": {
+          "const": "NOT_RUN"
+        },
+        "country_attribution": {
+          "const": "NOT_RUN"
+        },
+        "proposition_stance": {
+          "const": "NOT_RUN"
+        },
+        "owner_review": {
+          "const": "NOT_RUN"
+        },
+        "privacy": {
+          "const": "NOT_RUN"
+        },
+        "statistical_identification": {
+          "const": "NOT_RUN"
+        },
+        "reserved_holdout": {
+          "const": "NOT_RUN"
+        },
+        "d1_publication": {
+          "const": "NOT_RUN"
+        }
+      }
+    },
+    "holdout_lock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reserved_meetings",
+        "transcripts_opened",
+        "access_granted",
+        "d1_o1_o5"
+      ],
+      "properties": {
+        "reserved_meetings": {
+          "const": 37
+        },
+        "transcripts_opened": {
+          "const": 0
+        },
+        "access_granted": {
+          "const": false
+        },
+        "d1_o1_o5": {
+          "const": "frozen"
+        }
+      }
+    },
+    "epoch": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "log_length": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 3
+    },
+    "quorum_size": {
+      "type": "integer",
+      "enum": [
+        0,
+        3,
+        4
+      ]
+    },
+    "checkpoint_sha256": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "withheld"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "epoch": {
+            "const": null
+          },
+          "log_length": {
+            "const": null
+          },
+          "quorum_size": {
+            "const": 0
+          },
+          "checkpoint_sha256": {
+            "const": null
+          }
+        },
+        "required": [
+          "reason_codes"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "synthetic_quorum_consistent_no_authority"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "reason_codes": {
+            "maxItems": 0
+          },
+          "epoch": {
+            "type": "integer"
+          },
+          "log_length": {
+            "type": "integer"
+          },
+          "quorum_size": {
+            "enum": [
+              3,
+              4
+            ]
+          },
+          "checkpoint_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    }
+  ]
+}

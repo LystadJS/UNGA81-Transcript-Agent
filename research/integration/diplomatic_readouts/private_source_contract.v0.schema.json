@@ -1,0 +1,217 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "contract_version",
+    "authority",
+    "mode",
+    "source_split",
+    "evaluation_role",
+    "source_identity",
+    "population",
+    "gate_status",
+    "reserved_holdout",
+    "contains_original_source_text",
+    "contains_row_level_source_evidence",
+    "authorized",
+    "publication_eligible",
+    "delivery_eligible"
+  ],
+  "properties": {
+    "schema": {
+      "const": "un.private-source-authorization.proposal.v0"
+    },
+    "contract_version": {
+      "const": "0.1.0"
+    },
+    "authority": {
+      "const": "none"
+    },
+    "mode": {
+      "const": "design_only"
+    },
+    "source_split": {
+      "const": "synthetic"
+    },
+    "evaluation_role": {
+      "const": "engineering_only"
+    },
+    "source_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "upstream_source_schema",
+        "source_hash_basis",
+        "source_sha256",
+        "selection_sha256",
+        "envelope_sha256"
+      ],
+      "properties": {
+        "upstream_source_schema": {
+          "enum": [
+            "synthetic.v1",
+            "un.browser.corpus.v1",
+            "un.latent-comparison.v1",
+            "un.passage-corpus.v1",
+            "un.review.v1"
+          ]
+        },
+        "source_hash_basis": {
+          "enum": [
+            "canonical_source_text",
+            "raw_response_bytes",
+            "source_text_file_bytes",
+            "synthetic",
+            "utf8_corpus_export",
+            "utf8_response_text"
+          ]
+        },
+        "source_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "selection_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "envelope_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "population": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_in_frame",
+        "observations_total",
+        "eligible",
+        "excluded",
+        "unavailable_sources"
+      ],
+      "properties": {
+        "total_in_frame": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "observations_total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "eligible": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "excluded": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unavailable_sources": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "gate_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_registry",
+        "original_bytes",
+        "text_transform",
+        "original_offsets",
+        "selection_and_duplicates",
+        "source_dependence",
+        "country_attribution",
+        "proposition_stance",
+        "owner_review",
+        "privacy",
+        "statistical_identification",
+        "reserved_holdout",
+        "d1_publication"
+      ],
+      "properties": {
+        "source_registry": {
+          "const": "NOT_RUN"
+        },
+        "original_bytes": {
+          "const": "NOT_RUN"
+        },
+        "text_transform": {
+          "const": "NOT_RUN"
+        },
+        "original_offsets": {
+          "const": "NOT_RUN"
+        },
+        "selection_and_duplicates": {
+          "const": "NOT_RUN"
+        },
+        "source_dependence": {
+          "const": "NOT_RUN"
+        },
+        "country_attribution": {
+          "const": "NOT_RUN"
+        },
+        "proposition_stance": {
+          "const": "NOT_RUN"
+        },
+        "owner_review": {
+          "const": "NOT_RUN"
+        },
+        "privacy": {
+          "const": "NOT_RUN"
+        },
+        "statistical_identification": {
+          "const": "NOT_RUN"
+        },
+        "reserved_holdout": {
+          "const": "NOT_RUN"
+        },
+        "d1_publication": {
+          "const": "NOT_RUN"
+        }
+      }
+    },
+    "reserved_holdout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "meetings_reserved",
+        "transcripts_opened",
+        "access_granted"
+      ],
+      "properties": {
+        "meetings_reserved": {
+          "const": 37
+        },
+        "transcripts_opened": {
+          "const": 0
+        },
+        "access_granted": {
+          "const": false
+        }
+      }
+    },
+    "contains_original_source_text": {
+      "const": false
+    },
+    "contains_row_level_source_evidence": {
+      "const": false
+    },
+    "authorized": {
+      "const": false
+    },
+    "publication_eligible": {
+      "const": false
+    },
+    "delivery_eligible": {
+      "const": false
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:un:private-source-authorization:proposal:v0",
+  "title": "UNGA81 prospective synthetic-only private-source authorization design preview — NOT RUN",
+  "description": "Source-free metadata-only design preview; is never an authorization certificate."
+}
