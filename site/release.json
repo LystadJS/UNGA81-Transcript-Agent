@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.53.0",
+  "browser_engine": "browser-descriptive-1.54.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-13",
   "features": [
+    "One local report-package ZIP keeps HTML, source-bound saved JSON, full evidence CSV, a field guide and SHA-256 manifest together; 25 MB total bound and stale-work protection, with no uploads or model changes",
     "Consistent 25 MB UTF-8 download bound for HTML, JSON and CSV; oversized output is refused without truncation, changing current work or clearing unsaved-work protection",
     "Explicit keep-current/replace protection for unsaved reports, strict invalid-import preservation, cancellation and partial-collection decisions, and stale-operation checks that preserve newer edits; no automatic note storage or upload",
     "HTML, saved JSON and full evidence CSV downloads share the prepared report UTC timestamp in their filenames; different preparations stay distinguishable without embedding mission names, notes or source text",
