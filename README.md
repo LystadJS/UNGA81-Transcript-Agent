@@ -19,11 +19,11 @@
 </p>
 
 <p align="center">
-  <a href="https://lystadjs.github.io/un/transcript-agent/"><strong>Open report builder</strong></a>
+  <a href="https://lystadjs.github.io/un/transcript-agent/meeting-reports.html"><strong>Prepare a meeting report</strong></a>
   &nbsp;&middot;&nbsp;
-  <a href="https://lystadjs.github.io/un/transcript-agent/latent.html">Compare latent structure</a>
+  <a href="https://lystadjs.github.io/un/transcript-agent/archive.html">Browse the archive</a>
   &nbsp;&middot;&nbsp;
-  <a href="docs/BROWSER_ANALYSIS.md">Browser guide</a>
+  <a href="docs/MEETING_REPORTING.md">Reporting guide</a>
 </p>
 
 ## Purpose
@@ -34,25 +34,28 @@ On its _https://transcripts.un.org/en_ website, the United Nations has built a c
 
 ## Start in the browser
 
-**The report builder is the primary application: open it in a browser, collect public UN transcripts, read the source-linked briefing, and save your work.** No software installation or coding is needed. Optional exploratory methods describe patterns in selected text; their settings and assumptions affect the results.
+**Start with [Meeting reports](https://lystadjs.github.io/un/transcript-agent/meeting-reports.html): select proceedings, inspect their evidence, and prepare a mission briefing, negotiation record or evidence digest.** No installation or coding is needed. Reports retain source context, recorded speaker information, coverage gaps and your separately labeled notes. Automatic five-class stance estimates remain withheld. The [advanced exploratory workspace](https://lystadjs.github.io/un/transcript-agent/) remains available for descriptive methods, clustering and component analysis.
 
 ## Choose a workflow
 
 | Workflow | Use it for | Entry point |
 | --- | --- | --- |
-| **Browser report builder** | Collect published transcripts on demand; analyze a meeting, topic, date range, or region; export visual reports and evidence. No installation or external AI API required. | [Open workspace](https://lystadjs.github.io/un/transcript-agent/) |
+| **Meeting reports** | Select meetings, search exact source passages, reuse mission preferences, add evidence and notes, and export documented HTML, JSON and full evidence CSV. | [Open Meeting reports](https://lystadjs.github.io/un/transcript-agent/meeting-reports.html) · [Reporting guide](docs/MEETING_REPORTING.md) |
+| **Advanced exploratory workspace** | Collect published transcripts on demand; analyze a meeting, topic, date range, or region; export visual reports and evidence. No installation or external AI API required. | [Open workspace](https://lystadjs.github.io/un/transcript-agent/) |
 | **Daily transcript archive** | Browse the published, versioned collection with source coverage and permitted metadata downloads. Coverage remains partial; automatic stance estimates are withheld pending acceptance. | [Archive](https://lystadjs.github.io/un/transcript-agent/archive.html) · [Operations](docs/OPERATIONS.md) |
 | **Latent-structure comparison** | Reopen saved runs; compare PCA/LSA, clustering, and component settings; inspect reviewed excerpts against their parent speeches. | [Open comparison](https://lystadjs.github.io/un/transcript-agent/latent.html) |
 | **Local R / Shiny briefing** | Run the controlled D1 analysis, set tracked issues, review the five-slot briefing, and save an unsent Outlook draft. | [Local setup](un/ui/START_HERE.md) |
 
-## Browser workflow — no installation
+## Meeting-reporting workflow — no installation
 
-1. Open the [report builder](https://lystadjs.github.io/un/transcript-agent/). Choose **One individual meeting** to search the UN's date-specific meeting inventory, or choose a date range and meeting scope for broader analysis.
-2. Select the meeting, dates, and any speaker-region restrictions. **Leave Topic blank** to analyze all eligible passages; enter a topic and related phrases to narrow the evidence. A missing match is not proof that an issue was absent.
-3. Select the available descriptive, clustering, or component methods, then choose **Generate report**. The report records collection coverage, source links, excluded or unavailable material, and the settings used.
-4. Inspect the source passages before drawing conclusions. Download the standalone HTML report, transcript and analysis JSON, or evidence CSV; use the browser's print function to save a PDF.
+1. Open [Meeting reports](https://lystadjs.github.io/un/transcript-agent/meeting-reports.html). Find proceedings by date, or select meetings in the [archive](https://lystadjs.github.io/un/transcript-agent/archive.html) and send them to the reporting workspace. Check current availability and explicitly load up to five meetings at a time.
+2. Search the loaded English evidence. Choose a report template, set mission priorities, select supporting passages and add your own notes. Reusable mission preferences contain settings only; saved report JSON retains the source records and your work.
+3. Choose **Prepare report**. Inspect the dated country expressions, U.S. comparison gaps and source context before circulation. Recorded affiliation does not verify national speaking capacity, and a missing extract does not establish neutrality. Prepare the report again after edits to update its exports.
+4. Save the source-bound JSON to reopen your work. Download the script-free HTML report or the full evidence CSV. The CSV includes all passages from the selected meetings, independently of search and appendix selection, and excludes your notes. HTML can be printed from the browser.
 
-The report builder requests inventory and transcript records from [transcripts.un.org](https://transcripts.un.org/en). Date and public source requests reach the UN service; topic filtering and numerical analysis run on the user's device. This interactive workflow requires no account or external AI API and does not automatically send email. The separate operational pipeline below supplies scheduled persistence. The [collection and method guide](docs/BROWSER_ANALYSIS.md) records source, language, resource, and export limits. The [individual-meeting guide](docs/INDIVIDUAL_MEETINGS.md) explains the date-first selector and its source checks.
+Inventory and transcript requests reach [transcripts.un.org](https://transcripts.un.org/en); evidence inspection and deterministic reporting run on your device. The workspace does not upload reports or notes automatically. A browser may load a newer source revision than the scheduled archive; the saved report identifies the revision actually used. See the [reporting and export contract](docs/MEETING_REPORTING.md).
+
+For topic/date-range analysis, regional filters, clustering or component methods, use the separate [advanced workspace](https://lystadjs.github.io/un/transcript-agent/) and its [collection and method guide](docs/BROWSER_ANALYSIS.md). Exploratory similarity is not policy agreement. The daily warehouse and research CSV snapshots below remain separate from these browser exports.
 
 ## Daily operational pipeline
 
