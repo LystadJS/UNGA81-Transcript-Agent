@@ -72,9 +72,52 @@ def decrypt_bundle(data, recipient_private):
     return plain
 
 
-def training_zip(storage):
-    """Exact allowlist: no calibration/test originals, annotations or credentials."""
+def registration_metadata(value):
+    """Frozen metadata only; reject source text, labels and unknown nested fields."""
+    from un_transcript.models.contracts import check_registration
+    fields={'schema','registered_at','required_bodies','catalog_sha256','sources',
+            'policy_sha256','attribution_method_version','attribution_registry_sha256',
+            'propositions','sampling'}
+    source_fields={'source_id','source_hash','meeting_id','date','split','segment_id','text_sha256'}
+    def text(value, maximum=512):
+        return isinstance(value,str) and 0<len(value)<=maximum
+    def sha256(value):
+        return isinstance(value,str) and re.fullmatch('[0-9a-f]{64}',value) is not None
+    if not isinstance(value,dict) or set(value)!=fields:
+        raise ValueError('Unexpected registration metadata fields')
+    if any(not text(value[k],1024) for k in ('schema','registered_at','attribution_method_version','sampling')):
+        raise ValueError('Invalid registration metadata value')
+    if any(not sha256(value[k]) for k in ('catalog_sha256','policy_sha256','attribution_registry_sha256')):
+        raise ValueError('Invalid registration metadata digest')
+    bodies=value['required_bodies']; propositions=value['propositions']; sources=value['sources']
+    if not isinstance(bodies,list) or not 0<len(bodies)<=64 or any(not text(v) for v in bodies):
+        raise ValueError('Invalid registration venue metadata')
+    if (not isinstance(propositions,dict) or not 0<len(propositions)<=1000 or
+            any(not text(k) or not text(v,4000) for k,v in propositions.items())):
+        raise ValueError('Invalid registration proposition metadata')
+    if not isinstance(sources,list) or not 0<len(sources)<=50000:
+        raise ValueError('Invalid registration source metadata')
+    for row in sources:
+        if (not isinstance(row,dict) or set(row)!=source_fields or
+                any(not text(row[k]) for k in source_fields) or
+                any(not sha256(row[k]) for k in ('source_hash','text_sha256'))):
+            raise ValueError('Unexpected registration source fields or values')
+    check_registration(value)
+    return value
+
+
+def registration_option(value):
+    if value not in ('true','false'):
+        raise ValueError('Registration export option must be true or false')
+    return value=='true'
+
+
+def training_zip(storage, include_registration=False):
+    """Training originals plus optional split metadata, never held-out source text."""
     from un_transcript.snapshots import sha
+    from un_transcript.models.contracts import digest
+    if type(include_registration) is not bool:
+        raise ValueError('Registration export requires an explicit boolean')
     storage.info()  # Requires the repository to remain private.
     reviewer_raw=storage.read(REVIEWER_PREFIX+'manifest.json',REVIEWER_REVISION,1024*1024)
     reviewer=json.loads(reviewer_raw)
@@ -96,6 +139,17 @@ def training_zip(storage):
     draft=json.loads(files['01_training/provenance/original-training-draft.json'])
     if len(draft.get('rows',[]))!=180 or len({r['pair_id'] for r in draft['rows']})!=180 or any(r.get('split')!='train' or r.get('owner_confirmed') for r in draft['rows']):
         raise ValueError('Only the original unreviewed training split may be exported')
+    if include_registration:
+        item=entries[PILOT_PREFIX+'registration.json']
+        if type(item['bytes']) is not int or not 0<item['bytes']<=MAX_BUNDLE:
+            raise ValueError('Invalid registration file bound')
+        raw=storage.read(PILOT_PREFIX+'registration.json',PILOT_REVISION,item['bytes'])
+        if len(raw)!=item['bytes'] or sha(raw)!=item['sha256']:
+            raise ValueError('Registration file checksum mismatch')
+        registration=registration_metadata(json.loads(raw))
+        if digest(registration)!=draft.get('registration_sha256'):
+            raise ValueError('Original training draft registration mismatch')
+        files['01_training/provenance/registration.json']=raw
     html=storage.read(REVIEWER_PREFIX+'training-review.html',REVIEWER_REVISION,MAX_BUNDLE)
     if sha(html)!=reviewer['html_sha256']:raise ValueError('Private reviewer checksum mismatch')
     match=re.search(rb'<script id="packet" type="application/json">(.*?)</script>',html,re.S)
@@ -116,7 +170,8 @@ def main():
     from un_transcript.snapshots import HFStorage
     recipient=base64.b64decode(os.environ['OWNER_RECIPIENT_PUBLIC_KEY'],validate=True)
     public_key(recipient)  # Validate before any private read.
-    result=encrypt_bundle(training_zip(HFStorage(os.environ['HF_DATASET_REPO'])),recipient)
+    include_registration=registration_option(os.environ.get('OWNER_INCLUDE_REGISTRATION','false'))
+    result=encrypt_bundle(training_zip(HFStorage(os.environ['HF_DATASET_REPO']),include_registration),recipient)
     path=Path(os.environ['RUNNER_TEMP'])/'owner-training.encrypted'
     path.write_bytes(result)
     print(json.dumps({'status':'recipient_encrypted','examples':180,'split':'train',

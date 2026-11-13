@@ -6,6 +6,11 @@ on:
         description: Base64-encoded RSA-4096 PEM public key; never a private key
         type: string
         required: true
+      include_registration:
+        description: Include frozen split metadata for private intake validation; no held-out source text
+        type: boolean
+        required: false
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -20,6 +25,7 @@ jobs:
       HF_TOKEN: ${{ secrets.HF_TOKEN }}
       HF_DATASET_REPO: ${{ vars.HF_DATASET_REPO }}
       OWNER_RECIPIENT_PUBLIC_KEY: ${{ inputs.recipient_public_key }}
+      OWNER_INCLUDE_REGISTRATION: ${{ inputs.include_registration }}
       HF_HUB_DISABLE_TELEMETRY: '1'
     steps:
       - uses: actions/checkout@v4
