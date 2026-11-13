@@ -19,6 +19,10 @@ const assert=require('node:assert/strict'),R=require('../site/meeting-report-cor
  const html=R.contextHTML(window);assert(html.includes('United States delegate'));assert(html.includes('Example Group'));assert(html.includes('Collective capacity indicated'));assert(html.includes('Speaking capacity is not verified'));assert(html.includes(a.records[1].raw_sha256));assert(html.includes(a.records[3].json_pointer));assert(!html.includes('<img'));assert(html.includes('&lt;img'));
  const missing=R.speakerHTML({text:'An ordinary statement.',speaker_metadata:{}});assert(missing.includes('Not supplied'));assert(missing.includes('not verified'));assert(!missing.includes('Collective capacity indicated'));
  const hostile=R.speakerHTML({text:'',speaker_metadata:{name:'<img onerror=bad>',function:'<script>bad</script>',group:'<svg>'}});assert(!hostile.includes('<img'));assert(!hostile.includes('<script>'));assert(hostile.includes('&lt;svg&gt;'));
+ const report=R.build([a],[a.coverage[0].slug]),preview=R.reportHTML(report,{preview:true});
+ assert(preview.includes('data-evidence-id='));assert(!R.standalone(report).includes('data-evidence-id='));
+ const positions=report.meetings[0].summary.positions,extract=positions[0].evidence[0],good=JSON.stringify(extract);
+ for(const key of ['record_id','text_sha256','json_pointer','source_url']){extract[key]='unknown';const changed=R.reportHTML(report,{preview:true});assert((changed.match(/data-evidence-id=/g)||[]).length<(preview.match(/data-evidence-id=/g)||[]).length,key);Object.assign(extract,JSON.parse(good));}
  assert.equal(JSON.stringify(rows),original);
  console.log('PASS: immediate source-index neighbors, meeting/date/language/revision isolation, missing context, strict identities, separate speaker/capacity metadata, escaped output and immutable inputs');
 })().catch(e=>{console.error(e);process.exitCode=1;});

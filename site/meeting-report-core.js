@@ -168,13 +168,17 @@
     const appendix=rows=>evidenceHTML(preview?rows.slice(0,50):rows)+(preview&&rows.length>50?'<p>Preview shows the first 50 passages. The HTML export includes all '+rows.length+' passages.</p>':'');
     const body=meetings.map(m=>{
       const s=m.summary,meetingRecords=records.filter(r=>r.meeting_slug===m.slug);
+      const expressionLink=e=>{
+        const matches=meetingRecords.filter(r=>r.id===e.record_id&&r.text_sha256===e.text_sha256&&r.json_pointer===e.json_pointer&&r.source_url===e.source_url);
+        return link(e.source_url,e.excerpt)+(preview&&matches.length===1?'<br><button type="button" data-evidence-id="'+escape(e.record_id)+'">Read source context</button>':'');
+      };
       const affiliations=[...new Set(meetingRecords.map(r=>r.country||'Unresolved attribution'))].sort();
       const countryRows=affiliations.map(country=>{
         const positions=s.positions.filter(x=>x.country===country),national=meetingRecords.filter(r=>r.country===country&&!Reader.collectiveAttribution(r));
         const us=s.positions.filter(x=>x.country==='United States');
         const comparisons=positions.filter(x=>us.some(u=>u.issue_id===x.issue_id&&u.expression_object.toLowerCase()===x.expression_object.toLowerCase()));
         const comparison=country==='United States'?'U.S. recorded expressions':comparisons.length?'Matching policy wording appears in the U.S. extracts below; no agreement score is assigned.':'No matching U.S. policy-object extract in this meeting. This is a comparison gap.';
-        return '<tr><th scope="row">'+escape(country)+'</th><td>'+(!national.length?'Collective statement; no national position assigned.':positions.length?positions.map(x=>escape(x.expression_label)+' '+escape(x.expression_object)+'<br>'+x.evidence.map(e=>link(e.source_url,e.excerpt)).join('<br>')).join('<hr>'):'No eligible object-specific expression extracted.')+'</td><td>'+escape(comparison)+'</td></tr>';
+        return '<tr><th scope="row">'+escape(country)+'</th><td>'+(!national.length?'Collective statement; no national position assigned.':positions.length?positions.map(x=>escape(x.expression_label)+' '+escape(x.expression_object)+'<br>'+x.evidence.map(expressionLink).join('<br>')).join('<hr>'):'No eligible object-specific expression extracted.')+'</td><td>'+escape(comparison)+'</td></tr>';
       }).join('');
       const themes='<h3>Subjects mentioned</h3><p>'+escape(s.themes.map(t=>t.label+' ('+t.segments+' source segments)').join('; ')||'No fixed-dictionary theme found.')+'</p>';
       const countries='<h3>Recorded country expressions and U.S. comparison coverage</h3><div class="report-table"><table><thead><tr><th>Recorded affiliation</th><th>Expression or gap</th><th>U.S. comparison</th></tr></thead><tbody>'+countryRows+'</tbody></table></div>';
