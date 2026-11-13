@@ -1,0 +1,64 @@
+name: Receive encrypted private owner review
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: Prepare recipient, store an encrypted part, or validate and finalize
+        type: choice
+        options: [prepare, part, finalize]
+        default: prepare
+        required: true
+      key_id:
+        description: Public recipient identifier
+        type: string
+      key_revision:
+        description: Immutable private dataset revision from the recipient receipt
+        type: string
+      cipher_sha256:
+        description: SHA-256 of complete ciphertext, never of plaintext annotations
+        type: string
+      part_number:
+        description: Encrypted part index (1–8)
+        type: string
+      part_count:
+        description: Total encrypted parts (1–8)
+        type: string
+      ciphertext_part:
+        description: Base64 recipient ciphertext only; NEVER plaintext review JSON or keys
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: operational-store
+  cancel-in-progress: false
+jobs:
+  intake:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONPATH: src:.
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      HF_DATASET_REPO: ${{ vars.HF_DATASET_REPO }}
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      HF_HUB_VERBOSITY: error
+      OWNER_INTAKE_ACTION: ${{ inputs.action }}
+      OWNER_KEY_ID: ${{ inputs.key_id }}
+      OWNER_KEY_REVISION: ${{ inputs.key_revision }}
+      OWNER_CIPHER_SHA256: ${{ inputs.cipher_sha256 }}
+      OWNER_PART_NUMBER: ${{ inputs.part_number }}
+      OWNER_PART_COUNT: ${{ inputs.part_count }}
+      OWNER_CIPHERTEXT_PART: ${{ inputs.ciphertext_part }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check huggingface-hub==0.36.0 cryptography==46.0.3
+      - name: Validate private intake and verify bounded storage operations
+        run: python tools/receive_owner_review.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: owner-intake-receipt
+          path: ${{ runner.temp }}/owner-intake-result.json
+          retention-days: 1
+          if-no-files-found: error
