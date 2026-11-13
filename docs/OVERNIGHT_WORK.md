@@ -662,3 +662,10 @@ Mirror #164 merged as `4155be9f62e80e085dc0fd32082ebbac13171a5b`. [Pages 4335845
 Final portfolio regression [43358456433](https://github.com/LystadJS/LystadJS.github.io/actions/runs/43358456433) passed **94 active tests with 44 existing viewport-specific skips**. Release 1.52.0 is fully deployed and verified on both sites. The reproduced unsaved-work replacement gap is resolved within the documented browser-session scope; actual human usability and scientific acceptance remain outstanding.
 
 Next bounded task: update the diplomat usability guide to exercise keeping unsaved notes before a replacement, saving JSON, and deliberately replacing the workspace. Keep actual participant findings separate from the completed synthetic engineering regression.
+
+
+## Next task — usability check for replacement decisions
+
+After [PR #283](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/283) recorded release verification and merged as `39455d3543cf6589e329dc9f6f4f58145d3019c3`, reread the checkpoint. Added a participant task to `docs/REPORTING_USABILITY.md`: keep an unsaved assessment when opening another fictional report, verify preserved notes/appendix/exports, save JSON, then deliberately replace the workspace. The comprehension record now distinguishes keeping work from actually saving it. The task matches the deployed keep/replace/Escape behavior already verified by synthetic hosted tests; preparation code and source fixtures are unchanged. Documentation/whitespace checks passed. No participant session or model-label review was invented, and no application asset requires redeployment.
+
+Next independent task: audit the documented 25 MB browser export bound across HTML, JSON and CSV. Current code visibly checks JSON before download while the shared download helper lacks a size check; verify the consequence and repair inconsistent handling without truncating source evidence or marking unsaved work saved after a refused download.
