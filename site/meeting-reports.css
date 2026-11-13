@@ -2,3 +2,4 @@
 .report-controls #archiveSelection{flex:1 1 100%;min-width:0;overflow-wrap:anywhere}
 .appendix-choice{display:flex;gap:10px;align-items:center;margin:12px 0}.appendix-choice input{width:auto;flex:none}.evidence .appendix-choice{font-size:14px}
 .passage-note-editor{margin-top:16px}.passage-note-editor label{display:block;margin-top:12px}.passage-note{border-left:3px solid var(--usun-gold);padding-left:16px;margin:24px 0}
+.passage-context{margin-top:16px}.context-segment{border-left:3px solid var(--usun-blue);padding-left:12px;margin:18px 0}.context-segment .evidence{padding:12px}.speaking-capacity{font-size:14px;border-left:3px solid var(--usun-gold);padding-left:12px}.recorded-speaker{overflow-wrap:anywhere}.evidence .passage-context p{font-size:inherit}@media(max-width:600px){.context-segment{padding-left:6px}.context-segment .evidence{padding:8px}}

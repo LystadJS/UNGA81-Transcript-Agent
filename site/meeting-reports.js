@@ -20,6 +20,10 @@
       label.className='appendix-choice';input.type='checkbox';input.checked=appendixIds.has(record.id);input.setAttribute('aria-label','Include passage '+record.id+' in appendix');
       input.onchange=()=>{if(input.checked)appendixIds.add(record.id);else appendixIds.delete(record.id);$('appendixMode').value='selected';invalidate();appendixCount();if($('onlySelectedEvidence').checked)search();};
       label.append(input,document.createTextNode('Include in evidence appendix'));article.prepend(label);
+      const context=document.createElement('details'),contextTitle=document.createElement('summary'),contextBody=document.createElement('div');
+      context.className='passage-context';contextTitle.textContent='Read neighboring source passages';contextBody.setAttribute('role','region');contextBody.setAttribute('aria-label','Source context for '+record.id);
+      context.ontoggle=()=>{if(context.open&&!contextBody.hasChildNodes()){try{contextBody.innerHTML=Core.contextHTML(Core.contextWindow(all,record.id));}catch(e){contextBody.textContent='Context unavailable: '+e.message;}}};
+      context.append(contextTitle,contextBody);article.append(context);
       const details=document.createElement('details'),summary=document.createElement('summary'),noteLabel=document.createElement('label'),note=document.createElement('textarea');
       details.className='passage-note-editor';details.open=notes.has(record.id);summary.textContent='Your note on this passage';noteLabel.textContent='Your interpretation or follow-up (up to '+Core.NOTE_LIMIT+' characters)';
       note.rows=3;note.maxLength=Core.NOTE_LIMIT;note.value=notes.get(record.id)||'';note.setAttribute('aria-label','Your note on passage '+record.id);
