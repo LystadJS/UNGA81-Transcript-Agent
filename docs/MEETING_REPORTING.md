@@ -22,6 +22,14 @@ Mission name, title, priority words, and analyst notes are configurable. Priorit
 
 Summaries reuse the existing deterministic quick reader. Country expressions are provisional source-linked rule extracts, not accepted five-class model predictions. Collective statements remain separate from national expressions. U.S. comparison coverage uses matching issue and exact policy-object wording in the same meeting; it assigns no agreement score. Any textual disagreement, conditions, or missing comparable extract must be interpreted through the evidence. User notes are visibly separate from source statements.
 
+## Source context and recorded capacity
+
+“Read neighboring source passages” opens the selected segment and, when loaded, the immediately preceding and following source indices. Neighbors must match the same meeting, date, language, source locator, version and raw-response hash. Missing indices remain explicit gaps; the reader never skips over an unloaded segment or treats the last loaded segment as proof of a complete transcript. This is bounded local inspection, with no additional source request.
+
+Each passage retains its own source identity, exact text and recorded speaker, role and group. Affiliation is labeled as recorded metadata, not verified national capacity. The existing quick-reader collective safeguard supplies a visible provisional collective indication; national attribution remains withheld for that passage. Absence of a collective indication does not verify national capacity or the person's identity. The contextual neighbor may have a different speaker and must not be attributed to the selected speaker.
+
+Opening context does not select appendix passages, copy notes, change search counts, alter country summaries or invalidate a prepared report. The browser context panel is not automatically added to HTML appendices or saved as a new selection. HTML evidence and note sections retain the speaker/capacity details; JSON retains original source records, and the full evidence CSV is unchanged. Report schemas v1/v2/v3 remain supported.
+
 ## Selecting an evidence appendix
 
 Check supporting passages while searching. Selections persist across searches, and “Show selected passages only” makes them easy to revisit. Any template can use a custom appendix; its heading identifies the passages as analyst-selected and reports their count against the full selected-meeting denominator. Clearing the selection leaves an explicit empty appendix. Returning to “Template default” clears custom selections. Removing a meeting removes its appendix selections.
@@ -58,7 +66,7 @@ CSV uses UTF-8, quoted cells and CRLF. Potential spreadsheet formulas are prefix
 
 1. Run the [representative-diplomat usability session](REPORTING_USABILITY.md); retain actual participant findings separately from synthetic engineering tests. The guide is prepared, and actual sessions remain uncompleted.
 2. Extend the implemented archive-selection handoff only through approved source access, without broadening the public text allowlist implicitly.
-3. Add an explicit passage-context reader and clearer recorded speaking-capacity details, preserving source boundaries and distinguishing recorded affiliation from national or collective capacity.
+3. Add source-bound navigation from country-expression extracts to the evidence reader, preserving exact segment identifiers and comparison gaps.
 4. Evaluate an optional local generative reporting model separately from the stance classifier. Fluent generation, factual coverage and citation correctness need their own acceptance evidence.
 5. Complete the owner-label pilot and untouched stance evaluation. Reporting remains useful while model estimates stay withheld.
 

@@ -125,7 +125,7 @@
     const chosen=appendixSelection(appendix,records),appendixIds=new Set(chosen.record_ids);
     const meetings=coverage.map(m=>({slug:m.slug,date:m.date,title:m.title||m.slug,status:m.status,source_url:Reader.safeURL(m.source_url),
       summary:Reader.build(records,{meeting_slug:m.slug,meeting_date:m.date,title:m.title})}));
-    return {schema:VERSION,engine:'source-bound-reporting-1.2',generated_at:new Date().toISOString(),settings:prefs,appendix:chosen,passage_notes:passageNotes(notes,records),
+    return {schema:VERSION,engine:'source-bound-reporting-1.3',generated_at:new Date().toISOString(),settings:prefs,appendix:chosen,passage_notes:passageNotes(notes,records),
       appendix_records:chosen.mode==='selected'?records.filter(r=>appendixIds.has(r.id)):prefs.template==='evidence'?records:[],
       selected_meetings:meetings.map(m=>m.slug),meetings,records,priority_evidence:search(records,prefs.priorities),
       collections:corpora.map(c=>({collected_at:c.collection.collected_at,checked_at:c.collection.checked_at,partial:c.collection.partial})),
@@ -136,8 +136,32 @@
         'Mission priorities organize evidence only. Analyst notes are user-authored and are not source statements.']};
   }
   const link=(url,label)=>Reader.safeURL(url)?'<a href="'+escape(url)+'" target="_blank" rel="noopener noreferrer">'+escape(label)+'</a>':escape(label);
+  function speakerHTML(record){
+    const speaker=record.speaker_metadata||{},collective=Reader.collectiveAttribution(record);
+    return '<p class="recorded-speaker"><strong>Recorded speaker:</strong> '+escape(speaker.name||'Not supplied')+'<br><strong>Recorded role:</strong> '+escape(speaker.function||'Not supplied')+'<br><strong>Recorded group:</strong> '+escape(speaker.group||'Not supplied')+'</p><p class="speaking-capacity">'+(collective?'Collective capacity indicated; no national position assigned from this passage.':'Speaking capacity is not verified.')+'</p>';
+  }
+  function contextWindow(records,id){
+    const matches=records.filter(r=>r.id===id);
+    if(matches.length!==1)throw Error('Choose one uniquely identified loaded passage.');
+    const focus=matches[0],keys=['meeting_slug','date','language','source_id','source_version','raw_sha256'];
+    if(keys.some(k=>typeof focus[k]!=='string'||!focus[k])||!/^[a-f0-9]{64}$/i.test(focus.raw_sha256))throw Error('Context requires a complete source revision identity.');
+    const byIndex=new Map();
+    for(const row of records.filter(r=>keys.every(k=>r[k]===focus[k]))){
+      const pointer=String(row.json_pointer||'').match(/^\/transcript\/data\/(0|[1-9]\d*)$/),index=pointer?Number(pointer[1]):NaN;
+      if(!Number.isSafeInteger(index)||row.id!==row.meeting_slug+'#'+index||byIndex.has(index))throw Error('Ambiguous or invalid source segment order.');
+      byIndex.set(index,row);
+    }
+    const index=Number(focus.json_pointer.split('/').at(-1));
+    return {focus,previous:byIndex.get(index-1)||null,next:byIndex.get(index+1)||null,at_start:index===0};
+  }
+  function contextHTML(context){
+    const part=(row,label)=>'<div class="context-segment"><p><strong>'+label+'</strong></p>'+evidenceHTML([row])+'</div>';
+    return '<p>Adjacent source segments from this meeting and exact revision. Each passage retains its own attribution; a nearby speaker\'s words are not assigned to the selected speaker.</p>'+
+      (context.previous?part(context.previous,'Immediately preceding passage'):'<p class="context-gap">'+(context.at_start?'The selected passage is the first source segment.':'The immediately preceding segment is not loaded.')+'</p>')+
+      part(context.focus,'Selected passage')+(context.next?part(context.next,'Immediately following passage'):'<p class="context-gap">No immediately following segment is loaded. This does not establish source completeness.</p>');
+  }
   function evidenceHTML(rows){
-    return rows.map(r=>'<article class="evidence"><h4>'+escape(r.country||'Unresolved attribution')+' · '+escape(r.date)+'</h4><p>'+link(r.source_url,r.meeting||r.meeting_slug)+'</p><blockquote>'+escape(r.text)+'</blockquote><details><summary>Source identity</summary><p>'+escape(r.id)+' · '+escape(r.json_pointer)+'<br>Source SHA-256: '+escape(r.raw_sha256)+'<br>Text SHA-256: '+escape(r.text_sha256)+'</p></details></article>').join('');
+    return rows.map(r=>'<article class="evidence"><h4>Recorded affiliation: '+escape(r.country||'Unresolved attribution')+' · '+escape(r.date)+'</h4><p>'+link(r.source_url,r.meeting||r.meeting_slug)+'</p>'+speakerHTML(r)+'<blockquote tabindex="0">'+escape(r.text)+'</blockquote><details><summary>Source identity</summary><p>'+escape(r.id)+' · '+escape(r.json_pointer)+'<br>Source SHA-256: '+escape(r.raw_sha256)+'<br>Text SHA-256: '+escape(r.text_sha256)+'</p></details></article>').join('');
   }
   function reportHTML(report,{preview=false}={}){
     const {settings:p,meetings,records}=report;
@@ -168,6 +192,6 @@
     const cell=x=>'"'+String(/^[\s]*[=+\-@]/.test(String(x??''))?"'"+x:x??'').replace(/"/g,'""')+'"';
     return [cols,...records.map(r=>cols.map(k=>r[k]))].map(row=>row.map(cell).join(',')).join('\r\n');
   }
-  const api={VERSION,LEGACY_VERSION,APPENDIX_VERSION,NOTE_LIMIT,NOTES_LIMIT,TEMPLATES,LIMIT,PREFERENCES_VERSION,PREFERENCES_LIMIT,exportPreferences,importPreferences,settings,exclusions,allowed,validateCorpora,search,meetingSelection,appendixSelection,passageNotes,openSaved,savedReport,build,reportHTML,evidenceHTML,standalone,evidenceCSV};
+  const api={VERSION,LEGACY_VERSION,APPENDIX_VERSION,NOTE_LIMIT,NOTES_LIMIT,TEMPLATES,LIMIT,PREFERENCES_VERSION,PREFERENCES_LIMIT,exportPreferences,importPreferences,settings,exclusions,allowed,validateCorpora,search,meetingSelection,appendixSelection,passageNotes,openSaved,savedReport,build,reportHTML,evidenceHTML,speakerHTML,contextWindow,contextHTML,standalone,evidenceCSV};
   if(node)module.exports=api;else root.UNMeetingReport=api;
 })(globalThis);

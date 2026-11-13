@@ -47,6 +47,7 @@ jobs:
           node tests/test_meeting_report.cjs
           node tests/test_report_appendix.cjs
           node tests/test_report_passage_notes.cjs
+          node tests/test_report_context.cjs
           node tests/test_meeting_selection.cjs
           node tests/test_mission_preferences.cjs
           node tests/test_meeting_reports_ui.cjs
