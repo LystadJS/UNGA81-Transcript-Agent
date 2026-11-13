@@ -95,7 +95,7 @@ class EncryptedIntake(unittest.TestCase):
                          self.returned['rows'])
         self.assertFalse(receipt['model_accepted']); self.assertFalse(receipt['training_started'])
         self.assertEqual(receipt['confirmed_examples'], 1)
-        self.assertEqual(set(receipt), {'status','key_id','private_revision','confirmed_examples',
+        self.assertEqual(set(receipt), {'schema','status','key_id','private_revision','confirmed_examples',
                          'total_examples','clarification_count','original_bytes_preserved','remote_files_verified','training_started','model_accepted'})
         exposed = encode([receipt, self.recipient, dispatches])
         for secret in (b'PRIVATE KEY', b'Fictional source statement', b'synthetic-owner'):

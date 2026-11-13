@@ -175,12 +175,14 @@ def receive_part(storage, key_id, revision, cipher_sha, count, number, data, now
     if previous is not None:
         if previous != data.encode() or old_meta is None:
             raise ValueError('Immutable encrypted part conflict')
-        return {'status':'verified_duplicate_part','key_id':key_id,'part_number':number,'part_count':count}
+        return {'schema':'un.owner-intake-receipt.v1','status':'verified_duplicate_part',
+                'key_id':key_id,'part_number':number,'part_count':count}
     files = {path:data.encode()}
     if old_meta is None:
         files[prefix+'manifest.json'] = manifest
     commit_files(storage, files, info.sha, 'Store encrypted owner-intake part')
-    return {'status':'verified_encrypted_part','key_id':key_id,'part_number':number,'part_count':count}
+    return {'schema':'un.owner-intake-receipt.v1','status':'verified_encrypted_part',
+            'key_id':key_id,'part_number':number,'part_count':count}
 
 
 def original_inputs(storage):
@@ -258,7 +260,8 @@ def read_accepted(storage, raw_pointer, originals):
 
 
 def result(pointer, validated, total, status):
-    return {'status':status, 'key_id':pointer['key_id'], 'private_revision':pointer['revision'],
+    return {'schema':'un.owner-intake-receipt.v1', 'status':status,
+            'key_id':pointer['key_id'], 'private_revision':pointer['revision'],
             'confirmed_examples':len(validated['rows']), 'total_examples':total,
             'clarification_count':len(clarifications(validated)['flags']),
             'original_bytes_preserved':True, 'remote_files_verified':True,
