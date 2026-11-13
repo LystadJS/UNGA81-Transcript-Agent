@@ -32,6 +32,20 @@ const clone=x=>JSON.parse(JSON.stringify(x));
  assert.equal(R.search(report.records,'😀').length,1);
  const h=R.standalone({...report,settings:{...report.settings,template:'evidence',notes:'<script>alert(1)</script>'}});
  assert(!h.includes('<script>'));assert(h.includes('&lt;script&gt;'));assert(h.includes('&lt;img'));assert(h.includes('No matching U.S.')||h.includes('Matching policy wording'));
+ assert(!h.includes('<nav class="report-meeting-index"'));
+ const multi=R.build([a,b],F.meetings.map(m=>m.slug)),before=JSON.stringify(multi),csvBefore=R.evidenceCSV(multi.records);
+ for(const template of Object.keys(R.TEMPLATES)){
+  const rendered=R.reportHTML({...multi,settings:{...multi.settings,template}});
+  assert.equal((rendered.match(/href="#report-meeting-[12]"/g)||[]).length,2);
+  assert.equal((rendered.match(/href="#report-meeting-index"/g)||[]).length,2);
+  assert.equal((rendered.match(/4 loaded source segments/g)||[]).length,2);
+  assert(rendered.includes('Counts describe loaded evidence, not completeness or policy importance.'));
+ }
+ const many={...multi,meetings:Array.from({length:100},(_,i)=>({...multi.meetings[i%2],title:'Repeated <img> title',status:i?'downloaded':'unavailable'}))};
+ const longHTML=R.standalone(many),anchors=[...longHTML.matchAll(/id="(report-meeting-\d+)"/g)].map(m=>m[1]);
+ assert.equal(anchors.length,100);assert.equal(new Set(anchors).size,100);for(const id of anchors)assert(longHTML.includes('href="#'+id+'"'));
+ assert(longHTML.includes('Repeated &lt;img&gt; title'));assert(longHTML.includes('Collection outcome: unavailable'));assert(!longHTML.includes('<script'));
+ assert.equal(JSON.stringify(multi),before);assert.equal(R.evidenceCSV(multi.records),csvBefore);
  assert(R.evidenceCSV([{text:'=cmd()',country:'\t+formula'}]).includes("'=cmd()"));
  assert.equal(JSON.stringify([a,b]),original);
  assert.throws(()=>R.build([a],[],{}));assert.throws(()=>R.settings({template:'foreign'}));

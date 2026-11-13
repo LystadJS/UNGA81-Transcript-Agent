@@ -3,9 +3,9 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),http=require('node:http'),path=require('node:path');
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
 const F=require('./meeting_report_fixture.cjs'),root=path.resolve(__dirname,'../site');
-let browser,server;
+let browser,server,exportedHTML;
 (async()=>{
- server=http.createServer((req,res)=>{const p=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname);if(!p.startsWith(root+path.sep)){res.writeHead(403);return res.end();}try{res.setHeader('Content-Type',p.endsWith('.js')?'text/javascript':p.endsWith('.css')?'text/css':p.endsWith('.json')?'application/json':'text/html');res.end(fs.readFileSync(p));}catch{res.writeHead(404);res.end();}});
+ server=http.createServer((req,res)=>{if(req.url==='/downloaded-report.html'&&exportedHTML){res.setHeader('Content-Type','text/html');return res.end(exportedHTML);}const p=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname);if(!p.startsWith(root+path.sep)){res.writeHead(403);return res.end();}try{res.setHeader('Content-Type',p.endsWith('.js')?'text/javascript':p.endsWith('.css')?'text/css':p.endsWith('.json')?'application/json':'text/html');res.end(fs.readFileSync(p));}catch{res.writeHead(404);res.end();}});
  await new Promise(r=>server.listen(0,'127.0.0.1',r));browser=await chromium.launch({headless:true,executablePath:process.env.BROWSER_PATH||'/usr/bin/chromium'});
  const page=await browser.newPage({acceptDownloads:true,viewport:{width:1440,height:1000}}),errors=[],sourceRequests=[];
  page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.dismiss());
@@ -74,5 +74,25 @@ let browser,server;
  assert.match(await page.locator('#passageNotesCount').innerText(),/^0 passage notes/);
  for(const schema of ['un.meeting-report.v1','un.meeting-report.v2']){const legacy={...value,schema};if(schema==='un.meeting-report.v1')delete legacy.appendix;delete legacy.passage_notes;await page.locator('#openCollection').setInputFiles({name:'legacy-report.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(legacy))});await page.waitForFunction(()=>document.querySelector('#status').textContent.startsWith('Saved sources verified'));await page.locator('#prepareReport').click();assert.equal(await page.locator('#appendixMode').inputValue(),'template');assert.equal(await page.locator('#reportPreview .evidence-appendix .evidence').count(),4);assert.equal(await page.locator('#reportPreview .passage-notes').count(),0);}
  await page.locator('#loadedMeetings input').first().uncheck();await page.locator('#prepareReport').click();assert.equal(await page.locator('#downloadReport').isDisabled(),true);
- assert.deepEqual(errors,[]);console.log('PASS: explicit selected-only loading, reserved-date no-network, bounded revision-local context with separate speaker/capacity and no extra requests, evidence search, template/notes, HTML/CSV/JSON round-trip, reusable preferences, unchanged country overview/full CSV/original sources, v1/v2/v3 compatibility, strict import/stale export prevention, corrupt import preservation, mobile and no script execution');
+ const multiple={...notedValue,corpora:[await F.corpus(),await F.corpus(1)],selected_meetings:F.meetings.map(m=>m.slug)},indexRequests=sourceRequests.length;
+ await page.locator('#openCollection').setInputFiles({name:'multiple-meetings.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(multiple))});await page.waitForFunction(()=>document.querySelector('#status').textContent.startsWith('Saved sources verified'));await page.locator('#prepareReport').click();
+ const indexLinks=page.locator('#reportPreview .report-meeting-index li a');assert.equal(await indexLinks.count(),2);assert.equal(await page.locator('#reportPreview .report-meeting').count(),2);
+ const beforeNavigation=await page.locator('#reportPreview').innerHTML();
+ for(const width of [390,1440]){
+  await page.setViewportSize({width,height:900});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
+  await indexLinks.last().focus();await page.keyboard.press('Enter');assert.equal(await page.evaluate(()=>document.activeElement.id),'report-meeting-2');assert.equal(new URL(page.url()).hash,'#report-meeting-2');
+  await page.locator('.report-meeting').last().getByRole('link',{name:'Back to selected meetings'}).focus();await page.keyboard.press('Enter');assert.equal(await page.evaluate(()=>document.activeElement.id),'report-meeting-index');
+ }
+ assert.equal(await page.locator('#reportPreview').innerHTML(),beforeNavigation);assert.equal(await page.locator('#downloadReport').isDisabled(),false);assert.equal(sourceRequests.length,indexRequests);
+ const [indexedJSON]=await Promise.all([page.waitForEvent('download'),page.locator('#saveReport').click()]);const indexedValue=JSON.parse(fs.readFileSync(await indexedJSON.path()));for(const key of ['corpora','appendix','passage_notes','selected_meetings'])assert.deepEqual(indexedValue[key],multiple[key]);
+ const [indexedCSV]=await Promise.all([page.waitForEvent('download'),page.locator('#downloadEvidence').click()]);assert.equal(fs.readFileSync(await indexedCSV.path(),'utf8'),require('../site/meeting-report-core.js').evidenceCSV(multiple.corpora.flatMap(c=>c.records)));
+ const [indexedHTML]=await Promise.all([page.waitForEvent('download'),page.locator('#downloadReport').click()]);exportedHTML=fs.readFileSync(await indexedHTML.path(),'utf8');
+ const offline=await browser.newContext({javaScriptEnabled:false,viewport:{width:390,height:900}}),offlinePage=await offline.newPage();
+ try{
+  await offlinePage.goto(`http://127.0.0.1:${server.address().port}/downloaded-report.html`);assert.equal(await offlinePage.locator('script,button').count(),0);
+  const ids=await offlinePage.locator('[id]').evaluateAll(nodes=>nodes.map(n=>n.id));assert.equal(new Set(ids).size,ids.length);assert(await offlinePage.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
+  await offlinePage.locator('.report-meeting-index li a').last().focus();await offlinePage.keyboard.press('Enter');assert.equal(await offlinePage.evaluate(()=>document.activeElement.id),'report-meeting-2');
+  await offlinePage.locator('.report-meeting').last().getByRole('link',{name:'Back to selected meetings'}).focus();await offlinePage.keyboard.press('Enter');assert.equal(await offlinePage.evaluate(()=>document.activeElement.id),'report-meeting-index');
+ }finally{await offline.close();exportedHTML=null;}
+ assert.deepEqual(errors,[]);console.log('PASS: explicit selected-only loading, reserved-date no-network, bounded revision-local context with separate speaker/capacity and no extra requests, evidence search, template/notes, HTML/CSV/JSON round-trip, reusable preferences, unchanged country overview/full CSV/original sources, v1/v2/v3 compatibility, strict import/stale export prevention, corrupt import preservation, multi-meeting keyboard index/return links with JavaScript-disabled standalone navigation, mobile and no script execution');
 })().catch(e=>{console.error(e);process.exitCode=1;}).finally(async()=>{if(browser)await browser.close();if(server)await new Promise(r=>server.close(r));});
