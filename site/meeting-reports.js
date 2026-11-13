@@ -9,7 +9,7 @@
   const options=()=>({template:$('reportTemplate').value,mission:$('mission').value,title:$('reportTitle').value,priorities:$('priorities').value,notes:$('analystNotes').value});
   const appendix=()=>({mode:$('appendixMode').value,record_ids:[...appendixIds]});
   const passageNotes=()=>[...notes].map(([record_id,text])=>({record_id,text}));
-  function save(data,name,mime){const u=URL.createObjectURL(new Blob([data],{type:mime})),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
+  function save(data,name,mime){const blob=new Blob([data],{type:mime});if(blob.size>Core.LIMIT){setStatus('Download exceeds 25 MB. Choose fewer meetings or shorter notes before exporting. Current work has not changed.',true);return false;}const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);return true;}
   function reportName(suffix){return 'un-meeting-report-'+report.generated_at.replace(/[-:.]/g,'')+suffix;}
   function invalidate(){workspaceRevision++;report=null;$('expressionEvidence').close();$('expressionEvidenceBody').replaceChildren();$('reportPreview').replaceChildren();for(const id of ['downloadReport','saveReport','downloadEvidence'])$(id).disabled=true;$('reportState').textContent='Settings or selection changed. Prepare the report to update its exports.';dirty=!!corpora.length;}
   function replacementCurrent(ticket){
@@ -176,7 +176,7 @@
   $('closeExpressionEvidence').onclick=()=>$('expressionEvidence').close();
   $('expressionEvidence').addEventListener('close',()=>{if(!$('expressionEvidence').open)$('expressionEvidenceBody').replaceChildren();});
   $('downloadReport').onclick=()=>{if(report)save(Core.standalone(report),reportName('.html'),'text/html');};
-  $('saveReport').onclick=()=>{if(report){const data=JSON.stringify(Core.savedReport(report,corpora));if(new TextEncoder().encode(data).length>Core.LIMIT){setStatus('Report JSON exceeds 25 MB. Load a smaller collection before saving.',true);return;}save(data,reportName('.json'),'application/json');dirty=false;}};
+  $('saveReport').onclick=()=>{if(report&&save(JSON.stringify(Core.savedReport(report,corpora)),reportName('.json'),'application/json'))dirty=false;};
   $('downloadEvidence').onclick=()=>{if(report)save(Core.evidenceCSV(report.records),reportName('-evidence.csv'),'text/csv;charset=utf-8');};
   window.addEventListener('beforeunload',event=>{if(dirty){event.preventDefault();event.returnValue='';}});
   (async()=>{try{

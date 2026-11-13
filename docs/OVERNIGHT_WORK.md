@@ -669,3 +669,12 @@ Next bounded task: update the diplomat usability guide to exercise keeping unsav
 After [PR #283](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/283) recorded release verification and merged as `39455d3543cf6589e329dc9f6f4f58145d3019c3`, reread the checkpoint. Added a participant task to `docs/REPORTING_USABILITY.md`: keep an unsaved assessment when opening another fictional report, verify preserved notes/appendix/exports, save JSON, then deliberately replace the workspace. The comprehension record now distinguishes keeping work from actually saving it. The task matches the deployed keep/replace/Escape behavior already verified by synthetic hosted tests; preparation code and source fixtures are unchanged. Documentation/whitespace checks passed. No participant session or model-label review was invented, and no application asset requires redeployment.
 
 Next independent task: audit the documented 25 MB browser export bound across HTML, JSON and CSV. Current code visibly checks JSON before download while the shared download helper lacks a size check; verify the consequence and repair inconsistent handling without truncating source evidence or marking unsaved work saved after a refused download.
+
+
+## Next task — coherent browser download bounds
+
+After usability [PR #284](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/284) merged as `5b8500ac569e5184f831e7b2189b04861b8c8d13`, CLI access failed: `gh` returned **HTTP 401 Bad credentials** and the default Git fetch requested a username. No token was read or changed. The connected GitHub tools remained authorized, and an anonymous public Git fetch succeeded; use those paths for publication and verification until CLI credentials recover.
+
+The export audit confirmed that only JSON enforced the documented 25 MB bound. Release 1.53.0 moves the check to the shared download helper, measuring the actual Blob bytes for HTML/JSON/CSV. Oversized output is refused before creating a download URL, without truncation or workspace mutation. A refused JSON download does not clear unsaved-work protection. Exact 25,000,000-byte output remains allowed.
+
+The full synthetic reporting workflow passed with oversized multibyte HTML/CSV and JSON cases, zero downloads for refusals, unchanged preview, preserved replacement warning after a refused save, an exact-boundary CSV, and successful ordinary source-bearing JSON afterward. The public build and whitespace checks passed. Source/mirror CI and deployment remain pending; 1.52.0 remains the last fully verified release.
