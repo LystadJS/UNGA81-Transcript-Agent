@@ -1,0 +1,67 @@
+{
+  "attempted": {
+    "covariance": 540,
+    "response": 540
+  },
+  "failed_attempts": 318,
+  "failure_masks": [
+    {
+      "hex_mask": "3fffffff",
+      "reason": "EXTERNAL_DEPENDENT",
+      "scenario": "shared_measurement_error_T16",
+      "study": "covariance"
+    },
+    {
+      "hex_mask": "3fffffff",
+      "reason": "AUDIT_ABSENT",
+      "scenario": "no_audit_T16",
+      "study": "response"
+    },
+    {
+      "hex_mask": "00001000",
+      "reason": "YEAR_SUPPORT",
+      "scenario": "serial_correlated_T16",
+      "study": "response"
+    },
+    {
+      "hex_mask": "18607004",
+      "reason": "YEAR_SUPPORT",
+      "scenario": "serial_correlated_T32",
+      "study": "response"
+    },
+    {
+      "hex_mask": "002d0580",
+      "reason": "YEAR_SUPPORT",
+      "scenario": "serial_independent_T16",
+      "study": "response"
+    },
+    {
+      "hex_mask": "3fffffff",
+      "reason": "YEAR_SUPPORT",
+      "scenario": "weak_audit_T16",
+      "study": "response"
+    }
+  ],
+  "methods_per_covariance_scenario": [
+    "wide",
+    "narrow",
+    "externally_constrained"
+  ],
+  "methods_per_response_scenario": [
+    "pooled_logit",
+    "year_fixed_effects",
+    "estimated_ar1_year_effects"
+  ],
+  "reason_codes": {
+    "AUDIT_ABSENT": "IdentificationFailure:no independent missing-outcome audit",
+    "EXTERNAL_DEPENDENT": "IdentificationFailure:external replicate source errors correlated",
+    "YEAR_SUPPORT": "IdentificationFailure:year-specific response and recovered-outcome support absent"
+  },
+  "repetitions_per_scenario": 30,
+  "schema": "un.w4.v3.serial-partial-development-failure-index.v1",
+  "source_free_development_metrics_sha256": "3707fdb4635addad1b5209379aefd4b744b76cd6e421388245c0b91280a4d7ef",
+  "source_free_full_failure_ledger_sha256": "0b9390788b4bab31bad532161f10e723a50d563640b034607b23753b888b9029",
+  "statistical_acceptance": false,
+  "status": "SYNTHETIC_DEV_ONLY",
+  "v3_holdout_attempted": 0
+}

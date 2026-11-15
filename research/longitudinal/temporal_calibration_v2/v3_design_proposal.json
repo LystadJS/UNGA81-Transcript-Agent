@@ -1,0 +1,78 @@
+{
+  "schema": "un.w4.temporal-identification-v3.proposal.v1",
+  "status": "PROPOSED_NOT_FROZEN",
+  "primary_years": 16,
+  "horizons": [
+    8,
+    16,
+    24,
+    32,
+    48
+  ],
+  "masks": [
+    "census",
+    "two_of_three",
+    "era_shift"
+  ],
+  "responses": [
+    "mar",
+    "audited_mnar",
+    "unaudited_mnar",
+    "weak_support"
+  ],
+  "rho_values": [
+    0,
+    0.35,
+    0.65,
+    0.85
+  ],
+  "nugget_sd": [
+    0,
+    0.15,
+    0.4
+  ],
+  "methods": [
+    "iid_control",
+    "ar1_zero_nugget",
+    "ar1_ridge",
+    "external_nugget",
+    "union_sensitivity"
+  ],
+  "development_approved": false,
+  "holdout_authorized": false,
+  "holdout_seed": null,
+  "real_fit_authorized": false,
+  "external_nugget_provenance": "INDEPENDENT_MEASUREMENT_REQUIRED",
+  "target_coverage": 0.9,
+  "planned_primary_scenarios": "T16 x 3 masks x 4 responses x 4 rho x 3 nuggets = 144; q=0 MNAR entirely abstains",
+  "planned_primary_replicates_per_scenario": 600,
+  "planned_primary_attempts": 86400,
+  "planned_dev_replicates_per_scenario": 300,
+  "planned_dev_attempts": 43200,
+  "planned_holdout_replicates_per_scenario": 600,
+  "planned_holdout_attempts": 86400,
+  "monte_carlo_note": "At coverage .9 and n=600, binomial Monte Carlo SE sqrt(.9*.1/600)=.01225; pre-freeze run count must be confirmed with compute budget and worst-case support failures.",
+  "controls": [
+    "short-T",
+    "nonstationary",
+    "out-of-grid-rho",
+    "incompatible-era-design",
+    "genre-translation-roster-shift",
+    "no-audit-MNAR",
+    "weak-positivity"
+  ],
+  "provisional_gates": {
+    "rho_abs_bias": 0.12,
+    "rho_rmse": 0.25,
+    "rho_boundary_rate": 0.05,
+    "minimum_completion": 0.95,
+    "coverage_absolute_tolerance": 0.05,
+    "coverage_Wilson_contains_nominal": true,
+    "max_median_interval_width": 0.8
+  },
+  "gates_frozen": false,
+  "original_v2_gates_unchanged": true,
+  "source_authentication": "NOT_PERFORMED",
+  "v3_holdout": "NOT_CREATED",
+  "real_data": "PROHIBITED"
+}

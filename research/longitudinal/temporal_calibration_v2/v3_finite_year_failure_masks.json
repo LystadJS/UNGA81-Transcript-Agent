@@ -1,0 +1,98 @@
+{
+  "schema": "un.w4.v3.finite-year-development-failure-mask.v1",
+  "stage": "NEW_DEVELOPMENT_ONLY",
+  "world_repetitions": 12,
+  "bootstrap_per_attempt": 20,
+  "failures": 111,
+  "canonical_uncompressed_failure_sha256": "9f6f174f70798d3a77ddbd395c647dc3a6f5ccc3314e5c629bdf1ff29c9ea3b3",
+  "source_run_id": 38767638473,
+  "source_head": "8b13c22c9ea2ef79c62ace836957b9c4974db132",
+  "masks": [
+    {
+      "mask_hex": "8000040000200001000008000040000200001000008000040000200001",
+      "method": "year_block8",
+      "reason": "IdentificationFailure:insufficient whole-year blocks",
+      "scenario": "changing_gamma_T16",
+      "study": "response_method"
+    },
+    {
+      "mask_hex": "8000040000200001000008000040000200001000008000040000200001",
+      "method": "year_block8",
+      "reason": "IdentificationFailure:insufficient whole-year blocks",
+      "scenario": "iid_year_T16",
+      "study": "response_method"
+    },
+    {
+      "mask_hex": "8000040000200001000008000040000200001000008000040000200001",
+      "method": "hac_lag2",
+      "reason": "IdentificationFailure:no independent missing-outcome audit",
+      "scenario": "no_outcome_audit_T16",
+      "study": "response_method"
+    },
+    {
+      "mask_hex": "8000040000200001000008000040000200001000008000040000200001",
+      "method": "year_block4",
+      "reason": "IdentificationFailure:no independent missing-outcome audit",
+      "scenario": "no_outcome_audit_T16",
+      "study": "response_method"
+    },
+    {
+      "mask_hex": "8000040000200001000008000040000200001000008000040000200001",
+      "method": "year_block8",
+      "reason": "IdentificationFailure:insufficient whole-year blocks",
+      "scenario": "no_outcome_audit_T16",
+      "study": "response_method"
+    },
+    {
+      "mask_hex": "8000040000200001000008000040000200001000008000040000200001",
+      "method": "year_block8",
+      "reason": "IdentificationFailure:insufficient whole-year blocks",
+      "scenario": "serial_response_T16",
+      "study": "response_method"
+    },
+    {
+      "mask_hex": "8000000000000000000000000000000000000000000000000000000000",
+      "method": "hac_lag2",
+      "reason": "IdentificationFailure:year-specific response and recovered-outcome support absent",
+      "scenario": "serial_response_T32",
+      "study": "response_method"
+    },
+    {
+      "mask_hex": "8000000000000000000000000000000000000000000000000000000000",
+      "method": "year_block4",
+      "reason": "IdentificationFailure:year-specific response and recovered-outcome support absent",
+      "scenario": "serial_response_T32",
+      "study": "response_method"
+    },
+    {
+      "mask_hex": "8000000000000000000000000000000000000000000000000000000000",
+      "method": "year_block8",
+      "reason": "IdentificationFailure:year-specific response and recovered-outcome support absent",
+      "scenario": "serial_response_T32",
+      "study": "response_method"
+    },
+    {
+      "mask_hex": "8000040000200001000008000040000200001000008000040000200001",
+      "method": "hac_lag2",
+      "reason": "IdentificationFailure:year-specific response and recovered-outcome support absent",
+      "scenario": "weak_outcome_audit_T16",
+      "study": "response_method"
+    },
+    {
+      "mask_hex": "8000040000200001000008000040000200001000008000040000200001",
+      "method": "year_block4",
+      "reason": "IdentificationFailure:year-specific response and recovered-outcome support absent",
+      "scenario": "weak_outcome_audit_T16",
+      "study": "response_method"
+    },
+    {
+      "mask_hex": "8000040000200001000008000040000200001000008000040000200001",
+      "method": "year_block8",
+      "reason": "IdentificationFailure:insufficient whole-year blocks",
+      "scenario": "weak_outcome_audit_T16",
+      "study": "response_method"
+    }
+  ],
+  "v3_holdout_attempted": 0,
+  "real_fit_authorized": false
+}

@@ -1,0 +1,12 @@
+{
+  "categories": {
+    "EXPECTED_NO_AUDIT_NONIDENTIFICATION": 1440,
+    "FitFailure:insufficient source response strata": 5,
+    "FitFailure:no independently randomized nonresponder support": 102
+  },
+  "failed_attempts": 1547,
+  "outcomes_fabricated": false,
+  "schema": "un.w4.temporal_calibration_v2.failure_accounting.v1",
+  "source": "synthetic only",
+  "total_attempted": 7200
+}
