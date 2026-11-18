@@ -1,0 +1,121 @@
+name: Coordinator prospective US-relative integration
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited, ready_for_review]
+  push:
+    branches: [main]
+  merge_group:
+    types: [checks_requested]
+permissions:
+  contents: read
+jobs:
+  checks:
+    name: usref-gate-${{ matrix.mode }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [head, effective-tree, combined]
+    env:
+      MODE: ${{ matrix.mode }}
+      GH_READ_TOKEN: ${{ github.token }}
+      PYTHONHASHSEED: '0'
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: control
+          fetch-depth: 0
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /research/integration/w2_w4_w6/usref_integration/
+            /.github/workflows/coord-us-relative-integration.yml
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.16'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.3'
+      - name: Prepare exact identity and code-only disposable tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/usref-gate-$MODE"
+          echo "OUT=$OUT" >> "$GITHUB_ENV"
+          python control/research/integration/w2_w4_w6/usref_integration/gate.py prepare \
+            --repo "$GITHUB_WORKSPACE/control" --control "$GITHUB_WORKSPACE/control" \
+            --out "$OUT" --mode "$MODE"
+      - name: Provision mandatory native runtimes
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends r-base-core
+          Rscript --vanilla -e 'stopifnot(as.character(getRversion()) == "4.3.3")'
+          python -m pip install -r "$OUT/candidate/research/longitudinal/requirements.txt" playwright==1.57.0
+          python -m playwright install --with-deps chromium
+          npm install --prefix "$RUNNER_TEMP/usref-axe" --ignore-scripts --no-audit --no-fund axe-core@4.10.3
+      - name: Run mandatory synthetic suites and negative controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          python control/research/integration/w2_w4_w6/usref_integration/run_suites.py \
+            --out "$OUT" --axe "$RUNNER_TEMP/usref-axe/node_modules/axe-core/axe.min.js"
+      - name: Retain execution evidence, never Pages output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: usref-gate-${{ matrix.mode }}
+          path: |
+            ${{ runner.temp }}/usref-gate-${{ matrix.mode }}/identity.json
+            ${{ runner.temp }}/usref-gate-${{ matrix.mode }}/receipt.json
+            ${{ runner.temp }}/usref-gate-${{ matrix.mode }}/evidence
+          if-no-files-found: error
+          retention-days: 14
+  required:
+    name: usref-integration-required
+    if: always()
+    needs: [checks]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      GATE_NEEDS: ${{ toJSON(needs) }}
+      GH_READ_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: control
+          fetch-depth: 0
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /research/integration/w2_w4_w6/usref_integration/
+            /.github/workflows/coord-us-relative-integration.yml
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.16'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: usref-gate-*
+          path: ${{ runner.temp }}/usref-evidence
+      - name: Require all actual job outcomes and independently bound evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python control/research/integration/w2_w4_w6/usref_integration/gate.py finalize \
+            --repo "$GITHUB_WORKSPACE/control" --control "$GITHUB_WORKSPACE/control" \
+            --artifacts "$RUNNER_TEMP/usref-evidence" --out "$RUNNER_TEMP/usref-required.json"
+      - name: Retain aggregate decision
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: usref-required-decision
+          path: ${{ runner.temp }}/usref-required.json
+          if-no-files-found: error
+          retention-days: 14
