@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.68.0",
+  "browser_engine": "browser-descriptive-1.69.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-18",
   "features": [
+    "Separate source-bound passage-notes CSV for spreadsheet follow-up, with explicit analyst interpretation labels, selected-meeting scope, original source pointers, spreadsheet-formula escaping and unchanged evidence CSV, report schemas and resumable JSON/ZIP",
     "Personal all-day report-review calendar entries (.ics) with an explicitly chosen date, optional assessment, original meeting references, UTF-8 line folding and stale-export protection; separate reading copy with no calendar connection, invitations, source requests or new report schema",
     "Automatic alphabetical recorded-affiliation jump index with focusable country rows and return links for single/multi-meeting reports and native HTML/Word/print navigation; complete country coverage and source gaps stay visible, with no new schema, dependencies or storage",
     "Bulk appendix addition/removal across every filtered matching passage, with explicit new/selected counts and one-step undo including template mode; unchanged notes, whole-report coverage and full CSV, with history cleared on manual selections or source-scope changes and no new schema or dependencies",

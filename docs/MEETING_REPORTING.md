@@ -282,6 +282,29 @@ these source labels do not establish national capacity or verified policy.
 An empty or single-affiliation report omits the unnecessary index. Saved reports
 rebuild it from verified original sources rather than trusting a saved index.
 
+## Passage-note spreadsheet
+
+After preparing a report, expand **Passage notes for spreadsheet follow-up** and
+choose **Download passage notes CSV**. It exports one row per passage note in the
+prepared report's selected meetings, in original source order. Each row identifies
+the note as user-authored interpretation and retains the report timestamp, record
+identity, meeting, recorded affiliation, source URL, source revision, hashes and
+JSON pointer. Affiliation remains a source label, not verified national capacity.
+
+Search and appendix choices do not narrow these notes. Original transcript text
+and the report-level assessment are excluded. The separate full evidence CSV is
+unchanged and excludes analyst notes. Spreadsheet-formula prefixes receive an
+apostrophe, while quoted cells preserve commas, quotes, line breaks and Unicode.
+Save report JSON for exact original text and to resume editing; CSV changes cannot
+be imported. The notes CSV is separate from the existing five-file ZIP.
+
+The control stays disabled until a prepared report contains passage notes. Changing
+report inputs invalidates it with other exports. A failed or oversized download
+keeps current work; downloading notes does not clear unsaved-work protection.
+The existing 25 MB encoded download limit applies. Nothing is uploaded or saved
+automatically; no schema, dependency, storage or personal-runtime change is added.
+Actual spreadsheet-client and diplomat usability acceptance remains outstanding.
+
 ## Personal calendar review entry
 
 Prepare the report, expand **Calendar entry for a report review**, and choose your
