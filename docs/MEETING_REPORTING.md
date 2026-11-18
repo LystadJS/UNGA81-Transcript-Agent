@@ -247,6 +247,25 @@ from verified sources. Editing, adding, removing or moving a question invalidate
 exports. HTML and ZIP contain the question sections; evidence CSV remains unchanged.
 No model, new dependency, automatic storage or external AI request is added.
 
+## Preference and download failure handling
+
+Mission preferences use one 8 KiB UTF-8 budget for export and import. Downloads
+use compact JSON so an exported file, including Unicode headings and queries,
+can reopen within that same file-size limit. Individual field limits still apply.
+If the complete preferences exceed 8,192 bytes, export asks you to shorten them
+and keeps every field unchanged; it does not truncate or download an unusable file.
+The report JSON/ZIP limit remains 25 MB, and full reports can retain settings too
+large for a standalone preference file. Existing v1/v2 preference files within
+their limits remain readable; no schema changes.
+
+The shared downloader catches failures while creating a Blob/temporary URL or
+starting a browser download, reports the error and releases any created URL.
+Preferences and package status do not claim a download succeeded after a failure.
+Current sources, notes, preview and unsaved-work protection remain intact. A
+successful start still depends on the browser completing the download; check the
+resulting file before closing. Nothing is uploaded or automatically saved.
+Actual government-browser download policy acceptance remains outstanding.
+
 ## First delivery
 
 [Open the reporting workspace](https://lystadjs.github.io/un/transcript-agent/meeting-reports.html). Deployment and verified engineering evidence are recorded in [the current checkpoint](OVERNIGHT_WORK.md). Diplomat usability and scientific acceptance remain separate.
