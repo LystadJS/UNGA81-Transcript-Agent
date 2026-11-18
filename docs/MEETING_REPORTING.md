@@ -2,6 +2,36 @@
 
 The immediate product target is a PowerTranscript-like reporting workflow, implemented independently: select proceedings, search their evidence, apply mission report templates, and export documented results. Research CSVs and evaluated stance tracking remain distinct capabilities. This is not a claim of equivalent vendor performance or access to proprietary code or weights.
 
+## Add sources while keeping current work
+
+Open a collection or report first, then use **Add sources from JSON to this
+report**. The file may be an original-bound collection or a supported saved report.
+Its original source bytes, identities and metadata are checked before any change.
+Your mission settings, briefing questions, notes, appendix choices and existing
+meeting selections stay in place. Unfinished question fields remain editable.
+
+Only sources are added. Notes, settings and appendix choices from the added
+report are not copied. All its loaded source bundles are retained, including
+unselected meetings; its selected meetings are checked in the combined workspace.
+Existing unchecked meetings remain unchecked. Review the loaded meeting list,
+then prepare the report again before exporting or saving on this device.
+
+Any overlapping meeting identity is refused, including an unselected meeting or
+another revision of the same meeting. No source revision is silently replaced,
+no partial merge is applied and no current annotation is discarded. Use a
+nonoverlapping file, or open the other report separately to inspect its revision.
+Invalid/reserved/corrupt files leave current sources, notes, preview and exports
+intact. Editing or starting a newer source operation during validation prevents
+an older addition from overwriting that work. This action makes no source request.
+
+The combined sources retain the existing limits: ten source bundles, 100 meetings,
+15,000 passages and 25 MB encoded source JSON. Before applying an addition, the
+application also measures the complete resumable report JSON, including all loaded
+sources, current notes, settings and selections. It refuses a result above 25 MB
+without truncation. Later edits can still enlarge exports, which keep their own
+bounds. Nothing is saved or uploaded automatically; report v4, preferences v2 and
+the eight-report/25 MB device-library limit are unchanged.
+
 ## Country expressions across selected meetings
 
 Preparing more than one meeting automatically adds a combined country/affiliation
