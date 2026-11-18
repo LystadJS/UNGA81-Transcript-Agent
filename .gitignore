@@ -16,3 +16,8 @@ __pycache__/
 *.sqlite3
 *.sqlite3-wal
 *.sqlite3-shm
+
+# Historical generated reports remain accessible at their immutable Git archive.
+/docs/gmm-comparison.json
+/docs/nmf-comparison.json
+/docs/display-comparison.json

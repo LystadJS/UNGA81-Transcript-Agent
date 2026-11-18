@@ -7,6 +7,10 @@ source of truth for all subsequent work on this project.
 - Make requested project changes in this repository, validate them appropriately,
   then commit and push them here as part of completing the request. The user has
   authorized this continuing workflow; do not ask again solely to push requested edits.
+- On 18 November 2026 the user explicitly approved all project merges from that
+  point onward. This is standing authorization to merge tested project PRs and
+  publish the required website mirror, subject to passing checks, repository
+  protections and later user instructions. Do not ask again solely to merge.
 - Follow later user instructions and repository protection rules. Preserve unrelated
   work, do not force-push, and report any genuine permission or validation blocker.
 - Distinguish executable methods from registry plans and inherited test records
