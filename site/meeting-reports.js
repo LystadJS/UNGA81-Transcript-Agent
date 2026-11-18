@@ -32,7 +32,7 @@
   $('addBriefingQuestion').onclick=()=>{addQuestion(undefined,true);invalidate();};
   function save(data,name,mime){
     let url;const release=()=>{if(url)try{URL.revokeObjectURL(url);}catch{}};
-    try{const blob=new Blob([data],{type:mime});if(blob.size>Core.LIMIT){setStatus('Download exceeds 25 MB. Choose fewer meetings or shorter notes before exporting. Current work has not changed.',true);return false;}url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(release,1000);return true;}
+    try{const blob=new Blob([data],{type:mime});if(blob.size>Core.LIMIT){setStatus('Download exceeds 25 MB. Choose fewer meetings or shorter notes before exporting. Current work has not changed.',true);return false;}url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(release,1000);if($('status').classList.contains('error'))setStatus('Download started. Check your browser’s downloads.');return true;}
     catch(e){release();setStatus('Could not start download: '+e.message+' Current work kept.',true);return false;}
   }
   function reportName(suffix){return 'un-meeting-report-'+report.generated_at.replace(/[-:.]/g,'')+suffix;}

@@ -262,6 +262,7 @@ The shared downloader catches failures while creating a Blob/temporary URL or
 starting a browser download, reports the error and releases any created URL.
 Preferences and package status do not claim a download succeeded after a failure.
 Current sources, notes, preview and unsaved-work protection remain intact. A
+successful retry clears the previous error message. A
 successful start still depends on the browser completing the download; check the
 resulting file before closing. Nothing is uploaded or automatically saved.
 Actual government-browser download policy acceptance remains outstanding.
