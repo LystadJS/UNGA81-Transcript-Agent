@@ -12,57 +12,44 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Verified release 1.73.0
+## Release 1.74.0 candidate: personal generated drafts
 
-| PR | Change | Checked head / merge |
-| --- | --- | --- |
-| [Source #332](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/332) | Stale preference-import protection | Three checks passed at `b025461`; merged `bf49852` |
-| [Website #187](https://github.com/LystadJS/LystadJS.github.io/pull/187) | Canonical mirror and source/release pins | Audit/regression passed at `0a719c0`; merged `935dbd1` |
+A new browser/Python sidecar implements optional question-based generated drafts.
+The browser exports a 64 KiB evidence packet with up to eight questions and 100
+literal-search-matched passages. Standard-library Python validates the context and
+text hashes, then calls a configured loopback OpenAI-compatible chat server once
+per answered question. Empty searches make no request. No runtime or model is
+selected, downloaded or bundled; local server configuration determines whether
+inference actually stays local. Environment proxies and redirects are refused.
 
-Both public URLs serve 1.73.0. All 196 preferred-site files match expected SHA-256
-hashes. Fourteen reporting browser suites pass live with fictional sources:
-reporting (including delayed preference reads), calendar, affiliation navigation,
-bulk appendix, inventory addition, saved-source addition, package opening, source
-removal, replacement, device library, packages, Word, print/PDF and archive handoff.
-The expanded reporting suite also passes at the original URL, whose three changed
-assets match canonical hashes. Skipped PR live jobs are not deployed test passes.
+Model replies require bounded bullets with exact quotations from the question's
+own passages. Malformed, unknown or altered citations refuse the whole draft.
+The returned JSON is always unreviewed. The browser binds it to the prepared
+source scope and question order, displays cited context after the country-first
+report and can download a separate review HTML. Ordinary report exports, JSON,
+ZIP, preferences and device saves exclude the draft; users retain the original
+report JSON and returned draft JSON separately. Source/settings changes clear the
+session-only view; stale imports/exports cannot restore old work. Exact quotation
+matching does not validate factual entailment or model identity.
 
-The audit reproduced a delayed local preference-file read replacing a mission name
-typed after selection. Imports now capture the workspace revision, loaded-source
-operation counter and latest preference-selection serial. An older result cannot
-replace newer edits, prepared work or a later source operation. Only the latest
-preference selection may apply, including when that newer file is invalid or the
-selection is cleared. Older errors cannot replace the latest import status, and
-older cleanup cannot clear a newer selected file.
+The new protocol uses fictional HTTP fixtures; no real generative inference or
+reserved transcript retrieval has occurred. Hardware/model choice and factual,
+citation and diplomat acceptance remain outstanding. No browser inference, model
+weights, dependencies, backend or Hugging Face storage are added. Existing report
+v4/preferences v2 and scientific/source gates remain unchanged.
 
-The local status shows Checking while reading, applied after a valid current
-import, or current-settings-kept after workspace changes. Valid current imports
-still invalidate prepared exports; current read/validation errors remain visible.
-Sources, notes, meeting selection, preview, export readiness and dirty-work
-protection stay intact when an obsolete result is refused. The existing 8 KiB
-preference and 25 MB full-report budgets, schemas, country coverage and source
-verification are unchanged. Guards are session-only; no stored field is added.
+Local validation passes 264 Python tests, fifteen reporting browser workflows,
+reporting/facilitator contracts, 2,077 retained checksums and the 205-entry public
+build. New checks cover synthetic chat transport, redirect/proxy refusal, byte
+bounds, exact citations, missing evidence, no overwrite, Unicode cross-runtime
+seals, stale browser work and ordinary-export isolation. Publication and deployed
+validation remain pending. The last verified deployment is 1.73.0: 196 preferred-site hashes, fourteen live reporting
+browser suites, 256 Python tests and 2,077 retained package checksums. The prior
+source-only QA consolidation keeps shared loopback/browser helpers and reduced
+its cohort by 4,333 bytes. New browser tests reuse that helper.
 
-Local validation passes 256 Python tests, fourteen existing reporting browser
-suites, facilitator checks and pure contracts. Expanded browser checks hold and
-resolve/reject fictional file reads to verify newer edits/preparation, retained
-replacement protection, two pending selections, newer invalid files, stale errors,
-current errors, source operations kept without replacement, clearing selection and
-input cleanup. Existing mobile, preference round-trip, download-failure, source
-verification and format checks pass. These are deterministic engineering races,
-not actual diplomat or government-browser usability sessions. No real or reserved
-transcript was retrieved.
-
-The public build remains 204 entries and mirror 195 files. Three existing assets
-plus the manifest change; repeat sync copies zero files. No public file, dependency,
-schema, model, backend, personal R/Python analysis or Hugging Face storage is added.
-All 2,077 retained package checksums remain valid. Scientific/source gates and all
-37 reserved meetings are unchanged. Runtime QA outputs remain ignored and outside
-the published application and Git tree.
-
-The [previous checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/966194717b73728ce0c6254d6bdf25155a633d01/docs/OVERNIGHT_WORK.md)
-records release 1.72.0 and links earlier receipts. Use those results at their
-original version and scope.
+The [previous checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/f0927f2541ea17578b24dd3176c124934abfc040/docs/OVERNIGHT_WORK.md)
+retains the verified 1.73.0 deployment and QA receipts, with links to earlier releases.
 
 ## Runnable usability setup
 
@@ -88,22 +75,6 @@ personal R/Python analysis code. Fixture files/downloads stay
 outside the checkout, and temporary public-build copies are removed on normal exit.
 The guide now names the executable setup rather than an unavailable synthetic
 inventory. Record actual participant findings separately.
-
-## Shared reporting QA fixture
-
-Fourteen reporting browser suites now use one [loopback server and browser launcher](../tests/reporting_browser_fixture.cjs).
-All post-launch workflow checks remain byte-identical. Including the shared helper
-and its new contract, this QA cohort falls from 185,606 to 181,273 bytes: 4,333
-bytes of net reduction. The contract checks MIME/UTF-8 responses, versioned asset
-URLs, dynamic script-free reading copies and root/traversal refusal using fictional
-temporary files. It runs in Node before Playwright installation; browser loading
-stays lazy and retains existing module/executable overrides.
-
-Fourteen workflows pass locally and live, along with the new HTTP contract,
-256 Python tests, 2,077 retained checksums and the 204-entry public build. All 196
-preferred-site hashes remain unchanged; repeat mirror sync copies zero files.
-The public app stays at 1.73.0, with no runtime, dependency, schema, model or storage
-change. The separate facilitator keeps its public-build/network-isolation setup.
 
 ## Source tree and remaining work
 
@@ -135,7 +106,7 @@ no released model or semantic-accuracy claim follows from structural QA.
 
 The R cleanup did not change browser assets or add Hugging Face storage.
 
-1. Continue useful reporting work from the verified 1.73.0 release, then expand
+1. Complete deployment and personal-model acceptance for 1.74.0, then expand
    broader workflows within the execution/storage constraints.
 2. Continue dependency-based cleanup with appropriate personal-runtime checks.
 3. Complete actual diplomat usability sessions; evaluate any optional generative

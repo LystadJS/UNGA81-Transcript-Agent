@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.73.0",
+  "browser_engine": "browser-descriptive-1.74.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-18",
   "features": [
+    "Separate personal Python draft generation via a configured loopback OpenAI-compatible model server: bounded source/question packets, literal quotation and scope checks, unreviewed browser review with source context and separate HTML, stale-operation refusal and ordinary-export isolation; no model weights, browser inference, backend or Hugging Face storage added",
     "Mission-preference imports reject delayed results after newer workspace edits or source operations, keep only the latest preference selection and avoid stale error/input cleanup; current fields, report preview and exports remain intact without new schemas, dependencies or storage",
     "Mission-preference export/import share the 8 KiB UTF-8 compact JSON budget, including Unicode briefing sections; oversized preferences are refused without truncation, and browser download-start failures report errors, release temporary URLs and preserve current work instead of claiming success",
     "Keyboard-accessible briefing-question ordering with numbered positions, boundary-aware Move up/down controls, preserved draft fields and explicit stale-export invalidation; existing report v4 and preference v2 arrays retain the order without new schemas, dependencies or storage",
@@ -48,9 +49,9 @@
     "Ten-year humanitarian access/civilian protection workflow: independent historical as-of date, current country-position statistics, coverage heatmap, U.S. history, automatic observed country trajectories, source-bound historical import and saved replay; fitted models withheld",
     "Country briefings and documentary exports separate executive policy, congressional analysis, enacted U.S. law and other official evidence; historical status and current gaps remain visible",
     "Qualified universal-jurisdiction support distinguished from conflicting positions without adding agreement scores",
-    "Automatic source-linked country\u2013U.S. briefings separating UN statements, shared priorities, historical/dated official documents and current gaps; standalone script-free briefing export",
+    "Automatic source-linked country–U.S. briefings separating UN statements, shared priorities, historical/dated official documents and current gaps; standalone script-free briefing export",
     "Separate source-bound documentary policy reviews: historical dates, official document links, saved review notes, no contribution to UN statement statistics or agreement scores",
-    "Automatic nearby-date comparisons: signed date differences, exact policy direction versus shared child-protection, climate-finance, UNCAT-accession, human-rights-institution and renewable-energy priorities, nearest-date ties, saved 0\u201314-day window, separate from same-day scores",
+    "Automatic nearby-date comparisons: signed date differences, exact policy direction versus shared child-protection, climate-finance, UNCAT-accession, human-rights-institution and renewable-energy priorities, nearest-date ties, saved 0–14-day window, separate from same-day scores",
     "National implementation priorities, bounded adjacent renewable-energy targets and climate-finance appeals; qualified domestic commitments remain outside U.S. agreement scoring",
     "three-country source review: 125 questions, qualified recognition of specific OHCHR functions, human rights framing, and explicit AOSIS attribution without national inference",
     "source-reviewed country coverage across 123 questions; explicit positions with unspecified context remain visible and never establish U.S. agreement",
@@ -175,6 +176,14 @@
       "un.meeting-report.v2",
       "un.meeting-report.v3",
       "un.meeting-report.v4"
-    ]
+    ],
+    "personal_drafts": {
+      "input_schema": "un.report-draft-input.v1",
+      "output_schema": "un.report-draft.v1",
+      "status": "synthetic_protocol_testing",
+      "model_inference_acceptance": "not_run",
+      "browser_model_requests": false,
+      "default_exports_include_drafts": false
+    }
   }
 }
