@@ -1,8 +1,8 @@
 # Current capability and acceptance matrix
 
-Updated 18 November 2026, America/New_York. **Release 1.63.0 is deployed and
+Updated 18 November 2026, America/New_York. **Release 1.64.0 is deployed and
 verified at both public URLs.** All 195 checked portfolio files match their
-expected hashes; nine reporting suites passed against the actual live site with
+expected hashes; ten reporting suites passed against the actual live site with
 fictional sources. This is engineering verification, not diplomat or model
 acceptance. Code, deployment, source coverage and empirical acceptance remain
 distinct. See the [current checkpoint](OVERNIGHT_WORK.md) for release receipts.
@@ -13,7 +13,7 @@ distinct. See the [current checkpoint](OVERNIGHT_WORK.md) for release receipts.
 | --- | --- | --- |
 | Meeting-first reporting | Explicit selected English-source loading; mission briefing, negotiation record and evidence digest; literal evidence search; source context; passage notes and selected appendices | Up to five meetings per load. Reports preserve country-expression coverage and visible comparison gaps. Actual diplomat usability acceptance remains outstanding |
 | Remove loaded sources | Whole original collections with meeting/note/appendix impact confirmation, JSON byte counts, selective annotation pruning and stale-decision refusal | Keep and Escape preserve work; last removal explicitly clears the current assessment. Kept bytes, mission settings, downloaded files and device copies stay intact. No new dependencies or source requests |
-| Open report-package ZIP | Direct local reopening or source addition from original five-file uncompressed packages; ZIP structure, CRC/SHA-256 and manifest checks precede source revalidation | Imported HTML is never executed; derived reports rebuilt. Keep/Replace and stale-operation protection apply. Compressed/repacked ZIPs require extracted JSON; checksums do not authenticate a source |
+| Open report-package ZIP | Direct local reopening or source addition from original five-file uncompressed packages; ZIP structure, CRC/SHA-256 and manifest checks precede source revalidation | Imported HTML is never executed; derived reports rebuilt. Keep/Replace and stale-operation protection apply. ZIPs outside this format require extracted JSON; checksums do not authenticate a source |
 | Add saved sources | Atomic addition of verified collection/report sources while keeping current settings, notes, appendix and selections; incoming report annotations are excluded | Refuses all meeting overlap/revisions, reserved/corrupt files, stale operations and oversized combined saved JSON. All loaded source bundles are retained; new exports require preparation. No source requests or schema change |
 | Cross-meeting country overview | Automatic dated rows for every recorded affiliation, source/collective gaps and exact displayed-object U.S. extracts from the same meeting; matched U.S. wording also appears in individual tables | Reuses existing provisional extracts. No carry-forward, agreement score, verified policy-change claim or repeated-quote weighting. Original sources and full CSV remain unchanged |
 | Passage-list filters | Exact recorded country/affiliation and speaker-name filters combined with literal search and appendix selection | Temporary view only; full country overview, prepared report, source context and CSV unchanged. Names and affiliations are source labels, not verified personal identity or national capacity |
