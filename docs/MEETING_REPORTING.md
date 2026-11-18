@@ -2,13 +2,29 @@
 
 The immediate product target is a PowerTranscript-like reporting workflow, implemented independently: select proceedings, search their evidence, apply mission report templates, and export documented results. Research CSVs and evaluated stance tracking remain distinct capabilities. This is not a claim of equivalent vendor performance or access to proprietary code or weights.
 
+## Briefing questions
+
+Add up to eight briefing questions in mission preferences. Each has a heading
+(up to 160 characters) and search words (up to 300 characters). All search words
+must occur in a passage or its recorded metadata. Prepared reports show matching
+original passages with source identities, or an explicit unanswered-question gap.
+These searches do not generate answers, infer positions or change the mandatory
+meeting overview, country comparison coverage, evidence appendix or full CSV.
+
+Questions are retained in v4 saved reports and v2 mission preferences. Existing
+v1–v3 reports and v1 preferences reopen with no questions; legacy schemas carrying
+questions are rejected rather than silently dropping them. Imports rebuild results
+from verified sources. Editing, adding or removing a question invalidates prepared
+exports. HTML and ZIP contain the question sections; evidence CSV remains unchanged.
+No model, new dependency, automatic storage or external AI request is added.
+
 ## First delivery
 
 [Open the reporting workspace](https://lystadjs.github.io/un/transcript-agent/meeting-reports.html). Deployment and verified engineering evidence are recorded in [the current checkpoint](OVERNIGHT_WORK.md). Diplomat usability and scientific acceptance remain separate.
 
 `site/meeting-reports.html` is a focused browser workspace. A date search verifies the complete official inventory without downloading transcripts. Users explicitly select up to five meetings per load; only those transcripts are requested. The 37 reserved identities and both reserved dates are blocked before collection. A synthetic regression binds the browser exclusions to the production collector's exact policy.
 
-Users can also reopen source-bound `un.browser.corpus.v1` collections and versioned `un.meeting-report.v1`, `un.meeting-report.v2` and `un.meeting-report.v3` reports. Imported text must match original response bytes, source identity, date, language, JSON pointer, and hashes. Meeting titles, passage identifiers and evidence links must match the original inventory and source; renaming a repeated passage cannot inflate its count. Country and speaker metadata must agree with the original source and current country registry. Unsupported or corrupt inputs leave the existing collection intact. Legacy hash-only collections remain readable in the original advanced workspace; this new workflow requires original response bytes.
+Users can also reopen source-bound `un.browser.corpus.v1` collections and versioned `un.meeting-report.v1`, `un.meeting-report.v2`, `un.meeting-report.v3` and `un.meeting-report.v4` reports. Imported text must match original response bytes, source identity, date, language, JSON pointer, and hashes. Meeting titles, passage identifiers and evidence links must match the original inventory and source; renaming a repeated passage cannot inflate its count. Country and speaker metadata must agree with the original source and current country registry. Unsupported or corrupt inputs leave the existing collection intact. Legacy hash-only collections remain readable in the original advanced workspace; this new workflow requires original response bytes.
 
 The maintained public archive is deliberately source-free. The archive can hand off up to five selected public meeting identities across dates. Selection survives filters and pagination. The versioned link carries only dates, meeting IDs and the public snapshot ID; no transcript, notes, source URL or credentials. In the reporting workspace, users explicitly check those identities against the current official inventory before loading available sources. Missing and unavailable meetings remain visible; the tool never substitutes another meeting. Invalid/reserved selections are rejected, and missing exclusion policy disables handoff while preserving archive browsing. This does not transfer private warehouse text or change publication allowlists. Fresh browser collection is user-triggered, local, English-only and separate from the scheduled warehouse. A browser can show a newer revision than the last warehouse snapshot; report provenance identifies the actual loaded revision.
 
@@ -44,7 +60,7 @@ Country-expression tables offer “Read source context” in the prepared browse
 
 Reports containing multiple meetings open with a selected-meeting index. Each dated title links to its meeting section, alongside the loaded source-segment count and collection outcome. These describe available evidence, not source completeness or policy importance. Each section links back to the index. Keyboard navigation moves focus to the destination heading; the same links work in the script-free HTML download. A single-meeting report opens directly with its meeting overview.
 
-Navigation does not request sources, select evidence, change notes or alter country expressions and coverage. Meeting order, original source links and the full evidence CSV remain unchanged. The index is rebuilt from verified sources when a saved report reopens; all three saved-report versions remain supported.
+Navigation does not request sources, select evidence, change notes or alter country expressions and coverage. Meeting order, original source links and the full evidence CSV remain unchanged. The index is rebuilt from verified sources when a saved report reopens; all four saved-report versions remain supported.
 
 ## Selecting an evidence appendix
 
@@ -81,7 +97,7 @@ The complete package, including ZIP headers and manifest, must fit within 25,000
 | Export | Contents and use |
 | --- | --- |
 | HTML | Script-free, standalone report suitable for browser reading and printing. Includes settings, preparation time, source checks, selected coverage, evidence links, and limitations. |
-| JSON | `un.meeting-report.v3`: engine, preparation time, preferences, selected meeting identities, appendix mode/passage identities, source-bound analyst notes, and original browser corpora. Reopening verifies sources and rebuilds derived claims; it does not trust saved computed summaries. |
+| JSON | `un.meeting-report.v4`: engine, preparation time, preferences, selected meeting identities, appendix mode/passage identities, source-bound analyst notes, and original browser corpora. Reopening verifies sources and rebuilds derived claims; it does not trust saved computed summaries. |
 | Evidence CSV | One row per original segment in the selected meetings: `id`, `meeting_slug`, `date`, `country`, `text`, `source_url`, `source_id`, `source_version`, `raw_sha256`, `text_sha256`, `json_pointer`. Includes every passage from the selected meetings, independently of search and appendix selection; excludes analyst notes. |
 
 The three downloads share a basename containing the report preparation timestamp in UTC, for example `un-meeting-report-20261113T023000123Z.html`, the corresponding `.json`, and `-evidence.csv`. Repeated exports from one prepared report retain that timestamp; preparing again creates a new report time. Filenames contain no mission name, notes or source text. The timestamp identifies a preparation, not the source publication date or a cryptographic checksum.

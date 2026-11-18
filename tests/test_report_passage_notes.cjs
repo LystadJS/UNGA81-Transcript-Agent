@@ -15,7 +15,7 @@ const policy=JSON.parse(fs.readFileSync(require.resolve('../site/reporting-exclu
  }
  const missing={...saved};delete missing.passage_notes;await assert.rejects(R.openSaved(missing,policy,F.countries));
  for(const schema of [R.LEGACY_VERSION,R.APPENDIX_VERSION]){
-  const old={...missing,schema};if(schema===R.LEGACY_VERSION)delete old.appendix;
+  const old={...missing,schema,settings:{...missing.settings}};delete old.settings.questions;if(schema===R.LEGACY_VERSION)delete old.appendix;
   assert.deepEqual((await R.openSaved(old,policy,F.countries)).passage_notes,[]);
   await assert.rejects(R.openSaved({...old,passage_notes:notes},policy,F.countries));
  }

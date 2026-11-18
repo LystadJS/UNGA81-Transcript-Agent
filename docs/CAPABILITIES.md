@@ -1,8 +1,25 @@
 # Current capability and acceptance matrix
 
-This is the current operational status guide, updated on 13 November 2026 (UTC). `site/release.json` identifies the released browser version. Historical validation receipts retain their original scope and date; they are not a fresh full-system test.
+This is the current operational status guide, updated on 18 November 2026 (America/New_York). `site/release.json` identifies the released browser version. Historical validation receipts retain their original scope and date; they are not a fresh full-system test.
 
 **The next product priority is a PowerTranscript-like meeting reporting workflow:** select proceedings, search source evidence, prepare a mission briefing, and export documented results. This is an independent implementation; no proprietary DiploTools code or model is used. Research CSVs and evaluated stance tracking remain distinct workstreams. See [the reporting contract and next deliveries](MEETING_REPORTING.md).
+
+**Reporting extension in review:** release 1.55.0 adds up to eight reusable briefing
+questions with original supporting passages and explicit unanswered gaps. It keeps
+JavaScript-only browser execution and introduces no Hugging Face storage, model
+weights or dependencies. Generated narrative reporting and full vendor parity are
+not established. Publication and verification status are recorded in the current
+work checkpoint.
+
+**Repository cleanup boundary:** the tracked tree contains approximately 127 MB
+under `un/` and 24 MB under `docs/`, including repeated fixtures and frozen method
+receipts. These are measured candidates for a dependency and provenance audit,
+not proven unused files. Preserve frozen artifacts and checksums while separating
+runtime, personal R/Python tools, required tests and historical evidence. Move
+historical material to a preserved Git archival reference before removing live-tree
+copies; update every executable reference and validate clean installations. Do not
+move these artifacts into the limited Hugging Face store or rewrite Git history.
+No claim of a runtime-only repository is made yet.
 
 | Capability | Implementation boundary | Deployment / empirical status |
 | --- | --- | --- |

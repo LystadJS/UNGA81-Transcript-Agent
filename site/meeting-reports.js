@@ -6,9 +6,21 @@
   let workspaceRevision=0,replacementSerial=0,packaging=false;
   const setStatus=(message,error=false)=>{$('status').textContent=message;$('status').classList.toggle('error',error);};
   const selected=()=>[...$('loadedMeetings').querySelectorAll('input:checked')].map(e=>e.value);
-  const options=()=>({template:$('reportTemplate').value,mission:$('mission').value,title:$('reportTitle').value,priorities:$('priorities').value,notes:$('analystNotes').value});
+  const options=()=>({template:$('reportTemplate').value,mission:$('mission').value,title:$('reportTitle').value,priorities:$('priorities').value,notes:$('analystNotes').value,questions:readQuestions()});
   const appendix=()=>({mode:$('appendixMode').value,record_ids:[...appendixIds]});
   const passageNotes=()=>[...notes].map(([record_id,text])=>({record_id,text}));
+  function readQuestions(){return [...$('briefingQuestions').children].map(row=>({heading:row.querySelector('[data-heading]').value,query:row.querySelector('[data-query]').value}));}
+  function questionCount(){const count=$('briefingQuestions').children.length;$('questionCount').textContent=count+' of 8 questions.';$('addBriefingQuestion').disabled=count>=8;}
+  function addQuestion(value={heading:'',query:''},focus=false){
+    if($('briefingQuestions').children.length>=8)return;
+    const row=document.createElement('fieldset'),legend=document.createElement('legend');legend.textContent='Briefing question';row.append(legend);
+    for(const [key,label,max] of [['heading','Question or section heading',160],['query','Search words for supporting evidence',300]]){
+      const wrapper=document.createElement('label'),input=document.createElement('input');wrapper.textContent=label;input.type='text';input.maxLength=max;input.value=value[key];input.dataset[key]='';input.addEventListener('input',invalidate);wrapper.append(input);row.append(wrapper);
+    }
+    const remove=document.createElement('button');remove.type='button';remove.className='secondary';remove.textContent='Remove question';remove.onclick=()=>{const next=row.nextElementSibling?.querySelector('input')||row.previousElementSibling?.querySelector('input')||$('addBriefingQuestion');row.remove();questionCount();invalidate();next.focus();};row.append(remove);$('briefingQuestions').append(row);questionCount();if(focus)row.querySelector('input').focus();
+  }
+  function setQuestions(values=[]){$('briefingQuestions').replaceChildren();for(const q of values)addQuestion(q);questionCount();}
+  $('addBriefingQuestion').onclick=()=>{addQuestion(undefined,true);invalidate();};
   function save(data,name,mime){const blob=new Blob([data],{type:mime});if(blob.size>Core.LIMIT){setStatus('Download exceeds 25 MB. Choose fewer meetings or shorter notes before exporting. Current work has not changed.',true);return false;}const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);return true;}
   function reportName(suffix){return 'un-meeting-report-'+report.generated_at.replace(/[-:.]/g,'')+suffix;}
   function invalidate(){workspaceRevision++;report=null;$('expressionEvidence').close();$('expressionEvidenceBody').replaceChildren();$('reportPreview').replaceChildren();for(const id of ['downloadReport','saveReport','downloadEvidence','downloadPackage'])$(id).disabled=true;$('packageStatus').textContent='Prepare the report before downloading its package.';$('reportState').textContent='Settings or selection changed. Prepare the report to update its exports.';dirty=!!corpora.length;}
@@ -73,6 +85,7 @@
     appendixIds=new Set(chosen.record_ids);$('appendixMode').value=chosen.mode;$('onlySelectedEvidence').checked=false;
     notes=new Map(passage_notes.map(n=>[n.record_id,n.text]));
     for(const row of corpora.flatMap(c=>c.coverage).filter(r=>r.slug))$('loadedMeetings').append(checkbox(row,true,!selection||selection.includes(row.slug)));
+    if(prefs)setQuestions(prefs.questions);
     if(prefs){for(const [id,key] of [['reportTemplate','template'],['mission','mission'],['reportTitle','title'],['priorities','priorities'],['analystNotes','notes']])$(id).value=prefs[key];}
     else $('analystNotes').value='';
     $('reportControls').disabled=false;$('evidenceSearch').disabled=false;$('appendixControls').disabled=false;
@@ -157,7 +170,7 @@
       if(file.size>Core.PREFERENCES_LIMIT)throw Error('Use a mission-preferences JSON file under 8 KiB.');
       const prefs=Core.importPreferences(JSON.parse(await file.text()));
       for(const [id,key] of [['reportTemplate','template'],['mission','mission'],['reportTitle','title'],['priorities','priorities']])$(id).value=prefs[key];
-      invalidate();$('preferencesStatus').textContent='Mission preferences applied. Your loaded sources, meeting selection and analyst notes are unchanged. Prepare the report again to update its exports.';
+      setQuestions(prefs.questions);invalidate();$('preferencesStatus').textContent='Mission preferences applied. Your loaded sources, meeting selection and analyst notes are unchanged. Prepare the report again to update its exports.';
     }catch(e){$('preferencesStatus').textContent='Could not open mission preferences: '+e.message;}finally{event.target.value='';}
   };
   $('evidenceSearch').oninput=()=>{shown=10;search();};$('moreEvidence').onclick=()=>{shown+=10;search();};
