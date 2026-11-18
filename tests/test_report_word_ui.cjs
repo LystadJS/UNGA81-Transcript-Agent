@@ -21,7 +21,7 @@ let browser,server;
   const old=UNMeetingReportWord.build;window.wordSnapshot=null;
   UNMeetingReportWord.build=report=>{const doc=new DOMParser().parseFromString(UNMeetingReport.reportHTML(report),'text/html'),walker=doc.createTreeWalker(doc.body,NodeFilter.SHOW_TEXT),text=[];let node;while(node=walker.nextNode())if(node.nodeValue.trim())text.push(node.nodeValue);window.wordSnapshot={text,links:[...doc.querySelectorAll('a[href]')].map(a=>a.getAttribute('href')),time:report.generated_at};return old(report);};return true;
  });assert(content);
- const [download]=await Promise.all([page.waitForEvent('download'),page.locator('#downloadWord').click()]);assert(download.suggestedFilename().endsWith('.docx'));
+ await page.locator('#downloadWord').focus();const [download]=await Promise.all([page.waitForEvent('download'),page.keyboard.press('Enter')]);assert(download.suggestedFilename().endsWith('.docx'));
  const snapshot=await page.evaluate(()=>window.wordSnapshot);assert(download.suggestedFilename().includes(snapshot.time.replace(/[-:.]/g,'')));
  const check=spawnSync('python3',['-c',`
 import json,re,sys,zipfile,xml.etree.ElementTree as ET
