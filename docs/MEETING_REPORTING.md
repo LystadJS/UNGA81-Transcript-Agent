@@ -264,6 +264,24 @@ Reports containing multiple meetings open with a selected-meeting index. Each da
 
 Navigation does not request sources, select evidence, change notes or alter country expressions and coverage. Meeting order, original source links and the full evidence CSV remain unchanged. The index is rebuilt from verified sources when a saved report reopens; all four saved-report versions remain supported.
 
+## Jump between recorded affiliations
+
+Reports with more than one recorded affiliation include an alphabetical
+**Recorded affiliations** index. Each link jumps to that affiliation's first row
+in the collection overview, or its country row in a single-meeting report.
+Single-meeting reports keep their summary and source statistics ahead of the index.
+**Back to affiliations** returns to the index. Keyboard activation moves focus
+to the destination row or heading. Every affiliation and comparison gap remains
+visible; no country selection is required to receive the overview.
+
+These links change only navigation. They preserve the prepared report, source
+scope, search filters, notes, appendix and full CSV. They make no source request.
+The same native links work in the script-free HTML export, Word bookmarks and
+browser-generated PDF. Unresolved or collective-only evidence remains a gap;
+these source labels do not establish national capacity or verified policy.
+An empty or single-affiliation report omits the unnecessary index. Saved reports
+rebuild it from verified original sources rather than trusting a saved index.
+
 ## Selecting an evidence appendix
 
 Check supporting passages while searching. Selections persist across searches, and “Show selected passages only” makes them easy to revisit. Any template can use a custom appendix; its heading identifies the passages as analyst-selected and reports their count against the full selected-meeting denominator. Clearing the selection leaves an explicit empty appendix. Returning to “Template default” clears custom selections. Removing a meeting removes its appendix selections.

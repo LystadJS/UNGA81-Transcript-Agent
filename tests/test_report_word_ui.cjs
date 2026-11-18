@@ -46,7 +46,7 @@ with zipfile.ZipFile(sys.argv[1]) as z:
  assert all(r.attrib['Type'].endswith('/hyperlink') for r in relations if r.attrib.get('TargetMode')=='External')
  bookmarks={x.attrib['{'+w['w']+'}name'] for x in doc.findall('.//w:bookmarkStart',w)}
  assert all(h.attrib['{'+w['w']+'}anchor'] in bookmarks for h in doc.findall('.//w:hyperlink',w) if '{'+w['w']+'}anchor' in h.attrib)
- assert len(doc.findall('.//w:bookmarkStart',w))==3
+ assert len(doc.findall('.//w:bookmarkStart',w))==6
  assert not doc.findall('.//w:object',w) and not doc.findall('.//w:altChunk',w)
  print('PASS: independent native OOXML/CRC/XML parsing, complete rendered text, exact source hyperlinks, bookmarks, editable country tables, lists, Unicode and notes; no macros or remote media')
 `,await download.path()],{input:JSON.stringify(snapshot),encoding:'utf8'});assert.equal(check.status,0,check.stderr);process.stdout.write(check.stdout);
