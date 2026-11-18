@@ -52,6 +52,10 @@ report boundaries. Browser checks cover automatic rows, U.S. quotations, unchang
 filter/export state, local context, dated keyboard links, offline HTML, three native
 Word tables and complete PDF. Independently extracted the 39-page fictional print
 stress case and inspected its country table after preserving row pagination.
+Poppler and MuPDF independently extracted the live 39-page, 298,082-byte PDF;
+the country overview, comparison heading, no-carry-forward qualification, final
+source passage, long-quote end and analyst notes are present, without workspace
+controls. This is a reading-copy check, not a source-byte authenticity claim.
 These are engineering checks; no diplomat session, government-browser dialog or
 desktop Word-rendering acceptance is claimed.
 
