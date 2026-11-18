@@ -1,3 +1,16 @@
+## 18 November 2026 — generated snapshot cleanup
+
+Three generated comparison JSON files under docs/ (GMM, NMF and display) have
+been verified byte-for-byte against existing public commit
+`5d0ca060b7cfb90509b47ed4ac0c87a532eb637e`. Removing their current-tree copies
+saves 16,269,686 bytes. All nine doc/renderer/public-report links now use the
+immutable Git archive; the three output paths are ignored against reintroduction.
+No runtime/test consumes these files and all renderers already take explicit
+input paths. Frozen D1 artifacts, manifests, current methods and R/Python tools
+are preserved. Validation passed: all nine links are pinned, archived inputs regenerate all
+three current HTML audits byte for byte, renderer syntax and the allowlisted
+static build pass. Publication is in progress on the cleanup branch.
+
 ## 18 November 2026 — optional device report
 
 The next reporting increment (1.56.0) adds one explicitly saved IndexedDB report,

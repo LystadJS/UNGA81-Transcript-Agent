@@ -121,7 +121,7 @@ permutation-invariant alignment, missing vocabulary, limits, resampling, invalid
 reviews, filtering and source-safe rendering. Browser acceptance covers actual
 worker execution, completed-review import, source links, CSV/JSON/HTML/original
 exports, stale results, cancellation, mismatch rejection and mobile layouts.
-See [validation evidence](nmf-validation.json) and [comparison data](nmf-comparison.json).
+See [validation evidence](nmf-validation.json) and [comparison data](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/5d0ca060b7cfb90509b47ed4ac0c87a532eb637e/docs/nmf-comparison.json).
 
 ## Recommended next steps
 

@@ -16,7 +16,13 @@ work checkpoint.
 **Repository cleanup boundary:** the tracked tree contains approximately 127 MB
 under `un/` and 24 MB under `docs/`, including repeated fixtures and frozen method
 receipts. These are measured candidates for a dependency and provenance audit,
-not proven unused files. Preserve frozen artifacts and checksums while separating
+not proven unused files. Three generated comparison snapshots (GMM, NMF and display)
+have now been verified byte-for-byte against commit
+`5d0ca060b7cfb90509b47ed4ac0c87a532eb637e` and removed from the current tree:
+**16,269,686 bytes**. All nine documentation/renderer/report links now point to
+that immutable Git archive. No runtime, test, R/Python entry point, frozen D1
+artifact or source corpus was removed. The remaining historical files require
+dependency checks. Preserve frozen artifacts and checksums while separating
 runtime, personal R/Python tools, required tests and historical evidence. Move
 historical material to a preserved Git archival reference before removing live-tree
 copies; update every executable reference and validate clean installations. Do not

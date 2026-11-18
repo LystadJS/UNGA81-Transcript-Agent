@@ -164,7 +164,7 @@ with maximum coordinate difference below 2e-13. Initial coordinates are shared,
 while majorization and distance evaluation are independent. Tests cover exact
 planar geometry, duplicate/zero targets, stress descent, iteration limits,
 reproducibility, cancellation and unchanged memberships/UMAP/grouped refits with
-MDS enabled. See [validation](display-validation.json) and [saved comparison](display-comparison.json).
+MDS enabled. See [validation](display-validation.json) and [saved comparison](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/5d0ca060b7cfb90509b47ed4ac0c87a532eb637e/docs/display-comparison.json).
 The frozen R D1 pipeline and its release gates are unchanged.
 
 ## Recommended next steps

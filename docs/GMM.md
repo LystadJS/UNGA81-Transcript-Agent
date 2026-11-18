@@ -150,7 +150,7 @@ Browser acceptance exercises worker execution, both representations, the reviewe
 subset, soft exports, original byte preservation, stale results, cancellation,
 wrong-review rejection, a one-component spherical reference and mobile layout.
 Existing numerical suites remain regression checks. See [validation](gmm-validation.json)
-and [comparison data](gmm-comparison.json). New checks apply to the browser workflow;
+and [comparison data](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/5d0ca060b7cfb90509b47ed4ac0c87a532eb637e/docs/gmm-comparison.json). New checks apply to the browser workflow;
 the frozen R D1 pipeline, labels and release gates are unchanged.
 
 ## Recommended next steps
