@@ -10,7 +10,14 @@ summary acceptance and full DiploTools equivalence remain outstanding.
 Local validation passed: all 250 Python operational contract tests, eight Node
 reporting contract suites, five Chromium reporting/archive suites and an
 allowlisted static build. Tests used synthetic sources; no reserved transcripts
-were opened. Source and mirror publication remain pending. Repository
+were opened. Source [PR #291](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/291)
+is open at commit `117cbc0`; all three hosted checks passed. Mirror
+[PR #167](https://github.com/LystadJS/LystadJS.github.io/pull/167) is open at
+`feef7a4`; exactly five app assets and its manifest changed. All 192 mirrored
+public files match their hashes. Mirror hosted checks, merge and live deployment
+remain pending. The partial mirror checkout is `/workspace/portfolio-site`;
+unchanged absent paths are marked skip-worktree after network clone failures.
+Do not interpret that partial checkout as authorization to delete website files. Repository
 cleanup has been scoped to distinguish required runtime/personal tools/tests from
 frozen historical evidence; no frozen files have been deleted.
 
