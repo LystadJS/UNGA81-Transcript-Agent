@@ -2,6 +2,20 @@
 
 The immediate product target is a PowerTranscript-like reporting workflow, implemented independently: select proceedings, search their evidence, apply mission report templates, and export documented results. Research CSVs and evaluated stance tracking remain distinct capabilities. This is not a claim of equivalent vendor performance or access to proprietary code or weights.
 
+## Choose the right export
+
+Prepared-report downloads are grouped by purpose. **Save work to reopen** keeps
+JSON, ZIP and device saves together; JSON/ZIP provide portable resumable copies,
+while device saves stay in the current browser profile. **Read or share** contains
+print/PDF, Word and standalone HTML, with a reminder to retain JSON/ZIP separately.
+**Evidence spreadsheets** contains the full original-evidence CSV and the separate
+passage-notes CSV. Calendar review entries remain a separate optional download.
+
+All controls retain their existing preparation, stale-work, file-size and
+unsaved-work protections. The grouping changes navigation and guidance; source
+scope, report content, original ZIP files and saved formats remain unchanged.
+Actual diplomat comprehension and work-browser acceptance still need user sessions.
+
 ## Remove loaded source collections
 
 Expand **Manage loaded source collections** to see each original collection's
