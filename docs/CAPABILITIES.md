@@ -4,7 +4,9 @@ This is the current operational status guide, updated on 18 November 2026 (Ameri
 
 **The next product priority is a PowerTranscript-like meeting reporting workflow:** select proceedings, search source evidence, prepare a mission briefing, and export documented results. This is an independent implementation; no proprietary DiploTools code or model is used. Research CSVs and evaluated stance tracking remain distinct workstreams. See [the reporting contract and next deliveries](MEETING_REPORTING.md).
 
-**Reporting extension in review:** release 1.55.0 adds up to eight reusable briefing
+**Reporting extensions in review:** release 1.56.0 adds an optional explicitly
+saved device report with verified replay, replacement safeguards and JSON fallback.
+This is one browser-profile copy, not authenticated collaboration. Release 1.55.0 adds up to eight reusable briefing
 questions with original supporting passages and explicit unanswered gaps. It keeps
 JavaScript-only browser execution and introduces no Hugging Face storage, model
 weights or dependencies. Generated narrative reporting and full vendor parity are

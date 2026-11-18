@@ -3,7 +3,7 @@
   'use strict';
   const $=id=>document.getElementById(id),Core=UNMeetingReport;
   let policy,countries,inventory=[],corpora=[],report=null,controller=null,shown=10,dirty=false,handoff=null,appendixIds=new Set(),notes=new Map();
-  let workspaceRevision=0,replacementSerial=0,packaging=false;
+  let workspaceRevision=0,replacementSerial=0,packaging=false,deviceBusy=false,deviceAvailable=false,deviceSaved=false;
   const setStatus=(message,error=false)=>{$('status').textContent=message;$('status').classList.toggle('error',error);};
   const selected=()=>[...$('loadedMeetings').querySelectorAll('input:checked')].map(e=>e.value);
   const options=()=>({template:$('reportTemplate').value,mission:$('mission').value,title:$('reportTitle').value,priorities:$('priorities').value,notes:$('analystNotes').value,questions:readQuestions()});
@@ -23,7 +23,7 @@
   $('addBriefingQuestion').onclick=()=>{addQuestion(undefined,true);invalidate();};
   function save(data,name,mime){const blob=new Blob([data],{type:mime});if(blob.size>Core.LIMIT){setStatus('Download exceeds 25 MB. Choose fewer meetings or shorter notes before exporting. Current work has not changed.',true);return false;}const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);return true;}
   function reportName(suffix){return 'un-meeting-report-'+report.generated_at.replace(/[-:.]/g,'')+suffix;}
-  function invalidate(){workspaceRevision++;report=null;$('expressionEvidence').close();$('expressionEvidenceBody').replaceChildren();$('reportPreview').replaceChildren();for(const id of ['downloadReport','saveReport','downloadEvidence','downloadPackage'])$(id).disabled=true;$('packageStatus').textContent='Prepare the report before downloading its package.';$('reportState').textContent='Settings or selection changed. Prepare the report to update its exports.';dirty=!!corpora.length;}
+  function invalidate(){workspaceRevision++;report=null;$('expressionEvidence').close();$('expressionEvidenceBody').replaceChildren();$('reportPreview').replaceChildren();for(const id of ['downloadReport','saveReport','downloadEvidence','downloadPackage','saveDeviceReport'])$(id).disabled=true;$('packageStatus').textContent='Prepare the report before downloading its package.';$('reportState').textContent='Settings or selection changed. Prepare the report to update its exports.';dirty=!!corpora.length;deviceControls();}
   function replacementCurrent(ticket){
     if(ticket.id!==replacementSerial)return false;
     if(ticket.revision!==workspaceRevision){setStatus('Your report changed while sources were being checked. Current work kept; try loading again when ready.');return false;}
@@ -177,7 +177,7 @@
   $('onlySelectedEvidence').onchange=()=>{shown=10;search();};
   $('appendixMode').onchange=()=>{if($('appendixMode').value==='template')appendixIds.clear();invalidate();search();};
   $('clearAppendix').onclick=()=>{appendixIds.clear();$('appendixMode').value='selected';invalidate();search();};
-  $('prepareReport').onclick=()=>{try{report=Core.build(corpora,selected(),options(),appendix(),passageNotes());workspaceRevision++;$('reportPreview').innerHTML=Core.reportHTML(report,{preview:true});for(const id of ['downloadReport','saveReport','downloadEvidence','downloadPackage'])$(id).disabled=false;$('downloadPackage').disabled=packaging;if(!packaging)$('packageStatus').textContent='Ready to download a report package.';$('reportState').textContent='Report ready: '+report.meetings.length+' meetings. Review source evidence before circulation.';dirty=true;}catch(e){invalidate();setStatus(e.message,true);}};
+  $('prepareReport').onclick=()=>{try{report=Core.build(corpora,selected(),options(),appendix(),passageNotes());workspaceRevision++;$('reportPreview').innerHTML=Core.reportHTML(report,{preview:true});for(const id of ['downloadReport','saveReport','downloadEvidence','downloadPackage','saveDeviceReport'])$(id).disabled=false;$('downloadPackage').disabled=packaging;if(!packaging)$('packageStatus').textContent='Ready to download a report package.';$('reportState').textContent='Report ready: '+report.meetings.length+' meetings. Review source evidence before circulation.';dirty=true;deviceControls();}catch(e){invalidate();setStatus(e.message,true);}};
   $('reportPreview').onclick=event=>{
     const button=event.target.closest('button[data-evidence-id]');
     if(!button||!$('reportPreview').contains(button)||!report)return;
@@ -201,10 +201,54 @@
     }catch(e){$('packageStatus').textContent='Could not create report package: '+e.message;}
     finally{packaging=false;$('downloadPackage').disabled=!report;}
   };
+  function deviceControls(){
+    $('openDeviceReport').disabled=deviceBusy||!deviceAvailable||!deviceSaved||!policy||!countries;
+    $('deleteDeviceReport').disabled=deviceBusy||!deviceAvailable||!deviceSaved;
+    $('saveDeviceReport').disabled=deviceBusy||!deviceAvailable||!report;
+  }
+  async function checkDeviceReport(){
+    try{deviceSaved=await UNReportStorage.exists();deviceAvailable=true;$('deviceReportStatus').textContent=deviceSaved?'A saved report is available in this browser profile. Open it explicitly to verify its sources.':'No report saved on this device. Prepare a report and choose Save on this device.';}
+    catch(e){deviceAvailable=false;$('deviceReportStatus').textContent=e.message;}
+    deviceControls();
+  }
+  function deviceSaveStatus(message){$('deviceReportStatus').textContent=message;$('deviceSaveStatus').textContent=message;}
+  $('saveDeviceReport').onclick=async()=>{
+    if(!report||deviceBusy||!deviceAvailable)return;
+    if(deviceSaved&&!window.confirm('Replace the report saved in this browser profile? Download its JSON first if you need to retain it.'))return;
+    const prepared=report,revision=workspaceRevision;deviceBusy=true;deviceControls();
+    try{
+      await UNReportStorage.write(JSON.stringify(Core.savedReport(prepared,corpora)));deviceSaved=true;
+      if(report===prepared&&workspaceRevision===revision){dirty=false;deviceSaveStatus('Report saved in this browser profile. Nothing was uploaded. Download JSON for a portable copy.');}
+      else deviceSaveStatus('The earlier prepared report was saved. Your newer edits remain unsaved; prepare and save again.');
+    }catch(e){deviceSaveStatus('Could not save on this device: '+e.message);}
+    finally{deviceBusy=false;deviceControls();}
+  };
+  $('openDeviceReport').onclick=async()=>{
+    if(deviceBusy||!deviceAvailable)return;
+    const ticket={id:++replacementSerial,revision:workspaceRevision};deviceBusy=true;deviceControls();
+    try{
+      const text=await UNReportStorage.read();if(typeof text!=='string'||new TextEncoder().encode(text).length>Core.LIMIT)throw Error('No supported device report found. Open a downloaded JSON copy instead.');
+      const opened=await Core.openSaved(JSON.parse(text),policy,countries);
+      if(!replacementCurrent(ticket))return;
+      if(!await confirmReplacement('Opening the device report will replace your current sources, appendix selections and notes.'))return;
+      if(!replacementCurrent(ticket))return;
+      setCollection(opened.corpora,opened.settings,opened.selected,opened.appendix,opened.passage_notes);dirty=false;
+      $('deviceReportStatus').textContent='Device report verified and opened. Prepare the report to rebuild its summaries.';
+    }catch(e){$('deviceReportStatus').textContent='Could not open device report: '+e.message;}
+    finally{deviceBusy=false;deviceControls();}
+  };
+  $('deleteDeviceReport').onclick=async()=>{
+    if(deviceBusy||!deviceAvailable||!window.confirm('Remove the report saved in this browser profile? Your currently open work and downloaded files will remain.'))return;
+    deviceBusy=true;deviceControls();
+    try{await UNReportStorage.remove();deviceSaved=false;dirty=!!corpora.length;deviceSaveStatus('Device copy removed. Your currently open work and downloaded files are unchanged.');}
+    catch(e){$('deviceReportStatus').textContent='Could not remove device copy: '+e.message;}
+    finally{deviceBusy=false;deviceControls();}
+  };
+  checkDeviceReport();
   window.addEventListener('beforeunload',event=>{if(dirty){event.preventDefault();event.returnValue='';}});
   (async()=>{try{
     const read=async path=>{const r=await fetch(path,{credentials:'omit'});if(!r.ok)throw Error('Reporting setup unavailable.');return r.json();};
-    [policy,countries]=await Promise.all([read('reporting-exclusions.json'),read('countries.json')]);Core.exclusions(policy);
+    [policy,countries]=await Promise.all([read('reporting-exclusions.json'),read('countries.json')]);Core.exclusions(policy);deviceControls();
     const now=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());$('meetingDate').value=now;
     $('sourceControls').disabled=false;
     try{handoff=UNMeetingReportSelection.read(location.search,policy);}catch(e){setStatus('Could not open meeting selection: '+e.message+' Choose a date or saved collection instead.',true);return;}

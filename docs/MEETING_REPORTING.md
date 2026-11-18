@@ -2,6 +2,26 @@
 
 The immediate product target is a PowerTranscript-like reporting workflow, implemented independently: select proceedings, search their evidence, apply mission report templates, and export documented results. Research CSVs and evaluated stance tracking remain distinct capabilities. This is not a claim of equivalent vendor performance or access to proprietary code or weights.
 
+## Optional report saved on this device
+
+After preparing a report, choose **Save on this device** to retain one report in
+this browser profile. Saving includes every loaded original source bundle, notes,
+questions and selections, with the same 25 MB bound as saved JSON. Replacing an
+existing device copy requires confirmation. Nothing is saved automatically or
+uploaded; this feature uses IndexedDB and adds no dependency or Hugging Face data.
+
+Open **Saved report on this device** to reopen or remove that copy. Opening checks
+original sources through the same importer as JSON and rebuilds derived summaries.
+Unsaved current work requires an explicit replacement decision. Failed validation
+or storage operations preserve current work; a delayed save never marks newer edits
+saved. Removing the device copy preserves open work and downloaded files, and marks
+open work as unsaved. Device saves leave the existing report JSON schema unchanged.
+
+This is local storage, not an authenticated shared mission workspace. Other users
+of the same browser profile may access it; clearing browser data may remove it.
+Keep a downloaded JSON or ZIP for portability. A browser that disables storage
+continues to support the file-based reporting workflow.
+
 ## Briefing questions
 
 Add up to eight briefing questions in mission preferences. Each has a heading
