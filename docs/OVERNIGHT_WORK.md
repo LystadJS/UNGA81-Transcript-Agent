@@ -12,58 +12,39 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Verified release 1.64.0
+## Verified patch 1.64.1
 
 | PR | Change | Checked head / merge |
 | --- | --- | --- |
-| [Source #311](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/311) | Direct report-package ZIP reopening and source addition | Three checks passed at `988f90b`; merged `69e5f6f` |
-| [Website #177](https://github.com/LystadJS/LystadJS.github.io/pull/177) | Canonical mirror, release pins and live package-open suite | Audit/regression passed at `5f5f6b9`; merged `b9ad696` |
+| [Source #313](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/313) | Remove superseded package extraction instructions | Three checks passed at `315be7a`; merged `19f94be` |
+| [Website #178](https://github.com/LystadJS/LystadJS.github.io/pull/178) | Canonical mirror and verification pins | Audit/regression passed at `abda993`; merged `beff1f0` |
 
-Both public URLs serve 1.64.0. All 195 checked portfolio files (194 manifest
-entries plus the manifest) match expected SHA-256 hashes. Ten reporting browser
-suites pass against the actual preferred URL with fictional sources: reporting,
-package opening, source removal/addition, replacement, packages, device library,
-archive handoff, Word and print/PDF. Package opening also passes at the original
-source URL, whose four changed assets match canonical hashes. Skipped PR live
-jobs are not counted as deployed verification.
+Both public URLs serve 1.64.1. All 195 preferred-site files match their expected
+SHA-256 hashes. Existing package-download and direct-package-opening browser
+suites pass against the preferred URL; package opening also passes at the original
+source URL. The updated post-download status and export help direct users to open
+the ZIP in the workspace; extracted report.json remains an alternative. The main
+script URL is versioned. This patch changes instructions and cache/release metadata,
+with no new application files, dependencies, schemas, models or storage.
 
-Open and Add sources accept original report-package ZIPs directly, preserving
-JSON support. No manual extraction is required for the app's own packages. The
-reader bounds the whole file to 25 MB, accepts only the five original uncompressed
-entries, verifies contiguous matching local/central headers and CRCs, then checks
-SHA-256 file hashes and manifest/report metadata. Original source bytes are
-revalidated through the existing saved-report path before any replacement prompt.
-Imported HTML is never rendered or executed; every derived claim is rebuilt.
-Checksums establish consistency, not source authentication. ZIPs outside
-this exact format are refused; extracted report.json remains available.
+The [1.64.0 receipt](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/7992df9bf87e50bab32016d249cee76285ee08c1/docs/OVERNIGHT_WORK.md)
+records the full functional release: 256 Python tests, ten live reporting suites,
+actual 1.63-writer compatibility and original-source checks. Use those results at
+their original version and scope. The current source PR also passes its full CI
+contracts, numerical and browser checks; skipped PR live jobs are not live passes.
+No actual diplomat usability session or accepted stance model is claimed.
 
-Keep/Replace, Escape, preserved invalid-import state and stale-operation checks
-apply to direct packages. Source addition keeps current settings and annotations,
-excludes incoming report notes and refuses overlapping meetings. A ZIP renamed
-with a JSON suffix is detected by its signature. Neither import nor preparation
-is automatic saving. Export schemas, notes, source selection and storage limits
-remain unchanged.
+Direct package opening remains bounded to the original five-file uncompressed
+format with matching ZIP headers, CRCs, SHA-256 file hashes, manifest/report
+metadata and separately revalidated original sources. Imported HTML never renders
+or executes; report claims are rebuilt. Keep/Escape, invalid-import preservation,
+stale-operation checks, overlapping-meeting refusal and foreign-annotation exclusion
+remain in place. File consistency does not authenticate a source or speaker.
 
-Local validation passes 256 Python tests and ten synthetic reporting browser
-suites plus pure contracts. New checks cover independent ZIP entry extraction,
-original package round-trip, malformed/extra/missing/encrypted/compressed/trailing
-structures, offsets and size fields, CRC/SHA-256/manifest mismatches, exact size
-bounds, corrupt original sources, Keep/Escape, retained notes/settings/sources,
-source addition, overlap and delayed-edit refusal, mobile and no transcript
-requests. A separate compatibility check generated a fictional package with the
-actual archived 1.63 writer and reopened it losslessly with the new reader.
-Usability instructions now include direct ZIP reopening; no actual participant
-session or diplomat acceptance is claimed.
-
-The public build remains 203 entries and the mirror 194 files. Four assets and
-the manifest change; sync is idempotent. Package/main script URLs are versioned.
-No application file, dependency, schema, model, server, upload or Hugging Face
-storage is added. All 2,077 R-package checksums remain valid; scientific gates,
-original records and all 37 reserved meetings are unchanged.
-
-The preserved [1.63.0 receipt](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/51c94bdab12869fe4e6a2e3cdd908e1dfc137962/docs/OVERNIGHT_WORK.md)
-records source removal and links earlier reporting checkpoints. Use historical
-results at their original version and scope.
+The public build remains 203 entries and the mirror 194 files. Three assets and
+the manifest change; repeat sync copies zero files. Hugging Face storage, separate
+personal R/Python execution, source/scientific gates and all 37 reserved meetings
+are unchanged. The current 2,077-file R-package checksum inventory remains valid.
 
 ## Source tree and remaining work
 
@@ -95,7 +76,7 @@ no released model or semantic-accuracy claim follows from structural QA.
 
 The R cleanup did not change browser assets or add Hugging Face storage.
 
-1. Continue useful reporting work from the verified 1.64.0 release, then expand
+1. Continue useful reporting work from the verified 1.64.1 release, then expand
    broader workflows within the execution/storage constraints.
 2. Continue dependency-based cleanup with appropriate personal-runtime checks.
 3. Complete actual diplomat usability sessions; evaluate any optional generative
