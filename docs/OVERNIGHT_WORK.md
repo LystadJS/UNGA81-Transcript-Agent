@@ -7,25 +7,25 @@ tools, limited Hugging Face storage and a focused source tree.
 
 ## Publication boundary
 
-Automatic approval review rejected merging source PR #291 because the standing
-workflow authorizes commit/push but does not explicitly authorize merging into
-main. Explicit asynchronous approval questions for #291 and website #167 remain
-pending. Do not retry either merge, push to main, merge into prerequisite feature
-branches or infer approval from elapsed time. No current change is deployed.
-The live portfolio release was checked on 18 November and remains 1.54.0.
+On 18 November 2026 the user explicitly approved all merges from that point
+onward. This standing authorization supersedes the former merge-approval blocker;
+respect checks and repository protections, but do not request the same approval
+again. Source #291/#292 and website #167 are merged. Cleanup #293 and website #168
+have been retargeted to main; their publication and live verification are in progress.
+The last verified live release before these merges was 1.54.0; do not claim a new
+live release until deployed assets have been checked.
 
 ## Reviewable changes
 
 | PR | Scope | Base / verification |
 | --- | --- | --- |
-| [Source #291](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/291) | Release 1.55.0: eight reusable briefing questions, original supporting passages and unanswered gaps | main; head `76b7ace`; all three hosted checks passed |
-| [Source #292](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/292) | Release 1.56.0: one explicitly saved device report, verified replay and JSON fallback | #291 feature branch; head `41bf732`; all three hosted checks passed |
-| [Source #293](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/293) | Remove three historical generated snapshots and consolidate current status documents | #292 feature branch; applicable browser/numerical checks passed before this documentation consolidation |
-| [Website #167](https://github.com/LystadJS/LystadJS.github.io/pull/167) | 1.55.0 mirror, corrected source/release verification pins | main; head `939d8e8`; audit and regression passed |
-| [Website #168](https://github.com/LystadJS/LystadJS.github.io/pull/168) | 1.56.0 mirror, storage module and archived evidence links | #167 feature branch; head `59cc403`; audit passed, regression pending |
+| [Source #291](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/291) | Release 1.55.0: eight reusable briefing questions, original supporting passages and unanswered gaps | main; merged as `7c42c87`; all three hosted checks passed |
+| [Source #292](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/292) | Release 1.56.0: one explicitly saved device report, verified replay and JSON fallback | main; merged as `29be705`; all three hosted checks passed |
+| [Source #293](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/293) | Remove three historical generated snapshots and consolidate current status documents | main; applicable browser/numerical checks passed before this authorization update |
+| [Website #167](https://github.com/LystadJS/LystadJS.github.io/pull/167) | 1.55.0 mirror, corrected source/release verification pins | main; merged as `f6d7254`; audit and regression passed |
+| [Website #168](https://github.com/LystadJS/LystadJS.github.io/pull/168) | 1.56.0 mirror, storage module and archived evidence links | main; head `59cc403`; audit and regression passed |
 
-After authorized prerequisite merges, retarget stacked PRs to main and verify
-current checks before publication. Website #168 depends on source #292 and #293.
+Verify current checks before publication. Website #168 depends on source #292 and #293.
 Do not open another equivalent PR or treat skipped post-deployment jobs as passes.
 
 ## Verified engineering work
@@ -54,8 +54,7 @@ Use the existing sync script and explicit paths; never stage website deletions
 from the partial checkout. Its Git trees can be written with `--missing-ok`
 while retaining unchanged promisor objects; review the exact staged paths first.
 
-1. Inspect hosted checks and any approval answers. Publication remains blocked
-   until the relevant explicit merge authorization is received.
+1. Inspect hosted checks and any approval answers. Standing merge authorization is recorded above; preserve checks and protections.
 2. Continue dependency-based cleanup; the larger `un/` fixtures have live
    validation references and must not be deleted merely because they are old.
 3. Complete representative diplomat usability sessions and evaluate any optional
