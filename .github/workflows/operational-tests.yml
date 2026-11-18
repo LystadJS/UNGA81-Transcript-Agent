@@ -59,6 +59,7 @@ jobs:
           node tests/test_mission_preferences.cjs
           node tests/test_meeting_reports_ui.cjs
           node tests/test_report_remove_sources_ui.cjs
+          node tests/test_report_collect_append_ui.cjs
           node tests/test_report_append_sources_ui.cjs
           node tests/test_report_replacement_ui.cjs
           node tests/test_device_report_ui.cjs

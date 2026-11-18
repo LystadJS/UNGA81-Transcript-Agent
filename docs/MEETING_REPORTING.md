@@ -18,6 +18,27 @@ warns; reusable mission settings and questions stay. Downloaded files, saved dev
 copies and the canonical archive are unchanged. A newer edit or source operation
 invalidates an older removal confirmation.
 
+## Add transcripts from the meeting inventory
+
+Open or load a report, find a meeting date, and check up to five new meetings.
+Choose **Add selected transcripts to this report** to retrieve them while keeping
+current sources, notes, appendix choices, questions and existing meeting selections.
+Unchecked loaded meetings stay unchecked; new meetings are included. Prepare the
+report again, then save JSON or ZIP to retain the addition. Nothing is saved
+automatically. The request checkboxes clear after a successful addition.
+
+An already loaded meeting, including an unchecked one or a newer source revision,
+is refused before retrieval. The ten-bundle/100-meeting limit and reserved or
+unavailable metadata are checked before requests. Retrieved sources and the full
+saved-JSON budget are checked before applying anything. Failed, incomplete,
+cancelled or stale retrieval leaves current work intact; a completed first bundle
+is not applied when a later bundle fails. Use a separate report to inspect
+incomplete sources. Edits or newer source operations supersede pending additions.
+
+**Load selected transcripts** keeps its separate replacement workflow and asks
+before discarding unsaved source-bound work. Inventory search alone does not
+retrieve transcripts. Both retrieval actions are explicit browser requests.
+
 ## Add sources while keeping current work
 
 Open a collection or report first, then use **Add sources from JSON or report-package ZIP to this

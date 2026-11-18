@@ -91,11 +91,11 @@
     input.setAttribute('aria-label',(loaded?'Include ':'Select ')+row.title);
     input.disabled=!Core.allowed(row.date.slice(0,10),row.slug,policy)||(!loaded&&!row.hasTranscript);
     span.textContent=row.date.slice(0,10)+' · '+row.title+' · '+(loaded?row.status:input.disabled?'Unavailable or excluded':'Transcript listed');
-    input.addEventListener('change',()=>{if(loaded){pruneAppendix();refreshEvidenceFilters();invalidate();shown=10;search();}else $('loadMeetings').disabled=!document.querySelector('#inventory input:checked');});
+    input.addEventListener('change',()=>{if(loaded){pruneAppendix();refreshEvidenceFilters();invalidate();shown=10;search();}else loadButtons();});
     label.append(input,span);return label;
   }
   function setCollection(next,prefs=null,selection=null,chosen={mode:'template',record_ids:[]},passage_notes=[],preserveSettings=false){
-    corpora=next;$('addCollection').disabled=!corpora.length;$('loadedMeetings').replaceChildren();
+    corpora=next;$('addCollection').disabled=!corpora.length;loadButtons();$('loadedMeetings').replaceChildren();
     appendixIds=new Set(chosen.record_ids);$('appendixMode').value=chosen.mode;$('onlySelectedEvidence').checked=false;
     notes=new Map(passage_notes.map(n=>[n.record_id,n.text]));
     for(const row of corpora.flatMap(c=>c.coverage).filter(r=>r.slug))$('loadedMeetings').append(checkbox(row,true,!selection||selection.includes(row.slug)));
@@ -138,7 +138,12 @@
       ($('sourceCollections').querySelector('button')||$('openCollection')).focus();
     }catch(e){if(ticket.id===replacementSerial)setStatus('Could not remove sources: '+e.message+' Current work kept.',true);}
   }
-  function busy(value){$('sourceControls').disabled=value;$('loadMeetings').disabled=value||!document.querySelector('#inventory input:checked');$('cancelLoad').hidden=!value;for(const e of $('inventory').querySelectorAll('input'))e.disabled=value||!inventory.find(m=>m.slug===e.value)?.hasTranscript;}
+  function loadButtons(loading=!!controller){
+    const checked=!!document.querySelector('#inventory input:checked');
+    $('loadMeetings').disabled=loading||!checked;$('addSelectedMeetings').disabled=loading||!checked||!corpora.length;
+  }
+  function busy(value){$('sourceControls').disabled=value;loadButtons(value);$('cancelLoad').hidden=!value;for(const e of $('inventory').querySelectorAll('input')){const m=inventory.find(m=>m.slug===e.value);e.disabled=value||!m?.hasTranscript||!Core.allowed(m.date.slice(0,10),m.slug,policy);}}
+
   function clearHandoff(){handoff=null;$('archiveSelection').hidden=true;}
   $('checkArchiveSelection').onclick=async()=>{
     if(!handoff)return;
@@ -168,12 +173,19 @@
       setStatus(inventory.length+' eligible meetings found. Select up to five, then load their transcripts.');
     }catch(e){setStatus(e.name==='AbortError'?'Search cancelled.':e.message,true);}finally{controller=null;busy(false);}
   };
-  $('meetingDate').oninput=()=>{clearHandoff();inventory=[];$('inventory').replaceChildren();$('loadMeetings').disabled=true;};
-  $('loadMeetings').onclick=async()=>{
+  $('meetingDate').oninput=()=>{clearHandoff();inventory=[];$('inventory').replaceChildren();loadButtons();};
+  async function loadSelected(add=false){
     const ids=new Set([...$('inventory').querySelectorAll('input:checked')].map(e=>e.value)),chosen=inventory.filter(m=>ids.has(m.slug));
     if(!chosen.length||chosen.length>5){setStatus('Select between one and five meetings per load.',true);return;}
+    if(add){
+      if(!corpora.length){setStatus('Open or load a report before adding transcripts.',true);return;}
+      const loaded=new Set(corpora.flatMap(c=>c.coverage).filter(m=>m.slug).map(m=>m.slug));
+      if(chosen.some(m=>loaded.has(m.slug))){setStatus('Already loaded meeting selected. Uncheck it before adding; current sources and revisions are kept.',true);return;}
+      if(corpora.length+chosen.length>10||loaded.size+chosen.length>100){setStatus('Addition exceeds ten source bundles or 100 meetings. Remove loaded collections or use a separate report. Current work kept.',true);return;}
+      if(chosen.some(m=>!m.hasTranscript||!Core.allowed(m.date.slice(0,10),m.slug,policy))){setStatus('Unavailable or reserved meeting blocked. No transcripts requested.',true);return;}
+    }
     const ticket={id:++replacementSerial,revision:workspaceRevision};
-    if(!await confirmReplacement('Loading these meetings will replace your current sources, appendix selections and notes.')){if(ticket.id===replacementSerial)setStatus('Current report kept. No transcripts requested.');return;}
+    if(!add&&!await confirmReplacement('Loading these meetings will replace your current sources, appendix selections and notes.')){if(ticket.id===replacementSerial)setStatus('Current report kept. No transcripts requested.');return;}
     if(!replacementCurrent(ticket))return;
     const next=[],loading=new AbortController();let failure=null,cancelled=false;
     try{
@@ -182,7 +194,7 @@
         if(loading.signal.aborted||ticket.id!==replacementSerial||ticket.revision!==workspaceRevision)break;
         if(!Core.allowed(m.date.slice(0,10),m.slug,policy))throw Error('Reserved meeting blocked.');
         const c=await UNCollector.collect(UNMeetingPickerCore.selection(m.date.slice(0,10),m),countries,{signal:loading.signal,progress:message=>{if(ticket.id===replacementSerial)setStatus(message);}});
-        await Core.validateCorpora([...next,c],policy,countries);next.push(c);
+        await Core.validateCorpora([...(add?corpora:[]),...next,c],policy,countries);next.push(c);
       }
     }catch(e){cancelled=e.name==='AbortError';failure=cancelled?'Loading cancelled.':e.message;}
     finally{if(controller===loading){controller=null;busy(false);}}
@@ -190,11 +202,24 @@
     if(loading.signal.aborted||cancelled){setStatus('Loading cancelled. Current work kept; no replacement applied.');return;}
     if(!replacementCurrent(ticket))return;
     const partial=!!failure||next.some(c=>c.collection.partial);
+    if(add){
+      if(partial||next.length!==chosen.length){setStatus('No sources added: '+(failure||'retrieval is incomplete.')+' Current work kept. Use a separate report to inspect incomplete sources.',true);return;}
+      try{
+        const combined=[...corpora,...next],selection=[...selected(),...next.flatMap(c=>c.coverage).filter(m=>m.slug).map(m=>m.slug)],prefs=options(),chosenAppendix=appendix(),passage_notes=passageNotes();
+        if(Core.savedStateBytes(combined,{settings:prefs,selected:selection,appendix:chosenAppendix,passage_notes})>Core.LIMIT)throw Error('Combined saved report exceeds 25 MB, including your notes and selections.');
+        setCollection(combined,null,selection,chosenAppendix,passage_notes,true);
+        for(const input of $('inventory').querySelectorAll('input:checked'))input.checked=false;loadButtons();
+        setStatus('Transcripts added: '+next.length+' meeting bundles. Current notes, settings and previous selections kept. Prepare the report again and save JSON or ZIP to retain the addition.');
+      }catch(e){setStatus('No sources added: '+e.message+' Current work kept.',true);}
+      return;
+    }
     if(next.length&&partial&&!await confirmReplacement(next.length+' of '+chosen.length+' meeting bundles loaded; retrieval is incomplete. Replace your current report with these available sources?',true)){if(ticket.id===replacementSerial)setStatus('Current report kept. Incomplete replacement was not applied.');return;}
     if(!replacementCurrent(ticket))return;
     if(next.length)setCollection(next);
     setStatus(failure?(failure+' '+next.length+' meeting bundles applied; current work is unchanged if none completed.'):'Retrieval finished.'+(partial?' Coverage is incomplete.':'')+' Check each meeting outcome, search available evidence, and prepare a report.',!!failure);
   };
+  $('loadMeetings').onclick=()=>loadSelected();
+  $('addSelectedMeetings').onclick=()=>loadSelected(true);
   $('cancelLoad').onclick=()=>controller?.abort();
   async function readSavedFile(file){
     if(file.size>Core.LIMIT)throw Error('Use a JSON export or report-package ZIP under 25 MB.');
