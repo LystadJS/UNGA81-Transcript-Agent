@@ -23,6 +23,18 @@ const policy=JSON.parse(fs.readFileSync(require.resolve('../site/reporting-exclu
  assert.equal(R.passageNotes(many.slice(0,100),records).length,100);assert.throws(()=>R.passageNotes(many,records));
  assert.equal(R.passageNotes([{record_id:record.id,text:'x'.repeat(2000)}],baseline.records)[0].text.length,2000);
  assert(!JSON.stringify(R.exportPreferences({...report.settings,passage_notes:notes})).includes('user note'));
+ // Parse with an independent CSV reader, including formulas, quotes and line breaks.
+ const parseCSV=value=>{const r=require('node:child_process').spawnSync('python',['-c','import csv,json,sys; print(json.dumps(list(csv.DictReader(sys.stdin))))'],{input:value,encoding:'utf8'});assert.equal(r.status,0,r.stderr);return JSON.parse(r.stdout);};
+ const csvNote=' \t=HYPERLINK("https://example.invalid","check")\r\nSecond line, 😀';
+ const noteReport=R.build(corpora,selected,{notes:'Excluded report-level assessment'},undefined,[{record_id:record.id,text:csvNote}]);
+ const frozen=JSON.stringify(noteReport),rows=parseCSV(R.passageNotesCSV(noteReport));assert.equal(rows.length,1);
+ const row=rows[0];assert.equal(row.analyst_note,"'"+csvNote);assert.equal(row.note_type,'User-authored interpretation');assert.equal(row.report_generated_at,noteReport.generated_at);
+ for(const key of ['id','meeting_slug','date','country','source_url','source_id','source_version','raw_sha256','text_sha256','json_pointer'])assert.equal(row[key],String(record[key]??''));
+ assert(!Object.hasOwn(row,'text'));assert(!R.passageNotesCSV(noteReport).includes('Excluded report-level assessment'));assert(!R.passageNotesCSV(noteReport).includes(corpora[1].records[0].id));
+ assert.deepEqual(parseCSV(R.passageNotesCSV(baseline)),[]);assert.equal(JSON.stringify(noteReport),frozen);
+ for(const prefix of ['=','+','-','@',' \t=']){const r={...noteReport,passage_notes:[{record_id:record.id,text:prefix+'check'}]};assert.equal(parseCSV(R.passageNotesCSV(r))[0].analyst_note,"'"+prefix+'check');}
+ for(const passage_notes of [[...notes,...notes],[{record_id:corpora[1].records[0].id,text:'outside selected meetings'}]])assert.throws(()=>R.passageNotesCSV({...noteReport,passage_notes}));
+ assert.equal(R.evidenceCSV(report.records),R.evidenceCSV(baseline.records));
  assert.equal(JSON.stringify(corpora),original);assert.equal(report.model_status,'withheld_not_accepted');
- console.log('PASS: source-bound passage notes, separate escaped interpretation, unchanged source/summary/CSV, v1/v2/v3 replay, duplicate/out-of-scope/type/length/count rejection and source immutability');
+ console.log('PASS: source-bound passage notes, separate escaped interpretation, unchanged source/summary/CSV, v1/v2/v3 replay, duplicate/out-of-scope/type/length/count rejection and source immutability and independently parsed, formula-safe source-bound notes CSV');
 })().catch(e=>{console.error(e);process.exitCode=1;});
