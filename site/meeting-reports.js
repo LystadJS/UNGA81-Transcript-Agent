@@ -3,6 +3,7 @@
   'use strict';
   const $=id=>document.getElementById(id),Core=UNMeetingReport;
   let policy,countries,inventory=[],corpora=[],report=null,controller=null,shown=10,dirty=false,handoff=null,appendixIds=new Set(),notes=new Map();
+  let printing=false,printTitle=null,printSnapshot=null;
   let workspaceRevision=0,replacementSerial=0,packaging=false,deviceBusy=false,deviceAvailable=false,deviceSaved=false,deviceLibrary=[],deviceId='current';
   const setStatus=(message,error=false)=>{$('status').textContent=message;$('status').classList.toggle('error',error);};
   const selected=()=>[...$('loadedMeetings').querySelectorAll('input:checked')].map(e=>e.value);
@@ -23,7 +24,7 @@
   $('addBriefingQuestion').onclick=()=>{addQuestion(undefined,true);invalidate();};
   function save(data,name,mime){const blob=new Blob([data],{type:mime});if(blob.size>Core.LIMIT){setStatus('Download exceeds 25 MB. Choose fewer meetings or shorter notes before exporting. Current work has not changed.',true);return false;}const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);return true;}
   function reportName(suffix){return 'un-meeting-report-'+report.generated_at.replace(/[-:.]/g,'')+suffix;}
-  function invalidate(){workspaceRevision++;report=null;$('expressionEvidence').close();$('expressionEvidenceBody').replaceChildren();$('wordStatus').textContent='Prepare the report before downloading Word. Save JSON or ZIP to reopen work here.';$('reportPreview').replaceChildren();for(const id of ['downloadReport','downloadWord','saveReport','downloadEvidence','downloadPackage','saveDeviceReport'])$(id).disabled=true;$('packageStatus').textContent='Prepare the report before downloading its package.';$('reportState').textContent='Settings or selection changed. Prepare the report to update its exports.';dirty=!!corpora.length;deviceControls();}
+  function invalidate(){workspaceRevision++;report=null;$('expressionEvidence').close();$('expressionEvidenceBody').replaceChildren();$('printStatus').textContent='Prepare the report before printing. Save JSON or ZIP separately to resume work.';$('wordStatus').textContent='Prepare the report before downloading Word. Save JSON or ZIP to reopen work here.';$('reportPreview').replaceChildren();for(const id of ['downloadReport','downloadWord','printReportButton','saveReport','downloadEvidence','downloadPackage','saveDeviceReport'])$(id).disabled=true;$('packageStatus').textContent='Prepare the report before downloading its package.';$('reportState').textContent='Settings or selection changed. Prepare the report to update its exports.';dirty=!!corpora.length;deviceControls();}
   function replacementCurrent(ticket){
     if(ticket.id!==replacementSerial)return false;
     if(ticket.revision!==workspaceRevision){setStatus('Your report changed while sources were being checked. Current work kept; try loading again when ready.');return false;}
@@ -192,7 +193,7 @@
   $('onlySelectedEvidence').onchange=()=>{shown=10;search();};
   $('appendixMode').onchange=()=>{if($('appendixMode').value==='template')appendixIds.clear();invalidate();search();};
   $('clearAppendix').onclick=()=>{appendixIds.clear();$('appendixMode').value='selected';invalidate();search();};
-  $('prepareReport').onclick=()=>{try{report=Core.build(corpora,selected(),options(),appendix(),passageNotes());workspaceRevision++;$('reportPreview').innerHTML=Core.reportHTML(report,{preview:true});for(const id of ['downloadReport','downloadWord','saveReport','downloadEvidence','downloadPackage','saveDeviceReport'])$(id).disabled=false;$('downloadPackage').disabled=packaging;if(!packaging)$('packageStatus').textContent='Ready to download a report package.';$('reportState').textContent='Report ready: '+report.meetings.length+' meetings. Review source evidence before circulation.';$('wordStatus').textContent='Ready to download Word. Save JSON or ZIP separately to reopen work here.';dirty=true;deviceControls();}catch(e){invalidate();setStatus(e.message,true);}};
+  $('prepareReport').onclick=()=>{try{report=Core.build(corpora,selected(),options(),appendix(),passageNotes());workspaceRevision++;$('reportPreview').innerHTML=Core.reportHTML(report,{preview:true});for(const id of ['downloadReport','downloadWord','printReportButton','saveReport','downloadEvidence','downloadPackage','saveDeviceReport'])$(id).disabled=false;$('downloadPackage').disabled=packaging;if(!packaging)$('packageStatus').textContent='Ready to download a report package.';$('reportState').textContent='Report ready: '+report.meetings.length+' meetings. Review source evidence before circulation.';$('printReportButton').disabled=printing;$('printStatus').textContent='Ready to print the complete report or use the browser’s PDF destination.';$('wordStatus').textContent='Ready to download Word. Save JSON or ZIP separately to reopen work here.';dirty=true;deviceControls();}catch(e){invalidate();setStatus(e.message,true);}};
   $('reportPreview').onclick=event=>{
     const button=event.target.closest('button[data-evidence-id]');
     if(!button||!$('reportPreview').contains(button)||!report)return;
@@ -203,6 +204,38 @@
   };
   $('closeExpressionEvidence').onclick=()=>$('expressionEvidence').close();
   $('expressionEvidence').addEventListener('close',()=>{if(!$('expressionEvidence').open)$('expressionEvidenceBody').replaceChildren();});
+  function preparePrint(){
+    if(printing&&printSnapshot===report&&report)return;
+    if(printing)clearPrint();
+    if(!report)throw Error('Prepare a report before printing.');
+    const html=Core.reportHTML(report),area=$('printReport');
+    if(new TextEncoder().encode(html).length>Core.LIMIT)throw Error('Printable report exceeds 25 MB. Choose fewer meetings; no truncated report was printed.');
+    area.innerHTML=html;
+    // Keep PDF destinations distinct from the same headings in the screen preview.
+    const anchors=new Map();
+    for(const node of area.querySelectorAll('[id]')){const old=node.id;node.id='print-'+old;anchors.set(old,node.id);}
+    for(const link of area.querySelectorAll('a[href^="#"]')){const next=anchors.get(link.getAttribute('href').slice(1));if(next)link.setAttribute('href','#'+next);}
+    for(const node of area.querySelectorAll('[aria-labelledby],[aria-describedby]'))for(const attr of ['aria-labelledby','aria-describedby'])if(node.hasAttribute(attr))node.setAttribute(attr,node.getAttribute(attr).split(/\s+/).map(id=>anchors.get(id)||id).join(' '));
+    for(const details of area.querySelectorAll('details'))details.open=true;
+    printTitle=document.title;document.title=reportName('');printing=true;printSnapshot=report;
+    $('printReportButton').disabled=true;$('returnFromPrint').hidden=false;
+  }
+  function clearPrint(){
+    $('printReport').replaceChildren();if(printTitle!==null)document.title=printTitle;
+    printTitle=null;printing=false;printSnapshot=null;$('printReportButton').disabled=!report;$('returnFromPrint').hidden=true;
+  }
+  window.addEventListener('beforeprint',()=>{
+    try{preparePrint();}
+    catch(e){clearPrint();$('printReport').textContent='Report not printed: '+e.message;$('printStatus').textContent=e.message;}
+  });
+  function finishPrint(){const active=printing;clearPrint();if(active)$('printStatus').textContent='Print view closed. Check your printer or PDF file. Save JSON or ZIP separately to resume work.';}
+  window.addEventListener('afterprint',finishPrint);
+  $('returnFromPrint').onclick=finishPrint;
+  $('printReportButton').onclick=()=>{
+    if(!report||printing)return;
+    try{preparePrint();$('printStatus').textContent='Choose your printer or the browser’s PDF destination. If controls do not reset after closing the dialog, choose Return to report. Save JSON or ZIP to resume work.';window.print();}
+    catch(e){clearPrint();$('printStatus').textContent='Could not print: '+e.message+' Download HTML to print it separately.';}
+  };
   $('downloadWord').onclick=()=>{
     if(!report)return;
     try{if(save(UNMeetingReportWord.build(report),reportName('.docx'),'application/vnd.openxmlformats-officedocument.wordprocessingml.document'))$('wordStatus').textContent='Word reading copy downloaded. Save JSON or ZIP separately to reopen source-verified work. Review sources and analyst notes before sharing.';}
