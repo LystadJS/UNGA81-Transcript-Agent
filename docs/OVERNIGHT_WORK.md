@@ -65,6 +65,31 @@ The [1.64.1 receipt](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/6b
 records package-opening instruction cleanup and links the 1.64.0 functional
 release. Use those results at their original version and scope.
 
+## Runnable usability setup
+
+The [facilitator tool](../tools/reporting_usability.cjs) replaces the guide's inline
+fixture generator. `--fixtures-only` creates the three source-validated JSON files
+using Node alone. The default local session uses the existing personal QA setup
+(Node, Python public builder and Playwright), serves only the public build on
+loopback, intercepts fictional inventory/transcript responses and blocks other
+external browser requests. It adds no dependency to the government-browser app.
+
+`--smoke` passes an automated import/add/export/source-revalidation and network
+blocking check. The tool contract also verifies private temporary files, fixture-only
+operation without Playwright, separate duplicate downloads, closed-session cleanup
+and a metadata-only receipt whose participant acceptance is always `not_recorded`.
+The interactive close lifecycle is exercised with a headless driver on this host;
+a visible session needs a graphical display and remains to be run with actual
+participants. No real transcript, held-out source, participant response or human
+acceptance is created by these checks. The synthetic-inventory setup gap is addressed;
+actual representative-user sessions and work-browser policies remain untested.
+
+The public application remains 1.65.0. No public asset, schema, model, Hugging Face
+storage or personal R/Python analysis code changes. Fixture files/downloads stay
+outside the checkout, and temporary public-build copies are removed on normal exit.
+The guide now names the executable setup rather than an unavailable synthetic
+inventory. Record actual participant findings separately.
+
 ## Source tree and remaining work
 
 The source checkout is `/workspace/UNGA81-Transcript-Agent`; main is the source of

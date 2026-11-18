@@ -57,7 +57,7 @@ models or proof of government alignment. All 37 reserved meetings remain closed.
 
 ## Acceptance dependencies
 
-1. Complete representative diplomat tasks using the [usability guide](REPORTING_USABILITY.md)
+1. Complete representative diplomat tasks using the [usability guide](REPORTING_USABILITY.md) and its runnable local synthetic facilitator session
    and record actual findings separately from synthetic browser tests.
 2. Complete continued scheduled-operation, recovery and account-wide capacity
    acceptance without treating manual runs or elapsed time as acceptance.
