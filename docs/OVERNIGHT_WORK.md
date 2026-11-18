@@ -12,51 +12,55 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Verified release 1.70.0
+## Verified release 1.71.0
 
 | PR | Change | Checked head / merge |
 | --- | --- | --- |
-| [Source #326](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/326) | Purpose-grouped report exports and concise guidance | Three checks passed at `e6dbacf`; merged `3e99a92` |
-| [Website #184](https://github.com/LystadJS/LystadJS.github.io/pull/184) | Canonical mirror and source/release pins | Audit/regression passed at `8e7a858`; merged `e32f8d7` |
+| [Source #328](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/328) | Reusable briefing-question section ordering | Three checks passed at `84f717c`; merged `e183522` |
+| [Website #185](https://github.com/LystadJS/LystadJS.github.io/pull/185) | Canonical mirror and source/release pins | Audit/regression passed at `a74e500`; merged `dc71d4c` |
 
-Both public URLs serve 1.70.0. All 196 preferred-site files match expected SHA-256
+Both public URLs serve 1.71.0. All 196 preferred-site files match expected SHA-256
 hashes. Fourteen reporting browser suites pass live with fictional sources:
-reporting/notes export, calendar, affiliation navigation, bulk appendix, inventory
-addition, saved-source addition, package opening, source removal, replacement,
-device library, packages, Word, print/PDF and archive handoff. The reporting suite
-also passes at the original URL, whose four changed assets match canonical hashes.
-Skipped PR live jobs are not deployed test passes.
+reporting (including question ordering), calendar, affiliation navigation, bulk
+appendix, inventory addition, saved-source addition, package opening, source removal,
+replacement, device library, packages, Word, print/PDF and archive handoff. The
+expanded reporting suite also passes at the original URL, whose three changed
+assets match canonical hashes. Skipped PR live jobs are not deployed test passes.
 
-The prepared-report workspace replaces one flat export row with three native
-fieldset groups: Save work to reopen, Read or share, and Evidence spreadsheets.
-Portable JSON/ZIP and browser-profile device saves sit together, while print/PDF,
-Word and standalone HTML retain visible guidance to save resumable work separately.
-The full original-evidence CSV and separate analyst-notes CSV share the spreadsheet
-group. Calendar review entries stay separate. Related status messages sit beside
-their actions; repeated print/Word explanations are shortened.
+Briefing questions now have numbered legends and keyboard-accessible Move up/down
+buttons. The first and last unavailable moves are disabled; a move announces its
+resulting position. Headings and evidence queries move together, including
+unfinished drafts. Focus stays on the activated move button when available and
+returns to the moved heading if that direction reaches a boundary. Existing remove
+and eight-question limits remain in place.
 
-Existing button identities and handlers remain in place. Export formats and bytes,
-original report-package files, selected source scope, schemas, device storage,
-byte limits and stale/unsaved-work protection remain unchanged. Keyboard/native
-fieldset grouping and mobile wrapping use existing browser controls and styling.
-Actual diplomat comprehension and work-browser acceptance remain outstanding.
+Prepared question sections follow the chosen order after the mandatory country
+overview. Report v4 and preference v2 arrays retain it without a new serialized
+field. Imports rebuild from verified sources. Moving invalidates prepared exports
+and keeps dirty-work protection active. Country tables, source coverage, original
+passages, notes and full evidence CSV remain unchanged. These are literal evidence
+sections, not generated answers or arbitrary report layouts. Preferences still
+require explicit saving; nothing is stored or uploaded automatically.
 
 Local validation passes 256 Python tests, fourteen existing reporting browser
-suites, facilitator checks and pure contracts. Final targeted Word and print suites
-pass after the copy changes. Fictional prepared-report screenshots were inspected
-at 390/1440px; all three groups were captured and both widths pass overflow checks.
-These are engineering checks, not actual assistive-technology or diplomat sessions.
+suites, facilitator checks and pure contracts. Expanded browser checks cover both
+directions, disabled boundaries, interior/boundary keyboard focus, draft retention,
+unsaved-work protection, unchanged country coverage, prepared order and report/
+preference replay. Pure checks verify ordered evidence and standalone HTML with
+unchanged original sources and evidence CSV. First/middle controls were visually
+inspected at 390/1440px; browser regression verifies no horizontal overflow. These
+are engineering checks, not actual diplomat or assistive-technology sessions.
 No real or reserved transcript was retrieved.
 
-The public build remains 204 entries and mirror 195 files. Four existing assets
+The public build remains 204 entries and mirror 195 files. Three existing assets
 plus the manifest change; repeat sync copies zero files. No public file, dependency,
 schema, model, backend, personal R/Python analysis or Hugging Face storage is added.
 All 2,077 retained package checksums remain valid. Scientific/source gates and all
-37 reserved meetings are unchanged. Screenshots and fictional visual-check files
-remain ignored local QA outputs, outside the published application and Git tree.
+37 reserved meetings are unchanged. Fictional visual-check files/screenshots stay
+ignored and outside the published application and Git tree.
 
-The [previous checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/9eedd87a23ac3a0f37bf2aeac69174149b587e1e/docs/OVERNIGHT_WORK.md)
-records release 1.69.0 and links earlier receipts. Use those results at their
+The [previous checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/9b79932c2d82826cc149aa87cccb9972cb5475f7/docs/OVERNIGHT_WORK.md)
+records release 1.70.0 and links earlier receipts. Use those results at their
 original version and scope.
 
 ## Runnable usability setup
@@ -114,7 +118,7 @@ no released model or semantic-accuracy claim follows from structural QA.
 
 The R cleanup did not change browser assets or add Hugging Face storage.
 
-1. Continue useful reporting work from the verified 1.70.0 release, then expand
+1. Continue useful reporting work from the verified 1.71.0 release, then expand
    broader workflows within the execution/storage constraints.
 2. Continue dependency-based cleanup with appropriate personal-runtime checks.
 3. Complete actual diplomat usability sessions; evaluate any optional generative
