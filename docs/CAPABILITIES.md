@@ -1,12 +1,12 @@
 # Current capability and acceptance matrix
 
-Updated 18 November 2026, America/New_York. **Release 1.71.0 is deployed and
+Updated 18 November 2026, America/New_York. **Release 1.72.0 is deployed and
 verified at both public URLs.** All 196 preferred-site files match expected hashes;
 fourteen reporting browser suites passed live with fictional sources. The expanded
-question-ordering/reporting suite also passed at the original URL. Controls were
-visually inspected at 390/1440px. These are engineering checks, not diplomat,
-assistive-technology or model acceptance. Code, deployment, source coverage and
-empirical acceptance remain distinct. See the [current checkpoint](OVERNIGHT_WORK.md).
+preference/download-failure reporting suite also passed at the original URL.
+These are engineering simulations, not government-browser policy, diplomat or
+model acceptance. Code, deployment, source coverage and empirical acceptance
+remain distinct. See the [current checkpoint](OVERNIGHT_WORK.md).
 
 ## Reporting and execution
 
@@ -26,7 +26,7 @@ empirical acceptance remain distinct. See the [current checkpoint](OVERNIGHT_WOR
 | Portable reports | Purpose-grouped resumable saves, reading copies and spreadsheets; script-free HTML, verified source-bearing JSON, full evidence CSV and a ZIP with checksums | 25 MB encoded bounds; oversized downloads fail without truncation. Exports can contain source text and analyst notes; review before sharing |
 | Print / browser PDF | Complete prepared report in the native print dialog, isolated from workspace controls, with expanded provenance and unclipped evidence | Printed HTML bounded to 25 MB; browser controls final PDF size and destination. PDF cannot resume work. Actual government-browser dialogs and participant usability remain unaccepted |
 | Editable Word reading copy | Native browser-generated `.docx` with complete report text, editable country tables, source links, questions, selected evidence and separate notes | 25 MB whole-document bound; no Word import or embedded source bundle. Save JSON/ZIP separately to resume. Desktop Word rendering and diplomat usability remain unaccepted |
-| Briefing questions | Up to eight reusable headed literal searches with Move up/down, numbered positions, source evidence/unanswered gaps and saved order | Country overview remains first; no generated answers. Report v4/preferences v2; older report v1–v3 and preference v1 remain readable. Draft fields move intact; complete them before preparing or saving preferences |
+| Briefing questions | Up to eight reusable headed literal searches with Move up/down, numbered positions, source evidence/unanswered gaps and saved order | Country overview remains first; no generated answers. Report v4/preferences v2; older report v1–v3 and preference v1 remain readable. Draft fields move intact; complete them before preparing or saving preferences. Standalone preferences share an 8 KiB compact UTF-8 export/import budget; full report JSON remains 25 MB |
 | Device report library | Eight explicitly saved reports sharing a 25 MB UTF-8 JSON budget; title/time/size selection, source-verified reopening, stale-tab checks, atomic upgrade and retained-copy recovery | Same browser profile only; no automatic saving or authenticated collaboration. Browser cleanup may remove it. Source #295 and website #169 merged after passing checks; live migration, concurrent limits, quota rollback and recovery-download tests passed |
 | Advanced browser analysis | On-demand collection, source-linked descriptive reports, dimensional methods, clustering, component analysis and saved-run comparison | JavaScript on the user's device. English-only published transcripts; no real-time audio ingestion or multilingual parity. Similar language is not policy agreement |
 | Local R/Shiny | Preserved personal briefing, controlled D1 adapters, evidence inspection and unsent email exports | Separate from the public browser. Twelve executable adapters among 42 registered methods; registered plans are not operational methods |
