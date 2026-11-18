@@ -61,7 +61,12 @@ selection rather than following the user's latest run.
 Seven suites pass 453 default R checks plus two explicitly selected archived-run
 checks on Linux R 4.5.0 (Matrix 1.7.3, cluster 2.1.8.1, igraph 2.1.4). The Python
 suite passes 256 tests, including six inventory-maintenance checks. This does not
-establish Windows, live Shiny, PDF or scientific acceptance. Browser release 1.57.0
+establish Windows, live Shiny, PDF or scientific acceptance. Fresh full offline replays before and after cleanup both exit successfully with
+identical validation: 39 country sections, 507 coding cells, five report packets,
+42 methods accounted and 133 prerequisites. Seven fitted candidates remain withheld;
+no released model or semantic-accuracy claim follows from structural QA.
+
+Browser release 1.57.0
 and its public assets remain unchanged; no Hugging Face storage was added.
 
 1. Continue useful reporting work from the verified 1.57.0 release, then expand
