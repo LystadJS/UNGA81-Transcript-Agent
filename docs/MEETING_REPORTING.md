@@ -2,6 +2,22 @@
 
 The immediate product target is a PowerTranscript-like reporting workflow, implemented independently: select proceedings, search their evidence, apply mission report templates, and export documented results. Research CSVs and evaluated stance tracking remain distinct capabilities. This is not a claim of equivalent vendor performance or access to proprietary code or weights.
 
+## Remove loaded source collections
+
+Expand **Manage loaded source collections** to see each original collection's
+meetings, segment count and JSON byte size. Unchecking a meeting keeps its source
+data in saved JSON. **Remove collection** removes that whole original bundle.
+The confirmation lists the affected meetings and the number of passage notes and
+appendix choices that will be removed. **Keep sources** is the default; Escape
+also keeps current work. Save report JSON first if you need this version later.
+
+Remaining source bytes, selections, annotations, mission settings and questions
+stay intact. Prepare again before exporting the reduced report. Removing the last
+collection also clears the current assessment, as the confirmation explicitly
+warns; reusable mission settings and questions stay. Downloaded files, saved device
+copies and the canonical archive are unchanged. A newer edit or source operation
+invalidates an older removal confirmation.
+
 ## Add sources while keeping current work
 
 Open a collection or report first, then use **Add sources from JSON to this

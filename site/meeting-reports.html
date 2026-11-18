@@ -4,8 +4,8 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' https://transcripts.un.org; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
   <title>Meeting reports · UN Transcript Agent</title>
-  <link rel="stylesheet" href="theme.css"><link rel="stylesheet" href="app.css"><link rel="stylesheet" href="meeting-reports.css?v=1.61.0">
-  <script defer src="meeting-scopes.js"></script><script defer src="collector.js"></script><script defer src="meeting-picker-core.js"></script><script defer src="text-units.js"></script><script defer src="meeting-quick-reader.js"></script><script defer src="meeting-report-core.js?v=1.62.0"></script><script defer src="meeting-report-selection.js"></script><script defer src="meeting-report-package.js?v=1.59.0"></script><script defer src="meeting-report-word.js"></script><script defer src="meeting-report-storage.js?v=1.57.0"></script><script defer src="meeting-reports.js?v=1.62.0"></script>
+  <link rel="stylesheet" href="theme.css"><link rel="stylesheet" href="app.css"><link rel="stylesheet" href="meeting-reports.css?v=1.63.0">
+  <script defer src="meeting-scopes.js"></script><script defer src="collector.js"></script><script defer src="meeting-picker-core.js"></script><script defer src="text-units.js"></script><script defer src="meeting-quick-reader.js"></script><script defer src="meeting-report-core.js?v=1.63.0"></script><script defer src="meeting-report-selection.js"></script><script defer src="meeting-report-package.js?v=1.59.0"></script><script defer src="meeting-report-word.js"></script><script defer src="meeting-report-storage.js?v=1.57.0"></script><script defer src="meeting-reports.js?v=1.63.0"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to meeting reports</a>
@@ -25,6 +25,7 @@
       <details><summary>Saved reports on this device</summary><p>Keep up to eight prepared reports in this browser profile, with 25 MB of report JSON in total. Sources and notes are included. Nothing is saved automatically or uploaded. Other users of this browser profile may open these reports; browser cleanup may remove them. Download JSON for a portable copy.</p><div class="report-controls"><label for="deviceReportChoice">Saved report<select id="deviceReportChoice" disabled></select></label><button type="button" id="recoverDeviceReport" class="secondary" hidden>Download earlier device copy</button><button type="button" id="refreshDeviceReports" class="secondary" disabled>Refresh library</button><button type="button" id="openDeviceReport" class="secondary" disabled>Open selected report</button><button type="button" id="deleteDeviceReport" class="secondary" disabled>Remove selected device copy</button></div><p id="deviceReportStatus" role="status">Checking device storage…</p></details>
       <p class="hint">Date search reads the official inventory only. Load transcripts explicitly after selecting up to five meetings. Reserved evaluation meetings cannot be opened here.</p>
       <div id="inventory" class="meeting-options"></div><button type="button" id="loadMeetings" disabled>Load selected transcripts</button><button type="button" id="cancelLoad" class="secondary" hidden>Cancel loading</button>
+      <details id="manageSources" hidden><summary>Manage loaded source collections</summary><p>Unchecking a meeting excludes it from the report but keeps its sources in saved JSON. Removing a collection reduces the current saved data and removes its source-bound notes and appendix choices. Downloaded files, saved device copies and the archive are unchanged.</p><div id="sourceCollections"></div></details>
       <p id="collectionStatus" role="status">No collection loaded.</p><div id="loadedMeetings" class="meeting-options"></div>
     </section>
     <section aria-labelledby="evidenceHeading"><h2 id="evidenceHeading">2. Search the evidence</h2>
@@ -64,6 +65,10 @@
     <h2 id="replaceReportTitle">Replace the current report?</h2>
     <p id="replaceReportMessage"></p><p>Choose “Keep current report” to return and save report JSON first. Nothing is saved or uploaded automatically.</p>
     <div class="report-controls"><button type="button" id="keepCurrentReport" autofocus>Keep current report</button><button type="button" id="replaceCurrentReport" class="secondary">Replace report</button></div>
+  </dialog>
+  <dialog id="removeSources" aria-labelledby="removeSourcesTitle" aria-describedby="removeSourcesMessage">
+    <h2 id="removeSourcesTitle">Remove this source collection?</h2><p id="removeSourcesMessage"></p><ul id="removeSourcesMeetings"></ul><p>Keep sources to return and save report JSON first. Downloaded files, saved device copies and the archive are unchanged.</p>
+    <div class="report-controls"><button type="button" id="keepSources" autofocus>Keep sources</button><button type="button" id="confirmRemoveSources" class="secondary">Remove sources</button></div>
   </dialog>
   <footer>Source-linked reporting · Deterministic extracts, not an accepted stance model · No external AI calls</footer>
 <section id="printReport" aria-label="Printable report"></section>

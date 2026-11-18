@@ -21,3 +21,5 @@
 }
 
 @media print{#printReport .country-timeline tr{break-inside:avoid}}
+
+.source-collection{border-bottom:1px solid var(--usun-rule);padding:12px 0;overflow-wrap:anywhere}.source-collection p{margin:6px 0}#removeSources{box-sizing:border-box;width:min(680px,calc(100vw - 32px));max-height:90vh;padding:24px;border:2px solid var(--usun-blue);font:inherit;color:var(--usun-ink);background:white;overflow:auto;overflow-wrap:anywhere}#removeSources::backdrop{background:#14263cb3}
