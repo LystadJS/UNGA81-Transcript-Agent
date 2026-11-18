@@ -1,6 +1,6 @@
 # Current capability and acceptance matrix
 
-Updated 18 November 2026, America/New_York. **Release 1.57.0 is deployed and
+Updated 18 November 2026, America/New_York. **Release 1.58.0 is deployed and
 verified at both public URLs.** All 194 checked portfolio files match their
 expected hashes; five reporting suites passed against the actual live site with
 fictional sources. This is engineering verification, not diplomat or model
@@ -91,13 +91,15 @@ On Linux with R 4.5.0, Matrix 1.7.3, cluster 2.1.8.1 and igraph 2.1.4, the seven
 retained suites pass 453 default checks; explicit archived-run selection passes
 the two additional frozen-run checks (455 unique checks). This is personal-runtime
 validation, not Windows, live Shiny, PDF or scientific acceptance. The Python suite
-passes 256 tests. Fresh full offline replays before and after cleanup both exit successfully with
+passes 256 tests.
+
+Fresh full offline replays before and after cleanup both exit successfully with
 identical validation: 39 country sections, 507 coding cells, five report packets,
 42 methods accounted and 133 prerequisites. Seven fitted candidates remain withheld;
 no released model or semantic-accuracy claim follows from structural QA.
 
-No browser dependency or Hugging Face storage was added; public
-release 1.57.0 is unchanged.
+The R cleanup added no browser dependency or Hugging Face storage; its
+validation is separate from the 1.58.0 reporting release.
 
 These removals reduce the active checkout, not retained Git history. Reproducibility
 fixtures and source corpora remain; a runtime-only repository has not been achieved.
