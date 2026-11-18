@@ -282,6 +282,34 @@ these source labels do not establish national capacity or verified policy.
 An empty or single-affiliation report omits the unnecessary index. Saved reports
 rebuild it from verified original sources rather than trusting a saved index.
 
+## Personal calendar review entry
+
+Prepare the report, expand **Calendar entry for a report review**, and choose your
+personal all-day review date. **Download review entry (.ics)** saves one calendar
+entry with the report title, preparation time and selected source meeting
+references. Review dates are chosen independently of source meeting dates. The
+calendar application controls import, visibility and alerts; check them after
+importing. There is no calendar account connection or invitation sending.
+
+The assessment checkbox starts off. Enabling it copies the report-level assessment
+into the calendar description. Passage notes and transcript text are excluded.
+The entry carries a private-class hint; review its contents before importing into
+your selected calendar. No source request or automatic upload occurs.
+
+ICS is a separate reading copy. It preserves neither original corpora nor resumable
+report state. Calendar date/assessment options belong to this browser session,
+are excluded from saved report JSON/preferences and reset when another report
+replaces the workspace. Save the ICS to retain the entry and JSON/ZIP to resume
+editing. Calendar export does not clear unsaved-report protection or change other
+prepared exports. Word and calendar copies remain separate from the report ZIP.
+
+The date range is 1900–9998. Entries use date-only start and exclusive next-day
+end, UTC preparation stamps, escaped text and UTF-8 folding at 75 octets. Missing
+or invalid dates, unsupported text, oversized output and changes during export
+are refused without modifying current work. Engineering checks validate the file
+and browser behavior; actual calendar-client and work-browser acceptance remains
+outstanding.
+
 ## Selecting an evidence appendix
 
 Check supporting passages while searching. Selections persist across searches, and “Show selected passages only” makes them easy to revisit. Any template can use a custom appendix; its heading identifies the passages as analyst-selected and reports their count against the full selected-meeting denominator. Clearing the selection leaves an explicit empty appendix. Returning to “Template default” clears custom selections. Removing a meeting removes its appendix selections.
