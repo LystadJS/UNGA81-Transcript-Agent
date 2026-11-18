@@ -12,58 +12,52 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Verified release 1.62.0
+## Verified release 1.63.0
 
 | PR | Change | Checked head / merge |
 | --- | --- | --- |
-| [Source #307](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/307) | Add saved sources without replacing current work | Three checks passed at `1a89682`; merged `24e1e42` |
-| [Website #175](https://github.com/LystadJS/LystadJS.github.io/pull/175) | Canonical mirror, source/release pins and live addition test | Audit/regression passed at `4b4279a`; merged `5fab209` |
+| [Source #309](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/309) | Explicit loaded-source collection removal | Three checks passed at `75ccf29`; merged `a01edcc` |
+| [Website #176](https://github.com/LystadJS/LystadJS.github.io/pull/176) | Canonical mirror, release pins and live removal test | Audit/regression passed at `c81af3d`; merged `1857c90` |
 
-Both public URLs serve 1.62.0. All 195 checked portfolio files (194 manifest
-entries plus the manifest) match expected SHA-256 hashes. Eight browser suites
+Both public URLs serve 1.63.0. All 195 checked portfolio files (194 manifest
+entries plus the manifest) match expected SHA-256 hashes. Nine browser suites
 pass against the actual preferred URL with fictional sources: reporting, source
-addition, replacement, packages, device library, archive handoff, Word and print/PDF.
-The source-addition suite also passes at the original source URL. No skipped PR
-live-verification job is counted as a live pass.
+removal/addition, replacement, packages, device library, archive handoff, Word and
+print/PDF. Removal also passes at the original source URL. Skipped PR live jobs
+are not counted as deployed verification. The first original-URL removal check
+reached the older page during rollout; after release and changed-asset hashes
+matched 1.63.0, a fresh removal check passed.
 
-Add sources from JSON extends an existing report using original-bound collections
-or supported saved-report files. Current settings, questions, global/passage notes,
-appendix and meeting selections are retained. Incoming report annotations and
-preferences are not copied. All its loaded sources remain, including unchecked
-meetings; its selected meetings are checked. No source request or automatic save
-occurs. New evidence invalidates prepared exports until preparation.
+Manage loaded source collections displays meeting/segment counts and original
+collection JSON bytes. Unlike unchecking a meeting, explicit removal reduces the
+sources carried in saved JSON. Keep is the default and Escape preserves current
+work. The dialog lists every affected meeting and counts removed notes/appendix
+choices. Whole original bundles are removed; remaining source bytes and identities
+are unchanged. Remaining selections, annotations and reusable settings stay intact.
+Prepared exports are invalidated until preparation. Last-collection removal
+explicitly clears the current assessment and source-bound annotations while
+retaining mission settings and questions. A newer edit/source operation invalidates
+an older confirmation. Downloaded files, saved device copies and the archive stay
+unchanged; neither removal nor preparation is automatic saving.
 
-Source validation and the combined ten-bundle/100-meeting/15,000-passage/25 MB
-source bounds remain unchanged. Before committing, the complete resumable JSON
-is measured in UTF-8 with current settings, notes and selections. Overlapping
-meeting identities/revisions are refused, including unselected bundles. There is
-no partial merge or silent source replacement. Invalid/reserved/corrupt files,
-file/state-size failures and stale operations keep current work. Unfinished question
-fields and focus survive an addition; edits and newer source actions supersede
-older pending additions. Saved report v4/preference v2 and device-library limits
-are unchanged.
+Local validation passes 256 Python tests and nine synthetic reporting browser
+suites plus pure contracts. New cases cover whole-bundle removal, exact kept source
+identity, selective annotation pruning, unchecked bundles, invalid state refusal,
+input immutability, default Keep/Escape/focus, smaller saved JSON, stale decisions,
+explicit last-assessment clearing, unchanged device storage, reopening and mobile
+layout without transcript requests. The mobile confirmation was visually inspected.
+Usability instructions now include source removal; no actual participant session
+or diplomat acceptance is claimed.
 
-Local validation passes 256 Python tests and eight synthetic browser suites,
-plus source-addition, country and package contracts. Cases cover original-byte
-verification, true revised sources, all-bundle overlap, reserved/corrupt data,
-foreign-annotation exclusion, unselected source retention, existing selections,
-notes/appendix, exact saved-JSON bytes, incomplete editor fields/focus, delayed
-edits/older operations, stale exports, mobile and no transcript requests. The
-usability generator now supplies a nonoverlapping fictional report with a distinct
-incoming assessment, alongside the original single/two-meeting files. The generated files were checked
-against the production registry/policy: the additional file appends and the
-overlapping two-meeting file is refused. No actual
-participant session or diplomat acceptance is claimed.
+The public build remains 203 entries and the mirror 194 files. Five assets and
+the manifest change; sync is idempotent. Core/main script and stylesheet URLs are
+versioned. No application file, dependency, schema, model, server, upload or
+Hugging Face storage is added. All 2,077 R-package checksums remain valid;
+scientific gates, original records and all 37 reserved meetings are unchanged.
 
-The public build remains 203 entries and the mirror 194 files. Four assets and
-the manifest change; sync is idempotent. Core/main script URLs are versioned; no
-application file, dependency, model, server, upload or Hugging Face storage is
-added. All 2,077 R-package checksums remain valid; scientific gates, original
-records and 37 unopened reserved meetings are unchanged.
-
-The preserved [1.61.0 receipt](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/a5abb7f6038d14f09d314014fe063e053203d945/docs/OVERNIGHT_WORK.md)
-records the dated country overview, same-meeting U.S. comparisons and prior
-reporting checkpoints. Use historical results at their original version and scope.
+The preserved [1.62.0 receipt](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/37df49ef9fe2684f172cfa2312e005ced35b2c68/docs/OVERNIGHT_WORK.md)
+records source addition and links earlier reporting checkpoints. Use historical
+results at their original version and scope.
 
 ## Source tree and remaining work
 
@@ -95,7 +89,7 @@ no released model or semantic-accuracy claim follows from structural QA.
 
 The R cleanup did not change browser assets or add Hugging Face storage.
 
-1. Continue useful reporting work from the verified 1.62.0 release, then expand
+1. Continue useful reporting work from the verified 1.63.0 release, then expand
    broader workflows within the execution/storage constraints.
 2. Continue dependency-based cleanup with appropriate personal-runtime checks.
 3. Complete actual diplomat usability sessions; evaluate any optional generative
