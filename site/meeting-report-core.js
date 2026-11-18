@@ -6,6 +6,7 @@
   const Reader=node?require('./meeting-quick-reader.js'):root.UNMeetingQuickReader;
   const Picker=node?require('./meeting-picker-core.js'):root.UNMeetingPickerCore;
   const VERSION='un.meeting-report.v4',NOTES_VERSION='un.meeting-report.v3',LEGACY_VERSION='un.meeting-report.v1',APPENDIX_VERSION='un.meeting-report.v2';
+  const ENGINE='source-bound-reporting-1.6';
   const NOTE_LIMIT=2000,NOTES_LIMIT=100;
   const TEMPLATES=Object.freeze({brief:'Mission briefing',negotiation:'Negotiation record',evidence:'Evidence digest'});
   const LIMIT=25000000;
@@ -125,6 +126,20 @@
     appendix=appendixSelection(appendix,records);notes=passageNotes(notes,records);
     return {corpora,settings:prefs,selected:[...ids],appendix,passage_notes:notes};
   }
+  async function appendSaved(existing,value,policy,countries){
+    if(!Array.isArray(existing)||!existing.length)throw Error('Open a collection or report before adding sources.');
+    const opened=await openSaved(value,policy,countries),known=new Set(existing.flatMap(c=>c.coverage).filter(m=>m.slug).map(m=>m.slug));
+    const overlaps=opened.corpora.flatMap(c=>c.coverage).filter(m=>m.slug&&known.has(m.slug));
+    if(overlaps.length)throw Error('Already loaded: '+overlaps.slice(0,3).map(m=>m.date+' · '+String(m.title||m.slug).slice(0,120)).join('; ')+'. Use a nonoverlapping file; open a separate report for another revision.');
+    const corpora=[...existing,...opened.corpora];await validateCorpora(corpora,policy,countries);
+    return {corpora,selected_added:opened.selected,incoming_report:value.schema!=='un.browser.corpus.v1'};
+  }
+  function savedStateBytes(corpora,state){
+    // Measure the resumable file even while a question row is unfinished.
+    const prefs={...settings({...state.settings,questions:[]}),questions:state.settings.questions??[]};
+    const model={engine:ENGINE,generated_at:'2000-01-01T00:00:00.000Z',settings:prefs,selected_meetings:state.selected,appendix:state.appendix,passage_notes:state.passage_notes};
+    return new TextEncoder().encode(JSON.stringify(savedReport(model,corpora))).length;
+  }
   function savedReport(report,corpora){
     return {schema:VERSION,engine:report.engine,generated_at:report.generated_at,settings:report.settings,selected_meetings:report.selected_meetings,appendix:report.appendix,passage_notes:report.passage_notes,corpora};
   }
@@ -135,7 +150,7 @@
     const chosen=appendixSelection(appendix,records),appendixIds=new Set(chosen.record_ids);
     const meetings=coverage.map(m=>({slug:m.slug,date:m.date,title:m.title||m.slug,status:m.status,source_url:Reader.safeURL(m.source_url),
       summary:Reader.build(records,{meeting_slug:m.slug,meeting_date:m.date,title:m.title})}));
-    return {schema:VERSION,engine:'source-bound-reporting-1.6',generated_at:new Date().toISOString(),settings:prefs,appendix:chosen,passage_notes:passageNotes(notes,records),
+    return {schema:VERSION,engine:ENGINE,generated_at:new Date().toISOString(),settings:prefs,appendix:chosen,passage_notes:passageNotes(notes,records),
       appendix_records:chosen.mode==='selected'?records.filter(r=>appendixIds.has(r.id)):prefs.template==='evidence'?records:[],
       question_evidence:prefs.questions.map(q=>({...q,records:search(records,q.query)})),
       selected_meetings:meetings.map(m=>m.slug),meetings,records,priority_evidence:search(records,prefs.priorities),
@@ -229,6 +244,6 @@
     const cell=x=>'"'+String(/^[\s]*[=+\-@]/.test(String(x??''))?"'"+x:x??'').replace(/"/g,'""')+'"';
     return [cols,...records.map(r=>cols.map(k=>r[k]))].map(row=>row.map(cell).join(',')).join('\r\n');
   }
-  const api={VERSION,NOTES_VERSION,questions,LEGACY_VERSION,APPENDIX_VERSION,NOTE_LIMIT,NOTES_LIMIT,TEMPLATES,LIMIT,PREFERENCES_VERSION,PREFERENCES_LIMIT,exportPreferences,importPreferences,settings,exclusions,allowed,validateCorpora,search,meetingSelection,appendixSelection,passageNotes,openSaved,savedReport,build,countryTimeline,reportHTML,evidenceHTML,speakerHTML,contextWindow,contextHTML,standalone,evidenceCSV};
+  const api={VERSION,NOTES_VERSION,questions,LEGACY_VERSION,APPENDIX_VERSION,NOTE_LIMIT,NOTES_LIMIT,TEMPLATES,LIMIT,PREFERENCES_VERSION,PREFERENCES_LIMIT,exportPreferences,importPreferences,settings,exclusions,allowed,validateCorpora,search,meetingSelection,appendixSelection,passageNotes,openSaved,appendSaved,savedStateBytes,savedReport,build,countryTimeline,reportHTML,evidenceHTML,speakerHTML,contextWindow,contextHTML,standalone,evidenceCSV};
   if(node)module.exports=api;else root.UNMeetingReport=api;
 })(globalThis);

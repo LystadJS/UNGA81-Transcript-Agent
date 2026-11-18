@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.61.0",
+  "browser_engine": "browser-descriptive-1.62.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-18",
   "features": [
+    "Atomic addition of source collections or saved-report sources to the current workspace, retaining current notes/settings/selections, original source verification, overlap/revision refusal, complete saved-JSON byte budgeting and stale-operation protection; no uploads, new schema or dependencies",
     "Automatic country-first dated overview across selected meetings, with exact same-meeting policy-object U.S. extracts, explicit country/comparison gaps, source context and no carry-forward, weighting or inferred policy-change scores; same source-bound report schemas and no dependencies",
     "Direct complete-report printing and browser Save as PDF, with workspace controls excluded, expanded source identities, untruncated evidence, native print-dialog handling and unchanged resumable JSON/ZIP; no PDF library, server or uploads",
     "Editable native Word (.docx) reading copy generated entirely in the browser, with complete report coverage, country tables, source hyperlinks, analyst notes, questions and selected evidence; bounded to 25 MB, no macros, remote images, dependencies or uploads",

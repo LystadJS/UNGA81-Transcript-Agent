@@ -94,14 +94,16 @@
     input.addEventListener('change',()=>{if(loaded){pruneAppendix();refreshEvidenceFilters();invalidate();shown=10;search();}else $('loadMeetings').disabled=!document.querySelector('#inventory input:checked');});
     label.append(input,span);return label;
   }
-  function setCollection(next,prefs=null,selection=null,chosen={mode:'template',record_ids:[]},passage_notes=[]){
-    corpora=next;$('loadedMeetings').replaceChildren();
+  function setCollection(next,prefs=null,selection=null,chosen={mode:'template',record_ids:[]},passage_notes=[],preserveSettings=false){
+    corpora=next;$('addCollection').disabled=!corpora.length;$('loadedMeetings').replaceChildren();
     appendixIds=new Set(chosen.record_ids);$('appendixMode').value=chosen.mode;$('onlySelectedEvidence').checked=false;
     notes=new Map(passage_notes.map(n=>[n.record_id,n.text]));
     for(const row of corpora.flatMap(c=>c.coverage).filter(r=>r.slug))$('loadedMeetings').append(checkbox(row,true,!selection||selection.includes(row.slug)));
-    if(prefs)setQuestions(prefs.questions);
-    if(prefs){for(const [id,key] of [['reportTemplate','template'],['mission','mission'],['reportTitle','title'],['priorities','priorities'],['analystNotes','notes']])$(id).value=prefs[key];}
-    else $('analystNotes').value='';
+    if(!preserveSettings){
+      if(prefs)setQuestions(prefs.questions);
+      if(prefs){for(const [id,key] of [['reportTemplate','template'],['mission','mission'],['reportTitle','title'],['priorities','priorities'],['analystNotes','notes']])$(id).value=prefs[key];}
+      else $('analystNotes').value='';
+    }
     $('reportControls').disabled=false;$('evidenceSearch').disabled=false;$('appendixControls').disabled=false;
     $('collectionStatus').textContent=corpora.flatMap(c=>c.coverage).filter(r=>r.slug).length+' loaded meeting records; '+corpora.reduce((n,c)=>n+c.records.length,0)+' English source segments. Original response hashes verified. Last source check: '+corpora.map(c=>c.collection.checked_at||c.collection.collected_at||'Unknown').join('; ')+'.';
     refreshEvidenceFilters(true);invalidate();shown=10;search();
@@ -175,6 +177,20 @@
       if(!replacementCurrent(ticket))return;
       setCollection(opened.corpora,opened.settings,opened.selected,opened.appendix,opened.passage_notes);setStatus('Saved sources verified. Prepare the report to rebuild its summaries; saved derived claims are not trusted.');
     }catch(e){if(ticket.id===replacementSerial)setStatus('Could not open file: '+e.message,true);}finally{if(ticket.id===replacementSerial)event.target.value='';}
+  };
+  $('addCollection').onchange=async event=>{
+    const file=event.target.files[0];if(!file)return;
+    const ticket={id:++replacementSerial,revision:workspaceRevision};setStatus('Checking sources to add…');
+    try{
+      if(file.size>Core.LIMIT)throw Error('Use a JSON export under 25 MB.');
+      const added=await Core.appendSaved(corpora,JSON.parse(await file.text()),policy,countries);
+      if(!replacementCurrent(ticket))return;
+      const selection=[...new Set([...selected(),...added.selected_added])],prefs=options(),chosen=appendix(),passage_notes=passageNotes();
+      if(Core.savedStateBytes(added.corpora,{settings:prefs,selected:selection,appendix:chosen,passage_notes})>Core.LIMIT)throw Error('Combined saved report exceeds 25 MB, including your notes and selections. Use fewer sources or a separate report.');
+      setCollection(added.corpora,null,selection,chosen,passage_notes,true);
+      setStatus('Sources added: '+added.selected_added.length+(added.selected_added.length===1?' meeting selection.':' meeting selections.')+' Current notes, settings and existing meeting selections kept.'+(added.incoming_report?' Notes and settings from the added report were not copied.':'')+' Prepare the report again to include the added evidence.');
+    }catch(e){if(ticket.id===replacementSerial)setStatus('Could not add sources: '+e.message+' Current work kept.',true);}
+    finally{if(event.target.files[0]===file)event.target.value='';}
   };
   for(const id of ['reportTemplate','mission','reportTitle','priorities','analystNotes'])$(id).addEventListener('input',invalidate);
   $('savePreferences').onclick=()=>{try{save(JSON.stringify(Core.exportPreferences(options()),null,2),'un-mission-preferences.json','application/json');$('preferencesStatus').textContent='Mission preferences saved. Transcript text, selected meetings and analyst notes are excluded.';}catch(e){$('preferencesStatus').textContent=e.message;}};
