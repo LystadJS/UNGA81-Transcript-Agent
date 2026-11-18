@@ -89,6 +89,22 @@ outside the checkout, and temporary public-build copies are removed on normal ex
 The guide now names the executable setup rather than an unavailable synthetic
 inventory. Record actual participant findings separately.
 
+## Shared reporting QA fixture
+
+Fourteen reporting browser suites now use one [loopback server and browser launcher](../tests/reporting_browser_fixture.cjs).
+All post-launch workflow checks remain byte-identical. Including the shared helper
+and its new contract, this QA cohort falls from 185,606 to 181,273 bytes: 4,333
+bytes of net reduction. The contract checks MIME/UTF-8 responses, versioned asset
+URLs, dynamic script-free reading copies and root/traversal refusal using fictional
+temporary files. It runs in Node before Playwright installation; browser loading
+stays lazy and retains existing module/executable overrides.
+
+Fourteen workflows pass locally and live, along with the new HTTP contract,
+256 Python tests, 2,077 retained checksums and the 204-entry public build. All 196
+preferred-site hashes remain unchanged; repeat mirror sync copies zero files.
+The public app stays at 1.73.0, with no runtime, dependency, schema, model or storage
+change. The separate facilitator keeps its public-build/network-isolation setup.
+
 ## Source tree and remaining work
 
 The source checkout is `/workspace/UNGA81-Transcript-Agent`; main is the source of

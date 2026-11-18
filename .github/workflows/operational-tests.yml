@@ -30,7 +30,9 @@ jobs:
       - name: Current tracked R package integrity
         run: python tools/package_checksums.py
       - name: Source-free collection, persistence, publication and model contracts
-        run: python -m unittest discover -s tests -p 'test_*.py' -v
+        run: |
+          python -m unittest discover -s tests -p 'test_*.py' -v
+          node tests/test_reporting_browser_fixture.cjs
       - name: Install pinned browser harness
         run: |
           python -m pip install --disable-pip-version-check playwright==1.57.0

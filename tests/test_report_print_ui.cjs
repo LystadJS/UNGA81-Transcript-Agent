@@ -1,12 +1,12 @@
 /* Complete print view and native browser PDF, with fictional sources only. */
 'use strict';
-const assert=require('node:assert/strict'),fs=require('node:fs'),http=require('node:http'),path=require('node:path');
-const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
-const F=require('./meeting_report_fixture.cjs'),Core=require('../site/meeting-report-core.js'),Collector=require('../site/collector.js'),root=path.resolve(__dirname,'../site');
+const assert=require('node:assert/strict'),fs=require('node:fs');
+const {startServer,launchBrowser}=require('./reporting_browser_fixture.cjs');
+const F=require('./meeting_report_fixture.cjs'),Core=require('../site/meeting-report-core.js'),Collector=require('../site/collector.js');
 let browser,server;
 (async()=>{
- server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname);if(!file.startsWith(root+path.sep)){res.writeHead(403);return res.end();}try{res.setHeader('Content-Type',file.endsWith('.js')?'text/javascript':file.endsWith('.css')?'text/css':file.endsWith('.json')?'application/json':'text/html');res.end(fs.readFileSync(file));}catch{res.writeHead(404);res.end();}});
- await new Promise(r=>server.listen(0,'127.0.0.1',r));browser=await chromium.launch({headless:true,executablePath:process.env.BROWSER_PATH||'/usr/bin/chromium'});
+ server=await startServer();
+ browser=await launchBrowser();
  const page=await browser.newPage({acceptDownloads:true,viewport:{width:1440,height:1000}}),errors=[],requests=[];
  // Simulate a stale cached unversioned sheet; the updated report must request its versioned print styles.
  await page.route('**/meeting-reports.css',r=>r.fulfill({contentType:'text/css',body:'#printReport{display:none}'}));

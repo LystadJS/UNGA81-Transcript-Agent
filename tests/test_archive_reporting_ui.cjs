@@ -1,7 +1,7 @@
 /* Hosted or local workflow; all archive and UN responses are synthetic. */
 'use strict';
-const assert=require('node:assert/strict'),fs=require('node:fs'),http=require('node:http'),path=require('node:path'),crypto=require('node:crypto');
-const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
+const {startServer,launchBrowser}=require('./reporting_browser_fixture.cjs');
 const F=require('./meeting_report_fixture.cjs'),H=require('../site/meeting-report-selection.js');
 const root=path.resolve(__dirname,'../site'),policy=JSON.parse(fs.readFileSync(path.join(root,'reporting-exclusions.json')));
 const selected=[F.meetings[0],{...F.meetings[1],date:'2026-11-11'}];
@@ -10,9 +10,9 @@ archive.push({...archive[0],meeting_id:policy.meetings[0],title:'Reserved identi
 const partition=Buffer.from(JSON.stringify({meetings:archive})),manifest={schema:'un.archive.v1',snapshot_id:'synthetic-handoff-1',generated_at:'2026-01-01T00:00:00Z',status:'partial',model_status:'withheld',coverage:{selected:archive.length},downloads:[],partitions:[{path:'part.json',bytes:partition.length,sha256:crypto.createHash('sha256').update(partition).digest('hex')}]};
 let browser,server,policyFailure=false,missingSecond=false;
 (async()=>{
- server=http.createServer((req,res)=>{const p=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname);if(!p.startsWith(root+path.sep)){res.writeHead(403);return res.end();}try{res.setHeader('Content-Type',p.endsWith('.js')?'text/javascript':p.endsWith('.css')?'text/css':p.endsWith('.json')?'application/json':'text/html');res.end(fs.readFileSync(p));}catch{res.writeHead(404);res.end();}});
- await new Promise(r=>server.listen(0,'127.0.0.1',r));const base=process.argv[2]||`http://127.0.0.1:${server.address().port}/`;
- browser=await chromium.launch({headless:true,executablePath:process.env.BROWSER_PATH||'/usr/bin/chromium'});const page=await browser.newPage({acceptDownloads:true,viewport:{width:1440,height:1000}}),errors=[],requests=[];page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.accept());
+ server=await startServer();
+ const base=process.argv[2]||`http://127.0.0.1:${server.address().port}/`;
+ browser=await launchBrowser();const page=await browser.newPage({acceptDownloads:true,viewport:{width:1440,height:1000}}),errors=[],requests=[];page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.accept());
  await page.route('**/archive-config.json',r=>r.fulfill({json:{schema:'un.archive-config.v1',manifest_url:new URL('fixture/manifest.json',base).href}}));
  await page.route('**/fixture/manifest.json',r=>r.fulfill({json:manifest}));await page.route('**/fixture/part.json',r=>r.fulfill({body:partition,contentType:'application/json'}));await page.route('**/countries.json',r=>r.fulfill({json:F.countries}));
  await page.route('**/reporting-exclusions.json',r=>policyFailure?r.fulfill({status:404,body:'unavailable'}):r.fulfill({json:policy}));

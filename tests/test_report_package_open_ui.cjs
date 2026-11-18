@@ -1,12 +1,12 @@
 /* Direct package reopening never executes imported HTML or replaces newer work. */
 'use strict';
-const assert=require('node:assert/strict'),fs=require('node:fs'),http=require('node:http'),path=require('node:path');
-const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
-const F=require('./meeting_report_fixture.cjs'),Core=require('../site/meeting-report-core.js'),Package=require('../site/meeting-report-package.js'),root=path.resolve(__dirname,'../site');
+const assert=require('node:assert/strict'),fs=require('node:fs');
+const {startServer,launchBrowser}=require('./reporting_browser_fixture.cjs');
+const F=require('./meeting_report_fixture.cjs'),Core=require('../site/meeting-report-core.js'),Package=require('../site/meeting-report-package.js');
 let browser,server;
 (async()=>{
- server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname);if(!file.startsWith(root+path.sep)){res.writeHead(403);return res.end();}try{res.setHeader('Content-Type',file.endsWith('.js')?'text/javascript':file.endsWith('.css')?'text/css':file.endsWith('.json')?'application/json':'text/html');res.end(fs.readFileSync(file));}catch{res.writeHead(404);res.end();}});
- await new Promise(r=>server.listen(0,'127.0.0.1',r));browser=await chromium.launch({headless:true,executablePath:process.env.BROWSER_PATH||'/usr/bin/chromium'});
+ server=await startServer();
+ browser=await launchBrowser();
  const a=await F.corpus(),b=await F.corpus(1);
  const file=value=>({name:'synthetic.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(value))});
  const old=Core.savedReport(Core.build([a],[F.meetings[0].slug],{mission:'Current mission',title:'Current report',notes:'Keep global assessment 😀',questions:[{heading:'Current question',query:'humanitarian access'}]}, {mode:'selected',record_ids:[a.records[0].id]},[{record_id:a.records[0].id,text:'Keep source interpretation'}]),[a]);
