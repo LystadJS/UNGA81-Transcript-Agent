@@ -37,10 +37,23 @@
   }
   $('keepCurrentReport').onclick=()=>$('replaceReport').close('keep');
   $('replaceCurrentReport').onclick=()=>$('replaceReport').close('replace');
+  // JSON values keep missing metadata distinct from any literal recorded name.
+  function evidenceValue(record,key){return JSON.stringify((key==='country'?record.country:record.speaker_metadata?.name)||null);}
+  function refreshEvidenceFilters(reset=false){
+    const ids=new Set(selected()),records=corpora.flatMap(c=>c.records).filter(r=>ids.has(r.meeting_slug));
+    for(const [id,key,all,missing] of [['evidenceCountry','country','All recorded affiliations','No recorded country affiliation'],['evidenceSpeaker','speaker','All recorded names','No recorded speaker name']]){
+      const control=$(id),previous=reset?'':control.value,values=[...new Set(records.map(r=>evidenceValue(r,key)))];
+      values.sort((a,b)=>String(JSON.parse(a)||'').localeCompare(String(JSON.parse(b)||'')));
+      control.replaceChildren(new Option(all,''));
+      for(const value of values)control.append(new Option(key==='speaker'&&JSON.parse(value)?'Recorded: '+JSON.parse(value):JSON.parse(value)||missing,value));
+      control.value=values.includes(previous)?previous:'';
+    }
+    $('evidenceFilters').disabled=!records.length;
+  }
   function search(){
     const ids=new Set(selected()),all=corpora.flatMap(c=>c.records).filter(r=>ids.has(r.meeting_slug));
-    const rows=Core.search(all.filter(r=>!$('onlySelectedEvidence').checked||appendixIds.has(r.id)),$('evidenceSearch').value);
-    $('evidenceCount').textContent=rows.length+' matching source segments in '+ids.size+' selected meetings. Showing '+Math.min(rows.length,shown)+'.';
+    const rows=Core.search(all.filter(r=>(!$('evidenceCountry').value||evidenceValue(r,'country')===$('evidenceCountry').value)&&(!$('evidenceSpeaker').value||evidenceValue(r,'speaker')===$('evidenceSpeaker').value)&&(!$('onlySelectedEvidence').checked||appendixIds.has(r.id))),$('evidenceSearch').value);
+    $('evidenceCount').textContent=rows.length+' matching source segments in '+ids.size+' selected meetings ('+all.length+' source segments before search and filters). Showing '+Math.min(rows.length,shown)+'.';
     $('evidenceResults').innerHTML=Core.evidenceHTML(rows.slice(0,shown));$('moreEvidence').hidden=rows.length<=shown;
     for(const [i,article] of [...$('evidenceResults').children].entries()){
       const record=rows[i],label=document.createElement('label'),input=document.createElement('input');
@@ -77,7 +90,7 @@
     input.setAttribute('aria-label',(loaded?'Include ':'Select ')+row.title);
     input.disabled=!Core.allowed(row.date.slice(0,10),row.slug,policy)||(!loaded&&!row.hasTranscript);
     span.textContent=row.date.slice(0,10)+' · '+row.title+' · '+(loaded?row.status:input.disabled?'Unavailable or excluded':'Transcript listed');
-    input.addEventListener('change',()=>{if(loaded){pruneAppendix();invalidate();shown=10;search();}else $('loadMeetings').disabled=!document.querySelector('#inventory input:checked');});
+    input.addEventListener('change',()=>{if(loaded){pruneAppendix();refreshEvidenceFilters();invalidate();shown=10;search();}else $('loadMeetings').disabled=!document.querySelector('#inventory input:checked');});
     label.append(input,span);return label;
   }
   function setCollection(next,prefs=null,selection=null,chosen={mode:'template',record_ids:[]},passage_notes=[]){
@@ -90,7 +103,7 @@
     else $('analystNotes').value='';
     $('reportControls').disabled=false;$('evidenceSearch').disabled=false;$('appendixControls').disabled=false;
     $('collectionStatus').textContent=corpora.flatMap(c=>c.coverage).filter(r=>r.slug).length+' loaded meeting records; '+corpora.reduce((n,c)=>n+c.records.length,0)+' English source segments. Original response hashes verified. Last source check: '+corpora.map(c=>c.collection.checked_at||c.collection.collected_at||'Unknown').join('; ')+'.';
-    invalidate();shown=10;search();
+    refreshEvidenceFilters(true);invalidate();shown=10;search();
   }
   function busy(value){$('sourceControls').disabled=value;$('loadMeetings').disabled=value||!document.querySelector('#inventory input:checked');$('cancelLoad').hidden=!value;for(const e of $('inventory').querySelectorAll('input'))e.disabled=value||!inventory.find(m=>m.slug===e.value)?.hasTranscript;}
   function clearHandoff(){handoff=null;$('archiveSelection').hidden=true;}
@@ -173,6 +186,8 @@
       setQuestions(prefs.questions);invalidate();$('preferencesStatus').textContent='Mission preferences applied. Your loaded sources, meeting selection and analyst notes are unchanged. Prepare the report again to update its exports.';
     }catch(e){$('preferencesStatus').textContent='Could not open mission preferences: '+e.message;}finally{event.target.value='';}
   };
+  for(const id of ['evidenceCountry','evidenceSpeaker'])$(id).onchange=()=>{shown=10;search();};
+  $('clearEvidenceFilters').onclick=()=>{$('evidenceSearch').value='';$('evidenceCountry').value='';$('evidenceSpeaker').value='';$('onlySelectedEvidence').checked=false;shown=10;search();$('evidenceSearch').focus();};
   $('evidenceSearch').oninput=()=>{shown=10;search();};$('moreEvidence').onclick=()=>{shown+=10;search();};
   $('onlySelectedEvidence').onchange=()=>{shown=10;search();};
   $('appendixMode').onchange=()=>{if($('appendixMode').value==='template')appendixIds.clear();invalidate();search();};
