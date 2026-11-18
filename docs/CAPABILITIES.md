@@ -1,10 +1,11 @@
 # Current capability and acceptance matrix
 
-Updated 18 November 2026, America/New_York. The last verified live portfolio release before the current publication was
-1.54.0. Source releases 1.55.0/1.56.0 are merged; website deployment and live
-verification are in progress. Do not treat merged source as verified live delivery. Code, engineering verification,
-external configuration, human review and empirical acceptance remain distinct.
-See the [current checkpoint](OVERNIGHT_WORK.md) for PRs and publication blockers.
+Updated 18 November 2026, America/New_York. **Release 1.56.0 is deployed and
+verified at both public URLs.** All 194 checked portfolio files match their
+expected hashes; five reporting suites passed against the actual live site with
+fictional sources. This is engineering verification, not diplomat or model
+acceptance. Code, deployment, source coverage and empirical acceptance remain
+distinct. See the [current checkpoint](OVERNIGHT_WORK.md) for release receipts.
 
 ## Reporting and execution
 
@@ -12,8 +13,8 @@ See the [current checkpoint](OVERNIGHT_WORK.md) for PRs and publication blockers
 | --- | --- | --- |
 | Meeting-first reporting | Explicit selected English-source loading; mission briefing, negotiation record and evidence digest; literal evidence search; source context; passage notes and selected appendices | Up to five meetings per load. Reports preserve country-expression coverage and visible comparison gaps. Actual diplomat usability acceptance remains outstanding |
 | Portable reports | Script-free HTML, verified source-bearing JSON, full evidence CSV and a ZIP with checksums | 25 MB encoded bounds; oversized downloads fail without truncation. Exports can contain source text and analyst notes; review before sharing |
-| Briefing questions — 1.55.0 in review | Eight reusable question headings and all-word evidence queries; original supporting passages or explicit unanswered gaps; saved-report v4 and preference v2 | These are literal searches, not generated answers. Older report v1–v3 and preference v1 formats remain readable. Source #291 and website #167 merged after passing checks; live verification pending |
-| Device report — 1.56.0 in review | One explicitly saved IndexedDB report, verified reopening, guarded replacement/removal, stale-save protection and JSON fallback | Same browser profile only; no automatic saving or authenticated collaboration. Browser cleanup may remove it. Source #292 merged after passing checks; website #168 audit/regression passed and publication is pending |
+| Briefing questions | Eight reusable question headings and all-word evidence queries; original supporting passages or explicit unanswered gaps; saved-report v4 and preference v2 | These are literal searches, not generated answers. Older report v1–v3 and preference v1 formats remain readable. Source #291 and website #167 merged after passing checks; live reporting verification passed |
+| Device report | One explicitly saved IndexedDB report, verified reopening, guarded replacement/removal, stale-save protection and JSON fallback | Same browser profile only; no automatic saving or authenticated collaboration. Browser cleanup may remove it. Source #292 and website #168 merged after passing checks; live device-storage verification passed |
 | Advanced browser analysis | On-demand collection, source-linked descriptive reports, dimensional methods, clustering, component analysis and saved-run comparison | JavaScript on the user's device. English-only published transcripts; no real-time audio ingestion or multilingual parity. Similar language is not policy agreement |
 | Local R/Shiny | Preserved personal briefing, controlled D1 adapters, evidence inspection and unsent email exports | Separate from the public browser. Twelve executable adapters among 42 registered methods; registered plans are not operational methods |
 | Personal Python pipeline | Versioned collection, immutable sources, SQLite warehouse, research exports, publication guards and recovery/inspection tooling | Separate personal/operational execution; not required on government browser clients. Existing storage limits and private/public allowlists remain intact |
