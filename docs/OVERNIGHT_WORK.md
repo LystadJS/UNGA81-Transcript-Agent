@@ -12,60 +12,63 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Verified release 1.60.0
+## Verified release 1.61.0
 
 | PR | Change | Checked head / merge |
 | --- | --- | --- |
-| [Source #302](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/302) | Complete native printing / browser PDF | Three checks passed at `52b36f2`; merged `b21add4` |
-| [Website #172](https://github.com/LystadJS/LystadJS.github.io/pull/172) | Canonical mirror and deployed print test | Audit/regression passed at `018210f`; merged `f1e3bc6` |
-| [Source #303](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/303) | Version the changed print stylesheet | Three checks passed at `4904146`; merged `2a58233` |
-| [Website #173](https://github.com/LystadJS/LystadJS.github.io/pull/173) | Hash transformed CSS in mirror URLs | Audit/regression passed at `e4b39d8`; merged `8cf6aba` |
+| [Source #305](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/305) | Dated country overview and matched U.S. excerpts | Three checks passed at `5ac3a6a`; merged `326845b` |
+| [Website #174](https://github.com/LystadJS/LystadJS.github.io/pull/174) | Canonical public sync and exact source/release pins | Audit/regression passed at `fd3ee75`; merged `c9a3fc5` |
 
-Both public URLs serve 1.60.0 with the final style-cache fix. All 195 checked
-portfolio files (194 manifest entries plus the manifest) match expected SHA-256
-hashes. Seven browser suites pass against the actual preferred URL with fictional
-sources: reporting, replacement, packages, device library, archive handoff, Word
-and print/PDF. The print suite also passes at the original source URL with the
-simulated stale unversioned stylesheet. No skipped PR live job is counted as a pass.
+Both public URLs serve 1.61.0. All 195 portfolio files (194 manifest entries plus
+the manifest) match expected SHA-256 hashes. All seven reporting browser suites
+pass against the actual preferred URL with fictional sources; the expanded meeting
+reporting suite also passes at the source URL. No skipped PR live-verification job
+is counted as a live pass. The live print test includes the dated country table
+and preserves its complete evidence, source context and original schema behavior.
 
-Printing uses the complete report renderer, beyond preview limits. Workspace
-controls are excluded; source identities are expanded, quotation/table clipping
-is removed and meeting navigation targets distinct print headings. Native dialog
-closing or Return to report clears the print view and restores its title. Browser
-failure, stale/oversized reports and missing closing events preserve current work.
-Printing does not mark resumable work saved or claim that a PDF was created.
-Save JSON/ZIP separately. The browser controls PDF destination and final size;
-printable HTML has a 25 MB bound. No popup, PDF library, model or server is added.
+Multi-meeting reports automatically show each recorded affiliation's existing
+object-specific extracts in source-date order, with links to the dated meeting,
+source/collective gaps and matching U.S. excerpts from that same meeting. Individual
+meeting tables also show matched U.S. quotations. Matching uses the same issue ID
+and case-insensitive displayed object wording. It assigns no agreement score,
+current stance or verified policy change. Evidence is never carried forward,
+including between meetings on the same date; those rows sort by title without
+claiming within-day chronology. Exact repeated quoted wording appears once per
+extract and adds no weight. Original source records and full CSV are unchanged.
 
-A simulated stale unversioned stylesheet exercises the source URL fix. The mirror
-font transform previously replaced source CSS versions with one shared tag. It
-now hashes actual transformed local styles after font changes; source style
-updates invalidate their cache even when the typography theme is unchanged.
-Seven sync fixtures pass, including changed-CSS invalidation and repeat-sync
-idempotence. Shared typography links and unrelated CV work are preserved.
+The view reuses existing quick-reader outputs, not a second classifier. Renderer
+metadata is 1.6; report v4 and preference v2 remain unchanged. Imports rebuild
+derived views from verified original sources, ignoring forged saved chronology.
+No country selection is required. Passage filters, appendix choices and briefing
+questions leave the country overview intact. HTML, Word, print/PDF and package HTML
+include it. Printed dated rows stay together when they fit on a page.
 
-Local validation passes 256 Python tests and seven synthetic reporting browser
-suites. The print suite covers 64 source segments, the full appendix beyond the
-50-passage preview, an unclipped long quotation, notes, source details, unanswered
-gaps, native/keyboard events, CSS isolation, anchors, recovery, dirty/stale protection
-and size/browser refusal. Independent local PDF extraction verifies the 38-page,
-133,658-byte stress-test file's final passage, long-quote end, notes and hashes,
-two source URLs and four internal navigation links. Three rasterized pages were
-inspected for table margins, qualifications, source identity and note readability.
-The actual live portfolio PDF also passed independent extraction: 38 pages,
-279,395 bytes, complete long/end passages, source identities, notes, question gap,
-two source URLs and four internal navigation links; workspace controls are absent.
-These are engineering checks, not actual government-browser dialogs or diplomat
-usability acceptance. The usability guide includes those unrun participant tasks.
+Local checks pass 256 Python tests, seven browser suites, existing report/package
+contracts and a new source-bound country-timeline contract. Cases include opposing
+country/U.S. verbs without agreement inference, exact objects, no same-day or
+cross-date carry-forward, missing U.S./country sources, collective-only observations,
+repeated wording, escaped titles, immutable inputs, rebuilt imports and single/empty
+report boundaries. Browser checks cover automatic rows, U.S. quotations, unchanged
+filter/export state, local context, dated keyboard links, offline HTML, three native
+Word tables and complete PDF. Independently extracted the 39-page fictional print
+stress case and inspected its country table after preserving row pagination.
+Poppler and MuPDF independently extracted the live 39-page, 298,082-byte PDF;
+the country overview, comparison heading, no-carry-forward qualification, final
+source passage, long-quote end and analyst notes are present, without workspace
+controls. This is a reading-copy check, not a source-byte authenticity claim.
+These are engineering checks; no diplomat session, government-browser dialog or
+desktop Word-rendering acceptance is claimed.
 
-The public build remains 203 entries and the mirror 194 files. There is no new
-application file, dependency, source input, upload or Hugging Face storage. All
-2,077 R-package checksums remain valid; saved report/preference schemas, ZIP
-contents, scientific gates and the 37 reserved meetings are unchanged.
+The build remains 203 entries and the mirror 194 files. Four public assets and the
+manifest change; canonical sync is idempotent. Core-script and changed stylesheet
+URLs are versioned, with transformed CSS hashes retained in the mirror. No new
+application file, dependency, model, server, upload or Hugging Face storage is added.
+All 2,077 R-package checksums remain valid; the scientific/source gates, original
+records and 37 unopened reserved meetings are unchanged.
 
-The preserved [1.59.0 receipt](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/b21add458fa15974e6fcc96a99a39d8aa8dd7b72/docs/OVERNIGHT_WORK.md)
-records native Word export and prior reporting checkpoints. Use historical results
-at their original versions and scope.
+The preserved [1.60.0 receipt](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/fdb98cf7ef1396ef455a0561d088f213ad5154bc/docs/OVERNIGHT_WORK.md)
+records native printing, PDF checks and stylesheet cache handling. Use historical
+results at their original versions and scope.
 
 ## Source tree and remaining work
 
@@ -97,7 +100,7 @@ no released model or semantic-accuracy claim follows from structural QA.
 
 The R cleanup did not change browser assets or add Hugging Face storage.
 
-1. Continue useful reporting work from the verified 1.60.0 release, then expand
+1. Continue useful reporting work from the verified 1.61.0 release, then expand
    broader workflows within the execution/storage constraints.
 2. Continue dependency-based cleanup with appropriate personal-runtime checks.
 3. Complete actual diplomat usability sessions; evaluate any optional generative
