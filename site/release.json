@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.70.0",
+  "browser_engine": "browser-descriptive-1.71.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-18",
   "features": [
+    "Keyboard-accessible briefing-question ordering with numbered positions, boundary-aware Move up/down controls, preserved draft fields and explicit stale-export invalidation; existing report v4 and preference v2 arrays retain the order without new schemas, dependencies or storage",
     "Reporting exports grouped by purpose: save resumable work, read/share reports and evidence spreadsheets, with format guidance beside each action and unchanged controls, downloads, schemas, storage and source coverage",
     "Separate source-bound passage-notes CSV for spreadsheet follow-up, with explicit analyst interpretation labels, selected-meeting scope, original source pointers, spreadsheet-formula escaping and unchanged evidence CSV, report schemas and resumable JSON/ZIP",
     "Personal all-day report-review calendar entries (.ics) with an explicitly chosen date, optional assessment, original meeting references, UTF-8 line folding and stale-export protection; separate reading copy with no calendar connection, invitations, source requests or new report schema",

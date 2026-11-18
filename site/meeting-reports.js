@@ -11,14 +11,22 @@
   const appendix=()=>({mode:$('appendixMode').value,record_ids:[...appendixIds]});
   const passageNotes=()=>[...notes].map(([record_id,text])=>({record_id,text}));
   function readQuestions(){return [...$('briefingQuestions').children].map(row=>({heading:row.querySelector('[data-heading]').value,query:row.querySelector('[data-query]').value}));}
-  function questionCount(){const count=$('briefingQuestions').children.length;$('questionCount').textContent=count+' of 8 questions.';$('addBriefingQuestion').disabled=count>=8;}
+  function questionCount(){
+    const rows=[...$('briefingQuestions').children],count=rows.length;$('questionCount').textContent=count+' of 8 questions.';$('addBriefingQuestion').disabled=count>=8;
+    rows.forEach((row,index)=>{row.querySelector('legend').textContent='Briefing question '+(index+1)+' of '+count;for(const button of row.querySelectorAll('[data-question-move]')){const up=button.dataset.questionMove==='-1';button.disabled=up?index===0:index===count-1;button.setAttribute('aria-label','Move question '+(index+1)+(up?' up':' down'));}});
+  }
   function addQuestion(value={heading:'',query:''},focus=false){
     if($('briefingQuestions').children.length>=8)return;
     const row=document.createElement('fieldset'),legend=document.createElement('legend');legend.textContent='Briefing question';row.append(legend);
     for(const [key,label,max] of [['heading','Question or section heading',160],['query','Search words for supporting evidence',300]]){
       const wrapper=document.createElement('label'),input=document.createElement('input');wrapper.textContent=label;input.type='text';input.maxLength=max;input.value=value[key];input.dataset[key]='';input.addEventListener('input',invalidate);wrapper.append(input);row.append(wrapper);
     }
-    const remove=document.createElement('button');remove.type='button';remove.className='secondary';remove.textContent='Remove question';remove.onclick=()=>{const next=row.nextElementSibling?.querySelector('input')||row.previousElementSibling?.querySelector('input')||$('addBriefingQuestion');row.remove();questionCount();invalidate();next.focus();};row.append(remove);$('briefingQuestions').append(row);questionCount();if(focus)row.querySelector('input').focus();
+    const controls=document.createElement('div');controls.className='report-controls';
+    for(const direction of [-1,1]){
+      const move=document.createElement('button');move.type='button';move.className='secondary';move.dataset.questionMove=direction;move.textContent=direction<0?'Move up':'Move down';
+      move.onclick=()=>{const container=$('briefingQuestions'),neighbor=direction<0?row.previousElementSibling:row.nextElementSibling;if(!neighbor)return;if(direction<0)container.insertBefore(row,neighbor);else container.insertBefore(neighbor,row);questionCount();invalidate();$('questionCount').textContent+=' Question moved to position '+([...container.children].indexOf(row)+1)+'.';(move.disabled?row.querySelector('[data-heading]'):move).focus();};controls.append(move);
+    }
+    const remove=document.createElement('button');remove.type='button';remove.className='secondary';remove.textContent='Remove question';remove.onclick=()=>{const next=row.nextElementSibling?.querySelector('input')||row.previousElementSibling?.querySelector('input')||$('addBriefingQuestion');row.remove();questionCount();invalidate();next.focus();};controls.append(remove);row.append(controls);$('briefingQuestions').append(row);questionCount();if(focus)row.querySelector('input').focus();
   }
   function setQuestions(values=[]){$('briefingQuestions').replaceChildren();for(const q of values)addQuestion(q);questionCount();}
   $('addBriefingQuestion').onclick=()=>{addQuestion(undefined,true);invalidate();};
