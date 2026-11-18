@@ -1,90 +1,72 @@
 # Current work checkpoint
 
-Updated 18 November 2026, America/New_York. The active objective is a usable
-PowerTranscript-like reporting application, followed by broader diplomatic
-workflows, with JavaScript-only browser execution, separate personal R/Python
-tools, limited Hugging Face storage and a focused source tree.
+Updated 18 November 2026, America/New_York. Continue the PowerTranscript-like
+reporting application and broader feasible diplomatic workflows with JavaScript-only
+browser execution, separate personal R/Python tools, bounded Hugging Face storage
+and a focused source tree. Full DiploTools parity is not established.
 
-## Publication boundary
+## Standing authorization
 
-On 18 November 2026 the user explicitly approved all merges from that point
-onward. This standing authorization supersedes the former merge-approval blocker;
-respect checks and repository protections, but do not request the same approval
-again. Source #291/#292/#293 and website #167/#168 are merged. Release 1.56.0
-is verified live at both the source Pages URL and preferred portfolio mirror.
-All 194 checked portfolio files (193 manifest entries plus the manifest itself)
-matched their expected SHA-256 hashes. Five reporting suites passed against the
-actual live portfolio, using fictional sources and no reserved transcripts.
+On 18 November the user explicitly approved all merges from that point onward.
+This supersedes the former merge blocker. Merge tested project PRs and publish
+the required mirror without repeating that approval request; respect repository
+protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Current increment — 1.57.0
+## Verified release 1.57.0
 
-`feature/device-report-library` extends the single device copy into an eight-report
-library, sharing 25 MB of UTF-8 report JSON. The IndexedDB v2 upgrade preserves
-and moves the v1 slot atomically; no duplicate source store remains. Write/count
-limits and report-revision checks share transactions. Titles, dates and sizes are
-listed without automatic source opening. Stale tabs must refresh before opening,
-replacing or removing a changed report. Report/preference schemas are unchanged.
-
-Local storage tests passed the existing save/replay/failure paths plus multiple
-reports, title escaping, stale tabs, concurrent storage bounds, blocked-tab
-migration/recovery and upgrade quota-error rollback. The four other reporting
-browser suites, syntax/diff checks and the allowlisted 202-entry build passed.
-Source/mirror publication and live acceptance are in progress. No Hugging Face data, model, dependency or external API is added.
-The last verified live release remains 1.56.0 until the new deployment is checked.
-
-## Published changes
-
-| PR | Scope | Base / verification |
+| PR | Change | Verified result |
 | --- | --- | --- |
-| [Source #291](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/291) | Release 1.55.0: eight reusable briefing questions, original supporting passages and unanswered gaps | main; merged as `7c42c87`; all three hosted checks passed |
-| [Source #292](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/292) | Release 1.56.0: one explicitly saved device report, verified replay and JSON fallback | main; merged as `29be705`; all three hosted checks passed |
-| [Source #293](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/293) | Remove three historical generated snapshots and consolidate current status documents | main; merged as `a4346e8`; browser/numerical checks passed at the exact reviewed head |
-| [Website #167](https://github.com/LystadJS/LystadJS.github.io/pull/167) | 1.55.0 mirror, corrected source/release verification pins | main; merged as `f6d7254`; audit and regression passed |
-| [Website #168](https://github.com/LystadJS/LystadJS.github.io/pull/168) | 1.56.0 mirror, storage module and archived evidence links | main; merged as `4aa57a7`; audit and regression passed |
+| [Source #295](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/295) | Bounded device report library | All three checks passed at `e254a13`; merged as `0f0907b` |
+| [Website #169](https://github.com/LystadJS/LystadJS.github.io/pull/169) | Exact public sync, release/source pins, expanded live device acceptance | Audit and regression passed at `7a325d3`; merged as `4f6e049` |
 
-These five PRs are complete. Do not open equivalent replacement PRs. Treat skipped
-post-deployment jobs as skipped; the live verification above was executed directly.
+Both public URLs serve 1.57.0. All 194 checked portfolio files (193 manifest entries
+plus the manifest) matched expected SHA-256 hashes. Five reporting suites passed
+against the actual portfolio: device library, meeting reporting, replacement
+protection, ZIP packages and archive handoff. The library suite also passed against
+the source Pages URL. Tests used fictional sources and no reserved transcripts;
+they establish engineering behavior, not diplomat usability or model accuracy.
+Do not open equivalent replacement PRs or count skipped CI jobs as live passes.
 
-## Verified engineering work
+The device library holds eight reports sharing 25 MB of UTF-8 report JSON. It
+lists titles, New York save times and sizes without opening sources automatically.
+Read/write revision checks reject stale-tab operations, and count/byte limits
+share the write transaction. The prior single slot migrates atomically without a
+duplicate source store. Blocked-tab recovery and upgrade quota-error rollback
+passed. After failure, the retained v1 JSON can be downloaded unchanged and
+unverified, without upgrading or deleting it. Source verification happens on
+normal import/open. Restricted browsers retain file-based reporting.
 
-Eight Node reporting contract suites and six Chromium reporting/archive suites
-passed. The device test exercised actual IndexedDB save/reload/replay, cancelled
-actions, corrupt data, quota failure, delayed saves, restricted-browser fallback
-and mobile layouts. Five suites also passed against the actual deployed portfolio:
-meeting reporting, device storage, replacement protection, ZIP packages and archive
-handoff. These tests use synthetic sources and do not establish diplomatic accuracy.
-The public build contains 202 entries; all 193 mirror files match their manifest.
-These are synthetic engineering checks, not diplomat or model acceptance.
+Report schema v4 and preference schema v2 are unchanged. No model, dependency,
+server, automatic report saving or Hugging Face data was added. The public build
+still contains 202 entries and the mirror still contains 193 public files.
 
-Three generated comparison snapshots were verified against public commit
-`5d0ca060b7cfb90509b47ed4ac0c87a532eb637e`. Removing current-tree copies saves
-16,269,686 bytes. All nine doc/renderer/report links are pinned to that immutable
-archive; archived inputs regenerate all three current HTML audits byte for byte.
-Git history remains intact. Frozen D1 artifacts, historical checksums, source
-corpora and current R/Python tools were preserved. No Hugging Face data was added.
+## Source tree and remaining work
 
-## Workspace and next work
+The source checkout is `/workspace/UNGA81-Transcript-Agent`; main is the source of
+truth. Keep implementation work in isolated branches. The partial mirror checkout
+is `/workspace/portfolio-site`; preserve unrelated `assets/css/cv.css` work and
+never stage absent website files as deletions. Use scripts/sync_un_project.py and
+explicit staged paths. Missing unchanged promisor objects can be retained through
+`git write-tree --missing-ok` after reviewing the exact staged set.
 
-The source checkout is `/workspace/UNGA81-Transcript-Agent`, currently on
-`feature/device-report-library`. The partial website checkout is
-`/workspace/portfolio-site`, on `feature/un-device-reports`; unchanged absent
-paths are marked skip-worktree. Preserve unrelated `assets/css/cv.css` work.
-Use the existing sync script and explicit paths; never stage website deletions
-from the partial checkout. Its Git trees can be written with `--missing-ok`
-while retaining unchanged promisor objects; review the exact staged paths first.
+Prior cleanup removed three generated snapshots and consolidated status documents,
+reducing active checkout content by about 16.48 MB while preserving Git history.
+All nine snapshot links use immutable archives and archived inputs regenerate
+three current HTML audits byte for byte. Frozen D1 artifacts, original checksums,
+source corpora, current methods and R/Python tools remain intact. Larger `un/`
+fixtures still have live validation dependencies; do not delete by age alone.
 
-1. Continue from this verified 1.56.0 release. Standing merge authorization is
-   recorded above; preserve checks and repository protections.
-2. Continue dependency-based cleanup; the larger `un/` fixtures have live
-   validation references and must not be deleted merely because they are old.
-3. Complete representative diplomat usability sessions and evaluate any optional
-   generative reporting separately from the existing deterministic reader.
-4. Preserve all 37 reserved meetings and model acceptance gates. Do not infer
-   national positions from collective statements, mentions or text similarity.
+1. Continue useful reporting work from the verified 1.57.0 release, then expand
+   broader workflows within the execution/storage constraints.
+2. Continue dependency-based cleanup with appropriate personal-runtime checks.
+3. Complete actual diplomat usability sessions; evaluate any optional generative
+   reporting independently from the deterministic reader and stance classifier.
+4. Preserve all 37 reserved meetings, the single-reviewer owner mode and publication
+   gates. Do not infer national positions from collectives, mentions or similarity.
 
-## Historical receipts
+## Earlier receipts
 
-Earlier activation logs, expired scheduling instructions and detailed receipts
-are preserved in the [archived checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/44cf6ba28a5b38693547407a4ac2414e6b607c82/docs/OVERNIGHT_WORK.md).
-They are evidence of their original dates and scope, not current instructions or
-fresh acceptance. Keep this file a current handoff rather than an append-only log.
+The [1.56.0 checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/44ff0106f5a3ac8e82b4da22602c341f2593454f/docs/OVERNIGHT_WORK.md)
+and its linked immutable archives retain earlier deployment, cleanup and operational
+receipts. Use their original dates and scope, not expired activation instructions.
+Keep this file a current handoff rather than an append-only log.
