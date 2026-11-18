@@ -16,6 +16,22 @@ All 194 checked portfolio files (193 manifest entries plus the manifest itself)
 matched their expected SHA-256 hashes. Five reporting suites passed against the
 actual live portfolio, using fictional sources and no reserved transcripts.
 
+## Current increment — 1.57.0
+
+`feature/device-report-library` extends the single device copy into an eight-report
+library, sharing 25 MB of UTF-8 report JSON. The IndexedDB v2 upgrade preserves
+and moves the v1 slot atomically; no duplicate source store remains. Write/count
+limits and report-revision checks share transactions. Titles, dates and sizes are
+listed without automatic source opening. Stale tabs must refresh before opening,
+replacing or removing a changed report. Report/preference schemas are unchanged.
+
+Local storage tests passed the existing save/replay/failure paths plus multiple
+reports, title escaping, stale tabs, concurrent storage bounds, blocked-tab
+migration/recovery and upgrade quota-error rollback. The four other reporting
+browser suites, syntax/diff checks and the allowlisted 202-entry build passed.
+Source/mirror publication and live acceptance are in progress. No Hugging Face data, model, dependency or external API is added.
+The last verified live release remains 1.56.0 until the new deployment is checked.
+
 ## Published changes
 
 | PR | Scope | Base / verification |
@@ -50,7 +66,7 @@ corpora and current R/Python tools were preserved. No Hugging Face data was adde
 ## Workspace and next work
 
 The source checkout is `/workspace/UNGA81-Transcript-Agent`, currently on
-`cleanup/historical-report-snapshots`. The partial website checkout is
+`feature/device-report-library`. The partial website checkout is
 `/workspace/portfolio-site`, on `feature/un-device-reports`; unchanged absent
 paths are marked skip-worktree. Preserve unrelated `assets/css/cv.css` work.
 Use the existing sync script and explicit paths; never stage website deletions

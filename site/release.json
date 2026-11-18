@@ -1,10 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.56.0",
+  "browser_engine": "browser-descriptive-1.57.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-18",
   "features": [
-    "Optional explicitly saved device report in IndexedDB, with verified source replay, replacement/removal controls, stale-save protection and file-download fallback when browser storage is disabled; one 25 MB slot, no uploads or added dependencies",
+    "Bounded device report library: up to eight explicitly saved reports sharing 25 MB of report JSON, atomic migration of the earlier single slot, revision checks against stale tabs, source-verified reopening and restricted-browser JSON fallback; no uploads or dependencies",
     "Up to eight reusable mission briefing questions with source-bound literal evidence, explicit unanswered gaps, v4 saved reports and backward-compatible v1-v3 readers; JavaScript-only, no new dependencies, storage or model downloads",
     "One local report-package ZIP keeps HTML, source-bound saved JSON, full evidence CSV, a field guide and SHA-256 manifest together; 25 MB total bound and stale-work protection, with no uploads or model changes",
     "Consistent 25 MB UTF-8 download bound for HTML, JSON and CSV; oversized output is refused without truncation, changing current work or clearing unsaved-work protection",

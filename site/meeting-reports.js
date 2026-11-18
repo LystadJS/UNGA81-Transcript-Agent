@@ -3,7 +3,7 @@
   'use strict';
   const $=id=>document.getElementById(id),Core=UNMeetingReport;
   let policy,countries,inventory=[],corpora=[],report=null,controller=null,shown=10,dirty=false,handoff=null,appendixIds=new Set(),notes=new Map();
-  let workspaceRevision=0,replacementSerial=0,packaging=false,deviceBusy=false,deviceAvailable=false,deviceSaved=false;
+  let workspaceRevision=0,replacementSerial=0,packaging=false,deviceBusy=false,deviceAvailable=false,deviceSaved=false,deviceLibrary=[],deviceId='current';
   const setStatus=(message,error=false)=>{$('status').textContent=message;$('status').classList.toggle('error',error);};
   const selected=()=>[...$('loadedMeetings').querySelectorAll('input:checked')].map(e=>e.value);
   const options=()=>({template:$('reportTemplate').value,mission:$('mission').value,title:$('reportTitle').value,priorities:$('priorities').value,notes:$('analystNotes').value,questions:readQuestions()});
@@ -201,33 +201,53 @@
     }catch(e){$('packageStatus').textContent='Could not create report package: '+e.message;}
     finally{packaging=false;$('downloadPackage').disabled=!report;}
   };
+  const selectedDeviceReport=()=>deviceLibrary.find(r=>r.id===deviceId);
   function deviceControls(){
+    deviceSaved=!!selectedDeviceReport();
+    $('deviceReportChoice').disabled=deviceBusy||!deviceAvailable||!deviceLibrary.length;
+    $('refreshDeviceReports').disabled=deviceBusy;
     $('openDeviceReport').disabled=deviceBusy||!deviceAvailable||!deviceSaved||!policy||!countries;
     $('deleteDeviceReport').disabled=deviceBusy||!deviceAvailable||!deviceSaved;
     $('saveDeviceReport').disabled=deviceBusy||!deviceAvailable||!report;
+    $('saveDeviceReport').textContent=deviceSaved?'Replace selected device report':'Save on this device';
+    $('saveNewDeviceReport').disabled=deviceBusy||!deviceAvailable||!report||!deviceLibrary.length||deviceLibrary.length>=UNReportStorage.MAX_REPORTS;
   }
+  function showDeviceLibrary(){
+    $('deviceReportChoice').replaceChildren();
+    if(!deviceLibrary.some(r=>r.id===deviceId))deviceId=deviceLibrary[0]?.id||'current';
+    for(const row of deviceLibrary){const option=document.createElement('option'),date=row.saved_at?new Date(row.saved_at):null,time=date&&Number.isFinite(date.getTime())?new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',year:'numeric',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(date):'Save time unavailable (earlier device copy)';option.value=row.id;option.textContent=row.title+' · '+time+' · '+row.bytes.toLocaleString('en-US')+' bytes';$('deviceReportChoice').append(option);}
+    $('deviceReportChoice').value=deviceId;deviceControls();
+  }
+  const deviceUsage=()=>deviceLibrary.length+' of 8 reports saved; '+deviceLibrary.reduce((n,r)=>n+r.bytes,0)+' of 25,000,000 report JSON bytes.';
   async function checkDeviceReport(){
-    try{deviceSaved=await UNReportStorage.exists();deviceAvailable=true;$('deviceReportStatus').textContent=deviceSaved?'A saved report is available in this browser profile. Open it explicitly to verify its sources.':'No report saved on this device. Prepare a report and choose Save on this device.';}
+    if(deviceBusy)return;deviceBusy=true;deviceControls();
+    try{deviceLibrary=await UNReportStorage.list();deviceAvailable=true;showDeviceLibrary();$('deviceReportStatus').textContent=deviceLibrary.length?deviceUsage()+' Open a report explicitly to verify its sources.':'No report saved on this device. Prepare a report and choose Save on this device.';}
     catch(e){deviceAvailable=false;$('deviceReportStatus').textContent=e.message;}
-    deviceControls();
+    finally{deviceBusy=false;deviceControls();}
   }
+  $('refreshDeviceReports').onclick=checkDeviceReport;
+  $('deviceReportChoice').onchange=()=>{deviceId=$('deviceReportChoice').value;deviceControls();};
   function deviceSaveStatus(message){$('deviceReportStatus').textContent=message;$('deviceSaveStatus').textContent=message;}
-  $('saveDeviceReport').onclick=async()=>{
+  async function saveDeviceReport(asNew=false){
     if(!report||deviceBusy||!deviceAvailable)return;
-    if(deviceSaved&&!window.confirm('Replace the report saved in this browser profile? Download its JSON first if you need to retain it.'))return;
+    const previous=asNew?null:selectedDeviceReport(),id=asNew?crypto.randomUUID():deviceId;
+    if(previous&&!window.confirm('Replace “'+previous.title+'” in this browser profile? Download its JSON first if you need to retain it.'))return;
     const prepared=report,revision=workspaceRevision;deviceBusy=true;deviceControls();
     try{
-      await UNReportStorage.write(JSON.stringify(Core.savedReport(prepared,corpora)));deviceSaved=true;
-      if(report===prepared&&workspaceRevision===revision){dirty=false;deviceSaveStatus('Report saved in this browser profile. Nothing was uploaded. Download JSON for a portable copy.');}
+      const saved=await UNReportStorage.write(JSON.stringify(Core.savedReport(prepared,corpora)),id,previous?.version||0);
+      deviceLibrary=[saved,...deviceLibrary.filter(r=>r.id!==id)];deviceId=id;showDeviceLibrary();
+      if(report===prepared&&workspaceRevision===revision){dirty=false;deviceSaveStatus('Report saved in this browser profile. '+deviceUsage()+' Nothing was uploaded. Download JSON for a portable copy.');}
       else deviceSaveStatus('The earlier prepared report was saved. Your newer edits remain unsaved; prepare and save again.');
     }catch(e){deviceSaveStatus('Could not save on this device: '+e.message);}
     finally{deviceBusy=false;deviceControls();}
-  };
+  }
+  $('saveDeviceReport').onclick=()=>saveDeviceReport();$('saveNewDeviceReport').onclick=()=>saveDeviceReport(true);
   $('openDeviceReport').onclick=async()=>{
     if(deviceBusy||!deviceAvailable)return;
+    const chosen=selectedDeviceReport();if(!chosen)return;
     const ticket={id:++replacementSerial,revision:workspaceRevision};deviceBusy=true;deviceControls();
     try{
-      const text=await UNReportStorage.read();if(typeof text!=='string'||new TextEncoder().encode(text).length>Core.LIMIT)throw Error('No supported device report found. Open a downloaded JSON copy instead.');
+      const text=await UNReportStorage.read(chosen.id,chosen.version);if(typeof text!=='string'||new TextEncoder().encode(text).length>Core.LIMIT)throw Error('No supported device report found. Open a downloaded JSON copy instead.');
       const opened=await Core.openSaved(JSON.parse(text),policy,countries);
       if(!replacementCurrent(ticket))return;
       if(!await confirmReplacement('Opening the device report will replace your current sources, appendix selections and notes.'))return;
@@ -238,9 +258,10 @@
     finally{deviceBusy=false;deviceControls();}
   };
   $('deleteDeviceReport').onclick=async()=>{
-    if(deviceBusy||!deviceAvailable||!window.confirm('Remove the report saved in this browser profile? Your currently open work and downloaded files will remain.'))return;
+    const chosen=selectedDeviceReport();
+    if(deviceBusy||!deviceAvailable||!chosen||!window.confirm('Remove “'+chosen.title+'” from this browser profile? Your currently open work and downloaded files will remain.'))return;
     deviceBusy=true;deviceControls();
-    try{await UNReportStorage.remove();deviceSaved=false;dirty=!!corpora.length;deviceSaveStatus('Device copy removed. Your currently open work and downloaded files are unchanged.');}
+    try{await UNReportStorage.remove(chosen.id,chosen.version);deviceLibrary=deviceLibrary.filter(r=>r.id!==chosen.id);showDeviceLibrary();dirty=!!corpora.length;deviceSaveStatus('Device copy removed. '+deviceUsage()+' Your currently open work and downloaded files are unchanged.');}
     catch(e){$('deviceReportStatus').textContent='Could not remove device copy: '+e.message;}
     finally{deviceBusy=false;deviceControls();}
   };
