@@ -1,3 +1,29 @@
+## 18 November 2026 — continuation handoff
+
+Reviewable source changes:
+- #291: briefing questions, head `76b7ace`; all three hosted checks passed.
+- #292: device-local report, head `41bf732`; targets #291's feature branch.
+- #293: generated snapshot cleanup, targets #292's feature branch. Archive-backed
+  removals save 16,269,686 current-tree bytes; Git history is retained.
+
+Website changes:
+- #167: release 1.55.0 mirror, head `939d8e8`; audit and regression passed after
+  repairing its stale source/release pins.
+- #168: release 1.56.0 mirror plus archived evidence links, head `59cc403`; targets
+  #167's feature branch. All 193 public file hashes match its manifest.
+
+Explicit merge approvals for #291 and #167 are pending in asynchronous questions.
+Automatic review rejected #291's merge because commit/push authorization does not
+cover merging to main. Do not bypass it, merge into prerequisite feature branches,
+or claim deployment. After authorized prerequisite merges, retarget stacked PRs
+to main and verify their current checks before publication. No merge approval is
+inferred from elapsed time. Remaining source/mirror hosted checks are in progress.
+The mirror checkout is partial; preserve unrelated `assets/css/cv.css` work.
+
+Local verification of 1.56.0: eight Node contracts, six Chromium suites, actual
+IndexedDB reload/failure/race tests, 202-entry public build, three archived-input
+HTML regenerations and all nine archive references. No reserved source was opened.
+
 ## 18 November 2026 — generated snapshot cleanup
 
 Three generated comparison JSON files under docs/ (GMM, NMF and display) have
