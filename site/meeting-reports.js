@@ -300,7 +300,7 @@
     try{
       const bytes=await UNMeetingReportPackage.build(prepared,corpora);
       if(report!==prepared||workspaceRevision!==revision){$('packageStatus').textContent='Your report changed. No package was downloaded; prepare the report again.';return;}
-      if(save(bytes,name,'application/zip')){dirty=false;$('packageStatus').textContent='Report package downloaded. Extract it and open report.json to resume editing. Review source text and notes before sharing.';}
+      if(save(bytes,name,'application/zip')){dirty=false;$('packageStatus').textContent='Report package downloaded. Open this ZIP in the reporting workspace to resume editing. Review source text and notes before sharing.';}
     }catch(e){$('packageStatus').textContent='Could not create report package: '+e.message;}
     finally{packaging=false;$('downloadPackage').disabled=!report;}
   };
