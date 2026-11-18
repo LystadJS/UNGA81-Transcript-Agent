@@ -54,6 +54,7 @@ jobs:
           node tests/test_report_passage_notes.cjs
           node tests/test_report_questions.cjs
           node tests/test_report_context.cjs
+          node tests/test_report_calendar.cjs
           node tests/test_report_package.cjs
           node tests/test_meeting_selection.cjs
           node tests/test_mission_preferences.cjs
@@ -61,6 +62,7 @@ jobs:
           node tests/test_report_remove_sources_ui.cjs
           node tests/test_reporting_usability.cjs
           node tests/test_report_collect_append_ui.cjs
+          node tests/test_report_calendar_ui.cjs
           node tests/test_report_affiliation_navigation_ui.cjs
           node tests/test_report_bulk_appendix_ui.cjs
           node tests/test_report_append_sources_ui.cjs

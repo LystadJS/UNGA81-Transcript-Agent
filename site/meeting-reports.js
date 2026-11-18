@@ -4,7 +4,7 @@
   const $=id=>document.getElementById(id),Core=UNMeetingReport;
   let policy,countries,inventory=[],corpora=[],report=null,controller=null,shown=10,dirty=false,handoff=null,appendixIds=new Set(),notes=new Map(),bulkUndo=null;
   let printing=false,printTitle=null,printSnapshot=null;
-  let workspaceRevision=0,replacementSerial=0,packaging=false,deviceBusy=false,deviceAvailable=false,deviceSaved=false,deviceLibrary=[],deviceId='current';
+  let workspaceRevision=0,replacementSerial=0,packaging=false,calendarExporting=false,deviceBusy=false,deviceAvailable=false,deviceSaved=false,deviceLibrary=[],deviceId='current';
   const setStatus=(message,error=false)=>{$('status').textContent=message;$('status').classList.toggle('error',error);};
   const selected=()=>[...$('loadedMeetings').querySelectorAll('input:checked')].map(e=>e.value);
   const options=()=>({template:$('reportTemplate').value,mission:$('mission').value,title:$('reportTitle').value,priorities:$('priorities').value,notes:$('analystNotes').value,questions:readQuestions()});
@@ -24,7 +24,7 @@
   $('addBriefingQuestion').onclick=()=>{addQuestion(undefined,true);invalidate();};
   function save(data,name,mime){const blob=new Blob([data],{type:mime});if(blob.size>Core.LIMIT){setStatus('Download exceeds 25 MB. Choose fewer meetings or shorter notes before exporting. Current work has not changed.',true);return false;}const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);return true;}
   function reportName(suffix){return 'un-meeting-report-'+report.generated_at.replace(/[-:.]/g,'')+suffix;}
-  function invalidate(){workspaceRevision++;report=null;$('expressionEvidence').close();$('expressionEvidenceBody').replaceChildren();$('printStatus').textContent='Prepare the report before printing. Save JSON or ZIP separately to resume work.';$('wordStatus').textContent='Prepare the report before downloading Word. Save JSON or ZIP to reopen work here.';$('reportPreview').replaceChildren();for(const id of ['downloadReport','downloadWord','printReportButton','saveReport','downloadEvidence','downloadPackage','saveDeviceReport'])$(id).disabled=true;$('packageStatus').textContent='Prepare the report before downloading its package.';$('reportState').textContent='Settings or selection changed. Prepare the report to update its exports.';dirty=!!corpora.length;deviceControls();}
+  function invalidate(){workspaceRevision++;report=null;$('expressionEvidence').close();$('expressionEvidenceBody').replaceChildren();$('printStatus').textContent='Prepare the report before printing. Save JSON or ZIP separately to resume work.';$('wordStatus').textContent='Prepare the report before downloading Word. Save JSON or ZIP to reopen work here.';$('reportPreview').replaceChildren();for(const id of ['downloadReport','downloadWord','printReportButton','saveReport','downloadEvidence','downloadPackage','saveDeviceReport','downloadReviewEntry'])$(id).disabled=true;$('calendarStatus').textContent='Prepare the report and choose a review date.';$('packageStatus').textContent='Prepare the report before downloading its package.';$('reportState').textContent='Settings or selection changed. Prepare the report to update its exports.';dirty=!!corpora.length;deviceControls();}
   function replacementCurrent(ticket){
     if(ticket.id!==replacementSerial)return false;
     if(ticket.revision!==workspaceRevision){setStatus('Your report changed while sources were being checked. Current work kept; try loading again when ready.');return false;}
@@ -117,6 +117,7 @@
     appendixIds=new Set(chosen.record_ids);$('appendixMode').value=chosen.mode;$('onlySelectedEvidence').checked=false;
     notes=new Map(passage_notes.map(n=>[n.record_id,n.text]));
     for(const row of corpora.flatMap(c=>c.coverage).filter(r=>r.slug))$('loadedMeetings').append(checkbox(row,true,!selection||selection.includes(row.slug)));
+    if(!preserveSettings||!corpora.length){$('reviewDate').value='';$('calendarAssessment').checked=false;}
     if(!preserveSettings){
       if(prefs)setQuestions(prefs.questions);
       if(prefs){for(const [id,key] of [['reportTemplate','template'],['mission','mission'],['reportTitle','title'],['priorities','priorities'],['analystNotes','notes']])$(id).value=prefs[key];}
@@ -286,7 +287,23 @@
   $('onlySelectedEvidence').onchange=()=>{shown=10;search();};
   $('appendixMode').onchange=()=>{clearBulkUndo();if($('appendixMode').value==='template')appendixIds.clear();invalidate();search();};
   $('clearAppendix').onclick=()=>{if(appendixIds.size||$('appendixMode').value!=='selected')rememberBulk();appendixIds.clear();$('appendixMode').value='selected';invalidate();search();};
-  $('prepareReport').onclick=()=>{try{report=Core.build(corpora,selected(),options(),appendix(),passageNotes());workspaceRevision++;$('reportPreview').innerHTML=Core.reportHTML(report,{preview:true});for(const id of ['downloadReport','downloadWord','printReportButton','saveReport','downloadEvidence','downloadPackage','saveDeviceReport'])$(id).disabled=false;$('downloadPackage').disabled=packaging;if(!packaging)$('packageStatus').textContent='Ready to download a report package.';$('reportState').textContent='Report ready: '+report.meetings.length+' meetings. Review source evidence before circulation.';$('printReportButton').disabled=printing;$('printStatus').textContent='Ready to print the complete report or use the browser’s PDF destination.';$('wordStatus').textContent='Ready to download Word. Save JSON or ZIP separately to reopen work here.';dirty=true;deviceControls();}catch(e){invalidate();setStatus(e.message,true);}};
+  $('prepareReport').onclick=()=>{try{report=Core.build(corpora,selected(),options(),appendix(),passageNotes());workspaceRevision++;$('reportPreview').innerHTML=Core.reportHTML(report,{preview:true});for(const id of ['downloadReport','downloadWord','printReportButton','saveReport','downloadEvidence','downloadPackage','saveDeviceReport'])$(id).disabled=false;$('downloadPackage').disabled=packaging;if(!packaging)$('packageStatus').textContent='Ready to download a report package.';$('reportState').textContent='Report ready: '+report.meetings.length+' meetings. Review source evidence before circulation.';$('printReportButton').disabled=printing;$('printStatus').textContent='Ready to print the complete report or use the browser’s PDF destination.';$('wordStatus').textContent='Ready to download Word. Save JSON or ZIP separately to reopen work here.';dirty=true;deviceControls();calendarControls(true);}catch(e){invalidate();setStatus(e.message,true);}};
+  function calendarControls(announce=false){
+    const calendar=globalThis.UNMeetingReportCalendar,valid=!!calendar&&calendar.validDate($('reviewDate').value);
+    $('downloadReviewEntry').disabled=calendarExporting||!report||!valid;
+    if(announce)$('calendarStatus').textContent=!report?'Prepare the report and choose a review date.':!calendar?'Calendar export is unavailable in this browser session.':valid?'Ready to download a personal review entry.':'Choose a valid personal review date from 1900 through 9998.';
+  }
+  for(const id of ['reviewDate','calendarAssessment'])$(id).oninput=()=>calendarControls(true);
+  $('downloadReviewEntry').onclick=async()=>{
+    if(!report||calendarExporting)return;
+    const prepared=report,revision=workspaceRevision,date=$('reviewDate').value,includeAssessment=$('calendarAssessment').checked,name=reportName('-review-'+date+'.ics');calendarExporting=true;calendarControls();
+    try{
+      const bytes=await UNMeetingReportCalendar.build(prepared,date,{includeAssessment});
+      if(report!==prepared||workspaceRevision!==revision||$('reviewDate').value!==date||$('calendarAssessment').checked!==includeAssessment){$('calendarStatus').textContent='Your report or calendar options changed. No calendar file downloaded; prepare again if needed.';return;}
+      if(save(bytes,name,'text/calendar;charset=utf-8'))$('calendarStatus').textContent='Personal review entry downloaded. Import the ICS in your calendar app and check its date and visibility. Save JSON or ZIP separately to resume the report.';
+    }catch(e){$('calendarStatus').textContent='Could not create calendar entry: '+e.message+' Current work kept.';}
+    finally{calendarExporting=false;calendarControls();}
+  };
   $('reportPreview').onclick=event=>{
     const button=event.target.closest('button[data-evidence-id]');
     if(!button||!$('reportPreview').contains(button)||!report)return;
