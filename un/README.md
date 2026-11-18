@@ -1,23 +1,21 @@
-# Daily UN briefing — D1 research pipeline
+# Personal R briefing and research workflow
 
-Current source includes the I5 extension: 12 executable adapters, 30 still
-unimplemented, and six new audit-only lexical research methods. See the
-[current implementation and roadmap](../docs/I5.md) and
-[Windows acceptance](validation/i5/README.md). The Shiny interface supports
-editable user topics; the fixed codebook described below is the legacy CLI
-codebook. The following milestone notes preserve the imported I4 baseline.
+The current package has 12 executable adapters among 42 registered methods.
+Additional registrations are plans, not operational methods. The Shiny interface
+accepts tracked issues as evidence queries; they do not create an accepted stance
+classifier. Read the [method boundary](../docs/I5.md) and
+[installation guide](START_HERE.md). The government-browser application is
+separate and needs no R or Python installation.
 
-**Release 2.5.0-d1-i4-checkpoint | R-native | local unsent Outlook drafts | 25 September 2026**
+## Start and verify
 
-This checkpoint adds **M09 PAM / k-medoids** to the validated frozen TF-IDF analytical layer. Six D1 adapters are implemented: M01, M02, M05, M06, M07 and M09. The remaining 36 registrations remain explicitly unimplemented; all 42 methods and all 133 original prerequisites still receive daily accounting.
+Use R 4.3 or newer and the package's dependency setup. The personal runtime and
+its locked dependencies belong on the user's computer, outside version control.
+On Windows, follow `scripts/Setup-Windows.ps1`, then `ui/Setup.bat`, `ui/Verify.bat`
+and `ui/Start.bat`. The pinned adapter and publication/no-send gates are unchanged.
 
-Both clustering adapters use the **same full frozen TF-IDF Euclidean-chord distance space**. M07 hierarchical clustering remains the primary clustering diagnostic; M09 PAM is a challenger with inspectable medoids. Neither is permitted to add an email section or publish country groupings. Their figures and assignments are audit-only.
-
-The email contract remains unchanged: exactly five analytical outputs, followed by regional country readouts. Fixed topics remain **Iran, Cuba, Ukraine, AI**. Countries remain grouped by region and alphabetized within region.
-
-## Quick start
-
-Read [START_HERE.md](START_HERE.md), then run the normal Windows setup. For offline verification with the tested R runtime:
+Run offline checks in a separate checkout or copy because they write validation
+receipts. From this `un` directory:
 
 ```sh
 Rscript --vanilla tests/run_tests.R --minimal=true
@@ -25,31 +23,60 @@ Rscript --vanilla tests/run_d1_tests.R --minimal=true
 Rscript --vanilla tests/run_i2_tests.R --minimal=true
 Rscript --vanilla tests/run_hierarchical_tests.R --minimal=true
 Rscript --vanilla tests/run_pam_tests.R --minimal=true
+Rscript --vanilla tests/run_i5_tests.R
+Rscript --vanilla tests/run_shiny_adapter_tests.R
 ```
 
-To reproduce PAM only from a trusted completed frozen-feature run:
+Matrix, cluster and igraph are required for the applicable numerical checks;
+minimal mode is not a substitute for those dependencies. Live Shiny and PDF checks
+have separate dependencies and acceptance records. A successful Linux offline run
+does not establish Windows or live-interface acceptance.
+
+Generate a fresh local replay from retained inputs when checking the whole CLI:
 
 ```sh
-Rscript --vanilla pam_only.R \
-  --input=output/2026-09-23/hierarchical_reference \
-  --output=output/pam_standalone \
-  --minimal=true
+Rscript --vanilla run_daily.R --source=replay --date=2026-09-23 --run-id=my_replay --minimal=true
 ```
 
-No source collection, API call, feature refit, email send, or Windows scheduling occurs in that standalone command.
+Choose a new run ID each time. Outputs remain local and unsent. Review source,
+coverage and publication status before circulation. Scientific gates remain in
+force even when engineering tests pass.
 
-## Checkpoint findings
+## Generated runs and historical references
 
-On the 39-speech inherited replay, PAM selects **k=2** with **22 and 17 countries**, with medoids **POL** and **BDI**. Mean silhouette is **0.015** and mean roster-deletion ARI is **0.717**, below the frozen release screens. Hierarchical clustering also fails its gates and yields a 38/1 average-linkage split. The adjusted Rand agreement between the two selected partitions is approximately **-0.012**. These differences support retaining both methods as diagnostics rather than labeling the groups as geopolitical blocs.
+`output/`, caches, history, models and installed libraries are runtime state and
+are not shipped as application source. The original replay inputs, frozen feature
+fixtures, policies and original checksum records remain. Source/report provenance
+is not rewritten.
 
-All five engineering/regression suites pass (**371 tests, zero failures**). See [validation/FINAL_VALIDATION.md](validation/FINAL_VALIDATION.md) and [docs/CLUSTERING_CHECKPOINT.md](docs/CLUSTERING_CHECKPOINT.md).
+The former generated runs and three obsolete I4 checkpoint-freezing scripts are
+preserved in [commit ea18ad8](https://github.com/LystadJS/UNGA81-Transcript-Agent/tree/ea18ad83b030e10abfb32d2525c17ada5f5939b9/un).
+Historical scripts assume six adapters and must not be used to certify the current
+12-adapter implementation. Their historical receipts remain dated evidence.
 
-## Diplomat interface — dynamic tracked issues
+For an old frozen-run audit, restore that commit's `un/output` into a separate
+folder. From an existing full Git checkout, create the ignored `review-work`
+directory, then export without altering the current checkout:
 
-This integrated checkpoint includes `ui/`, a Shiny front end intended for nontechnical users, and a pinned adapter at `interfaces/shiny_v1.R`.
+```sh
+git archive --format=zip --output=review-work/frozen-r-output.zip ea18ad83b030e10abfb32d2525c17ada5f5939b9 un/output un/validation/checkpoint_audit.R un/validation/finalize_checkpoint.R un/validation/write_manifest.R
+```
 
-The interface lets a user type up to 20 tracked issues. These issue definitions are immutable within a run and are applied as evidence-retrieval candidates after the D1 corpus is collected. They do **not** replace or mutate the legacy four-topic codebook used by archived CLI runs, and they do not create a released classifier. Non-matches remain unresolved rather than being coded absent.
+Extract the ZIP outside the source package. Set `UNBRIEF_ARCHIVED_RUN` to the
+restored completed replay directory before running `tests/run_tests.R` to include
+its two optional frozen-run checks. Without that variable, those checks explicitly
+report not executed. Tests never discover archives through a user's mutable
+`output/latest.json`. Runtime differences must fail closed; do not refit a frozen
+reference merely to make a gate pass.
 
-The full eligible transcript corpus continues through D1 method accounting independently of the tracked issue list. Current-corpus clustering suggestions can appear in the interface as audit-only research candidates; D1 O2 remains the publication authority. The five-output boundary and no-send behavior remain intact.
+## Package integrity
 
-Launch from `ui/Start.bat` after running the interface setup. See `ui/docs/INTEGRATION.md` and `validation/SHINY_CHECK.md`.
+`SHA256SUMS.txt` describes the current tracked package. Maintainers stage intended
+package changes, then run `python tools/package_checksums.py --write` from the
+repository root; the default command checks rather than writes. Runtime files are
+excluded. The ORIGINAL checksum inventory and I4 checkpoint manifest are immutable
+historical records, not current file counts or fresh acceptance.
+
+The [previous package README](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/ea18ad83b030e10abfb32d2525c17ada5f5939b9/un/README.md)
+retains the original I4 findings and commands. Current entry points above supersede
+those historical setup/output assumptions.

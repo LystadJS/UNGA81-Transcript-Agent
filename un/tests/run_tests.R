@@ -86,15 +86,18 @@ unlink(file.path(root,cfg_test$storage$cache_dir),recursive=TRUE)
 seal<-read_bytes("assets/USUN_Seal.png")
 test("MIME round-trip with UTF-8 and inline image",{raw<-assemble_mime("É plain",'<html><body><img src="cid:test@local"></body></html>',list(list(name="seal.png",cid="test@local",bytes=seal)),"UN | É", "2026-09-24T20:00:00Z","TEST");p<-flatten_mime(parse_mime(raw));stopifnot(length(p)==5,identical(Filter(function(z)z$type=="image/png",p)[[1]]$bytes,seal),identical(rawToChar(Filter(function(z)z$type=="text/plain",p)[[1]]$bytes),"É plain"))})
 test("MIME bare LF rejected",throws(parse_mime(charToRaw("Subject: test\n\ntext"))))
-latest<-file.path(root,"output/latest.json")
-if(file.exists(latest)) {
-  archived_run<-file.path(root,json_read(latest)$run)
+# Archived output checks are explicit: never read a user's mutable output/latest.json.
+archived_run<-Sys.getenv("UNBRIEF_ARCHIVED_RUN",unset="")
+if(nzchar(archived_run)) {
+  assert(dir.exists(archived_run)&&all(file.exists(file.path(archived_run,c("checkpoint.rds","config_used.json","brief.json")))),"UNBRIEF_ARCHIVED_RUN must identify a restored completed archive")
+  archived_run<-normalizePath(archived_run,winslash="/",mustWork=TRUE)
+  assert(identical(json_read(file.path(archived_run,"brief.json"))$source,"replay"),"UNBRIEF_ARCHIVED_RUN must identify a completed replay archive")
   feature_path<-file.path(archived_run,"audit/analytics/artifacts/M02.rds")
   compatible<-!file.exists(feature_path) || tryCatch({i2_validate_features(readRDS(feature_path),root=root);TRUE},error=function(e)FALSE)
   if(compatible)test("Generated replay MIME and chart totals validate",stopifnot(validate_output(root,archived_run,json_read(file.path(archived_run,"config_used.json")))$passed))
   else test("Incompatible archived reference is rejected, not silently refitted",throws(validate_output(root,archived_run,json_read(file.path(archived_run,"config_used.json")))))
-}
-if(file.exists(latest))test("Replay carries distinct inherited and provisional versions",{run<-file.path(root,json_read(latest)$run);if(json_read(file.path(run,"brief.json"))$source=="replay"){cb<-json_read(file.path(run,"audit/codebook.json"));stopifnot(sum(vapply(cb,function(i)i$version=="1.0-inherited-reviewed-and-lexicon",logical(1)))==10,sum(vapply(cb,function(i)i$version=="2.1-provisional-replay-scan",logical(1)))==3)}})
+  test("Replay carries distinct inherited and provisional versions",{run<-archived_run;if(json_read(file.path(run,"brief.json"))$source=="replay"){cb<-json_read(file.path(run,"audit/codebook.json"));stopifnot(sum(vapply(cb,function(i)i$version=="1.0-inherited-reviewed-and-lexicon",logical(1)))==10,sum(vapply(cb,function(i)i$version=="2.1-provisional-replay-scan",logical(1)))==3)}})
+} else cat("NOT EXECUTED: optional frozen-run checks; set UNBRIEF_ARCHIVED_RUN to an explicit restored archive.\n")
 if(requireNamespace("jsonlite",quietly=TRUE))test("Package JSON backend matches offline adapter",{j<-json_minimal(list(a=list(1,TRUE,NULL),b="É \\ quote \""));stopifnot(isTRUE(all.equal(jsonlite::fromJSON(j,simplifyVector=FALSE),json_parse_minimal(j))))})
 if(requireNamespace("digest",quietly=TRUE))test("Package digest known SHA-256",stopifnot(digest::digest(charToRaw("abc"),algo="sha256",serialize=FALSE)=="ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"))
 if(requireNamespace("base64enc",quietly=TRUE))test("Package Base64 matches offline adapter",{old<-getOption("unbrief.minimal");options(unbrief.minimal=TRUE);x<-b64(seal);options(unbrief.minimal=old);stopifnot(x==base64enc::base64encode(seal))})

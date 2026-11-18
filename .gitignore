@@ -21,3 +21,12 @@ __pycache__/
 /docs/gmm-comparison.json
 /docs/nmf-comparison.json
 /docs/display-comparison.json
+
+# Personal R run products are runtime data, not application source.
+/un/output/
+/un/library/
+/un/history/
+/un/cache/
+/un/models/
+/un/config/runtime.local.json
+/un/config/library_path.txt
