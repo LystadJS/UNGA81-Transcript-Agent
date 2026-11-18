@@ -36,6 +36,8 @@ build is served on loopback. A fictional-session banner and meeting titles ident
 the material. Close the reporting tab to finish. Explicit downloads and the three
 fixture files remain in the printed folder; repeated downloads are kept separately.
 The temporary public build is removed.
+The browser profile is temporary: device saves survive reloads within this session
+and are discarded when it closes. Keep JSON/ZIP downloads for work you need later.
 No notes, answers, screenshots or video are recorded automatically. The receipt
 contains browser/release/source-version information, timing and request/download
 counts. Its participant-acceptance field always remains `not_recorded`; enter
