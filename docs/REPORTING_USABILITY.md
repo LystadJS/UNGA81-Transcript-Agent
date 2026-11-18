@@ -6,42 +6,57 @@ Use the [reporting contract](MEETING_REPORTING.md) and [current capability matri
 
 ## Preparation
 
-Begin with synthetic material so the session requires no private archive access or real policy assessment. A maintainer can create an original-bound collection and a two-meeting saved report from the existing test fixture without making network requests:
+Begin with synthetic material so the session requires no private archive access or real policy assessment. From the source repository root, create the three source-validated JSON files:
 
 ```sh
-node - <<'JS'
-const fs = require('node:fs'), os = require('node:os'), path = require('node:path');
-const fixture = require('./tests/meeting_report_fixture.cjs');
-const Collector = require('./site/collector.js'), Report = require('./site/meeting-report-core.js');
-(async () => {
-  const countries = JSON.parse(fs.readFileSync('site/countries.json'));
-  const policy = JSON.parse(fs.readFileSync('site/reporting-exclusions.json'));
-  const request = async url => {
-    const pathname = new URL(url).pathname;
-    const meeting = fixture.meetings.find(item => pathname === '/en/' + item.slug + '.json');
-    if (!pathname.endsWith('/meetings.json') && !meeting) throw Error('Unexpected fixture request');
-    const data = pathname.endsWith('/meetings.json')
-      ? {meetings: fixture.meetings, page: 1, total: 2, hasMore: false}
-      : fixture.transcript(meeting);
-    const raw = JSON.stringify(data);
-    return {data, raw, hash: await Collector.sha(raw), retrieved_at: new Date().toISOString()};
-  };
-  const corpora = [];
-  for (const meeting of fixture.meetings) {
-    corpora.push(await Collector.collect({start: fixture.date, end: fixture.date, scope: 'all', meeting_slug: meeting.slug, meeting_date: fixture.date}, countries, {request}));
-  }
-  await Report.validateCorpora(corpora, policy, countries);
-  const report = Report.build(corpora, fixture.meetings.map(meeting => meeting.slug), {mission: 'Fictional training mission', title: 'Fictional two-meeting report'});
-  const folder = fs.mkdtempSync(path.join(os.tmpdir(), 'un-reporting-usability-'));
-  const addition = Report.build([corpora[1]], [fixture.meetings[1].slug], {mission: 'Other fictional mission', title: 'Fictional additional report', notes: 'Fictional incoming assessment; leave this out of the current report.'});
-  const files = {'synthetic-collection.json': corpora[0], 'synthetic-multi-meeting-report.json': Report.savedReport(report, corpora), 'synthetic-additional-report.json': Report.savedReport(addition, [corpora[1]])};
-  for (const [name, value] of Object.entries(files)) fs.writeFileSync(path.join(folder, name), JSON.stringify(value), {mode: 0o600});
-  console.log(JSON.stringify({folder, files: Object.keys(files)}));
-})().catch(error => { console.error(error.message); process.exitCode = 1; });
-JS
+node tools/reporting_usability.cjs --fixtures-only
 ```
 
-Run this from the source repository root. Give the participant the three generated files, clearly labeled **fictional test material**, and a place to save browser downloads. `synthetic-collection.json` contains four English segments in one synthetic meeting, two recorded country affiliations and one explicit collective statement. Begin the single-meeting tasks with this file. `synthetic-multi-meeting-report.json` adds a second synthetic meeting, for eight segments in total, and opens with both meetings selected. The fixture repeats its fictional wording across meetings; repetition is not evidence of policy importance or agreement. Use the two-meeting file for navigation after saving current work. For the source-addition task, use `synthetic-additional-report.json`: it contains only the second meeting and a distinct fictional assessment that should not enter the current report. It does not overlap the initial collection; the two-meeting file does, so it can demonstrate overlap refusal.
+This mode needs Node only. It prints a new temporary folder outside the repository.
+The generated files use the production country registry and exclusion policy.
+
+### Local facilitator session
+
+For the inventory-addition task, the personal maintainer environment can launch
+the actual application with an intercepted fictional inventory. Use the existing
+QA browser harness; this adds no dependency to the government-browser application.
+If that QA environment is not installed, set it up on the personal machine:
+
+```sh
+python -m pip install playwright==1.57.0
+python -m playwright install chromium
+export PLAYWRIGHT_MODULE="$(python -c 'import pathlib,playwright; print(pathlib.Path(playwright.__file__).parent / "driver" / "package")')"
+node tools/reporting_usability.cjs
+```
+
+The default opens a visible browser. Use the printed files and the fictional date
+**2026-11-10**. All transcript-service requests are intercepted locally; unknown
+source paths and other external requests are blocked. Only the allowlisted public
+build is served on loopback. A fictional-session banner and meeting titles identify
+the material. Close the reporting tab to finish. Explicit downloads and the three
+fixture files remain in the printed folder; repeated downloads are kept separately.
+The temporary public build is removed.
+No notes, answers, screenshots or video are recorded automatically. The receipt
+contains browser/release/source-version information, timing and request/download
+counts. Its participant-acceptance field always remains `not_recorded`; enter
+actual observations separately in a private session record.
+
+For unattended setup verification, use the same environment with
+`node tools/reporting_usability.cjs --smoke`. This opens a headless browser,
+rehearses source addition/export and network blocking, and writes an
+`engineering_smoke` receipt. A passing smoke result is never a participant session.
+The temporary folder uses POSIX mode 0700 and files 0600; protect downloads under
+the host account's permissions on other platforms. Set `BROWSER_PATH` for an
+existing compatible browser or `PYTHON` if the Python executable has another name.
+
+This local Chromium session does not establish compatibility with an approved
+work browser or its print/storage policies. Use `--fixtures-only` for file-based
+tasks on that actual browser and record its version separately. A live local
+session needs a graphical display; the automated smoke check does not. The
+maintained-archive task remains a separate public-metadata exercise because this
+local reporting session blocks external archive requests.
+
+Give the participant the three generated files, clearly labeled **fictional test material**, and a place to save browser downloads. `synthetic-collection.json` contains four English segments in one synthetic meeting, two recorded country affiliations and one explicit collective statement. Begin the single-meeting tasks with this file. `synthetic-multi-meeting-report.json` adds a second synthetic meeting, for eight segments in total, and opens with both meetings selected. The fixture repeats its fictional wording across meetings; repetition is not evidence of policy importance or agreement. Use the two-meeting file for navigation after saving current work. For the source-addition task, use `synthetic-additional-report.json`: it contains only the second meeting and a distinct fictional assessment that should not enter the current report. It does not overlap the initial collection; the two-meeting file does, so it can demonstrate overlap refusal.
 
 The fixture's source-shaped locators are provenance test data, not links to real statements; do not follow external transcript links during this exercise. The local “Read source context” control uses the loaded fictional passages and makes no source request. The preparation script validates the source bundles against the production country registry and reporting exclusion policy; it never reads private data, reserved sources or sealed tests.
 
@@ -68,7 +83,7 @@ Read the task prompt without first explaining the controls. Record assistance an
 | Download a Word copy and explain how you would continue editing tomorrow. | The participant opens the `.docx` in their actual Word environment, checks headings, country tables, source links, line breaks and notes, and recognizes that Word edits cannot be imported here. They save JSON or ZIP separately to reopen source-verified work. Record the actual Word version, rendering problems and any assistance. |
 | Download a report package, inspect its files, and use it to resume editing. | The participant opens the original ZIP directly in the workspace, checks retained notes and selections, and prepares the rebuilt report. They can also extract it to read report.html and identify the full evidence CSV, JSON and field guide. They recognize that JSON retains all loaded source bundles, including unselected meetings, and that the package is unencrypted and may contain analyst notes. Checksums are understood as file-integrity evidence, not proof of speaker identity or policy truth. A package refused for size does not erase current work. |
 | Change an appendix choice or note after preparing a report. | Disabled stale exports are understood; the participant prepares the report again. Removing a meeting and its notes is not mistaken for deleting the canonical warehouse archive. |
-| Keep your assessment, find another fictional meeting in the inventory and add its transcript. Cancel once, then complete the addition. | The participant distinguishes Add selected transcripts from Load's replacement, checks retained notes and unchecked sources, prepares again and saves JSON/ZIP. A failed or incomplete multi-meeting retrieval is understood to add nothing. Run this task only with a facilitator-provided synthetic inventory; defer it on the public production inventory. Never request reserved meetings. Record assistance and unintended loss. |
+| Keep your assessment, find another fictional meeting in the inventory and add its transcript. Cancel once, then complete the addition. | The participant distinguishes Add selected transcripts from Load's replacement, checks retained notes and unchecked sources, prepares again and saves JSON/ZIP. A failed or incomplete multi-meeting retrieval is understood to add nothing. Use the local facilitator session above, which supplies the synthetic inventory; defer this task on the public production inventory. Never request reserved meetings. Record assistance and unintended loss. |
 | Keep your current assessment and appendix, then add sources from a nonoverlapping fictional saved file. Explain what was added. | The participant chooses Add sources rather than Open, recognizes retained current notes/settings and excluded incoming report annotations, checks new versus unchecked meetings and prepares again. They understand that all loaded source bundles are saved, an overlap/revision is refused without replacement, and addition is not automatic saving. Record confusion and assistance. |
 | Remove one loaded source collection after checking the listed meetings and annotations. Keep it once, then confirm removal. | The participant distinguishes unchecking from reducing saved source data, understands whole-bundle removal and the special warning for clearing the last collection's assessment, checks retained notes and settings, and prepares again. Existing downloaded files and device copies are understood to be separate. Record assistance and unintended loss. |
 | With an unsaved assessment, try opening the other fictional report. Keep the current work, then save it and deliberately replace it. | The participant recognizes the replacement choice, can use “Keep current report” or Escape, and confirms that notes, appendix and prepared exports remain intact. They save report JSON before replacing, understand that fresh collection clears source-bound notes, and do not mistake a warning for automatic saving. Source requests have not occurred merely because an imported file was checked. |
