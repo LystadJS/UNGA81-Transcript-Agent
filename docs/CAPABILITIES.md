@@ -7,6 +7,10 @@ fictional sources. This is engineering verification, not diplomat or model
 acceptance. Code, deployment, source coverage and empirical acceptance remain
 distinct. See the [current checkpoint](OVERNIGHT_WORK.md) for release receipts.
 
+Release 1.57.0 is the next implementation: a device library with eight reports,
+a shared 25 MB JSON budget, atomic single-slot upgrade and stale-tab protection.
+It remains in review until publication and live verification are recorded below.
+
 ## Reporting and execution
 
 | Capability | Available implementation | Boundary / acceptance |

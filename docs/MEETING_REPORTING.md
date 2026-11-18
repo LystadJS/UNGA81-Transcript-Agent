@@ -2,25 +2,45 @@
 
 The immediate product target is a PowerTranscript-like reporting workflow, implemented independently: select proceedings, search their evidence, apply mission report templates, and export documented results. Research CSVs and evaluated stance tracking remain distinct capabilities. This is not a claim of equivalent vendor performance or access to proprietary code or weights.
 
-## Optional report saved on this device
+## Optional reports saved on this device
 
-After preparing a report, choose **Save on this device** to retain one report in
-this browser profile. Saving includes every loaded original source bundle, notes,
-questions and selections, with the same 25 MB bound as saved JSON. Replacing an
-existing device copy requires confirmation. Nothing is saved automatically or
-uploaded; this feature uses IndexedDB and adds no dependency or Hugging Face data.
+After preparing a report, choose **Save on this device** for the first copy.
+**Save as another device report** keeps an additional report; **Replace selected
+device report** replaces the copy selected in the library after confirmation.
+The library holds up to eight reports and 25,000,000 UTF-8 bytes of report JSON
+in total. A replacement counts the new copy instead of the old one. Count and
+byte checks share the write transaction, so concurrent tabs cannot exceed either
+limit. IndexedDB's internal metadata/overhead is outside this JSON payload budget.
+No model, dependency, server or Hugging Face data is added.
 
-Open **Saved report on this device** to reopen or remove that copy. Opening checks
-original sources through the same importer as JSON and rebuilds derived summaries.
-Unsaved current work requires an explicit replacement decision. Failed validation
-or storage operations preserve current work; a delayed save never marks newer edits
-saved. Removing the device copy preserves open work and downloaded files, and marks
-open work as unsaved. Device saves leave the existing report JSON schema unchanged.
+Open **Saved reports on this device** to select, refresh, reopen or remove a copy.
+The list displays titles, save times and encoded JSON sizes, without opening a
+report automatically. Reports retain all loaded original source bundles, notes,
+questions and selections. Reopening checks original sources through the same
+importer as downloaded JSON; it rebuilds derived summaries rather than trusting
+saved claims. Library selection does not change the current report or exports.
 
-This is local storage, not an authenticated shared mission workspace. Other users
-of the same browser profile may access it; clearing browser data may remove it.
-Keep a downloaded JSON or ZIP for portability. A browser that disables storage
-continues to support the file-based reporting workflow.
+Opening over unsaved work requires an explicit replacement decision. Removal
+preserves open work and downloaded files, and marks open work unsaved. A delayed
+save never marks newer edits saved. Opening, replacing or removing a copy using
+stale metadata fails with a request to refresh, rather than acting on another
+tab's newer version. Storage failures preserve existing copies and current work.
+Report JSON schema v4 and mission preference schema v2 remain unchanged.
+
+The database upgrade moves the earlier single slot into the library atomically,
+without keeping a duplicate source store. A failed upgrade rolls back to the
+earlier data. After a failed upgrade, **Download earlier device copy** can export
+the retained JSON unchanged without upgrading or deleting it. This recovery file
+is unverified until opened through the source-checking importer. A tab that prevents the upgrade can be closed before **Refresh
+library** retries it. Browser versions still running the earlier storage module
+cannot write its old database version after the upgrade; file-based reporting
+remains available.
+
+Nothing is saved automatically or uploaded. This is browser-profile storage,
+not authenticated mission collaboration. Other users of the same browser profile
+may access saved reports, and browser cleanup may remove them. Keep downloaded
+JSON or ZIP for portability. A browser that disables storage retains file-based
+reporting. These guarantees concern engineering behavior, not summary accuracy.
 
 ## Briefing questions
 
