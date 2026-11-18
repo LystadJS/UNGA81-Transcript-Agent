@@ -19,3 +19,5 @@
   #printReport article{padding:10pt;margin:10pt 0}
   #printReport .report-meeting-index{break-inside:avoid}
 }
+
+@media print{#printReport .country-timeline tr{break-inside:avoid}}

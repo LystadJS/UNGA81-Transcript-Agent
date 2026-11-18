@@ -36,7 +36,7 @@ const clone=x=>JSON.parse(JSON.stringify(x));
  const multi=R.build([a,b],F.meetings.map(m=>m.slug)),before=JSON.stringify(multi),csvBefore=R.evidenceCSV(multi.records);
  for(const template of Object.keys(R.TEMPLATES)){
   const rendered=R.reportHTML({...multi,settings:{...multi.settings,template}});
-  assert.equal((rendered.match(/href="#report-meeting-[12]"/g)||[]).length,2);
+  assert.equal((rendered.match(/<nav class="report-meeting-index"[\s\S]*?<\/nav>/)[0].match(/href="#report-meeting-[12]"/g)||[]).length,2);
   assert.equal((rendered.match(/href="#report-meeting-index"/g)||[]).length,2);
   assert.equal((rendered.match(/4 loaded source segments/g)||[]).length,2);
   assert(rendered.includes('Counts describe loaded evidence, not completeness or policy importance.'));

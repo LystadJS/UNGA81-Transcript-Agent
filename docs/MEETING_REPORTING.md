@@ -2,6 +2,33 @@
 
 The immediate product target is a PowerTranscript-like reporting workflow, implemented independently: select proceedings, search their evidence, apply mission report templates, and export documented results. Research CSVs and evaluated stance tracking remain distinct capabilities. This is not a claim of equivalent vendor performance or access to proprietary code or weights.
 
+## Country expressions across selected meetings
+
+Preparing more than one meeting automatically adds a combined country/affiliation
+overview. Every recorded affiliation appears, grouped by label and source date.
+Each dated row links to its meeting and shows existing object-specific extracts,
+collective/no-extract gaps and matching U.S. extracts from that same meeting.
+The individual meeting tables also show matched U.S. wording directly.
+
+A match requires the same issue identifier and case-insensitive displayed policy
+object wording. It does not establish policy agreement: both countries' original
+verbs and cited excerpts remain visible, including opposing wording. U.S. evidence
+from another meeting is never carried forward, even on the same date. Same-date
+meetings are ordered by title without claiming their actual within-day order.
+Dates and different expressions are not verified government policy changes.
+
+Affiliation coverage counts describe loaded evidence. A country missing from a
+selected meeting remains a source gap, not neutrality or silence. Collective-only
+observations never become national positions. Repeated quoted wording appears
+once per extract and adds no weight; original records remain in the full CSV.
+Search filters, appendix choices and priority questions do not narrow the overview.
+
+The view is rebuilt from original source bundles on import. Saved report v4 and
+mission preferences v2 remain unchanged; derived chronology is not trusted from
+saved files. HTML, Word, print/PDF and report-package HTML include the view, without
+an additional model, dependency, upload or server. Existing provisional-extraction
+and publication boundaries still apply; actual diplomat usability is unaccepted.
+
 ## Print or save a PDF
 
 Prepare a report, then choose **Print / Save as PDF**. Select your printer or the

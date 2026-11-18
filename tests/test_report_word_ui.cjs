@@ -37,8 +37,8 @@ with zipfile.ZipFile(sys.argv[1]) as z:
  assert '8 English source segments' in text and 'Fictional assessment <script>literal</script> 😀' in text
  assert 'Separate passage note 😀' in text and 'question remains unanswered' in text
  assert 'Source SHA-256:' in text and '/transcript/data/0' in text
- assert len(doc.findall('.//w:tbl',w))==2
- assert len(doc.findall('.//w:tblHeader',w))==2
+ assert len(doc.findall('.//w:tbl',w))==3
+ assert len(doc.findall('.//w:tblHeader',w))==3
  assert doc.findall('.//w:br',w) and doc.findall('.//w:tab',w) and doc.findall('.//w:numPr',w)
  relations=list(parts['word/_rels/document.xml.rels'])
  external={r.attrib['Target'] for r in relations if r.attrib.get('TargetMode')=='External'}
