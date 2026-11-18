@@ -12,6 +12,9 @@ Open report.html to read or print the report. Extract report.json and open it in
 the reporting workspace to continue editing; original sources are revalidated.
 evidence.csv contains every source segment from the selected meetings, regardless
 of search or appendix selection. Analyst notes appear only in HTML and JSON.
+Briefing questions include literal source matches or explicit unanswered gaps;
+they are not generated answers. Questions are saved in report.json and reusable
+mission preferences. They do not change country comparisons or the evidence CSV.
 JSON preserves all loaded source bundles, including meetings not selected for
 this report. This package can contain source text and sensitive analyst notes.
 Review its contents before sharing. It is not encrypted. Nothing is uploaded.

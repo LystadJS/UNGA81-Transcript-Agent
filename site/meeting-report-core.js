@@ -5,14 +5,21 @@
   const Collector=node?require('./collector.js'):root.UNCollector;
   const Reader=node?require('./meeting-quick-reader.js'):root.UNMeetingQuickReader;
   const Picker=node?require('./meeting-picker-core.js'):root.UNMeetingPickerCore;
-  const VERSION='un.meeting-report.v3',LEGACY_VERSION='un.meeting-report.v1',APPENDIX_VERSION='un.meeting-report.v2';
+  const VERSION='un.meeting-report.v4',NOTES_VERSION='un.meeting-report.v3',LEGACY_VERSION='un.meeting-report.v1',APPENDIX_VERSION='un.meeting-report.v2';
   const NOTE_LIMIT=2000,NOTES_LIMIT=100;
   const TEMPLATES=Object.freeze({brief:'Mission briefing',negotiation:'Negotiation record',evidence:'Evidence digest'});
   const LIMIT=25000000;
-  const PREFERENCES_VERSION='un.mission-preferences.v1',PREFERENCES_LIMIT=8192,PREFERENCE_KEYS=['template','mission','title','priorities'];
+  const PREFERENCES_VERSION='un.mission-preferences.v2',PREFERENCES_LIMIT=8192,PREFERENCE_KEYS=['template','mission','title','priorities','questions'];
   const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function questions(value=[]){
+    if(!Array.isArray(value)||value.length>8)throw Error('Use at most eight briefing questions.');
+    return value.map(q=>{
+      if(!q||Object.keys(q).length!==2||typeof q.heading!=='string'||!q.heading.trim()||q.heading.length>160||typeof q.query!=='string'||!q.query.trim()||q.query.length>300)throw Error('Each briefing question needs a heading (up to 160 characters) and search words (up to 300 characters).');
+      return {heading:q.heading,query:q.query};
+    });
+  }
   function settings(value={}){
-    const out={template:value.template||'brief',mission:value.mission||'',title:value.title||'Meeting briefing',priorities:value.priorities||'',notes:value.notes||''};
+    const out={template:value.template||'brief',mission:value.mission||'',title:value.title||'Meeting briefing',priorities:value.priorities||'',notes:value.notes||'',questions:questions(value.questions)};
     if(!Object.hasOwn(TEMPLATES,out.template))throw Error('Unknown report template.');
     for(const [key,max] of [['mission',160],['title',200],['priorities',300],['notes',8000]])if(typeof out[key]!=='string'||out[key].length>max)throw Error('Invalid report setting: '+key);
     return out;
@@ -26,7 +33,8 @@
     return {schema:PREFERENCES_VERSION,settings:Object.fromEntries(PREFERENCE_KEYS.map(k=>[k,checked[k]]))};
   }
   function importPreferences(value){
-    if(!value||value.schema!==PREFERENCES_VERSION||Object.keys(value).some(k=>!['schema','settings'].includes(k))||!value.settings||Object.keys(value.settings).length!==PREFERENCE_KEYS.length||PREFERENCE_KEYS.some(k=>!Object.hasOwn(value.settings,k)||typeof value.settings[k]!=='string')||!Object.hasOwn(TEMPLATES,value.settings.template))throw Error('Use a supported mission-preferences file with only format, mission, title and priority words.');
+    const legacy=value?.schema==='un.mission-preferences.v1',keys=legacy?PREFERENCE_KEYS.filter(k=>k!=='questions'):PREFERENCE_KEYS;
+    if(!value||(!legacy&&value.schema!==PREFERENCES_VERSION)||Object.keys(value).some(k=>!['schema','settings'].includes(k))||!value.settings||Object.keys(value.settings).length!==keys.length||keys.some(k=>!Object.hasOwn(value.settings,k))||keys.filter(k=>k!=='questions').some(k=>typeof value.settings[k]!=='string')||!Object.hasOwn(TEMPLATES,value.settings.template))throw Error('Use supported mission preferences containing only format, mission, title, priority words and briefing questions.');
     if(new TextEncoder().encode(JSON.stringify(value)).length>PREFERENCES_LIMIT)throw Error('Mission preferences exceed 8 KiB.');
     return exportPreferences(value.settings).settings;
   }
@@ -102,11 +110,13 @@
   }
   async function openSaved(value,policy,countries){
     let corpora,prefs=null,selected=null,appendix,notes=[];
-    if([VERSION,LEGACY_VERSION,APPENDIX_VERSION].includes(value?.schema)){
+    if([VERSION,NOTES_VERSION,LEGACY_VERSION,APPENDIX_VERSION].includes(value?.schema)){
+      if(value.schema===VERSION&&!Object.hasOwn(value.settings||{},'questions'))throw Error('Saved report is missing its briefing questions.');
+      if(value.schema!==VERSION&&Object.hasOwn(value.settings||{},'questions'))throw Error('Briefing questions require saved-report version 4.');
       corpora=value.corpora;prefs=settings(value.settings);selected=value.selected_meetings;
       if(value.schema!==LEGACY_VERSION){if(!Object.hasOwn(value,'appendix'))throw Error('Saved report is missing its appendix selection.');appendix=value.appendix;}
       else if(Object.hasOwn(value,'appendix'))throw Error('A v1 report cannot contain a v2 appendix selection.');
-      if(value.schema===VERSION){if(!Array.isArray(value.passage_notes))throw Error('Saved report is missing its passage notes.');notes=value.passage_notes;}
+      if([VERSION,NOTES_VERSION].includes(value.schema)){if(!Array.isArray(value.passage_notes))throw Error('Saved report is missing its passage notes.');notes=value.passage_notes;}
       else if(Object.hasOwn(value,'passage_notes'))throw Error('Passage notes require saved-report version 3.');
     }else if(value?.schema==='un.browser.corpus.v1')corpora=[value];else throw Error('Unsupported saved report or collection version.');
     await validateCorpora(corpora,policy,countries);
@@ -125,8 +135,9 @@
     const chosen=appendixSelection(appendix,records),appendixIds=new Set(chosen.record_ids);
     const meetings=coverage.map(m=>({slug:m.slug,date:m.date,title:m.title||m.slug,status:m.status,source_url:Reader.safeURL(m.source_url),
       summary:Reader.build(records,{meeting_slug:m.slug,meeting_date:m.date,title:m.title})}));
-    return {schema:VERSION,engine:'source-bound-reporting-1.4',generated_at:new Date().toISOString(),settings:prefs,appendix:chosen,passage_notes:passageNotes(notes,records),
+    return {schema:VERSION,engine:'source-bound-reporting-1.5',generated_at:new Date().toISOString(),settings:prefs,appendix:chosen,passage_notes:passageNotes(notes,records),
       appendix_records:chosen.mode==='selected'?records.filter(r=>appendixIds.has(r.id)):prefs.template==='evidence'?records:[],
+      question_evidence:prefs.questions.map(q=>({...q,records:search(records,q.query)})),
       selected_meetings:meetings.map(m=>m.slug),meetings,records,priority_evidence:search(records,prefs.priorities),
       collections:corpora.map(c=>({collected_at:c.collection.collected_at,checked_at:c.collection.checked_at,partial:c.collection.partial})),
       model_status:'withheld_not_accepted',method:'Existing deterministic quick reader plus literal all-term evidence search; not generative AI.',
@@ -187,6 +198,7 @@
       return '<section class="report-meeting"><h2 id="'+anchor(i)+'" tabindex="-1">'+escape(m.date)+' · '+link(m.source_url,m.title)+'</h2><p>'+escape(s.paragraphs.join(' '))+'</p><p>'+s.stats.source_segments+' source segments; '+s.stats.recorded_countries+' recorded country labels; '+s.stats.withheld_collective_segments+' collective segments withheld from national positions. Collection outcome: '+escape(m.status)+'.</p>'+(p.template==='negotiation'?countries+themes:themes+countries)+(indexed?'<p><a href="#report-meeting-index">Back to selected meetings</a></p>':'')+'</section>';
     }).join('');
     return '<h1>'+escape(p.title)+'</h1><p>'+escape(p.mission||'Mission not specified')+' · '+escape(TEMPLATES[p.template])+'</p><p>'+meetings.length+' selected meetings; '+records.length+' English source segments. Prepared '+escape(report.generated_at)+'.</p><p class="notice">Source-linked draft. Automatic five-class stance estimates remain withheld. Review the evidence before circulation.</p>'+index+body+
+      (report.question_evidence?.length?'<section class="briefing-questions"><h2>Mission briefing questions</h2><p>Analyst-defined questions with literal all-word evidence searches. Matches are supporting passages, not generated answers or verified positions. The meeting summaries and country comparisons above retain all selected evidence.</p>'+report.question_evidence.map(q=>'<section class="briefing-question"><h3>'+escape(q.heading)+'</h3><p>Search words: '+escape(q.query)+' · '+q.records.length+' matching source segments across '+new Set(q.records.map(r=>r.meeting_slug)).size+' meetings.</p>'+(q.records.length?appendix(q.records):'<p class="question-gap">No matching passage in the loaded selected meetings. The question remains unanswered; this does not establish silence, neutrality or absence of relevant evidence.</p>')+'</section>').join('')+'</section>':'')+
       (p.priorities?'<section><h2>Mission priority evidence</h2><p>Literal search: '+escape(p.priorities)+'. '+report.priority_evidence.length+' matching source segments; this does not change the all-meeting overview.</p>'+appendix(report.priority_evidence)+'</section>':'')+
       (report.appendix.mode==='selected'||p.template==='evidence'?'<section class="evidence-appendix"><h2>Evidence appendix</h2><p>'+(report.appendix.mode==='selected'?'Analyst-selected passages: ':'All passages: ')+report.appendix_records.length+' of '+records.length+' source segments from the selected meetings. The overview, country expressions and coverage counts use all '+records.length+' segments.</p>'+(report.appendix_records.length?appendix(report.appendix_records):'<p>No appendix passages selected. This does not establish absence of relevant evidence.</p>')+'</section>':'')+
       (report.passage_notes.length?'<section class="passage-notes"><h2>Analyst notes on source passages</h2><p>User-authored interpretation and follow-up, separate from the quoted source text. These notes do not change the meeting overview or country expressions.</p>'+report.passage_notes.map(n=>'<div class="passage-note">'+evidenceHTML([records.find(r=>r.id===n.record_id)])+'<h3>Analyst note</h3><p class="analyst-notes">'+escape(n.text)+'</p></div>').join('')+'</section>':'')+
@@ -198,6 +210,6 @@
     const cell=x=>'"'+String(/^[\s]*[=+\-@]/.test(String(x??''))?"'"+x:x??'').replace(/"/g,'""')+'"';
     return [cols,...records.map(r=>cols.map(k=>r[k]))].map(row=>row.map(cell).join(',')).join('\r\n');
   }
-  const api={VERSION,LEGACY_VERSION,APPENDIX_VERSION,NOTE_LIMIT,NOTES_LIMIT,TEMPLATES,LIMIT,PREFERENCES_VERSION,PREFERENCES_LIMIT,exportPreferences,importPreferences,settings,exclusions,allowed,validateCorpora,search,meetingSelection,appendixSelection,passageNotes,openSaved,savedReport,build,reportHTML,evidenceHTML,speakerHTML,contextWindow,contextHTML,standalone,evidenceCSV};
+  const api={VERSION,NOTES_VERSION,questions,LEGACY_VERSION,APPENDIX_VERSION,NOTE_LIMIT,NOTES_LIMIT,TEMPLATES,LIMIT,PREFERENCES_VERSION,PREFERENCES_LIMIT,exportPreferences,importPreferences,settings,exclusions,allowed,validateCorpora,search,meetingSelection,appendixSelection,passageNotes,openSaved,savedReport,build,reportHTML,evidenceHTML,speakerHTML,contextWindow,contextHTML,standalone,evidenceCSV};
   if(node)module.exports=api;else root.UNMeetingReport=api;
 })(globalThis);

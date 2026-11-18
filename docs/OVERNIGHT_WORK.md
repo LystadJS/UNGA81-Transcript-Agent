@@ -1,3 +1,19 @@
+## 18 November 2026 — browser reporting questions
+
+Release 1.55.0 adds up to eight user-defined briefing headings and literal evidence
+queries. Reports retain full meeting/country coverage and show original citations
+or an unanswered gap. Saved report v4 and preferences v2 retain settings; original
+v1–v3 reports and v1 preferences remain readable. No new browser dependency, model,
+backend or Hugging Face storage is added. Actual diplomat acceptance, generative
+summary acceptance and full DiploTools equivalence remain outstanding.
+
+Local validation passed: all 250 Python operational contract tests, eight Node
+reporting contract suites, five Chromium reporting/archive suites and an
+allowlisted static build. Tests used synthetic sources; no reserved transcripts
+were opened. Source and mirror publication remain pending. Repository
+cleanup has been scoped to distinguish required runtime/personal tools/tests from
+frozen historical evidence; no frozen files have been deleted.
+
 # Autonomous work checkpoint
 
 Authorized 12 November 2026, America/New_York. Continue engineering tasks, validate and publish each, then start the next actionable task. Hourly resumption is scheduled through the final status report at **10:00 a.m. 13 November 2026, America/New_York**. Scheduling is not a guarantee of uninterrupted execution. Preserve this checkpoint across sessions. Avoid overlapping edits/writers; inspect live PRs and Actions before starting.
