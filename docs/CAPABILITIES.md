@@ -1,12 +1,12 @@
 # Current capability and acceptance matrix
 
-Updated 18 November 2026, America/New_York. **Release 1.69.0 is deployed and
+Updated 18 November 2026, America/New_York. **Release 1.70.0 is deployed and
 verified at both public URLs.** All 196 preferred-site files match expected hashes;
-fourteen reporting browser suites passed live with fictional sources. The expanded
-reporting/notes-export suite also passed at the original URL. These are engineering
-checks, not diplomat, spreadsheet-client or model acceptance. Code, deployment,
-source coverage and empirical acceptance remain distinct. See the
-[current checkpoint](OVERNIGHT_WORK.md).
+fourteen reporting browser suites passed live with fictional sources. The reporting
+suite also passed at the original URL. Grouped exports were visually inspected at
+390/1440px. These are engineering checks, not diplomat, assistive-technology or
+model acceptance. Code, deployment, source coverage and empirical acceptance
+remain distinct. See the [current checkpoint](OVERNIGHT_WORK.md).
 
 ## Reporting and execution
 
@@ -23,7 +23,7 @@ source coverage and empirical acceptance remain distinct. See the
 | Affiliation navigation | Automatic alphabetical index and focusable first country rows with return links in single/multi-meeting reports; native HTML, Word and PDF destinations | All affiliations and comparison gaps remain visible. Navigation does not change source scope, notes, filters, appendix or exports; no source requests or new schema |
 | Bulk evidence appendix | Add/remove every filtered match across pages, with affected counts and one-step restoration of the previous mode and explicit choices | Preserves other choices, notes, source bytes, full country coverage and CSV. History is session-only and clears on manual selections or source/meeting changes; exports require preparation |
 | Passage-list filters | Exact recorded country/affiliation and speaker-name filters combined with literal search and appendix selection | Temporary view only; full country overview, prepared report, source context and CSV unchanged. Names and affiliations are source labels, not verified personal identity or national capacity |
-| Portable reports | Script-free HTML, verified source-bearing JSON, full evidence CSV and a ZIP with checksums | 25 MB encoded bounds; oversized downloads fail without truncation. Exports can contain source text and analyst notes; review before sharing |
+| Portable reports | Purpose-grouped resumable saves, reading copies and spreadsheets; script-free HTML, verified source-bearing JSON, full evidence CSV and a ZIP with checksums | 25 MB encoded bounds; oversized downloads fail without truncation. Exports can contain source text and analyst notes; review before sharing |
 | Print / browser PDF | Complete prepared report in the native print dialog, isolated from workspace controls, with expanded provenance and unclipped evidence | Printed HTML bounded to 25 MB; browser controls final PDF size and destination. PDF cannot resume work. Actual government-browser dialogs and participant usability remain unaccepted |
 | Editable Word reading copy | Native browser-generated `.docx` with complete report text, editable country tables, source links, questions, selected evidence and separate notes | 25 MB whole-document bound; no Word import or embedded source bundle. Save JSON/ZIP separately to resume. Desktop Word rendering and diplomat usability remain unaccepted |
 | Briefing questions | Eight reusable question headings and all-word evidence queries; original supporting passages or explicit unanswered gaps; saved-report v4 and preference v2 | These are literal searches, not generated answers. Older report v1–v3 and preference v1 formats remain readable. Source #291 and website #167 merged after passing checks; live reporting verification passed |
