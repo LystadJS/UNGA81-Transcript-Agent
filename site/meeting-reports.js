@@ -23,7 +23,7 @@
   $('addBriefingQuestion').onclick=()=>{addQuestion(undefined,true);invalidate();};
   function save(data,name,mime){const blob=new Blob([data],{type:mime});if(blob.size>Core.LIMIT){setStatus('Download exceeds 25 MB. Choose fewer meetings or shorter notes before exporting. Current work has not changed.',true);return false;}const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);return true;}
   function reportName(suffix){return 'un-meeting-report-'+report.generated_at.replace(/[-:.]/g,'')+suffix;}
-  function invalidate(){workspaceRevision++;report=null;$('expressionEvidence').close();$('expressionEvidenceBody').replaceChildren();$('reportPreview').replaceChildren();for(const id of ['downloadReport','saveReport','downloadEvidence','downloadPackage','saveDeviceReport'])$(id).disabled=true;$('packageStatus').textContent='Prepare the report before downloading its package.';$('reportState').textContent='Settings or selection changed. Prepare the report to update its exports.';dirty=!!corpora.length;deviceControls();}
+  function invalidate(){workspaceRevision++;report=null;$('expressionEvidence').close();$('expressionEvidenceBody').replaceChildren();$('wordStatus').textContent='Prepare the report before downloading Word. Save JSON or ZIP to reopen work here.';$('reportPreview').replaceChildren();for(const id of ['downloadReport','downloadWord','saveReport','downloadEvidence','downloadPackage','saveDeviceReport'])$(id).disabled=true;$('packageStatus').textContent='Prepare the report before downloading its package.';$('reportState').textContent='Settings or selection changed. Prepare the report to update its exports.';dirty=!!corpora.length;deviceControls();}
   function replacementCurrent(ticket){
     if(ticket.id!==replacementSerial)return false;
     if(ticket.revision!==workspaceRevision){setStatus('Your report changed while sources were being checked. Current work kept; try loading again when ready.');return false;}
@@ -192,7 +192,7 @@
   $('onlySelectedEvidence').onchange=()=>{shown=10;search();};
   $('appendixMode').onchange=()=>{if($('appendixMode').value==='template')appendixIds.clear();invalidate();search();};
   $('clearAppendix').onclick=()=>{appendixIds.clear();$('appendixMode').value='selected';invalidate();search();};
-  $('prepareReport').onclick=()=>{try{report=Core.build(corpora,selected(),options(),appendix(),passageNotes());workspaceRevision++;$('reportPreview').innerHTML=Core.reportHTML(report,{preview:true});for(const id of ['downloadReport','saveReport','downloadEvidence','downloadPackage','saveDeviceReport'])$(id).disabled=false;$('downloadPackage').disabled=packaging;if(!packaging)$('packageStatus').textContent='Ready to download a report package.';$('reportState').textContent='Report ready: '+report.meetings.length+' meetings. Review source evidence before circulation.';dirty=true;deviceControls();}catch(e){invalidate();setStatus(e.message,true);}};
+  $('prepareReport').onclick=()=>{try{report=Core.build(corpora,selected(),options(),appendix(),passageNotes());workspaceRevision++;$('reportPreview').innerHTML=Core.reportHTML(report,{preview:true});for(const id of ['downloadReport','downloadWord','saveReport','downloadEvidence','downloadPackage','saveDeviceReport'])$(id).disabled=false;$('downloadPackage').disabled=packaging;if(!packaging)$('packageStatus').textContent='Ready to download a report package.';$('reportState').textContent='Report ready: '+report.meetings.length+' meetings. Review source evidence before circulation.';$('wordStatus').textContent='Ready to download Word. Save JSON or ZIP separately to reopen work here.';dirty=true;deviceControls();}catch(e){invalidate();setStatus(e.message,true);}};
   $('reportPreview').onclick=event=>{
     const button=event.target.closest('button[data-evidence-id]');
     if(!button||!$('reportPreview').contains(button)||!report)return;
@@ -203,6 +203,11 @@
   };
   $('closeExpressionEvidence').onclick=()=>$('expressionEvidence').close();
   $('expressionEvidence').addEventListener('close',()=>{if(!$('expressionEvidence').open)$('expressionEvidenceBody').replaceChildren();});
+  $('downloadWord').onclick=()=>{
+    if(!report)return;
+    try{if(save(UNMeetingReportWord.build(report),reportName('.docx'),'application/vnd.openxmlformats-officedocument.wordprocessingml.document'))$('wordStatus').textContent='Word reading copy downloaded. Save JSON or ZIP separately to reopen source-verified work. Review sources and analyst notes before sharing.';}
+    catch(e){$('wordStatus').textContent='Could not create Word report: '+e.message;}
+  };
   $('downloadReport').onclick=()=>{if(report)save(Core.standalone(report),reportName('.html'),'text/html');};
   $('saveReport').onclick=()=>{if(report&&save(JSON.stringify(Core.savedReport(report,corpora)),reportName('.json'),'application/json'))dirty=false;};
   $('downloadEvidence').onclick=()=>{if(report)save(Core.evidenceCSV(report.records),reportName('-evidence.csv'),'text/csv;charset=utf-8');};

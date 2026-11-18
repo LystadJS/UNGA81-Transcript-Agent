@@ -41,10 +41,16 @@ provisional rule extracts. Missing evidence is not neutrality; collective capaci
 does not establish a national position. Repetition does not add policy weight.
 Research CSV releases, private owner annotations and model acceptance are separate.
 `;
-  function zip(files){
-    // Fixed internal ASCII filenames; callers cannot supply ZIP paths.
+  function zip(files,label='Report package'){
+    // Shared bounded ZIP writer for report packages and native Office documents.
+    const names=new Set();
+    if(!Array.isArray(files)||!files.length||files.length>65535)throw Error('Invalid archive file count.');
+    for(const f of files){
+      if(typeof f.name!=='string'||!/^[A-Za-z0-9_.[\]\/-]+$/.test(f.name)||f.name.length>240||f.name.startsWith('/')||f.name.split('/').some(p=>!p||p==='.'||p==='..')||names.has(f.name.toLowerCase())||!(f.bytes instanceof Uint8Array))throw Error('Invalid archive entry.');
+      names.add(f.name.toLowerCase());
+    }
     const size=22+files.reduce((n,f)=>n+76+2*f.name.length+f.bytes.length,0);
-    if(size>Core.LIMIT)throw Error('Report package exceeds 25 MB. Choose fewer meetings or use individual downloads. Current work has not changed.');
+    if(size>Core.LIMIT)throw Error(label+' exceeds 25 MB. Choose fewer meetings or use individual downloads. Current work has not changed.');
     const out=new Uint8Array(size),view=new DataView(out.buffer);let at=0;
     const u16=n=>{view.setUint16(at,n,true);at+=2;},u32=n=>{view.setUint32(at,n,true);at+=4;};
     const raw=bytes=>{out.set(bytes,at);at+=bytes.length;};
@@ -75,5 +81,5 @@ Research CSV releases, private owner annotations and model acceptance are separa
     files.push({name:'manifest.json',bytes:encoder.encode(JSON.stringify(manifest,null,2)+'\n')});
     return zip(files);
   }
-  const api={build};if(node)module.exports=api;else root.UNMeetingReportPackage=api;
+  const api={build,zip};if(node)module.exports=api;else root.UNMeetingReportPackage=api;
 })(globalThis);
