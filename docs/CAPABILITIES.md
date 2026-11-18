@@ -1,8 +1,8 @@
 # Current capability and acceptance matrix
 
-Updated 18 November 2026, America/New_York. **Release 1.58.0 is deployed and
-verified at both public URLs.** All 194 checked portfolio files match their
-expected hashes; five reporting suites passed against the actual live site with
+Updated 18 November 2026, America/New_York. **Release 1.59.0 is deployed and
+verified at both public URLs.** All 195 checked portfolio files match their
+expected hashes; six reporting suites passed against the actual live site with
 fictional sources. This is engineering verification, not diplomat or model
 acceptance. Code, deployment, source coverage and empirical acceptance remain
 distinct. See the [current checkpoint](OVERNIGHT_WORK.md) for release receipts.
@@ -100,7 +100,7 @@ identical validation: 39 country sections, 507 coding cells, five report packets
 no released model or semantic-accuracy claim follows from structural QA.
 
 The R cleanup added no browser dependency or Hugging Face storage; its
-validation is separate from the 1.58.0 reporting release.
+validation is separate from subsequent browser reporting releases.
 
 These removals reduce the active checkout, not retained Git history. Reproducibility
 fixtures and source corpora remain; a runtime-only repository has not been achieved.
