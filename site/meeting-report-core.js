@@ -134,6 +134,17 @@
     const corpora=[...existing,...opened.corpora];await validateCorpora(corpora,policy,countries);
     return {corpora,selected_added:opened.selected,incoming_report:value.schema!=='un.browser.corpus.v1'};
   }
+  function planSourceRemoval(corpora,index,state){
+    if(!Array.isArray(corpora)||!Number.isInteger(index)||index<0||index>=corpora.length)throw Error('Source list changed. Choose a current collection.');
+    const known=new Set(corpora.flatMap(c=>c.coverage).filter(m=>m.slug).map(m=>m.slug));
+    if(!Array.isArray(state.selected)||new Set(state.selected).size!==state.selected.length||state.selected.some(id=>!known.has(id)))throw Error('Invalid current meeting selection.');
+    const before=corpora.flatMap(c=>c.records).filter(r=>state.selected.includes(r.meeting_slug)),chosen=appendixSelection(state.appendix,before),notes=passageNotes(state.passage_notes,before);
+    const next=corpora.filter((_,i)=>i!==index),kept=new Set(next.flatMap(c=>c.coverage).filter(m=>m.slug).map(m=>m.slug)),selected=state.selected.filter(id=>kept.has(id));
+    const records=next.flatMap(c=>c.records).filter(r=>selected.includes(r.meeting_slug)),ids=new Set(records.map(r=>r.id));
+    const appendix=next.length?appendixSelection({mode:chosen.mode,record_ids:chosen.record_ids.filter(id=>ids.has(id))},records):{mode:'template',record_ids:[]};
+    const passage_notes=passageNotes(notes.filter(n=>ids.has(n.record_id)),records);
+    return {corpora:next,selected,appendix,passage_notes,removed_meetings:corpora[index].coverage.filter(m=>m.slug),removed_notes:notes.length-passage_notes.length,removed_appendix:chosen.record_ids.length-appendix.record_ids.length,clear_assessment:!next.length};
+  }
   function savedStateBytes(corpora,state){
     // Measure the resumable file even while a question row is unfinished.
     const prefs={...settings({...state.settings,questions:[]}),questions:state.settings.questions??[]};
@@ -244,6 +255,6 @@
     const cell=x=>'"'+String(/^[\s]*[=+\-@]/.test(String(x??''))?"'"+x:x??'').replace(/"/g,'""')+'"';
     return [cols,...records.map(r=>cols.map(k=>r[k]))].map(row=>row.map(cell).join(',')).join('\r\n');
   }
-  const api={VERSION,NOTES_VERSION,questions,LEGACY_VERSION,APPENDIX_VERSION,NOTE_LIMIT,NOTES_LIMIT,TEMPLATES,LIMIT,PREFERENCES_VERSION,PREFERENCES_LIMIT,exportPreferences,importPreferences,settings,exclusions,allowed,validateCorpora,search,meetingSelection,appendixSelection,passageNotes,openSaved,appendSaved,savedStateBytes,savedReport,build,countryTimeline,reportHTML,evidenceHTML,speakerHTML,contextWindow,contextHTML,standalone,evidenceCSV};
+  const api={VERSION,NOTES_VERSION,questions,LEGACY_VERSION,APPENDIX_VERSION,NOTE_LIMIT,NOTES_LIMIT,TEMPLATES,LIMIT,PREFERENCES_VERSION,PREFERENCES_LIMIT,exportPreferences,importPreferences,settings,exclusions,allowed,validateCorpora,search,meetingSelection,appendixSelection,passageNotes,openSaved,appendSaved,planSourceRemoval,savedStateBytes,savedReport,build,countryTimeline,reportHTML,evidenceHTML,speakerHTML,contextWindow,contextHTML,standalone,evidenceCSV};
   if(node)module.exports=api;else root.UNMeetingReport=api;
 })(globalThis);

@@ -104,9 +104,39 @@
       if(prefs){for(const [id,key] of [['reportTemplate','template'],['mission','mission'],['reportTitle','title'],['priorities','priorities'],['analystNotes','notes']])$(id).value=prefs[key];}
       else $('analystNotes').value='';
     }
-    $('reportControls').disabled=false;$('evidenceSearch').disabled=false;$('appendixControls').disabled=false;
+    $('reportControls').disabled=!corpora.length;$('evidenceSearch').disabled=!corpora.length;$('appendixControls').disabled=!corpora.length;
     $('collectionStatus').textContent=corpora.flatMap(c=>c.coverage).filter(r=>r.slug).length+' loaded meeting records; '+corpora.reduce((n,c)=>n+c.records.length,0)+' English source segments. Original response hashes verified. Last source check: '+corpora.map(c=>c.collection.checked_at||c.collection.collected_at||'Unknown').join('; ')+'.';
-    refreshEvidenceFilters(true);invalidate();shown=10;search();
+    if(!corpora.length)$('collectionStatus').textContent='No collection loaded.';
+    showSourceCollections();refreshEvidenceFilters(true);invalidate();shown=10;search();
+  }
+  function showSourceCollections(){
+    $('manageSources').hidden=!corpora.length;$('sourceCollections').replaceChildren();
+    corpora.forEach((c,index)=>{
+      const row=document.createElement('div'),label=document.createElement('p'),titles=document.createElement('p'),button=document.createElement('button'),meetings=c.coverage.filter(m=>m.slug);
+      row.className='source-collection';label.textContent='Collection '+(index+1)+' · '+meetings.length+' meeting'+(meetings.length===1?'':'s')+' · '+c.records.length+' source segments · '+new TextEncoder().encode(JSON.stringify(c)).length.toLocaleString('en-US')+' source JSON bytes';
+      titles.textContent=meetings.slice(0,2).map(m=>m.date+' · '+String(m.title||m.slug).slice(0,160)).join('; ')+(meetings.length>2?'; '+(meetings.length-2)+' more meetings':'');
+      button.type='button';button.className='secondary';button.textContent='Remove collection '+(index+1);button.onclick=()=>removeSourceCollection(c,button);
+      row.append(label,titles,button);$('sourceCollections').append(row);
+    });
+  }
+  $('keepSources').onclick=()=>$('removeSources').close('keep');
+  $('confirmRemoveSources').onclick=()=>$('removeSources').close('remove');
+  async function removeSourceCollection(collection,button){
+    if($('removeSources').open)return;
+    const ticket={id:++replacementSerial,revision:workspaceRevision};
+    try{
+      const plan=Core.planSourceRemoval(corpora,corpora.indexOf(collection),{selected:selected(),appendix:appendix(),passage_notes:passageNotes()});
+      $('removeSourcesMessage').textContent=plan.removed_meetings.length+' meeting'+(plan.removed_meetings.length===1?'':'s')+', '+plan.removed_notes+' passage note'+(plan.removed_notes===1?'':'s')+' and '+plan.removed_appendix+' appendix selection'+(plan.removed_appendix===1?'':'s')+' will be removed from current work. '+(plan.clear_assessment?'This is the last collection: the current assessment will also be cleared. Reusable mission settings and questions stay.':'The current assessment, mission settings and annotations on remaining sources stay.');
+      $('removeSourcesMeetings').replaceChildren();for(const m of plan.removed_meetings){const item=document.createElement('li');item.textContent=m.date+' · '+m.title;$('removeSourcesMeetings').append(item);}
+      const dialog=$('removeSources');dialog.returnValue='keep';
+      const choice=await new Promise(resolve=>{dialog.addEventListener('close',()=>resolve(dialog.returnValue),{once:true});dialog.showModal();});
+      if(!replacementCurrent(ticket))return;
+      if(choice!=='remove'){setStatus('Sources kept. Current work is unchanged.');if(button.isConnected)button.focus();return;}
+      if(plan.clear_assessment)$('analystNotes').value='';
+      setCollection(plan.corpora,null,plan.selected,plan.appendix,plan.passage_notes,true);
+      setStatus(plan.clear_assessment?'Current sources and assessment cleared. Mission settings and questions kept. Open a collection or report to continue.':'Source collection removed. Remaining notes and settings kept. Select meetings as needed and prepare the report again.');
+      ($('sourceCollections').querySelector('button')||$('openCollection')).focus();
+    }catch(e){if(ticket.id===replacementSerial)setStatus('Could not remove sources: '+e.message+' Current work kept.',true);}
   }
   function busy(value){$('sourceControls').disabled=value;$('loadMeetings').disabled=value||!document.querySelector('#inventory input:checked');$('cancelLoad').hidden=!value;for(const e of $('inventory').querySelectorAll('input'))e.disabled=value||!inventory.find(m=>m.slug===e.value)?.hasTranscript;}
   function clearHandoff(){handoff=null;$('archiveSelection').hidden=true;}
