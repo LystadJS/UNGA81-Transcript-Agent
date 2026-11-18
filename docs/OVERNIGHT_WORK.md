@@ -12,35 +12,46 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Verified release 1.58.0
+## Verified release 1.59.0
 
 | PR | Change | Verified result |
 | --- | --- | --- |
-| [Source #298](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/298) | Exact recorded affiliation and speaker-name filters | All three checks passed at `6741a3c`; merged as `eb450ec` |
-| [Website #170](https://github.com/LystadJS/LystadJS.github.io/pull/170) | Canonical public sync, release/source pins | Mirror audit and website regression passed at `3bdf0c4`; merged as `07d7d2e` |
+| [Source #300](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/300) | Native browser-only Word report export | All three checks passed at `7103b6f`; merged as `a80cd4b` |
+| [Website #171](https://github.com/LystadJS/LystadJS.github.io/pull/171) | Canonical public sync, source/release pins, deployed Word test | Mirror audit and website regression passed at `6527e6d`; merged as `67f77d2` |
 
-Both public URLs serve 1.58.0. All 194 portfolio files (193 manifest entries plus
-the manifest) match expected SHA-256 hashes. The expanded reporting suite passes
-against the live source URL. All five synthetic browser suites also pass against
-the preferred portfolio URL: reporting, replacement, packages, device library and
-archive handoff. Local checks pass 256 Python tests and the same five browser suites.
-These are engineering checks, not diplomat usability or model-accuracy acceptance.
-Do not count skipped PR live-verification jobs as live passes.
+Both public URLs serve 1.59.0. All 195 checked portfolio files (194 manifest
+entries plus the manifest) match expected SHA-256 hashes. Six reporting suites
+pass against the actual preferred URL with fictional sources: reporting,
+replacement, packages, device library, archive handoff and native Word export.
+One transient asset HTTP 503 passed on retry; no source or code repair was needed.
 
-Exact country/affiliation and recorded-name controls narrow the passage list,
-combined with all-word search and appendix-only view. Clearing filters preserves
-notes and appendix choices. Names remain source labels, collective evidence stays
-visible and missing metadata has a separate option. Filters leave prepared reports,
-mandatory country coverage, neighboring context, saved-work JSON and full CSV intact.
-Source replacement resets the filters; removing a meeting discards unavailable
-values. The usability guide includes a corresponding participant task, still unrun.
+The Word export uses native editable headings, country tables, lists, source links
+and meeting bookmarks from the complete report renderer. Questions, selected
+evidence and separately labeled notes remain present. Filters do not narrow the
+report. Word is a reading copy: edits cannot be imported, and downloading Word
+keeps unsaved-work protection. JSON/ZIP remain the resumable formats. The report
+ZIP's existing contents and all saved schemas remain unchanged.
 
-Report schema v4 and preference schema v2 are unchanged; release metadata now
-correctly lists those existing schemas. No model, dependency, server, automatic
-saving or Hugging Face data was added. The public build still has 202 entries;
-the mirror has 193 files and canonical sync is idempotent. The preserved
-[1.57.0 receipt](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/eb450ec609ea1b2ee73f266f22fb73ebf12e4585/docs/OVERNIGHT_WORK.md)
-records the device-library deployment and earlier checks.
+The document's 25 MB bound includes XML and ZIP overhead. Tests cover deterministic
+bytes at the exact limit, payload/container failure, unsupported XML characters,
+matching timestamps, unchanged current work/other exports, stale-export prevention,
+keyboard and mobile behavior. Independent standard-library parsing verifies every
+part, CRC, ordered full rendered text, editable tables, links, bookmarks and notes.
+A separate local python-docx reader also opened the 33,775-byte fictional sample.
+This is structural compatibility, not desktop Word rendering or diplomat acceptance.
+The usability guide includes an actual Word-environment task; no participant
+session has been performed.
+
+Local validation passes 256 Python tests, six synthetic browser suites and the
+existing report-package checks. The Word suite passes against the live source
+URL. No skipped PR live job is counted as a live test. The public build contains
+203 entries and the mirror contains 194 files. One 9 KB runtime module reuses the
+existing ZIP writer; no dependency, server, model, upload, remote media or Hugging
+Face data was added. All 2,077 R-package checksums remain valid.
+
+The preserved [1.58.0 receipt](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/a80cd4b27bf45487f24493dbae9be7b89cbccc1f/docs/OVERNIGHT_WORK.md)
+records passage filtering and the earlier device-library receipt. Keep its original
+version and scope when using those historical results.
 
 ## Source tree and remaining work
 
@@ -72,7 +83,7 @@ no released model or semantic-accuracy claim follows from structural QA.
 
 The R cleanup did not change browser assets or add Hugging Face storage.
 
-1. Continue useful reporting work from the verified 1.58.0 release, then expand
+1. Continue useful reporting work from the verified 1.59.0 release, then expand
    broader workflows within the execution/storage constraints.
 2. Continue dependency-based cleanup with appropriate personal-runtime checks.
 3. Complete actual diplomat usability sessions; evaluate any optional generative
