@@ -29,7 +29,9 @@ Report JSON schema v4 and mission preference schema v2 remain unchanged.
 
 The database upgrade moves the earlier single slot into the library atomically,
 without keeping a duplicate source store. A failed upgrade rolls back to the
-earlier data. A tab that prevents the upgrade can be closed before **Refresh
+earlier data. After a failed upgrade, **Download earlier device copy** can export
+the retained JSON unchanged without upgrading or deleting it. This recovery file
+is unverified until opened through the source-checking importer. A tab that prevents the upgrade can be closed before **Refresh
 library** retries it. Browser versions still running the earlier storage module
 cannot write its old database version after the upgrade; file-based reporting
 remains available.

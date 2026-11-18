@@ -205,7 +205,7 @@
   function deviceControls(){
     deviceSaved=!!selectedDeviceReport();
     $('deviceReportChoice').disabled=deviceBusy||!deviceAvailable||!deviceLibrary.length;
-    $('refreshDeviceReports').disabled=deviceBusy;
+    $('refreshDeviceReports').disabled=deviceBusy;$('recoverDeviceReport').disabled=deviceBusy;
     $('openDeviceReport').disabled=deviceBusy||!deviceAvailable||!deviceSaved||!policy||!countries;
     $('deleteDeviceReport').disabled=deviceBusy||!deviceAvailable||!deviceSaved;
     $('saveDeviceReport').disabled=deviceBusy||!deviceAvailable||!report;
@@ -221,10 +221,16 @@
   const deviceUsage=()=>deviceLibrary.length+' of 8 reports saved; '+deviceLibrary.reduce((n,r)=>n+r.bytes,0)+' of 25,000,000 report JSON bytes.';
   async function checkDeviceReport(){
     if(deviceBusy)return;deviceBusy=true;deviceControls();
-    try{deviceLibrary=await UNReportStorage.list();deviceAvailable=true;showDeviceLibrary();$('deviceReportStatus').textContent=deviceLibrary.length?deviceUsage()+' Open a report explicitly to verify its sources.':'No report saved on this device. Prepare a report and choose Save on this device.';}
-    catch(e){deviceAvailable=false;$('deviceReportStatus').textContent=e.message;}
+    try{deviceLibrary=await UNReportStorage.list();deviceAvailable=true;$('recoverDeviceReport').hidden=true;showDeviceLibrary();$('deviceReportStatus').textContent=deviceLibrary.length?deviceUsage()+' Open a report explicitly to verify its sources.':'No report saved on this device. Prepare a report and choose Save on this device.';}
+    catch(e){deviceAvailable=false;$('recoverDeviceReport').hidden=!e.legacy_recovery;$('deviceReportStatus').textContent=e.message;}
     finally{deviceBusy=false;deviceControls();}
   }
+  $('recoverDeviceReport').onclick=async()=>{
+    if(deviceBusy)return;deviceBusy=true;deviceControls();
+    try{const text=await UNReportStorage.legacy();if(typeof text!=='string')throw Error('No earlier device JSON copy is available.');if(save(text,'un-device-report-recovery.json','application/json'))deviceSaveStatus('Earlier device copy downloaded unchanged. It has not been verified or removed; open the JSON file to verify its sources.');}
+    catch(e){deviceSaveStatus('Could not recover earlier device copy: '+e.message);}
+    finally{deviceBusy=false;deviceControls();}
+  };
   $('refreshDeviceReports').onclick=checkDeviceReport;
   $('deviceReportChoice').onchange=()=>{deviceId=$('deviceReportChoice').value;deviceControls();};
   function deviceSaveStatus(message){$('deviceReportStatus').textContent=message;$('deviceSaveStatus').textContent=message;}

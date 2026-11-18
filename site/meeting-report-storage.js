@@ -13,13 +13,13 @@
     return new Promise((resolve,reject)=>{
       if(!validID(id))return reject(Error('Invalid device report identifier.'));
       if(action==='write'&&(typeof value!=='string'||bytes(value)>LIMIT))return reject(Error('Use a saved report under 25 MB.'));
-      let open,settled=false,reason;
-      const fail=message=>{if(!settled){settled=true;reject(Error(message));}};
+      let open,settled=false,reason,migrating=false;
+      const fail=message=>{if(!settled){settled=true;const error=Error(message);error.legacy_recovery=migrating;reject(error);}};
       try{if(!root.indexedDB)throw Error();open=root.indexedDB.open(NAME,2);}catch{fail('Device storage is unavailable. Download report JSON instead.');return;}
       open.onblocked=()=>fail('Device storage is blocked by another tab. Close it or download report JSON.');
       open.onerror=()=>fail(reason||'Could not open device storage. Download report JSON instead.');
       open.onupgradeneeded=()=>{
-        const db=open.result,store=db.createObjectStore(STORE,{keyPath:'id'});
+        const db=open.result;migrating=db.objectStoreNames.contains('draft');const store=db.createObjectStore(STORE,{keyPath:'id'});
         // Copy the original single slot within the upgrade transaction, then remove
         // its duplicate store. A failed migration rolls back both changes.
         if(db.objectStoreNames.contains('draft')){
@@ -64,6 +64,22 @@
       };
     });
   }
-  const api={LIMIT,MAX_REPORTS,list:()=>request('list'),exists:(id='current')=>request('exists',id),read:(id='current',expected)=>request('read',id,undefined,expected),remove:(id='current',expected=0)=>request('remove',id,undefined,expected),write:(value,id='current',expected=0)=>request('write',id,value,expected)};
+  // Recovery reads the retained v1 copy without attempting an upgrade or write.
+  function legacy(){
+    return new Promise((resolve,reject)=>{
+      let open,fresh=false;
+      try{open=root.indexedDB.open(NAME);}catch{reject(Error('Earlier device data is unavailable.'));return;}
+      open.onupgradeneeded=()=>{fresh=true;open.transaction.abort();};
+      open.onerror=()=>fresh?resolve(undefined):reject(Error('Could not read the earlier device copy.'));
+      open.onsuccess=()=>{
+        const db=open.result;db.onversionchange=()=>db.close();
+        if(!db.objectStoreNames.contains('draft')){db.close();resolve(undefined);return;}
+        const tx=db.transaction('draft'),read=tx.objectStore('draft').get('current');
+        tx.oncomplete=()=>{db.close();resolve(read.result);};
+        tx.onabort=()=>{db.close();reject(Error('Could not read the earlier device copy.'));};
+      };
+    });
+  }
+  const api={LIMIT,MAX_REPORTS,legacy,list:()=>request('list'),exists:(id='current')=>request('exists',id),read:(id='current',expected)=>request('read',id,undefined,expected),remove:(id='current',expected=0)=>request('remove',id,undefined,expected),write:(value,id='current',expected=0)=>request('write',id,value,expected)};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UNReportStorage=api;
 })(globalThis);
