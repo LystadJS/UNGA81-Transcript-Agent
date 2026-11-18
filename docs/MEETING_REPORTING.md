@@ -258,6 +258,15 @@ The report JSON/ZIP limit remains 25 MB, and full reports can retain settings to
 large for a standalone preference file. Existing v1/v2 preference files within
 their limits remain readable; no schema changes.
 
+Opening preferences displays **Checking mission preferences** while the local
+file is read. If you edit or prepare the workspace, or begin a source operation
+before that read finishes, its result is not applied. Current settings, notes,
+preview and export readiness stay intact; reopen the file explicitly if needed.
+Only the latest preference selection can apply. A newer invalid file or cleared
+selection also supersedes an older read, and old errors cannot replace the latest
+import status or clear a newer file choice. These checks are session-only and add
+no stored fields or schema change.
+
 The shared downloader catches failures while creating a Blob/temporary URL or
 starting a browser download, reports the error and releases any created URL.
 Preferences and package status do not claim a download succeeded after a failure.
