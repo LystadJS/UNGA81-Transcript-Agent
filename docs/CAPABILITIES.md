@@ -1,11 +1,11 @@
 # Current capability and acceptance matrix
 
-Updated 18 November 2026, America/New_York. **Release 1.64.0 is deployed and
-verified at both public URLs.** All 195 checked portfolio files match their
-expected hashes; ten reporting suites passed against the actual live site with
-fictional sources. This is engineering verification, not diplomat or model
-acceptance. Code, deployment, source coverage and empirical acceptance remain
-distinct. See the [current checkpoint](OVERNIGHT_WORK.md) for release receipts.
+Updated 18 November 2026, America/New_York. **Release 1.64.1 is deployed and
+verified at both public URLs.** All 195 checked portfolio files match expected
+hashes. Package download and reopening suites passed live for this instructions
+patch; the full ten-suite reporting run belongs to release 1.64.0. These are
+engineering checks, not diplomat or model acceptance. Code, deployment, source
+coverage and empirical acceptance remain distinct. See the [current checkpoint](OVERNIGHT_WORK.md).
 
 ## Reporting and execution
 
