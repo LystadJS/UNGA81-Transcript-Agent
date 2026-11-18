@@ -1,12 +1,12 @@
 # Current capability and acceptance matrix
 
-Updated 18 November 2026, America/New_York. **Release 1.72.0 is deployed and
+Updated 18 November 2026, America/New_York. **Release 1.73.0 is deployed and
 verified at both public URLs.** All 196 preferred-site files match expected hashes;
 fourteen reporting browser suites passed live with fictional sources. The expanded
-preference/download-failure reporting suite also passed at the original URL.
-These are engineering simulations, not government-browser policy, diplomat or
-model acceptance. Code, deployment, source coverage and empirical acceptance
-remain distinct. See the [current checkpoint](OVERNIGHT_WORK.md).
+delayed-preference reporting suite also passed at the original URL. These are
+engineering race simulations, not government-browser policy, diplomat or model
+acceptance. Code, deployment, source coverage and empirical acceptance remain
+distinct. See the [current checkpoint](OVERNIGHT_WORK.md).
 
 ## Reporting and execution
 
