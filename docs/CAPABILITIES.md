@@ -1,10 +1,10 @@
 # Current capability and acceptance matrix
 
-Updated 18 November 2026, America/New_York. **Release 1.66.0 is deployed and
+Updated 18 November 2026, America/New_York. **Release 1.67.0 is deployed and
 verified at both public URLs.** All 195 preferred-site files match expected hashes;
-twelve reporting browser suites passed live with fictional sources. The bulk
-appendix suite also passed at the original URL. These are engineering checks,
-not diplomat or model acceptance. Code, deployment, source coverage and empirical
+thirteen reporting browser suites passed live with fictional sources. Affiliation
+navigation also passed at the original URL. These are engineering checks, not
+diplomat or model acceptance. Code, deployment, source coverage and empirical
 acceptance remain distinct. See the [current checkpoint](OVERNIGHT_WORK.md).
 
 ## Reporting and execution

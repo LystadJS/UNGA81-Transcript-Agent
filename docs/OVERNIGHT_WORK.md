@@ -12,51 +12,55 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Verified release 1.66.0
+## Verified release 1.67.0
 
 | PR | Change | Checked head / merge |
 | --- | --- | --- |
-| [Source #318](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/318) | Bulk matching appendix selection and session undo | Three checks passed at `c9fc025`; merged `fc8f7a1` |
-| [Website #180](https://github.com/LystadJS/LystadJS.github.io/pull/180) | Canonical mirror, release pins and live bulk-appendix suite | Audit/regression passed at `623c36a`; merged `1498c3a` |
+| [Source #320](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/320) | Native recorded-affiliation report navigation | Three checks passed at `cf8fecf`; merged `1720737` |
+| [Website #181](https://github.com/LystadJS/LystadJS.github.io/pull/181) | Canonical mirror, cache/release pins and live affiliation suite | Audit/regression passed at `b7ff38c`; merged `5f696f3` |
 
-Both public URLs serve 1.66.0. All 195 preferred-site files match expected SHA-256
-hashes. Twelve reporting browser suites pass live with fictional sources: reporting,
-bulk appendix, inventory addition, saved-source addition, package opening, source
-removal, replacement, device library, packages, Word, print/PDF and archive handoff.
-The bulk-appendix suite also passes at the original URL, whose three changed assets
-match canonical hashes. Skipped PR live jobs are not counted as deployed tests.
+Both public URLs serve 1.67.0. All 195 preferred-site files match expected SHA-256
+hashes. Thirteen reporting browser suites pass live with fictional sources:
+reporting, affiliation navigation, bulk appendix, inventory addition, saved-source
+addition, package opening, source removal, replacement, device library, packages,
+Word, print/PDF and archive handoff. The new navigation suite also passes at the
+original URL, whose four changed assets match canonical hashes. Skipped PR live
+jobs are not counted as deployed tests.
 
-The appendix controls add every new current match or remove matching explicit
-selections, across all result pages. Counts distinguish new from selected matches.
-Literal search, recorded affiliation/name and selected-only filters define the
-matching set; other explicit selections remain. These actions switch to selected
-passages only. Template-default contents are not implicit selections.
+Reports with multiple recorded affiliations include an alphabetical jump index.
+Links focus the first country row in the collection overview, or the single-meeting
+country table; return links focus the index heading. Single-meeting summaries and
+source statistics remain ahead of the index. All affiliations, dated observations
+and comparison gaps remain rendered. Nothing is filtered or selected by navigation.
+Empty/single-affiliation reports omit the unnecessary index. Labels remain escaped
+and targets use numeric generated IDs rather than source text.
 
-Undo restores the previous appendix mode and exact explicit choices, including
-a template default or Clear. Later assessment and passage-note edits remain.
-Search changes keep undo; manual passage choices, appendix-mode changes and
-source/selected-meeting changes clear it. History is a single in-memory snapshot,
-not a saved-report field. Applied and undone changes invalidate exports until
-preparation. Source bytes, country coverage, comparison gaps and full CSV remain
-unchanged. No source request or automatic saving occurs.
+Native links work in browser reports, JavaScript-disabled standalone HTML, Word
+bookmarks and printed PDF destinations. Print targets retain their separate prefix
+and ARIA references. Saved reports rebuild the index from verified original source;
+no navigation field is serialized. Notes, appendix choices, search state, source
+bytes, full CSV and analytical comparisons remain unchanged. No source request or
+automatic saving occurs.
 
-Local validation passes 256 Python tests, twelve reporting browser suites,
-facilitator-tool checks and existing pure contracts. The new 32-passage browser
-fixture verifies beyond-page combined filters, retained other choices/notes,
-template/custom and no-op-clear undo, exact source bytes/full CSV/country overview,
-stale exports and delayed-import protection, manual/source/meeting invalidation,
-JSON replay without history, keyboard and mobile. No real transcript, reserved
-source, participant response or human acceptance is produced by these checks.
+Local validation passes 256 Python tests, thirteen reporting browser suites,
+facilitator checks and existing pure contracts. New checks cover alphabetical
+single/multi navigation, unique valid destinations, keyboard row/return focus,
+unchanged prepared state and controls, script-free HTML, mobile, unsafe-label
+escaping and empty/single-affiliation boundaries. Independent OOXML parsing verifies
+all internal hyperlinks and six bookmarks in the two-country/two-meeting fixture.
+A separate PDF parser resolves the index and both country destinations in the
+40-page synthetic stress PDF. This is engineering verification, not actual Office,
+work-browser or diplomat acceptance. No real or reserved transcript was retrieved.
 
-The public build remains 203 entries and mirror 194 files. Three assets plus
-the manifest change; repeat sync copies zero files. The main script URL is
-versioned. No application file, dependency, schema, model, backend or Hugging Face
-storage is added. All 2,077 R-package checksums remain valid; personal R/Python
+The public build remains 203 entries and mirror 194 files. Four assets plus
+the manifest change; repeat sync copies zero files. Renderer and stylesheet URLs
+are versioned. No application file, dependency, schema, model, backend or Hugging
+Face storage is added. All 2,077 R-package checksums remain valid; personal R/Python
 execution, scientific gates and all 37 reserved meetings are unchanged.
 
-The [previous checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/9d5e1c0267ac68f223deed6201c5647678c644ee/docs/OVERNIGHT_WORK.md)
-records release 1.65.0 and the runnable synthetic facilitator setup, with links to
-earlier receipts. Use those results at their original version and scope.
+The [previous checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/aeaa2e2536d9fdd2f6e7a250b0943e1df0c01049/docs/OVERNIGHT_WORK.md)
+records release 1.66.0 and links earlier receipts. Use those results at their
+original version and scope.
 
 ## Runnable usability setup
 
@@ -113,7 +117,7 @@ no released model or semantic-accuracy claim follows from structural QA.
 
 The R cleanup did not change browser assets or add Hugging Face storage.
 
-1. Continue useful reporting work from the verified 1.66.0 release, then expand
+1. Continue useful reporting work from the verified 1.67.0 release, then expand
    broader workflows within the execution/storage constraints.
 2. Continue dependency-based cleanup with appropriate personal-runtime checks.
 3. Complete actual diplomat usability sessions; evaluate any optional generative
