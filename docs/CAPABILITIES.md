@@ -71,12 +71,36 @@ NMF and display comparison snapshots were verified against commit
 inputs regenerate the current HTML audits byte for byte. Current status documents
 have been consolidated; their historical receipts remain linked below.
 
-This reduces current checkout content, not retained Git history. No history is
-rewritten, no Hugging Face storage is added and no runtime, test, R/Python entry
-point, source corpus or frozen D1 artifact is removed. The larger historical
-fixtures still require dependency checks and appropriate personal-runtime tests.
-A runtime-only repository has not yet been achieved. Keep future generated output
-out of version control; preserve current manifests and original checksum records.
+The personal R package now also excludes 226 generated output files
+(50,521,390 bytes) and three superseded I4 freezer scripts. Their exact versions
+remain recoverable from [the preserved archive](https://github.com/LystadJS/UNGA81-Transcript-Agent/tree/ea18ad83b030e10abfb32d2525c17ada5f5939b9/un).
+The old scripts hardcoded six adapters and 371 checks; current code has 12 adapters.
+Generated output, local libraries, caches and models are ignored. Default tests no
+longer read a user's latest output; optional frozen-run checks require an explicit
+`UNBRIEF_ARCHIVED_RUN`. See [the R guide](../un/README.md).
+
+All 1,673 retained RDS fixtures are byte-identical to the preserved commit and
+read successfully without direct output-path references. Original checksum
+records, the historical checkpoint manifest, Shiny pin and UI manifest are
+unchanged. `tools/package_checksums.py` verifies the current 2,077-file tracked
+inventory in CI and refreshes only the current checksum record after staged edits.
+Six focused tests cover inventory maintenance and unsafe refresh cases.
+
+On Linux with R 4.5.0, Matrix 1.7.3, cluster 2.1.8.1 and igraph 2.1.4, the seven
+retained suites pass 453 default checks; explicit archived-run selection passes
+the two additional frozen-run checks (455 unique checks). This is personal-runtime
+validation, not Windows, live Shiny, PDF or scientific acceptance. The Python suite
+passes 256 tests. Fresh full offline replays before and after cleanup both exit successfully with
+identical validation: 39 country sections, 507 coding cells, five report packets,
+42 methods accounted and 133 prerequisites. Seven fitted candidates remain withheld;
+no released model or semantic-accuracy claim follows from structural QA.
+
+No browser dependency or Hugging Face storage was added; public
+release 1.57.0 is unchanged.
+
+These removals reduce the active checkout, not retained Git history. Reproducibility
+fixtures and source corpora remain; a runtime-only repository has not been achieved.
+Keep future generated output out of version control and preserve original records.
 
 ## Licensing and historical receipts
 

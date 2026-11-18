@@ -49,12 +49,25 @@ never stage absent website files as deletions. Use scripts/sync_un_project.py an
 explicit staged paths. Missing unchanged promisor objects can be retained through
 `git write-tree --missing-ok` after reviewing the exact staged set.
 
-Prior cleanup removed three generated snapshots and consolidated status documents,
-reducing active checkout content by about 16.48 MB while preserving Git history.
-All nine snapshot links use immutable archives and archived inputs regenerate
-three current HTML audits byte for byte. Frozen D1 artifacts, original checksums,
-source corpora, current methods and R/Python tools remain intact. Larger `un/`
-fixtures still have live validation dependencies; do not delete by age alone.
+Prior cleanup removed about 16.48 MB of generated snapshots and repeated status
+content. The current R cleanup removes another 226 generated output files
+(50,521,390 bytes) plus three obsolete checkpoint scripts. Exact copies remain in
+commit `ea18ad83b030e10abfb32d2525c17ada5f5939b9`; Git history is unchanged.
+All 1,673 retained RDS fixtures and protected original records remain byte-identical.
+The current 2,077-file checksum inventory is checked in CI; generated outputs and
+personal runtime paths are ignored. Frozen-run tests now require explicit archive
+selection rather than following the user's latest run.
+
+Seven suites pass 453 default R checks plus two explicitly selected archived-run
+checks on Linux R 4.5.0 (Matrix 1.7.3, cluster 2.1.8.1, igraph 2.1.4). The Python
+suite passes 256 tests, including six inventory-maintenance checks. This does not
+establish Windows, live Shiny, PDF or scientific acceptance. Fresh full offline replays before and after cleanup both exit successfully with
+identical validation: 39 country sections, 507 coding cells, five report packets,
+42 methods accounted and 133 prerequisites. Seven fitted candidates remain withheld;
+no released model or semantic-accuracy claim follows from structural QA.
+
+Browser release 1.57.0
+and its public assets remain unchanged; no Hugging Face storage was added.
 
 1. Continue useful reporting work from the verified 1.57.0 release, then expand
    broader workflows within the execution/storage constraints.

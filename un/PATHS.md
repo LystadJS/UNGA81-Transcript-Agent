@@ -17,3 +17,9 @@ SHA256SUMS_D1_I4_ORIGINAL.txt is preserved verbatim as historical evidence of
 the pre-integration checkpoint; its paths and hashes are intentionally original.
 Other inherited test results describe earlier runs, not new acceptance results.
 See the separately delivered validation report for checks performed on this ZIP.
+
+The path-length and rename records above describe the original repackaging.
+Current tracked payload is defined by SHA256SUMS.txt; PATHS.csv is historical,
+not a current inventory. Generated output runs and obsolete checkpoint-freezing
+scripts are preserved at the immutable archive linked in README.md and are no
+longer shipped in the source tree. Original hash records remain unchanged.

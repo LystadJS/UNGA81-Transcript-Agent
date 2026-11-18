@@ -69,6 +69,16 @@ The frozen reference artifacts retain their full hashes and original bytes.
 R/package/platform differences can prevent reuse of a frozen reference; follow
 the pipeline's instructions for a fresh local reference rather than bypassing gates.
 
+Generated R outputs are no longer bundled in the active source tree. The retained
+example inputs support fresh replay. Optional frozen-output checks use the explicit
+`UNBRIEF_ARCHIVED_RUN` variable, never a personal `output/latest.json` pointer; see
+[the personal package guide](un/README.md) for immutable archive restoration.
+
+Maintain current package checksums with `python tools/package_checksums.py`
+(default verification) or `--write` after staging intended package changes. Runtime
+libraries, caches, models, histories and outputs are excluded from the tracked
+inventory. The updater does not rewrite original checkpoint receipts.
+
 `un/SHA256SUMS.txt` is the current package inventory. The similarly named ORIGINAL
 inventory and inherited test records are historical provenance.
 
