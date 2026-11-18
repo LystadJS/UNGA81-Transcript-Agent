@@ -12,33 +12,35 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Verified release 1.57.0
+## Verified release 1.58.0
 
 | PR | Change | Verified result |
 | --- | --- | --- |
-| [Source #295](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/295) | Bounded device report library | All three checks passed at `e254a13`; merged as `0f0907b` |
-| [Website #169](https://github.com/LystadJS/LystadJS.github.io/pull/169) | Exact public sync, release/source pins, expanded live device acceptance | Audit and regression passed at `7a325d3`; merged as `4f6e049` |
+| [Source #298](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/298) | Exact recorded affiliation and speaker-name filters | All three checks passed at `6741a3c`; merged as `eb450ec` |
+| [Website #170](https://github.com/LystadJS/LystadJS.github.io/pull/170) | Canonical public sync, release/source pins | Mirror audit and website regression passed at `3bdf0c4`; merged as `07d7d2e` |
 
-Both public URLs serve 1.57.0. All 194 checked portfolio files (193 manifest entries
-plus the manifest) matched expected SHA-256 hashes. Five reporting suites passed
-against the actual portfolio: device library, meeting reporting, replacement
-protection, ZIP packages and archive handoff. The library suite also passed against
-the source Pages URL. Tests used fictional sources and no reserved transcripts;
-they establish engineering behavior, not diplomat usability or model accuracy.
-Do not open equivalent replacement PRs or count skipped CI jobs as live passes.
+Both public URLs serve 1.58.0. All 194 portfolio files (193 manifest entries plus
+the manifest) match expected SHA-256 hashes. The expanded reporting suite passes
+against the live source URL. All five synthetic browser suites also pass against
+the preferred portfolio URL: reporting, replacement, packages, device library and
+archive handoff. Local checks pass 256 Python tests and the same five browser suites.
+These are engineering checks, not diplomat usability or model-accuracy acceptance.
+Do not count skipped PR live-verification jobs as live passes.
 
-The device library holds eight reports sharing 25 MB of UTF-8 report JSON. It
-lists titles, New York save times and sizes without opening sources automatically.
-Read/write revision checks reject stale-tab operations, and count/byte limits
-share the write transaction. The prior single slot migrates atomically without a
-duplicate source store. Blocked-tab recovery and upgrade quota-error rollback
-passed. After failure, the retained v1 JSON can be downloaded unchanged and
-unverified, without upgrading or deleting it. Source verification happens on
-normal import/open. Restricted browsers retain file-based reporting.
+Exact country/affiliation and recorded-name controls narrow the passage list,
+combined with all-word search and appendix-only view. Clearing filters preserves
+notes and appendix choices. Names remain source labels, collective evidence stays
+visible and missing metadata has a separate option. Filters leave prepared reports,
+mandatory country coverage, neighboring context, saved-work JSON and full CSV intact.
+Source replacement resets the filters; removing a meeting discards unavailable
+values. The usability guide includes a corresponding participant task, still unrun.
 
-Report schema v4 and preference schema v2 are unchanged. No model, dependency,
-server, automatic report saving or Hugging Face data was added. The public build
-still contains 202 entries and the mirror still contains 193 public files.
+Report schema v4 and preference schema v2 are unchanged; release metadata now
+correctly lists those existing schemas. No model, dependency, server, automatic
+saving or Hugging Face data was added. The public build still has 202 entries;
+the mirror has 193 files and canonical sync is idempotent. The preserved
+[1.57.0 receipt](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/eb450ec609ea1b2ee73f266f22fb73ebf12e4585/docs/OVERNIGHT_WORK.md)
+records the device-library deployment and earlier checks.
 
 ## Source tree and remaining work
 
@@ -61,15 +63,16 @@ selection rather than following the user's latest run.
 Seven suites pass 453 default R checks plus two explicitly selected archived-run
 checks on Linux R 4.5.0 (Matrix 1.7.3, cluster 2.1.8.1, igraph 2.1.4). The Python
 suite passes 256 tests, including six inventory-maintenance checks. This does not
-establish Windows, live Shiny, PDF or scientific acceptance. Fresh full offline replays before and after cleanup both exit successfully with
+establish Windows, live Shiny, PDF or scientific acceptance.
+
+Fresh full offline replays before and after cleanup both exit successfully with
 identical validation: 39 country sections, 507 coding cells, five report packets,
 42 methods accounted and 133 prerequisites. Seven fitted candidates remain withheld;
 no released model or semantic-accuracy claim follows from structural QA.
 
-Browser release 1.57.0
-and its public assets remain unchanged; no Hugging Face storage was added.
+The R cleanup did not change browser assets or add Hugging Face storage.
 
-1. Continue useful reporting work from the verified 1.57.0 release, then expand
+1. Continue useful reporting work from the verified 1.58.0 release, then expand
    broader workflows within the execution/storage constraints.
 2. Continue dependency-based cleanup with appropriate personal-runtime checks.
 3. Complete actual diplomat usability sessions; evaluate any optional generative
