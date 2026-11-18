@@ -2,6 +2,25 @@
 
 The immediate product target is a PowerTranscript-like reporting workflow, implemented independently: select proceedings, search their evidence, apply mission report templates, and export documented results. Research CSVs and evaluated stance tracking remain distinct capabilities. This is not a claim of equivalent vendor performance or access to proprietary code or weights.
 
+## Passage-list filters
+
+Choose an exact **Recorded country / affiliation** or **Recorded speaker name**
+to narrow the evidence list. Both filters combine with all-word search and
+**Show selected passages only**. Choices come from all passages in the currently
+selected meetings, independently of the current query. A zero-match result stays
+visible; **Clear search and filters** restores the full passage list without
+removing appendix choices or notes.
+
+These filters do not select report countries, verify personal identity or turn a
+collective statement into a national position. The mandatory country overview,
+prepared report and full evidence CSV retain all passages from selected meetings.
+Neighboring context retains other speakers even when they do not match the filter.
+Filtering does not invalidate a prepared report or change saved-report JSON.
+Names are exact recorded strings, not a deduplicated person directory. Missing
+names have a separate option. Opening different sources resets both filters;
+removing a meeting resets a filter if its value is no longer available. Filters
+are temporary view choices and are not saved in report or preference files.
+
 ## Optional reports saved on this device
 
 After preparing a report, choose **Save on this device** for the first copy.
