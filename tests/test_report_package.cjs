@@ -39,5 +39,9 @@ with zipfile.ZipFile(sys.argv[1]) as z:
   Core.LIMIT=bytes.length-1;await assert.rejects(Package.build(report,corpora),/exceeds 25 MB/);
   Core.LIMIT=1;await assert.rejects(Package.build(report,corpora),/exceeds 25 MB/);
  }finally{Core.LIMIT=limit;}
+ for(const name of ['../private','/absolute','word/../private','word//file','word/./file','word\\file','é.xml',''])assert.throws(()=>Package.zip([{name,bytes:new Uint8Array()}]),/Invalid archive entry/);
+ assert.throws(()=>Package.zip([{name:'word/file.xml',bytes:new Uint8Array()},{name:'WORD/file.xml',bytes:new Uint8Array()}]),/Invalid archive entry/);
+ assert.throws(()=>Package.zip([{name:'word/file.xml',bytes:'not bytes'}]),/Invalid archive entry/);
+ assert.throws(()=>Package.zip([]),/Invalid archive file count/);
  console.log('PASS: deterministic package, exact boundary and payload/container bounds; synthetic data only');
 })().catch(e=>{console.error(e);process.exitCode=1;});

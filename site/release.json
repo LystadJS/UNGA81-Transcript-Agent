@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.58.0",
+  "browser_engine": "browser-descriptive-1.59.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-18",
   "features": [
+    "Editable native Word (.docx) reading copy generated entirely in the browser, with complete report coverage, country tables, source hyperlinks, analyst notes, questions and selected evidence; bounded to 25 MB, no macros, remote images, dependencies or uploads",
     "Exact recorded country/affiliation and speaker-name filters for the passage list, combined with literal search and appendix selection; unchanged whole-report coverage, source context, notes and full CSV; no uploads or dependencies",
     "Bounded device report library: up to eight explicitly saved reports sharing 25 MB of report JSON, atomic migration of the earlier single slot, revision checks against stale tabs, source-verified reopening and restricted-browser JSON fallback; no uploads or dependencies",
     "Up to eight reusable mission briefing questions with source-bound literal evidence, explicit unanswered gaps, v4 saved reports and backward-compatible v1-v3 readers; JavaScript-only, no new dependencies, storage or model downloads",

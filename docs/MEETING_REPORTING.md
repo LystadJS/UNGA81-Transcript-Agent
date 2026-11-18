@@ -2,6 +2,29 @@
 
 The immediate product target is a PowerTranscript-like reporting workflow, implemented independently: select proceedings, search their evidence, apply mission report templates, and export documented results. Research CSVs and evaluated stance tracking remain distinct capabilities. This is not a claim of equivalent vendor performance or access to proprietary code or weights.
 
+## Editable Word reading copy
+
+After preparing a report, choose **Download Word report (.docx)**. The browser
+creates native headings, editable country tables, lists, source hyperlinks and
+meeting-index bookmarks from the complete report, including selected evidence,
+briefing questions, visible gaps and separately labeled analyst notes. Passage-list
+filters do not narrow the download. No source request, upload, external model,
+macro, embedded source bundle or remote image is added.
+
+The Word copy is for reading and editing outside this application. Word edits
+cannot be imported here. Save JSON or the report ZIP separately to reopen verified
+sources and resume work; downloading Word alone keeps unsaved-work protection.
+The ZIP still contains HTML, JSON, CSV, its guide and checksums; it does not include
+Word. Word uses the prepared report's timestamp, matching the other filenames.
+
+The complete `.docx` is limited to 25 MB, including its ZIP/XML container. Size
+or unsupported XML-character failures refuse the download without truncating
+sources, changing the report or disabling its other exports. Changing report
+settings or evidence selections disables stale Word exports until preparation.
+Native package structure, text coverage, hyperlinks and browser behavior have
+synthetic engineering tests. Desktop Word rendering and actual diplomat usability
+still need user acceptance; JSON remains the exact source-preserving format.
+
 ## Passage-list filters
 
 Choose an exact **Recorded country / affiliation** or **Recorded speaker name**
