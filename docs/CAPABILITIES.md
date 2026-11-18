@@ -1,11 +1,12 @@
 # Current capability and acceptance matrix
 
-Updated 18 November 2026, America/New_York. **Release 1.68.0 is deployed and
+Updated 18 November 2026, America/New_York. **Release 1.69.0 is deployed and
 verified at both public URLs.** All 196 preferred-site files match expected hashes;
-fourteen reporting browser suites passed live with fictional sources. Calendar
-export also passed at the original URL. These are engineering checks, not diplomat,
-calendar-client or model acceptance. Code, deployment, source coverage and empirical
-acceptance remain distinct. See the [current checkpoint](OVERNIGHT_WORK.md).
+fourteen reporting browser suites passed live with fictional sources. The expanded
+reporting/notes-export suite also passed at the original URL. These are engineering
+checks, not diplomat, spreadsheet-client or model acceptance. Code, deployment,
+source coverage and empirical acceptance remain distinct. See the
+[current checkpoint](OVERNIGHT_WORK.md).
 
 ## Reporting and execution
 
@@ -35,6 +36,8 @@ Read the [reporting contract](MEETING_REPORTING.md), [browser guide](BROWSER_ANA
 and [operations guide](OPERATIONS.md) for setup and format limits. Browser reports
 remain useful while automated stance predictions are withheld. Source hashes verify
 byte consistency, not speaker identity, factual correctness or national capacity.
+
+Public comparison sources checked 18 November 2026: [FIT's product description](https://www.fondation-fit.ch/en/general/news/2026/fit-supports-impli-with-a-tech-seed-loan-and-diplotools-and-hafnova-with-two-digital-seed-loans) identifies PowerTranscript's generated transcripts/summaries, user-defined templates and centralized retrieval, and PowerElection's UN campaign CRM. [UNITAR's launch account](https://unitar.org/about/news-stories/news/unitar-and-diplotools-launch-tech-solutions-growing-diplomatic-workloads) independently describes election/campaign management. These are public product descriptions, not an authenticated feature-by-feature vendor acceptance test. The vendor homepage was unavailable through the web tool during this check. This app still uses published English transcripts and deterministic reporting; generated summaries, live transcription, authenticated shared workspaces and campaign CRM remain separate gaps. Do not substitute unrelated DiploFoundation products for DiploTools evidence.
 
 ## Operational and scientific boundaries
 
