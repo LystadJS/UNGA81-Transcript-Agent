@@ -62,6 +62,7 @@ jobs:
           node tests/test_report_append_sources_ui.cjs
           node tests/test_report_replacement_ui.cjs
           node tests/test_device_report_ui.cjs
+          node tests/test_report_package_open_ui.cjs
           node tests/test_report_package_ui.cjs
           node tests/test_report_word_ui.cjs
           node tests/test_report_print_ui.cjs
