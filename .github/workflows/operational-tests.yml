@@ -61,6 +61,7 @@ jobs:
           node tests/test_report_remove_sources_ui.cjs
           node tests/test_reporting_usability.cjs
           node tests/test_report_collect_append_ui.cjs
+          node tests/test_report_affiliation_navigation_ui.cjs
           node tests/test_report_bulk_appendix_ui.cjs
           node tests/test_report_append_sources_ui.cjs
           node tests/test_report_replacement_ui.cjs

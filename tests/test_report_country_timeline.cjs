@@ -22,6 +22,10 @@ async function corpus(index,rows,date='2026-11-'+(10+index)){
  const html=R.reportHTML(report);assert(html.includes('country-timeline'));assert(html.includes('No affiliated source segment in 1 others'));assert(!html.includes('in 0 others'));assert(html.includes('not verified government positions or policy changes'));assert(html.includes('Later &lt;img&gt; source'));assert(!html.includes('<img>'));
  assert.equal(JSON.stringify(report),baseline);assert.equal(R.evidenceCSV(report.records),csv);assert.equal(JSON.stringify(corpora),original);
  const saved=R.savedReport(report,corpora);assert(!Object.hasOwn(saved,'country_timeline'));const opened=await R.openSaved({...saved,country_timeline:[{country:'forged'}]},policy,F.countries);assert.deepEqual(R.countryTimeline(R.build(opened.corpora,opened.selected,opened.settings)),timeline);
+ assert(html.includes('class="report-country-index"'));assert.equal((html.match(/id="report-country-1"/g)||[]).length,1);assert.equal((html.match(/id="report-country-2"/g)||[]).length,1);assert(html.includes('href="#report-country-index"'));
+ const singleNavigation=R.reportHTML(R.build([earlier],[F.meetings[0].slug]));assert(singleNavigation.includes('class="report-country-index"'));assert.equal((singleNavigation.match(/class="report-country-target"/g)||[]).length,2);
+ const oneAffiliation=R.reportHTML(R.build([later],[F.meetings[1].slug]));assert(!oneAffiliation.includes('class="report-country-index"'));assert(!oneAffiliation.includes('href="#report-country-index"'));
+ const unsafe=structuredClone(report);unsafe.records[0].country='<img src=x onerror=alert(1)>';const escaped=R.reportHTML(unsafe);assert(escaped.includes('&lt;img src=x onerror=alert(1)&gt;'));assert(!escaped.includes('<img'));
  const sameDay=await corpus(1,[passage('Kenya','We support '+object+'.')],'2026-11-10');
  const sameDayCountry=R.countryTimeline(R.build([earlier,sameDay],selected))[0];assert.equal(sameDayCountry.observations.find(o=>o.meeting_slug===F.meetings[1].slug).us_matches.length,0);
  const collective=await corpus(1,[passage('Kenya','We speak on behalf of the Example Group. We support '+object+'.','Example Group')]);
