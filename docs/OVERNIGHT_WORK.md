@@ -1,3 +1,22 @@
+## 18 November 2026 — optional device report
+
+The next reporting increment (1.56.0) adds one explicitly saved IndexedDB report,
+with source verification on reopen, guarded replacement/removal, a 25 MB bound,
+stale-save protection and file-based fallback for restricted browsers. No automatic
+source storage, external service, dependency or Hugging Face growth is added.
+Local real-Chromium tests passed with reload/replay, corruption, cancelled actions,
+quota failure, edits during saving, questions/notes and restricted-storage fallback.
+Local regression passed: eight Node contract suites, six Chromium reporting/archive
+suites and the allowlisted 202-entry static build. Publication is in progress on
+`feature/device-report-draft`; no empirical or diplomat acceptance is claimed.
+
+Source PR #291 has three passing hosted checks. Its merge was rejected by automatic
+approval review: commit/push authorization was not accepted as merge authorization.
+An asynchronous approval question for merging #291 is pending. Do not retry the
+merge or push to main without that answer. Mirror PR #167 now pins release 1.55.0
+and source `76b7ace`; its audit passes and full regression is pending. The mirror
+head is `939d8e8`. Keep later feature work separate from those reviewed PRs.
+
 ## 18 November 2026 — browser reporting questions
 
 Release 1.55.0 adds up to eight user-defined briefing headings and literal evidence
