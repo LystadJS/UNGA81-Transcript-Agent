@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),os=require('nod
 const Core=require('../site/meeting-report-core.js'),Package=require('../site/meeting-report-package.js'),F=require('./meeting_report_fixture.cjs');
 (async()=>{
  const corpora=[await F.corpus(),await F.corpus(1)],report=Core.build(corpora,[F.meetings[0].slug],{mission:'Synthetic mission',notes:'Private fictional assessment 😀'});
- const bytes=await Package.build(report,corpora);assert.deepEqual(await Package.build(report,corpora),bytes);
+ const bytes=await Package.build(report,corpora);assert.deepEqual(await Package.read(bytes),Core.savedReport(report,corpora));assert.deepEqual(await Package.build(report,corpora),bytes);
  const directory=fs.mkdtempSync(path.join(os.tmpdir(),'un-package-test-')),file=path.join(directory,'report.zip');
  try{
   fs.writeFileSync(file,bytes);
@@ -32,11 +32,34 @@ with zipfile.ZipFile(sys.argv[1]) as z:
  print('PASS: independent ZIP/CRC/SHA-256/UTF-8 verification; exact exports and scoped manifest')
 `,file],{input:JSON.stringify({time:report.generated_at,selected:report.selected_meetings,files:{'report.html':Core.standalone(report),'report.json':JSON.stringify(Core.savedReport(report,corpora)),'evidence.csv':Core.evidenceCSV(report.records)}}),encoding:'utf8'});
   assert.equal(check.status,0,check.stderr);process.stdout.write(check.stdout);
+  const unpack=spawnSync('python3',['-c',"import zipfile,json,sys,base64; z=zipfile.ZipFile(sys.argv[1]); print(json.dumps([[n,base64.b64encode(z.read(n)).decode()] for n in z.namelist()]))",file],{encoding:'utf8'});assert.equal(unpack.status,0,unpack.stderr);
+  const entries=JSON.parse(unpack.stdout).map(([name,b64])=>({name,bytes:new Uint8Array(Buffer.from(b64,'base64'))}));
+  const repack=(name,value)=>Package.zip(entries.map(e=>({name:e.name,bytes:e.name===name?new TextEncoder().encode(value):e.bytes})));
+  // Valid ZIP CRCs do not bypass the package SHA-256 manifest.
+  await assert.rejects(Package.read(repack('report.html','<script>globalThis.unsafe=true</script>')),/Invalid report package|SHA-256/);
+  const changedHtml=entries.find(e=>e.name==='report.html').bytes.slice();changedHtml[0]^=1;
+  await assert.rejects(Package.read(Package.zip(entries.map(e=>({name:e.name,bytes:e.name==='report.html'?changedHtml:e.bytes})))),/SHA-256/);
+  const manifest=JSON.parse(new TextDecoder().decode(entries[4].bytes));
+  for(const change of [m=>m.selected_meetings=['unknown'],m=>m.selected_segment_count++,m=>m.generated_at='wrong',m=>m.engine='wrong',m=>m.report_schema='wrong',m=>m.source_revisions.pop(),m=>m.files.push(m.files[0]),m=>m.files[0].sha256='0'.repeat(64),m=>m.saved_source_scope='selected_only',m=>m.model_status='accepted']){
+   const altered=structuredClone(manifest);change(altered);
+   await assert.rejects(Package.read(repack('manifest.json',JSON.stringify(altered))),/Invalid report package|SHA-256/);
+  }
+  for(const mutate of [
+   b=>b.subarray(0,b.length-1),b=>new Uint8Array([...b,0]),
+   b=>{b[0]^=1;return b;},b=>{b[6]=1;return b;},b=>{b[8]=8;return b;},
+   b=>{b[30]^=1;return b;},b=>{b[30+'report.html'.length]^=1;return b;},
+   b=>{const v=new DataView(b.buffer),central=v.getUint32(b.length-6,true);v.setUint32(central+42,1,true);return b;},
+   b=>{const v=new DataView(b.buffer),central=v.getUint32(b.length-6,true);v.setUint32(central+24,0xffffffff,true);return b;},
+   b=>{b[b.length-12]=6;return b;}
+  ])await assert.rejects(Package.read(mutate(bytes.slice())),/Invalid report package|CRC mismatch/);
+  await assert.rejects(Package.read(Package.zip([...entries,{name:'extra.txt',bytes:new Uint8Array()}])),/Invalid report package/);
+  await assert.rejects(Package.read(Package.zip(entries.slice(0,4))),/Invalid report package/);
+  console.log('PASS: original ZIP reader round-trip, independent entry extraction, CRC/SHA-256 and manifest binding, malformed/extra/missing/encrypted/compressed/trailing/offset/size refusal');
  }finally{fs.rmSync(directory,{recursive:true,force:true});}
  const limit=Core.LIMIT;
  try{
-  Core.LIMIT=bytes.length;assert.equal((await Package.build(report,corpora)).length,bytes.length);
-  Core.LIMIT=bytes.length-1;await assert.rejects(Package.build(report,corpora),/exceeds 25 MB/);
+  Core.LIMIT=bytes.length;assert.equal((await Package.build(report,corpora)).length,bytes.length);assert.deepEqual(await Package.read(bytes),Core.savedReport(report,corpora));
+  Core.LIMIT=bytes.length-1;await assert.rejects(Package.build(report,corpora),/exceeds 25 MB/);await assert.rejects(Package.read(bytes),/under 25 MB/);
   Core.LIMIT=1;await assert.rejects(Package.build(report,corpora),/exceeds 25 MB/);
  }finally{Core.LIMIT=limit;}
  for(const name of ['../private','/absolute','word/../private','word//file','word/./file','word\\file','é.xml',''])assert.throws(()=>Package.zip([{name,bytes:new Uint8Array()}]),/Invalid archive entry/);

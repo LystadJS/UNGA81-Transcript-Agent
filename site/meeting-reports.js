@@ -196,24 +196,28 @@
     setStatus(failure?(failure+' '+next.length+' meeting bundles applied; current work is unchanged if none completed.'):'Retrieval finished.'+(partial?' Coverage is incomplete.':'')+' Check each meeting outcome, search available evidence, and prepare a report.',!!failure);
   };
   $('cancelLoad').onclick=()=>controller?.abort();
+  async function readSavedFile(file){
+    if(file.size>Core.LIMIT)throw Error('Use a JSON export or report-package ZIP under 25 MB.');
+    const header=new Uint8Array(await file.slice(0,4).arrayBuffer());
+    if(/\.zip$/i.test(file.name)||(header[0]===0x50&&header[1]===0x4b))return UNMeetingReportPackage.read(new Uint8Array(await file.arrayBuffer()));
+    return JSON.parse(await file.text());
+  }
   $('openCollection').onchange=async event=>{
     const file=event.target.files[0];if(!file)return;
     const ticket={id:++replacementSerial,revision:workspaceRevision};setStatus('Checking saved sources…');
     try{
-      if(file.size>Core.LIMIT)throw Error('Use a JSON export under 25 MB.');
-      const opened=await Core.openSaved(JSON.parse(await file.text()),policy,countries);
+      const opened=await Core.openSaved(await readSavedFile(file),policy,countries);
       if(!replacementCurrent(ticket))return;
       if(!await confirmReplacement('Opening this file will replace your current sources, appendix selections and notes.')){if(ticket.id===replacementSerial)setStatus('Current report kept. The selected file was not applied.');return;}
       if(!replacementCurrent(ticket))return;
       setCollection(opened.corpora,opened.settings,opened.selected,opened.appendix,opened.passage_notes);setStatus('Saved sources verified. Prepare the report to rebuild its summaries; saved derived claims are not trusted.');
-    }catch(e){if(ticket.id===replacementSerial)setStatus('Could not open file: '+e.message,true);}finally{if(ticket.id===replacementSerial)event.target.value='';}
+    }catch(e){if(ticket.id===replacementSerial)setStatus('Could not open file: '+e.message,true);}finally{if(event.target.files[0]===file)event.target.value='';}
   };
   $('addCollection').onchange=async event=>{
     const file=event.target.files[0];if(!file)return;
     const ticket={id:++replacementSerial,revision:workspaceRevision};setStatus('Checking sources to add…');
     try{
-      if(file.size>Core.LIMIT)throw Error('Use a JSON export under 25 MB.');
-      const added=await Core.appendSaved(corpora,JSON.parse(await file.text()),policy,countries);
+      const added=await Core.appendSaved(corpora,await readSavedFile(file),policy,countries);
       if(!replacementCurrent(ticket))return;
       const selection=[...new Set([...selected(),...added.selected_added])],prefs=options(),chosen=appendix(),passage_notes=passageNotes();
       if(Core.savedStateBytes(added.corpora,{settings:prefs,selected:selection,appendix:chosen,passage_notes})>Core.LIMIT)throw Error('Combined saved report exceeds 25 MB, including your notes and selections. Use fewer sources or a separate report.');

@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.63.0",
+  "browser_engine": "browser-descriptive-1.64.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-18",
   "features": [
+    "Direct browser reopening and source addition from original report-package ZIPs, with strict bounded uncompressed ZIP structure, CRC and SHA-256 checks, source revalidation and unchanged keep/replace and stale-work protection; imported HTML is never executed, with no new dependencies or storage",
     "Explicit loaded-source collection removal with byte counts, reviewed meeting/note/appendix consequences, keep-by-default confirmation, atomic pruning and stale-decision refusal; original kept sources, downloaded files and device copies remain unchanged, with no new schema or dependencies",
     "Atomic addition of source collections or saved-report sources to the current workspace, retaining current notes/settings/selections, original source verification, overlap/revision refusal, complete saved-JSON byte budgeting and stale-operation protection; no uploads, new schema or dependencies",
     "Automatic country-first dated overview across selected meetings, with exact same-meeting policy-object U.S. extracts, explicit country/comparison gaps, source context and no carry-forward, weighting or inferred policy-change scores; same source-bound report schemas and no dependencies",
