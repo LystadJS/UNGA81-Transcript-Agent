@@ -25,3 +25,5 @@
 .source-collection{border-bottom:1px solid var(--usun-rule);padding:12px 0;overflow-wrap:anywhere}.source-collection p{margin:6px 0}#removeSources{box-sizing:border-box;width:min(680px,calc(100vw - 32px));max-height:90vh;padding:24px;border:2px solid var(--usun-blue);font:inherit;color:var(--usun-ink);background:white;overflow:auto;overflow-wrap:anywhere}#removeSources::backdrop{background:#14263cb3}
 
 .report-country-index{display:block;border:1px solid #cbd5df;padding:16px;margin:24px 0}.report-country-index h2{margin-top:0}.report-country-index .country-jumps{line-height:2;overflow-wrap:anywhere}.report-country-index h2,.report-country-target{scroll-margin-top:24px}.report-country-index h2:focus,.report-country-target:focus{outline:2px solid #245887;outline-offset:-2px}
+
+.report-export-group{margin:18px 0}.report-export-group>p:first-of-type{margin-top:0}
