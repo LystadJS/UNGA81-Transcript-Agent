@@ -12,46 +12,60 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Verified release 1.59.0
+## Verified release 1.60.0
 
-| PR | Change | Verified result |
+| PR | Change | Checked head / merge |
 | --- | --- | --- |
-| [Source #300](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/300) | Native browser-only Word report export | All three checks passed at `7103b6f`; merged as `a80cd4b` |
-| [Website #171](https://github.com/LystadJS/LystadJS.github.io/pull/171) | Canonical public sync, source/release pins, deployed Word test | Mirror audit and website regression passed at `6527e6d`; merged as `67f77d2` |
+| [Source #302](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/302) | Complete native printing / browser PDF | Three checks passed at `52b36f2`; merged `b21add4` |
+| [Website #172](https://github.com/LystadJS/LystadJS.github.io/pull/172) | Canonical mirror and deployed print test | Audit/regression passed at `018210f`; merged `f1e3bc6` |
+| [Source #303](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/303) | Version the changed print stylesheet | Three checks passed at `4904146`; merged `2a58233` |
+| [Website #173](https://github.com/LystadJS/LystadJS.github.io/pull/173) | Hash transformed CSS in mirror URLs | Audit/regression passed at `e4b39d8`; merged `8cf6aba` |
 
-Both public URLs serve 1.59.0. All 195 checked portfolio files (194 manifest
-entries plus the manifest) match expected SHA-256 hashes. Six reporting suites
-pass against the actual preferred URL with fictional sources: reporting,
-replacement, packages, device library, archive handoff and native Word export.
-One transient asset HTTP 503 passed on retry; no source or code repair was needed.
+Both public URLs serve 1.60.0 with the final style-cache fix. All 195 checked
+portfolio files (194 manifest entries plus the manifest) match expected SHA-256
+hashes. Seven browser suites pass against the actual preferred URL with fictional
+sources: reporting, replacement, packages, device library, archive handoff, Word
+and print/PDF. The print suite also passes at the original source URL with the
+simulated stale unversioned stylesheet. No skipped PR live job is counted as a pass.
 
-The Word export uses native editable headings, country tables, lists, source links
-and meeting bookmarks from the complete report renderer. Questions, selected
-evidence and separately labeled notes remain present. Filters do not narrow the
-report. Word is a reading copy: edits cannot be imported, and downloading Word
-keeps unsaved-work protection. JSON/ZIP remain the resumable formats. The report
-ZIP's existing contents and all saved schemas remain unchanged.
+Printing uses the complete report renderer, beyond preview limits. Workspace
+controls are excluded; source identities are expanded, quotation/table clipping
+is removed and meeting navigation targets distinct print headings. Native dialog
+closing or Return to report clears the print view and restores its title. Browser
+failure, stale/oversized reports and missing closing events preserve current work.
+Printing does not mark resumable work saved or claim that a PDF was created.
+Save JSON/ZIP separately. The browser controls PDF destination and final size;
+printable HTML has a 25 MB bound. No popup, PDF library, model or server is added.
 
-The document's 25 MB bound includes XML and ZIP overhead. Tests cover deterministic
-bytes at the exact limit, payload/container failure, unsupported XML characters,
-matching timestamps, unchanged current work/other exports, stale-export prevention,
-keyboard and mobile behavior. Independent standard-library parsing verifies every
-part, CRC, ordered full rendered text, editable tables, links, bookmarks and notes.
-A separate local python-docx reader also opened the 33,775-byte fictional sample.
-This is structural compatibility, not desktop Word rendering or diplomat acceptance.
-The usability guide includes an actual Word-environment task; no participant
-session has been performed.
+A simulated stale unversioned stylesheet exercises the source URL fix. The mirror
+font transform previously replaced source CSS versions with one shared tag. It
+now hashes actual transformed local styles after font changes; source style
+updates invalidate their cache even when the typography theme is unchanged.
+Seven sync fixtures pass, including changed-CSS invalidation and repeat-sync
+idempotence. Shared typography links and unrelated CV work are preserved.
 
-Local validation passes 256 Python tests, six synthetic browser suites and the
-existing report-package checks. The Word suite passes against the live source
-URL. No skipped PR live job is counted as a live test. The public build contains
-203 entries and the mirror contains 194 files. One 9 KB runtime module reuses the
-existing ZIP writer; no dependency, server, model, upload, remote media or Hugging
-Face data was added. All 2,077 R-package checksums remain valid.
+Local validation passes 256 Python tests and seven synthetic reporting browser
+suites. The print suite covers 64 source segments, the full appendix beyond the
+50-passage preview, an unclipped long quotation, notes, source details, unanswered
+gaps, native/keyboard events, CSS isolation, anchors, recovery, dirty/stale protection
+and size/browser refusal. Independent local PDF extraction verifies the 38-page,
+133,658-byte stress-test file's final passage, long-quote end, notes and hashes,
+two source URLs and four internal navigation links. Three rasterized pages were
+inspected for table margins, qualifications, source identity and note readability.
+The actual live portfolio PDF also passed independent extraction: 38 pages,
+279,395 bytes, complete long/end passages, source identities, notes, question gap,
+two source URLs and four internal navigation links; workspace controls are absent.
+These are engineering checks, not actual government-browser dialogs or diplomat
+usability acceptance. The usability guide includes those unrun participant tasks.
 
-The preserved [1.58.0 receipt](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/a80cd4b27bf45487f24493dbae9be7b89cbccc1f/docs/OVERNIGHT_WORK.md)
-records passage filtering and the earlier device-library receipt. Keep its original
-version and scope when using those historical results.
+The public build remains 203 entries and the mirror 194 files. There is no new
+application file, dependency, source input, upload or Hugging Face storage. All
+2,077 R-package checksums remain valid; saved report/preference schemas, ZIP
+contents, scientific gates and the 37 reserved meetings are unchanged.
+
+The preserved [1.59.0 receipt](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/b21add458fa15974e6fcc96a99a39d8aa8dd7b72/docs/OVERNIGHT_WORK.md)
+records native Word export and prior reporting checkpoints. Use historical results
+at their original versions and scope.
 
 ## Source tree and remaining work
 
@@ -83,7 +97,7 @@ no released model or semantic-accuracy claim follows from structural QA.
 
 The R cleanup did not change browser assets or add Hugging Face storage.
 
-1. Continue useful reporting work from the verified 1.59.0 release, then expand
+1. Continue useful reporting work from the verified 1.60.0 release, then expand
    broader workflows within the execution/storage constraints.
 2. Continue dependency-based cleanup with appropriate personal-runtime checks.
 3. Complete actual diplomat usability sessions; evaluate any optional generative
