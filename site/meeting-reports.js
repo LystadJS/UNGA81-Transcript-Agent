@@ -30,7 +30,11 @@
   }
   function setQuestions(values=[]){$('briefingQuestions').replaceChildren();for(const q of values)addQuestion(q);questionCount();}
   $('addBriefingQuestion').onclick=()=>{addQuestion(undefined,true);invalidate();};
-  function save(data,name,mime){const blob=new Blob([data],{type:mime});if(blob.size>Core.LIMIT){setStatus('Download exceeds 25 MB. Choose fewer meetings or shorter notes before exporting. Current work has not changed.',true);return false;}const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);return true;}
+  function save(data,name,mime){
+    let url;const release=()=>{if(url)try{URL.revokeObjectURL(url);}catch{}};
+    try{const blob=new Blob([data],{type:mime});if(blob.size>Core.LIMIT){setStatus('Download exceeds 25 MB. Choose fewer meetings or shorter notes before exporting. Current work has not changed.',true);return false;}url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(release,1000);if($('status').classList.contains('error'))setStatus('Download started. Check your browser’s downloads.');return true;}
+    catch(e){release();setStatus('Could not start download: '+e.message+' Current work kept.',true);return false;}
+  }
   function reportName(suffix){return 'un-meeting-report-'+report.generated_at.replace(/[-:.]/g,'')+suffix;}
   function invalidate(){workspaceRevision++;report=null;$('expressionEvidence').close();$('expressionEvidenceBody').replaceChildren();$('printStatus').textContent='Prepare the report before printing.';$('wordStatus').textContent='Prepare the report before downloading Word.';$('reportPreview').replaceChildren();for(const id of ['downloadReport','downloadWord','printReportButton','saveReport','downloadEvidence','downloadPassageNotes','downloadPackage','saveDeviceReport','downloadReviewEntry'])$(id).disabled=true;$('passageNotesExportStatus').textContent='Prepare a report containing passage notes.';$('calendarStatus').textContent='Prepare the report and choose a review date.';$('packageStatus').textContent='Prepare the report before downloading its package.';$('reportState').textContent='Settings or selection changed. Prepare the report to update its exports.';dirty=!!corpora.length;deviceControls();}
   function replacementCurrent(ticket){
@@ -279,11 +283,11 @@
     finally{if(event.target.files[0]===file)event.target.value='';}
   };
   for(const id of ['reportTemplate','mission','reportTitle','priorities','analystNotes'])$(id).addEventListener('input',invalidate);
-  $('savePreferences').onclick=()=>{try{save(JSON.stringify(Core.exportPreferences(options()),null,2),'un-mission-preferences.json','application/json');$('preferencesStatus').textContent='Mission preferences saved. Transcript text, selected meetings and analyst notes are excluded.';}catch(e){$('preferencesStatus').textContent=e.message;}};
+  $('savePreferences').onclick=()=>{try{const ok=save(JSON.stringify(Core.exportPreferences(options())),'un-mission-preferences.json','application/json');$('preferencesStatus').textContent=ok?'Mission preferences download started. Transcript text, selected meetings and analyst notes are excluded.':'Mission preferences were not downloaded. Current settings kept.';}catch(e){$('preferencesStatus').textContent=e.message;}};
   $('openPreferences').onchange=async event=>{
     const file=event.target.files[0];if(!file)return;
     try{
-      if(file.size>Core.PREFERENCES_LIMIT)throw Error('Use a mission-preferences JSON file under 8 KiB.');
+      if(file.size>Core.PREFERENCES_LIMIT)throw Error('Use a mission-preferences JSON file no larger than 8 KiB.');
       const prefs=Core.importPreferences(JSON.parse(await file.text()));
       for(const [id,key] of [['reportTemplate','template'],['mission','mission'],['reportTitle','title'],['priorities','priorities']])$(id).value=prefs[key];
       setQuestions(prefs.questions);invalidate();$('preferencesStatus').textContent='Mission preferences applied. Your loaded sources, meeting selection and analyst notes are unchanged. Prepare the report again to update its exports.';
@@ -373,7 +377,7 @@
     try{
       const bytes=await UNMeetingReportPackage.build(prepared,corpora);
       if(report!==prepared||workspaceRevision!==revision){$('packageStatus').textContent='Your report changed. No package was downloaded; prepare the report again.';return;}
-      if(save(bytes,name,'application/zip')){dirty=false;$('packageStatus').textContent='Report package downloaded. Open this ZIP in the reporting workspace to resume editing. Review source text and notes before sharing.';}
+      if(save(bytes,name,'application/zip')){dirty=false;$('packageStatus').textContent='Report package downloaded. Open this ZIP in the reporting workspace to resume editing. Review source text and notes before sharing.';}else $('packageStatus').textContent='Report package was not downloaded. Current work kept.';
     }catch(e){$('packageStatus').textContent='Could not create report package: '+e.message;}
     finally{packaging=false;$('downloadPackage').disabled=!report;}
   };

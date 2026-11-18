@@ -15,6 +15,8 @@ const policy=JSON.parse(fs.readFileSync(require.resolve('../site/reporting-exclu
  assert.deepEqual(reordered.question_evidence.map(q=>q.heading),reversed.map(q=>q.heading));assert.deepEqual(reordered.meetings,report.meetings);assert.equal(R.evidenceCSV(reordered.records),R.evidenceCSV(report.records));assert.deepEqual(R.importPreferences(R.exportPreferences({questions:reversed})).questions,reversed);
  const reorderedHTML=R.standalone(reordered);assert(reorderedHTML.indexOf('<h3>Unknown</h3>')<reorderedHTML.indexOf('<h3>Access &lt;script&gt;?&lt;/script&gt;</h3>'));
  const reorderedSaved=R.savedReport(reordered,corpora),reorderedOpened=await R.openSaved(reorderedSaved,policy,F.countries);assert.deepEqual(reorderedOpened.settings.questions,reversed);
+ const largeQuestions=Array.from({length:8},()=>({heading:'界'.repeat(160),query:'界'.repeat(300)}));assert.throws(()=>R.exportPreferences({questions:largeQuestions}),/8 KiB/);
+ const largeReport=R.build(corpora,selected,{questions:largeQuestions}),largeSaved=R.savedReport(largeReport,corpora);assert.deepEqual((await R.openSaved(largeSaved,policy,F.countries)).settings.questions,largeQuestions);
  const legacyPrefs={schema:'un.mission-preferences.v1',settings:{template:'brief',mission:'',title:'Old report',priorities:''}};assert.deepEqual(R.importPreferences(legacyPrefs).questions,[]);
  const old={...saved,schema:R.NOTES_VERSION,settings:{...saved.settings}};delete old.settings.questions;assert.deepEqual((await R.openSaved(old,policy,F.countries)).settings.questions,[]);
  await assert.rejects(R.openSaved({...old,settings:saved.settings},policy,F.countries));

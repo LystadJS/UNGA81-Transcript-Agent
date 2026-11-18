@@ -31,12 +31,13 @@
   }
   function exportPreferences(options){
     const checked=settings(Object.fromEntries(PREFERENCE_KEYS.map(k=>[k,options[k]])));
-    return {schema:PREFERENCES_VERSION,settings:Object.fromEntries(PREFERENCE_KEYS.map(k=>[k,checked[k]]))};
+    const value={schema:PREFERENCES_VERSION,settings:Object.fromEntries(PREFERENCE_KEYS.map(k=>[k,checked[k]]))};
+    if(new TextEncoder().encode(JSON.stringify(value)).length>PREFERENCES_LIMIT)throw Error('Mission preferences exceed 8 KiB. Shorten the mission, title, priority words or briefing questions. Current settings kept.');
+    return value;
   }
   function importPreferences(value){
     const legacy=value?.schema==='un.mission-preferences.v1',keys=legacy?PREFERENCE_KEYS.filter(k=>k!=='questions'):PREFERENCE_KEYS;
     if(!value||(!legacy&&value.schema!==PREFERENCES_VERSION)||Object.keys(value).some(k=>!['schema','settings'].includes(k))||!value.settings||Object.keys(value.settings).length!==keys.length||keys.some(k=>!Object.hasOwn(value.settings,k))||keys.filter(k=>k!=='questions').some(k=>typeof value.settings[k]!=='string')||!Object.hasOwn(TEMPLATES,value.settings.template))throw Error('Use supported mission preferences containing only format, mission, title, priority words and briefing questions.');
-    if(new TextEncoder().encode(JSON.stringify(value)).length>PREFERENCES_LIMIT)throw Error('Mission preferences exceed 8 KiB.');
     return exportPreferences(value.settings).settings;
   }
   function allowed(date,slug,policy){
