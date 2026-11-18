@@ -4,7 +4,7 @@
   const $=id=>document.getElementById(id),Core=UNMeetingReport;
   let policy,countries,inventory=[],corpora=[],report=null,controller=null,shown=10,dirty=false,handoff=null,appendixIds=new Set(),notes=new Map(),bulkUndo=null;
   let printing=false,printTitle=null,printSnapshot=null;
-  let workspaceRevision=0,replacementSerial=0,packaging=false,calendarExporting=false,deviceBusy=false,deviceAvailable=false,deviceSaved=false,deviceLibrary=[],deviceId='current';
+  let workspaceRevision=0,replacementSerial=0,preferencesSerial=0,packaging=false,calendarExporting=false,deviceBusy=false,deviceAvailable=false,deviceSaved=false,deviceLibrary=[],deviceId='current';
   const setStatus=(message,error=false)=>{$('status').textContent=message;$('status').classList.toggle('error',error);};
   const selected=()=>[...$('loadedMeetings').querySelectorAll('input:checked')].map(e=>e.value);
   const options=()=>({template:$('reportTemplate').value,mission:$('mission').value,title:$('reportTitle').value,priorities:$('priorities').value,notes:$('analystNotes').value,questions:readQuestions()});
@@ -285,13 +285,17 @@
   for(const id of ['reportTemplate','mission','reportTitle','priorities','analystNotes'])$(id).addEventListener('input',invalidate);
   $('savePreferences').onclick=()=>{try{const ok=save(JSON.stringify(Core.exportPreferences(options())),'un-mission-preferences.json','application/json');$('preferencesStatus').textContent=ok?'Mission preferences download started. Transcript text, selected meetings and analyst notes are excluded.':'Mission preferences were not downloaded. Current settings kept.';}catch(e){$('preferencesStatus').textContent=e.message;}};
   $('openPreferences').onchange=async event=>{
-    const file=event.target.files[0];if(!file)return;
+    const id=++preferencesSerial,file=event.target.files[0];if(!file){$('preferencesStatus').textContent='No preference file selected. Current settings kept.';return;}
+    const ticket={revision:workspaceRevision,sourceOperation:replacementSerial};
+    const current=()=>{if(id!==preferencesSerial)return false;if(ticket.revision!==workspaceRevision||ticket.sourceOperation!==replacementSerial){$('preferencesStatus').textContent='Your workspace changed while preferences were checked. Current settings kept. Open the file again if needed.';return false;}return true;};
+    $('preferencesStatus').textContent='Checking mission preferences…';
     try{
       if(file.size>Core.PREFERENCES_LIMIT)throw Error('Use a mission-preferences JSON file no larger than 8 KiB.');
-      const prefs=Core.importPreferences(JSON.parse(await file.text()));
+      const text=await file.text();if(!current())return;
+      const prefs=Core.importPreferences(JSON.parse(text));
       for(const [id,key] of [['reportTemplate','template'],['mission','mission'],['reportTitle','title'],['priorities','priorities']])$(id).value=prefs[key];
       setQuestions(prefs.questions);invalidate();$('preferencesStatus').textContent='Mission preferences applied. Your loaded sources, meeting selection and analyst notes are unchanged. Prepare the report again to update its exports.';
-    }catch(e){$('preferencesStatus').textContent='Could not open mission preferences: '+e.message;}finally{event.target.value='';}
+    }catch(e){if(current())$('preferencesStatus').textContent='Could not open mission preferences: '+e.message;}finally{if(id===preferencesSerial&&event.target.files[0]===file)event.target.value='';}
   };
   for(const id of ['evidenceCountry','evidenceSpeaker'])$(id).onchange=()=>{shown=10;search();};
   $('clearEvidenceFilters').onclick=()=>{$('evidenceSearch').value='';$('evidenceCountry').value='';$('evidenceSpeaker').value='';$('onlySelectedEvidence').checked=false;shown=10;search();$('evidenceSearch').focus();};

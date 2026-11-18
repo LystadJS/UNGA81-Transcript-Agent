@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.72.0",
+  "browser_engine": "browser-descriptive-1.73.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-18",
   "features": [
+    "Mission-preference imports reject delayed results after newer workspace edits or source operations, keep only the latest preference selection and avoid stale error/input cleanup; current fields, report preview and exports remain intact without new schemas, dependencies or storage",
     "Mission-preference export/import share the 8 KiB UTF-8 compact JSON budget, including Unicode briefing sections; oversized preferences are refused without truncation, and browser download-start failures report errors, release temporary URLs and preserve current work instead of claiming success",
     "Keyboard-accessible briefing-question ordering with numbered positions, boundary-aware Move up/down controls, preserved draft fields and explicit stale-export invalidation; existing report v4 and preference v2 arrays retain the order without new schemas, dependencies or storage",
     "Reporting exports grouped by purpose: save resumable work, read/share reports and evidence spreadsheets, with format guidance beside each action and unchanged controls, downloads, schemas, storage and source coverage",
