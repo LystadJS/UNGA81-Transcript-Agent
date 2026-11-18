@@ -141,3 +141,6 @@ The browser and comparison releases are recorded in [`site/release.json`](site/r
 ## Historical issue infrastructure (1.34.0)
 
 The [implementation ledger](docs/implementation-agenda/STATUS.md) records progress toward the three-input, ten-year issue workflow. The new `issue-archive.html` workspace consumes verified, versioned historical bundles and saves frozen reports. The separate historical issue archive is not provisioned; use the existing saved-collection issue page while historical source acquisition and empirical assessment remain incomplete. The current-session meeting archive above is deployed. Maintainer store/ingestion modules use Python standard libraries; end users need only a browser. Experimental model code is not a calibrated production trajectory.
+
+Personal model drafts use a separate standard-library Python command and a browser
+review sidecar; see [setup, evidence limits and unreviewed-output boundaries](docs/MEETING_REPORTING.md#personal-model-drafts). No generative model is bundled.

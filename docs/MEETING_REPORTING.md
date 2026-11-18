@@ -2,6 +2,58 @@
 
 The immediate product target is a PowerTranscript-like reporting workflow, implemented independently: select proceedings, search their evidence, apply mission report templates, and export documented results. Research CSVs and evaluated stance tracking remain distinct capabilities. This is not a claim of equivalent vendor performance or access to proprietary code or weights.
 
+## Personal model drafts
+
+Prepare a report with one to eight briefing questions, then expand **Personal model
+drafts (Python)** and download its evidence input. The packet contains the selected
+meeting references and only passages matching those literal searches. It excludes
+mission settings, assessment, passage notes and appendix choices. Review the source
+text before moving it between computers; your organization's rules determine what
+may leave a work device. No browser model requests occur.
+
+On your personal computer, configure a model server supporting the OpenAI chat
+completion protocol. No model/runtime is selected or downloaded by this project.
+For example, [Ollama documents this protocol](https://docs.ollama.com/api/openai-compatibility)
+at `http://127.0.0.1:11434/v1/chat/completions`. Configure local weights and disable
+cloud routing: a loopback address does **not** attest that inference stays local.
+From a source checkout run:
+
+```sh
+PYTHONPATH=src python -m un_transcript.report_draft input.json --output draft.json --model YOUR_LOCAL_MODEL
+```
+
+Use `--endpoint` for a different loopback `/chat/completions` URL and `--timeout`
+for 1–600 seconds per question. External endpoints, redirects and environment
+proxies are refused. Each question with evidence makes one request; an unanswered
+literal search makes none. The input is limited to 64 KiB and 100 matching passages,
+with no truncation. Refine searches or select fewer meetings when needed. The
+standard-library Python command validates source text hashes before requests and
+refuses to overwrite an existing output file. It writes a private new draft JSON
+only after every question validates; a malformed response produces no draft.
+
+Open that JSON next to the prepared report. Source scope and question order must
+match its input hash. Each bullet needs an exact quotation from a passage matched
+to that question. Unknown, changed or repeated citations are refused. Open cited
+context to check the whole original segment. Exact quotation matching does **not**
+establish whether a model claim follows from the passage. Claims, declared model
+identity and timestamps remain unreviewed; they are not accepted stance output or
+verified government positions. Collective source labels retain their caveats.
+
+The country-first overview stays above the optional draft. Ordinary HTML, Word,
+print, evidence CSV, JSON and ZIP exports keep their existing contents. A separate
+**draft review HTML** combines the report and unreviewed draft for reading; it
+cannot resume work. Save the original report JSON and returned draft JSON separately.
+The draft view is session-only and clears when settings or sources change. Prepare
+again and reopen the same draft if only notes or presentation changed; different
+sources or questions require a new packet. Stale imports cannot replace newer
+settings, selections or a cleared draft. An invalid import keeps current report work
+and any current draft view. No draft enters mission preferences or device saves.
+
+Synthetic HTTP protocol and browser checks establish engineering behavior only.
+No real generative model, diplomat session or government-browser policy acceptance
+has been recorded. Model quality, hardware capacity and human factual review remain
+separate work; the tiny BERT stance checkpoint is not a generative model.
+
 ## Choose the right export
 
 Prepared-report downloads are grouped by purpose. **Save work to reopen** keeps

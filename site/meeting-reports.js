@@ -3,6 +3,7 @@
   'use strict';
   const $=id=>document.getElementById(id),Core=UNMeetingReport;
   let policy,countries,inventory=[],corpora=[],report=null,controller=null,shown=10,dirty=false,handoff=null,appendixIds=new Set(),notes=new Map(),bulkUndo=null;
+  let modelDraft=null,draftSerial=0;
   let printing=false,printTitle=null,printSnapshot=null;
   let workspaceRevision=0,replacementSerial=0,preferencesSerial=0,packaging=false,calendarExporting=false,deviceBusy=false,deviceAvailable=false,deviceSaved=false,deviceLibrary=[],deviceId='current';
   const setStatus=(message,error=false)=>{$('status').textContent=message;$('status').classList.toggle('error',error);};
@@ -36,7 +37,7 @@
     catch(e){release();setStatus('Could not start download: '+e.message+' Current work kept.',true);return false;}
   }
   function reportName(suffix){return 'un-meeting-report-'+report.generated_at.replace(/[-:.]/g,'')+suffix;}
-  function invalidate(){workspaceRevision++;report=null;$('expressionEvidence').close();$('expressionEvidenceBody').replaceChildren();$('printStatus').textContent='Prepare the report before printing.';$('wordStatus').textContent='Prepare the report before downloading Word.';$('reportPreview').replaceChildren();for(const id of ['downloadReport','downloadWord','printReportButton','saveReport','downloadEvidence','downloadPassageNotes','downloadPackage','saveDeviceReport','downloadReviewEntry'])$(id).disabled=true;$('passageNotesExportStatus').textContent='Prepare a report containing passage notes.';$('calendarStatus').textContent='Prepare the report and choose a review date.';$('packageStatus').textContent='Prepare the report before downloading its package.';$('reportState').textContent='Settings or selection changed. Prepare the report to update its exports.';dirty=!!corpora.length;deviceControls();}
+  function invalidate(){workspaceRevision++;report=null;clearDraft();$('expressionEvidence').close();$('expressionEvidenceBody').replaceChildren();$('printStatus').textContent='Prepare the report before printing.';$('wordStatus').textContent='Prepare the report before downloading Word.';$('reportPreview').replaceChildren();for(const id of ['downloadReport','downloadWord','printReportButton','saveReport','downloadEvidence','downloadPassageNotes','downloadPackage','saveDeviceReport','downloadReviewEntry'])$(id).disabled=true;$('passageNotesExportStatus').textContent='Prepare a report containing passage notes.';$('calendarStatus').textContent='Prepare the report and choose a review date.';$('packageStatus').textContent='Prepare the report before downloading its package.';$('reportState').textContent='Settings or selection changed. Prepare the report to update its exports.';dirty=!!corpora.length;deviceControls();}
   function replacementCurrent(ticket){
     if(ticket.id!==replacementSerial)return false;
     if(ticket.revision!==workspaceRevision){setStatus('Your report changed while sources were being checked. Current work kept; try loading again when ready.');return false;}
@@ -303,7 +304,30 @@
   $('onlySelectedEvidence').onchange=()=>{shown=10;search();};
   $('appendixMode').onchange=()=>{clearBulkUndo();if($('appendixMode').value==='template')appendixIds.clear();invalidate();search();};
   $('clearAppendix').onclick=()=>{if(appendixIds.size||$('appendixMode').value!=='selected')rememberBulk();appendixIds.clear();$('appendixMode').value='selected';invalidate();search();};
-  $('prepareReport').onclick=()=>{try{report=Core.build(corpora,selected(),options(),appendix(),passageNotes());workspaceRevision++;$('reportPreview').innerHTML=Core.reportHTML(report,{preview:true});for(const id of ['downloadReport','downloadWord','printReportButton','saveReport','downloadEvidence','downloadPackage','saveDeviceReport'])$(id).disabled=false;$('downloadPackage').disabled=packaging;if(!packaging)$('packageStatus').textContent='Ready to download a report package.';$('reportState').textContent='Report ready: '+report.meetings.length+' meetings. Review source evidence before circulation.';$('printReportButton').disabled=printing;$('printStatus').textContent='Ready to print the complete report or use the browser’s PDF destination.';$('wordStatus').textContent='Ready to download an editable Word reading copy.';$('downloadPassageNotes').disabled=!report.passage_notes.length;$('passageNotesExportStatus').textContent=report.passage_notes.length?report.passage_notes.length+' passage notes from the selected meetings. Ready to download.':'No passage notes in this prepared report.';dirty=true;deviceControls();calendarControls(true);}catch(e){invalidate();setStatus(e.message,true);}};
+  $('prepareReport').onclick=()=>{try{report=Core.build(corpora,selected(),options(),appendix(),passageNotes());workspaceRevision++;clearDraft();$('reportPreview').innerHTML=Core.reportHTML(report,{preview:true});for(const id of ['downloadReport','downloadWord','printReportButton','saveReport','downloadEvidence','downloadPackage','saveDeviceReport'])$(id).disabled=false;$('downloadPackage').disabled=packaging;if(!packaging)$('packageStatus').textContent='Ready to download a report package.';$('reportState').textContent='Report ready: '+report.meetings.length+' meetings. Review source evidence before circulation.';$('printReportButton').disabled=printing;$('printStatus').textContent='Ready to print the complete report or use the browser’s PDF destination.';$('wordStatus').textContent='Ready to download an editable Word reading copy.';$('downloadPassageNotes').disabled=!report.passage_notes.length;$('passageNotesExportStatus').textContent=report.passage_notes.length?report.passage_notes.length+' passage notes from the selected meetings. Ready to download.':'No passage notes in this prepared report.';dirty=true;deviceControls();calendarControls(true);}catch(e){invalidate();setStatus(e.message,true);}};
+  function draftControls(){
+    const ready=!!report&&!!globalThis.UNReportDraft&&!!report.settings.questions.length;
+    $('downloadDraftInput').disabled=!ready;$('openModelDraft').disabled=!ready;
+    for(const id of ['viewModelDraft','downloadModelDraft','clearModelDraft'])$(id).disabled=!modelDraft;
+    if(!ready)$('modelDraftStatus').textContent=!globalThis.UNReportDraft?'Personal draft support is unavailable in this browser session.':'Prepare a report with briefing questions.';
+  }
+  function clearDraft(){draftSerial++;modelDraft=null;$('openModelDraft').value='';$('modelDraftPreview').replaceChildren();$('modelDraftStatus').textContent='Ready for a bounded model input or a matching returned draft.';draftControls();}
+  function draftTicket(){const id=++draftSerial,prepared=report,revision=workspaceRevision,sourceOperation=replacementSerial;const current=()=>id===draftSerial&&prepared===report&&revision===workspaceRevision&&sourceOperation===replacementSerial;current.id=id;return current;}
+  $('downloadDraftInput').onclick=async()=>{
+    if(!report||!globalThis.UNReportDraft)return;
+    const prepared=report,current=draftTicket(),name=reportName('-model-input.json');
+    try{const packet=await UNReportDraft.createInput(prepared,policy);if(!current())return;$('modelDraftStatus').textContent=save(JSON.stringify(packet),name,'application/json')?'Model input downloaded. Review its source text before transferring it to your personal computer.':'Model input was not downloaded. Current work kept.';}
+    catch(e){if(current())$('modelDraftStatus').textContent='Could not export model input: '+e.message;}
+  };
+  $('openModelDraft').onchange=async event=>{
+    const file=event.target.files[0],prepared=report,current=draftTicket();if(!file||!prepared)return;
+    try{if(file.size>UNReportDraft.LIMIT)throw Error('Draft exceeds 256 KiB.');const raw=await file.text();if(new TextEncoder().encode(raw).length>UNReportDraft.LIMIT)throw Error('Draft exceeds 256 KiB.');if(!current())return;const value=await UNReportDraft.open(JSON.parse(raw),prepared,policy);if(!current())return;const html=UNReportDraft.reviewHTML(value,prepared,{interactive:true});modelDraft=value;$('modelDraftPreview').innerHTML=html;draftControls();$('modelDraftStatus').textContent='Draft opened for review. Exact quotation matching does not verify its claims. Ordinary exports exclude this draft.';}
+    catch(e){if(current())$('modelDraftStatus').textContent='Could not open model draft: '+e.message+' Current report and draft view kept.';}
+    finally{if(current.id===draftSerial&&event.target.files[0]===file)event.target.value='';}
+  };
+  $('clearModelDraft').onclick=clearDraft;
+  $('viewModelDraft').onclick=()=>$('personal-model-draft')?.focus();
+  $('downloadModelDraft').onclick=()=>{if(!report||!modelDraft)return;try{$('modelDraftStatus').textContent=save(UNReportDraft.standalone(modelDraft,report),reportName('-draft-review.html'),'text/html')?'Separate draft review HTML downloaded. Keep both original report JSON and draft JSON to reopen work.':'Draft review was not downloaded. Current work kept.';}catch(e){$('modelDraftStatus').textContent='Could not export draft review: '+e.message;}};
   function calendarControls(announce=false){
     const calendar=globalThis.UNMeetingReportCalendar,valid=!!calendar&&calendar.validDate($('reviewDate').value);
     $('downloadReviewEntry').disabled=calendarExporting||!report||!valid;
@@ -320,14 +344,15 @@
     }catch(e){$('calendarStatus').textContent='Could not create calendar entry: '+e.message+' Current work kept.';}
     finally{calendarExporting=false;calendarControls();}
   };
-  $('reportPreview').onclick=event=>{
+  function showEvidence(event){
     const button=event.target.closest('button[data-evidence-id]');
-    if(!button||!$('reportPreview').contains(button)||!report)return;
+    if(!button||!event.currentTarget.contains(button)||!report)return;
     try{
       $('expressionEvidenceBody').innerHTML=Core.contextHTML(Core.contextWindow(report.records,button.dataset.evidenceId));
       $('expressionEvidence').showModal();
     }catch(e){setStatus('Source context unavailable: '+e.message,true);}
   };
+  $('reportPreview').onclick=showEvidence;$('modelDraftPreview').onclick=showEvidence;
   $('closeExpressionEvidence').onclick=()=>$('expressionEvidence').close();
   $('expressionEvidence').addEventListener('close',()=>{if(!$('expressionEvidence').open)$('expressionEvidenceBody').replaceChildren();});
   function preparePrint(){
