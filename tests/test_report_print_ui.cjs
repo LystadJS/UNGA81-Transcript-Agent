@@ -8,6 +8,8 @@ let browser,server;
  server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname);if(!file.startsWith(root+path.sep)){res.writeHead(403);return res.end();}try{res.setHeader('Content-Type',file.endsWith('.js')?'text/javascript':file.endsWith('.css')?'text/css':file.endsWith('.json')?'application/json':'text/html');res.end(fs.readFileSync(file));}catch{res.writeHead(404);res.end();}});
  await new Promise(r=>server.listen(0,'127.0.0.1',r));browser=await chromium.launch({headless:true,executablePath:process.env.BROWSER_PATH||'/usr/bin/chromium'});
  const page=await browser.newPage({acceptDownloads:true,viewport:{width:1440,height:1000}}),errors=[],requests=[];
+ // Simulate a stale cached unversioned sheet; the updated report must request its versioned print styles.
+ await page.route('**/meeting-reports.css',r=>r.fulfill({contentType:'text/css',body:'#printReport{display:none}'}));
  page.on('pageerror',e=>errors.push(e.message));await page.route('**/countries.json',r=>r.fulfill({json:F.countries}));
  await page.route('https://transcripts.un.org/**',r=>{requests.push(r.request().url());return r.abort();});
  const base=process.argv[2]||`http://127.0.0.1:${server.address().port}/`;
