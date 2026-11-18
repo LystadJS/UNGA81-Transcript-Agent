@@ -12,63 +12,58 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Verified release 1.61.0
+## Verified release 1.62.0
 
 | PR | Change | Checked head / merge |
 | --- | --- | --- |
-| [Source #305](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/305) | Dated country overview and matched U.S. excerpts | Three checks passed at `5ac3a6a`; merged `326845b` |
-| [Website #174](https://github.com/LystadJS/LystadJS.github.io/pull/174) | Canonical public sync and exact source/release pins | Audit/regression passed at `fd3ee75`; merged `c9a3fc5` |
+| [Source #307](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/307) | Add saved sources without replacing current work | Three checks passed at `1a89682`; merged `24e1e42` |
+| [Website #175](https://github.com/LystadJS/LystadJS.github.io/pull/175) | Canonical mirror, source/release pins and live addition test | Audit/regression passed at `4b4279a`; merged `5fab209` |
 
-Both public URLs serve 1.61.0. All 195 portfolio files (194 manifest entries plus
-the manifest) match expected SHA-256 hashes. All seven reporting browser suites
-pass against the actual preferred URL with fictional sources; the expanded meeting
-reporting suite also passes at the source URL. No skipped PR live-verification job
-is counted as a live pass. The live print test includes the dated country table
-and preserves its complete evidence, source context and original schema behavior.
+Both public URLs serve 1.62.0. All 195 checked portfolio files (194 manifest
+entries plus the manifest) match expected SHA-256 hashes. Eight browser suites
+pass against the actual preferred URL with fictional sources: reporting, source
+addition, replacement, packages, device library, archive handoff, Word and print/PDF.
+The source-addition suite also passes at the original source URL. No skipped PR
+live-verification job is counted as a live pass.
 
-Multi-meeting reports automatically show each recorded affiliation's existing
-object-specific extracts in source-date order, with links to the dated meeting,
-source/collective gaps and matching U.S. excerpts from that same meeting. Individual
-meeting tables also show matched U.S. quotations. Matching uses the same issue ID
-and case-insensitive displayed object wording. It assigns no agreement score,
-current stance or verified policy change. Evidence is never carried forward,
-including between meetings on the same date; those rows sort by title without
-claiming within-day chronology. Exact repeated quoted wording appears once per
-extract and adds no weight. Original source records and full CSV are unchanged.
+Add sources from JSON extends an existing report using original-bound collections
+or supported saved-report files. Current settings, questions, global/passage notes,
+appendix and meeting selections are retained. Incoming report annotations and
+preferences are not copied. All its loaded sources remain, including unchecked
+meetings; its selected meetings are checked. No source request or automatic save
+occurs. New evidence invalidates prepared exports until preparation.
 
-The view reuses existing quick-reader outputs, not a second classifier. Renderer
-metadata is 1.6; report v4 and preference v2 remain unchanged. Imports rebuild
-derived views from verified original sources, ignoring forged saved chronology.
-No country selection is required. Passage filters, appendix choices and briefing
-questions leave the country overview intact. HTML, Word, print/PDF and package HTML
-include it. Printed dated rows stay together when they fit on a page.
+Source validation and the combined ten-bundle/100-meeting/15,000-passage/25 MB
+source bounds remain unchanged. Before committing, the complete resumable JSON
+is measured in UTF-8 with current settings, notes and selections. Overlapping
+meeting identities/revisions are refused, including unselected bundles. There is
+no partial merge or silent source replacement. Invalid/reserved/corrupt files,
+file/state-size failures and stale operations keep current work. Unfinished question
+fields and focus survive an addition; edits and newer source actions supersede
+older pending additions. Saved report v4/preference v2 and device-library limits
+are unchanged.
 
-Local checks pass 256 Python tests, seven browser suites, existing report/package
-contracts and a new source-bound country-timeline contract. Cases include opposing
-country/U.S. verbs without agreement inference, exact objects, no same-day or
-cross-date carry-forward, missing U.S./country sources, collective-only observations,
-repeated wording, escaped titles, immutable inputs, rebuilt imports and single/empty
-report boundaries. Browser checks cover automatic rows, U.S. quotations, unchanged
-filter/export state, local context, dated keyboard links, offline HTML, three native
-Word tables and complete PDF. Independently extracted the 39-page fictional print
-stress case and inspected its country table after preserving row pagination.
-Poppler and MuPDF independently extracted the live 39-page, 298,082-byte PDF;
-the country overview, comparison heading, no-carry-forward qualification, final
-source passage, long-quote end and analyst notes are present, without workspace
-controls. This is a reading-copy check, not a source-byte authenticity claim.
-These are engineering checks; no diplomat session, government-browser dialog or
-desktop Word-rendering acceptance is claimed.
+Local validation passes 256 Python tests and eight synthetic browser suites,
+plus source-addition, country and package contracts. Cases cover original-byte
+verification, true revised sources, all-bundle overlap, reserved/corrupt data,
+foreign-annotation exclusion, unselected source retention, existing selections,
+notes/appendix, exact saved-JSON bytes, incomplete editor fields/focus, delayed
+edits/older operations, stale exports, mobile and no transcript requests. The
+usability generator now supplies a nonoverlapping fictional report with a distinct
+incoming assessment, alongside the original single/two-meeting files. The generated files were checked
+against the production registry/policy: the additional file appends and the
+overlapping two-meeting file is refused. No actual
+participant session or diplomat acceptance is claimed.
 
-The build remains 203 entries and the mirror 194 files. Four public assets and the
-manifest change; canonical sync is idempotent. Core-script and changed stylesheet
-URLs are versioned, with transformed CSS hashes retained in the mirror. No new
-application file, dependency, model, server, upload or Hugging Face storage is added.
-All 2,077 R-package checksums remain valid; the scientific/source gates, original
+The public build remains 203 entries and the mirror 194 files. Four assets and
+the manifest change; sync is idempotent. Core/main script URLs are versioned; no
+application file, dependency, model, server, upload or Hugging Face storage is
+added. All 2,077 R-package checksums remain valid; scientific gates, original
 records and 37 unopened reserved meetings are unchanged.
 
-The preserved [1.60.0 receipt](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/fdb98cf7ef1396ef455a0561d088f213ad5154bc/docs/OVERNIGHT_WORK.md)
-records native printing, PDF checks and stylesheet cache handling. Use historical
-results at their original versions and scope.
+The preserved [1.61.0 receipt](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/a5abb7f6038d14f09d314014fe063e053203d945/docs/OVERNIGHT_WORK.md)
+records the dated country overview, same-meeting U.S. comparisons and prior
+reporting checkpoints. Use historical results at their original version and scope.
 
 ## Source tree and remaining work
 
@@ -100,7 +95,7 @@ no released model or semantic-accuracy claim follows from structural QA.
 
 The R cleanup did not change browser assets or add Hugging Face storage.
 
-1. Continue useful reporting work from the verified 1.61.0 release, then expand
+1. Continue useful reporting work from the verified 1.62.0 release, then expand
    broader workflows within the execution/storage constraints.
 2. Continue dependency-based cleanup with appropriate personal-runtime checks.
 3. Complete actual diplomat usability sessions; evaluate any optional generative
