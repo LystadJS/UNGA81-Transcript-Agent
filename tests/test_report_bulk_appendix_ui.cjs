@@ -1,12 +1,12 @@
 /* Bulk appendix changes cover every filtered match with bounded, source-scoped undo. */
 'use strict';
-const assert=require('node:assert/strict'),fs=require('node:fs'),http=require('node:http'),path=require('node:path');
-const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
-const F=require('./meeting_report_fixture.cjs'),Core=require('../site/meeting-report-core.js'),root=path.resolve(__dirname,'../site');
+const assert=require('node:assert/strict'),fs=require('node:fs');
+const {startServer,launchBrowser}=require('./reporting_browser_fixture.cjs');
+const F=require('./meeting_report_fixture.cjs'),Core=require('../site/meeting-report-core.js');
 let browser,server;
 (async()=>{
- server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname);if(!file.startsWith(root+path.sep)){res.writeHead(403);return res.end();}try{res.setHeader('Content-Type',file.endsWith('.js')?'text/javascript':file.endsWith('.css')?'text/css':file.endsWith('.json')?'application/json':'text/html');res.end(fs.readFileSync(file));}catch{res.writeHead(404);res.end();}});
- await new Promise(r=>server.listen(0,'127.0.0.1',r));browser=await chromium.launch({headless:true,executablePath:process.env.BROWSER_PATH||'/usr/bin/chromium'});
+ server=await startServer();
+ browser=await launchBrowser();
  const b=await F.corpus(1),Collector=require('../site/collector.js'),meeting=F.meetings[0];
  const a=await Collector.collect({start:F.date,end:F.date,scope:'all',meeting_slug:meeting.slug,meeting_date:F.date},F.countries,{request:async url=>{let data;if(new URL(url).pathname.endsWith('meetings.json'))data={meetings:[meeting],total:1,page:1,hasMore:false};else{data=F.transcript(meeting);const base=data.transcript.data;data.transcript.data=Array.from({length:32},(_,i)=>{const passage=structuredClone(base[i%4]);passage.paragraphs[0].sentences[0].text+=' '+(i<16?'Focusset':'Otherset')+' fixture '+i+'.';return passage;});}const raw=JSON.stringify(data);return {data,raw,hash:await Collector.sha(raw),retrieved_at:'2026-11-18T20:00:00Z'};}});
  const file=value=>({name:'synthetic.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(value))});

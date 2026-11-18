@@ -1,11 +1,11 @@
 /* Real IndexedDB in Chromium; fictional sources only, with failure/race checks. */
 'use strict';
-const assert=require('node:assert/strict'),fs=require('node:fs'),http=require('node:http'),path=require('node:path');
-const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright'),F=require('./meeting_report_fixture.cjs'),root=path.resolve(__dirname,'../site');
+const assert=require('node:assert/strict'),fs=require('node:fs');
+const {startServer,launchBrowser}=require('./reporting_browser_fixture.cjs'),F=require('./meeting_report_fixture.cjs');
 let browser,server;
 (async()=>{
- server=http.createServer((req,res)=>{const p=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname);if(!p.startsWith(root+path.sep)){res.writeHead(403);return res.end();}try{res.setHeader('Content-Type',p.endsWith('.js')?'text/javascript':p.endsWith('.css')?'text/css':p.endsWith('.json')?'application/json':'text/html');res.end(fs.readFileSync(p));}catch{res.writeHead(404);res.end();}});
- await new Promise(r=>server.listen(0,'127.0.0.1',r));browser=await chromium.launch({headless:true,executablePath:process.env.BROWSER_PATH||'/usr/bin/chromium'});
+ server=await startServer();
+ browser=await launchBrowser();
  const context=await browser.newContext(),page=await context.newPage(),errors=[],external=[];let accept=false;
  page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>accept?d.accept():d.dismiss());
  await context.route('**/countries.json',r=>r.fulfill({json:F.countries}));await context.route('https://transcripts.un.org/**',r=>{external.push(r.request().url());return r.abort();});

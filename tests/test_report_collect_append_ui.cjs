@@ -1,12 +1,12 @@
 /* Explicit inventory addition is atomic and preserves current reporting work. */
 'use strict';
-const assert=require('node:assert/strict'),fs=require('node:fs'),http=require('node:http'),path=require('node:path');
-const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const {startServer,launchBrowser}=require('./reporting_browser_fixture.cjs');
 const F=require('./meeting_report_fixture.cjs'),Core=require('../site/meeting-report-core.js'),Collector=require('../site/collector.js'),root=path.resolve(__dirname,'../site');
 let browser,server;
 (async()=>{
- server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname);if(!file.startsWith(root+path.sep)){res.writeHead(403);return res.end();}try{res.setHeader('Content-Type',file.endsWith('.js')?'text/javascript':file.endsWith('.css')?'text/css':file.endsWith('.json')?'application/json':'text/html');res.end(fs.readFileSync(file));}catch{res.writeHead(404);res.end();}});
- await new Promise(r=>server.listen(0,'127.0.0.1',r));browser=await chromium.launch({headless:true,executablePath:process.env.BROWSER_PATH||'/usr/bin/chromium'});
+ server=await startServer();
+ browser=await launchBrowser();
  const a=await F.corpus(),b=await F.corpus(1),m={...F.meetings[0],slug:'ga/81/999',pageUrl:'/en/ga/81/999',jsonUrl:'/en/ga/81/999.json',title:'Synthetic third meeting'};
  const c=await Collector.collect({start:F.date,end:F.date,scope:'all',meeting_slug:m.slug,meeting_date:F.date},F.countries,{request:async url=>{const data=new URL(url).pathname.endsWith('meetings.json')?{meetings:[m],total:1,page:1,hasMore:false}:F.transcript(m),raw=JSON.stringify(data);return {data,raw,hash:await Collector.sha(raw),retrieved_at:'2026-11-18T20:00:00Z'};}});
  const file=value=>({name:'synthetic.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(value))});
