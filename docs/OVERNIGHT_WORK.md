@@ -12,57 +12,51 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Verified release 1.69.0
+## Verified release 1.70.0
 
 | PR | Change | Checked head / merge |
 | --- | --- | --- |
-| [Source #324](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/324) | Separate source-bound passage-notes spreadsheet | Three checks passed at `4599ee2`; merged `400b8ef` |
-| [Website #183](https://github.com/LystadJS/LystadJS.github.io/pull/183) | Canonical mirror and source/release pins | Audit/regression passed at `b597995`; merged `5c99f1b` |
+| [Source #326](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/326) | Purpose-grouped report exports and concise guidance | Three checks passed at `e6dbacf`; merged `3e99a92` |
+| [Website #184](https://github.com/LystadJS/LystadJS.github.io/pull/184) | Canonical mirror and source/release pins | Audit/regression passed at `8e7a858`; merged `e32f8d7` |
 
-Both public URLs serve 1.69.0. All 196 preferred-site files match expected SHA-256
+Both public URLs serve 1.70.0. All 196 preferred-site files match expected SHA-256
 hashes. Fourteen reporting browser suites pass live with fictional sources:
-reporting (including the notes spreadsheet), calendar, affiliation navigation,
-bulk appendix, inventory addition, saved-source addition, package opening, source
-removal, replacement, device library, packages, Word, print/PDF and archive handoff.
-The expanded reporting suite also passes at the original URL, whose four changed
-assets match canonical hashes. Skipped PR live jobs are not deployed test passes.
+reporting/notes export, calendar, affiliation navigation, bulk appendix, inventory
+addition, saved-source addition, package opening, source removal, replacement,
+device library, packages, Word, print/PDF and archive handoff. The reporting suite
+also passes at the original URL, whose four changed assets match canonical hashes.
+Skipped PR live jobs are not deployed test passes.
 
-Prepared reports with passage notes offer a separate CSV in an expandable
-spreadsheet-follow-up section. Each row identifies user-authored interpretation,
-the prepared report timestamp and original source identity/revision/hash/pointer.
-Only notes from the prepared selected meetings appear, in original source order;
-search and appendix choices do not narrow them. Transcript text and report-level
-assessment are excluded. The full evidence CSV continues to exclude notes, and
-the original five-file report package remains unchanged.
+The prepared-report workspace replaces one flat export row with three native
+fieldset groups: Save work to reopen, Read or share, and Evidence spreadsheets.
+Portable JSON/ZIP and browser-profile device saves sit together, while print/PDF,
+Word and standalone HTML retain visible guidance to save resumable work separately.
+The full original-evidence CSV and separate analyst-notes CSV share the spreadsheet
+group. Calendar review entries stay separate. Related status messages sit beside
+their actions; repeated print/Word explanations are shortened.
 
-The export is disabled without prepared notes and invalidates with report inputs.
-Failed or oversized exports preserve the report and other exports. Downloading a
-notes spreadsheet leaves unsaved-work protection active. JSON/ZIP remain the
-resumable formats, and CSV edits cannot be imported. Existing quoting and formula
-prefix protection are shared rather than duplicated. JSON retains exact note text.
-The CSV is not encrypted; review analyst content before sharing.
+Existing button identities and handlers remain in place. Export formats and bytes,
+original report-package files, selected source scope, schemas, device storage,
+byte limits and stale/unsaved-work protection remain unchanged. Keyboard/native
+fieldset grouping and mobile wrapping use existing browser controls and styling.
+Actual diplomat comprehension and work-browser acceptance remain outstanding.
 
-Local validation passes 256 Python tests, fourteen reporting browser suites,
-facilitator checks and existing pure contracts. Independent Python CSV parsing
-checks multiline Unicode and quotes, formula prefixes, note labels, source fields,
-empty output and selected-meeting scope; invalid duplicate/out-of-scope notes are
-refused. The browser checks the actual file, filtering independence, source-text
-and assessment exclusion, no-note and stale-input disabling, dirty-work protection,
-export/size failure preservation and mobile widths. A direct comparison with the
-merged 1.68 implementation verifies unchanged evidence CSV bytes on fictional
-source and formula/Unicode/quote cases. These are engineering checks; actual
-spreadsheet-client and diplomat acceptance remain outstanding. No real or reserved
-transcript was retrieved.
+Local validation passes 256 Python tests, fourteen existing reporting browser
+suites, facilitator checks and pure contracts. Final targeted Word and print suites
+pass after the copy changes. Fictional prepared-report screenshots were inspected
+at 390/1440px; all three groups were captured and both widths pass overflow checks.
+These are engineering checks, not actual assistive-technology or diplomat sessions.
+No real or reserved transcript was retrieved.
 
 The public build remains 204 entries and mirror 195 files. Four existing assets
 plus the manifest change; repeat sync copies zero files. No public file, dependency,
 schema, model, backend, personal R/Python analysis or Hugging Face storage is added.
-All 2,077 retained package checksums remain valid. Source gates and all 37 reserved
-meetings are unchanged. Command-line Git credentials are working again; this
-increment uses normal tested branch publication and approved merges.
+All 2,077 retained package checksums remain valid. Scientific/source gates and all
+37 reserved meetings are unchanged. Screenshots and fictional visual-check files
+remain ignored local QA outputs, outside the published application and Git tree.
 
-The [previous checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/f052401e250b179cf0ad220fd993d3ea772bddbe/docs/OVERNIGHT_WORK.md)
-records release 1.68.0 and links earlier receipts. Use those results at their
+The [previous checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/9eedd87a23ac3a0f37bf2aeac69174149b587e1e/docs/OVERNIGHT_WORK.md)
+records release 1.69.0 and links earlier receipts. Use those results at their
 original version and scope.
 
 ## Runnable usability setup
@@ -120,7 +114,7 @@ no released model or semantic-accuracy claim follows from structural QA.
 
 The R cleanup did not change browser assets or add Hugging Face storage.
 
-1. Continue useful reporting work from the verified 1.69.0 release, then expand
+1. Continue useful reporting work from the verified 1.70.0 release, then expand
    broader workflows within the execution/storage constraints.
 2. Continue dependency-based cleanup with appropriate personal-runtime checks.
 3. Complete actual diplomat usability sessions; evaluate any optional generative
