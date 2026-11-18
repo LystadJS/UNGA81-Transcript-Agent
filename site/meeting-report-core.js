@@ -135,7 +135,7 @@
     const chosen=appendixSelection(appendix,records),appendixIds=new Set(chosen.record_ids);
     const meetings=coverage.map(m=>({slug:m.slug,date:m.date,title:m.title||m.slug,status:m.status,source_url:Reader.safeURL(m.source_url),
       summary:Reader.build(records,{meeting_slug:m.slug,meeting_date:m.date,title:m.title})}));
-    return {schema:VERSION,engine:'source-bound-reporting-1.5',generated_at:new Date().toISOString(),settings:prefs,appendix:chosen,passage_notes:passageNotes(notes,records),
+    return {schema:VERSION,engine:'source-bound-reporting-1.6',generated_at:new Date().toISOString(),settings:prefs,appendix:chosen,passage_notes:passageNotes(notes,records),
       appendix_records:chosen.mode==='selected'?records.filter(r=>appendixIds.has(r.id)):prefs.template==='evidence'?records:[],
       question_evidence:prefs.questions.map(q=>({...q,records:search(records,q.query)})),
       selected_meetings:meetings.map(m=>m.slug),meetings,records,priority_evidence:search(records,prefs.priorities),
@@ -174,30 +174,49 @@
   function evidenceHTML(rows){
     return rows.map(r=>'<article class="evidence"><h4>Recorded affiliation: '+escape(r.country||'Unresolved attribution')+' · '+escape(r.date)+'</h4><p>'+link(r.source_url,r.meeting||r.meeting_slug)+'</p>'+speakerHTML(r)+'<blockquote tabindex="0">'+escape(r.text)+'</blockquote><details><summary>Source identity</summary><p>'+escape(r.id)+' · '+escape(r.json_pointer)+'<br>Source SHA-256: '+escape(r.raw_sha256)+'<br>Text SHA-256: '+escape(r.text_sha256)+'</p></details></article>').join('');
   }
+  function countryTimeline(report){
+    const recordsByMeeting=new Map(),countries=new Map();
+    for(const r of report.records){if(!recordsByMeeting.has(r.meeting_slug))recordsByMeeting.set(r.meeting_slug,[]);recordsByMeeting.get(r.meeting_slug).push(r);}
+    const policyKey=p=>JSON.stringify([p.issue_id,p.expression_object.toLowerCase()]);
+    report.meetings.forEach((m,index)=>{
+      const affiliations=new Map(),positions=new Map(),us=m.summary.positions.filter(p=>p.country==='United States');
+      for(const r of recordsByMeeting.get(m.slug)||[]){const country=r.country||'Unresolved attribution';if(!affiliations.has(country))affiliations.set(country,false);if(!Reader.collectiveAttribution(r))affiliations.set(country,true);}
+      for(const p of m.summary.positions){if(!positions.has(p.country))positions.set(p.country,[]);positions.get(p.country).push(p);}
+      for(const [country,national] of affiliations){
+        const expressed=positions.get(country)||[],keys=new Set(expressed.map(policyKey));
+        const matches=country==='United States'?[]:us.filter(p=>keys.has(policyKey(p)));
+        const comparison=!expressed.length?'No eligible '+(country==='United States'?'U.S.':'country')+' policy-object extract in this meeting; no comparison assigned.':country==='United States'?'U.S. recorded expressions':matches.length?'Matching policy wording appears in the U.S. extracts for this meeting; no agreement score is assigned.':'No matching U.S. policy-object extract in this meeting. This is a comparison gap.';
+        if(!countries.has(country))countries.set(country,{country,observations:[]});
+        countries.get(country).observations.push({meeting_index:index,meeting_slug:m.slug,date:m.date,title:m.title,status:m.status,collective_only:!national,positions:expressed,us_matches:matches,comparison});
+      }
+    });
+    return [...countries.values()].sort((a,b)=>a.country.localeCompare(b.country)).map(c=>({...c,unobserved_meetings:report.meetings.length-c.observations.length,observations:c.observations.sort((a,b)=>a.date.localeCompare(b.date)||a.title.localeCompare(b.title)||a.meeting_slug.localeCompare(b.meeting_slug)||a.meeting_index-b.meeting_index)}));
+  }
   function reportHTML(report,{preview=false}={}){
     const {settings:p,meetings,records}=report;
     const appendix=rows=>evidenceHTML(preview?rows.slice(0,50):rows)+(preview&&rows.length>50?'<p>Preview shows the first 50 passages. The HTML export includes all '+rows.length+' passages.</p>':'');
     const indexed=meetings.length>1,anchor=i=>'report-meeting-'+(i+1);
     const index=indexed?'<nav class="report-meeting-index" aria-labelledby="report-meeting-index"><h2 id="report-meeting-index" tabindex="-1">Selected meetings</h2><ol>'+meetings.map((m,i)=>'<li><a href="#'+anchor(i)+'">'+escape(m.date)+' · '+escape(m.title)+'</a><span>'+m.summary.stats.source_segments+' loaded source segments · Collection outcome: '+escape(m.status||'Unknown')+'</span></li>').join('')+'</ol><p>Counts describe loaded evidence, not completeness or policy importance.</p></nav>':'';
+    const timeline=countryTimeline(report),observations=new Map(meetings.map((_,i)=>[i,[]]));
+    for(const c of timeline)for(const o of c.observations)observations.get(o.meeting_index).push({country:c.country,...o});
+    const recordIndex=new Map(records.map(r=>[r.id,r]));
+    const expressionLink=e=>{
+      const r=recordIndex.get(e.record_id),matches=r&&r.text_sha256===e.text_sha256&&r.json_pointer===e.json_pointer&&r.source_url===e.source_url;
+      return link(e.source_url,e.excerpt)+(preview&&matches?'<br><button type="button" data-evidence-id="'+escape(e.record_id)+'">Read source context</button>':'');
+    };
+    const evidenceLinks=evidence=>{const seen=new Set();return evidence.filter(e=>{if(seen.has(e.excerpt))return false;seen.add(e.excerpt);return true;}).map(expressionLink).join('<br>');};
+    const positionHTML=positions=>positions.map(x=>escape(x.expression_label)+' '+escape(x.expression_object)+'<br>'+evidenceLinks(x.evidence)).join('<hr>');
+    const expressionHTML=o=>o.collective_only?'Collective statement; no national position assigned.':o.positions.length?positionHTML(o.positions):'No eligible object-specific expression extracted.';
+    const comparisonHTML=o=>escape(o.comparison)+(o.us_matches.length?'<br>'+positionHTML(o.us_matches):'');
+    const overview=indexed?'<section class="country-timeline"><h2>Country expressions across selected meetings</h2><p>Every recorded affiliation appears below, grouped by country label and then source date. Compare each dated extract with U.S. wording from that same meeting. These are provisional object-specific extracts, not verified government positions or policy changes. Same-date meetings are ordered by title; no within-day chronology is inferred.</p><p>Coverage describes loaded source, not completeness. Repeated quoted wording is shown once per extract and adds no policy weight. Original source passages remain in the full evidence CSV. Missing country evidence and missing U.S. matches remain gaps; no position is carried forward from another meeting.</p>'+(timeline.length?'<div class="report-table"><table><thead><tr><th>Recorded affiliation and meeting</th><th>Expression or gap</th><th>U.S. comparison in this meeting</th></tr></thead><tbody>'+timeline.map(c=>c.observations.map((o,i)=>'<tr><th scope="row">'+escape(c.country)+'<br><a href="#'+anchor(o.meeting_index)+'">'+escape(o.date)+' · '+escape(o.title)+'</a><br>Collection outcome: '+escape(o.status||'Unknown')+(!i?'<br>Affiliation observed in '+c.observations.length+' of '+meetings.length+' selected meetings.'+(c.unobserved_meetings?' No affiliated source segment in '+c.unobserved_meetings+' others; this is a coverage gap, not neutrality.':''):'')+'</th><td>'+expressionHTML(o)+'</td><td>'+comparisonHTML(o)+'</td></tr>').join('')).join('')+'</tbody></table></div>':'<p>No recorded affiliations in the loaded selected source. This is a coverage gap, not evidence of silence or neutrality.</p>')+'</section>':'';
     const body=meetings.map((m,i)=>{
-      const s=m.summary,meetingRecords=records.filter(r=>r.meeting_slug===m.slug);
-      const expressionLink=e=>{
-        const matches=meetingRecords.filter(r=>r.id===e.record_id&&r.text_sha256===e.text_sha256&&r.json_pointer===e.json_pointer&&r.source_url===e.source_url);
-        return link(e.source_url,e.excerpt)+(preview&&matches.length===1?'<br><button type="button" data-evidence-id="'+escape(e.record_id)+'">Read source context</button>':'');
-      };
-      const affiliations=[...new Set(meetingRecords.map(r=>r.country||'Unresolved attribution'))].sort();
-      const countryRows=affiliations.map(country=>{
-        const positions=s.positions.filter(x=>x.country===country),national=meetingRecords.filter(r=>r.country===country&&!Reader.collectiveAttribution(r));
-        const us=s.positions.filter(x=>x.country==='United States');
-        const comparisons=positions.filter(x=>us.some(u=>u.issue_id===x.issue_id&&u.expression_object.toLowerCase()===x.expression_object.toLowerCase()));
-        const comparison=country==='United States'?'U.S. recorded expressions':comparisons.length?'Matching policy wording appears in the U.S. extracts below; no agreement score is assigned.':'No matching U.S. policy-object extract in this meeting. This is a comparison gap.';
-        return '<tr><th scope="row">'+escape(country)+'</th><td>'+(!national.length?'Collective statement; no national position assigned.':positions.length?positions.map(x=>escape(x.expression_label)+' '+escape(x.expression_object)+'<br>'+x.evidence.map(expressionLink).join('<br>')).join('<hr>'):'No eligible object-specific expression extracted.')+'</td><td>'+escape(comparison)+'</td></tr>';
-      }).join('');
+      const s=m.summary;
+      const countryRows=observations.get(i).map(o=>'<tr><th scope="row">'+escape(o.country)+'</th><td>'+expressionHTML(o)+'</td><td>'+comparisonHTML(o)+'</td></tr>').join('');
       const themes='<h3>Subjects mentioned</h3><p>'+escape(s.themes.map(t=>t.label+' ('+t.segments+' source segments)').join('; ')||'No fixed-dictionary theme found.')+'</p>';
       const countries='<h3>Recorded country expressions and U.S. comparison coverage</h3><div class="report-table"><table><thead><tr><th>Recorded affiliation</th><th>Expression or gap</th><th>U.S. comparison</th></tr></thead><tbody>'+countryRows+'</tbody></table></div>';
       return '<section class="report-meeting"><h2 id="'+anchor(i)+'" tabindex="-1">'+escape(m.date)+' · '+link(m.source_url,m.title)+'</h2><p>'+escape(s.paragraphs.join(' '))+'</p><p>'+s.stats.source_segments+' source segments; '+s.stats.recorded_countries+' recorded country labels; '+s.stats.withheld_collective_segments+' collective segments withheld from national positions. Collection outcome: '+escape(m.status)+'.</p>'+(p.template==='negotiation'?countries+themes:themes+countries)+(indexed?'<p><a href="#report-meeting-index">Back to selected meetings</a></p>':'')+'</section>';
     }).join('');
-    return '<h1>'+escape(p.title)+'</h1><p>'+escape(p.mission||'Mission not specified')+' · '+escape(TEMPLATES[p.template])+'</p><p>'+meetings.length+' selected meetings; '+records.length+' English source segments. Prepared '+escape(report.generated_at)+'.</p><p class="notice">Source-linked draft. Automatic five-class stance estimates remain withheld. Review the evidence before circulation.</p>'+index+body+
+    return '<h1>'+escape(p.title)+'</h1><p>'+escape(p.mission||'Mission not specified')+' · '+escape(TEMPLATES[p.template])+'</p><p>'+meetings.length+' selected meetings; '+records.length+' English source segments. Prepared '+escape(report.generated_at)+'.</p><p class="notice">Source-linked draft. Automatic five-class stance estimates remain withheld. Review the evidence before circulation.</p>'+index+overview+body+
       (report.question_evidence?.length?'<section class="briefing-questions"><h2>Mission briefing questions</h2><p>Analyst-defined questions with literal all-word evidence searches. Matches are supporting passages, not generated answers or verified positions. The meeting summaries and country comparisons above retain all selected evidence.</p>'+report.question_evidence.map(q=>'<section class="briefing-question"><h3>'+escape(q.heading)+'</h3><p>Search words: '+escape(q.query)+' · '+q.records.length+' matching source segments across '+new Set(q.records.map(r=>r.meeting_slug)).size+' meetings.</p>'+(q.records.length?appendix(q.records):'<p class="question-gap">No matching passage in the loaded selected meetings. The question remains unanswered; this does not establish silence, neutrality or absence of relevant evidence.</p>')+'</section>').join('')+'</section>':'')+
       (p.priorities?'<section><h2>Mission priority evidence</h2><p>Literal search: '+escape(p.priorities)+'. '+report.priority_evidence.length+' matching source segments; this does not change the all-meeting overview.</p>'+appendix(report.priority_evidence)+'</section>':'')+
       (report.appendix.mode==='selected'||p.template==='evidence'?'<section class="evidence-appendix"><h2>Evidence appendix</h2><p>'+(report.appendix.mode==='selected'?'Analyst-selected passages: ':'All passages: ')+report.appendix_records.length+' of '+records.length+' source segments from the selected meetings. The overview, country expressions and coverage counts use all '+records.length+' segments.</p>'+(report.appendix_records.length?appendix(report.appendix_records):'<p>No appendix passages selected. This does not establish absence of relevant evidence.</p>')+'</section>':'')+
@@ -210,6 +229,6 @@
     const cell=x=>'"'+String(/^[\s]*[=+\-@]/.test(String(x??''))?"'"+x:x??'').replace(/"/g,'""')+'"';
     return [cols,...records.map(r=>cols.map(k=>r[k]))].map(row=>row.map(cell).join(',')).join('\r\n');
   }
-  const api={VERSION,NOTES_VERSION,questions,LEGACY_VERSION,APPENDIX_VERSION,NOTE_LIMIT,NOTES_LIMIT,TEMPLATES,LIMIT,PREFERENCES_VERSION,PREFERENCES_LIMIT,exportPreferences,importPreferences,settings,exclusions,allowed,validateCorpora,search,meetingSelection,appendixSelection,passageNotes,openSaved,savedReport,build,reportHTML,evidenceHTML,speakerHTML,contextWindow,contextHTML,standalone,evidenceCSV};
+  const api={VERSION,NOTES_VERSION,questions,LEGACY_VERSION,APPENDIX_VERSION,NOTE_LIMIT,NOTES_LIMIT,TEMPLATES,LIMIT,PREFERENCES_VERSION,PREFERENCES_LIMIT,exportPreferences,importPreferences,settings,exclusions,allowed,validateCorpora,search,meetingSelection,appendixSelection,passageNotes,openSaved,savedReport,build,countryTimeline,reportHTML,evidenceHTML,speakerHTML,contextWindow,contextHTML,standalone,evidenceCSV};
   if(node)module.exports=api;else root.UNMeetingReport=api;
 })(globalThis);
