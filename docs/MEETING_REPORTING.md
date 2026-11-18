@@ -227,10 +227,23 @@ original passages with source identities, or an explicit unanswered-question gap
 These searches do not generate answers, infer positions or change the mandatory
 meeting overview, country comparison coverage, evidence appendix or full CSV.
 
+Use **Move up** or **Move down** to arrange the sections after the country
+overview. Numbered legends show each position; the first/last unavailable move is
+disabled. Buttons work with keyboard activation and return focus to the moved
+question's heading if that move reaches a boundary. Unfinished headings/search
+fields move together without validation or lost text; complete them before
+preparing or saving preferences. The live count announces the resulting position.
+
+Saved preferences and report JSON retain the existing array order. Reopening
+rebuilds the same order in prepared reports and reading copies. A move invalidates
+prepared exports and keeps unsaved-work protection active. Ordering never changes
+which sources a question searches, whole-report country coverage, source text or
+the full evidence CSV. Save preferences explicitly to reuse this arrangement.
+
 Questions are retained in v4 saved reports and v2 mission preferences. Existing
 v1–v3 reports and v1 preferences reopen with no questions; legacy schemas carrying
 questions are rejected rather than silently dropping them. Imports rebuild results
-from verified sources. Editing, adding or removing a question invalidates prepared
+from verified sources. Editing, adding, removing or moving a question invalidates prepared
 exports. HTML and ZIP contain the question sections; evidence CSV remains unchanged.
 No model, new dependency, automatic storage or external AI request is added.
 
