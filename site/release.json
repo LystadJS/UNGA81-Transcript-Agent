@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.65.0",
+  "browser_engine": "browser-descriptive-1.66.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-18",
   "features": [
+    "Bulk appendix addition/removal across every filtered matching passage, with explicit new/selected counts and one-step undo including template mode; unchanged notes, whole-report coverage and full CSV, with history cleared on manual selections or source-scope changes and no new schema or dependencies",
     "Explicit addition of selected inventory transcripts to the current report, preserving current sources, annotations, mission settings and selections; preflight overlap/capacity/policy refusal and atomic validation, cancellation, incomplete-retrieval and stale-edit safeguards, with no new schema, dependencies or storage",
     "Direct browser reopening and source addition from original report-package ZIPs, with strict bounded uncompressed ZIP structure, CRC and SHA-256 checks, source revalidation and unchanged keep/replace and stale-work protection; imported HTML is never executed, with no new dependencies or storage",
     "Explicit loaded-source collection removal with byte counts, reviewed meeting/note/appendix consequences, keep-by-default confirmation, atomic pruning and stale-decision refusal; original kept sources, downloaded files and device copies remain unchanged, with no new schema or dependencies",

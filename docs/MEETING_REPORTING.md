@@ -268,6 +268,21 @@ Navigation does not request sources, select evidence, change notes or alter coun
 
 Check supporting passages while searching. Selections persist across searches, and “Show selected passages only” makes them easy to revisit. Any template can use a custom appendix; its heading identifies the passages as analyst-selected and reports their count against the full selected-meeting denominator. Clearing the selection leaves an explicit empty appendix. Returning to “Template default” clears custom selections. Removing a meeting removes its appendix selections.
 
+Use **Add … new matches** or **Remove … selected matches** to change every
+current match, including results beyond the visible page. The buttons show how
+many new or already selected passages the action affects. Literal search,
+recorded-affiliation/name filters and “Show selected passages only” define the
+matching set. Other explicit selections stay intact. These actions switch to
+**Selected passages only**; template-default contents are not implicit selections.
+
+**Undo last bulk appendix change** restores the previous appendix mode and exact
+explicit choices, including after Clear passage selection. It keeps subsequent
+assessment and passage-note edits. Changing a search filter does not erase undo;
+manual passage choices, appendix-mode changes, selected-meeting changes and source
+replacement/addition/removal do. Undo is session-only and is not saved in JSON,
+ZIP or reusable preferences. Every applied or undone appendix change requires
+preparing the report again before exporting. No source request occurs.
+
 Appendix selection never changes meeting overviews, country expressions, U.S. comparison coverage, priority-query results or the full evidence CSV. Original passages and source locators remain unchanged. Analyst notes remain a separate user-authored section. Search results and selected passages do not establish absence of other relevant evidence.
 
 The v2 and v3 saved-report objects require `appendix: {mode, record_ids}`. `mode` is `template` (with an empty ID list) or `selected`; selected IDs must be unique and belong to the loaded, selected meetings. Unknown, duplicate, out-of-scope and malformed IDs are rejected before modifying the workspace. Rendering follows original source order. Existing v1 reports reopen with template defaults. All supported versions revalidate original sources and rebuild summaries rather than trusting saved derived claims. Appendix edits disable prepared exports until the report is rebuilt. Reusable mission preferences exclude appendix selections.

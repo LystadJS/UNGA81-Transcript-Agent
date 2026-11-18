@@ -2,7 +2,7 @@
 (()=>{
   'use strict';
   const $=id=>document.getElementById(id),Core=UNMeetingReport;
-  let policy,countries,inventory=[],corpora=[],report=null,controller=null,shown=10,dirty=false,handoff=null,appendixIds=new Set(),notes=new Map();
+  let policy,countries,inventory=[],corpora=[],report=null,controller=null,shown=10,dirty=false,handoff=null,appendixIds=new Set(),notes=new Map(),bulkUndo=null;
   let printing=false,printTitle=null,printSnapshot=null;
   let workspaceRevision=0,replacementSerial=0,packaging=false,deviceBusy=false,deviceAvailable=false,deviceSaved=false,deviceLibrary=[],deviceId='current';
   const setStatus=(message,error=false)=>{$('status').textContent=message;$('status').classList.toggle('error',error);};
@@ -55,11 +55,12 @@
     const ids=new Set(selected()),all=corpora.flatMap(c=>c.records).filter(r=>ids.has(r.meeting_slug));
     const rows=Core.search(all.filter(r=>(!$('evidenceCountry').value||evidenceValue(r,'country')===$('evidenceCountry').value)&&(!$('evidenceSpeaker').value||evidenceValue(r,'speaker')===$('evidenceSpeaker').value)&&(!$('onlySelectedEvidence').checked||appendixIds.has(r.id))),$('evidenceSearch').value);
     $('evidenceCount').textContent=rows.length+' matching source segments in '+ids.size+' selected meetings ('+all.length+' source segments before search and filters). Showing '+Math.min(rows.length,shown)+'.';
+    bulkControls(rows);
     $('evidenceResults').innerHTML=Core.evidenceHTML(rows.slice(0,shown));$('moreEvidence').hidden=rows.length<=shown;
     for(const [i,article] of [...$('evidenceResults').children].entries()){
       const record=rows[i],label=document.createElement('label'),input=document.createElement('input');
       label.className='appendix-choice';input.type='checkbox';input.checked=appendixIds.has(record.id);input.setAttribute('aria-label','Include passage '+record.id+' in appendix');
-      input.onchange=()=>{if(input.checked)appendixIds.add(record.id);else appendixIds.delete(record.id);$('appendixMode').value='selected';invalidate();appendixCount();if($('onlySelectedEvidence').checked)search();};
+      input.onchange=()=>{clearBulkUndo();if(input.checked)appendixIds.add(record.id);else appendixIds.delete(record.id);$('appendixMode').value='selected';invalidate();appendixCount();if($('onlySelectedEvidence').checked)search();else bulkControls(rows);};
       label.append(input,document.createTextNode('Include in evidence appendix'));article.prepend(label);
       const context=document.createElement('details'),contextTitle=document.createElement('summary'),contextBody=document.createElement('div');
       context.className='passage-context';contextTitle.textContent='Read neighboring source passages';contextBody.setAttribute('role','region');contextBody.setAttribute('aria-label','Source context for '+record.id);
@@ -77,11 +78,28 @@
     }
     appendixCount();notesCount();
   }
+  function clearBulkUndo(){bulkUndo=null;$('undoBulkAppendix').hidden=true;$('undoBulkAppendix').disabled=true;}
+  function rememberBulk(){bulkUndo={mode:$('appendixMode').value,record_ids:[...appendixIds]};$('undoBulkAppendix').hidden=false;$('undoBulkAppendix').disabled=false;}
+  function bulkControls(rows){
+    const missing=rows.filter(r=>!appendixIds.has(r.id)).length,present=rows.length-missing;
+    $('addMatchingAppendix').textContent='Add '+missing+' new '+(missing===1?'match':'matches');$('addMatchingAppendix').disabled=!missing;
+    $('removeMatchingAppendix').textContent='Remove '+present+' selected '+(present===1?'match':'matches');$('removeMatchingAppendix').disabled=!present;
+    const change=add=>{
+      if(!rows.some(r=>appendixIds.has(r.id)!==add))return;
+      rememberBulk();for(const r of rows){if(add)appendixIds.add(r.id);else appendixIds.delete(r.id);}
+      $('appendixMode').value='selected';invalidate();search();
+    };
+    $('addMatchingAppendix').onclick=()=>change(true);$('removeMatchingAppendix').onclick=()=>change(false);
+  }
+  $('undoBulkAppendix').onclick=()=>{
+    if(!bulkUndo)return;appendixIds=new Set(bulkUndo.record_ids);$('appendixMode').value=bulkUndo.mode;clearBulkUndo();invalidate();search();$('clearAppendix').focus();
+  };
   function notesCount(){$('passageNotesCount').textContent=notes.size+' passage '+(notes.size===1?'note':'notes')+'. Saved in report HTML and JSON, separately from source text. The full evidence CSV and reusable preferences exclude your notes. Removing a meeting removes its notes.';}
   function appendixCount(){
     $('appendixCount').textContent=$('appendixMode').value==='selected'?appendixIds.size+(appendixIds.size===1?' passage selected for the appendix.':' passages selected for the appendix.')+' Summaries, country expressions and the full evidence CSV still use all passages from selected meetings.':'Template default: the evidence digest includes all passages; other templates omit the appendix. Select a passage to create a custom appendix.';
   }
   function pruneAppendix(){
+    clearBulkUndo();
     const meetings=new Set(selected()),known=new Set(corpora.flatMap(c=>c.records).filter(r=>meetings.has(r.meeting_slug)).map(r=>r.id));
     appendixIds=new Set([...appendixIds].filter(id=>known.has(id)));
     notes=new Map([...notes].filter(([id])=>known.has(id)));
@@ -95,7 +113,7 @@
     label.append(input,span);return label;
   }
   function setCollection(next,prefs=null,selection=null,chosen={mode:'template',record_ids:[]},passage_notes=[],preserveSettings=false){
-    corpora=next;$('addCollection').disabled=!corpora.length;loadButtons();$('loadedMeetings').replaceChildren();
+    clearBulkUndo();corpora=next;$('addCollection').disabled=!corpora.length;loadButtons();$('loadedMeetings').replaceChildren();
     appendixIds=new Set(chosen.record_ids);$('appendixMode').value=chosen.mode;$('onlySelectedEvidence').checked=false;
     notes=new Map(passage_notes.map(n=>[n.record_id,n.text]));
     for(const row of corpora.flatMap(c=>c.coverage).filter(r=>r.slug))$('loadedMeetings').append(checkbox(row,true,!selection||selection.includes(row.slug)));
@@ -266,8 +284,8 @@
   $('clearEvidenceFilters').onclick=()=>{$('evidenceSearch').value='';$('evidenceCountry').value='';$('evidenceSpeaker').value='';$('onlySelectedEvidence').checked=false;shown=10;search();$('evidenceSearch').focus();};
   $('evidenceSearch').oninput=()=>{shown=10;search();};$('moreEvidence').onclick=()=>{shown+=10;search();};
   $('onlySelectedEvidence').onchange=()=>{shown=10;search();};
-  $('appendixMode').onchange=()=>{if($('appendixMode').value==='template')appendixIds.clear();invalidate();search();};
-  $('clearAppendix').onclick=()=>{appendixIds.clear();$('appendixMode').value='selected';invalidate();search();};
+  $('appendixMode').onchange=()=>{clearBulkUndo();if($('appendixMode').value==='template')appendixIds.clear();invalidate();search();};
+  $('clearAppendix').onclick=()=>{if(appendixIds.size||$('appendixMode').value!=='selected')rememberBulk();appendixIds.clear();$('appendixMode').value='selected';invalidate();search();};
   $('prepareReport').onclick=()=>{try{report=Core.build(corpora,selected(),options(),appendix(),passageNotes());workspaceRevision++;$('reportPreview').innerHTML=Core.reportHTML(report,{preview:true});for(const id of ['downloadReport','downloadWord','printReportButton','saveReport','downloadEvidence','downloadPackage','saveDeviceReport'])$(id).disabled=false;$('downloadPackage').disabled=packaging;if(!packaging)$('packageStatus').textContent='Ready to download a report package.';$('reportState').textContent='Report ready: '+report.meetings.length+' meetings. Review source evidence before circulation.';$('printReportButton').disabled=printing;$('printStatus').textContent='Ready to print the complete report or use the browser’s PDF destination.';$('wordStatus').textContent='Ready to download Word. Save JSON or ZIP separately to reopen work here.';dirty=true;deviceControls();}catch(e){invalidate();setStatus(e.message,true);}};
   $('reportPreview').onclick=event=>{
     const button=event.target.closest('button[data-evidence-id]');
