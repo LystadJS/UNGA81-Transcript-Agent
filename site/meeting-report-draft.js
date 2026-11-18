@@ -23,9 +23,11 @@
    const speaker=r.speaker_metadata||{};
    return {id:text(r.id,INPUT_LIMIT),meeting_slug:r.meeting_slug,date:r.date,country:text(r.country||'',INPUT_LIMIT,true),source_url:r.source_url,raw_sha256:r.raw_sha256,text_sha256:r.text_sha256,json_pointer:text(r.json_pointer,INPUT_LIMIT),text:text(r.text,INPUT_LIMIT),speaker_name:text(speaker.name||'',INPUT_LIMIT,true),speaker_role:text(speaker.function||'',INPUT_LIMIT,true),speaker_group:text(speaker.group||'',INPUT_LIMIT,true),speaking_capacity:Reader.collectiveAttribution(r)?'collective_indicated':'unverified'};
   }).sort((a,b)=>a.id<b.id?-1:a.id>b.id?1:0);
-  const context={schema:CONTEXT,meetings,source_record_count:report.records.length,questions:ordered,records};
+  const identities=report.records.map(r=>({id:r.id,raw_sha256:r.raw_sha256,text_sha256:r.text_sha256})).sort((a,b)=>a.id<b.id?-1:a.id>b.id?1:0);
+  if(identities.some(r=>typeof r.id!=='string'||!['raw_sha256','text_sha256'].every(k=>/^[a-f0-9]{64}$/.test(r[k]))))throw Error('Draft scope requires complete source identities.');
+  const context={schema:CONTEXT,meetings,source_record_count:report.records.length,source_sha256:await Collector.sha(canonical(identities)),questions:ordered,records};
   if(!Number.isInteger(context.source_record_count)||context.source_record_count>15000||records.length!==needed.size)throw Error('Invalid personal draft source scope.');
-  // Reserve the fixed envelope before hashing or retaining an oversized packet.
+  // Bound the envelope before validating every included source text.
   if(bytes({schema:INPUT,context,context_sha256:'0'.repeat(64)})>INPUT_LIMIT)throw Error('Personal model input exceeds 64 KiB. Use more specific briefing searches or fewer meetings. Nothing was truncated.');
   for(const r of records)if(await Collector.sha(r.text)!==r.text_sha256)throw Error('A draft source text hash differs. Reopen verified report sources.');
   return {schema:INPUT,context,context_sha256:await Collector.sha(canonical(context))};

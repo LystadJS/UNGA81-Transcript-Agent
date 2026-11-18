@@ -32,7 +32,8 @@ refuses to overwrite an existing output file. It writes a private new draft JSON
 only after every question validates; a malformed response produces no draft.
 
 Open that JSON next to the prepared report. Source scope and question order must
-match its input hash. Each bullet needs an exact quotation from a passage matched
+match its input hash, including a fingerprint of every selected passage identity
+even when that passage matches no question. Each bullet needs an exact quotation from a passage matched
 to that question. Unknown, changed or repeated citations are refused. Open cited
 context to check the whole original segment. Exact quotation matching does **not**
 establish whether a model claim follows from the passage. Claims, declared model

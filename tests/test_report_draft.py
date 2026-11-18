@@ -18,7 +18,7 @@ from un_transcript import report_draft as D
 def packet():
     text = 'We support humanitarian access. Literal 😀 <img src=x>.'
     record = dict(id='ga/81/900#0', meeting_slug='ga/81/900', date='2026-11-10', country='Kenya', source_url='https://transcripts.un.org/en/ga/81/900', raw_sha256='a'*64, text_sha256=hashlib.sha256(text.encode()).hexdigest(), json_pointer='/transcript/data/0', text=text, speaker_name='Fictional delegate', speaker_role='Representative', speaker_group='', speaking_capacity='unverified')
-    context = dict(schema=D.CONTEXT, meetings=[dict(slug='ga/81/900', date='2026-11-10', title='Fictional meeting 😀', source_url=record['source_url'])], source_record_count=1, questions=[dict(heading='Access 😀', query='humanitarian access', record_ids=[record['id']]), dict(heading='Missing', query='nonexistent', record_ids=[])], records=[record])
+    context = dict(schema=D.CONTEXT, meetings=[dict(slug='ga/81/900', date='2026-11-10', title='Fictional meeting 😀', source_url=record['source_url'])], source_record_count=1, source_sha256='b'*64, questions=[dict(heading='Access 😀', query='humanitarian access', record_ids=[record['id']]), dict(heading='Missing', query='nonexistent', record_ids=[])], records=[record])
     return seal(context)
 
 

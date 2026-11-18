@@ -81,7 +81,9 @@ def validate_input(value):
     context = value['context']
     if value['schema'] != INPUT or len(encoded(value)) > INPUT_LIMIT:
         raise ValueError('Use a supported evidence packet no larger than 64 KiB')
-    _exact(context, {'schema', 'meetings', 'source_record_count', 'questions', 'records'})
+    _exact(context, {'schema', 'meetings', 'source_record_count', 'source_sha256', 'questions', 'records'})
+    if not isinstance(context['source_sha256'], str) or not HEX.fullmatch(context['source_sha256']):
+        raise ValueError('Invalid full-scope source fingerprint')
     if context['schema'] != CONTEXT or value['context_sha256'] != hashlib.sha256(encoded(context)).hexdigest():
         raise ValueError('Evidence packet context hash differs')
     meetings, records, questions = context['meetings'], context['records'], context['questions']
