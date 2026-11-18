@@ -2,6 +2,30 @@
 
 The immediate product target is a PowerTranscript-like reporting workflow, implemented independently: select proceedings, search their evidence, apply mission report templates, and export documented results. Research CSVs and evaluated stance tracking remain distinct capabilities. This is not a claim of equivalent vendor performance or access to proprietary code or weights.
 
+## Print or save a PDF
+
+Prepare a report, then choose **Print / Save as PDF**. Select your printer or the
+PDF destination in the browser's own dialog. Printing uses the complete report,
+including evidence beyond the screen preview limit, source identities, questions,
+selected appendices and separately labeled notes. Workspace controls are excluded.
+Filters do not narrow the output. Meeting links point to headings within the
+printable copy; original source hyperlinks remain intact.
+
+Closing the dialog restores the workspace. If a browser does not reset the print
+controls, choose **Return to report**. The application cannot tell whether you
+printed, saved a PDF or cancelled, so it never reports a PDF as saved. Printing
+keeps unsaved-work protection. Save JSON or ZIP separately to reopen verified
+sources and notes; a PDF is a reading copy.
+
+The printable HTML is bounded to 25 MB without truncation. The browser controls
+final PDF size, destination, paper settings, headers and footers. If printing is
+disabled, download HTML and print it separately. Editing a report disables its
+print button until preparation; browser-menu printing without a prepared report
+shows an explicit preparation message instead of an old report. No PDF library,
+server, upload or new model is used. Synthetic Chromium PDF output and browser
+state have engineering checks; actual government-browser printer/PDF dialogs and
+participant usability remain unaccepted.
+
 ## Editable Word reading copy
 
 After preparing a report, choose **Download Word report (.docx)**. The browser

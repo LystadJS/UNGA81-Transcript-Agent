@@ -59,6 +59,7 @@ jobs:
           node tests/test_device_report_ui.cjs
           node tests/test_report_package_ui.cjs
           node tests/test_report_word_ui.cjs
+          node tests/test_report_print_ui.cjs
           node tests/test_archive_reporting_ui.cjs
       - name: Browser owner review round-trip with synthetic passages
         run: python tests/browser_owner_review.py
