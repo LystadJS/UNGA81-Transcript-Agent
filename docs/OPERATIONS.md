@@ -256,3 +256,20 @@ Application 1.84.0, public assets, source/model pins, triggers, permissions,
 retention, recipients and scientific/publication gates remain unchanged. Ordinary
 CI package dependencies and synthetic test artifacts are within the reduced scope;
 no new source/model retrieval or real-source artifact export is activated by it.
+
+The reduced migration merged in [PR #368](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/368)
+as `622e81e5f72e659f50b4306d4b0a446c1522f1d8` after all 39 job checks passed
+across 36 runs, including the native R synthetic engineering regression. Run
+metadata confirms none of the eight deferred acquisition/live/model workflows
+was activated. No application/public/R-package files changed; mirror sync remains
+zero. This CI scope does not establish model, source-quality or client acceptance.
+
+The remaining 28-reference/eight-workflow patch is ready on
+[`maintenance/acquisition-action-runtimes`](https://github.com/LystadJS/UNGA81-Transcript-Agent/compare/main...maintenance/acquisition-action-runtimes),
+commit `fa6f19a247060eacb2633b13a4f841bf1f9a093f`. Only action refs differ from
+`main`; its push filters do not match that branch and no workflow run was triggered
+by preparation. All 61 YAML files pass lint in that candidate. No PR was opened:
+specific approval is needed for the source/model retrieval and artifact-output
+side effects identified by automatic approval review. This focused branch
+supersedes the original full candidate for review. The temporary linter was
+removed; generated plans/logs remain ignored and are not committed.
