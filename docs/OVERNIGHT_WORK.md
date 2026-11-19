@@ -17,6 +17,23 @@ and download failures keep current work. No runtime file, dependency, model or
 storage is added. Managed testing remains deferred; desktop Word acceptance is
 unrecorded.
 
+[Source #362](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/362)
+merged as `40418ededaaac4bda995ffafe1c5458dcca46621` after numerical, browser and
+operational contracts passed, including fifteen reporting UI suites, four
+campaign suites, the facilitator and read-only archive checks.
+[Website #198](https://github.com/LystadJS/LystadJS.github.io/pull/198)
+merged as `d08d2c600b7c9f32e5d10abd950c03007e0af360` after audit and website
+regression passed. Both deployments serve 1.83.0. All 201 preferred-site canonical
+hashes and five changed original-site asset hashes match. Four campaign suites,
+ordinary report Word and personal draft/Word pass live at both URLs with fictional
+inputs. Independent DOCX parsing checks complete text in order, XML/CRC structure,
+privacy scope, resumable-JSON guidance and exact whole-file bounds. Stale data/
+source decisions, failed downloads, pending forms and missing/older modules keep
+work. The shared report Word/package bounds and draft prefix remain validated.
+Repeat mirror sync copies/removes zero of 200 public files; the build remains
+209 entries. No model, private transcript or client/account acceptance is implied.
+Managed testing remains deferred; desktop Word rendering is unverified.
+
 ## Campaign follow-up queue — 1.82.0
 
 The owner deferred managed Edge/Outlook testing and requested continued changes.
