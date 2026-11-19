@@ -32,10 +32,23 @@ class PublicBuildConfigurationTests(unittest.TestCase):
                 BUILD.archive_configuration(url)
 
 
-if __name__ == '__main__':
-    unittest.main()
-
 class CheckedArchiveTests(unittest.TestCase):
+    def test_research_only_modules_stay_out_of_public_build(self):
+        repo = Path(__file__).resolve().parents[1]
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / 'public'
+            BUILD.build(output)
+            for name in BUILD.RESEARCH_ONLY_MODULES:
+                self.assertTrue((repo / 'site' / name).is_file())
+                self.assertFalse((output / name).exists())
+                # A future UI dependency must explicitly revisit this boundary.
+                for asset in output.rglob('*'):
+                    if asset.suffix in {'.html', '.js', '.css'}:
+                        self.assertNotIn(name.encode('ascii'), asset.read_bytes(), str(asset))
+            for name in ['index.html', 'meeting-reports.html', 'campaign-notebook.html',
+                         'issue-archive-worker.js', 'issue-report.js']:
+                self.assertTrue((output / name).is_file(), name)
+
     def test_build_uses_versioned_endpoint_and_rejects_conflicting_override(self):
         repo = Path(__file__).resolve().parents[1]
         expected = json.loads((repo/'site/archive-config.json').read_bytes())
@@ -43,3 +56,7 @@ class CheckedArchiveTests(unittest.TestCase):
         self.assertEqual(BUILD.configured_archive(repo, expected['manifest_url']), expected)
         with self.assertRaises(ValueError):
             BUILD.configured_archive(repo, 'https://huggingface.co/datasets/other/unrelated/resolve/main/latest.json')
+
+
+if __name__ == '__main__':
+    unittest.main()

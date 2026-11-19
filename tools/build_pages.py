@@ -3,6 +3,10 @@ import argparse, csv, hashlib, json, os, re, shutil
 from pathlib import Path
 from urllib.parse import urlsplit
 
+# Used by offline research tests, not by a public page or worker. Keep the
+# research source without distributing unused experimental APIs to clients.
+RESEARCH_ONLY_MODULES = frozenset({'issue-candidates.js', 'issue-extraction.js'})
+
 def archive_configuration(manifest_url):
     """Only a public, credential-free HF dataset URL may enter the static app."""
     manifest_url = (manifest_url or '').strip()
@@ -29,13 +33,15 @@ def build(output):
     numeric_manifest=json.loads((repo/'site/numerics-manifest.json').read_text(encoding='utf-8'))
     if hashlib.sha256((repo/'site/numerics.js').read_bytes()).hexdigest()!=numeric_manifest['sha256']:
         raise ValueError('Numerical bundle hash mismatch; rebuild with tools/browser-deps/build.cjs')
-    registry=list(csv.DictReader((repo/'un/config/countries.csv').open(encoding='utf-8-sig')))
+    with (repo/'un/config/countries.csv').open(encoding='utf-8-sig') as stream:
+        registry=list(csv.DictReader(stream))
     if json.loads((repo/'site/countries.json').read_text(encoding='utf-8'))!=registry:
         raise ValueError('Browser country registry is stale; regenerate site/countries.json from un/config/countries.csv')
     if output.exists():raise FileExistsError('Use a new Pages output directory')
     output.mkdir(parents=True)
     for p in (repo/'site').iterdir():
-        if p.is_file():shutil.copy2(p,output/p.name)
+        if p.is_file() and p.name not in RESEARCH_ONLY_MODULES:
+            shutil.copy2(p,output/p.name)
     (output/'archive-config.json').write_text(json.dumps(archive_config, indent=2)+'\n', encoding='utf-8')
     source=repo/'reports/hlw-cuba';dest=output/'reports/hlw-cuba';dest.mkdir(parents=True)
     for p in source.iterdir():
