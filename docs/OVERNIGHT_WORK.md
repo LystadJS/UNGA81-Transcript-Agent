@@ -12,7 +12,7 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Release 1.77.0 candidate: manual campaign outreach notebook
+## Verified release 1.77.0: manual campaign outreach notebook
 
 A new browser-only notebook covers an initial manual campaign workflow: campaign
 details, one current lead-contact/status row per country/territory, user-entered
@@ -37,7 +37,19 @@ workflows pass locally. New checks cover exact encoded limits, independent CSV
 parsing, safe HTML, malformed UTF-8/files, CRUD, filter/export scope, unapplied
 forms, full-registry mobile layout and stale reads/confirmations. Desktop/mobile
 visual inspection used fictional records only. All 2,077 retained checksums and
-the 209-entry public build pass. CI and deployment receipts are pending.
+the 209-entry public build pass.
+
+[Source #345](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/345)
+merged as `3a5d334cf88fb60bb720aa12c3a4c2e8a0a68b25` after all four checks passed.
+[Website #192](https://github.com/LystadJS/LystadJS.github.io/pull/192) merged as
+`4be7867b4fe1c8f1d481c887e5db560331e066dc` after audit and regression passed.
+The mirror contains 200 public files; repeat synchronization copied/removed zero.
+All 201 preferred-site canonical URLs (including its manifest) match expected
+hashes. An older query-string index cache was separately observed; canonical
+index bytes match. The campaign browser suite and all fifteen reporting suites
+pass at the preferred site. The original site passes the campaign and main report
+suites and all eight changed-asset hashes. These are fictional-data engineering
+checks; actual participant and government-client acceptance remains unrecorded.
 
 Four new essential public files reuse the existing theme/app styles and country
 registry. No model, package dependency, backend, personal R/Python change or
@@ -88,8 +100,10 @@ no released model or semantic-accuracy claim follows from structural QA.
 
 The R cleanup did not change browser assets or add Hugging Face storage.
 
-1. Complete this campaign notebook release, reporting usability and personal-model factual/citation acceptance, then expand
-   broader workflows within the execution/storage constraints.
+1. Complete reporting usability and personal-model factual/citation acceptance.
+   Extend campaign workflows beyond one lead/current row with explicit contact and
+   dated interaction requirements; keep shared authentication and election eligibility
+   separate from manual outreach records. Preserve browser/personal-runtime boundaries.
 2. Continue dependency-based cleanup with appropriate personal-runtime checks.
 3. Complete actual diplomat usability sessions; evaluate any optional generative
    reporting independently from the deterministic reader and stance classifier.
