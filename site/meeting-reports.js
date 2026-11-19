@@ -1,7 +1,7 @@
 /* Local reporting workspace; source loading is explicit and bounded. */
 (()=>{
   'use strict';
-  const $=id=>document.getElementById(id),Core=UNMeetingReport;
+  const $=id=>document.getElementById(id),Core=UNMeetingReport,draftWordButton=$('downloadModelDraftWord');
   let policy,countries,inventory=[],corpora=[],report=null,controller=null,shown=10,dirty=false,handoff=null,appendixIds=new Set(),notes=new Map(),bulkUndo=null;
   const sourceFileTickets=new WeakMap();
   let modelDraft=null,draftSerial=0,draftWordExporting=false;
@@ -318,7 +318,7 @@
     const ready=!!report&&!!globalThis.UNReportDraft&&!!report.settings.questions.length;
     $('downloadDraftInput').disabled=!ready;$('openModelDraft').disabled=!ready;
     for(const id of ['viewModelDraft','downloadModelDraft','clearModelDraft'])$(id).disabled=!modelDraft;
-    $('downloadModelDraftWord').disabled=!modelDraft||draftWordExporting||!globalThis.UNMeetingReportWord?.buildDraft;
+    if(draftWordButton)draftWordButton.disabled=!modelDraft||draftWordExporting||!globalThis.UNMeetingReportWord?.buildDraft;
     if(!ready)$('modelDraftStatus').textContent=!globalThis.UNReportDraft?'Personal draft support is unavailable in this browser session.':'Prepare a report with briefing questions.';
   }
   function clearDraft(){draftSerial++;modelDraft=null;$('openModelDraft').value='';$('modelDraftPreview').replaceChildren();$('modelDraftStatus').textContent='Ready for a bounded model input or a matching returned draft.';draftControls();}
@@ -338,7 +338,7 @@
   $('clearModelDraft').onclick=clearDraft;
   $('viewModelDraft').onclick=()=>$('personal-model-draft')?.focus();
   $('downloadModelDraft').onclick=()=>{if(!report||!modelDraft)return;try{$('modelDraftStatus').textContent=save(UNReportDraft.standalone(modelDraft,report),reportName('-draft-review.html'),'text/html')?'Separate draft review HTML downloaded. Keep both original report JSON and draft JSON to reopen work.':'Draft review was not downloaded. Current work kept.';}catch(e){$('modelDraftStatus').textContent='Could not export draft review: '+e.message;}};
-  $('downloadModelDraftWord').onclick=async()=>{
+  if(draftWordButton)draftWordButton.onclick=async()=>{
     if(!report||!modelDraft||draftWordExporting||!globalThis.UNMeetingReportWord?.buildDraft)return;
     const prepared=report,draft=modelDraft,revision=workspaceRevision,serial=draftSerial,sourceOperation=replacementSerial,name=reportName('-draft-review.docx');
     const current=()=>{if(prepared!==report||draft!==modelDraft||revision!==workspaceRevision||serial!==draftSerial)return false;if(sourceOperation!==replacementSerial){$('modelDraftStatus').textContent='Source selection changed. No draft Word file downloaded; try again if needed.';return false;}return true;};
