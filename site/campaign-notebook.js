@@ -8,11 +8,11 @@
  if(($('notebookOrder')&&Core.VIEW_VERSION!==1)||Core.SCHEMA!=='un.campaign-notebook.v3'||typeof Core.interaction!=='function'||(hasTransfer&&typeof Core.planContactTransfer!=='function')){ $('notebookStatus').textContent='Notebook files are from different releases. Reload this page before opening or entering work.';return;}
  let draftContacts=[],profileDirty=false,editingProfile=null;
  let draftInteractions=[],interactionDirty=false;
- let registry,entries=[],editing=null,dirty=false,entryDirty=false,revision=0,actionSerial=0,exportRevision=-1,exportStamp='',exportGenerated='',calendarBusy=false,calendarOptionsRevision=0;
+ let registry,entries=[],editing=null,dirty=false,entryDirty=false,revision=0,actionSerial=0,exportRevision=-1,exportStamp='',exportGenerated='',calendarBusy=false,calendarOptionsRevision=0,wordBusy=false;
  const status=(message,error=false)=>{$('notebookStatus').textContent=message;$('notebookStatus').classList.toggle('error',error);};
  const read=(prefix,keys)=>Object.fromEntries(keys.map(k=>{const input=$(prefix+k);if(input.validity?.badInput)throw Error('Complete or clear the date input before applying or exporting.');return [k,input.value];}));
  const data=()=>({schema:Core.SCHEMA,campaign:read('campaign_',campaignKeys),entries});
- function state(){for(const id of ['saveNotebook','downloadNotebookCSV','downloadNotebookContactCSV','downloadContactTransfer','downloadNotebookLogCSV','downloadNotebookHTML'])if($(id))$(id).disabled=entryDirty;$('notebookSaveState').textContent=entryDirty?'Apply or discard the country form before exporting.':dirty?'Unsaved notebook changes. Download JSON to keep them.':'Current notebook has no unsaved applied changes.';$('entryState').textContent=entryDirty?'Unapplied country form changes.':editing?'Editing '+editing+'. Country identity stays fixed.':'Choose a place to add a record.';calendarControls();}
+ function state(){for(const id of ['saveNotebook','downloadNotebookCSV','downloadNotebookContactCSV','downloadContactTransfer','downloadNotebookLogCSV','downloadNotebookHTML'])if($(id))$(id).disabled=entryDirty;$('notebookSaveState').textContent=entryDirty?'Apply or discard the country form before exporting.':dirty?'Unsaved notebook changes. Download JSON to keep them.':'Current notebook has no unsaved applied changes.';$('entryState').textContent=entryDirty?'Unapplied country form changes.':editing?'Editing '+editing+'. Country identity stays fixed.':'Choose a place to add a record.';calendarControls();wordControls();}
  function changed(form=false){revision++;if(form)entryDirty=true;else dirty=true;state();}
  function ticket(){const t={action:++actionSerial,revision};if($('notebookConfirm').open)$('notebookConfirm').close('keep');return t;}
  function current(t){if(t.action!==actionSerial)return false;if(t.revision!==revision){status('Your notebook changed while the action was pending. Current work kept.');return false;}return true;}
@@ -95,6 +95,18 @@
  if($('downloadNotebookContactCSV'))$('downloadNotebookContactCSV').onclick=()=>{try{const s=snapshot();if(save(Core.contactCSV(s.value,registry),s.name+'-contacts.csv','text/csv;charset=utf-8'))status('All-contact CSV download started. Keep JSON separately to reopen work.');}catch(e){status(e.message,true);}};
  if($('downloadContactTransfer'))$('downloadContactTransfer').onclick=()=>{try{const s=snapshot(),transfer=Core.contactTransfer(s.value,registry);if(save(JSON.stringify(transfer),s.name+'-contacts.json','application/json'))status('Contact-only JSON download started. It excludes campaign notes, statuses and conversations; keep full notebook JSON to resume work.');}catch(e){status(e.message,true);}};
  $('downloadNotebookHTML').onclick=()=>{try{const s=snapshot();if(save(Core.html(s.value,registry),s.name+'.html','text/html'))status('Complete reading HTML download started. Keep JSON separately to reopen work.');}catch(e){status(e.message,true);}};
+ function wordControls(){
+  if(!$('downloadNotebookWord'))return;
+  const available=typeof globalThis.UNMeetingReportWord?.buildCampaign==='function'&&globalThis.UNMeetingReportPackage?.BOUNDED_ZIP_VERSION===1;
+  $('downloadNotebookWord').disabled=!available||wordBusy||entryDirty;
+  $('notebookWordState').textContent=!available?'Word export is unavailable. Reload this page; JSON and HTML remain available.':wordBusy?'Preparing Word briefing…':entryDirty?'Apply or discard country form changes before Word export.':'Word includes campaign notes, every country, contact profile and interaction, independently of list filters. Review private details before sharing.';
+ }
+ if($('downloadNotebookWord'))$('downloadNotebookWord').onclick=async()=>{
+  if(wordBusy)return;const operation=actionSerial;let s;
+  try{s=snapshot();wordBusy=true;wordControls();const bytes=await globalThis.UNMeetingReportWord.buildCampaign(s.value,registry);if(operation!==actionSerial)return;if(s.revision!==revision){status('Notebook changed while preparing Word. Current work kept; prepare another copy.');return;}if(save(bytes,s.name+'.docx','application/vnd.openxmlformats-officedocument.wordprocessingml.document'))status('Complete editable Word download started. Keep notebook JSON separately to reopen work; Word edits cannot be imported.');}
+  catch(e){if(operation===actionSerial&&(!s||s.revision===revision))status(e.message,true);}
+  finally{wordBusy=false;wordControls();}
+ };
  function calendarControls(){
   if(!$('downloadCampaignCalendar'))return;const available=typeof globalThis.UNMeetingReportCalendar?.buildCampaign==='function',cutoff=$('calendarThrough'),valid=!cutoff.validity.badInput&&(!cutoff.value||Core.date(cutoff.value)),count=valid?entries.filter(e=>e.follow_up_date&&(!cutoff.value||e.follow_up_date<=cutoff.value)).length:0;
   $('downloadCampaignCalendar').disabled=!available||calendarBusy||entryDirty||!valid||!count;$('campaignCalendarState').textContent=!available?'Calendar export is unavailable. Reload this page.':calendarBusy?'Preparing calendar copy…':entryDirty?'Apply or discard country form changes before exporting.':!valid?'Complete or clear the calendar cutoff date.':count+' dated country follow-up'+(count===1?'':'s')+'. This calendar scope ignores list filters; undated records are excluded.';

@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.82.0",
+  "browser_engine": "browser-descriptive-1.83.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-19",
   "features": [
+    "Complete editable campaign Word briefing reuses the native Word/ZIP writers without the report core, keeps all campaign/country/profile/interaction text independently of list filters, enforces a 1 MiB whole-file bound, and isolates optional module failures/stale work; no new runtime files, dependencies or storage",
     "Campaign follow-up queue with earliest dated follow-up or latest manually logged interaction ordering, explicit dated/undated filters and alphabetical ties; view-only controls preserve complete exports, unapplied edits and saved v3 JSON, reset on New/Open/Clear, and add no files, dependencies or storage",
     "Explicit all-day campaign follow-up ICS copies reuse the report calendar writer, include all dated country records independently of filters with optional cutoff/country notes, omit lead/profile fields, conversation logs and campaign notes, and preserve dirty work with stale data/options/source refusal; no connection, invitations, alarms, new runtime files or storage",
     "Contact-only JSON transfer excludes campaign notes, lead/status fields and conversations; reviewed atomic append, identical-ID skipping, conflict refusal and complete-state byte/count budgets preserve existing work, with latest-operation/cross-control cleanup and no new runtime files or storage",

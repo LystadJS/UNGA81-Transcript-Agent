@@ -56,6 +56,7 @@ with zipfile.ZipFile(sys.argv[1]) as z:
   await assert.rejects(Package.read(Package.zip(entries.slice(0,4))),/Invalid report package/);
   console.log('PASS: original ZIP reader round-trip, independent entry extraction, CRC/SHA-256 and manifest binding, malformed/extra/missing/encrypted/compressed/trailing/offset/size refusal');
  }finally{fs.rmSync(directory,{recursive:true,force:true});}
+ for(const limit of [0,-1,1.5,25000001,Infinity])assert.throws(()=>Package.zip([{name:'word/test.xml',bytes:new Uint8Array([1])}],'Test',{limit}),/Invalid archive byte limit/);
  const limit=Core.LIMIT;
  try{
   Core.LIMIT=bytes.length;assert.equal((await Package.build(report,corpora)).length,bytes.length);assert.deepEqual(await Package.read(bytes),Core.savedReport(report,corpora));
