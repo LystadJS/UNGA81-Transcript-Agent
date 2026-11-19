@@ -27,9 +27,9 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/configure-pages@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
       - name: Test browser analysis and collection
@@ -62,9 +62,10 @@ jobs:
         env:
           ARCHIVE_MANIFEST_URL: ${{ vars.ARCHIVE_MANIFEST_URL }}
         run: python3 tools/build_pages.py _site
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
+          include-hidden-files: true
       - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

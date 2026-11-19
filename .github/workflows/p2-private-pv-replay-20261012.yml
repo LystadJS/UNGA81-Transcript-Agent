@@ -12,10 +12,10 @@ jobs:
       matrix:
         batch: [0, 1]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.11'
       - name: Install pinned cryptography and PDF extraction dependencies
@@ -60,7 +60,7 @@ jobs:
           assert files[0].read_bytes()[:8]==b'UNW4P2\x00\x01'
           print('PASS: uploaded artifact contains ciphertext only')
           PY
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: p2-20261012-originals-batch-${{ matrix.batch }}
           path: ${{ runner.temp }}/p2-private/*.sealed

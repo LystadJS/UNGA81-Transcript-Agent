@@ -28,14 +28,14 @@ jobs:
       OWNER_INCLUDE_REGISTRATION: ${{ inputs.include_registration }}
       HF_HUB_DISABLE_TELEMETRY: '1'
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - run: python -m pip install --disable-pip-version-check huggingface-hub==0.36.0 cryptography==46.0.3
       - name: Verify pinned training inputs and encrypt in memory
         run: python tools/export_owner_training.py
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: recipient-encrypted-training
           path: ${{ runner.temp }}/owner-training.encrypted

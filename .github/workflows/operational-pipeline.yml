@@ -26,7 +26,7 @@ jobs:
       HF_ACCEPTED_MODEL_REVISION: ${{ vars.HF_ACCEPTED_MODEL_REVISION }}
       HF_HUB_DISABLE_TELEMETRY: '1'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Require durable private storage
         shell: bash
         run: |
@@ -34,7 +34,7 @@ jobs:
             echo '::error::Set HF_TOKEN secret and HF_DATASET_REPO variable before running collection. No transient-only collection will be performed.'
             exit 1
           fi
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - name: Install pinned storage client
@@ -163,7 +163,7 @@ jobs:
         run: python tools/write_operational_receipt.py
       - name: Retain source-free monitoring receipt
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: operational-receipt-${{ github.run_attempt }}
           path: ${{ runner.temp }}/operational-receipt.json
