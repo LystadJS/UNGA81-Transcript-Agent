@@ -40,6 +40,18 @@ synchronization copied/removed zero of 200 public files. No website publication
 is needed. Models, dependencies and HF storage are unchanged; public application 1.81.0 remains verified. This prepares actual
 user/client work and does not substitute for it.
 
+## Public vendor evidence refresh
+
+On 19 November the public vendor homepage was rendered in an isolated browser:
+it provides broad reporting/campaign claims and demo links, not a detailed feature
+checklist. The February 2026 Venture Kick account also confirms broad position
+coordination and secure-communication claims. The [capability matrix](CAPABILITIES.md)
+now distinguishes these categories from local comparisons/file exchange and lists
+requirements for any authorized shared service. No account, demo booking or message
+was used. Secondary/AI-generated product details remain unconfirmed. App assets
+and release 1.81.0 are unchanged. Full parity requires permitted vendor workflow
+evidence and actual user/client observations; marketing is not acceptance.
+
 ## Verified application checkpoint
 
 [Release 1.81.0 checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/9e90de4926bd51b5c15e1c04f7ec396fe798a7e7/docs/OVERNIGHT_WORK.md)
