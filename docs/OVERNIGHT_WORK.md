@@ -5,6 +5,18 @@ reporting application and broader feasible diplomatic workflows with JavaScript-
 browser execution, separate personal R/Python tools, bounded Hugging Face storage
 and a focused source tree. Full DiploTools parity is not established.
 
+## Exclude unused research modules from publication
+
+The public build omits two modules with no published consumers:
+`issue-candidates.js` and `issue-extraction.js`. Their offline research source and
+tests remain intact. Before/after builds contain 200/198 files and 209/207 entries;
+the only difference is removal of those 9,909 bytes. Every retained file is
+byte-identical. Five build tests pass through both direct and discovery invocation;
+the existing candidate and extraction checks also pass on synthetic inputs.
+Direct invocation now includes the checked-archive class, previously defined after
+`unittest.main()`. No application release, schema, dependency, model, HF storage,
+source acquisition or managed-client acceptance changes. Publication is pending.
+
 ## Opt-in contact-profile change review — 1.85.0
 
 Contact transfers keep add-only conflict refusal by default. An explicit review

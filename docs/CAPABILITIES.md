@@ -103,8 +103,9 @@ retains ten private report/campaign downloads and checks handoff, explicit calen
 dates and complete reading copies. Model inference, calendar-client import and
 participant acceptance remain explicitly unperformed by the tool. Actual user
 and client observations belong in a separate private session record. [Source #355](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/355) passed
-its contract check and is merged. Public application bytes remain 1.81.0; repeat
-mirror synchronization copies/removes zero files.
+its contract check and is merged. At that facilitator checkpoint, public
+application bytes remained 1.81.0 and repeat mirror synchronization copied/removed
+zero files; the current release is recorded at the top of this document.
 
 The owner selected **Microsoft Edge and Outlook** for the actual client rehearsal.
 The [targeted guide](REPORTING_USABILITY.md#edge-and-outlook-rehearsal) gives file
@@ -155,6 +156,14 @@ models or proof of government alignment. All 37 reserved meetings remain closed.
    requirements with explicit execution/storage/identity constraints.
 
 ## Repository cleanup
+
+The public builder excludes `issue-candidates.js` and `issue-extraction.js`:
+neither is referenced by a published page, script or worker. Both remain available
+to their offline research tests. This removes 9,909 bytes from publication without
+changing any retained public file: 198 files in 207 build entries. A build test
+checks the exclusion and refuses a future published dependency on either module.
+This is publication cleanup, not removal of the active research source or an
+accepted model. App release 1.85.0 and browser functionality are unchanged.
 
 The initial inventory measured approximately 127 MB under `un/` and 24 MB under
 `docs/`, including repeated fixtures and frozen receipts. Three generated GMM,
