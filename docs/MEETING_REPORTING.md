@@ -55,6 +55,13 @@ No real generative model, diplomat session or government-browser policy acceptan
 has been recorded. Model quality, hardware capacity and human factual review remain
 separate work; the tiny BERT stance checkpoint is not a generative model.
 
+For personal-model acceptance, retain the code commit, runtime/model revision,
+hardware and server locality settings with a private review record. Use authorized
+development material covering explicit national wording, collectives, negation,
+contradictory passages and no-match questions. Review claim support, omissions,
+attribution and citation correctness separately. A passed transport check or exact
+quote is not a factual-quality score; do not use the unopened reserved meetings.
+
 ## Choose the right export
 
 Prepared-report downloads are grouped by purpose. **Save work to reopen** keeps
