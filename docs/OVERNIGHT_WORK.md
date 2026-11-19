@@ -20,6 +20,21 @@ event filters match no feature file. Their specific CI-side-effect approval rema
 pending; this feature does not open or run that candidate. Managed testing remains
 deferred and full DiploTools parity is not established.
 
+[Source #370](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/370)
+merged as `ae74c54602df970472015dcbff4c098d509dcaf1` after numerical, browser and
+operational contracts passed. [Website #201](https://github.com/LystadJS/LystadJS.github.io/pull/201)
+merged as `79008e732c9861cae86c4058a395212ba87ba734` after audit/regression passed.
+All 201 preferred-site canonical hashes and four changed original-site hashes
+match; four campaign suites pass live at both URLs with fictional profiles.
+Complete field previews, optional clearing, immutable country/ID updates,
+unchanged lead/history, active-editor refresh, no-op replay, exact capacity/UTF-8
+bounds, stale mode/read/preview/edit guards, reset, mobile and capability/layout
+isolation are covered. Source CI retains sixteen reporting UI suites, four
+campaign suites, facilitator and read-only archive checks. The public build stays
+209 entries with 200 mirror assets; repeat sync copies/removes zero. No runtime,
+dependency, schema or HF-storage increase, scientific gate change, real-client
+acceptance or approval-dependent CI dispatch follows from this release.
+
 ## Source-free historical/research action subset
 
 The full 46-workflow PR opening was rejected by automatic approval review because
