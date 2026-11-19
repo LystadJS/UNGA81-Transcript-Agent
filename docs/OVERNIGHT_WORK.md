@@ -12,86 +12,48 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Verified release 1.76.0
+## Current increment: draft-review facilitator setup
 
-The optional personal-draft panel adds a separate Word review copy. The existing
-native document writer is shared by ordinary Word and draft Word; no second
-renderer or dependency is added. Draft export revalidates the source/question
-context and exact citations, then keeps the complete country-first report before
-the unreviewed model sections. Quotations, source links, evidence gaps, declared
-model provenance and collective/unverified-capacity caveats remain visible.
+The personal facilitator now produces four files: three source-validated fixtures
+and `synthetic-model-draft.json`, paired with the original two-meeting report.
+Two report questions yield one hand-authored collective-source example and one
+unanswered section. The declared model says the request count is simulated and
+no inference occurred. The tool records `tool_model_inference: not_run`,
+`bundled_draft: hand_authored_fictional` and participant acceptance as unrecorded.
+This does not attest external activity or model quality.
 
-Word is a reading/editing copy outside this app. Keep the original report JSON and
-returned draft JSON separately to resume; Word edits cannot be imported. Ordinary
-Word, HTML, print, CSV, saved JSON and ZIP retain their previous contents. Draft
-Word does not clear unsaved-work protection. It refuses oversized HTML/whole
-DOCX and unsupported XML characters without truncation. New report edits, source
-actions, draft selections or clearing suppress an old result/error; the optional
-exporter can fail without preventing ordinary report preparation or draft HTML.
+`--fixtures-only` stays Node-only and works without Playwright or a model. The
+isolated browser smoke now opens the pair, checks the exported input context,
+reviews collective/missing-source caveats, and retains separate Word and HTML
+copies. Its five downloads include the original two saved-JSON copies and a model
+input packet. New source/question tampering checks refuse mismatches. Private
+temporary files and loopback/public-build isolation remain unchanged; receipts
+contain metadata rather than source text or notes. The visible-session close and
+failed-download cleanup checks remain in force. The guide separates hardware-free
+interface tasks from optional real-model acceptance.
 
-| PR | Change | Checked head / merge |
-| --- | --- | --- |
-| [Source #340](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/340) | Separate editable draft Word review copies | Three checks passed at `2db557a`; merged `8f01f92` |
-| [Website #190](https://github.com/LystadJS/LystadJS.github.io/pull/190) | Canonical Word review mirror and source/release pins | Audit/regression passed at `45b5bb2`; merged `ee39a15` |
-| [Source #341](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/341) | Optional-button startup compatibility | Three checks passed at `e6f663d`; merged `237138d` |
-| [Website #191](https://github.com/LystadJS/LystadJS.github.io/pull/191) | Compatibility mirror and final source pin | Audit/regression passed at `94fcc6c`; merged `c89ef8d` |
+The focused facilitator contract passes locally, including fixture-only,
+headless smoke, visible-session lifecycle simulation, output failure and cleanup.
+All 2,077 retained checksums and the 205-entry public build pass locally. Mirror
+synchronization copies/removes zero files. Full CI and publication receipts are
+pending. Generated material stays outside
+the repository and public build. No production app asset, schema, dependency,
+model weight, backend, personal R/Python change or Hugging Face storage is added.
+Actual diplomat, government-browser, desktop Word and model-quality acceptance
+remain outstanding. All 37 reserved meetings and scientific gates stay intact.
 
-Both public URLs serve 1.76.0. All 197 preferred-site files match expected SHA-256
-hashes. Fifteen reporting browser workflows pass live with fictional sources:
-reporting, personal drafts, calendar, affiliation navigation, bulk appendix,
-inventory addition, saved-source addition, package opening, source removal,
-replacement, device library, packages, Word, print/PDF and archive handoff. The
-expanded personal-draft, ordinary Word and main reporting suites also pass at the
-original URL, whose four changed assets match canonical source hashes. Skipped
-PR live jobs are not deployed test passes.
+## Verified application 1.76.0
 
-Independent native OOXML/CRC parsing verifies the exact ordinary-report text
-prefix, quotations, source links, Unicode/literal markup, evidence gaps and
-unreviewed/collective labels without macros or media. Scope/citation mismatch,
-byte/character limits, stale edits/clears/source actions and optional exporter
-failure preserve work. A synthesized layout without the new button reproduced a
-startup error; optional control binding now passes startup, report preparation,
-draft HTML review, JSON readiness and ordinary Word download. This is a targeted
-missing-control simulation, not acceptance of every cached historical layout.
+The app remains at 1.76.0. Its previously verified 197 preferred-site hashes,
+fifteen live reporting workflows, three original-site reporting/Word suites,
+264 Python tests, 2,077 retained checksums and 205-entry public build retain their
+original scope; they are not new user or model acceptance. The separate editable
+draft Word copy remains available, with complete ordinary-report content first,
+unreviewed/capacity labels and source/question revalidation.
 
-Local validation passes fifteen reporting browser workflows and the focused final
-compatibility check. CI passes 264 Python tests and full reporting contracts/browser
-workflows. All 2,077 retained package checksums and the 205-entry public build pass.
-Mirror count remains 196 files; repeat synchronization copies/removes zero files.
-Four existing application assets plus the manifest change. There is no new module,
-schema, model, dependency, backend, personal R/Python change or Hugging Face
-storage. Actual model quality, desktop Word rendering and diplomat/government
-browser acceptance remain outstanding. All 37 reserved meetings, original R
-artifacts and scientific publication gates remain unchanged.
-
-The [previous checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/0fe4dabe518e461fb2b5f09c9d20751e0ff83752/docs/OVERNIGHT_WORK.md)
-retains verified release 1.75.0, 197 preferred-site hashes and fifteen live reporting
-workflows, with links to earlier receipts. Use each result at its original scope.
-
-## Runnable usability setup
-
-The [facilitator tool](../tools/reporting_usability.cjs) replaces the guide's inline
-fixture generator. `--fixtures-only` creates the three source-validated JSON files
-using Node alone. The default local session uses the existing personal QA setup
-(Node, Python public builder and Playwright), serves only the public build on
-loopback, intercepts fictional inventory/transcript responses and blocks other
-external browser requests. It adds no dependency to the government-browser app.
-
-`--smoke` passes an automated import/add/export/source-revalidation and network
-blocking check. The tool contract also verifies private temporary files, fixture-only
-operation without Playwright, separate duplicate downloads, closed-session cleanup
-and a metadata-only receipt whose participant acceptance is always `not_recorded`.
-The interactive close lifecycle is exercised with a headless driver on this host;
-a visible session needs a graphical display and remains to be run with actual
-participants. No real transcript, held-out source, participant response or human
-acceptance is created by these checks. The synthetic-inventory setup gap is addressed;
-actual representative-user sessions and work-browser policies remain untested.
-
-The facilitator adds no public asset, schema, model, Hugging Face storage or
-personal R/Python analysis code. Fixture files/downloads stay
-outside the checkout, and temporary public-build copies are removed on normal exit.
-The guide now names the executable setup rather than an unavailable synthetic
-inventory. Record actual participant findings separately.
+The [previous checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/ef92a70a28430431b94f435fb13e82af4e3ac578/docs/OVERNIGHT_WORK.md)
+retains the complete 1.76.0 deployment, compatibility and earlier receipts. Use
+each result at its original version and scope.
 
 ## Source tree and remaining work
 
@@ -114,7 +76,7 @@ selection rather than following the user's latest run.
 Seven suites pass 453 default R checks plus two explicitly selected archived-run
 checks on Linux R 4.5.0 (Matrix 1.7.3, cluster 2.1.8.1, igraph 2.1.4). At the cleanup checkpoint, the Python
 suite passed 256 tests, including six inventory-maintenance checks; the current
-264-test total is recorded above. This does not
+264-test total is recorded in the verified checkpoint above. This does not
 establish Windows, live Shiny, PDF or scientific acceptance.
 
 Fresh full offline replays before and after cleanup both exit successfully with
