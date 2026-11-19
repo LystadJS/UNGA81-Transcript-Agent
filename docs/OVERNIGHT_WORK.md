@@ -12,7 +12,7 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Release 1.78.0 candidate: dated campaign outreach logs
+## Verified release 1.78.0: dated campaign outreach logs
 
 The existing manual notebook now stages dated interactions inside each country
 form. Each log has a user-entered date, channel, contact/address snapshot, notes
@@ -35,8 +35,17 @@ HTML, pending interaction fields, multiple contacts, stale remove decisions,
 Keep/Escape, JSON replay and mobile long-text layout. Cached pre-log layouts retain
 logs through ordinary edits/saves; mismatched core files refuse entry with a reload
 message. Migrated v2 state must fit the same byte limit; dense v1 refusals are
-explicit rather than truncating work. Desktop/mobile inspection used fictional data. Full deployment and CI
-receipts are pending. No new runtime file, dependency, backend, model weights,
+explicit rather than truncating work. Desktop/mobile inspection used fictional data. [Source #347](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/347)
+merged as `318651fd624fd00b082ef34e26551840f6ba5bcd` after numerical, browser and
+contract checks passed, including fifteen reporting workflows.
+[Website #193](https://github.com/LystadJS/LystadJS.github.io/pull/193) merged as
+`af7a27c4651c8ff19e87b9579f75509bfe82bff8` after audit and regression passed.
+All 201 preferred-site canonical files and all five changed original-site assets
+match expected hashes. The expanded campaign browser workflow passes live at
+both URLs. Main reporting also passed locally; fifteen live reporting suites
+retain their previous 1.77 scope below. All 2,077 retained checksums and the
+209-entry public build pass; no Python test change alters the 264-test suite.
+The mirror remains 200 public files; repeat sync copied/removed zero. No new runtime file, dependency, backend, model weights,
 private records, personal R/Python change or Hugging Face storage is added.
 
 ## Previous verified release
@@ -81,8 +90,8 @@ no released model or semantic-accuracy claim follows from structural QA.
 The R cleanup did not change browser assets or add Hugging Face storage.
 
 1. Complete reporting usability and personal-model factual/citation acceptance.
-   Extend campaign workflows beyond one lead/current row with explicit contact and
-   dated interaction requirements; keep shared authentication and election eligibility
+   Extend campaign workflows with reusable contact profiles and explicit links to
+   dated interactions; keep shared authentication and election eligibility
    separate from manual outreach records. Preserve browser/personal-runtime boundaries.
 2. Continue dependency-based cleanup with appropriate personal-runtime checks.
 3. Complete actual diplomat usability sessions; evaluate any optional generative

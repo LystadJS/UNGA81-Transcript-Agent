@@ -1,17 +1,21 @@
 # Current capability and acceptance matrix
 
-Updated 19 November 2026, UTC. **Release 1.77.0 is deployed and verified at both
-public URLs.** All 201 preferred-site files match expected hashes at their canonical
-URLs. The campaign notebook and fifteen reporting browser workflows passed live
-with fictional records/sources; the original URL passed campaign and main reporting
-checks, and all eight changed assets match. All four source PR checks and both
-website PR checks passed before merge. The unchanged Python suite has 264 tests;
-all 2,077 retained package checksums and the 209-entry public build pass.
-The new notebook keeps manual campaign/contact/status records in browser memory
-with explicit JSON saves and complete CSV/HTML downloads. These are engineering
-checks, not actual model quality, desktop Word, government-browser policy or
-diplomat acceptance. Full DiploTools parity remains unestablished. See the
-[current checkpoint](OVERNIGHT_WORK.md).
+Updated 19 November 2026, UTC. **Release 1.78.0 is deployed and verified at both
+public URLs.** All 201 preferred-site canonical files and all five changed
+original-site assets match expected hashes. The expanded campaign browser suite
+passes live at both URLs, including dated contact snapshots, complete log exports,
+v1 migration, cached-layout preservation and mismatched-core refusal. Source #347
+passed numerical, browser and contract checks (including fifteen reporting
+workflows); website #193 passed audit and regression before merge. The unchanged
+Python suite has 264 tests; all 2,077 retained package checksums and the 209-entry
+public build pass. The preceding fifteen live reporting workflows retain their
+1.77 scope in the linked checkpoint; they are not newly rerun live here.
+
+Manual logs do not change current outreach status or reconstruct past history.
+There is no new runtime file, dependency, backend, model weight or Hugging Face
+storage. These are fictional-data engineering checks, not actual model quality,
+desktop Word, government-browser policy or diplomat acceptance. Full DiploTools
+parity remains unestablished. See the [current checkpoint](OVERNIGHT_WORK.md).
 
 ## Reporting and execution
 
