@@ -12,62 +12,39 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Verified release 1.77.0: manual campaign outreach notebook
+## Release 1.78.0 candidate: dated campaign outreach logs
 
-A new browser-only notebook covers an initial manual campaign workflow: campaign
-details, one current lead-contact/status row per country/territory, user-entered
-status and follow-up dates, source reference and notes. The shared 249-entry
-geographic registry is a place picker, not an electorate. Counts describe rows;
-reported support is not an actual vote, verified identity or prediction.
+The existing manual notebook now stages dated interactions inside each country
+form. Each log has a user-entered date, channel, contact/address snapshot, notes
+and source reference. Add stages a log; Apply commits the country form in session
+memory; JSON saves it. Logged contacts can differ from the current lead. No log
+automatically changes status, status date, lead, follow-up or country counts.
 
-Apply commits a country form to session memory; JSON explicitly saves the full
-notebook. CSV exports all country rows but excludes campaign-level notes. The
-script-free reading HTML includes campaign notes and complete records for print.
-Filters change only the list, not counts or downloads. Imports/compact JSON and
-reading copies are bounded to 1 MiB without truncation. No account, automatic
-storage, history, reminders or messages are provided. Full multi-contact election
-CRM and authenticated collaboration remain additional work.
+Strict v1 files reopen with empty history; v2 writes explicit interaction arrays.
+No prior conversations are inferred from dates or statuses. Up to 100 logs per
+place and 1,000 per notebook share the existing 1 MiB bound. JSON and script-free
+HTML retain all logs. Separate complete interaction CSV excludes campaign/country
+notes and current statuses; existing country CSV retains its original scope.
+Literal search includes logs; filters never reduce downloads. Removal is explicit
+and confirmable, not an immutable audit trail. Reusable contact profiles, automatic
+change history, accounts and full election CRM remain additional work.
 
-Strict schema/date/unique-place/UTF-8 checks precede replacement. Keep/Escape,
-unapplied/dirty-form protection and latest-operation/revision guards retain work;
-old reads/errors and stale confirmations cannot replace newer edits. Country
-identity stays fixed during editing. Failed download starts preserve dirty state.
-Current interface/core contracts and all fifteen existing reporting browser
-workflows pass locally. New checks cover exact encoded limits, independent CSV
-parsing, safe HTML, malformed UTF-8/files, CRUD, filter/export scope, unapplied
-forms, full-registry mobile layout and stale reads/confirmations. Desktop/mobile
-visual inspection used fictional records only. All 2,077 retained checksums and
-the 209-entry public build pass.
+Local engineering checks cover migration without invented history, duplicate IDs,
+strict fields/dates, per-country/global limits, both independent CSV parses, safe
+HTML, pending interaction fields, multiple contacts, stale remove decisions,
+Keep/Escape, JSON replay and mobile long-text layout. Full deployment and CI
+receipts are pending. No new runtime file, dependency, backend, model weights,
+private records, personal R/Python change or Hugging Face storage is added.
 
-[Source #345](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/345)
-merged as `3a5d334cf88fb60bb720aa12c3a4c2e8a0a68b25` after all four checks passed.
-[Website #192](https://github.com/LystadJS/LystadJS.github.io/pull/192) merged as
-`4be7867b4fe1c8f1d481c887e5db560331e066dc` after audit and regression passed.
-The mirror contains 200 public files; repeat synchronization copied/removed zero.
-All 201 preferred-site canonical URLs (including its manifest) match expected
-hashes. An older query-string index cache was separately observed; canonical
-index bytes match. The campaign browser suite and all fifteen reporting suites
-pass at the preferred site. The original site passes the campaign and main report
-suites and all eight changed-asset hashes. These are fictional-data engineering
-checks; actual participant and government-client acceptance remains unrecorded.
+## Previous verified release
 
-Four new essential public files reuse the existing theme/app styles and country
-registry. No model, package dependency, backend, personal R/Python change or
-Hugging Face storage is added. Notebook data is manual and private by user choice;
-no records or generated outputs are committed or uploaded. Source policy/model
-gates and all 37 reserved meetings remain unchanged. See the
-[data contract](CAMPAIGN_NOTEBOOK.md).
-
-## Previous verified application and facilitator
-
-Application 1.76.0 and the model-free four-file facilitator remain available. The
-[previous checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/cdd2b699f329f300d62b34154bcd8dcf21fb4132/docs/OVERNIGHT_WORK.md)
-retains 197 preferred-site hashes, fifteen live reporting workflows, three
-original-site suites, 264 Python tests, 2,077 package checksums and the 205-entry
-build, plus source #343's model-free paired draft/Word/HTML rehearsal. These are
-engineering receipts at their original scope, not new user/model acceptance.
-Actual model, desktop Word and diplomat/government-browser validation remain
-outstanding.
+[Release 1.77.0 checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/30179d4ba3846523ca018ca458ac5d191259a836/docs/OVERNIGHT_WORK.md)
+retains the 201 preferred-site hashes, fifteen live reporting workflows plus the
+campaign workflow, two original-site suites, 264 Python tests, 2,077 package
+checksums and 209-entry public build. It also links the preceding reporting/Word
+and model-free facilitator receipts. Those are engineering checks at their
+original scope, not new participant/model acceptance. Actual model, desktop Word
+and diplomat/government-browser validation remain outstanding.
 
 ## Source tree and remaining work
 

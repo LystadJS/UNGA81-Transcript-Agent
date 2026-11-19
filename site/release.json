@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.77.0",
+  "browser_engine": "browser-descriptive-1.78.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-19",
   "features": [
+    "Manual dated country outreach logs with contact snapshots, complete interaction CSV and script-free HTML, 1 MiB v2 JSON with v1 migration without invented history; no automatic status changes, contact authentication or new storage",
     "Browser-only campaign outreach notebook with user-entered lead contacts, dated statuses and follow-up notes, one current record per country/territory, explicit 1 MiB JSON save/reopen and complete CSV/script-free HTML copies; unapplied/dirty work and stale imports are protected, with no model inference, actual-vote prediction, automatic storage, new dependencies or Hugging Face storage",
     "Separate editable personal-draft Word review copies reuse the native report writer, preserve the full country-first report and unreviewed source-linked claims, revalidate source/question scope and refuse stale or oversized exports; ordinary exports remain unchanged with no new modules, dependencies, schemas or storage",
     "Source-file Open/Add selections supersede older file checks even when cleared; obsolete reads stop before source validation, stale errors respect newer report work and current file controls retain latest-operation cleanup, without new modules, schemas, dependencies or storage",
@@ -52,9 +53,9 @@
     "Ten-year humanitarian access/civilian protection workflow: independent historical as-of date, current country-position statistics, coverage heatmap, U.S. history, automatic observed country trajectories, source-bound historical import and saved replay; fitted models withheld",
     "Country briefings and documentary exports separate executive policy, congressional analysis, enacted U.S. law and other official evidence; historical status and current gaps remain visible",
     "Qualified universal-jurisdiction support distinguished from conflicting positions without adding agreement scores",
-    "Automatic source-linked country–U.S. briefings separating UN statements, shared priorities, historical/dated official documents and current gaps; standalone script-free briefing export",
+    "Automatic source-linked country\u2013U.S. briefings separating UN statements, shared priorities, historical/dated official documents and current gaps; standalone script-free briefing export",
     "Separate source-bound documentary policy reviews: historical dates, official document links, saved review notes, no contribution to UN statement statistics or agreement scores",
-    "Automatic nearby-date comparisons: signed date differences, exact policy direction versus shared child-protection, climate-finance, UNCAT-accession, human-rights-institution and renewable-energy priorities, nearest-date ties, saved 0–14-day window, separate from same-day scores",
+    "Automatic nearby-date comparisons: signed date differences, exact policy direction versus shared child-protection, climate-finance, UNCAT-accession, human-rights-institution and renewable-energy priorities, nearest-date ties, saved 0\u201314-day window, separate from same-day scores",
     "National implementation priorities, bounded adjacent renewable-energy targets and climate-finance appeals; qualified domestic commitments remain outside U.S. agreement scoring",
     "three-country source review: 125 questions, qualified recognition of specific OHCHR functions, human rights framing, and explicit AOSIS attribution without national inference",
     "source-reviewed country coverage across 123 questions; explicit positions with unspecified context remain visible and never establish U.S. agreement",
@@ -192,13 +193,20 @@
   },
   "campaign_notebook": {
     "entry": "campaign-notebook.html",
-    "schema": "un.campaign-notebook.v1",
+    "schema": "un.campaign-notebook.v2",
     "status": "local_engineering_pass",
     "data_origin": "user_entered_outreach",
     "max_json_bytes": 1048576,
     "persistence": "session_memory_and_explicit_downloads",
     "authenticated_shared_workspace": false,
     "actual_vote_predictions": false,
-    "empirical_usability_acceptance": "not_run"
+    "empirical_usability_acceptance": "not_run",
+    "readable_schemas": [
+      "un.campaign-notebook.v1",
+      "un.campaign-notebook.v2"
+    ],
+    "max_interactions_per_country": 100,
+    "max_interactions_per_notebook": 1000,
+    "history_origin": "user_entered_dated_interactions_not_verified_audit"
   }
 }
