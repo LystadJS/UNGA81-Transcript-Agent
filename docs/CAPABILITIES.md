@@ -50,7 +50,40 @@ and [operations guide](OPERATIONS.md) for setup and format limits. Browser repor
 remain useful while automated stance predictions are withheld. Source hashes verify
 byte consistency, not speaker identity, factual correctness or national capacity.
 
-Public comparison sources checked 18 November 2026: [FIT's product description](https://www.fondation-fit.ch/en/general/news/2026/fit-supports-impli-with-a-tech-seed-loan-and-diplotools-and-hafnova-with-two-digital-seed-loans) identifies PowerTranscript's generated transcripts/summaries, user-defined templates and centralized retrieval, and PowerElection's UN campaign CRM. [UNITAR's launch account](https://unitar.org/about/news-stories/news/unitar-and-diplotools-launch-tech-solutions-growing-diplomatic-workloads) independently describes election/campaign management. These are public product descriptions, not an authenticated feature-by-feature vendor acceptance test. The vendor homepage was unavailable through the web tool during this check. This app uses published English transcripts and deterministic country reporting, with optional personal model drafts awaiting real-model acceptance. Live transcription, authenticated shared workspaces and full multi-contact/election CRM remain separate gaps; the local campaign notebook covers an initial manual country-outreach workflow. Do not substitute unrelated DiploFoundation products for DiploTools evidence.
+## Vendor comparison and remaining work
+
+Public evidence refreshed **19 November 2026**. [FIT's product description](https://www.fondation-fit.ch/en/general/news/2026/fit-supports-impli-with-a-tech-seed-loan-and-diplotools-and-hafnova-with-two-digital-seed-loans)
+identifies PowerTranscript's generated transcripts/summaries, user-defined templates
+and centralized retrieval, and PowerElection's UN campaign CRM.
+[UNITAR's launch account](https://unitar.org/about/news-stories/news/unitar-and-diplotools-launch-tech-solutions-growing-diplomatic-workloads)
+confirms an election-management demonstration.
+[Venture Kick's February 2026 account](https://www.venturekick.ch/DiploTools-receives-CHF-150000-from-Venture-Kick-to-build-purposebuilt-AI-tools-for-modern-diplomacy)
+also describes position coordination and secure communication, alongside election
+tracking and automated conference reporting. These are publisher/vendor descriptions,
+not independent technical security tests or measured acceptance for this app.
+
+The [vendor homepage](https://diplotools.com/) returned a JavaScript shell to the
+text tool; rendering its public page in an isolated browser exposed general
+report-generation/campaign/centralization claims and demo links, but no detailed
+product checklist. No account was accessed, demo requested or communication sent.
+The time-saving claims are promotional figures, not benchmarks for this project.
+Product names or fine-grained features found only in secondary/AI-generated
+listings are not treated as confirmed requirements. Unrelated DiploFoundation
+products are not DiploTools evidence.
+
+| Documented category | Current project | Additional work |
+| --- | --- | --- |
+| Generated transcripts/summaries and configurable reports | Published English sources, deterministic country-first reports, editable settings/literal questions and optional personal draft protocol | Confirm required input/audio/language scope from a permitted vendor specification. Choose personal runtime/hardware and storage budget before weights; validate actual generation/transcription and citation/attribution quality. Current app has no audio ingestion/live ASR or accepted generative model |
+| Centralized retrieval | Public metadata archive, personal warehouse, loaded-source search and explicit device/file saves | An authorized shared private store, identity/access rules, source versions, retention/capacity and recovery acceptance are needed for mission-wide retrieval. Public static assets and local JSON are not that service |
+| Election/campaign management | One manual campaign per file, current country statuses, profiles, interaction snapshots, reviewed contact handoff and calendar reading copies | Obtain the actual workflow checklist before adding multi-election/eligibility or reciprocal-support behavior. Confirm authoritative election inputs and acceptance cases; do not turn reported support or geographic labels into observed votes or voter eligibility |
+| Position coordination and secure communication | Source-based comparisons and explicit report/contact reading copies; no authenticated team approval or messaging | Specify actual headquarters/mission roles and workflows, then an authorized identity/storage/communication integration with access, conflict and audit behavior. Local editable notes, checksums and profile IDs do not authenticate collaborators or provide secure communications |
+
+This is a bounded comparison, not a complete vendor feature inventory. Full parity
+cannot be established from public marketing or synthetic QA alone. The next
+requirements evidence is a permitted feature checklist or walkthrough, paired
+with real user/client task results. Preserve the JavaScript government-browser
+path, separate personal R/Python execution, storage bounds and scientific/source
+gates while deciding which shared or compute-heavy functions are feasible.
 
 The [facilitator setup](REPORTING_USABILITY.md) creates six fictional JSON files
 using Node alone: three reporting files, a matching hand-authored model draft,
@@ -95,9 +128,10 @@ models or proof of government alignment. All 37 reserved meetings remain closed.
    splits. Preserve failed gates as failures.
 4. Evaluate optional generative reporting separately for factual coverage, citation
    correctness and unsupported claims. The quick reader remains deterministic.
-5. Scope live transcription, multilingual reporting, authenticated mission workspaces
-   and full election-campaign management beyond the local notebook as additional products; full DiploTools parity
-   is not established.
+5. Confirm a permitted vendor feature checklist/walkthrough before claiming feature parity.
+   Scope audio/language support, authenticated retrieval, headquarters/mission
+   coordination, secure communication and full election workflows as separate
+   requirements with explicit execution/storage/identity constraints.
 
 ## Repository cleanup
 
