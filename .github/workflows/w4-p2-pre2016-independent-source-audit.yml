@@ -16,10 +16,10 @@ jobs:
       RECIPIENT_PUBLIC_KEY_B64: U72wNyFNO4cR3MD+gR7YVtGOnNzWsTF/hFhc82OV1Vg=
       PYTHONNOUSERSITE: '1'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.11'
       - name: Pin recipient-encryption dependency
@@ -35,7 +35,7 @@ jobs:
             --sealed-output w4_p2_pre2016_independent_audit_originals.x25519_aesgcm \
             --workers 4
       - name: Upload ONLY recipient-encrypted original-PV source-audit package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: w4-p2-private-recipient-encrypted-28-UN-PV-originals
           path: w4_p2_pre2016_independent_audit_originals.x25519_aesgcm

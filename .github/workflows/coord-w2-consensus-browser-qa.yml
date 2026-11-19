@@ -35,15 +35,15 @@ jobs:
       OMP_NUM_THREADS: "1"
     steps:
       - name: Check out source without persisted credentials
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           persist-credentials: false
       - name: Native Node 22
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "22"
       - name: Native Python 3.11
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.11"
       - name: Source, W2 native and v1/consumer acceptance
@@ -86,7 +86,7 @@ jobs:
             --output "$RUNNER_TEMP/w2-browser-qa"
       - name: Preserve only synthetic screenshots and receipts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coordinator-w2-browser-synthetic-qa
           path: |

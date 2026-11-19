@@ -225,3 +225,34 @@ Node 24 actions and runs separately. Mirror sync copies/removes zero files.
 Across both repositories this increment replaces 53 references in 17 workflows;
 application 1.84.0 and its public assets remain unchanged. The temporary linter,
 build and tar archive were removed; no generated maintenance receipt was committed.
+
+### Remaining historical/research migration
+
+The follow-on candidate replaces the remaining 157 first-party references in
+46 workflows, using checkout/setup-node/setup-python/upload-artifact v7. All 61
+source workflows pass actionlint 1.7.12; the existing `r-lib/actions/setup-r@v2`
+already declares Node 24 and is retained. Parsed workflow structure is identical
+apart from the action references: no triggers, scripts, model/source pins,
+permissions, recipients, artifact scopes, retention limits or acceptance gates
+are changed. No application or public asset is changed.
+
+The acquisition audit distinguishes actual data access from source-free tests:
+
+- The 50-original intake is fixed to 2016–2024, and the 38-original probe to
+  2016–2023. The 64-document temporal selection is fixed to 2008–2015.
+- The frozen 118-symbol 2008–2015 frame has 90 development-acquisition and
+  28 separate source-quality-audit symbols. Both local self-tests pass without
+  reading original PDFs; the original 2026 reserved frame remains excluded.
+- The Harvard v14 archive ends in 2025. Its existing workflow deletes temporary
+  raw bytes and publishes aggregate metadata only. Model checks retain their
+  existing pinned public files and synthetic/nonpublication boundaries.
+- The live browser collector uses the allowed October 1 development date;
+  the separate meeting-source check uses September 24. Public-archive checks
+  retain the public-metadata configuration and main-branch completion guard.
+
+Existing workflow events can repeat their approved historical acquisitions and
+pinned-model checks when the changed files enter CI. Encrypted intakes retain
+ciphertext-only artifact checks and one-day retention where configured; no source
+scope is broadened or raw text added to publication. These events are engineering
+validation, not new source-quality, model or scientific acceptance. No additional
+HF storage, app runtime, dependency manifest or generated evidence file is added.

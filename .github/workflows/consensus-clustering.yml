@@ -16,10 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
       - name: Independent synthetic numerical and source-link tests
@@ -41,7 +41,7 @@ jobs:
           set -euo pipefail
           node research/consensus/run_synthetic.cjs "$RUNNER_TEMP/consensus-synthetic"
           node -e 'const r=require(process.env.RUNNER_TEMP+"/consensus-synthetic/validation-receipt.json"); if(r.holdout_access!==false || r.publication_eligible!==false || r.descriptive_groups!==2 || r.nuisance_rejected!==6) process.exit(1);'
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: consensus-w2-synthetic-reports

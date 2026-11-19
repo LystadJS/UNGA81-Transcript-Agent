@@ -18,10 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.11'
       - name: Install pinned numerical runtime
@@ -36,7 +36,7 @@ jobs:
           python -m unittest discover -s research/longitudinal -p 'test_*.py' -v
           node docs/parallel-work/validate-contract.cjs
       - name: Export source code only for independently seeded private calibration
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: w4-joint-temporal-source-only
           path: |

@@ -15,13 +15,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.11'
       - name: Verify P2 original source authentication synthetic controls
@@ -44,7 +44,7 @@ jobs:
           assert all(r.is_dir() for r in roots)
           print('PASS: source-code-only QA; no original PDF, private vectors, speaker records, or heldout files')
           PY
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: p2-w1-20261012-source-only-code
           path: |

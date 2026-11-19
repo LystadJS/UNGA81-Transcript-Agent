@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
       - name: Source-bound review, frozen frame and corpus regressions
@@ -46,7 +46,7 @@ jobs:
         run: |
           "$RUNNER_TEMP/qa-python/bin/python" tools/test_boundary_ui.py "$RUNNER_TEMP/synthetic-packet" boundary-evidence/browser
           node tools/boundary_packet.cjs validate "$RUNNER_TEMP/synthetic-corpus.json" boundary-evidence/browser/synthetic-review.json > boundary-evidence/return-validation.json
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: boundary-review-validation

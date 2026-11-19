@@ -25,11 +25,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.13'
       - name: Synthetic-only attribution and benchmark regression checks
@@ -44,7 +44,7 @@ jobs:
         run: python -m pip install --disable-pip-version-check playwright==1.55.0
       - name: Synthetic-only browser interface, export and resume acceptance
         run: CHROME_BINARY="$(command -v google-chrome)" python tools/test_quick_reader_adjudication_ui.py benchmark-browser
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: quick-reader-adjudication-synthetic-browser

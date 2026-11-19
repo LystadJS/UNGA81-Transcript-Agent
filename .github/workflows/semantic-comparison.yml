@@ -20,11 +20,11 @@ jobs:
       OMP_NUM_THREADS: '1'
       SEMANTIC_MODEL_DIR: ${{ github.workspace }}/semantic-model
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.13'
       - name: Install pinned numerical and local encoder runtime
@@ -61,7 +61,7 @@ jobs:
           (logs/'scope.json').write_text(json.dumps({'commit':os.environ['GITHUB_SHA'],'new_synthetic_tests':47,'machine_tests':57,'corpus_checks':53,'existing_suites':15,'real_corpus_used':False,'heldout_transcripts_requested':0,'human_choices_changed':False},indent=2)+'\n')
           print('Pinned public model and synthetic fixtures only. No UN transcript collection or holdout evaluation.')
           PY
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: semantic-comparison-validation

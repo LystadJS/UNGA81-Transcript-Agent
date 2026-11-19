@@ -5,6 +5,19 @@ reporting application and broader feasible diplomatic workflows with JavaScript-
 browser execution, separate personal R/Python tools, bounded Hugging Face storage
 and a focused source tree. Full DiploTools parity is not established.
 
+## Remaining historical/research action migration
+
+The candidate replaces 157 references in the remaining 46 workflows. All 61 source
+workflows pass actionlint; the four first-party older references no longer occur.
+Only `uses` values change. Source/model pins, triggers, recipients, encryption,
+retention, scripts and scientific/publication gates are byte-for-byte preserved.
+Four local source-free acquisition self-tests pass. Audited historical symbol
+rosters exclude 2026; the 37 reserved October meetings remain closed. Existing CI
+events may replay bounded historical/public-model access, but no manual private
+workflow is dispatched. Read the [migration audit](OPERATIONS.md#remaining-historicalresearch-migration)
+for actual source ranges and publication boundaries. Application 1.84.0 and all
+public assets remain unchanged; managed testing remains deferred.
+
 ## Action-runtime maintenance — application unchanged
 
 Current first-party Node 24 actions replace 45 references in 15 active-build,

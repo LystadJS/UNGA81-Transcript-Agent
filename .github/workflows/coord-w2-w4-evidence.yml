@@ -26,13 +26,13 @@ jobs:
       MKL_NUM_THREADS: "1"
       OMP_NUM_THREADS: "1"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "22"
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
       - name: Verify source syntax and Chromium
@@ -150,7 +150,7 @@ jobs:
           node --test research/integration/w3_w5_w6/test-integration.cjs
       - name: Archive only fictional browser screenshots and aggregate QA
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coord-w2-w4-w6-synthetic-qa
           path: |

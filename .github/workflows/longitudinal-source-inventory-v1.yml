@@ -25,10 +25,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
       - name: Syntax check and synthetic nullable-inventory tests
@@ -58,7 +58,7 @@ jobs:
           PY
 
       - name: Export exact source-only contract for private local P2 test
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: w4-source-inventory-v1-source-only
           path: |
