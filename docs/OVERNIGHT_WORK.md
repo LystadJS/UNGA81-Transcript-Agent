@@ -5,6 +5,21 @@ reporting application and broader feasible diplomatic workflows with JavaScript-
 browser execution, separate personal R/Python tools, bounded Hugging Face storage
 and a focused source tree. Full DiploTools parity is not established.
 
+## Opt-in contact-profile change review — 1.85.0
+
+Contact transfers keep add-only conflict refusal by default. An explicit review
+mode can update matching country/ID profiles, showing every changed field as
+Current/Incoming before atomic application. No name-based identity or recency
+claim is made. Campaign/status/country fields and lead/interaction snapshots stay
+intact; an unchanged active profile editor refreshes to the imported fields.
+Mode changes supersede pending reads/previews; New/Open resets the option. It is
+not saved in JSON. Existing v3/v1 formats, counts and 1 MiB budgets are unchanged;
+no runtime file, dependency or HF storage is added. Browser-only tests use fictional
+profiles. The eight deferred data-access workflows remain unmodified and their
+event filters match no feature file. Their specific CI-side-effect approval remains
+pending; this feature does not open or run that candidate. Managed testing remains
+deferred and full DiploTools parity is not established.
+
 ## Source-free historical/research action subset
 
 The full 46-workflow PR opening was rejected by automatic approval review because

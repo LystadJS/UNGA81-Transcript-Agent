@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.84.0",
+  "browser_engine": "browser-descriptive-1.85.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-19",
   "features": [
+    "Opt-in contact-transfer updates match country plus saved profile ID, preview Current/Incoming field changes, preserve default add-only conflict refusal and immutable lead/history snapshots, refresh an unchanged active profile editor, reset on New/Open and refuse stale mode/read/preview decisions within existing v3/v1 and 1 MiB budgets; no runtime files, dependencies or storage",
     "User-triggered report copy for email provides complete formatted HTML and plain-text clipboard payloads with expanded provenance and source links, a shared 25 MB UTF-8 budget, no clipboard reads or sending, independent ordinary exports, optional API/core isolation and honest earlier-snapshot completion notices; no runtime files, dependencies or storage",
     "Complete editable campaign Word briefing reuses the native Word/ZIP writers without the report core, keeps all campaign/country/profile/interaction text independently of list filters, enforces a 1 MiB whole-file bound, and isolates optional module failures/stale work; no new runtime files, dependencies or storage",
     "Campaign follow-up queue with earliest dated follow-up or latest manually logged interaction ordering, explicit dated/undated filters and alphabetical ties; view-only controls preserve complete exports, unapplied edits and saved v3 JSON, reset on New/Open/Clear, and add no files, dependencies or storage",
