@@ -12,7 +12,7 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Release 1.79.0 candidate: reusable campaign contact profiles
+## Verified release 1.79.0: reusable campaign contact profiles
 
 Country forms now stage reusable, unverified profiles with a name, role, address
 and notes. Explicit copying fills lead or new-interaction fields, with Keep/Escape
@@ -34,7 +34,15 @@ Local core/browser checks pass for strict limits/IDs, independent contact CSV
 parsing, v1/v2 migration, complete exports versus filters, explicit lead/log copying,
 snapshot preservation, stale removals, cached layouts and mobile/reading-copy
 long-text layout. Fictional desktop/mobile visual inspection passed. All 2,077
-checksums and the 209-entry public build pass. CI/deployment receipts are pending. Reusable profiles are not
+checksums and the 209-entry public build pass. [Source #349](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/349)
+merged as `42a6f80357ed929e9091c7f301b00687c85de1ac` after numerical, browser and
+contract checks passed, including fifteen reporting workflows.
+[Website #194](https://github.com/LystadJS/LystadJS.github.io/pull/194) merged as
+`14ed42d6b5066de666edd29f329a1b7d102facf6` after audit and regression passed.
+All 201 preferred-site canonical hashes and all five changed original-site assets
+match. The expanded campaign suite passes live at both URLs. The mirror remains
+200 public files; repeat sync copied/removed zero. Earlier live reporting receipts
+retain their original scope below; actual participant/client acceptance is unrecorded. Reusable profiles are not
 verified identities, a synchronized directory or authenticated election CRM.
 Actual diplomat/government-browser acceptance remains unrecorded.
 
@@ -80,9 +88,9 @@ no released model or semantic-accuracy claim follows from structural QA.
 The R cleanup did not change browser assets or add Hugging Face storage.
 
 1. Complete reporting usability and personal-model factual/citation acceptance.
-   Extend campaign workflows with reusable contact profiles and explicit links to
-   dated interactions; keep shared authentication and election eligibility
-   separate from manual outreach records. Preserve browser/personal-runtime boundaries.
+   Rehearse the campaign workflow with actual users, then prioritize reviewable bulk
+   contact transfer or explicit calendar follow-ups. Contact copies stay independent;
+   keep shared authentication and election eligibility separate from manual records. Preserve browser/personal-runtime boundaries.
 2. Continue dependency-based cleanup with appropriate personal-runtime checks.
 3. Complete actual diplomat usability sessions; evaluate any optional generative
    reporting independently from the deterministic reader and stance classifier.
