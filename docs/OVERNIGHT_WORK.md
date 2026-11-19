@@ -15,7 +15,26 @@ byte-identical. Five build tests pass through both direct and discovery invocati
 the existing candidate and extraction checks also pass on synthetic inputs.
 Direct invocation now includes the checked-archive class, previously defined after
 `unittest.main()`. No application release, schema, dependency, model, HF storage,
-source acquisition or managed-client acceptance changes. Publication is pending.
+source acquisition or managed-client acceptance changes.
+
+[Source #372](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/372)
+merged as `b7e7a6879c4f443f693e3167fe40da1d38367a66` after operational and two
+synthetic research-browser checks passed. The full Python suite passes 265 tests;
+all 2,077 package checksums pass. Four built entry pages (home, reporting, campaign,
+research) load without page errors or missing assets. The first local full-suite
+invocation lacked `PYTHONPATH=src`; rerunning with the project environment passed.
+
+[Mirror #202](https://github.com/LystadJS/LystadJS.github.io/pull/202)
+merged as `dc5cc28e21e3e305e56695dcbcdd3888f409377b` after audit and regression
+passed. Its initial audit used the previous builder pin and restored the two
+modules; updating the pin to source `0b525e215b59a27b07c4b4c06b81346a3ac2530c`
+restored canonical idempotence. Sync copies/removes zero files on repeat. The
+superseded website regression run was cancelled; the current pre-merge run passed.
+Both Pages deployments succeeded. Fresh hashes match all 198 original-site files
+and 199 preferred-site files including its manifest; both excluded assets return
+404 at both URLs. Application release remains 1.85.0. Managed testing stays
+deferred; these engineering checks establish no new client or vendor acceptance.
+The eight approval-dependent workflows were not changed or triggered.
 
 ## Opt-in contact-profile change review — 1.85.0
 

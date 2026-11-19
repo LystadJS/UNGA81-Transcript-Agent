@@ -1,16 +1,19 @@
 # Current capability and acceptance matrix
 
-Updated 19 November 2026, UTC. **Release 1.85.0 is deployed and verified at both
-public URLs.** All 201 preferred-site canonical files and all four changed
-original-site assets match expected hashes. All four campaign browser suites pass
-live at both URLs, including opt-in Current/Incoming profile-update review.
-Source #370 passed numerical, browser and contract checks, including sixteen
-reporting workflows and four campaign suites; website #201 passed audit and
-regression before merge. The unchanged Python suite has 264 tests; all 2,077
-retained package checksums and the 209-entry public build pass. Earlier live
-reporting and clipboard receipts retain their original scope in the linked
-checkpoint. Actual client/OS/Outlook acceptance remains unverified; managed testing
-is deferred. The separate acquisition/model-CI approval remains pending.
+Updated 19 November 2026, UTC. **Release 1.85.0 remains deployed at both public
+URLs.** Packaging cleanup #372 and mirror #202 remove two unused research modules;
+all 198 retained public files are unchanged. Fresh hash verification covers 198
+original-site files and 199 preferred-site files including its manifest. Both
+excluded modules return 404 at both sites. The public build has 207 entries.
+
+Source #372 passed operational contracts and both synthetic research-browser
+checks; 265 Python tests and all 2,077 retained package checksums pass. Website
+#202 passed audit and regression before merge. Four built entry pages load locally
+without JavaScript errors or missing assets. The earlier four campaign suites
+passed live at both URLs for 1.85.0; earlier reporting and clipboard receipts
+retain their original scope in the linked checkpoint. No fresh managed-client,
+OS clipboard or Outlook acceptance is claimed. Managed testing is deferred; the
+separate acquisition/model-CI approval remains pending.
 
 Campaign follow-ups reuse the report calendar writer without a new runtime file,
 dependency, backend, model weight or Hugging Face storage. Calendar copies are
