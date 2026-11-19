@@ -120,15 +120,29 @@ connection occurs; review contact details/notes before sharing the file.
 Apply or discard pending country-form changes first. Import checks the complete
 file and resulting notebook before offering a preview grouped by country. Expand
 each group to inspect names, roles, addresses and contact notes. Keep/Escape
-cancels without changing work; proceeding adds only the reviewed new profiles.
-Identical saved IDs within a country are skipped. Different contents under an
-existing ID refuse the whole import; resolve that contact manually. Matching
-names/addresses under different IDs are not merged or treated as verified identity.
+cancels without changing work. Add-only import is the default: identical saved IDs
+within a country are skipped and different contents under an existing ID refuse
+the whole import. Matching names/addresses under different IDs are not merged.
+
+To import changed profiles, explicitly select **Review changes to matching saved
+profiles** before choosing the file. Matching means the same country label and
+saved profile ID, not verified personal identity or recency. The preview shows
+every changed name, role, address or contact-note field as Current and Incoming;
+changed groups are expanded. The apply button states addition/change counts.
+Proceeding applies the complete reviewed plan; Keep/Escape applies none. Empty
+incoming optional fields clear those profile fields. Missing profiles are retained,
+and identical IDs under different countries remain separate local profiles.
+
+This option is session-only and resets on New/Open. It is not included in JSON.
+Changing it supersedes pending reads/previews and asks for a fresh file selection.
+An older core disables only change review, retaining add-only imports. Older
+layouts default to add-only behavior. No timestamps, person authentication or
+which-copy-is-newer rule is inferred.
 
 New country records start **Not assessed**, with empty lead fields and no invented
 history. Existing statuses, leads, notes, conversations, filters and campaign
 settings stay intact. An unchanged country edit form refreshes its profiles so a
-later Apply retains additions. No-op replays do not mark work dirty. Imports that
+later Apply retains additions/changes. If an unchanged profile is open for editing, its fields refresh to the imported values; prior lead and interaction snapshots stay intact. No-op replays do not mark work dirty. Imports that
 exceed per-country, total or complete-state 1 MiB limits refuse without partial
 changes. Newer edits, file selections, cleared selections and source actions
 supersede old reads/preview decisions. Malformed files retain current work.
@@ -138,7 +152,7 @@ with exactly `country` and `contacts` per group. Profiles use the same strict
 fields as notebook v3. Both raw file and normalized transfer are bounded to 1 MiB;
 the full resulting notebook must also fit its own 1 MiB budget. Complete notebooks,
 CSV reading copies and HTML are not contact-transfer inputs. Import is an explicit
-append operation, not synchronization, authentication or automatic overwriting.
+reviewed add/change operation, not synchronization, authentication or automatic overwriting.
 The contact-only filename ends `-contacts.json`; full notebook files do not.
 
 ## Dated outreach log
@@ -239,7 +253,7 @@ stance-model targets.
 
 Fictional contracts cover strict fields, duplicate identity, dates, exact 1 MiB
 round-trips, all CSV formats with independent parsing/formula escaping, safe HTML,
-v1/v2-to-v3 migration without fabricated logs/profiles, profile identity/limits, interaction dates/IDs/limits and immutable updates, private-scope contact transfers, same-ID conflict refusal,
+v1/v2-to-v3 migration without fabricated logs/profiles, profile identity/limits, interaction dates/IDs/limits and immutable updates, private-scope contact transfers, default same-ID conflict refusal, opt-in field-change review with immutable snapshots and stale-mode refusal,
 no-op replay and complete-state merge budgets.
 Browser checks cover adding/editing/removing, file replay, unapplied/dirty work,
 Keep/Escape, invalid UTF-8, stale/latest reads and confirmations, download failure,
