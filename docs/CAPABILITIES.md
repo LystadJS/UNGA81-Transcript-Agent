@@ -1,12 +1,14 @@
 # Current capability and acceptance matrix
 
-Updated 19 November 2026, UTC. **Release 1.76.0 is deployed and verified at both
-public URLs.** All 197 preferred-site files match expected hashes; fifteen
-reporting browser workflows passed live with fictional sources. Expanded draft,
-ordinary Word and main reporting suites also passed at the original URL. CI passes
-264 Python tests; all 2,077 retained package checksums remain valid. Separate
-editable draft Word copies preserve the complete ordinary report first, recheck
-source/question scope and retain unreviewed/collective labels. These are engineering
+Updated 19 November 2026, UTC. **Release 1.77.0 is deployed and verified at both
+public URLs.** All 201 preferred-site files match expected hashes at their canonical
+URLs. The campaign notebook and fifteen reporting browser workflows passed live
+with fictional records/sources; the original URL passed campaign and main reporting
+checks, and all eight changed assets match. All four source PR checks and both
+website PR checks passed before merge. The unchanged Python suite has 264 tests;
+all 2,077 retained package checksums and the 209-entry public build pass.
+The new notebook keeps manual campaign/contact/status records in browser memory
+with explicit JSON saves and complete CSV/HTML downloads. These are engineering
 checks, not actual model quality, desktop Word, government-browser policy or
 diplomat acceptance. Full DiploTools parity remains unestablished. See the
 [current checkpoint](OVERNIGHT_WORK.md).
@@ -52,7 +54,8 @@ no tool inference and unrecorded participant acceptance remain explicit. This
 supports interface and client checks; actual model quality remains separate.
 [Source #343](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/343) passed
 its contract check, including the expanded facilitator rehearsal, and is merged.
-The public application and mirror bytes remain unchanged at 1.76.0.
+That source-only facilitator change preserved application 1.76.0; the subsequent
+1.77.0 release adds the manual campaign notebook described above.
 
 ## Operational and scientific boundaries
 
