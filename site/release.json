@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.83.0",
+  "browser_engine": "browser-descriptive-1.84.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-19",
   "features": [
+    "User-triggered report copy for email provides complete formatted HTML and plain-text clipboard payloads with expanded provenance and source links, a shared 25 MB UTF-8 budget, no clipboard reads or sending, independent ordinary exports, optional API/core isolation and honest earlier-snapshot completion notices; no runtime files, dependencies or storage",
     "Complete editable campaign Word briefing reuses the native Word/ZIP writers without the report core, keeps all campaign/country/profile/interaction text independently of list filters, enforces a 1 MiB whole-file bound, and isolates optional module failures/stale work; no new runtime files, dependencies or storage",
     "Campaign follow-up queue with earliest dated follow-up or latest manually logged interaction ordering, explicit dated/undated filters and alphabetical ties; view-only controls preserve complete exports, unapplied edits and saved v3 JSON, reset on New/Open/Clear, and add no files, dependencies or storage",
     "Explicit all-day campaign follow-up ICS copies reuse the report calendar writer, include all dated country records independently of filters with optional cutoff/country notes, omit lead/profile fields, conversation logs and campaign notes, and preserve dirty work with stale data/options/source refusal; no connection, invitations, alarms, new runtime files or storage",
