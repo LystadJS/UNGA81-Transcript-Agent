@@ -29,18 +29,18 @@ jobs:
       OMP_NUM_THREADS: "1"
       MKL_NUM_THREADS: "1"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
           # The accepted W1 merge is a genuine ancestor; a depth-1 PR checkout
           # cannot validate that ancestry, so fetch history without opening data.
           fetch-depth: 0
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
           cache: pip
           cache-dependency-path: research/graph_methods/requirements.txt
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "22"
       - name: Install pinned research/test dependencies
@@ -155,7 +155,7 @@ jobs:
           print("W1-W3 synthetic receipt archived with SHA256 verification")
           PY
       - name: Upload text-free synthetic benchmark for coordinator
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: graph-w3-synthetic-receipt
           path: ${{ runner.temp }}/graph-benchmark

@@ -5,6 +5,24 @@ reporting application and broader feasible diplomatic workflows with JavaScript-
 browser execution, separate personal R/Python tools, bounded Hugging Face storage
 and a focused source tree. Full DiploTools parity is not established.
 
+## Source-free historical/research action subset
+
+The full 46-workflow PR opening was rejected by automatic approval review because
+its CI could retrieve source/model material and produce artifacts. No full PR was
+created. The candidate remains on `maintenance/historical-ci-actions`; only two
+source-free push runs occurred (nuisance and roster), both passed.
+
+The reduced candidate changes 129 references in 38 workflows: 35 source-free
+validation workflows and three dormant legacy configurations whose events cannot
+run on a maintenance branch, PR or `main`. The eight unchanged acquisition/live/
+model workflows retain 28 older references. Static event/path checks show none
+is activated by the reduced diff. No manual dispatch is made. All 61 YAML files
+pass actionlint; parsed structure changes only action refs. Source/model inputs,
+permissions, retention and scientific/held-out gates are preserved. App 1.84.0,
+public assets and HF storage are unchanged; managed testing remains deferred.
+The [audit record](OPERATIONS.md#source-free-historicalresearch-action-subset)
+identifies the remaining blocked workflows and the automatic-review reason.
+
 ## Action-runtime maintenance — application unchanged
 
 Current first-party Node 24 actions replace 45 references in 15 active-build,

@@ -20,10 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
       - name: Native W1 retained child assignments and source privacy/refusal tests
@@ -48,7 +48,7 @@ jobs:
           set -euo pipefail
           node research/integration/w1_w2/make_grouped_synthetic.cjs "$RUNNER_TEMP/real-w1-grouped-synthetic"
           node -e 'const r=require(process.env.RUNNER_TEMP+"/real-w1-grouped-synthetic/receipt.json");if(r.heldout_transcripts_opened!==0||r.publication_eligible!==false||r.grouped_fit_records!==90||r.pairwise_descriptive<1||r.inferential_evidence!=="withheld")process.exit(1);'
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: w1-w2-source-group-refit-synthetic

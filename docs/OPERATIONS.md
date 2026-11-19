@@ -225,3 +225,34 @@ Node 24 actions and runs separately. Mirror sync copies/removes zero files.
 Across both repositories this increment replaces 53 references in 17 workflows;
 application 1.84.0 and its public assets remain unchanged. The temporary linter,
 build and tar archive were removed; no generated maintenance receipt was committed.
+
+### Source-free historical/research action subset
+
+Automatic approval review rejected opening the full 46-workflow migration PR
+because it could trigger historical source/model retrieval and encrypted or other
+artifact outputs without specific authorization for those side effects. The full
+candidate is preserved on `maintenance/historical-ci-actions`; no PR was opened.
+Its two push-triggered runs were the source-free nuisance/roster checks and passed.
+
+The reduced candidate updates 129 references in 38 workflows. Thirty-five perform
+fixture, synthetic, existing-repository metadata or offline validation; three
+legacy encrypted-acquisition configurations have only manual dispatch and pushes
+to their fixed historical coordination branches. Their events do not run on this
+maintenance branch, on PRs or on `main`. No manual dispatch is performed.
+
+Eight acquisition/live/model workflows are left byte-identical to `main`:
+`browser-collection-check`, `meeting-source-check`, `public-archive-live-check`,
+`coord-p3-harvard-v14-provenance`, `p2-original-pv-coverage-expansion`,
+`w4-p2-original-expansion`, `semantic-checkpoint-acceptance` and
+`semantic-comparison`. None of their push/PR path filters matches any reduced
+candidate file. Their 28 older references await explicit approval for the possible
+data-access/artifact-output side effects of the remaining PR.
+
+All 61 workflows pass actionlint 1.7.12 with external ShellCheck/Pyflakes disabled.
+Parsed structure is identical except for the 129 action references. The maintained
+R setup action already uses Node 24 and stays unchanged. The source-free frozen
+historical preflights pass without reading PDFs or the 37 reserved meetings.
+Application 1.84.0, public assets, source/model pins, triggers, permissions,
+retention, recipients and scientific/publication gates remain unchanged. Ordinary
+CI package dependencies and synthetic test artifacts are within the reduced scope;
+no new source/model retrieval or real-source artifact export is activated by it.

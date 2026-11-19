@@ -17,10 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
       - name: Native W1 fitted results through W2, W5 and W6
@@ -43,7 +43,7 @@ jobs:
           set -euo pipefail
           node research/integration/w1_w2/make-synthetic.cjs "$RUNNER_TEMP/w1-w2-consensus"
           node -e 'const r=require(process.env.RUNNER_TEMP+"/w1-w2-consensus/receipt.json");if(r.publication_eligible!==false||r.heldout_transcripts_opened!==0||r.eligible!==24||r.method_families!==4||r.uncertainty!=="not_estimated")process.exit(1);'
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: w1-w2-w5-w6-synthetic-evidence

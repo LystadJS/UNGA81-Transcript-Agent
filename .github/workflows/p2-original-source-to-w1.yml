@@ -25,10 +25,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
       - name: Synthetic original-proof fail-closed controls
@@ -44,7 +44,7 @@ jobs:
           node docs/parallel-work/validate-contract.cjs
           node docs/parallel-work/test-source-inventory-v1.cjs
       - name: Supply exact source-only P2 adapter for private original-source replay
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: p2-w1-source-adapter-code-only
           path: |
@@ -71,10 +71,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.11'
       - name: Install explicit fixed simulation dependencies

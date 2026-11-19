@@ -21,10 +21,10 @@ jobs:
       HF_HUB_OFFLINE: '1'
       TRANSFORMERS_OFFLINE: '1'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
       - name: Verify pre-simulation frozen design and all 13 withheld source gates
@@ -89,7 +89,7 @@ jobs:
           node --test research/integration/w1_w2/test-grouped-refits.cjs
           node docs/parallel-work/validate-contract.cjs
           node --test docs/parallel-work/test-w1-w2-inference-readiness.cjs
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: w1-w2-synthetic-null-oracle-diagnostic-only

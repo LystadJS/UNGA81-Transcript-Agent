@@ -26,28 +26,28 @@ jobs:
       W6_SHA: "b86c90175e8c2f184062b02db996893319b3339c"
     steps:
       - name: Checkout merged W3/W1 and coordinator-only code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           persist-credentials: false
           fetch-depth: 0
       - name: Checkout pinned W5 draft into isolated scratch tree (read only)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: LystadJS/UNGA81-Transcript-Agent
           ref: 2d78dd8b3bba60b61094179a8dea84f78f1f45ed
           path: .coordinator-input/w5
           persist-credentials: false
       - name: Checkout pinned W6 draft into isolated scratch tree (read only)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: LystadJS/UNGA81-Transcript-Agent
           ref: b86c90175e8c2f184062b02db996893319b3339c
           path: .coordinator-input/w6
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "22"
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
           cache: pip
@@ -130,7 +130,7 @@ jobs:
           },null,2));
           JS
       - name: Upload source-free coordination artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coordinator-w3-w5-w6-synthetic-contract
           path: |
