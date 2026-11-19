@@ -95,8 +95,10 @@ fictional; neither file authenticates a person, voting eligibility or support.
 The tool records `campaign_materials: hand_authored_fictional` and
 `tool_calendar_client_import: not_run`. The latter describes this tool; actual
 client import performed separately by a participant must be recorded privately.
-No target browser/calendar client is assumed. Capture the actual products,
-versions and policy constraints; mark unavailable client tasks not attempted.
+The owner selected **Microsoft Edge and Outlook**. Exact Edge build, Outlook
+edition/build, account type and managed policies remain unverified. Capture them
+with the actual observations; mark unavailable client tasks not attempted. See the
+[targeted rehearsal below](#edge-and-outlook-rehearsal).
 For a government-browser file rehearsal, generate material on the personal
 maintainer computer, transfer only these fictional files through a permitted
 route and open the deployed app. Node/Python and the local harness are not
@@ -107,6 +109,80 @@ The fixture's source-shaped locators are provenance test data, not links to real
 For the separate archive-selection task, use permitted public metadata and stop before loading transcripts. A real-source extension can use an explicitly approved eligible meeting after checking availability; record its identity and source revision privately. Never use the 37 reserved meetings, either reserved date, sealed evaluation data or private pilot annotations for usability testing.
 
 The owner may run a self-rehearsal; label it as owner testing, record prior familiarity and assistance, and do not call it independent acceptance. The participant should represent the intended diplomatic audience. Include the devices and accessibility needs that matter to actual users. A small convenience sample cannot establish population-wide usability. Do not substitute an assistant's answers for participant responses.
+
+## Edge and Outlook rehearsal
+
+The confirmed client family is Microsoft Edge with Outlook. This is a test target,
+not an acceptance result. Record the operating system, Edge version/profile type,
+Outlook edition/build (classic Windows, new Windows, web or another edition),
+account type and calendar timezone privately. Do not infer them from the client
+family or record account addresses in the public repository. The local automated
+harness runs Chromium; it does not attest behavior in the managed Edge profile or
+Outlook. Actual managed Edge and Outlook acceptance remains unrecorded.
+
+### Edge file checks
+
+Use the deployed app and the six fictional files generated on the personal
+computer. No Node/Python installation is required on the government computer.
+Identify the current destination in Edge's **Settings > Downloads**; on Windows,
+`Ctrl+J` opens the Downloads panel. Verify that each requested JSON, HTML, Word or
+calendar file actually appears and can be reopened before closing current work.
+A download-start message alone is not proof that the file was retained. Record
+blocked downloads and any missing controls without changing managed protections.
+These navigation instructions follow Microsoft's [download-location guide](https://support.microsoft.com/en-us/edge/find-where-your-browser-is-saving-downloads)
+and [keyboard-shortcut reference](https://support.microsoft.com/en-us/edge/keyboard-shortcuts-in-microsoft-edge), checked 19 November 2026.
+
+### Short campaign/calendar pass
+
+1. Open `synthetic-campaign-notebook.json` in the campaign notebook. Add a fictional
+   campaign note. Import `synthetic-contact-transfer.json`, cancel once, then review
+   and add its two new profiles. Confirm the existing note/history survives and the
+   new United States record is Not assessed, with no inferred vote or follow-up.
+2. Explicitly give that United States record the fictional date **22 November
+   2026**, Apply the country form and save full notebook JSON. Reopen it to check
+   both records and dates. The Kenya fixture already has **21 November 2026**.
+3. Narrow the list to Kenya. In **Calendar copy of country follow-ups**, leave the
+   cutoff empty and country notes unchecked, then download the `.ics` file. It
+   should still contain two all-day entries on those exact dates. Use the Outlook
+   route below that matches the actual client and account. The app's download is
+   a local calendar snapshot, not a subscription URL.
+4. Inspect the imported calendar: two entries on November 21 and 22, readable
+   country/campaign titles and line breaks, no date shift, and no lead/profile,
+   conversation or campaign-assessment fields. Record the actual visibility,
+   busy/free display and alerts rather than assuming the private/transparent file
+   flags control the client. Optional country notes/references can contain private
+   text; test them separately with fictional material if needed.
+5. Record whether a repeated import creates duplicates and whether later notebook
+   edits leave the imported copy unchanged. Keep full notebook JSON to resume
+   work. Use only an already permitted test calendar/destination; record a refused
+   or unavailable import as not attempted/blocked, not as successful compatibility.
+   Do not publish or share the calendar as part of this rehearsal.
+
+The dates are fictional and remain those dates even if the session occurs later.
+No live meeting, invitation, automatic reminder or calendar synchronization is
+created by the app. Outlook may apply its own defaults; actual observations are
+required before claiming client acceptance.
+
+### Outlook file-import routes
+
+These are Microsoft's documented routes, checked 19 November 2026, not actions
+performed by this tool. Use the matching edition; other editions need their own
+current documented route and actual results. If a managed account lacks the
+feature, record that outcome rather than switching account or weakening policy.
+
+| Actual client | Documented route and boundary |
+| --- | --- |
+| Classic Outlook for Windows | Use **File > Open & Export > Import/Export**, select **Import an iCalendar (.ics) or vCalendar file (.vcs)** and choose the downloaded file. **Open as New** allows inspection as a separate imported calendar. Microsoft documents this file-import sequence in its [classic Outlook instructions](https://support.microsoft.com/en-us/outlook/calendar/see-your-google-calendar-in-outlook). This app already supplies the `.ics`; no Google export/subscription step is needed |
+| New Outlook for Windows | Use **Calendar > Add calendar > Upload from file**, browse to the `.ics`, choose the intended calendar and import. Microsoft's [new Outlook instructions](https://support.microsoft.com/en-us/outlook/sharing/share-an-outlook-calendar-as-view-only-with-others) restrict this import to Microsoft 365 Exchange accounts. Confirm the actual account/build and available controls; do not assume all Outlook accounts support the route |
+| Outlook on the web | Use its file-upload calendar import, choose the downloaded `.ics` and the intended destination calendar. Follow the work/school section of Microsoft's [web import guide](https://support.microsoft.com/en-us/outlook/import-or-subscribe-to-a-calendar-in-outlook-com-or-outlook-on-the-web). Importing is a snapshot; the app supplies no subscription endpoint and later notebook changes do not update that copy |
+
+Record the actual edition and results, including any refusal, duplicates, date or
+text problems and assistance. Microsoft also distinguishes capabilities across
+[Outlook editions](https://support.microsoft.com/en-us/outlook/getstarted/feature-comparison-between-new-outlook-and-classic-outlook);
+shared branding is not evidence that every import path behaves identically.
+The existing report-review calendar is a separate one-event task; inspect it
+separately after the campaign pass. Word rendering, Edge print/PDF and device-save
+behavior retain their own tasks below and are not established by calendar import.
 
 ## Task script and observation criteria
 

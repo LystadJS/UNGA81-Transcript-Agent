@@ -29,7 +29,8 @@ outside the public build, which is removed on exit; fixture URLs return 404 and
 external requests are blocked. Private permissions, failed-output cleanup and
 visible-session lifecycle checks remain. The tool records no model inference,
 calendar-client import or participant acceptance; actual external client actions
-must be recorded separately. Browser/calendar targets remain unspecified.
+must be recorded separately. The owner has now selected Microsoft Edge and Outlook; exact edition/build,
+account type, managed policy and actual client observations remain unrecorded.
 
 Local facilitator tests pass, including Node-only generation, schema/planned
 counts, report/draft pairing, campaign outputs, metadata privacy and cleanup.
@@ -39,6 +40,22 @@ App assets are byte-identical to the verified 1.81 checkpoint; repeat mirror
 synchronization copied/removed zero of 200 public files. No website publication
 is needed. Models, dependencies and HF storage are unchanged; public application 1.81.0 remains verified. This prepares actual
 user/client work and does not substitute for it.
+
+## Edge and Outlook rehearsal target
+
+The owner selected Edge and Outlook. The [usability guide](REPORTING_USABILITY.md#edge-and-outlook-rehearsal)
+now specifies a short file/calendar pass and current Microsoft import paths for
+classic Windows, new Windows and web editions. New Outlook file import has an
+explicit Microsoft 365 Exchange account limitation; the exact client/account has
+not been supplied. The rehearsal captures actual versions, retained downloads,
+November 21/22 all-day dates, text, visibility, alerts and duplicates. It imports a
+file snapshot, not a subscription, and leaves full JSON as resumable work.
+
+No native Edge/Outlook acceptance was performed and no Outlook account or calendar
+was accessed. Actual managed-client acceptance is still outstanding.
+This update changes documentation only; release 1.81.0 and all public assets remain
+unchanged. Personal generation hardware/runtime and permitted vendor workflow
+requirements remain separate unresolved inputs.
 
 ## Public vendor evidence refresh
 

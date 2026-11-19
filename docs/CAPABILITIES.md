@@ -95,6 +95,13 @@ and client observations belong in a separate private session record. [Source #35
 its contract check and is merged. Public application bytes remain 1.81.0; repeat
 mirror synchronization copies/removes zero files.
 
+The owner selected **Microsoft Edge and Outlook** for the actual client rehearsal.
+The [targeted guide](REPORTING_USABILITY.md#edge-and-outlook-rehearsal) gives file
+checks and edition-specific calendar import routes based on current Microsoft
+instructions. Exact edition/build/account policy and observed results remain
+unrecorded. This selection does not change the app's acceptance status or turn
+Chromium/ICS engineering checks into managed Edge/Outlook testing.
+
 ## Operational and scientific boundaries
 
 The public archive is read-only allowlisted metadata; it is not a shared repository
