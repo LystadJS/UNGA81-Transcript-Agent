@@ -58,8 +58,9 @@ a campaign notebook and a contact-only transfer. Its isolated browser rehearsal
 retains ten private report/campaign downloads and checks handoff, explicit calendar
 dates and complete reading copies. Model inference, calendar-client import and
 participant acceptance remain explicitly unperformed by the tool. Actual user
-and client observations belong in a separate private session record. Local checks
-pass; source CI/merge receipts are pending. Public application bytes remain 1.81.0.
+and client observations belong in a separate private session record. [Source #355](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/355) passed
+its contract check and is merged. Public application bytes remain 1.81.0; repeat
+mirror synchronization copies/removes zero files.
 
 ## Operational and scientific boundaries
 

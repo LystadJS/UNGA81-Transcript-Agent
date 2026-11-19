@@ -12,7 +12,7 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Source-only candidate: reporting and campaign rehearsal kit
+## Verified source-only reporting and campaign rehearsal kit
 
 The existing facilitator now creates six fictional JSON files using Node alone:
 three source-validated reporting files, a paired hand-authored draft, a campaign
@@ -33,8 +33,11 @@ must be recorded separately. Browser/calendar targets remain unspecified.
 
 Local facilitator tests pass, including Node-only generation, schema/planned
 counts, report/draft pairing, campaign outputs, metadata privacy and cleanup.
-CI and merge receipts are pending. App assets, models, dependencies and HF storage
-are unchanged; public application 1.81.0 remains verified. This prepares actual
+[Source #355](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/355) passed
+its full contract check and merged as `6f353a8808fcfc3b1a93ae3369a51c15aa6cf649`.
+App assets are byte-identical to the verified 1.81 checkpoint; repeat mirror
+synchronization copied/removed zero of 200 public files. No website publication
+is needed. Models, dependencies and HF storage are unchanged; public application 1.81.0 remains verified. This prepares actual
 user/client work and does not substitute for it.
 
 ## Verified application checkpoint
