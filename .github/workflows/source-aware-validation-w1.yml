@@ -26,10 +26,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
       - name: New method, negative and lineage controls
@@ -76,7 +76,7 @@ jobs:
           print('PASS generated synthetic public contract & non-text-only artifact gate')
           print('PUBLIC_COMPARISON_SUMMARY',json.dumps({'models':report['models'],'comparisons':[{'left':r['left'],'right':r['right'],'status':r['status'],'ari':r.get('metrics',{}).get('ari') if r.get('metrics') else None,'ami':r.get('metrics',{}).get('adjusted_mutual_information') if r.get('metrics') else None,'shared_assigned':r.get('metrics',{}).get('assigned_both') if r.get('metrics') else None} for r in report['comparisons']],'failures':report['failure_count'],'cases':report['cases_count']}))
           PY
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: w1-source-aware-synthetic-reports
           path: ${{ runner.temp }}/source-validation/*.json

@@ -17,10 +17,10 @@ jobs:
       P1_RECIPIENT_PUBKEY_B64: mtq6ybIGw4iXjOBV3QPfEbz69OsdIXooTUyDw9zB1nE=
       PYTHONNOUSERSITE: '1'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.11'
       - name: Install single pinned encryption library
@@ -36,7 +36,7 @@ jobs:
             --sealed-output w4_p1_2008_2015_development_originals.x25519_aesgcm \
             --workers 4
       - name: Upload ENCRYPTED original-PV private recipient artifact only
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: w4-p1-recipient-encrypted-2008-2015-PV-development-only
           path: w4_p1_2008_2015_development_originals.x25519_aesgcm

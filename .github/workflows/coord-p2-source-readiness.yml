@@ -18,13 +18,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.13'
       - name: Check aggregate provenance, reported source/missingness and frozen evaluation
@@ -77,7 +77,7 @@ jobs:
           print('PASS: public aggregate only, PDF-byte replay and real fit explicitly NOT RUN')
           PY
       - name: Upload source-safe aggregate readiness receipt
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: w4-p2-no-private-rows-readiness
           path: ${{ runner.temp }}/p2-source-readiness.json
