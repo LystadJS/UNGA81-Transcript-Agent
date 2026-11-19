@@ -1,4 +1,4 @@
-# Meeting reporting: diplomat usability session
+# Reporting and campaign workflows: diplomat usability session
 
 This guide prepares an actual user session for the [deployed reporting workspace](https://lystadjs.github.io/un/transcript-agent/meeting-reports.html). **No participant session has been completed through this guide.** Automated browser checks and assistant QA establish engineering behavior; they do not establish that diplomats can use or interpret it successfully.
 
@@ -6,7 +6,7 @@ Use the [reporting contract](MEETING_REPORTING.md) and [current capability matri
 
 ## Preparation
 
-Begin with synthetic material so the session requires no private archive access or real policy assessment. From the source repository root, create four JSON files: three source-validated files and a matching hand-authored draft:
+Begin with synthetic material so the session requires no private archive access or real policy assessment. From the source repository root, create six JSON files: three source-validated reporting files, a matching hand-authored draft, a campaign notebook and a contact-only transfer:
 
 ```sh
 node tools/reporting_usability.cjs --fixtures-only
@@ -33,7 +33,7 @@ The default opens a visible browser. Use the printed files and the fictional dat
 **2026-11-10**. All transcript-service requests are intercepted locally; unknown
 source paths and other external requests are blocked. Only the allowlisted public
 build is served on loopback. A fictional-session banner and meeting titles identify
-the material. Close the reporting tab to finish. Explicit downloads and the four
+the material. Close the session tab to finish. Explicit downloads and the six
 fixture files remain in the printed folder; repeated downloads are kept separately.
 The temporary public build is removed.
 The browser profile is temporary: device saves survive reloads within this session
@@ -46,8 +46,8 @@ actual observations separately in a private session record.
 
 For unattended setup verification, use the same environment with
 `node tools/reporting_usability.cjs --smoke`. This opens a headless browser,
-rehearses source addition/export, matched draft review, separate Word/HTML copies
-and network blocking, and writes an
+rehearses source addition/export, matched draft review, separate Word/HTML copies,
+campaign handoff, explicit follow-up dates and calendar/CSV/HTML copies, and network blocking, and writes an
 `engineering_smoke` receipt. A passing smoke result is never a participant session.
 The temporary folder uses POSIX mode 0700 and files 0600; protect downloads under
 the host account's permissions on other platforms. Set `BROWSER_PATH` for an
@@ -60,7 +60,7 @@ session needs a graphical display; the automated smoke check does not. The
 maintained-archive task remains a separate public-metadata exercise because this
 local reporting session blocks external archive requests.
 
-Give the participant the four generated files, clearly labeled **fictional test material**, and a place to save browser downloads. `synthetic-collection.json` contains four English segments in one synthetic meeting, two recorded country affiliations and one explicit collective statement. Begin the single-meeting tasks with this file. `synthetic-multi-meeting-report.json` adds a second synthetic meeting, for eight segments in total, and opens with both meetings selected. The fixture repeats its fictional wording across meetings; repetition is not evidence of policy importance or agreement. Use the two-meeting file for navigation after saving current work. For the source-addition task, use `synthetic-additional-report.json`: it contains only the second meeting and a distinct fictional assessment that should not enter the current report. It does not overlap the initial collection; the two-meeting file does, so it can demonstrate overlap refusal.
+Give the participant the six generated files, clearly labeled **fictional test material**, and a place to save browser downloads. `synthetic-collection.json` contains four English segments in one synthetic meeting, two recorded country affiliations and one explicit collective statement. Begin the single-meeting tasks with this file. `synthetic-multi-meeting-report.json` adds a second synthetic meeting, for eight segments in total, and opens with both meetings selected. The fixture repeats its fictional wording across meetings; repetition is not evidence of policy importance or agreement. Use the two-meeting file for navigation after saving current work. For the source-addition task, use `synthetic-additional-report.json`: it contains only the second meeting and a distinct fictional assessment that should not enter the current report. It does not overlap the initial collection; the two-meeting file does, so it can demonstrate overlap refusal.
 
 `synthetic-model-draft.json` pairs with the unchanged two-meeting report, whose
 two briefing questions cover humanitarian access and an absent term. Save current
@@ -77,15 +77,36 @@ The tool's metadata records `tool_model_inference: not_run`,
 `bundled_draft: hand_authored_fictional` and
 `participant_acceptance: not_recorded`. These describe this tool and its bundled
 material; they do not attest activity in another program or factual quality.
-The smoke run retains five private downloads: two saved-report JSON copies,
-a model-input packet, draft Word and draft HTML. No inference, client-Word review,
-participant answer or human acceptance is created by that automated run.
+The smoke run retains ten private downloads: two saved-report JSON copies,
+a model-input packet, draft Word and draft HTML, then full campaign JSON,
+contact-only JSON, contact CSV, follow-up ICS and complete campaign HTML. No
+inference, Word/calendar-client import, participant answer or human acceptance
+is created by that automated run.
+
+`synthetic-campaign-notebook.json` is a separate, hand-authored fictional campaign:
+one Kenya record, one reusable profile, one earlier conversation snapshot and a
+follow-up on **2026-11-21**. `synthetic-contact-transfer.json` contains that same
+profile, another Kenya profile and one United States profile. Its reviewed plan
+adds two profiles, skips one identical ID and creates a United States record as
+Not assessed with no follow-up date. It carries no campaign assessment, lead/status
+fields or conversations. Names, addresses, candidate/body and notes are explicitly
+fictional; neither file authenticates a person, voting eligibility or support.
+
+The tool records `campaign_materials: hand_authored_fictional` and
+`tool_calendar_client_import: not_run`. The latter describes this tool; actual
+client import performed separately by a participant must be recorded privately.
+No target browser/calendar client is assumed. Capture the actual products,
+versions and policy constraints; mark unavailable client tasks not attempted.
+For a government-browser file rehearsal, generate material on the personal
+maintainer computer, transfer only these fictional files through a permitted
+route and open the deployed app. Node/Python and the local harness are not
+required on the government computer. Do not change local policy to run a task.
 
 The fixture's source-shaped locators are provenance test data, not links to real statements; do not follow external transcript links during this exercise, including links in exported reading copies. The local “Read source context” control uses the loaded fictional passages and makes no source request. The preparation script validates the source bundles against the production country registry and reporting exclusion policy; it never reads private data, reserved sources or sealed tests.
 
 For the separate archive-selection task, use permitted public metadata and stop before loading transcripts. A real-source extension can use an explicitly approved eligible meeting after checking availability; record its identity and source revision privately. Never use the 37 reserved meetings, either reserved date, sealed evaluation data or private pilot annotations for usability testing.
 
-The participant should represent the intended diplomatic audience. Include the devices and accessibility needs that matter to actual users. A small convenience sample cannot establish population-wide usability. Do not substitute an assistant's answers for participant responses.
+The owner may run a self-rehearsal; label it as owner testing, record prior familiarity and assistance, and do not call it independent acceptance. The participant should represent the intended diplomatic audience. Include the devices and accessibility needs that matter to actual users. A small convenience sample cannot establish population-wide usability. Do not substitute an assistant's answers for participant responses.
 
 ## Task script and observation criteria
 
@@ -123,6 +144,28 @@ Read the task prompt without first explaining the controls. Record assistance an
 
 Observe keyboard-only navigation, visible focus, readable tables and mobile layout where relevant. Record actual task time as context, not as a fabricated performance target. Do not coach a participant and later report the same attempt as unaided success.
 
+## Campaign rehearsal
+
+Use a separate short session or select the tasks relevant to the participant;
+do not require the complete reporting table and this table in one sitting. Save
+current report work first, then use **Campaign notebook**. Begin with the unchanged
+fictional notebook so the transfer's identical-ID example remains reproducible.
+Dates are fictional scheduling fields; a past date is not rescheduled automatically.
+
+| Task prompt | What the facilitator observes |
+| --- | --- |
+| Open the fictional campaign notebook. Explain what is recorded and what it establishes. | One geographic record, a current Contacted status, one reusable profile, an earlier interaction and a November 21 follow-up are recognized. The registry is not treated as an electorate, identity verification or proof of a ballot. |
+| Add a campaign assessment, then import the contact-only transfer. Keep it once, inspect the preview and add it. Save files for resuming work and for handing off only contacts. | The participant distinguishes Apply from JSON saving and full notebook from contact-only JSON. Two additions and one identical-ID skip leave current notes/status/history intact. The new United States record is Not assessed, not neutral or verified eligible. Contact notes are recognized as included in the transfer. Nothing is assumed uploaded, authenticated or synchronized. |
+| Edit the newly added Kenya profile, copy it into lead or new-interaction fields, and add a dated conversation. Apply and save the country record. Explain what changes in the earlier snapshot. | Keep/confirmation before replacing populated fields is understood. Earlier conversations remain independent, and profile edits do not automatically update lead fields, older snapshots or status counts. Added interaction fields, applied country form and saved JSON are distinguished. If the original transfer is retried after changing its same-ID profile, conflict refusal is understood as preserving current work, not a partial update. |
+| Give the United States record a fictional follow-up on November 22. Filter the list to Kenya, then download contact CSV, complete HTML and a calendar copy. | The participant recognizes complete exports despite a narrower list. The calendar has two explicitly entered all-day dates and ignores list filters; an optional calendar cutoff is separate. Country notes/references are opt-in, and lead/profile/log/campaign-note fields are excluded. ICS is not a notebook save or synchronization. |
+| If permitted and available, import the fictional calendar copy into the actual work client. Inspect dates, visibility and alerts; explain what a repeated import or later notebook edit would do. | Record browser/client/version, permitted import route, exact November dates, duplicate behavior, private/transparent handling, default alerts, any refusal and assistance. Do not treat a synthetic download or RFC parse as client acceptance. The tool supplies no invites/alarms and does not update/delete imported events. Mark not attempted where the client or policy does not permit this task. |
+
+For contact CSV, Word, print and calendar copies, record actual client rendering
+separately. Use only fictional data in transferred files. If a participant adds
+identifying or mission-specific notes, their explicit downloads become private
+session material; the tool does not redact them. Keep observed failures and
+assistance in the record rather than replacing them with automated test results.
+
 ## Private session record
 
 Keep completed session records, participant identities, mission details, notes and any source-bearing screenshots in authorized private storage. Do not commit them to the code repository or public mirror. A source-free engineering summary may reference a private record identifier and report aggregate task outcomes.
@@ -133,6 +176,7 @@ For each actual session, record:
 - Material type (`synthetic` or approved real source), setup success and any source/version reference in the private record.
 - Per task: `not_attempted`, `completed_independently`, `completed_with_assistance` or `not_completed`; elapsed time if measured; assistance given; observed interpretation errors.
 - Separate comprehension results for source versus analyst note, collective versus national capacity, neighboring speaker versus selected speaker, loaded coverage versus completeness, keeping current work versus saving it, no evidence versus neutrality, full CSV versus appendix subset, all loaded saved sources versus selected report meetings, checksums versus source authentication, and provisional extracts versus accepted model estimates.
+- Separate campaign comprehension results: staged versus applied versus saved work, profile copies versus live links, contact-only versus full files, conflict refusal versus partial update, Not assessed versus neutrality/eligibility, list filters versus complete exports, and calendar reading copy versus synchronization/client alerts.
 - Concrete defect or usability issue, reproduction steps stripped of private content, proposed repair and whether retesting is needed.
 - The owner's explicit release/usability decision and its scope after reviewing the actual evidence. Leave this unset until that decision occurs.
 
