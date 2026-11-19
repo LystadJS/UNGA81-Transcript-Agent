@@ -112,6 +112,10 @@ The owner may run a self-rehearsal; label it as owner testing, record prior fami
 
 ## Edge and Outlook rehearsal
 
+Managed Edge and Outlook testing is **deferred at the owner's request** on
+19 November 2026. This guide remains available for a later rehearsal; development
+continues without treating the deferral as acceptance.
+
 The confirmed client family is Microsoft Edge with Outlook. This is a test target,
 not an acceptance result. Record the operating system, Edge version/profile type,
 Outlook edition/build (classic Windows, new Windows, web or another edition),

@@ -15,6 +15,21 @@ cutoff, preserve unapplied work and complete exports, and reset on New/Open/Clea
 No schema, runtime file, dependency, model or Hugging Face storage was added.
 Managed-client acceptance remains deferred, not passed.
 
+[Source #360](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/360)
+merged as `37030fe36ee3c263b4c66e19e816f586797e3e9b` after numerical, browser and
+operational contracts passed (including fifteen reporting UI suites, three
+campaign suites, the facilitator and read-only archive checks).
+[Website #197](https://github.com/LystadJS/LystadJS.github.io/pull/197)
+merged as `25f218d545aa08e81c555dce6f37a2fb7c6a4304` after audit and website
+regression passed. Both public deployments serve 1.82.0. All 201 preferred-site
+canonical hashes and all four changed original-site asset hashes match. Three
+campaign suites and the report-calendar regression pass live at both URLs with
+fictional inputs. Repeat mirror sync copies/removes zero of 200 files; the public
+build remains 209 entries. Tests do not establish participant/client acceptance.
+The first local facilitator attempt lacked an explicit browser path; the rerun
+with the installed Chromium passed. No reserved meetings were opened.
+
+
 ## Standing authorization
 
 On 18 November the user explicitly approved all merges from that point onward.
