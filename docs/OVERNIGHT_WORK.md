@@ -12,7 +12,7 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Release 1.80.0 candidate: reviewed contact-only transfer
+## Verified release 1.80.0: reviewed contact-only transfer
 
 The notebook exports a separate `un.campaign-contacts.v1` JSON with country labels
 and complete profiles, including contact notes, excluding campaign/lead/status
@@ -34,7 +34,15 @@ Local core and both campaign browser suites pass: privacy scope, immutable appen
 replay/conflict refusal, complete-state budgets, Keep/Escape, pending/unchanged
 forms, stale read/preview decisions, cross-control cleanup and mobile. Fictional
 desktop/mobile preview inspection passed. All 2,077 checksums and the 209-entry
-public build pass. CI/deployment receipts are pending.
+public build pass. [Source #351](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/351)
+merged as `9cd3253f9d6220c95425ae6e378a3f8244bdd3b3` after numerical, browser and
+contract checks passed, including fifteen reporting workflows and both campaign
+suites. [Website #195](https://github.com/LystadJS/LystadJS.github.io/pull/195)
+merged as `56f1a70ce7c4ac087271c1c6d5d0b15a2594e706` after audit and regression
+passed. All 201 preferred-site canonical files and all four changed original-site
+assets match expected hashes. Both campaign suites pass live at both URLs. The
+mirror remains 200 public files; repeat synchronization copied/removed zero.
+These are synthetic engineering receipts, not actual participant/client acceptance.
 
 ## Previous verified release
 
@@ -78,8 +86,8 @@ no released model or semantic-accuracy claim follows from structural QA.
 The R cleanup did not change browser assets or add Hugging Face storage.
 
 1. Complete reporting usability and personal-model factual/citation acceptance.
-   Rehearse the campaign workflow with actual users, then prioritize reviewable bulk
-   contact transfer or explicit calendar follow-ups. Contact copies stay independent;
+   Rehearse reporting and campaign workflows with actual users; consider explicit
+   local calendar follow-ups next. Reviewed contact-only transfer is now available. Contact copies stay independent;
    keep shared authentication and election eligibility separate from manual records. Preserve browser/personal-runtime boundaries.
 2. Continue dependency-based cleanup with appropriate personal-runtime checks.
 3. Complete actual diplomat usability sessions; evaluate any optional generative

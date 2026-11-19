@@ -1,23 +1,24 @@
 # Current capability and acceptance matrix
 
-Updated 19 November 2026, UTC. **Release 1.79.0 is deployed and verified at both
-public URLs.** All 201 preferred-site canonical files and all five changed
-original-site assets match expected hashes. The expanded campaign browser suite
-passes live at both URLs, including reusable profiles, confirmed lead/interaction
-copying, unchanged earlier snapshots after profile editing/removal, complete
-exports, older-file migration and cached-layout preservation. Source #349 passed
-numerical, browser and contract checks (including fifteen reporting workflows);
-website #194 passed audit and regression before merge. The unchanged Python
-suite has 264 tests; all 2,077 retained package checksums and the 209-entry public
-build pass. Fifteen earlier live reporting suites retain their 1.77 scope in the
-linked checkpoint; they are not newly rerun live here.
+Updated 19 November 2026, UTC. **Release 1.80.0 is deployed and verified at both
+public URLs.** All 201 preferred-site canonical files and all four changed
+original-site assets match expected hashes. Both campaign browser suites pass
+live at both URLs: ordinary profile/log workflows and reviewed contact-only
+transfer, including private field scope, atomic append, replay/conflict refusal,
+complete-state bounds, unchanged edit forms, stale preview/reads and cross-control
+cleanup. Source #351 passed numerical, browser and contract checks (including
+fifteen reporting workflows and both campaign suites); website #195 passed audit
+and regression before merge. The unchanged Python suite has 264 tests; all 2,077
+retained package checksums and the 209-entry public build pass. Earlier live
+reporting suites retain their original 1.77 scope in the linked checkpoint.
 
-V3 JSON reads v1/v2 without inferred profiles or history. Contact profiles are
-unverified, user-entered records; copies do not create live links to snapshots.
-There is no new runtime file, dependency, backend, model weight or Hugging Face
-storage. These are fictional-data engineering checks, not actual model quality,
-desktop Word, government-browser policy or diplomat acceptance. Full DiploTools
-parity remains unestablished. See the [current checkpoint](OVERNIGHT_WORK.md).
+Contact-only JSON excludes campaign/lead/status fields, country notes and
+conversations but includes complete contact notes. It is an explicit reviewed
+append, not authentication or synchronization. No runtime file, dependency,
+backend, model weight or Hugging Face storage is added. These are fictional-data
+engineering checks, not actual model quality, desktop Word, government-browser
+policy or diplomat acceptance. Full DiploTools parity remains unestablished. See
+the [current checkpoint](OVERNIGHT_WORK.md).
 
 ## Reporting and execution
 
