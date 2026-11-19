@@ -1,17 +1,19 @@
 # Current capability and acceptance matrix
 
-Updated 19 November 2026, UTC. **Release 1.78.0 is deployed and verified at both
+Updated 19 November 2026, UTC. **Release 1.79.0 is deployed and verified at both
 public URLs.** All 201 preferred-site canonical files and all five changed
 original-site assets match expected hashes. The expanded campaign browser suite
-passes live at both URLs, including dated contact snapshots, complete log exports,
-v1 migration, cached-layout preservation and mismatched-core refusal. Source #347
-passed numerical, browser and contract checks (including fifteen reporting
-workflows); website #193 passed audit and regression before merge. The unchanged
-Python suite has 264 tests; all 2,077 retained package checksums and the 209-entry
-public build pass. The preceding fifteen live reporting workflows retain their
-1.77 scope in the linked checkpoint; they are not newly rerun live here.
+passes live at both URLs, including reusable profiles, confirmed lead/interaction
+copying, unchanged earlier snapshots after profile editing/removal, complete
+exports, older-file migration and cached-layout preservation. Source #349 passed
+numerical, browser and contract checks (including fifteen reporting workflows);
+website #194 passed audit and regression before merge. The unchanged Python
+suite has 264 tests; all 2,077 retained package checksums and the 209-entry public
+build pass. Fifteen earlier live reporting suites retain their 1.77 scope in the
+linked checkpoint; they are not newly rerun live here.
 
-Manual logs do not change current outreach status or reconstruct past history.
+V3 JSON reads v1/v2 without inferred profiles or history. Contact profiles are
+unverified, user-entered records; copies do not create live links to snapshots.
 There is no new runtime file, dependency, backend, model weight or Hugging Face
 storage. These are fictional-data engineering checks, not actual model quality,
 desktop Word, government-browser policy or diplomat acceptance. Full DiploTools
