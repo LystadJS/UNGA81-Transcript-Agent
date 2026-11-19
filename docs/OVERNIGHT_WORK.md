@@ -5,6 +5,16 @@ reporting application and broader feasible diplomatic workflows with JavaScript-
 browser execution, separate personal R/Python tools, bounded Hugging Face storage
 and a focused source tree. Full DiploTools parity is not established.
 
+## Campaign follow-up queue — 1.82.0
+
+The owner deferred managed Edge/Outlook testing and requested continued changes.
+The campaign list now offers earliest follow-up and latest manually logged
+interaction ordering, dated/undated filters and alphabetical ties. Missing dates
+sort last; no dates or activity are inferred. Views compose with search/status/
+cutoff, preserve unapplied work and complete exports, and reset on New/Open/Clear.
+No schema, runtime file, dependency, model or Hugging Face storage was added.
+Managed-client acceptance remains deferred, not passed.
+
 ## Standing authorization
 
 On 18 November the user explicitly approved all merges from that point onward.

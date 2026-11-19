@@ -156,7 +156,7 @@ Up to 100 interactions per place and 1,000 per notebook share the existing 1 MiB
 budget. The contact fields are snapshots for that interaction, not authenticated
 or live links to profiles. Logging a conversation does not change the current
 outreach status, status date, lead contact, follow-up date or status counts.
-Search includes logged contacts and notes; list filters still do not reduce exports.
+Search includes logged contacts and notes; list filters still do not reduce exports. Choose **Earliest follow-up first** to work through dated records before undated ones, or **Most recent interaction first** to order by each country's latest manually logged interaction date. Countries A–Z break ties. **Follow-up date** can show only dated or undated records; combining undated with a cutoff yields no matches. These controls change only the list, preserve unapplied edits and do not mark work unsaved. New/Open/Clear restore all records in country order. No date, reminder, status change or outreach history is inferred.
 
 Remove asks before removing an interaction from the country form. Keep/Escape and
 newer edits preserve it. Apply and save JSON to keep a removal. To correct a log,
