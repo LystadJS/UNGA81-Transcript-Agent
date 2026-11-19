@@ -5,6 +5,19 @@ reporting application and broader feasible diplomatic workflows with JavaScript-
 browser execution, separate personal R/Python tools, bounded Hugging Face storage
 and a focused source tree. Full DiploTools parity is not established.
 
+## Report copy for email — 1.84.0
+
+The prepared ordinary report can be copied as complete formatted HTML and plain
+text for manual email-editor pasting. Provenance is expanded and plain text keeps
+source URLs. The two UTF-8 representations share 25 MB without truncation.
+Passage-list filters do not reduce the copy; personal model drafts are separate.
+No clipboard read, account access, sending, runtime file, dependency or storage
+is added. API/core failures preserve ordinary exports and current work. Submitted
+browser writes cannot be cancelled: completion explicitly identifies an earlier
+snapshot after report/source work changes. Tests intercept writes and inspect
+native ClipboardItem payloads; no OS/Outlook round-trip is claimed. Managed testing
+remains deferred. The reporting contract links current primary Microsoft guidance.
+
 ## Campaign editable Word briefing — 1.83.0
 
 The campaign notebook now offers a complete editable Word reading copy using the

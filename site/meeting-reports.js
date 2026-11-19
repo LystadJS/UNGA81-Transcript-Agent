@@ -5,6 +5,7 @@
   let policy,countries,inventory=[],corpora=[],report=null,controller=null,shown=10,dirty=false,handoff=null,appendixIds=new Set(),notes=new Map(),bulkUndo=null;
   const sourceFileTickets=new WeakMap();
   let modelDraft=null,draftSerial=0,draftWordExporting=false;
+  let emailCopying=false;
   let printing=false,printTitle=null,printSnapshot=null;
   let workspaceRevision=0,replacementSerial=0,preferencesSerial=0,packaging=false,calendarExporting=false,deviceBusy=false,deviceAvailable=false,deviceSaved=false,deviceLibrary=[],deviceId='current';
   const setStatus=(message,error=false)=>{$('status').textContent=message;$('status').classList.toggle('error',error);};
@@ -38,7 +39,7 @@
     catch(e){release();setStatus('Could not start download: '+e.message+' Current work kept.',true);return false;}
   }
   function reportName(suffix){return 'un-meeting-report-'+report.generated_at.replace(/[-:.]/g,'')+suffix;}
-  function invalidate(){workspaceRevision++;report=null;clearDraft();$('expressionEvidence').close();$('expressionEvidenceBody').replaceChildren();$('printStatus').textContent='Prepare the report before printing.';$('wordStatus').textContent='Prepare the report before downloading Word.';$('reportPreview').replaceChildren();for(const id of ['downloadReport','downloadWord','printReportButton','saveReport','downloadEvidence','downloadPassageNotes','downloadPackage','saveDeviceReport','downloadReviewEntry'])$(id).disabled=true;$('passageNotesExportStatus').textContent='Prepare a report containing passage notes.';$('calendarStatus').textContent='Prepare the report and choose a review date.';$('packageStatus').textContent='Prepare the report before downloading its package.';$('reportState').textContent='Settings or selection changed. Prepare the report to update its exports.';dirty=!!corpora.length;deviceControls();}
+  function invalidate(){workspaceRevision++;report=null;emailControls('Prepare the report before copying for email.');clearDraft();$('expressionEvidence').close();$('expressionEvidenceBody').replaceChildren();$('printStatus').textContent='Prepare the report before printing.';$('wordStatus').textContent='Prepare the report before downloading Word.';$('reportPreview').replaceChildren();for(const id of ['downloadReport','downloadWord','printReportButton','saveReport','downloadEvidence','downloadPassageNotes','downloadPackage','saveDeviceReport','downloadReviewEntry'])$(id).disabled=true;$('passageNotesExportStatus').textContent='Prepare a report containing passage notes.';$('calendarStatus').textContent='Prepare the report and choose a review date.';$('packageStatus').textContent='Prepare the report before downloading its package.';$('reportState').textContent='Settings or selection changed. Prepare the report to update its exports.';dirty=!!corpora.length;deviceControls();}
   function replacementCurrent(ticket){
     if(ticket.id!==replacementSerial)return false;
     if(ticket.revision!==workspaceRevision){setStatus('Your report changed while sources were being checked. Current work kept; try loading again when ready.');return false;}
@@ -313,7 +314,7 @@
   $('onlySelectedEvidence').onchange=()=>{shown=10;search();};
   $('appendixMode').onchange=()=>{clearBulkUndo();if($('appendixMode').value==='template')appendixIds.clear();invalidate();search();};
   $('clearAppendix').onclick=()=>{if(appendixIds.size||$('appendixMode').value!=='selected')rememberBulk();appendixIds.clear();$('appendixMode').value='selected';invalidate();search();};
-  $('prepareReport').onclick=()=>{try{report=Core.build(corpora,selected(),options(),appendix(),passageNotes());workspaceRevision++;clearDraft();$('reportPreview').innerHTML=Core.reportHTML(report,{preview:true});for(const id of ['downloadReport','downloadWord','printReportButton','saveReport','downloadEvidence','downloadPackage','saveDeviceReport'])$(id).disabled=false;$('downloadPackage').disabled=packaging;if(!packaging)$('packageStatus').textContent='Ready to download a report package.';$('reportState').textContent='Report ready: '+report.meetings.length+' meetings. Review source evidence before circulation.';$('printReportButton').disabled=printing;$('printStatus').textContent='Ready to print the complete report or use the browser’s PDF destination.';$('wordStatus').textContent='Ready to download an editable Word reading copy.';$('downloadPassageNotes').disabled=!report.passage_notes.length;$('passageNotesExportStatus').textContent=report.passage_notes.length?report.passage_notes.length+' passage notes from the selected meetings. Ready to download.':'No passage notes in this prepared report.';dirty=true;deviceControls();calendarControls(true);}catch(e){invalidate();setStatus(e.message,true);}};
+  $('prepareReport').onclick=()=>{try{report=Core.build(corpora,selected(),options(),appendix(),passageNotes());workspaceRevision++;clearDraft();$('reportPreview').innerHTML=Core.reportHTML(report,{preview:true});for(const id of ['downloadReport','downloadWord','printReportButton','saveReport','downloadEvidence','downloadPackage','saveDeviceReport'])$(id).disabled=false;$('downloadPackage').disabled=packaging;if(!packaging)$('packageStatus').textContent='Ready to download a report package.';$('reportState').textContent='Report ready: '+report.meetings.length+' meetings. Review source evidence before circulation.';$('printReportButton').disabled=printing;$('printStatus').textContent='Ready to print the complete report or use the browser’s PDF destination.';$('wordStatus').textContent='Ready to download an editable Word reading copy.';emailControls('Ready to copy the complete prepared report for email.');$('downloadPassageNotes').disabled=!report.passage_notes.length;$('passageNotesExportStatus').textContent=report.passage_notes.length?report.passage_notes.length+' passage notes from the selected meetings. Ready to download.':'No passage notes in this prepared report.';dirty=true;deviceControls();calendarControls(true);}catch(e){invalidate();setStatus(e.message,true);}};
   function draftControls(){
     const ready=!!report&&!!globalThis.UNReportDraft&&!!report.settings.questions.length;
     $('downloadDraftInput').disabled=!ready;$('openModelDraft').disabled=!ready;
@@ -411,6 +412,25 @@
     try{if(save(UNMeetingReportWord.build(report),reportName('.docx'),'application/vnd.openxmlformats-officedocument.wordprocessingml.document'))$('wordStatus').textContent='Word reading copy downloaded.';}
     catch(e){$('wordStatus').textContent='Could not create Word report: '+e.message;}
   };
+  function emailControls(message){
+    if(!$('copyEmailReport'))return;
+    const available=typeof Core.emailCopy==='function'&&typeof navigator.clipboard?.write==='function'&&typeof globalThis.ClipboardItem==='function';
+    $('copyEmailReport').disabled=!available||!report||emailCopying;
+    if(!available)$('emailCopyStatus').textContent='Clipboard copy is unavailable. Download HTML or Word instead.';
+    else if(message)$('emailCopyStatus').textContent=message;
+  }
+  if($('copyEmailReport'))$('copyEmailReport').onclick=async()=>{
+    if(!report||emailCopying)return;
+    const prepared=report,revision=workspaceRevision,sourceOperation=replacementSerial;emailCopying=true;emailControls('Copying the prepared report…');
+    const changed=()=>report!==prepared||workspaceRevision!==revision||replacementSerial!==sourceOperation;
+    try{
+      const copy=Core.emailCopy(prepared);
+      await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([copy.html],{type:'text/html'}),'text/plain':new Blob([copy.text],{type:'text/plain'})})]);
+      $('emailCopyStatus').textContent=changed()?'An earlier report snapshot was copied. Prepare and copy the current report again if needed.':'Report copied as formatted HTML and plain text. Paste into your email editor and review before sending. Keep JSON or ZIP separately to reopen work.';
+    }catch(e){$('emailCopyStatus').textContent=changed()?'Earlier clipboard request failed. Current work kept; copy the current prepared report again if needed.':'Could not copy report: '+e.message+' Current work kept. Download HTML or Word instead.';}
+    finally{emailCopying=false;emailControls();}
+  };
+  emailControls();
   $('downloadReport').onclick=()=>{if(report)save(Core.standalone(report),reportName('.html'),'text/html');};
   $('saveReport').onclick=()=>{if(report&&save(JSON.stringify(Core.savedReport(report,corpora)),reportName('.json'),'application/json'))dirty=false;};
   $('downloadEvidence').onclick=()=>{if(report)save(Core.evidenceCSV(report.records),reportName('-evidence.csv'),'text/csv;charset=utf-8');};

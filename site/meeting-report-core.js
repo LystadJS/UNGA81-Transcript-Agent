@@ -254,6 +254,30 @@
       (report.passage_notes.length?'<section class="passage-notes"><h2>Analyst notes on source passages</h2><p>User-authored interpretation and follow-up, separate from the quoted source text. These notes do not change the meeting overview or country expressions.</p>'+report.passage_notes.map(n=>'<div class="passage-note">'+evidenceHTML([records.find(r=>r.id===n.record_id)])+'<h3>Analyst note</h3><p class="analyst-notes">'+escape(n.text)+'</p></div>').join('')+'</section>':'')+
       '<section><h2>Analyst notes</h2><p class="analyst-notes">'+escape(p.notes||'No analyst notes supplied.')+'</p><p>User-authored; not extracted from the transcript.</p></section><section><h2>Methods and coverage</h2><p>'+escape(report.method)+'</p><ul>'+report.limitations.map(x=>'<li>'+escape(x)+'</li>').join('')+'</ul><p>Source checks: '+escape(report.collections.map(c=>c.checked_at||c.collected_at||'Unknown').join('; '))+'. '+report.collections.filter(c=>c.partial).length+' collection bundles report incomplete retrieval.</p></section>';
   }
+  function emailCopy(report){
+    const source=reportHTML(report),encoder=new TextEncoder();
+    if(encoder.encode(source).length>api.LIMIT)throw Error('Email copy exceeds 25 MB. Use a smaller report or individual reading files.');
+    const doc=new DOMParser().parseFromString(source,'text/html');
+    // Expand provenance: mail clients need no interactive disclosure controls.
+    for(const node of [...doc.querySelectorAll('details,summary')].reverse()){const replacement=doc.createElement(node.tagName==='DETAILS'?'div':'p');replacement.append(...node.childNodes);node.replaceWith(replacement);}
+    for(const node of doc.querySelectorAll('[tabindex]'))node.removeAttribute('tabindex');
+    for(const node of doc.querySelectorAll('table'))node.setAttribute('style','border-collapse:collapse;width:100%');
+    for(const node of doc.querySelectorAll('th,td'))node.setAttribute('style','border:1px solid #b8c5d3;padding:8px;text-align:left;vertical-align:top');
+    for(const node of doc.querySelectorAll('blockquote,.analyst-notes'))node.setAttribute('style','white-space:pre-wrap;padding:12px;border-left:3px solid #002d74');
+    const notice=doc.createElement('p');notice.textContent='Reading copy. Keep report JSON or ZIP separately to reopen work; pasted edits cannot be imported.';doc.body.append(notice);
+    function plain(node){
+      if(node.nodeType===3)return node.nodeValue;
+      if(node.nodeType!==1)return '';
+      if(node.tagName==='BR')return '\n';
+      const text=[...node.childNodes].map(plain).join('');
+      if(node.tagName==='A'){const href=node.getAttribute('href')||'';return text+(/^https:\/\//i.test(href)&&text!==href?' ('+href+')':'');}
+      if(['TD','TH'].includes(node.tagName))return text+'\t';
+      return text+(/^(H[1-6]|P|DIV|SECTION|ARTICLE|BLOCKQUOTE|LI|TR|NAV|DL|DT|DD)$/.test(node.tagName)?'\n':'');
+    }
+    const text=plain(doc.body).trim(),html='<div style="font-family:Arial,sans-serif;font-size:14px;line-height:1.5;color:#182b40">'+doc.body.innerHTML+'</div>';
+    if(encoder.encode(html).length+encoder.encode(text).length>api.LIMIT)throw Error('Combined email copy exceeds 25 MB; nothing was truncated. Use a smaller report or individual reading files.');
+    return {html,text};
+  }
   function standalone(report){return '<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src \'unsafe-inline\'; base-uri \'none\'; form-action \'none\'"><title>'+escape(report.settings.title)+'</title><style>body{font:16px/1.6 system-ui;max-width:1050px;margin:32px auto;padding:20px;color:#182b40}table{border-collapse:collapse;width:100%}td,th{padding:12px;border:1px solid #cbd5df;text-align:left;vertical-align:top}blockquote{white-space:pre-wrap;margin:16px 0;padding:16px;background:#f4f6f8}.report-table{overflow:auto}p,td,th{overflow-wrap:anywhere}.analyst-notes{white-space:pre-wrap}.notice{border-left:4px solid #805900;padding:12px;background:#fff7e8}section{margin-top:30px}.report-meeting-index{display:block;border:1px solid #cbd5df;padding:16px;margin:24px 0}.report-meeting-index ol{margin:12px 0;padding-left:28px}.report-meeting-index h2{margin-top:0}.report-meeting-index p{margin-bottom:0}.report-meeting-index li{margin:12px 0;overflow-wrap:anywhere}.report-meeting-index li span{display:block;font-size:.9em}.report-meeting h2,.report-meeting-index h2{overflow-wrap:anywhere;scroll-margin-top:24px}.report-meeting h2:focus,.report-meeting-index h2:focus{outline:2px solid #245887;outline-offset:4px}.report-country-index{display:block;border:1px solid #cbd5df;padding:16px;margin:24px 0}.report-country-index h2{margin-top:0}.report-country-index .country-jumps{line-height:2;overflow-wrap:anywhere}.report-country-index h2,.report-country-target{scroll-margin-top:24px}.report-country-index h2:focus,.report-country-target:focus{outline:2px solid #245887;outline-offset:-2px}@media print{details{display:block}section{break-inside:auto}}</style>'+reportHTML(report)+'</html>';}
   function csv(rows){
     const cell=x=>'"'+String(/^[\s]*[=+\-@]/.test(String(x??''))?"'"+x:x??'').replace(/"/g,'""')+'"';
@@ -268,6 +292,6 @@
     const cols=['report_generated_at','note_type','analyst_note','id','meeting_slug','date','country','source_url','source_id','source_version','raw_sha256','text_sha256','json_pointer'];
     return csv([cols,...notes.map(n=>{const r=records.get(n.record_id);return cols.map(k=>k==='report_generated_at'?report.generated_at:k==='note_type'?'User-authored interpretation':k==='analyst_note'?n.text:r[k]);})]);
   }
-  const api={VERSION,NOTES_VERSION,questions,LEGACY_VERSION,APPENDIX_VERSION,NOTE_LIMIT,NOTES_LIMIT,TEMPLATES,LIMIT,PREFERENCES_VERSION,PREFERENCES_LIMIT,exportPreferences,importPreferences,settings,exclusions,allowed,validateCorpora,search,meetingSelection,appendixSelection,passageNotes,openSaved,appendSaved,planSourceRemoval,savedStateBytes,savedReport,build,countryTimeline,reportHTML,evidenceHTML,speakerHTML,contextWindow,contextHTML,standalone,evidenceCSV,passageNotesCSV};
+  const api={VERSION,NOTES_VERSION,questions,LEGACY_VERSION,APPENDIX_VERSION,NOTE_LIMIT,NOTES_LIMIT,TEMPLATES,LIMIT,PREFERENCES_VERSION,PREFERENCES_LIMIT,exportPreferences,importPreferences,settings,exclusions,allowed,validateCorpora,search,meetingSelection,appendixSelection,passageNotes,openSaved,appendSaved,planSourceRemoval,savedStateBytes,savedReport,build,countryTimeline,reportHTML,emailCopy,evidenceHTML,speakerHTML,contextWindow,contextHTML,standalone,evidenceCSV,passageNotesCSV};
   if(node)module.exports=api;else root.UNMeetingReport=api;
 })(globalThis);

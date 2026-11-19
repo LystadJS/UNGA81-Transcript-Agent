@@ -531,3 +531,34 @@ CSV uses UTF-8, quoted cells and CRLF. Potential spreadsheet formulas are prefix
 5. Complete the owner-label pilot and untouched stance evaluation. Reporting remains useful while model estimates stay withheld.
 
 No real-time transcription, multilingual parity, secure multi-user collaboration, fourteen-day operational acceptance, or accepted neural stance model is established by this release.
+
+## Copy a prepared report for email
+
+Choose **Copy report for email**, then paste into your email editor and review
+formatting and private details before sending. The app writes complete formatted
+HTML and plain text for the prepared report, independently of passage-list
+filters. It includes selected source evidence, country comparisons, questions,
+analyst notes and expanded source identities; external source URLs also appear
+in plain text. This copies the ordinary report, not a separate personal model
+draft. Nothing is sent, no account is connected and no clipboard content is read.
+Save JSON or ZIP separately to resume work; pasted edits cannot be imported.
+
+The two UTF-8 text representations share a 25 MB application budget. Oversized
+copies are refused without truncation before calling the clipboard API. If the
+API or current core is unavailable, or access fails, download HTML or Word
+instead. No deprecated copy-command fallback or permission-policy change is used.
+Only one copy request per workspace can be pending. A submitted browser write cannot be
+cancelled by the app: if report/source work changes before completion, the UI
+identifies the earlier snapshot rather than claiming the current report was
+copied. The report and dirty-work state remain intact; copy again after preparing
+current work. Copies do not update when the report changes.
+
+Microsoft documents [Outlook paste-formatting options](https://support.microsoft.com/en-us/outlook/outlook-advanced-editing-options)
+and [Edge clipboard API support](https://blogs.windows.com/msedgedev/2024/04/23/improving-text-editing-on-the-web/).
+These references were checked 19 November 2026; they do not establish this app's
+actual managed-profile or Outlook-paste behavior. Microsoft also documents
+[clipboard policy scope](https://learn.microsoft.com/en-us/deployedge/microsoft-edge-policies/defaultclipboardsetting),
+including that the named site-permission policy does not govern every type of
+clipboard write. Do not infer acceptance from one policy setting. Managed testing
+remains deferred. Synthetic browser tests intercept writes and inspect native
+ClipboardItem payloads; they do not test an OS clipboard or Outlook round-trip.
