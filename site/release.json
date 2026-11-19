@@ -5,7 +5,7 @@
   "date": "2026-11-19",
   "features": [
     "Reusable user-entered country contact profiles with confirmed lead/new-interaction copying, unchanged historical snapshots, complete contact CSV/HTML/JSON and v1/v2 migration without inferred profiles; same bounded browser-only storage",
-    "Manual dated country outreach logs with contact snapshots, complete interaction CSV and script-free HTML, 1 MiB v2 JSON with v1 migration without invented history; no automatic status changes, contact authentication or new storage",
+    "Manual dated country outreach logs with contact snapshots, complete interaction CSV and script-free HTML, 1 MiB JSON with older-file migration without invented history; no automatic status changes, contact authentication or new storage",
     "Browser-only campaign outreach notebook with user-entered lead contacts, dated statuses and follow-up notes, one current record per country/territory, explicit 1 MiB JSON save/reopen and complete CSV/script-free HTML copies; unapplied/dirty work and stale imports are protected, with no model inference, actual-vote prediction, automatic storage, new dependencies or Hugging Face storage",
     "Separate editable personal-draft Word review copies reuse the native report writer, preserve the full country-first report and unreviewed source-linked claims, revalidate source/question scope and refuse stale or oversized exports; ordinary exports remain unchanged with no new modules, dependencies, schemas or storage",
     "Source-file Open/Add selections supersede older file checks even when cleared; obsolete reads stop before source validation, stale errors respect newer report work and current file controls retain latest-operation cleanup, without new modules, schemas, dependencies or storage",
