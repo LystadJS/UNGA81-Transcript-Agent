@@ -42,8 +42,13 @@ verified government positions. Collective source labels retain their caveats.
 
 The country-first overview stays above the optional draft. Ordinary HTML, Word,
 print, evidence CSV, JSON and ZIP exports keep their existing contents. A separate
-**draft review HTML** combines the report and unreviewed draft for reading; it
-cannot resume work. Save the original report JSON and returned draft JSON separately.
+**draft review HTML** or **draft review Word** combines the complete report and
+unreviewed draft. The Word copy is editable outside this application; neither
+reading copy can resume work or import Word edits. Draft Word export rechecks
+the source/question scope and preserves the country-first report before every
+unreviewed claim, quotation and capacity caveat. The 25 MB HTML/document bounds
+and unsupported-XML-character refusal apply without truncation. Newer edits,
+source actions, draft selections or clearing the view suppress an old export. Save the original report JSON and returned draft JSON separately.
 The draft view is session-only and clears when settings or sources change. Prepare
 again and reopen the same draft if only notes or presentation changed; different
 sources or questions require a new packet. Stale imports cannot replace newer

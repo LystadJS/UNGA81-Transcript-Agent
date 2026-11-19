@@ -4,8 +4,13 @@
   const encoder=new TextEncoder(),W='http://schemas.openxmlformats.org/wordprocessingml/2006/main';
   const xml=value=>String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   const declaration='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
-  function build(report){
-    const Core=root.UNMeetingReport,html=Core.reportHTML(report);
+  function build(report){return render(root.UNMeetingReport.reportHTML(report));}
+  async function buildDraft(report,draft,policy){
+    await root.UNReportDraft.open(draft,report,policy);
+    return render(root.UNMeetingReport.reportHTML(report)+root.UNReportDraft.reviewHTML(draft,report), 'Editable unreviewed draft copy. Keep original report JSON and returned draft JSON separately to reopen work. Word edits cannot be imported into the reporting workspace.');
+  }
+  function render(html,notice='Editable reading copy. Save report JSON or its ZIP package to reopen source-verified work in the reporting workspace.'){
+    const Core=root.UNMeetingReport;
     if(encoder.encode(html).length>Core.LIMIT)throw Error('Word report exceeds 25 MB. Choose fewer meetings. Current work has not changed.');
     // Refuse unsupported XML characters rather than silently changing source text.
     for(const c of html){const n=c.codePointAt(0);if(!(n===9||n===10||n===13||(n>=32&&n<=0xd7ff)||(n>=0xe000&&n<=0xfffd)||n>=0x10000))throw Error('Word cannot preserve an unsupported control character in this report. Use JSON to retain exact source text.');}
@@ -59,7 +64,7 @@
         return blocks(n,level);
       }).join('');
     }
-    const body=blocks(document.body)+'<w:p>'+run('Editable reading copy. Save report JSON or its ZIP package to reopen source-verified work in the reporting workspace.')+'</w:p>';
+    const body=blocks(document.body)+'<w:p>'+run(notice)+'</w:p>';
     const documentXML='<w:document xmlns:w="'+W+'" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><w:body>'+body+'<w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1080" w:right="1080" w:bottom="1080" w:left="1080"/></w:sectPr></w:body></w:document>';
     const styles='<w:styles xmlns:w="'+W+'"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/><w:sz w:val="22"/><w:lang w:val="en-US"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="120"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style>'+Array.from({length:6},(_,i)=>'<w:style w:type="paragraph" w:styleId="Heading'+(i+1)+'"><w:name w:val="heading '+(i+1)+'"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:pPr><w:keepNext/><w:spacing w:before="200" w:after="120"/><w:outlineLvl w:val="'+i+'"/></w:pPr><w:rPr><w:b/><w:color w:val="002D74"/><w:sz w:val="'+[32,28,24,22,22,22][i]+'"/></w:rPr></w:style>').join('')+'<w:style w:type="paragraph" w:styleId="Quote"><w:name w:val="Quote"/><w:basedOn w:val="Normal"/><w:pPr><w:pBdr><w:left w:val="single" w:sz="12" w:color="002D74" w:space="8"/></w:pBdr><w:ind w:left="240"/></w:pPr></w:style><w:style w:type="character" w:styleId="Hyperlink"><w:name w:val="Hyperlink"/><w:rPr><w:color w:val="002D74"/><w:u w:val="single"/></w:rPr></w:style><w:style w:type="table" w:styleId="EvidenceTable"><w:name w:val="Evidence table"/><w:tblPr><w:tblBorders>'+['top','left','bottom','right','insideH','insideV'].map(side=>'<w:'+side+' w:val="single" w:sz="4" w:color="B8C5D3"/>').join('')+'</w:tblBorders><w:tblCellMar><w:top w:w="90" w:type="dxa"/><w:left w:w="90" w:type="dxa"/><w:bottom w:w="90" w:type="dxa"/><w:right w:w="90" w:type="dxa"/></w:tblCellMar></w:tblPr></w:style></w:styles>';
     const numbering='<w:numbering xmlns:w="'+W+'">'+[false,true].map((ordered,id)=>'<w:abstractNum w:abstractNumId="'+id+'">'+Array.from({length:9},(_,i)=>'<w:lvl w:ilvl="'+i+'"><w:start w:val="1"/><w:numFmt w:val="'+(ordered?'decimal':'bullet')+'"/><w:lvlText w:val="'+(ordered?'%'+(i+1)+'.':'•')+'"/><w:pPr><w:ind w:left="'+(360*(i+1))+'" w:hanging="180"/></w:pPr></w:lvl>').join('')+'</w:abstractNum>').join('')+lists.map(l=>'<w:num w:numId="'+l.id+'"><w:abstractNumId w:val="'+Number(l.ordered)+'"/></w:num>').join('')+'</w:numbering>';
@@ -69,5 +74,5 @@
     const files=[['[Content_Types].xml',types],['_rels/.rels',relations(relation('office','officeDocument','word/document.xml'))],['word/document.xml',documentXML],['word/styles.xml',styles],['word/numbering.xml',numbering],['word/_rels/document.xml.rels',relations(relation('styles','styles','styles.xml')+relation('numbering','numbering','numbering.xml')+relationships.map(r=>relation(r.id,'hyperlink',r.target,true)).join(''))]];
     return root.UNMeetingReportPackage.zip(files.map(([name,text])=>({name,bytes:encoder.encode(declaration+text)})),'Word report');
   }
-  root.UNMeetingReportWord={build};
+  root.UNMeetingReportWord={build,buildDraft};
 })(globalThis);
