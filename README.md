@@ -144,3 +144,5 @@ The [implementation ledger](docs/implementation-agenda/STATUS.md) records progre
 
 Personal model drafts use a separate standard-library Python command and a browser
 review sidecar; see [setup, evidence limits and unreviewed-output boundaries](docs/MEETING_REPORTING.md#personal-model-drafts). No generative model is bundled.
+
+The browser [campaign notebook](https://lystadjs.github.io/un/transcript-agent/campaign-notebook.html) keeps manual country outreach, lead contacts and follow-up dates in portable local files. See [its data contract and limits](docs/CAMPAIGN_NOTEBOOK.md). Reported support is not an actual vote or prediction.

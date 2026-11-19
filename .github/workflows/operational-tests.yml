@@ -2,10 +2,10 @@ name: Operational pipeline contracts
 
 on:
   pull_request:
-    paths: ['un/**', 'tools/package_checksums.py', 'tools/receive_owner_review.py', '.github/workflows/owner-review-intake.yml', 'tools/continue_owner_review.py', 'tools/export_owner_training.py', '.github/workflows/owner-training-export.yml', 'src/**', 'tests/**', 'config/**', 'site/archive*', 'site/meeting-report*', 'site/reporting-exclusions.json', 'tools/build_pages.py', 'tools/reporting_usability.cjs', 'tools/measure_storage_capacity.py', '.github/workflows/storage-capacity.yml', 'tools/write_operational_receipt.py', 'tools/observe_operational_runs.py', 'tools/inspect_operational_run.py', 'tools/storage_recovery_drill.py', 'tools/audit_private_exports.py', 'tools/provision_public_metadata.py', '.github/workflows/public-metadata-provision.yml', '.github/workflows/restored-export-audit.yml', '.github/workflows/storage-recovery.yml', 'tools/*reviewer*', 'tests/browser_owner_review.py', '.github/workflows/owner-reviewer.yml', 'requirements-model.txt', '.github/workflows/operational*.yml', '.github/workflows/model-training.yml']
+    paths: ['un/**', 'tools/package_checksums.py', 'tools/receive_owner_review.py', '.github/workflows/owner-review-intake.yml', 'tools/continue_owner_review.py', 'tools/export_owner_training.py', '.github/workflows/owner-training-export.yml', 'src/**', 'tests/**', 'config/**', 'site/archive*', 'site/campaign-notebook*', 'site/meeting-report*', 'site/reporting-exclusions.json', 'tools/build_pages.py', 'tools/reporting_usability.cjs', 'tools/measure_storage_capacity.py', '.github/workflows/storage-capacity.yml', 'tools/write_operational_receipt.py', 'tools/observe_operational_runs.py', 'tools/inspect_operational_run.py', 'tools/storage_recovery_drill.py', 'tools/audit_private_exports.py', 'tools/provision_public_metadata.py', '.github/workflows/public-metadata-provision.yml', '.github/workflows/restored-export-audit.yml', '.github/workflows/storage-recovery.yml', 'tools/*reviewer*', 'tests/browser_owner_review.py', '.github/workflows/owner-reviewer.yml', 'requirements-model.txt', '.github/workflows/operational*.yml', '.github/workflows/model-training.yml']
   push:
     branches: [main]
-    paths: ['un/**', 'tools/package_checksums.py', 'tools/receive_owner_review.py', '.github/workflows/owner-review-intake.yml', 'tools/continue_owner_review.py', 'tools/export_owner_training.py', '.github/workflows/owner-training-export.yml', 'src/**', 'tests/**', 'config/**', 'site/archive*', 'site/meeting-report*', 'site/reporting-exclusions.json', 'tools/build_pages.py', 'tools/reporting_usability.cjs', 'tools/measure_storage_capacity.py', '.github/workflows/storage-capacity.yml', 'tools/write_operational_receipt.py', 'tools/observe_operational_runs.py', 'tools/inspect_operational_run.py', 'tools/storage_recovery_drill.py', 'tools/audit_private_exports.py', 'tools/provision_public_metadata.py', '.github/workflows/public-metadata-provision.yml', '.github/workflows/restored-export-audit.yml', '.github/workflows/storage-recovery.yml', 'tools/*reviewer*', 'tests/browser_owner_review.py', '.github/workflows/owner-reviewer.yml', 'requirements-model.txt', '.github/workflows/operational*.yml', '.github/workflows/model-training.yml']
+    paths: ['un/**', 'tools/package_checksums.py', 'tools/receive_owner_review.py', '.github/workflows/owner-review-intake.yml', 'tools/continue_owner_review.py', 'tools/export_owner_training.py', '.github/workflows/owner-training-export.yml', 'src/**', 'tests/**', 'config/**', 'site/archive*', 'site/campaign-notebook*', 'site/meeting-report*', 'site/reporting-exclusions.json', 'tools/build_pages.py', 'tools/reporting_usability.cjs', 'tools/measure_storage_capacity.py', '.github/workflows/storage-capacity.yml', 'tools/write_operational_receipt.py', 'tools/observe_operational_runs.py', 'tools/inspect_operational_run.py', 'tools/storage_recovery_drill.py', 'tools/audit_private_exports.py', 'tools/provision_public_metadata.py', '.github/workflows/public-metadata-provision.yml', '.github/workflows/restored-export-audit.yml', '.github/workflows/storage-recovery.yml', 'tools/*reviewer*', 'tests/browser_owner_review.py', '.github/workflows/owner-reviewer.yml', 'requirements-model.txt', '.github/workflows/operational*.yml', '.github/workflows/model-training.yml']
   workflow_dispatch:
 
 permissions:
@@ -33,6 +33,7 @@ jobs:
         run: |
           python -m unittest discover -s tests -p 'test_*.py' -v
           node tests/test_reporting_browser_fixture.cjs
+          node tests/test_campaign_notebook.cjs
       - name: Install pinned browser harness
         run: |
           python -m pip install --disable-pip-version-check playwright==1.57.0
@@ -43,11 +44,12 @@ jobs:
           export PLAYWRIGHT_MODULE="$(python -c 'import pathlib, playwright; print(pathlib.Path(playwright.__file__).parent / "driver" / "package")')"
           export BROWSER_PATH="$(python -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
           node tests/test_archive_ui.cjs
-      - name: Source-bound meeting report contracts and browser workflow
+      - name: Reporting and manual campaign browser workflows
         shell: bash
         run: |
           export PLAYWRIGHT_MODULE="$(python -c 'import pathlib, playwright; print(pathlib.Path(playwright.__file__).parent / "driver" / "package")')"
           export BROWSER_PATH="$(python -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          node tests/test_campaign_notebook_ui.cjs
           node tests/test_meeting_report.cjs
           node tests/test_report_country_timeline.cjs
           node tests/test_report_remove_sources.cjs
