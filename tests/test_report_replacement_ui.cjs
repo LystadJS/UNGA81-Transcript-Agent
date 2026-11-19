@@ -70,5 +70,61 @@ let browser,server;
  // A stale file read is discarded before expensive source validation begins.
  await page.evaluate(()=>{const text=File.prototype.text,open=UNMeetingReport.openSaved;window.normalFileText=text;window.normalEarlyOpen=open;window.earlyValidationCalls=0;UNMeetingReport.openSaved=(...args)=>{window.earlyValidationCalls++;return open(...args);};File.prototype.text=async function(){const value=await text.call(this);await new Promise(resolve=>window.releaseSourceRead=()=>resolve(value));return value;};});
  await open(a);await page.waitForFunction(()=>typeof window.releaseSourceRead==='function');await page.locator('#mission').fill('Newest mission during file read');await page.locator('#prepareReport').click();const earlyBefore=await snapshot();await page.evaluate(async()=>{File.prototype.text=window.normalFileText;window.releaseSourceRead();await new Promise(resolve=>setTimeout(resolve,0));UNMeetingReport.openSaved=window.normalEarlyOpen;});await status('Your report changed');assert.equal(await page.evaluate(()=>window.earlyValidationCalls),0);assert.equal(await snapshot(),earlyBefore);
+ // Exercise actual directory/file handles with a fictional shared folder. Only the OS picker is substituted.
+ const folderContext=await browser.newContext(),reader=await folderContext.newPage();
+ await reader.route('**/countries.json',r=>r.fulfill({json:F.countries}));
+ await reader.addInitScript(()=>{window.showDirectoryPicker=async options=>{
+   if(options.mode!=='read')throw Error('Expected read-only folder access');
+   return (await navigator.storage.getDirectory()).getDirectoryHandle('Fictional Mission');
+ };});
+ await reader.goto(page.url());
+ await reader.waitForFunction(()=>document.querySelector('#status').textContent.startsWith('Ready.'));
+ const writerPage=await reader.context().newPage();
+ await writerPage.goto(page.url());
+ await writerPage.evaluate(async corpus=>{
+   const root=await navigator.storage.getDirectory();
+   const dir=await root.getDirectoryHandle('Fictional Mission',{create:true});
+   await dir.getDirectoryHandle('Nested',{create:true});
+   for(const [name,content] of [['Briefing.json',JSON.stringify(corpus)],['Other.json','{}'],['Notes.txt','ignore']]){
+     const handle=await dir.getFileHandle(name,{create:true}),writer=await handle.createWritable();
+     await writer.write(content);await writer.close();
+   }
+ },a);
+ await reader.locator('#missionFolder summary').click();
+ await reader.locator('#chooseMissionFolder').click();
+ await reader.waitForFunction(()=>document.querySelector('#missionFolderFiles').length===2);
+ await reader.locator('#missionFolderSearch').fill('BRIEF');
+ assert.equal(await reader.locator('#missionFolderFiles option').count(),1);
+ await reader.locator('#openMissionFile').click();
+ await reader.waitForFunction(()=>document.querySelector('#status').textContent.startsWith('Saved sources verified'));
+ await reader.locator('#analystNotes').fill('Preserve work');
+ await writerPage.evaluate(async corpus=>{
+   const dir=await (await navigator.storage.getDirectory()).getDirectoryHandle('Fictional Mission');
+   const handle=await dir.getFileHandle('Briefing.json'),writer=await handle.createWritable();
+   await writer.write(JSON.stringify(corpus));await writer.close();
+ },b);
+ await reader.locator('#openMissionFile').click();
+ await reader.locator('#keepCurrentReport').click();
+ assert.equal(await reader.locator('#analystNotes').inputValue(),'Preserve work');
+ await reader.locator('#openMissionFile').click();
+ await reader.locator('#replaceCurrentReport').click();
+ await reader.waitForFunction(()=>document.querySelector('#status').textContent.startsWith('Saved sources verified'));
+ assert.equal(await reader.locator('#loadedMeetings input').first().inputValue(),b.records[0].meeting_slug);
+ await reader.locator('#analystNotes').fill('Preserve work');
+ await writerPage.evaluate(async()=>{
+   const dir=await (await navigator.storage.getDirectory()).getDirectoryHandle('Fictional Mission');
+   await dir.removeEntry('Briefing.json');
+ });
+ await writerPage.close();
+ await reader.locator('#openMissionFile').click();
+ await reader.waitForFunction(()=>document.querySelector('#status').textContent.startsWith('Could not open file'));
+ assert.equal(await reader.locator('#analystNotes').inputValue(),'Preserve work');
+ await reader.locator('#refreshMissionFolder').click();
+ await reader.waitForFunction(()=>document.querySelector('#missionFolderFiles').length===0);
+ await reader.locator('#missionFolderSearch').fill('');
+ assert.equal(await reader.locator('#missionFolderFiles').inputValue(),'Other.json');
+ await reader.locator('#forgetMissionFolder').click();
+ assert(await reader.locator('#openMissionFile').isDisabled());
+ await folderContext.close();
  assert.deepEqual(errors,[]);console.log('PASS: invalid-import preservation; explicit keep/replace and Escape/focus; unchanged sources, notes, appendix, preview and exports on cancellation; no requests before collection approval; partial/failed/cancelled collection; edits during retrieval/validation; stale import isolation; cleared open/add selections, stale/current errors, newer invalid/cross-control selection, file cleanup and early-read refusal; mobile; synthetic sources only');
 })().catch(e=>{console.error(e);process.exitCode=1;}).finally(async()=>{if(browser)await browser.close();if(server)await new Promise(r=>server.close(r));});

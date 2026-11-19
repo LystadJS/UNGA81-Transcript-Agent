@@ -267,18 +267,98 @@
     for(const id of ['openCollection','addCollection'])if($(id)!==input)$(id).value='';
     return ticket;
   }
-  $('openCollection').onchange=async event=>{
-    const ticket=sourceFileTicket(event.target),file=event.target.files[0];if(!file){setStatus('No source file selected. Current work kept.');return;}
+  async function openReportFile(ticket, getFile){
     setStatus('Checking saved sources…');
     try{
+      const file=await getFile();if(!replacementCurrent(ticket))return;
       const value=await readSavedFile(file);if(!replacementCurrent(ticket))return;
       const opened=await Core.openSaved(value,policy,countries);
       if(!replacementCurrent(ticket))return;
       if(!await confirmReplacement('Opening this file will replace your current sources, appendix selections and notes.')){if(ticket.id===replacementSerial)setStatus('Current report kept. The selected file was not applied.');return;}
       if(!replacementCurrent(ticket))return;
       setCollection(opened.corpora,opened.settings,opened.selected,opened.appendix,opened.passage_notes);setStatus('Saved sources verified. Prepare the report to rebuild its summaries; saved derived claims are not trusted.');
-    }catch(e){if(replacementCurrent(ticket))setStatus('Could not open file: '+e.message,true);}finally{if(sourceFileTickets.get(event.target)===ticket&&event.target.files[0]===file)event.target.value='';}
+    }catch(e){if(replacementCurrent(ticket))setStatus('Could not open file: '+e.message,true);}
+  }
+  $('openCollection').onchange=async event=>{
+    const input=event.target,ticket=sourceFileTicket(input),file=input.files[0];
+    if(!file){setStatus('No source file selected. Current work kept.');return;}
+    try{await openReportFile(ticket,()=>file);}
+    finally{if(sourceFileTickets.get(input)===ticket&&input.files[0]===file)input.value='';}
   };
+
+  if ($('missionFolder') && typeof window.showDirectoryPicker === 'function') {
+    const choose = $('chooseMissionFolder'), refresh = $('refreshMissionFolder');
+    const forget = $('forgetMissionFolder'), search = $('missionFolderSearch');
+    const choices = $('missionFolderFiles'), open = $('openMissionFile');
+    const feedback = $('missionFolderStatus');
+    let directory, generation = 0, files = new Map(), pendingOpen;
+    function cancelOpen() {
+      if (pendingOpen?.id === replacementSerial) {
+        replacementSerial++;
+        setStatus('Folder selection changed. Current report kept.');
+      }
+      pendingOpen = null;
+    }
+    function display() {
+      const query = search.value.trim().toLowerCase();
+      const names = [...files.keys()].filter(name => name.toLowerCase().includes(query)).sort();
+      choices.replaceChildren(...names.map(name => new Option(name, name)));
+      choices.disabled = open.disabled = names.length === 0;
+      search.disabled = !files.size;
+      forget.disabled = refresh.disabled = !directory;
+      if (directory) feedback.textContent = directory.name + ' · ' + names.length + ' matching filenames of ' + files.size + '.';
+    }
+    async function listFolder(pick) {
+      const serial = ++generation;
+      cancelOpen();
+      try {
+        const selected = pick ? await window.showDirectoryPicker({mode:'read'}) : directory;
+        if (serial !== generation) return;
+        const next = new Map();
+        let count = 0;
+        feedback.textContent = 'Reading filenames…';
+        for await (const handle of selected.values()) {
+          if (serial !== generation) return;
+          if (++count > 500) throw Error('Choose a folder with at most 500 top-level entries.');
+          if (handle.kind === 'file' && /\.(json|zip)$/i.test(handle.name)) next.set(handle.name, handle);
+        }
+        if (serial !== generation) return;
+        cancelOpen();
+        directory = selected;
+        files = next;
+        if (pick) search.value = '';
+        display();
+      } catch (error) {
+        if (serial !== generation) return;
+        display();
+        feedback.textContent = (error.name === 'AbortError' ? 'Folder selection cancelled.' : 'Could not list folder. ' + error.message) +
+          (directory ? ' Previous list retained for ' + directory.name + '.' : ' Use the saved-file picker above.');
+      }
+    }
+    choose.disabled = false;
+    feedback.textContent = 'Choose a folder to list filenames. Access lasts for this page session.';
+    choose.onclick = () => listFolder(true);
+    refresh.onclick = () => listFolder(false);
+    forget.onclick = () => {
+      generation++;
+      cancelOpen();
+      directory = null;
+      files.clear();
+      search.value = '';
+      display();
+      feedback.textContent = 'Folder disconnected. Choose a folder to start again.';
+    };
+    search.oninput = () => { cancelOpen(); display(); };
+    choices.onchange = cancelOpen;
+    open.onclick = async () => {
+      const handle = files.get(choices.value);
+      if (!handle) return;
+      const ticket = sourceFileTicket(open);
+      pendingOpen = ticket;
+      await openReportFile(ticket, () => handle.getFile());
+      if (pendingOpen === ticket) pendingOpen = null;
+    };
+  }
   $('addCollection').onchange=async event=>{
     const ticket=sourceFileTicket(event.target),file=event.target.files[0];if(!file){setStatus('No source file selected. Current work kept.');return;}
     setStatus('Checking sources to add…');

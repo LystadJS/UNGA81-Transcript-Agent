@@ -1,5 +1,25 @@
 # Meeting-first reporting
 
+## Retrieve a report shared by your mission
+
+A report author downloads report JSON or the report-package ZIP and places it in
+a mission-approved shared drive or synced folder. Use a filename colleagues can
+search, such as a meeting date, topic and revision. Grant readers access through
+the drive. Files include the underlying sources and analyst notes.
+
+In **Meeting reports → Find reports in a shared mission folder**, choose the
+folder and search by filename. The app lists top-level JSON and ZIP files in
+folders with up to 500 entries. Opening a file reads the copy currently visible
+to the operating system and applies the usual report validation, 25 MB bound and
+replacement confirmation. Refresh to see additions or removals after drive sync.
+Disconnect to clear the session list. If folder selection is unavailable in your
+browser, use **Open saved collection/report JSON or report-package ZIP**.
+
+Each opened report is a snapshot. Save edits under a new revision name in the
+shared drive. Your mission's storage administrator manages membership, version
+history, retention and recovery.
+
+
 The immediate product target is a PowerTranscript-like reporting workflow, implemented independently: select proceedings, search their evidence, apply mission report templates, and export documented results. Research CSVs and evaluated stance tracking remain distinct capabilities. This is not a claim of equivalent vendor performance or access to proprietary code or weights.
 
 ## Personal model drafts
