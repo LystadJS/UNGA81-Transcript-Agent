@@ -12,51 +12,41 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Verified release 1.78.0: dated campaign outreach logs
+## Release 1.79.0 candidate: reusable campaign contact profiles
 
-The existing manual notebook now stages dated interactions inside each country
-form. Each log has a user-entered date, channel, contact/address snapshot, notes
-and source reference. Add stages a log; Apply commits the country form in session
-memory; JSON saves it. Logged contacts can differ from the current lead. No log
-automatically changes status, status date, lead, follow-up or country counts.
+Country forms now stage reusable, unverified profiles with a name, role, address
+and notes. Explicit copying fills lead or new-interaction fields, with Keep/Escape
+before replacing populated destinations. Copies remain independent: editing or
+removing a profile never rewrites prior interaction snapshots, lead fields or
+status counts. Removal asks before clearing that profile and its editing fields;
+newer edits invalidate stale decisions. Pending fields block country Apply until
+added, updated or cleared. Apply commits the form; JSON saves it.
 
-Strict v1 files reopen with empty history; v2 writes explicit interaction arrays.
-No prior conversations are inferred from dates or statuses. Up to 100 logs per
-place and 1,000 per notebook share the existing 1 MiB bound. JSON and script-free
-HTML retain all logs. Separate complete interaction CSV excludes campaign/country
-notes and current statuses; existing country CSV retains its original scope.
-Literal search includes logs; filters never reduce downloads. Removal is explicit
-and confirmable, not an immutable audit trail. Reusable contact profiles, automatic
-change history, accounts and full election CRM remain additional work.
+V3 JSON reads strict v1/v2 without inventing contacts or history. Up to 25 profiles
+per place and 1,000 total share the 1 MiB notebook limit. A separate contact CSV
+exports every profile; original country/interaction CSV scopes stay separate.
+Script-free HTML and JSON include complete profiles and logs. Cached earlier
+layouts preserve imported profiles through edits/saves; mismatched core files
+refuse entry with a reload message. No new runtime file, dependency, backend,
+model, private records or Hugging Face storage is added.
 
-Local engineering checks cover migration without invented history, duplicate IDs,
-strict fields/dates, per-country/global limits, both independent CSV parses, safe
-HTML, pending interaction fields, multiple contacts, stale remove decisions,
-Keep/Escape, JSON replay and mobile long-text layout. Cached pre-log layouts retain
-logs through ordinary edits/saves; mismatched core files refuse entry with a reload
-message. Migrated v2 state must fit the same byte limit; dense v1 refusals are
-explicit rather than truncating work. Desktop/mobile inspection used fictional data. [Source #347](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/347)
-merged as `318651fd624fd00b082ef34e26551840f6ba5bcd` after numerical, browser and
-contract checks passed, including fifteen reporting workflows.
-[Website #193](https://github.com/LystadJS/LystadJS.github.io/pull/193) merged as
-`af7a27c4651c8ff19e87b9579f75509bfe82bff8` after audit and regression passed.
-All 201 preferred-site canonical files and all five changed original-site assets
-match expected hashes. The expanded campaign browser workflow passes live at
-both URLs. Main reporting also passed locally; fifteen live reporting suites
-retain their previous 1.77 scope below. All 2,077 retained checksums and the
-209-entry public build pass; no Python test change alters the 264-test suite.
-The mirror remains 200 public files; repeat sync copied/removed zero. No new runtime file, dependency, backend, model weights,
-private records, personal R/Python change or Hugging Face storage is added.
+Local core/browser checks pass for strict limits/IDs, independent contact CSV
+parsing, v1/v2 migration, complete exports versus filters, explicit lead/log copying,
+snapshot preservation, stale removals, cached layouts and mobile/reading-copy
+long-text layout. Fictional desktop/mobile visual inspection passed. All 2,077
+checksums and the 209-entry public build pass. CI/deployment receipts are pending. Reusable profiles are not
+verified identities, a synchronized directory or authenticated election CRM.
+Actual diplomat/government-browser acceptance remains unrecorded.
 
 ## Previous verified release
 
-[Release 1.77.0 checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/30179d4ba3846523ca018ca458ac5d191259a836/docs/OVERNIGHT_WORK.md)
-retains the 201 preferred-site hashes, fifteen live reporting workflows plus the
-campaign workflow, two original-site suites, 264 Python tests, 2,077 package
-checksums and 209-entry public build. It also links the preceding reporting/Word
-and model-free facilitator receipts. Those are engineering checks at their
-original scope, not new participant/model acceptance. Actual model, desktop Word
-and diplomat/government-browser validation remain outstanding.
+[Release 1.78.0 checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/b5dd9a11da4de39e4bef0e4c91acd894b1dcac1e/docs/OVERNIGHT_WORK.md)
+retains 201 preferred-site hashes, five original-site asset hashes and the dated
+campaign workflow passing live at both URLs, plus three passing source checks,
+two website checks, 264 Python tests, 2,077 checksums and 209-entry public build.
+It links the preceding fifteen live reporting and model-free facilitator receipts.
+These remain engineering checks at their original scope, not user/model acceptance.
+Actual model, desktop Word and diplomat/government-browser validation is outstanding.
 
 ## Source tree and remaining work
 
