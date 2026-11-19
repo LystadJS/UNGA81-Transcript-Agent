@@ -49,6 +49,9 @@ needs no model or browser harness. The isolated browser rehearsal also checks
 paired draft review and separate Word/HTML downloads. Simulated request counts,
 no tool inference and unrecorded participant acceptance remain explicit. This
 supports interface and client checks; actual model quality remains separate.
+[Source #343](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/343) passed
+its contract check, including the expanded facilitator rehearsal, and is merged.
+The public application and mirror bytes remain unchanged at 1.76.0.
 
 ## Operational and scientific boundaries
 

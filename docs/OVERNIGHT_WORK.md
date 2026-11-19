@@ -12,7 +12,7 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Current increment: draft-review facilitator setup
+## Verified draft-review facilitator setup
 
 The personal facilitator now produces four files: three source-validated fixtures
 and `synthetic-model-draft.json`, paired with the original two-meeting report.
@@ -34,10 +34,14 @@ interface tasks from optional real-model acceptance.
 
 The focused facilitator contract passes locally, including fixture-only,
 headless smoke, visible-session lifecycle simulation, output failure and cleanup.
-All 2,077 retained checksums and the 205-entry public build pass locally. Mirror
-synchronization copies/removes zero files. Full CI and publication receipts are
-pending. Generated material stays outside
-the repository and public build. No production app asset, schema, dependency,
+All 2,077 retained checksums and the 205-entry public build pass locally. The
+source-only [PR #343](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/343)
+passed its contract check at `1b37bae` and merged as `44c210a`. CI passes 264 Python
+tests and the full reporting contracts/browser workflows, including the expanded
+facilitator rehearsal. Application bytes and the 196-file mirror are unchanged;
+their live-site validation retains the 1.76.0 scope below. Repeat synchronization
+copies/removes zero files. Generated material stays outside the repository and
+public build. No production app asset, schema, dependency,
 model weight, backend, personal R/Python change or Hugging Face storage is added.
 Actual diplomat, government-browser, desktop Word and model-quality acceptance
 remain outstanding. All 37 reserved meetings and scientific gates stay intact.
