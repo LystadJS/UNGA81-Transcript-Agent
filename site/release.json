@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.78.0",
+  "browser_engine": "browser-descriptive-1.79.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-19",
   "features": [
+    "Reusable user-entered country contact profiles with confirmed lead/new-interaction copying, unchanged historical snapshots, complete contact CSV/HTML/JSON and v1/v2 migration without inferred profiles; same bounded browser-only storage",
     "Manual dated country outreach logs with contact snapshots, complete interaction CSV and script-free HTML, 1 MiB v2 JSON with v1 migration without invented history; no automatic status changes, contact authentication or new storage",
     "Browser-only campaign outreach notebook with user-entered lead contacts, dated statuses and follow-up notes, one current record per country/territory, explicit 1 MiB JSON save/reopen and complete CSV/script-free HTML copies; unapplied/dirty work and stale imports are protected, with no model inference, actual-vote prediction, automatic storage, new dependencies or Hugging Face storage",
     "Separate editable personal-draft Word review copies reuse the native report writer, preserve the full country-first report and unreviewed source-linked claims, revalidate source/question scope and refuse stale or oversized exports; ordinary exports remain unchanged with no new modules, dependencies, schemas or storage",
@@ -193,7 +194,7 @@
   },
   "campaign_notebook": {
     "entry": "campaign-notebook.html",
-    "schema": "un.campaign-notebook.v2",
+    "schema": "un.campaign-notebook.v3",
     "status": "local_engineering_pass",
     "data_origin": "user_entered_outreach",
     "max_json_bytes": 1048576,
@@ -203,10 +204,14 @@
     "empirical_usability_acceptance": "not_run",
     "readable_schemas": [
       "un.campaign-notebook.v1",
-      "un.campaign-notebook.v2"
+      "un.campaign-notebook.v2",
+      "un.campaign-notebook.v3"
     ],
     "max_interactions_per_country": 100,
     "max_interactions_per_notebook": 1000,
-    "history_origin": "user_entered_dated_interactions_not_verified_audit"
+    "history_origin": "user_entered_dated_interactions_not_verified_audit",
+    "max_contacts_per_country": 25,
+    "max_contacts_per_notebook": 1000,
+    "contact_origin": "user_entered_unverified_profiles_with_independent_snapshots"
   }
 }
