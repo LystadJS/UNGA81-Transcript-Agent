@@ -1,11 +1,11 @@
 # Current capability and acceptance matrix
 
-Updated 19 November 2026, UTC. **Release 1.81.0 is deployed and verified at both
+Updated 19 November 2026, UTC. **Release 1.82.0 is deployed and verified at both
 public URLs.** All 201 preferred-site canonical files and all four changed
 original-site assets match expected hashes. Three campaign browser suites and
-the existing report-calendar regression pass live at both URLs. Source #353
+the existing report-calendar regression pass live at both URLs. Source #360
 passed numerical, browser and contract checks, including fifteen reporting
-workflows and three campaign suites; website #196 passed audit and regression
+workflows and three campaign suites; website #197 passed audit and regression
 before merge. The unchanged Python suite has 264 tests; all 2,077 retained package
 checksums and the 209-entry public build pass. Earlier live reporting suites
 retain their original scope in the linked checkpoint.
