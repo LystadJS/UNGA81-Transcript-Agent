@@ -23,6 +23,18 @@ public assets and HF storage are unchanged; managed testing remains deferred.
 The [audit record](OPERATIONS.md#source-free-historicalresearch-action-subset)
 identifies the remaining blocked workflows and the automatic-review reason.
 
+[Source #368](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/368)
+merged as `622e81e5f72e659f50b4306d4b0a446c1522f1d8` after 39 checks passed across
+36 runs, including native R. No deferred acquisition/live/model workflow was
+activated. Main now has 28 older references in the eight deferred workflows.
+The focused [review candidate](https://github.com/LystadJS/UNGA81-Transcript-Agent/compare/main...maintenance/acquisition-action-runtimes)
+is commit `fa6f19a247060eacb2633b13a4f841bf1f9a093f`; only action refs differ,
+all 61 files lint clean, its push matches no event and no run/PR was created.
+Opening that PR requires specific data-access/artifact-output approval because
+automatic review rejected the full proposal. No bypass or manual dispatch was
+used. The original full branch is superseded for review. Temporary linter removed;
+application/public/R assets and HF storage remain unchanged.
+
 ## Action-runtime maintenance — application unchanged
 
 Current first-party Node 24 actions replace 45 references in 15 active-build,
