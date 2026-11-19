@@ -99,8 +99,11 @@ The owner selected **Microsoft Edge and Outlook** for the actual client rehearsa
 The [targeted guide](REPORTING_USABILITY.md#edge-and-outlook-rehearsal) gives file
 checks and edition-specific calendar import routes based on current Microsoft
 instructions. Exact edition/build/account policy and observed results remain
-unrecorded. This selection does not change the app's acceptance status or turn
-Chromium/ICS engineering checks into managed Edge/Outlook testing.
+unrecorded. The subsequent [native Edge engineering pass](REPORTING_USABILITY.md#native-edge-engineering-receipt)
+passed 19 local UI suites, the facilitator contract and six preferred-site suites
+in unmanaged Linux headless Edge 157.0.4341.60; all 201 deployed file hashes matched.
+No app fix was required. This does not establish managed government Edge, Outlook
+import or participant acceptance.
 
 ## Operational and scientific boundaries
 

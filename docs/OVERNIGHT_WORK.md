@@ -51,8 +51,14 @@ not been supplied. The rehearsal captures actual versions, retained downloads,
 November 21/22 all-day dates, text, visibility, alerts and duplicates. It imports a
 file snapshot, not a subscription, and leaves full JSON as resumable work.
 
-No native Edge/Outlook acceptance was performed and no Outlook account or calendar
-was accessed. Actual managed-client acceptance is still outstanding.
+Native Edge engineering verification subsequently passed: 19 local UI suites,
+the facilitator contract, six preferred-site suites and 201 deployed file hashes,
+using Edge 157.0.4341.60 on unmanaged headless Linux with Playwright 1.62.0 at source
+`8a8741f78dff79223f22b2679ef937ef8d414836`. See the
+[scoped receipt](REPORTING_USABILITY.md#native-edge-engineering-receipt). The official
+package was hash-verified, extracted privately and removed after testing; no app
+fix or dependency change was needed. No Outlook account or calendar was accessed.
+Actual managed-client and participant acceptance is still outstanding.
 This update changes documentation only; release 1.81.0 and all public assets remain
 unchanged. Personal generation hardware/runtime and permitted vendor workflow
 requirements remain separate unresolved inputs.
