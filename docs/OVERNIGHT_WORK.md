@@ -12,7 +12,7 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Release 1.76.0 candidate: editable personal-draft Word copies
+## Verified release 1.76.0
 
 The optional personal-draft panel adds a separate Word review copy. The existing
 native document writer is shared by ordinary Word and draft Word; no second
@@ -29,16 +29,40 @@ DOCX and unsupported XML characters without truncation. New report edits, source
 actions, draft selections or clearing suppress an old result/error; the optional
 exporter can fail without preventing ordinary report preparation or draft HTML.
 
-Local validation passes fifteen reporting browser workflows, independent native
-OOXML/CRC parsing for ordinary and draft copies, 2,077 retained package checksums
-and the 205-entry public build. Expanded checks cover full-report prefix, exact
-quotations/links and capacity labels, scope/citation rejection, byte/character
-bounds, stale edits/clears/source actions and optional-module isolation. PR checks
-and deployment receipts remain pending. No new module,
+| PR | Change | Checked head / merge |
+| --- | --- | --- |
+| [Source #340](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/340) | Separate editable draft Word review copies | Three checks passed at `2db557a`; merged `8f01f92` |
+| [Website #190](https://github.com/LystadJS/LystadJS.github.io/pull/190) | Canonical Word review mirror and source/release pins | Audit/regression passed at `45b5bb2`; merged `ee39a15` |
+| [Source #341](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/341) | Optional-button startup compatibility | Three checks passed at `e6f663d`; merged `237138d` |
+| [Website #191](https://github.com/LystadJS/LystadJS.github.io/pull/191) | Compatibility mirror and final source pin | Audit/regression passed at `94fcc6c`; merged `c89ef8d` |
+
+Both public URLs serve 1.76.0. All 197 preferred-site files match expected SHA-256
+hashes. Fifteen reporting browser workflows pass live with fictional sources:
+reporting, personal drafts, calendar, affiliation navigation, bulk appendix,
+inventory addition, saved-source addition, package opening, source removal,
+replacement, device library, packages, Word, print/PDF and archive handoff. The
+expanded personal-draft, ordinary Word and main reporting suites also pass at the
+original URL, whose four changed assets match canonical source hashes. Skipped
+PR live jobs are not deployed test passes.
+
+Independent native OOXML/CRC parsing verifies the exact ordinary-report text
+prefix, quotations, source links, Unicode/literal markup, evidence gaps and
+unreviewed/collective labels without macros or media. Scope/citation mismatch,
+byte/character limits, stale edits/clears/source actions and optional exporter
+failure preserve work. A synthesized layout without the new button reproduced a
+startup error; optional control binding now passes startup, report preparation,
+draft HTML review, JSON readiness and ordinary Word download. This is a targeted
+missing-control simulation, not acceptance of every cached historical layout.
+
+Local validation passes fifteen reporting browser workflows and the focused final
+compatibility check. CI passes 264 Python tests and full reporting contracts/browser
+workflows. All 2,077 retained package checksums and the 205-entry public build pass.
+Mirror count remains 196 files; repeat synchronization copies/removes zero files.
+Four existing application assets plus the manifest change. There is no new module,
 schema, model, dependency, backend, personal R/Python change or Hugging Face
-storage is added. Actual model quality, desktop Word rendering and diplomat or
-government-browser acceptance remain outstanding; all 37 reserved meetings and
-scientific publication gates remain unchanged.
+storage. Actual model quality, desktop Word rendering and diplomat/government
+browser acceptance remain outstanding. All 37 reserved meetings, original R
+artifacts and scientific publication gates remain unchanged.
 
 The [previous checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/0fe4dabe518e461fb2b5f09c9d20751e0ff83752/docs/OVERNIGHT_WORK.md)
 retains verified release 1.75.0, 197 preferred-site hashes and fifteen live reporting
@@ -90,7 +114,7 @@ selection rather than following the user's latest run.
 Seven suites pass 453 default R checks plus two explicitly selected archived-run
 checks on Linux R 4.5.0 (Matrix 1.7.3, cluster 2.1.8.1, igraph 2.1.4). At the cleanup checkpoint, the Python
 suite passed 256 tests, including six inventory-maintenance checks; the current
-264-test total is recorded in the previous verified checkpoint. This does not
+264-test total is recorded above. This does not
 establish Windows, live Shiny, PDF or scientific acceptance.
 
 Fresh full offline replays before and after cleanup both exit successfully with
