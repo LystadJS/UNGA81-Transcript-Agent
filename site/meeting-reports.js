@@ -3,6 +3,7 @@
   'use strict';
   const $=id=>document.getElementById(id),Core=UNMeetingReport;
   let policy,countries,inventory=[],corpora=[],report=null,controller=null,shown=10,dirty=false,handoff=null,appendixIds=new Set(),notes=new Map(),bulkUndo=null;
+  const sourceFileTickets=new WeakMap();
   let modelDraft=null,draftSerial=0;
   let printing=false,printTitle=null,printSnapshot=null;
   let workspaceRevision=0,replacementSerial=0,preferencesSerial=0,packaging=false,calendarExporting=false,deviceBusy=false,deviceAvailable=false,deviceSaved=false,deviceLibrary=[],deviceId='current';
@@ -259,29 +260,37 @@
     if(/\.zip$/i.test(file.name)||(header[0]===0x50&&header[1]===0x4b))return UNMeetingReportPackage.read(new Uint8Array(await file.arrayBuffer()));
     return JSON.parse(await file.text());
   }
+  function sourceFileTicket(input){
+    const ticket={id:++replacementSerial,revision:workspaceRevision};
+    sourceFileTickets.set(input,ticket);
+    for(const id of ['openCollection','addCollection'])if($(id)!==input)$(id).value='';
+    return ticket;
+  }
   $('openCollection').onchange=async event=>{
-    const file=event.target.files[0];if(!file)return;
-    const ticket={id:++replacementSerial,revision:workspaceRevision};setStatus('Checking saved sources…');
+    const ticket=sourceFileTicket(event.target),file=event.target.files[0];if(!file){setStatus('No source file selected. Current work kept.');return;}
+    setStatus('Checking saved sources…');
     try{
-      const opened=await Core.openSaved(await readSavedFile(file),policy,countries);
+      const value=await readSavedFile(file);if(!replacementCurrent(ticket))return;
+      const opened=await Core.openSaved(value,policy,countries);
       if(!replacementCurrent(ticket))return;
       if(!await confirmReplacement('Opening this file will replace your current sources, appendix selections and notes.')){if(ticket.id===replacementSerial)setStatus('Current report kept. The selected file was not applied.');return;}
       if(!replacementCurrent(ticket))return;
       setCollection(opened.corpora,opened.settings,opened.selected,opened.appendix,opened.passage_notes);setStatus('Saved sources verified. Prepare the report to rebuild its summaries; saved derived claims are not trusted.');
-    }catch(e){if(ticket.id===replacementSerial)setStatus('Could not open file: '+e.message,true);}finally{if(event.target.files[0]===file)event.target.value='';}
+    }catch(e){if(replacementCurrent(ticket))setStatus('Could not open file: '+e.message,true);}finally{if(sourceFileTickets.get(event.target)===ticket&&event.target.files[0]===file)event.target.value='';}
   };
   $('addCollection').onchange=async event=>{
-    const file=event.target.files[0];if(!file)return;
-    const ticket={id:++replacementSerial,revision:workspaceRevision};setStatus('Checking sources to add…');
+    const ticket=sourceFileTicket(event.target),file=event.target.files[0];if(!file){setStatus('No source file selected. Current work kept.');return;}
+    setStatus('Checking sources to add…');
     try{
-      const added=await Core.appendSaved(corpora,await readSavedFile(file),policy,countries);
+      const value=await readSavedFile(file);if(!replacementCurrent(ticket))return;
+      const added=await Core.appendSaved(corpora,value,policy,countries);
       if(!replacementCurrent(ticket))return;
       const selection=[...new Set([...selected(),...added.selected_added])],prefs=options(),chosen=appendix(),passage_notes=passageNotes();
       if(Core.savedStateBytes(added.corpora,{settings:prefs,selected:selection,appendix:chosen,passage_notes})>Core.LIMIT)throw Error('Combined saved report exceeds 25 MB, including your notes and selections. Use fewer sources or a separate report.');
       setCollection(added.corpora,null,selection,chosen,passage_notes,true);
       setStatus('Sources added: '+added.selected_added.length+(added.selected_added.length===1?' meeting selection.':' meeting selections.')+' Current notes, settings and existing meeting selections kept.'+(added.incoming_report?' Notes and settings from the added report were not copied.':'')+' Prepare the report again to include the added evidence.');
-    }catch(e){if(ticket.id===replacementSerial)setStatus('Could not add sources: '+e.message+' Current work kept.',true);}
-    finally{if(event.target.files[0]===file)event.target.value='';}
+    }catch(e){if(replacementCurrent(ticket))setStatus('Could not add sources: '+e.message+' Current work kept.',true);}
+    finally{if(sourceFileTickets.get(event.target)===ticket&&event.target.files[0]===file)event.target.value='';}
   };
   for(const id of ['reportTemplate','mission','reportTitle','priorities','analystNotes'])$(id).addEventListener('input',invalidate);
   $('savePreferences').onclick=()=>{try{const ok=save(JSON.stringify(Core.exportPreferences(options())),'un-mission-preferences.json','application/json');$('preferencesStatus').textContent=ok?'Mission preferences download started. Transcript text, selected meetings and analyst notes are excluded.':'Mission preferences were not downloaded. Current settings kept.';}catch(e){$('preferencesStatus').textContent=e.message;}};
