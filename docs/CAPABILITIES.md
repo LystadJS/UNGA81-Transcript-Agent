@@ -43,6 +43,13 @@ byte consistency, not speaker identity, factual correctness or national capacity
 
 Public comparison sources checked 18 November 2026: [FIT's product description](https://www.fondation-fit.ch/en/general/news/2026/fit-supports-impli-with-a-tech-seed-loan-and-diplotools-and-hafnova-with-two-digital-seed-loans) identifies PowerTranscript's generated transcripts/summaries, user-defined templates and centralized retrieval, and PowerElection's UN campaign CRM. [UNITAR's launch account](https://unitar.org/about/news-stories/news/unitar-and-diplotools-launch-tech-solutions-growing-diplomatic-workloads) independently describes election/campaign management. These are public product descriptions, not an authenticated feature-by-feature vendor acceptance test. The vendor homepage was unavailable through the web tool during this check. This app uses published English transcripts and deterministic country reporting, with optional personal model drafts awaiting real-model acceptance. Live transcription, authenticated shared workspaces and campaign CRM remain separate gaps. Do not substitute unrelated DiploFoundation products for DiploTools evidence.
 
+The [facilitator setup](REPORTING_USABILITY.md) now creates a matching,
+hand-authored draft alongside its three source files. Node-only fixture generation
+needs no model or browser harness. The isolated browser rehearsal also checks
+paired draft review and separate Word/HTML downloads. Simulated request counts,
+no tool inference and unrecorded participant acceptance remain explicit. This
+supports interface and client checks; actual model quality remains separate.
+
 ## Operational and scientific boundaries
 
 The public archive is read-only allowlisted metadata; it is not a shared repository

@@ -6,7 +6,7 @@ Use the [reporting contract](MEETING_REPORTING.md) and [current capability matri
 
 ## Preparation
 
-Begin with synthetic material so the session requires no private archive access or real policy assessment. From the source repository root, create the three source-validated JSON files:
+Begin with synthetic material so the session requires no private archive access or real policy assessment. From the source repository root, create four JSON files: three source-validated files and a matching hand-authored draft:
 
 ```sh
 node tools/reporting_usability.cjs --fixtures-only
@@ -33,7 +33,7 @@ The default opens a visible browser. Use the printed files and the fictional dat
 **2026-11-10**. All transcript-service requests are intercepted locally; unknown
 source paths and other external requests are blocked. Only the allowlisted public
 build is served on loopback. A fictional-session banner and meeting titles identify
-the material. Close the reporting tab to finish. Explicit downloads and the three
+the material. Close the reporting tab to finish. Explicit downloads and the four
 fixture files remain in the printed folder; repeated downloads are kept separately.
 The temporary public build is removed.
 The browser profile is temporary: device saves survive reloads within this session
@@ -45,7 +45,8 @@ actual observations separately in a private session record.
 
 For unattended setup verification, use the same environment with
 `node tools/reporting_usability.cjs --smoke`. This opens a headless browser,
-rehearses source addition/export and network blocking, and writes an
+rehearses source addition/export, matched draft review, separate Word/HTML copies
+and network blocking, and writes an
 `engineering_smoke` receipt. A passing smoke result is never a participant session.
 The temporary folder uses POSIX mode 0700 and files 0600; protect downloads under
 the host account's permissions on other platforms. Set `BROWSER_PATH` for an
@@ -58,9 +59,28 @@ session needs a graphical display; the automated smoke check does not. The
 maintained-archive task remains a separate public-metadata exercise because this
 local reporting session blocks external archive requests.
 
-Give the participant the three generated files, clearly labeled **fictional test material**, and a place to save browser downloads. `synthetic-collection.json` contains four English segments in one synthetic meeting, two recorded country affiliations and one explicit collective statement. Begin the single-meeting tasks with this file. `synthetic-multi-meeting-report.json` adds a second synthetic meeting, for eight segments in total, and opens with both meetings selected. The fixture repeats its fictional wording across meetings; repetition is not evidence of policy importance or agreement. Use the two-meeting file for navigation after saving current work. For the source-addition task, use `synthetic-additional-report.json`: it contains only the second meeting and a distinct fictional assessment that should not enter the current report. It does not overlap the initial collection; the two-meeting file does, so it can demonstrate overlap refusal.
+Give the participant the four generated files, clearly labeled **fictional test material**, and a place to save browser downloads. `synthetic-collection.json` contains four English segments in one synthetic meeting, two recorded country affiliations and one explicit collective statement. Begin the single-meeting tasks with this file. `synthetic-multi-meeting-report.json` adds a second synthetic meeting, for eight segments in total, and opens with both meetings selected. The fixture repeats its fictional wording across meetings; repetition is not evidence of policy importance or agreement. Use the two-meeting file for navigation after saving current work. For the source-addition task, use `synthetic-additional-report.json`: it contains only the second meeting and a distinct fictional assessment that should not enter the current report. It does not overlap the initial collection; the two-meeting file does, so it can demonstrate overlap refusal.
 
-The fixture's source-shaped locators are provenance test data, not links to real statements; do not follow external transcript links during this exercise. The local “Read source context” control uses the loaded fictional passages and makes no source request. The preparation script validates the source bundles against the production country registry and reporting exclusion policy; it never reads private data, reserved sources or sealed tests.
+`synthetic-model-draft.json` pairs with the unchanged two-meeting report, whose
+two briefing questions cover humanitarian access and an absent term. Save current
+work, open `synthetic-multi-meeting-report.json` and prepare it before opening the
+draft in **Personal model drafts (Python)**. The draft contains one hand-authored
+collective-source example and an unanswered section. Its model name states
+**SIMULATED REQUEST COUNT; NO MODEL INFERENCE**. The schema's request count of one
+is simulated fixture metadata, not evidence of a model call. This material enables
+source-context, separate Word/HTML and resume-file tasks before selecting model
+hardware. The two questions and selected source scope must match; a later change
+requires reopening the original pair or preparing a different draft.
+
+The tool's metadata records `tool_model_inference: not_run`,
+`bundled_draft: hand_authored_fictional` and
+`participant_acceptance: not_recorded`. These describe this tool and its bundled
+material; they do not attest activity in another program or factual quality.
+The smoke run retains five private downloads: two saved-report JSON copies,
+a model-input packet, draft Word and draft HTML. No inference, client-Word review,
+participant answer or human acceptance is created by that automated run.
+
+The fixture's source-shaped locators are provenance test data, not links to real statements; do not follow external transcript links during this exercise, including links in exported reading copies. The local “Read source context” control uses the loaded fictional passages and makes no source request. The preparation script validates the source bundles against the production country registry and reporting exclusion policy; it never reads private data, reserved sources or sealed tests.
 
 For the separate archive-selection task, use permitted public metadata and stop before loading transcripts. A real-source extension can use an explicitly approved eligible meeting after checking availability; record its identity and source revision privately. Never use the 37 reserved meetings, either reserved date, sealed evaluation data or private pilot annotations for usability testing.
 
@@ -82,7 +102,8 @@ Read the task prompt without first explaining the controls. Record assistance an
 | In a prepared report, inspect the source context for a country expression, then return to your report. | The participant finds “Read source context” in the country table, recognizes the selected passage and its immediate neighbors, and keeps each speaker's words and recorded capacity separate. Missing context is not treated as source completeness. Keyboard opening, Escape and focus return are observed without coaching; the report and appendix choices remain intact. |
 | Add a short interpretation to one passage, prepare the report and download a passage-notes spreadsheet. | The participant distinguishes their interpretation from the quotation and model results, identifies the source pointers in the CSV, and understands that the full evidence CSV excludes notes. They recognize selected-meeting scope, formula-prefix escaping and the need to save JSON/ZIP to resume. Record actual spreadsheet-client rendering and assistance separately. |
 | Arrange two briefing-question sections in your preferred order using only the keyboard, then save and reopen mission preferences. Move an unfinished question once. | The participant can use the numbered positions and Move up/down buttons, understands disabled boundaries and focus return, and retains unfinished text. Prepared output and reopened preferences keep the order after the mandatory country overview. They distinguish Checking, applied and current-settings-kept import messages; any naturally observed delayed-read behavior is recorded separately from automated race tests. They recognize that queries remain literal searches, moves invalidate exports, and nothing is saved automatically. Record assistance and comprehension separately. |
-| Optional, with an authorized personal model setup: export a fictional question packet, generate a draft on the personal computer, open it beside the report and review a collective quotation. Save files to resume later. | The participant understands the browser makes no model request, checks where the configured server runs inference, distinguishes exact quotation matching from factual support and withholds national attribution for collective speech. They can open source context and distinguish separate draft review HTML from ordinary report exports. They inspect a separate draft Word copy when available, recognize that it preserves the country-first report and unreviewed labels, and understand that Word edits cannot be imported. Record actual Word-client rendering separately from XML checks. They keep original report JSON and draft JSON separately, reprepare/reopen after notes change and recognize refusal after question/source changes. Record setup assistance and actual model/runtime separately; skip and mark not run when unavailable. Synthetic protocol tests cannot substitute for this session. |
+| Save your current work, open the original fictional two-meeting report and prepare it. Open its matching fictional draft, inspect the cited context and save separate Word/HTML reading copies and files to resume later. | The participant recognizes hand-authored material, a simulated request count, the unanswered section and collective capacity. They distinguish exact quotation matching from claim support and retain original report JSON plus draft JSON. They understand Word edits cannot be imported and ordinary exports exclude the draft. Record actual Word-client rendering separately from XML checks, assistance separately from unaided completion, and any observed scope-mismatch refusal separately from model quality. No model installation is required. |
+| Optional, with an authorized personal model setup: export a fictional question packet, generate a new draft on the personal computer and review it beside its report. | Record the actual runtime/model revision, hardware and inference location separately from the bundled fixture. The participant understands the browser makes no model request and loopback does not attest local inference. Review factual support, omissions, attribution and citation correctness separately. Skip and mark not run when no model setup is available; fixture/transport checks cannot substitute for actual model acceptance. |
 | Save your work so you can continue tomorrow; also save preferences for a different meeting. | Report JSON, or a report package containing it, is chosen to preserve the collection, appendix and notes. Mission-preferences JSON is understood to contain only reusable settings. A reopened report retains the source and notes, and needs preparation to rebuild its preview. |
 | Export a report for reading and the evidence for analysis. Explain what each contains. | The participant uses the Save work to reopen, Read or share, and Evidence spreadsheets groups. HTML is recognized as a readable report, JSON as source-bound saved work, and CSV as all four source segments from the selected meeting. Search, appendix choices and analyst notes do not narrow or alter the CSV. Participants recognize potentially sensitive contents before sharing files. |
 | Print the report or save a PDF using your normal work browser. Cancel once, then return and prepare a PDF. | The participant finds the native destination, checks the complete appendix and source links, distinguishes cancellation from a saved file and can return to the workspace if its print controls need resetting. They understand that PDF does not replace JSON/ZIP for resuming work. Record the actual browser, print policy, destination, clipping or pagination problems and assistance. |
