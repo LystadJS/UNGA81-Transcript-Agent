@@ -21,6 +21,19 @@ references; some file edits can trigger acquisition work, so their migration is
 separate. Browser release 1.84.0, runtime files, dependencies and HF storage stay
 unchanged; managed testing remains deferred.
 
+[Source #366](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/366)
+merged as `5199c648d6e0ca30b8d7fc5247bedc8e16d1f5ef` after all four checks passed.
+The actual Pages pipeline passed with the new actions; all 200 original-site
+files match, including `.nojekyll`. [Website #200](https://github.com/LystadJS/LystadJS.github.io/pull/200)
+merged as `a9ed0820184c451d0427279f2e72fd197c403c5e` after audit/regression passed.
+It upgrades eight more references in two verification workflows. Post-merge audit,
+synthetic research verification and deployed-file checks pass. The regular
+comparison/meeting job retains its existing Node 24 actions and runs separately.
+Total scope is 53 references in 17 workflows, with 157 older references in 46
+historical/research source workflows still outstanding. Mirror synchronization
+changes zero files; the temporary tool/build/archive was removed. No private
+workflow dispatch, application release or managed-client acceptance was added.
+
 ## Report copy for email — 1.84.0
 
 The prepared ordinary report can be copied as complete formatted HTML and plain

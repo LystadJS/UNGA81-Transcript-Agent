@@ -207,3 +207,21 @@ Forty-six other historical/research workflows retain 157 older references at thi
 checkpoint. Several acquire source archives or model assets when their own files
 change. They need a separate controlled migration; this scoped update does not
 establish that the whole repository is free of deprecated action runtimes.
+
+The source migration merged in [PR #366](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/366)
+as `5199c648d6e0ca30b8d7fc5247bedc8e16d1f5ef` after operational, quick-reader,
+numerical and browser checks passed. The operational check has no Node 20
+runtime-deprecation annotation. The actual [Pages run](https://github.com/LystadJS/UNGA81-Transcript-Agent/actions/runs/44502531718)
+passed with configure-pages v6, upload-pages-artifact v5 and deploy-pages v5;
+all 200 original-site files, including `.nojekyll`, match the prior build.
+
+[Website PR #200](https://github.com/LystadJS/LystadJS.github.io/pull/200) merged as
+`a9ed0820184c451d0427279f2e72fd197c403c5e` after audit and website regression passed.
+It updates eight further references in two mirror-verification workflows, with
+all other parsed content preserved and both files passing actionlint. Post-merge
+audit, synthetic research verification and the deployed-file check pass using the
+updated actions. The regular comparison/meeting workflow retains its existing
+Node 24 actions and runs separately. Mirror sync copies/removes zero files.
+Across both repositories this increment replaces 53 references in 17 workflows;
+application 1.84.0 and its public assets remain unchanged. The temporary linter,
+build and tar archive were removed; no generated maintenance receipt was committed.
