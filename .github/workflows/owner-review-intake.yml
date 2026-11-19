@@ -49,14 +49,14 @@ jobs:
       OWNER_PART_COUNT: ${{ inputs.part_count }}
       OWNER_CIPHERTEXT_PART: ${{ inputs.ciphertext_part }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - run: python -m pip install --disable-pip-version-check huggingface-hub==0.36.0 cryptography==46.0.3
       - name: Validate private intake and verify bounded storage operations
         run: python tools/receive_owner_review.py
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: owner-intake-receipt
           path: ${{ runner.temp }}/owner-intake-result.json

@@ -168,3 +168,42 @@ The warehouse alternates advertised meetings without a stored source and refresh
 Record each observation at its actual timestamp. A scheduled date that was missing can later receive a delayed run; retain the earlier observation and update the current date status from the run's actual `schedule` event, creation/start time and completed jobs. Never fill it with a manual retry or describe delayed success as on-time service. GitHub does not expose the original scheduled-for timestamp, so the observer's date association remains explicit.
 
 The shared GitHub concurrency group serializes writers and read-only storage checks. `cancel-in-progress: false` protects an active job; it does not guarantee retention of the single pending job when another workflow enters that group. Inspect both active and pending runs before dispatch. A cancelled probe with no jobs is unmeasured, not passed. Preserve the cancellation and last valid measurement, then dispatch one replacement after the group clears. Do not remove serialization to make checks run sooner.
+
+## GitHub action-runtime maintenance
+
+On 19 November 2026, 45 first-party action references across 15 workflows moved
+to current Node 24 actions. This covers the operational contracts, latent/browser
+checks, quick-reader checks, Pages deployment, scheduled warehouse and ten
+manually invoked owner/model/storage/source tools. The application remains 1.84.0.
+Node/Python interpreter selections, scripts, triggers, permissions, secrets,
+source refs, retention settings and publication gates are preserved.
+
+| Action | Current reference | Primary release evidence |
+| --- | --- | --- |
+| Checkout | `actions/checkout@v7` | [7.0.1](https://github.com/actions/checkout/releases/tag/v7.0.1) |
+| Node setup | `actions/setup-node@v7` | [7.1.0](https://github.com/actions/setup-node/releases/tag/v7.1.0) |
+| Python setup | `actions/setup-python@v7` | [7.1.0](https://github.com/actions/setup-python/releases/tag/v7.1.0) |
+| Artifact upload | `actions/upload-artifact@v7` | [7.0.2](https://github.com/actions/upload-artifact/releases/tag/v7.0.2) |
+| Pages configuration | `actions/configure-pages@v6` | [6.0.0](https://github.com/actions/configure-pages/releases/tag/v6.0.0) |
+| Pages archive | `actions/upload-pages-artifact@v5` | [5.0.0](https://github.com/actions/upload-pages-artifact/releases/tag/v5.0.0) |
+| Pages deployment | `actions/deploy-pages@v5` | [5.0.1](https://github.com/actions/deploy-pages/releases/tag/v5.0.1) |
+
+Official action metadata confirms Node 24 for the JavaScript actions and the
+Pages archive's pinned upload child. The existing moving-major convention is
+retained. `upload-pages-artifact@v5` adds a hidden-file exclusion default, so the
+workflow explicitly sets `include-hidden-files: true` to preserve v3 behavior.
+The allowlisted build contains 200 files in 209 entries, with `.nojekyll` its only
+hidden file; the Pages tar recipe retains every file byte for byte. This does not
+broaden the build's private-data allowlist.
+
+Local validation uses checksum-verified actionlint 1.7.12 with external ShellCheck/
+Pyflakes disabled because they are not installed. All 15 selected workflows pass.
+A parsed structural comparison confirms only the 45 action references and explicit
+Pages hidden-file setting differ. No manual private/model/acquisition workflow
+was dispatched for this maintenance, and scheduled operational acceptance is not
+refreshed by static checks. No runtime file, dependency or HF storage is added.
+
+Forty-six other historical/research workflows retain 157 older references at this
+checkpoint. Several acquire source archives or model assets when their own files
+change. They need a separate controlled migration; this scoped update does not
+establish that the whole repository is free of deprecated action runtimes.

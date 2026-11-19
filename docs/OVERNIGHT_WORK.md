@@ -5,6 +5,22 @@ reporting application and broader feasible diplomatic workflows with JavaScript-
 browser execution, separate personal R/Python tools, bounded Hugging Face storage
 and a focused source tree. Full DiploTools parity is not established.
 
+## Action-runtime maintenance — application unchanged
+
+Current first-party Node 24 actions replace 45 references in 15 active-build,
+scheduled-operation and manual-only workflows. All scripts, triggers, permissions,
+language versions, inputs and scientific/source gates stay intact except the
+explicit Pages hidden-file option preserving `.nojekyll` under the new uploader.
+Local actionlint 1.7.12 and structural invariants pass; the Pages tar recipe retains
+all 200 files in the 209-entry allowlisted build byte for byte. See the
+[maintenance record](OPERATIONS.md#github-action-runtime-maintenance) for exact
+versions, primary releases and validation scope. No private/model workflow was
+manually dispatched, and no operational acceptance or whole-repository cleanup
+claim follows. Forty-six historical/research workflows still have 157 older
+references; some file edits can trigger acquisition work, so their migration is
+separate. Browser release 1.84.0, runtime files, dependencies and HF storage stay
+unchanged; managed testing remains deferred.
+
 ## Report copy for email — 1.84.0
 
 The prepared ordinary report can be copied as complete formatted HTML and plain

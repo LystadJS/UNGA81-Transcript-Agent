@@ -14,8 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
       - name: Existing analytical and provenance regressions
@@ -34,7 +34,7 @@ jobs:
           set -o pipefail
           node tools/test_latent.cjs 2>&1 | tee latent-validation.log
           node tools/test_meeting_picker.cjs 2>&1 | tee meeting-validation.log
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: latent-numerical-validation
@@ -44,8 +44,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
       - name: Isolated browser QA dependencies
@@ -65,7 +65,7 @@ jobs:
         run: |
           node tools/test_latent_ui.cjs _site latent-browser-validation
           node tools/test_meeting_picker_ui.cjs _site meeting-browser-validation
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: latent-browser-validation
