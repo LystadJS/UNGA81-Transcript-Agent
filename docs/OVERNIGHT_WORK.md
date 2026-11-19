@@ -12,7 +12,7 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Release 1.81.0 candidate: explicit campaign calendar follow-ups
+## Verified release 1.81.0: explicit campaign calendar follow-ups
 
 The notebook reuses the existing report calendar writer for all-day copies of
 manually dated country follow-ups, independent of list filters. Optional cutoff
@@ -37,8 +37,16 @@ semantics, privacy, leap/year bounds and exact encoded limits. The new calendar
 browser suite, both prior campaign suites and existing report-calendar browser
 regression pass, including dirty/stale/source guards, resets, download failure,
 cached layouts and optional-module isolation. Fictional desktop/mobile inspection
-passed. All 2,077 checksums and the 209-entry public build pass. CI/deployment
-receipts are pending.
+passed. All 2,077 checksums and the 209-entry public build pass. [Source #353](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/353)
+merged as `4863ec928c086aa35f04968294ec2561a6e1f8d7` after numerical, browser and
+contract checks passed, including fifteen reporting and three campaign suites.
+[Website #196](https://github.com/LystadJS/LystadJS.github.io/pull/196) merged as
+`f84eb5ca2734b761a6ab2f04a7997924a74d7d16` after audit and regression passed.
+All 201 preferred-site canonical files and all four changed original-site assets
+match expected hashes. Three campaign suites and the existing report-calendar
+regression pass live at both URLs. The mirror remains 200 public files; repeat
+sync copied/removed zero. These are synthetic engineering receipts, not actual
+participant, government-browser or calendar-client acceptance.
 
 ## Previous verified release
 
@@ -82,9 +90,10 @@ no released model or semantic-accuracy claim follows from structural QA.
 The R cleanup did not change browser assets or add Hugging Face storage.
 
 1. Complete reporting usability and personal-model factual/citation acceptance.
-   Rehearse reporting and campaign workflows with actual users; consider explicit
-   local calendar follow-ups next. Reviewed contact-only transfer is now available. Contact copies stay independent;
-   keep shared authentication and election eligibility separate from manual records. Preserve browser/personal-runtime boundaries.
+   Rehearse reporting, contact handoff and calendar follow-ups with actual users in
+   the intended browser/calendar clients. Record task completion, recovery and client
+   findings separately from synthetic QA. Keep shared authentication and election
+   eligibility separate from manual records; preserve browser/personal-runtime boundaries.
 2. Continue dependency-based cleanup with appropriate personal-runtime checks.
 3. Complete actual diplomat usability sessions; evaluate any optional generative
    reporting independently from the deterministic reader and stance classifier.
