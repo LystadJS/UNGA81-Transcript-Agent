@@ -116,9 +116,30 @@ The confirmed client family is Microsoft Edge with Outlook. This is a test targe
 not an acceptance result. Record the operating system, Edge version/profile type,
 Outlook edition/build (classic Windows, new Windows, web or another edition),
 account type and calendar timezone privately. Do not infer them from the client
-family or record account addresses in the public repository. The local automated
-harness runs Chromium; it does not attest behavior in the managed Edge profile or
-Outlook. Actual managed Edge and Outlook acceptance remains unrecorded.
+family or record account addresses in the public repository. The default automated
+harness runs Chromium. The separate native Edge engineering pass below does not
+attest behavior in the managed Edge profile or Outlook. Actual managed Edge and
+Outlook acceptance remains unrecorded.
+
+### Native Edge engineering receipt
+
+On 19 November 2026, source commit
+`8a8741f78dff79223f22b2679ef937ef8d414836` (application 1.81.0) passed
+19 local browser UI suites and the facilitator contract in **Microsoft Edge
+157.0.4341.60**, headless on unmanaged Linux x86_64, driven by Playwright 1.62.0.
+Six suites also passed against the preferred public site: meeting reports, Word
+export, campaign notebook, contact transfer, campaign calendar and report calendar.
+All 201 preferred-site file hashes matched. These checks used fictional inputs;
+no participant acceptance, model inference or Outlook import was performed.
+
+The existing `BROWSER_PATH` option selected the native binary; no application,
+harness, dependency or CI change was needed. Default CI remains Chromium with
+Playwright 1.57.0. Microsoft's stable package `157.0.4341.60-1` was extracted to a
+private temporary directory without a system installation, then removed after
+verification. Its SHA-256 matched the Microsoft package feed:
+`492b2d336d9c337814db72c51293807038ee0104654427f283fd344bca17c500`.
+This confirms the tested Linux automation scope, not Windows/macOS behavior,
+managed government policies, Outlook or the original project URL in native Edge.
 
 ### Edge file checks
 
