@@ -38,8 +38,9 @@ fixture files remain in the printed folder; repeated downloads are kept separate
 The temporary public build is removed.
 The browser profile is temporary: device saves survive reloads within this session
 and are discarded when it closes. Keep JSON/ZIP downloads for work you need later.
-No notes, answers, screenshots or video are recorded automatically. The receipt
-contains browser/release/source-version information, timing and request/download
+The tool does not record participant responses, screenshots or video. Explicit
+downloads retain their contents, including any notes or draft text they contain.
+The receipt contains browser/release/source-version information, timing and request/download
 counts. Its participant-acceptance field always remains `not_recorded`; enter
 actual observations separately in a private session record.
 
