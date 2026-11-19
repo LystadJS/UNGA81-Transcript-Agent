@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.81.0",
+  "browser_engine": "browser-descriptive-1.82.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-19",
   "features": [
+    "Campaign follow-up queue with earliest dated follow-up or latest manually logged interaction ordering, explicit dated/undated filters and alphabetical ties; view-only controls preserve complete exports, unapplied edits and saved v3 JSON, reset on New/Open/Clear, and add no files, dependencies or storage",
     "Explicit all-day campaign follow-up ICS copies reuse the report calendar writer, include all dated country records independently of filters with optional cutoff/country notes, omit lead/profile fields, conversation logs and campaign notes, and preserve dirty work with stale data/options/source refusal; no connection, invitations, alarms, new runtime files or storage",
     "Contact-only JSON transfer excludes campaign notes, lead/status fields and conversations; reviewed atomic append, identical-ID skipping, conflict refusal and complete-state byte/count budgets preserve existing work, with latest-operation/cross-control cleanup and no new runtime files or storage",
     "Reusable user-entered country contact profiles with confirmed lead/new-interaction copying, unchanged historical snapshots, complete contact CSV/HTML/JSON and v1/v2 migration without inferred profiles; same bounded browser-only storage",
@@ -56,9 +57,9 @@
     "Ten-year humanitarian access/civilian protection workflow: independent historical as-of date, current country-position statistics, coverage heatmap, U.S. history, automatic observed country trajectories, source-bound historical import and saved replay; fitted models withheld",
     "Country briefings and documentary exports separate executive policy, congressional analysis, enacted U.S. law and other official evidence; historical status and current gaps remain visible",
     "Qualified universal-jurisdiction support distinguished from conflicting positions without adding agreement scores",
-    "Automatic source-linked country\u2013U.S. briefings separating UN statements, shared priorities, historical/dated official documents and current gaps; standalone script-free briefing export",
+    "Automatic source-linked country–U.S. briefings separating UN statements, shared priorities, historical/dated official documents and current gaps; standalone script-free briefing export",
     "Separate source-bound documentary policy reviews: historical dates, official document links, saved review notes, no contribution to UN statement statistics or agreement scores",
-    "Automatic nearby-date comparisons: signed date differences, exact policy direction versus shared child-protection, climate-finance, UNCAT-accession, human-rights-institution and renewable-energy priorities, nearest-date ties, saved 0\u201314-day window, separate from same-day scores",
+    "Automatic nearby-date comparisons: signed date differences, exact policy direction versus shared child-protection, climate-finance, UNCAT-accession, human-rights-institution and renewable-energy priorities, nearest-date ties, saved 0–14-day window, separate from same-day scores",
     "National implementation priorities, bounded adjacent renewable-energy targets and climate-finance appeals; qualified domestic commitments remain outside U.S. agreement scoring",
     "three-country source review: 125 questions, qualified recognition of specific OHCHR functions, human rights framing, and explicit AOSIS attribution without national inference",
     "source-reviewed country coverage across 123 questions; explicit positions with unspecified context remain visible and never establish U.S. agreement",

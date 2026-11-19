@@ -17,6 +17,13 @@ These are fictional-data engineering checks, not actual calendar-client, model
 quality, desktop Word, government-browser policy or diplomat acceptance. Full
 DiploTools parity remains unestablished. See the [current checkpoint](OVERNIGHT_WORK.md).
 
+Managed Edge and Outlook testing is deferred at the owner's request. Development
+continues without treating that deferral as client acceptance. Release 1.82.0 adds
+a view-only campaign follow-up queue: earliest follow-up/latest logged interaction
+ordering, dated/undated filters, missing dates last and alphabetical ties. Existing
+full exports and v3 saves retain all records; no runtime files, dependencies,
+models or Hugging Face storage are added.
+
 ## Reporting and execution
 
 | Capability | Available implementation | Boundary / acceptance |

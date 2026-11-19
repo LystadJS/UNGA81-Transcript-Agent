@@ -10,6 +10,18 @@ assert.equal(initial.entries.length,0);assert.equal(n.entries.length,2);assert.t
 const edited=C.withEntry(n,{...n.entries[0],notes:'Updated manually'},registry,'Kenya');assert.equal(edited.entries[0].notes,'Updated manually');assert.equal(C.withoutEntry(n,'Kenya',registry).entries.length,1);assert.throws(()=>C.withoutEntry(n,'Unknown place',registry),/no longer/);
 const counts=C.summary(n.entries);assert.equal(counts.support_reported,1);assert.equal(counts.contacted,1);assert.equal(Object.values(counts).reduce((a,b)=>a+b),2);
 assert.deepEqual(C.view(n.entries,{query:'FICTIONAL contact',status:'contacted'}).map(e=>e.country),['United States']);assert.deepEqual(C.view(n.entries,{due:'2026-11-19'}).map(e=>e.country),['Kenya']);assert.equal(C.view(n.entries,{query:'nothingmatches'}).length,0);assert.equal(C.view(n.entries,{status:'unrecorded'}).length,0);assert.throws(()=>C.view(n.entries,{due:'2026-02-30'}));
+// Queue views sort copies, preserve missing dates and use latest logged date, not log order.
+const queue=freeze([entry('Kenya',{follow_up_date:'2026-11-22',interactions:[{date:'2026-11-25'},{date:'2026-11-19'}]}),entry('United States',{follow_up_date:'2026-11-21',interactions:[{date:'2026-11-24'}]}),entry('Canada')]);
+const queueBytes=JSON.stringify(queue),names=options=>C.view(queue,options).map(e=>e.country);
+assert.deepEqual(names({order:'follow_up'}),['United States','Kenya','Canada']);
+assert.deepEqual(names({order:'interaction'}),['Kenya','United States','Canada']);
+assert.deepEqual(names({schedule:'undated'}),['Canada']);
+assert.deepEqual(names({schedule:'dated',due:'2026-11-21',order:'follow_up'}),['United States']);
+assert.deepEqual(names({schedule:'undated',due:'2026-11-21'}),[]);
+assert.deepEqual(names({query:'Kenya',schedule:'dated',order:'interaction'}),['Kenya']);
+assert.deepEqual(C.view([entry('United States',{follow_up_date:'2026-11-21'}),entry('Kenya',{follow_up_date:'2026-11-21'})],{order:'follow_up'}).map(e=>e.country),['Kenya','United States']);
+assert.deepEqual(C.view([...queue].reverse(),{order:'country'}).map(e=>e.country),['Canada','Kenya','United States']);
+assert.throws(()=>C.view(queue,{order:'support_prediction'}));assert.throws(()=>C.view(queue,{schedule:'overdue_inferred'}));assert.equal(JSON.stringify(queue),queueBytes);
 for(const value of ['2028-02-29','1900-01-01','9998-12-31','2026-10-05'])assert(C.date(value));for(const value of ['','2026-02-29','1900-02-29','2026-11-31','2026-1-01','0000-01-01','1899-12-31','9999-01-01','2026-11-19T00:00:00Z'])assert(!C.date(value));
 for(const change of [v=>v.schema='unknown',v=>v.extra=true,v=>v.campaign.title='',v=>v.campaign.title='x'.repeat(161),v=>v.campaign.notes='bad\ud800',v=>v.entries.push(v.entries[0]),v=>v.entries[0].country='Unknown place',v=>v.entries[0].status='actual_vote',v=>v.entries[0].status_date='',v=>v.entries[0].follow_up_date='2026-02-30',v=>v.entries[0].notes='bad\u0000value',v=>v.entries[0].contact=null,v=>v.entries[0].extra='unknown']){const bad=structuredClone(n);change(bad);assert.throws(()=>C.validate(bad,registry));}
 assert.throws(()=>C.validate({...initial,entries:Array(251).fill(entry('Kenya'))},registry),/250/);assert.throws(()=>C.countries([{country:'Kenya'},{country:'Kenya'}]),/Duplicate/);assert.throws(()=>C.validate(initial,[]),/unavailable/);
