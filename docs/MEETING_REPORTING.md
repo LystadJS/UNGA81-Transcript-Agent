@@ -348,6 +348,17 @@ The maintained public archive is deliberately source-free. The archive can hand 
 
 ## Keeping current work when replacing sources
 
+Opening or adding a saved source file starts a checked operation. A later source
+file selection supersedes the earlier check, including an explicitly cleared
+selection. Only the latest source operation may update the report. Each input tracks its
+latest file selection for cleanup, so an older completion cannot clear a newer
+file and a superseded check can release its own obsolete filename. If you
+edit or prepare the report while a file is being checked, the old result and old
+errors cannot replace that newer work. A stale read stops before source validation;
+a current invalid file still reports its error. Clearing a selection does not
+remove loaded sources, notes or prepared exports. These are checked file-change
+semantics, not a claim about native file-chooser Cancel behavior on every browser.
+
 Opening another valid file or loading new transcripts asks before replacing unsaved work. “Keep current report” is the default; Escape also keeps it. This preserves loaded sources, notes, appendix selections, the prepared preview and available exports. Save report JSON before choosing “Replace report” if you need the current work later. Invalid imports show their validation error and leave the workspace unchanged, without a replacement prompt.
 
 New transcript loading asks before making source requests. Cancelling a load keeps the current workspace even if some bundles have completed. A partial result requires a separate replacement decision when a collection is already loaded; a complete failure preserves it. Edits or report preparation during retrieval or file validation invalidate that pending replacement. An older import cannot overwrite a newer one.
