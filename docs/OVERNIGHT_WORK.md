@@ -12,51 +12,40 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Verified release 1.81.0: explicit campaign calendar follow-ups
+## Source-only candidate: reporting and campaign rehearsal kit
 
-The notebook reuses the existing report calendar writer for all-day copies of
-manually dated country follow-ups, independent of list filters. Optional cutoff
-and country notes/source references are local export choices, excluded from JSON
-and reset on New/Open. Default output includes campaign title, country and date,
-not lead/profile fields, conversation logs or campaign/country notes. Included
-free-text notes can contain private details; users must review them.
+The existing facilitator now creates six fictional JSON files using Node alone:
+three source-validated reporting files, a paired hand-authored draft, a campaign
+notebook and contact-only transfer. The campaign has one current Contacted Kenya
+record/profile, one earlier conversation and a November 21 follow-up. The
+transfer adds two profiles, skips one unchanged ID and introduces an unassessed
+United States record without a date. No genuine identity, pledge or vote is used.
 
-No dates, attendees, organizer, invitations or alarms are invented. Calendar
-clients control import, visibility, duplicate handling and alerts. Later notebook
-edits do not synchronize updates or removals. IDs are stable for one prepared
-snapshot; repeated imports can duplicate entries. Full JSON remains resumable
-work. Calendar exports do not clear dirty protection. Pending forms, data/options
-changes, newer source actions and failed download starts retain current work.
-Missing/older calendar modules disable only this reading copy; cached earlier
-layouts and the existing report-review calendar remain supported.
+The expanded engineering smoke rehearses contact review/import, preserving current
+assessment/history, explicit November 22 follow-up entry, full notebook/contact
+JSON, complete contact CSV, follow-up ICS and complete HTML despite a list filter.
+Ten private downloads are retained. All six fixtures, downloads and receipts remain
+outside the public build, which is removed on exit; fixture URLs return 404 and
+external requests are blocked. Private permissions, failed-output cleanup and
+visible-session lifecycle checks remain. The tool records no model inference,
+calendar-client import or participant acceptance; actual external client actions
+must be recorded separately. Browser/calendar targets remain unspecified.
 
-No runtime file, dependency, backend, model weight, private record or HF storage
-is added. Calendar ICS shares the notebook's 1 MiB encoded bound; report calendars
-retain their existing 25 MB bound. Local independent ICS checks pass for UTF-8 folding/text escaping, cutoff/date
-semantics, privacy, leap/year bounds and exact encoded limits. The new calendar
-browser suite, both prior campaign suites and existing report-calendar browser
-regression pass, including dirty/stale/source guards, resets, download failure,
-cached layouts and optional-module isolation. Fictional desktop/mobile inspection
-passed. All 2,077 checksums and the 209-entry public build pass. [Source #353](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/353)
-merged as `4863ec928c086aa35f04968294ec2561a6e1f8d7` after numerical, browser and
-contract checks passed, including fifteen reporting and three campaign suites.
-[Website #196](https://github.com/LystadJS/LystadJS.github.io/pull/196) merged as
-`f84eb5ca2734b761a6ab2f04a7997924a74d7d16` after audit and regression passed.
-All 201 preferred-site canonical files and all four changed original-site assets
-match expected hashes. Three campaign suites and the existing report-calendar
-regression pass live at both URLs. The mirror remains 200 public files; repeat
-sync copied/removed zero. These are synthetic engineering receipts, not actual
-participant, government-browser or calendar-client acceptance.
+Local facilitator tests pass, including Node-only generation, schema/planned
+counts, report/draft pairing, campaign outputs, metadata privacy and cleanup.
+CI and merge receipts are pending. App assets, models, dependencies and HF storage
+are unchanged; public application 1.81.0 remains verified. This prepares actual
+user/client work and does not substitute for it.
 
-## Previous verified release
+## Verified application checkpoint
 
-[Release 1.80.0 checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/4cee4dc453c1400d489c3eff3b9b8d1917fe62e8/docs/OVERNIGHT_WORK.md)
-retains 201 preferred-site hashes, four original-site assets and both campaign
-suites passing live at both URLs. Source #351 and website #195 passed before merge;
-it links 264 Python tests, 2,077 checksums, the 209-entry public build and earlier
-reporting/model-free facilitator receipts. These are engineering checks at their
-original scope, not user/model acceptance. Actual calendar-client, diplomat,
-government-browser, desktop Word and model acceptance remains outstanding.
+[Release 1.81.0 checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/9e90de4926bd51b5c15e1c04f7ec396fe798a7e7/docs/OVERNIGHT_WORK.md)
+retains source #353 and website #196 passing-check merges, 201 preferred-site
+hashes, four changed original-site assets, three campaign suites plus the report
+calendar regression passing live at both URLs, 264 Python tests, 2,077 checksums
+and a 209-entry public build. It links prior reporting/facilitator receipts. Those
+are engineering checks at their original scope. Actual model, desktop Word,
+calendar-client, government-browser and diplomat acceptance remains outstanding.
 
 ## Source tree and remaining work
 

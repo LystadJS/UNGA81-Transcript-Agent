@@ -52,16 +52,14 @@ byte consistency, not speaker identity, factual correctness or national capacity
 
 Public comparison sources checked 18 November 2026: [FIT's product description](https://www.fondation-fit.ch/en/general/news/2026/fit-supports-impli-with-a-tech-seed-loan-and-diplotools-and-hafnova-with-two-digital-seed-loans) identifies PowerTranscript's generated transcripts/summaries, user-defined templates and centralized retrieval, and PowerElection's UN campaign CRM. [UNITAR's launch account](https://unitar.org/about/news-stories/news/unitar-and-diplotools-launch-tech-solutions-growing-diplomatic-workloads) independently describes election/campaign management. These are public product descriptions, not an authenticated feature-by-feature vendor acceptance test. The vendor homepage was unavailable through the web tool during this check. This app uses published English transcripts and deterministic country reporting, with optional personal model drafts awaiting real-model acceptance. Live transcription, authenticated shared workspaces and full multi-contact/election CRM remain separate gaps; the local campaign notebook covers an initial manual country-outreach workflow. Do not substitute unrelated DiploFoundation products for DiploTools evidence.
 
-The [facilitator setup](REPORTING_USABILITY.md) now creates a matching,
-hand-authored draft alongside its three source files. Node-only fixture generation
-needs no model or browser harness. The isolated browser rehearsal also checks
-paired draft review and separate Word/HTML downloads. Simulated request counts,
-no tool inference and unrecorded participant acceptance remain explicit. This
-supports interface and client checks; actual model quality remains separate.
-[Source #343](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/343) passed
-its contract check, including the expanded facilitator rehearsal, and is merged.
-That source-only facilitator change preserved application 1.76.0; the subsequent
-1.77.0 release adds the manual campaign notebook described above.
+The [facilitator setup](REPORTING_USABILITY.md) creates six fictional JSON files
+using Node alone: three reporting files, a matching hand-authored model draft,
+a campaign notebook and a contact-only transfer. Its isolated browser rehearsal
+retains ten private report/campaign downloads and checks handoff, explicit calendar
+dates and complete reading copies. Model inference, calendar-client import and
+participant acceptance remain explicitly unperformed by the tool. Actual user
+and client observations belong in a separate private session record. Local checks
+pass; source CI/merge receipts are pending. Public application bytes remain 1.81.0.
 
 ## Operational and scientific boundaries
 
