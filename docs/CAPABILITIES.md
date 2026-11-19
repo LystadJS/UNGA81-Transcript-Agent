@@ -1,13 +1,15 @@
 # Current capability and acceptance matrix
 
-Updated 18 November 2026, America/New_York. **Release 1.74.0 is deployed and
-verified at both public URLs.** All 197 preferred-site files match expected hashes;
-fifteen reporting browser workflows passed live with fictional sources. The new
-personal-draft and main reporting workflows also passed at the original URL.
-Local validation passes 264 Python tests and 2,077 retained package checksums.
-These are engineering checks, not real generative inference, government-browser
-policy or diplomat acceptance. Full DiploTools parity remains unestablished.
-See the [current checkpoint](OVERNIGHT_WORK.md).
+Updated 19 November 2026, UTC. **Release 1.75.0 is deployed and verified at both
+public URLs.** All 197 preferred-site files match expected hashes; fifteen
+reporting browser workflows passed live with fictional sources. The expanded
+source-replacement and main reporting suites also passed at the original URL.
+CI passes 264 Python tests; all 2,077 retained package checksums remain valid.
+Cleared/superseded source-file selections, stale errors and input cleanup now
+preserve newer work without adding modules, dependencies or storage. These are
+engineering checks, not real generative inference, government-browser policy or
+diplomat acceptance. Full DiploTools parity remains unestablished. See the
+[current checkpoint](OVERNIGHT_WORK.md).
 
 ## Reporting and execution
 
