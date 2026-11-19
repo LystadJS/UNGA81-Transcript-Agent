@@ -81,7 +81,10 @@ unknown, not that no outreach occurred.
 
 JSON writes `un.campaign-notebook.v2`, with campaign details, country entries and
 `interactions` arrays. It also reads strict v1 files, adding empty logs without
-inventing earlier history. New saves use v2; older application versions cannot read
+inventing earlier history. The migrated v2 state must also fit 1 MiB; a densely
+filled v1 file can exceed that bound after adding empty arrays and is refused
+without changing current work. Shorten such a file in its original version before
+migrating. New saves use v2; older application versions cannot read
 them. Interaction fields are `id`, `date`, `kind`, `contact`, `email`, `summary`, and
 `reference`. IDs identify records within a country; they do not authenticate events.
 Imports and compact JSON exports share a **1 MiB UTF-8** bound. Up to 250 distinct

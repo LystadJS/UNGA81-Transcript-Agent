@@ -32,7 +32,10 @@ change history, accounts and full election CRM remain additional work.
 Local engineering checks cover migration without invented history, duplicate IDs,
 strict fields/dates, per-country/global limits, both independent CSV parses, safe
 HTML, pending interaction fields, multiple contacts, stale remove decisions,
-Keep/Escape, JSON replay and mobile long-text layout. Full deployment and CI
+Keep/Escape, JSON replay and mobile long-text layout. Cached pre-log layouts retain
+logs through ordinary edits/saves; mismatched core files refuse entry with a reload
+message. Migrated v2 state must fit the same byte limit; dense v1 refusals are
+explicit rather than truncating work. Desktop/mobile inspection used fictional data. Full deployment and CI
 receipts are pending. No new runtime file, dependency, backend, model weights,
 private records, personal R/Python change or Hugging Face storage is added.
 
