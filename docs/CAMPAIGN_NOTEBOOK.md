@@ -75,6 +75,38 @@ counts. Remove asks before removing the profile and clearing its own editing
 fields; copied details remain elsewhere. Apply and save JSON to keep removals.
 No contact is messaged, authenticated or synchronized with an external directory.
 
+## Calendar copy of country follow-ups
+
+Open **Calendar copy of country follow-ups** under campaign files. Download the
+`.ics` file and import it yourself into a permitted calendar. Each country with
+an explicit follow-up date contributes one all-day entry. Undated records are
+excluded; the optional on-or-before cutoff narrows that calendar scope. List
+search, status and due-date filters do not change it. Dates are not invented,
+rescheduled or inferred from contact/status dates; past dates remain past dates.
+
+The default copy includes the campaign title, country and follow-up date, not
+lead/profile fields, conversations, campaign-level notes, country notes or source
+references. **Include country notes and source references** adds only those two
+fields. They can contain private details; review before importing or sharing.
+The calendar file contains no attendees, organizer, invitations or alarms. It
+marks entries private/transparent, but the receiving client controls visibility,
+alerts, duplicates and import behavior. Actual government calendar-client
+acceptance remains unrecorded.
+
+This is a reading copy, not calendar synchronization or a notebook save. Later
+notebook edits/removals do not update/delete imported entries. A repeated import
+can duplicate entries; IDs are stable within one prepared notebook snapshot,
+not a cross-version synchronization contract. Retain full notebook JSON to
+resume work. Calendar options are excluded from saved JSON and reset on New/Open.
+
+Apply/discard pending country forms before export. Changes to notebook data,
+calendar options or newer source actions supersede asynchronous preparation;
+failed starts keep current work and its unsaved protection. Calendar downloads
+never mark the notebook saved. The complete encoded file shares the 1 MiB bound
+without truncation. Missing/older calendar modules disable only this reading
+copy, leaving ordinary saves and CSV exports available. The existing report-review
+calendar keeps its separate source-bound scope and 25 MB budget.
+
 ## Reviewed contact transfer
 
 Open **Transfer contact profiles between notebooks** under campaign files.
@@ -153,7 +185,7 @@ invalid UTF-8 are checked before replacement. A malformed or oversized file keep
 current work; later edits, source actions and cleared/newer file selections
 supersede older reads and confirmations. No file authenticates its author.
 
-The five notebook reading/resumable downloads share a timestamp while the current preparation is unchanged.
+Notebook exports share a timestamp while the current preparation is unchanged.
 Names omit campaign names and contact details. The timestamp is a preparation
 marker, not a source date or integrity signature.
 
@@ -206,6 +238,6 @@ complete exports versus filters, pending interaction fields, Keep/remove/stale
 interaction confirmations, multiple contact snapshots, the full registry and mobile layout. They are
 engineering tests, not actual diplomat, government-browser or spreadsheet-client
 acceptance. Authenticated collaboration, cross-notebook contact synchronization, automatic change
-history, calendar integration, authoritative election eligibility/results and full
+history, connected calendar synchronization, authoritative election eligibility/results and full
 PowerElection CRM parity remain separate work. The transcript reader, model gates
 and all 37 unopened reserved meetings remain unchanged.

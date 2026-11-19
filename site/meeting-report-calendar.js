@@ -1,4 +1,4 @@
-/* Personal all-day review entries; no calendar connection or source requests. */
+/* Personal all-day calendar copies; no connection, invitations or source requests. */
 (function(root){
  'use strict';
  const node=typeof module!=='undefined'&&module.exports,Core=node?require('./meeting-report-core.js'):root.UNMeetingReport,crypto=node?require('node:crypto').webcrypto:root.crypto,encoder=new TextEncoder();
@@ -31,5 +31,18 @@
   const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//UN Transcript Agent//Personal report review//EN','CALSCALE:GREGORIAN','BEGIN:VEVENT','UID:'+uid,'DTSTAMP:'+report.generated_at.slice(0,19).replace(/[-:]/g,'')+'Z','DTSTART;VALUE=DATE:'+date.replace(/-/g,''),'DTEND;VALUE=DATE:'+end.toISOString().slice(0,10).replace(/-/g,''),'SUMMARY:'+summary,'DESCRIPTION:'+details,'CLASS:PRIVATE','TRANSP:TRANSPARENT','END:VEVENT','END:VCALENDAR'];
   const bytes=encoder.encode(lines.map(fold).join('\r\n')+'\r\n');if(bytes.length>Core.LIMIT)throw Error('Calendar entry exceeds 25 MB. Current work kept.');return bytes;
  }
- const api={build,validDate};if(node)module.exports=api;else root.UNMeetingReportCalendar=api;
+ async function buildCampaign(notebook,registry,{through='',includeCountryNotes=false,generatedAt}={}){
+  const Campaign=node?require('./campaign-notebook-core.js'):root.UNCampaignNotebook;
+  if(typeof through!=='string'||(through&&!validDate(through))||typeof includeCountryNotes!=='boolean'||typeof generatedAt!=='string'||!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(generatedAt)||!validDate(generatedAt.slice(0,10))||!Number.isFinite(Date.parse(generatedAt))||new Date(generatedAt).toISOString()!==generatedAt)throw Error('Choose a valid follow-up cutoff and calendar preparation time.');
+  if(!crypto?.subtle?.digest)throw Error('Calendar generation is unavailable in this browser. Keep JSON and try an approved browser.');
+  const n=Campaign.validate(notebook,registry),entries=n.entries.filter(e=>e.follow_up_date&&(!through||e.follow_up_date<=through)).sort((a,b)=>a.follow_up_date.localeCompare(b.follow_up_date)||a.country.localeCompare(b.country,'en'));
+  if(!entries.length)throw Error('No dated country follow-ups in this calendar scope. Add a follow-up date or clear the cutoff.');
+  const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//UN Transcript Agent//Personal campaign follow-ups//EN','CALSCALE:GREGORIAN'];
+  for(const e of entries){const end=new Date(e.follow_up_date+'T00:00:00Z');end.setUTCDate(end.getUTCDate()+1);const description=['Personal all-day campaign follow-up.','Campaign: '+n.campaign.title,'Country/territory: '+e.country,'User-entered date: '+e.follow_up_date,'This is a manual follow-up, not an actual vote or verified position.'];if(includeCountryNotes)description.push('Country notes:',e.notes||'Not recorded','Source / conversation reference:',e.reference||'Not recorded');description.push('Keep full notebook JSON separately. Import, visibility, duplicate handling and alerts are controlled by your calendar application. This file is not synchronized with later notebook changes.');
+   const identity=encoder.encode(JSON.stringify([generatedAt,n.campaign.title,e.country,e.follow_up_date]));if(identity.length>Campaign.LIMIT)throw Error('Calendar copy exceeds 1 MiB. Current work kept.');const digest=await crypto.subtle.digest('SHA-256',identity),uid=[...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,'0')).join('')+'@un-transcript-agent.invalid';
+   lines.push('BEGIN:VEVENT','UID:'+uid,'DTSTAMP:'+generatedAt.slice(0,19).replace(/[-:]/g,'')+'Z','DTSTART;VALUE=DATE:'+e.follow_up_date.replace(/-/g,''),'DTEND;VALUE=DATE:'+end.toISOString().slice(0,10).replace(/-/g,''),'SUMMARY:'+text('Follow up: '+e.country+' · '+n.campaign.title),'DESCRIPTION:'+text(description.join('\n')),'CLASS:PRIVATE','TRANSP:TRANSPARENT','END:VEVENT');
+  }
+  lines.push('END:VCALENDAR');const bytes=encoder.encode(lines.map(fold).join('\r\n')+'\r\n');if(bytes.length>Campaign.LIMIT)throw Error('Calendar copy exceeds 1 MiB. Shorten included notes or exclude them; nothing was truncated.');return bytes;
+ }
+ const api={build,buildCampaign,validDate};if(node)module.exports=api;else root.UNMeetingReportCalendar=api;
 })(globalThis);

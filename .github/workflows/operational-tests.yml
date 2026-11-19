@@ -34,6 +34,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_*.py' -v
           node tests/test_reporting_browser_fixture.cjs
           node tests/test_campaign_notebook.cjs
+          node tests/test_campaign_calendar.cjs
       - name: Install pinned browser harness
         run: |
           python -m pip install --disable-pip-version-check playwright==1.57.0
@@ -51,6 +52,7 @@ jobs:
           export BROWSER_PATH="$(python -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
           node tests/test_campaign_notebook_ui.cjs
           node tests/test_campaign_contact_transfer_ui.cjs
+          node tests/test_campaign_calendar_ui.cjs
           node tests/test_meeting_report.cjs
           node tests/test_report_country_timeline.cjs
           node tests/test_report_remove_sources.cjs
