@@ -15,6 +15,7 @@ diplomat acceptance. Full DiploTools parity remains unestablished. See the
 
 | Capability | Available implementation | Boundary / acceptance |
 | --- | --- | --- |
+| Campaign outreach notebook | Browser-session campaign details, one current lead-contact/status record per country/territory, explicit dates and follow-up notes, 1 MiB JSON save/reopen and complete CSV/script-free HTML copies | User-entered records; registry is not an electorate, support is not an actual vote or prediction. No account, automatic storage/history, messages, reminders or multi-contact CRM. Unapplied/dirty and stale-work guards; actual user/client acceptance outstanding |
 | Meeting-first reporting | Explicit selected English-source loading; mission briefing, negotiation record and evidence digest; literal evidence search; source context; passage notes and selected appendices | Up to five meetings per load. Reports preserve country-expression coverage and visible comparison gaps. Actual diplomat usability acceptance remains outstanding |
 | Remove loaded sources | Whole original collections with meeting/note/appendix impact confirmation, JSON byte counts, selective annotation pruning and stale-decision refusal | Keep and Escape preserve work; last removal explicitly clears the current assessment. Kept bytes, mission settings, downloaded files and device copies stay intact. No new dependencies or source requests |
 | Open report-package ZIP | Direct local reopening or source addition from original five-file uncompressed packages; ZIP structure, CRC/SHA-256 and manifest checks precede source revalidation | Imported HTML is never executed; derived reports rebuilt. Keep/Replace and stale-operation protection apply. ZIPs outside this format require extracted JSON; checksums do not authenticate a source |
@@ -41,7 +42,7 @@ and [operations guide](OPERATIONS.md) for setup and format limits. Browser repor
 remain useful while automated stance predictions are withheld. Source hashes verify
 byte consistency, not speaker identity, factual correctness or national capacity.
 
-Public comparison sources checked 18 November 2026: [FIT's product description](https://www.fondation-fit.ch/en/general/news/2026/fit-supports-impli-with-a-tech-seed-loan-and-diplotools-and-hafnova-with-two-digital-seed-loans) identifies PowerTranscript's generated transcripts/summaries, user-defined templates and centralized retrieval, and PowerElection's UN campaign CRM. [UNITAR's launch account](https://unitar.org/about/news-stories/news/unitar-and-diplotools-launch-tech-solutions-growing-diplomatic-workloads) independently describes election/campaign management. These are public product descriptions, not an authenticated feature-by-feature vendor acceptance test. The vendor homepage was unavailable through the web tool during this check. This app uses published English transcripts and deterministic country reporting, with optional personal model drafts awaiting real-model acceptance. Live transcription, authenticated shared workspaces and campaign CRM remain separate gaps. Do not substitute unrelated DiploFoundation products for DiploTools evidence.
+Public comparison sources checked 18 November 2026: [FIT's product description](https://www.fondation-fit.ch/en/general/news/2026/fit-supports-impli-with-a-tech-seed-loan-and-diplotools-and-hafnova-with-two-digital-seed-loans) identifies PowerTranscript's generated transcripts/summaries, user-defined templates and centralized retrieval, and PowerElection's UN campaign CRM. [UNITAR's launch account](https://unitar.org/about/news-stories/news/unitar-and-diplotools-launch-tech-solutions-growing-diplomatic-workloads) independently describes election/campaign management. These are public product descriptions, not an authenticated feature-by-feature vendor acceptance test. The vendor homepage was unavailable through the web tool during this check. This app uses published English transcripts and deterministic country reporting, with optional personal model drafts awaiting real-model acceptance. Live transcription, authenticated shared workspaces and full multi-contact/election CRM remain separate gaps; the local campaign notebook covers an initial manual country-outreach workflow. Do not substitute unrelated DiploFoundation products for DiploTools evidence.
 
 The [facilitator setup](REPORTING_USABILITY.md) now creates a matching,
 hand-authored draft alongside its three source files. Node-only fixture generation
@@ -87,7 +88,7 @@ models or proof of government alignment. All 37 reserved meetings remain closed.
 4. Evaluate optional generative reporting separately for factual coverage, citation
    correctness and unsupported claims. The quick reader remains deterministic.
 5. Scope live transcription, multilingual reporting, authenticated mission workspaces
-   and election-campaign management as additional products; full DiploTools parity
+   and full election-campaign management beyond the local notebook as additional products; full DiploTools parity
    is not established.
 
 ## Repository cleanup

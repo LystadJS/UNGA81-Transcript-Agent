@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.76.0",
+  "browser_engine": "browser-descriptive-1.77.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-19",
   "features": [
+    "Browser-only campaign outreach notebook with user-entered lead contacts, dated statuses and follow-up notes, one current record per country/territory, explicit 1 MiB JSON save/reopen and complete CSV/script-free HTML copies; unapplied/dirty work and stale imports are protected, with no model inference, actual-vote prediction, automatic storage, new dependencies or Hugging Face storage",
     "Separate editable personal-draft Word review copies reuse the native report writer, preserve the full country-first report and unreviewed source-linked claims, revalidate source/question scope and refuse stale or oversized exports; ordinary exports remain unchanged with no new modules, dependencies, schemas or storage",
     "Source-file Open/Add selections supersede older file checks even when cleared; obsolete reads stop before source validation, stale errors respect newer report work and current file controls retain latest-operation cleanup, without new modules, schemas, dependencies or storage",
     "Separate personal Python draft generation via a configured loopback OpenAI-compatible model server: bounded source/question packets, literal quotation and scope checks, unreviewed browser review with source context and separate HTML, stale-operation refusal and ordinary-export isolation; no model weights, browser inference, backend or Hugging Face storage added",
@@ -188,5 +189,16 @@
       "default_exports_include_drafts": false,
       "word_review": true
     }
+  },
+  "campaign_notebook": {
+    "entry": "campaign-notebook.html",
+    "schema": "un.campaign-notebook.v1",
+    "status": "local_engineering_pass",
+    "data_origin": "user_entered_outreach",
+    "max_json_bytes": 1048576,
+    "persistence": "session_memory_and_explicit_downloads",
+    "authenticated_shared_workspace": false,
+    "actual_vote_predictions": false,
+    "empirical_usability_acceptance": "not_run"
   }
 }
