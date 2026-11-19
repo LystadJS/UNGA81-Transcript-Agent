@@ -1,30 +1,29 @@
 # Current capability and acceptance matrix
 
-Updated 19 November 2026, UTC. **Release 1.80.0 is deployed and verified at both
+Updated 19 November 2026, UTC. **Release 1.81.0 is deployed and verified at both
 public URLs.** All 201 preferred-site canonical files and all four changed
-original-site assets match expected hashes. Both campaign browser suites pass
-live at both URLs: ordinary profile/log workflows and reviewed contact-only
-transfer, including private field scope, atomic append, replay/conflict refusal,
-complete-state bounds, unchanged edit forms, stale preview/reads and cross-control
-cleanup. Source #351 passed numerical, browser and contract checks (including
-fifteen reporting workflows and both campaign suites); website #195 passed audit
-and regression before merge. The unchanged Python suite has 264 tests; all 2,077
-retained package checksums and the 209-entry public build pass. Earlier live
-reporting suites retain their original 1.77 scope in the linked checkpoint.
+original-site assets match expected hashes. Three campaign browser suites and
+the existing report-calendar regression pass live at both URLs. Source #353
+passed numerical, browser and contract checks, including fifteen reporting
+workflows and three campaign suites; website #196 passed audit and regression
+before merge. The unchanged Python suite has 264 tests; all 2,077 retained package
+checksums and the 209-entry public build pass. Earlier live reporting suites
+retain their original scope in the linked checkpoint.
 
-Contact-only JSON excludes campaign/lead/status fields, country notes and
-conversations but includes complete contact notes. It is an explicit reviewed
-append, not authentication or synchronization. No runtime file, dependency,
-backend, model weight or Hugging Face storage is added. These are fictional-data
-engineering checks, not actual model quality, desktop Word, government-browser
-policy or diplomat acceptance. Full DiploTools parity remains unestablished. See
-the [current checkpoint](OVERNIGHT_WORK.md).
+Campaign follow-ups reuse the report calendar writer without a new runtime file,
+dependency, backend, model weight or Hugging Face storage. Calendar copies are
+not synchronized; clients control imports, visibility, alerts and duplicates.
+These are fictional-data engineering checks, not actual calendar-client, model
+quality, desktop Word, government-browser policy or diplomat acceptance. Full
+DiploTools parity remains unestablished. See the [current checkpoint](OVERNIGHT_WORK.md).
 
 ## Reporting and execution
 
 | Capability | Available implementation | Boundary / acceptance |
 | --- | --- | --- |
-| Campaign outreach notebook | Browser-session campaign details, one current lead-contact/status record per country/territory, explicit dates/follow-up notes and dated interactions with independent contact snapshots and reusable profiles, 1 MiB v3 JSON save/reopen (v1/v2 readable), complete country/contact/interaction CSV and script-free HTML copies, plus reviewed contact-only JSON transfer and explicit all-day follow-up ICS copies | User-entered records; registry is not an electorate, support is not an actual vote or prediction. No account, automatic storage/change history, messages, reminders or authenticated shared CRM. Profile copying is explicit; old snapshots remain unchanged. Manual logs do not change status counts or reconstruct earlier history. Calendar scope uses dated records independently of list filters, optional cutoff/country notes and no invites/alarms; it is not synchronized. Transfers append reviewed profiles, skip identical IDs and refuse conflicts/complete-state limits without importing statuses or conversations. Unapplied/dirty and stale-work guards; actual user/client acceptance outstanding |
+| Campaign outreach notebook | Campaign details, one current lead/status row per place, reusable contact profiles, dated interaction snapshots, explicit 1 MiB v3 JSON save/reopen (v1/v2 readable), complete country/contact/interaction CSV and script-free HTML | Manual unverified records. Registry is not an electorate; support is not an actual vote/prediction. No account, automatic storage/history, messages or shared CRM. Copies remain independent; actual usability/client acceptance outstanding |
+| Reviewed contact transfer | Contact-only JSON export and grouped append preview; identical saved IDs skipped, conflicts and complete-state limits refused atomically | Includes complete contact notes; excludes campaign assessments, leads/statuses and conversations. No name-based identity merging, authentication or synchronization. Dirty/stale and per-control file guards preserve work |
+| Campaign follow-up calendar | Explicit all-day ICS for every dated country record, optional cutoff and opt-in country notes/references, independent of list filters; 1 MiB encoded bound | Lead/profile fields, conversations and campaign notes excluded. No dates, invitations or alarms invented. Options reset on New/Open; dirty/stale guards and module isolation. No synchronization; actual client import/visibility/alerts/duplicates need acceptance |
 | Meeting-first reporting | Explicit selected English-source loading; mission briefing, negotiation record and evidence digest; literal evidence search; source context; passage notes and selected appendices | Up to five meetings per load. Reports preserve country-expression coverage and visible comparison gaps. Actual diplomat usability acceptance remains outstanding |
 | Remove loaded sources | Whole original collections with meeting/note/appendix impact confirmation, JSON byte counts, selective annotation pruning and stale-decision refusal | Keep and Escape preserve work; last removal explicitly clears the current assessment. Kept bytes, mission settings, downloaded files and device copies stay intact. No new dependencies or source requests |
 | Open report-package ZIP | Direct local reopening or source addition from original five-file uncompressed packages; ZIP structure, CRC/SHA-256 and manifest checks precede source revalidation | Imported HTML is never executed; derived reports rebuilt. Keep/Replace and stale-operation protection apply. ZIPs outside this format require extracted JSON; checksums do not authenticate a source |
