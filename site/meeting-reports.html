@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' https://transcripts.un.org; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
   <title>Meeting reports · UN Transcript Agent</title>
   <link rel="stylesheet" href="theme.css"><link rel="stylesheet" href="app.css"><link rel="stylesheet" href="meeting-reports.css?v=1.70.0">
-  <script defer src="meeting-scopes.js"></script><script defer src="collector.js"></script><script defer src="meeting-picker-core.js"></script><script defer src="text-units.js"></script><script defer src="meeting-quick-reader.js"></script><script defer src="meeting-report-core.js?v=1.84.0"></script><script defer src="meeting-report-selection.js"></script><script defer src="meeting-report-package.js?v=1.64.0"></script><script defer src="meeting-report-word.js?v=1.76.0"></script><script defer src="meeting-report-calendar.js?v=1.68.0"></script><script defer src="meeting-report-storage.js?v=1.57.0"></script><script defer src="meeting-report-draft.js"></script><script defer src="meeting-reports.js?v=1.84.0"></script>
+  <script defer src="meeting-scopes.js"></script><script defer src="collector.js"></script><script defer src="meeting-picker-core.js"></script><script defer src="text-units.js"></script><script defer src="meeting-quick-reader.js"></script><script defer src="meeting-report-core.js?v=1.84.0"></script><script defer src="meeting-report-selection.js"></script><script defer src="meeting-report-package.js?v=1.64.0"></script><script defer src="meeting-report-word.js?v=1.76.0"></script><script defer src="meeting-report-calendar.js?v=1.68.0"></script><script defer src="meeting-report-storage.js?v=1.57.0"></script><script defer src="meeting-report-draft.js"></script><script defer src="meeting-reports.js?v=1.86.0"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to meeting reports</a>
@@ -20,7 +20,20 @@
         <label for="meetingDate">Meeting date<input type="date" id="meetingDate"></label><button type="button" id="findMeetings">Find meetings</button>
         <label for="openCollection">Open saved collection/report JSON or report-package ZIP<input type="file" id="openCollection" accept=".json,.zip,application/json,application/zip"></label>
         <label for="addCollection">Add sources from JSON or report-package ZIP to this report<input type="file" id="addCollection" accept=".json,.zip,application/json,application/zip" disabled></label>
-      </div></fieldset>
+      </div>
+      <details id="missionFolder"><summary>Find reports in a shared mission folder</summary>
+        <p>Choose a shared drive or locally synced folder your mission already uses. Search its top-level JSON and ZIP filenames, then open a report. Everyone needs read access through the shared drive.</p>
+        <div class="report-controls">
+          <button type="button" id="chooseMissionFolder" disabled>Choose folder</button>
+          <button type="button" id="refreshMissionFolder" disabled>Refresh list</button>
+          <button type="button" id="forgetMissionFolder" disabled>Disconnect folder</button>
+          <label>Find by filename<input type="search" id="missionFolderSearch" disabled></label>
+          <label>Matching files<select id="missionFolderFiles" disabled></select></label>
+          <button type="button" id="openMissionFile" disabled>Open selected file</button>
+        </div>
+        <p id="missionFolderStatus" role="status">Use the saved-file picker above if folder access is unavailable.</p>
+        <p>To share a revision, save report JSON or ZIP with a descriptive filename in the shared folder. Colleagues can refresh and open it after the drive syncs. These files include sources and analyst notes.</p>
+      </details></fieldset>
       <p class="hint">Adding keeps your current notes and settings. Notes and settings from the added file are left out. All its saved sources are retained, with its selected meetings checked. Files containing an already loaded meeting are refused.</p>
       <details><summary>Saved reports on this device</summary><p>Keep up to eight prepared reports in this browser profile, with 25 MB of report JSON in total. Sources and notes are included. Nothing is saved automatically or uploaded. Other users of this browser profile may open these reports; browser cleanup may remove them. Download JSON for a portable copy.</p><div class="report-controls"><label for="deviceReportChoice">Saved report<select id="deviceReportChoice" disabled></select></label><button type="button" id="recoverDeviceReport" class="secondary" hidden>Download earlier device copy</button><button type="button" id="refreshDeviceReports" class="secondary" disabled>Refresh library</button><button type="button" id="openDeviceReport" class="secondary" disabled>Open selected report</button><button type="button" id="deleteDeviceReport" class="secondary" disabled>Remove selected device copy</button></div><p id="deviceReportStatus" role="status">Checking device storage…</p></details>
       <p class="hint">Date search reads the official inventory only. Load transcripts explicitly after selecting up to five meetings. Load replaces current source-bound work after confirmation. Add keeps your existing notes and selections and applies only a complete validated addition. Reserved evaluation meetings cannot be opened here.</p>
