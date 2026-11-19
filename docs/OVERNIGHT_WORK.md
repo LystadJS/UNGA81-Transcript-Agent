@@ -12,49 +12,39 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Verified release 1.79.0: reusable campaign contact profiles
+## Release 1.80.0 candidate: reviewed contact-only transfer
 
-Country forms now stage reusable, unverified profiles with a name, role, address
-and notes. Explicit copying fills lead or new-interaction fields, with Keep/Escape
-before replacing populated destinations. Copies remain independent: editing or
-removing a profile never rewrites prior interaction snapshots, lead fields or
-status counts. Removal asks before clearing that profile and its editing fields;
-newer edits invalidate stale decisions. Pending fields block country Apply until
-added, updated or cleared. Apply commits the form; JSON saves it.
+The notebook exports a separate `un.campaign-contacts.v1` JSON with country labels
+and complete profiles, including contact notes, excluding campaign/lead/status
+fields, country notes and conversations. Import validates the complete file and
+resulting notebook before a country-grouped review. Explicit approval appends
+new profiles, skips identical saved IDs and refuses differing contents under an
+existing ID. Matching names/addresses are not merged or treated as verified people.
+New countries start Not assessed with empty leads and history. Existing notes,
+statuses, leads, conversations and filters remain intact. Full JSON saves work;
+contact-only downloads never clear unsaved full-notebook protection.
 
-V3 JSON reads strict v1/v2 without inventing contacts or history. Up to 25 profiles
-per place and 1,000 total share the 1 MiB notebook limit. A separate contact CSV
-exports every profile; original country/interaction CSV scopes stay separate.
-Script-free HTML and JSON include complete profiles and logs. Cached earlier
-layouts preserve imported profiles through edits/saves; mismatched core files
-refuse entry with a reload message. No new runtime file, dependency, backend,
-model, private records or Hugging Face storage is added.
-
-Local core/browser checks pass for strict limits/IDs, independent contact CSV
-parsing, v1/v2 migration, complete exports versus filters, explicit lead/log copying,
-snapshot preservation, stale removals, cached layouts and mobile/reading-copy
-long-text layout. Fictional desktop/mobile visual inspection passed. All 2,077
-checksums and the 209-entry public build pass. [Source #349](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/349)
-merged as `42a6f80357ed929e9091c7f301b00687c85de1ac` after numerical, browser and
-contract checks passed, including fifteen reporting workflows.
-[Website #194](https://github.com/LystadJS/LystadJS.github.io/pull/194) merged as
-`14ed42d6b5066de666edd29f329a1b7d102facf6` after audit and regression passed.
-All 201 preferred-site canonical hashes and all five changed original-site assets
-match. The expanded campaign suite passes live at both URLs. The mirror remains
-200 public files; repeat sync copied/removed zero. Earlier live reporting receipts
-retain their original scope below; actual participant/client acceptance is unrecorded. Reusable profiles are not
-verified identities, a synchronized directory or authenticated election CRM.
-Actual diplomat/government-browser acceptance remains unrecorded.
+The current form must have no pending changes. An unchanged edit form refreshes
+its profile array before any later Apply. No-op imports do not dirty work. All
+per-country, total and complete-state 1 MiB bounds apply before mutation. Latest
+operation/revision guards cover both file controls; obsolete selections clean up
+independently, and canceled previews release hidden contact details. No runtime
+file, dependency, backend, model weight, private record or HF storage is added.
+Local core and both campaign browser suites pass: privacy scope, immutable append,
+replay/conflict refusal, complete-state budgets, Keep/Escape, pending/unchanged
+forms, stale read/preview decisions, cross-control cleanup and mobile. Fictional
+desktop/mobile preview inspection passed. All 2,077 checksums and the 209-entry
+public build pass. CI/deployment receipts are pending.
 
 ## Previous verified release
 
-[Release 1.78.0 checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/b5dd9a11da4de39e4bef0e4c91acd894b1dcac1e/docs/OVERNIGHT_WORK.md)
-retains 201 preferred-site hashes, five original-site asset hashes and the dated
-campaign workflow passing live at both URLs, plus three passing source checks,
-two website checks, 264 Python tests, 2,077 checksums and 209-entry public build.
-It links the preceding fifteen live reporting and model-free facilitator receipts.
-These remain engineering checks at their original scope, not user/model acceptance.
-Actual model, desktop Word and diplomat/government-browser validation is outstanding.
+[Release 1.79.0 checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/cd606b7aea9aa50cfa345cd7efa4f18869f0294b/docs/OVERNIGHT_WORK.md)
+retains 201 preferred-site hashes, five original-site assets and the reusable
+profile workflow passing live at both URLs; source #349 and website #194 passed
+before merge. It links 264 Python tests, 2,077 retained checksums, a 209-entry
+public build and prior reporting/model-free facilitator receipts. These are
+engineering checks at their original scope, not user/model acceptance. Actual
+model, desktop Word and diplomat/government-browser acceptance remains outstanding.
 
 ## Source tree and remaining work
 

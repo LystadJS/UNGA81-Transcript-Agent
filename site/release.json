@@ -1,9 +1,10 @@
 {
   "schema": "un.browser.release.v1",
-  "browser_engine": "browser-descriptive-1.79.0",
+  "browser_engine": "browser-descriptive-1.80.0",
   "comparison_engine": "latent-comparison-1.1.0",
   "date": "2026-11-19",
   "features": [
+    "Contact-only JSON transfer excludes campaign notes, lead/status fields and conversations; reviewed atomic append, identical-ID skipping, conflict refusal and complete-state byte/count budgets preserve existing work, with latest-operation/cross-control cleanup and no new runtime files or storage",
     "Reusable user-entered country contact profiles with confirmed lead/new-interaction copying, unchanged historical snapshots, complete contact CSV/HTML/JSON and v1/v2 migration without inferred profiles; same bounded browser-only storage",
     "Manual dated country outreach logs with contact snapshots, complete interaction CSV and script-free HTML, 1 MiB JSON with older-file migration without invented history; no automatic status changes, contact authentication or new storage",
     "Browser-only campaign outreach notebook with user-entered lead contacts, dated statuses and follow-up notes, one current record per country/territory, explicit 1 MiB JSON save/reopen and complete CSV/script-free HTML copies; unapplied/dirty work and stale imports are protected, with no model inference, actual-vote prediction, automatic storage, new dependencies or Hugging Face storage",
@@ -212,6 +213,8 @@
     "history_origin": "user_entered_dated_interactions_not_verified_audit",
     "max_contacts_per_country": 25,
     "max_contacts_per_notebook": 1000,
-    "contact_origin": "user_entered_unverified_profiles_with_independent_snapshots"
+    "contact_origin": "user_entered_unverified_profiles_with_independent_snapshots",
+    "contact_transfer_schema": "un.campaign-contacts.v1",
+    "contact_transfer_policy": "reviewed_append_skip_identical_refuse_conflicting_ids"
   }
 }
