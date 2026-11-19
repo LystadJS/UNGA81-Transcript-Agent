@@ -49,7 +49,7 @@ it. Counts describe complete geographic records, one per place, not votes or an
 electorate. No missing country receives a default position.
 
 Literal search, status and follow-up-on-or-before filters change the visible list.
-They do not reduce summary counts or downloads. Empty follow-up dates do not match
+They do not reduce summary counts or downloads, including contact transfers. Empty follow-up dates do not match
 a dated follow-up filter. Clear filters to recover the full list.
 
 ## Reusable contact profiles
@@ -74,6 +74,40 @@ rewrite lead fields or earlier interaction snapshots and do not change status
 counts. Remove asks before removing the profile and clearing its own editing
 fields; copied details remain elsewhere. Apply and save JSON to keep removals.
 No contact is messaged, authenticated or synchronized with an external directory.
+
+## Reviewed contact transfer
+
+Open **Transfer contact profiles between notebooks** under campaign files.
+Download **contact-only JSON** from the source notebook, then import it into the
+target notebook. This separate format contains country labels and complete
+profiles (including contact notes); it excludes campaign title/notes, current
+lead/status fields, country notes and conversation history. It does not save
+resumable campaign work. Keep full notebook JSON separately. No upload or account
+connection occurs; review contact details/notes before sharing the file.
+
+Apply or discard pending country-form changes first. Import checks the complete
+file and resulting notebook before offering a preview grouped by country. Expand
+each group to inspect names, roles, addresses and contact notes. Keep/Escape
+cancels without changing work; proceeding adds only the reviewed new profiles.
+Identical saved IDs within a country are skipped. Different contents under an
+existing ID refuse the whole import; resolve that contact manually. Matching
+names/addresses under different IDs are not merged or treated as verified identity.
+
+New country records start **Not assessed**, with empty lead fields and no invented
+history. Existing statuses, leads, notes, conversations, filters and campaign
+settings stay intact. An unchanged country edit form refreshes its profiles so a
+later Apply retains additions. No-op replays do not mark work dirty. Imports that
+exceed per-country, total or complete-state 1 MiB limits refuse without partial
+changes. Newer edits, file selections, cleared selections and source actions
+supersede old reads/preview decisions. Malformed files retain current work.
+
+Contact transfers use `un.campaign-contacts.v1`: exactly `schema` and `entries`,
+with exactly `country` and `contacts` per group. Profiles use the same strict
+fields as notebook v3. Both raw file and normalized transfer are bounded to 1 MiB;
+the full resulting notebook must also fit its own 1 MiB budget. Complete notebooks,
+CSV reading copies and HTML are not contact-transfer inputs. Import is an explicit
+append operation, not synchronization, authentication or automatic overwriting.
+The contact-only filename ends `-contacts.json`; full notebook files do not.
 
 ## Dated outreach log
 
@@ -119,7 +153,7 @@ invalid UTF-8 are checked before replacement. A malformed or oversized file keep
 current work; later edits, source actions and cleared/newer file selections
 supersede older reads and confirmations. No file authenticates its author.
 
-All five downloads share a timestamp while the current preparation is unchanged.
+The five notebook reading/resumable downloads share a timestamp while the current preparation is unchanged.
 Names omit campaign names and contact details. The timestamp is a preparation
 marker, not a source date or integrity signature.
 
@@ -164,7 +198,8 @@ stance-model targets.
 
 Fictional contracts cover strict fields, duplicate identity, dates, exact 1 MiB
 round-trips, all CSV formats with independent parsing/formula escaping, safe HTML,
-v1/v2-to-v3 migration without fabricated logs/profiles, profile identity/limits, interaction dates/IDs/limits and immutable updates.
+v1/v2-to-v3 migration without fabricated logs/profiles, profile identity/limits, interaction dates/IDs/limits and immutable updates, private-scope contact transfers, same-ID conflict refusal,
+no-op replay and complete-state merge budgets.
 Browser checks cover adding/editing/removing, file replay, unapplied/dirty work,
 Keep/Escape, invalid UTF-8, stale/latest reads and confirmations, download failure,
 complete exports versus filters, pending interaction fields, Keep/remove/stale
