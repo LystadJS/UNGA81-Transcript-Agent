@@ -1,14 +1,16 @@
 # Current capability and acceptance matrix
 
-Updated 19 November 2026, UTC. **Release 1.83.0 is deployed and verified at both
-public URLs.** All 201 preferred-site canonical files and all five changed
-original-site assets match expected hashes. Four campaign browser suites,
-ordinary report Word and personal draft/Word pass live at both URLs. Source #362
-passed numerical, browser and contract checks, including fifteen reporting
-workflows and four campaign suites; website #198 passed audit and regression
-before merge. The unchanged Python suite has 264 tests; all 2,077 retained package
-checksums and the 209-entry public build pass. Earlier live reporting suites
-retain their original scope in the linked checkpoint.
+Updated 19 November 2026, UTC. **Release 1.84.0 is deployed and verified at both
+public URLs.** All 201 preferred-site canonical files and all four changed
+original-site assets match expected hashes. The new email-copy contract, existing
+reporting UI, ordinary report Word and personal draft/Word pass live at both URLs.
+Source #364 passed numerical, browser and contract checks, including sixteen
+reporting workflows and four campaign suites; website #199 passed audit and
+regression before merge. The unchanged Python suite has 264 tests; all 2,077
+retained package checksums and the 209-entry public build pass. Earlier campaign
+and live reporting receipts retain their original scope in the linked checkpoint.
+Clipboard checks intercept writes and inspect native payloads; actual OS/Outlook
+paste remains unverified and managed testing deferred.
 
 Campaign follow-ups reuse the report calendar writer without a new runtime file,
 dependency, backend, model weight or Hugging Face storage. Calendar copies are

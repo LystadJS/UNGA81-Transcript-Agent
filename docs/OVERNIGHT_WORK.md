@@ -18,6 +18,21 @@ snapshot after report/source work changes. Tests intercept writes and inspect
 native ClipboardItem payloads; no OS/Outlook round-trip is claimed. Managed testing
 remains deferred. The reporting contract links current primary Microsoft guidance.
 
+[Source #364](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/364)
+merged as `62bdf677b32b1f22b5afa6f283645c340d6bdb2d` after numerical, browser and
+operational contracts passed, including sixteen reporting UI suites, four
+campaign suites, the facilitator and read-only archive checks.
+[Website #199](https://github.com/LystadJS/LystadJS.github.io/pull/199)
+merged as `b59979453775d29196916b2c2c8520ea7a2d203f` after audit and website
+regression passed. Both public deployments serve 1.84.0. All 201 preferred-site
+canonical hashes and four changed original-site asset hashes match. The new
+email-copy contract, existing report UI, ordinary report Word and personal
+draft/Word pass live at both URLs with fictional inputs. Copy tests intercept
+writes and inspect native ClipboardItem payloads without OS clipboard reads or
+actual Outlook access; no paste acceptance or sending is implied. Repeat mirror
+sync copies/removes zero of 200 public files; the build remains 209 entries.
+Current R/Python execution, storage and scientific gates are unchanged.
+
 ## Campaign editable Word briefing — 1.83.0
 
 The campaign notebook now offers a complete editable Word reading copy using the
