@@ -35,15 +35,15 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.13'
       - run: python -m unittest discover -s research/integration -p test_p3_harvard_archive_audit.py -v
       - run: python -m unittest discover -s research/integration -p test_p5_harvard_receipt.py -v
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
       - run: node research/integration/test_p4_historical_w1_preflight.cjs
@@ -55,10 +55,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.13'
       - name: Probe download of the pinned public Harvard v14 archive; record explicit block if unavailable
@@ -134,7 +134,7 @@ jobs:
           print('PASS: independently downloaded exact Harvard v14 original archive; 2016–2025 keys checked')
           PY
       - name: Upload only source-safe aggregate; never archive or speech text
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: p3-harvard-v14-aggregate-hashes-only-or-blocked
