@@ -12,7 +12,7 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Release 1.75.0 candidate: source-file operation safety
+## Verified release 1.75.0
 
 A fictional-source test reproduced an old file opening after its selection was
 cleared while validation was pending. Open/Add now allocate a new shared source
@@ -35,15 +35,33 @@ old errors after edits, cleared selections and newer invalid files, current
 errors, cross-control supersession, filename cleanup and early-read refusal.
 All material is fictional; no reserved or real transcript is retrieved.
 
-Local validation passes fifteen reporting browser workflows, the expanded
-replacement race suite, 2,077 retained package checksums and the 205-entry public
-build. The final per-input cleanup adjustment passes the focused replacement
-suite. PR checks and deployment receipts remain pending. Last verified
-release 1.74.0 serves both public URLs with 197 preferred-site hashes and fifteen
-live reporting browser workflows. The optional personal Python draft workflow
-remains available; actual model/runtime selection and factual/citation acceptance
-are still outstanding. No new module, schema, dependency, model weight, backend,
-personal R/Python change or Hugging Face storage is added in this candidate.
+| PR | Change | Checked head / merge |
+| --- | --- | --- |
+| [Source #338](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/338) | Source-file selection, stale errors and per-input cleanup | Three checks passed at `2739bae`; merged `524106c` |
+| [Website #189](https://github.com/LystadJS/LystadJS.github.io/pull/189) | Canonical mirror and source/release pins | Audit/regression passed at `96bf927`; merged `668d8e8` |
+
+Both public URLs serve 1.75.0. All 197 preferred-site files match expected SHA-256
+hashes. Fifteen reporting browser workflows pass live with fictional sources:
+reporting, personal drafts, calendar, affiliation navigation, bulk appendix,
+inventory addition, saved-source addition, package opening, source removal,
+replacement, device library, packages, Word, print/PDF and archive handoff. The
+expanded source-replacement suite and main reporting suite also pass at the
+original URL; its three changed assets match canonical hashes. Skipped PR live
+jobs are not deployed test passes.
+
+Local validation passes fifteen reporting browser workflows and the focused final
+per-input cleanup check. CI passes 264 Python tests, full reporting contracts and
+browser workflows. All 2,077 retained package checksums and the 205-entry public
+build pass. Mirror count remains 196 files; repeat sync copies/removes zero files.
+Three existing runtime/release assets plus the mirror manifest change. There is
+no new module, schema, dependency, model weight, backend, personal R/Python change
+or Hugging Face storage. Runtime QA files remain ignored and unpublished.
+
+Source verification, country coverage, deterministic reporting and scientific
+publication gates remain intact. All 37 reserved meetings stay unopened. These
+are engineering race tests, not actual diplomat or government-browser policy
+acceptance. Personal model drafts remain available from 1.74.0; real model/runtime
+selection and factual/citation acceptance are outstanding.
 
 The [previous checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/adc9d5ad8d9f960aa8ee6951d1686cd4581f9833/docs/OVERNIGHT_WORK.md)
 retains the verified 1.74.0 deployment and personal-generation receipts, with links
@@ -95,7 +113,7 @@ selection rather than following the user's latest run.
 Seven suites pass 453 default R checks plus two explicitly selected archived-run
 checks on Linux R 4.5.0 (Matrix 1.7.3, cluster 2.1.8.1, igraph 2.1.4). At the cleanup checkpoint, the Python
 suite passed 256 tests, including six inventory-maintenance checks; the current
-264-test total is recorded in the previous verified checkpoint. This does not
+264-test total is recorded above. This does not
 establish Windows, live Shiny, PDF or scientific acceptance.
 
 Fresh full offline replays before and after cleanup both exit successfully with
@@ -105,7 +123,7 @@ no released model or semantic-accuracy claim follows from structural QA.
 
 The R cleanup did not change browser assets or add Hugging Face storage.
 
-1. Complete this source-file reliability release and personal-model factual/citation acceptance, then expand
+1. Continue report usability and personal-model factual/citation acceptance, then expand
    broader workflows within the execution/storage constraints.
 2. Continue dependency-based cleanup with appropriate personal-runtime checks.
 3. Complete actual diplomat usability sessions; evaluate any optional generative
