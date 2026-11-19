@@ -53,6 +53,7 @@ jobs:
           node tests/test_campaign_notebook_ui.cjs
           node tests/test_campaign_contact_transfer_ui.cjs
           node tests/test_campaign_calendar_ui.cjs
+          node tests/test_campaign_word_ui.cjs
           node tests/test_meeting_report.cjs
           node tests/test_report_country_timeline.cjs
           node tests/test_report_remove_sources.cjs

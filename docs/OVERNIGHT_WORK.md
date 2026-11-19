@@ -5,6 +5,18 @@ reporting application and broader feasible diplomatic workflows with JavaScript-
 browser execution, separate personal R/Python tools, bounded Hugging Face storage
 and a focused source tree. Full DiploTools parity is not established.
 
+## Campaign editable Word briefing — 1.83.0
+
+The campaign notebook now offers a complete editable Word reading copy using the
+existing native Word/ZIP writers. It retains campaign notes, all country rows,
+contact profiles and interaction logs independently of list filters. Full JSON
+remains resumable work; Word edits cannot be imported. The complete binary shares
+the notebook's 1 MiB bound, with refusal rather than truncation. Missing/older
+optional modules disable only Word; pending fields, stale edits/source operations
+and download failures keep current work. No runtime file, dependency, model or
+storage is added. Managed testing remains deferred; desktop Word acceptance is
+unrecorded.
+
 ## Campaign follow-up queue — 1.82.0
 
 The owner deferred managed Edge/Outlook testing and requested continued changes.

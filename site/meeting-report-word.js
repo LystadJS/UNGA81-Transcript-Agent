@@ -1,4 +1,4 @@
-/* Native editable Word report, built locally from the complete report renderer. */
+/* Native editable Word reading copies from complete local report/notebook renderers. */
 (function(root){
   'use strict';
   const encoder=new TextEncoder(),W='http://schemas.openxmlformats.org/wordprocessingml/2006/main';
@@ -9,9 +9,12 @@
     await root.UNReportDraft.open(draft,report,policy);
     return render(root.UNMeetingReport.reportHTML(report)+root.UNReportDraft.reviewHTML(draft,report), 'Editable unreviewed draft copy. Keep original report JSON and returned draft JSON separately to reopen work. Word edits cannot be imported into the reporting workspace.');
   }
-  function render(html,notice='Editable reading copy. Save report JSON or its ZIP package to reopen source-verified work in the reporting workspace.'){
-    const Core=root.UNMeetingReport;
-    if(encoder.encode(html).length>Core.LIMIT)throw Error('Word report exceeds 25 MB. Choose fewer meetings. Current work has not changed.');
+  function buildCampaign(notebook,registry){
+    return render(root.UNCampaignNotebook.html(notebook,registry),'Editable campaign reading copy. Save full notebook JSON separately to reopen work. Word edits cannot be imported into the campaign notebook.',true);
+  }
+  function render(html,notice='Editable reading copy. Save report JSON or its ZIP package to reopen source-verified work in the reporting workspace.',campaign=false){
+    const limit=campaign?root.UNCampaignNotebook.LIMIT:root.UNMeetingReport.LIMIT;
+    if(encoder.encode(html).length>limit)throw Error(!campaign?'Word report exceeds 25 MB. Choose fewer meetings. Current work has not changed.':'Word notebook exceeds 1 MiB; nothing was truncated. Keep notebook JSON separately.');
     // Refuse unsupported XML characters rather than silently changing source text.
     for(const c of html){const n=c.codePointAt(0);if(!(n===9||n===10||n===13||(n>=32&&n<=0xd7ff)||(n>=0xe000&&n<=0xfffd)||n>=0x10000))throw Error('Word cannot preserve an unsupported control character in this report. Use JSON to retain exact source text.');}
     const document=new DOMParser().parseFromString(html,'text/html'),relationships=[],bookmarks=new Map(),lists=[];
@@ -72,7 +75,7 @@
     const relation=(id,type,target,external=false)=>'<Relationship Id="'+id+'" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/'+type+'" Target="'+xml(target)+'"'+(external?' TargetMode="External"':'')+'/>';
     const types='<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/><Override PartName="/word/numbering.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml"/></Types>';
     const files=[['[Content_Types].xml',types],['_rels/.rels',relations(relation('office','officeDocument','word/document.xml'))],['word/document.xml',documentXML],['word/styles.xml',styles],['word/numbering.xml',numbering],['word/_rels/document.xml.rels',relations(relation('styles','styles','styles.xml')+relation('numbering','numbering','numbering.xml')+relationships.map(r=>relation(r.id,'hyperlink',r.target,true)).join(''))]];
-    return root.UNMeetingReportPackage.zip(files.map(([name,text])=>({name,bytes:encoder.encode(declaration+text)})),'Word report');
+    return root.UNMeetingReportPackage.zip(files.map(([name,text])=>({name,bytes:encoder.encode(declaration+text)})),campaign?'Word notebook':'Word report',{limit,notebook:campaign});
   }
-  root.UNMeetingReportWord={build,buildDraft};
+  root.UNMeetingReportWord={build,buildDraft,buildCampaign};
 })(globalThis);

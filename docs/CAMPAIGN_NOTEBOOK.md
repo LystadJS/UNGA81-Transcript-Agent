@@ -206,6 +206,15 @@ marker, not a source date or integrity signature.
   reference. It excludes campaign-level notes, current country status and country
   notes; use the country CSV separately. A country with no logs has no interaction
   row. Formula protection applies; these are user-entered events, not verified facts.
+- **Editable Word briefing** contains the complete campaign notes, country records,
+  profiles and interaction logs, independently of list filters. It is a native
+  `.docx` reading copy generated in the browser using the shared report exporter.
+  Keep full JSON separately: Word edits cannot be imported. The complete binary
+  must fit 1 MiB; XML expansion can exceed this limit even when JSON fits. Nothing
+  is truncated. Missing/older Word modules disable only this action. Unapplied
+  forms, stale edits/source operations and failed downloads preserve current work.
+  Files can contain private contact details. Desktop Word rendering remains
+  unverified; managed Edge/Outlook testing remains deferred.
 - **Reading HTML** contains complete campaign notes, status counts, all records, profiles and their complete interaction logs,
   independently of filters. It is script-free and can be opened and printed without
   this application. Keep JSON separately; HTML cannot resume work. The workspace's
