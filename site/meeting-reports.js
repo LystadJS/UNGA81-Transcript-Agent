@@ -4,7 +4,7 @@
   const $=id=>document.getElementById(id),Core=UNMeetingReport;
   let policy,countries,inventory=[],corpora=[],report=null,controller=null,shown=10,dirty=false,handoff=null,appendixIds=new Set(),notes=new Map(),bulkUndo=null;
   const sourceFileTickets=new WeakMap();
-  let modelDraft=null,draftSerial=0;
+  let modelDraft=null,draftSerial=0,draftWordExporting=false;
   let printing=false,printTitle=null,printSnapshot=null;
   let workspaceRevision=0,replacementSerial=0,preferencesSerial=0,packaging=false,calendarExporting=false,deviceBusy=false,deviceAvailable=false,deviceSaved=false,deviceLibrary=[],deviceId='current';
   const setStatus=(message,error=false)=>{$('status').textContent=message;$('status').classList.toggle('error',error);};
@@ -318,6 +318,7 @@
     const ready=!!report&&!!globalThis.UNReportDraft&&!!report.settings.questions.length;
     $('downloadDraftInput').disabled=!ready;$('openModelDraft').disabled=!ready;
     for(const id of ['viewModelDraft','downloadModelDraft','clearModelDraft'])$(id).disabled=!modelDraft;
+    $('downloadModelDraftWord').disabled=!modelDraft||draftWordExporting||!globalThis.UNMeetingReportWord?.buildDraft;
     if(!ready)$('modelDraftStatus').textContent=!globalThis.UNReportDraft?'Personal draft support is unavailable in this browser session.':'Prepare a report with briefing questions.';
   }
   function clearDraft(){draftSerial++;modelDraft=null;$('openModelDraft').value='';$('modelDraftPreview').replaceChildren();$('modelDraftStatus').textContent='Ready for a bounded model input or a matching returned draft.';draftControls();}
@@ -337,6 +338,15 @@
   $('clearModelDraft').onclick=clearDraft;
   $('viewModelDraft').onclick=()=>$('personal-model-draft')?.focus();
   $('downloadModelDraft').onclick=()=>{if(!report||!modelDraft)return;try{$('modelDraftStatus').textContent=save(UNReportDraft.standalone(modelDraft,report),reportName('-draft-review.html'),'text/html')?'Separate draft review HTML downloaded. Keep both original report JSON and draft JSON to reopen work.':'Draft review was not downloaded. Current work kept.';}catch(e){$('modelDraftStatus').textContent='Could not export draft review: '+e.message;}};
+  $('downloadModelDraftWord').onclick=async()=>{
+    if(!report||!modelDraft||draftWordExporting||!globalThis.UNMeetingReportWord?.buildDraft)return;
+    const prepared=report,draft=modelDraft,revision=workspaceRevision,serial=draftSerial,sourceOperation=replacementSerial,name=reportName('-draft-review.docx');
+    const current=()=>{if(prepared!==report||draft!==modelDraft||revision!==workspaceRevision||serial!==draftSerial)return false;if(sourceOperation!==replacementSerial){$('modelDraftStatus').textContent='Source selection changed. No draft Word file downloaded; try again if needed.';return false;}return true;};
+    draftWordExporting=true;draftControls();$('modelDraftStatus').textContent='Preparing a separate unreviewed draft Word copy…';
+    try{const bytes=await UNMeetingReportWord.buildDraft(prepared,draft,policy);if(!current())return;$('modelDraftStatus').textContent=save(bytes,name,'application/vnd.openxmlformats-officedocument.wordprocessingml.document')?'Draft Word download started. Keep original report JSON and returned draft JSON separately to resume work.':'Draft Word download did not start. Current work kept.';}
+    catch(e){if(current())$('modelDraftStatus').textContent='Could not create draft Word copy: '+e.message+' Current work kept.';}
+    finally{draftWordExporting=false;draftControls();}
+  };
   function calendarControls(announce=false){
     const calendar=globalThis.UNMeetingReportCalendar,valid=!!calendar&&calendar.validDate($('reviewDate').value);
     $('downloadReviewEntry').disabled=calendarExporting||!report||!valid;

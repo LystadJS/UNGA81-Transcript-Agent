@@ -1,6 +1,6 @@
 # Current work checkpoint
 
-Updated 18 November 2026, America/New_York. Continue the PowerTranscript-like
+Updated 19 November 2026, UTC. Continue the PowerTranscript-like
 reporting application and broader feasible diplomatic workflows with JavaScript-only
 browser execution, separate personal R/Python tools, bounded Hugging Face storage
 and a focused source tree. Full DiploTools parity is not established.
@@ -12,60 +12,37 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Verified release 1.75.0
+## Release 1.76.0 candidate: editable personal-draft Word copies
 
-A fictional-source test reproduced an old file opening after its selection was
-cleared while validation was pending. Open/Add now allocate a new shared source
-operation ticket for every file-change event, including an empty selection. A
-new action clears the obsolete filename in the other source-file input. Each input separately
-tracks its latest file selection for cleanup, preserving newer files while
-releasing an obsolete filename after a non-file source action. Clearing retains
-existing report work.
+The optional personal-draft panel adds a separate Word review copy. The existing
+native document writer is shared by ordinary Word and draft Word; no second
+renderer or dependency is added. Draft export revalidates the source/question
+context and exact citations, then keeps the complete country-first report before
+the unreviewed model sections. Quotations, source links, evidence gaps, declared
+model provenance and collective/unverified-capacity caveats remain visible.
 
-Reads check the workspace revision and source-operation ticket before starting
-source validation. Delayed validation results and errors cannot replace newer
-edits, prepared reports or later source-file actions. Current errors remain
-visible. The existing source verification, Keep/Replace decisions, selected
-meetings, notes, appendix choices, export readiness and dirty-work protections
-remain in force. This does not claim every native file-picker Cancel event has
-those semantics; the check concerns actual empty file-change events.
+Word is a reading/editing copy outside this app. Keep the original report JSON and
+returned draft JSON separately to resume; Word edits cannot be imported. Ordinary
+Word, HTML, print, CSV, saved JSON and ZIP retain their previous contents. Draft
+Word does not clear unsaved-work protection. It refuses oversized HTML/whole
+DOCX and unsupported XML characters without truncation. New report edits, source
+actions, draft selections or clearing suppress an old result/error; the optional
+exporter can fail without preventing ordinary report preparation or draft HTML.
 
-The expanded replacement suite passes clear-before-apply for both Open/Add,
-old errors after edits, cleared selections and newer invalid files, current
-errors, cross-control supersession, filename cleanup and early-read refusal.
-All material is fictional; no reserved or real transcript is retrieved.
+Local validation passes fifteen reporting browser workflows, independent native
+OOXML/CRC parsing for ordinary and draft copies, 2,077 retained package checksums
+and the 205-entry public build. Expanded checks cover full-report prefix, exact
+quotations/links and capacity labels, scope/citation rejection, byte/character
+bounds, stale edits/clears/source actions and optional-module isolation. PR checks
+and deployment receipts remain pending. No new module,
+schema, model, dependency, backend, personal R/Python change or Hugging Face
+storage is added. Actual model quality, desktop Word rendering and diplomat or
+government-browser acceptance remain outstanding; all 37 reserved meetings and
+scientific publication gates remain unchanged.
 
-| PR | Change | Checked head / merge |
-| --- | --- | --- |
-| [Source #338](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/338) | Source-file selection, stale errors and per-input cleanup | Three checks passed at `2739bae`; merged `524106c` |
-| [Website #189](https://github.com/LystadJS/LystadJS.github.io/pull/189) | Canonical mirror and source/release pins | Audit/regression passed at `96bf927`; merged `668d8e8` |
-
-Both public URLs serve 1.75.0. All 197 preferred-site files match expected SHA-256
-hashes. Fifteen reporting browser workflows pass live with fictional sources:
-reporting, personal drafts, calendar, affiliation navigation, bulk appendix,
-inventory addition, saved-source addition, package opening, source removal,
-replacement, device library, packages, Word, print/PDF and archive handoff. The
-expanded source-replacement suite and main reporting suite also pass at the
-original URL; its three changed assets match canonical hashes. Skipped PR live
-jobs are not deployed test passes.
-
-Local validation passes fifteen reporting browser workflows and the focused final
-per-input cleanup check. CI passes 264 Python tests, full reporting contracts and
-browser workflows. All 2,077 retained package checksums and the 205-entry public
-build pass. Mirror count remains 196 files; repeat sync copies/removes zero files.
-Three existing runtime/release assets plus the mirror manifest change. There is
-no new module, schema, dependency, model weight, backend, personal R/Python change
-or Hugging Face storage. Runtime QA files remain ignored and unpublished.
-
-Source verification, country coverage, deterministic reporting and scientific
-publication gates remain intact. All 37 reserved meetings stay unopened. These
-are engineering race tests, not actual diplomat or government-browser policy
-acceptance. Personal model drafts remain available from 1.74.0; real model/runtime
-selection and factual/citation acceptance are outstanding.
-
-The [previous checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/adc9d5ad8d9f960aa8ee6951d1686cd4581f9833/docs/OVERNIGHT_WORK.md)
-retains the verified 1.74.0 deployment and personal-generation receipts, with links
-to earlier releases. Treat each receipt at its original version and scope.
+The [previous checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/0fe4dabe518e461fb2b5f09c9d20751e0ff83752/docs/OVERNIGHT_WORK.md)
+retains verified release 1.75.0, 197 preferred-site hashes and fifteen live reporting
+workflows, with links to earlier receipts. Use each result at its original scope.
 
 ## Runnable usability setup
 
@@ -113,7 +90,7 @@ selection rather than following the user's latest run.
 Seven suites pass 453 default R checks plus two explicitly selected archived-run
 checks on Linux R 4.5.0 (Matrix 1.7.3, cluster 2.1.8.1, igraph 2.1.4). At the cleanup checkpoint, the Python
 suite passed 256 tests, including six inventory-maintenance checks; the current
-264-test total is recorded above. This does not
+264-test total is recorded in the previous verified checkpoint. This does not
 establish Windows, live Shiny, PDF or scientific acceptance.
 
 Fresh full offline replays before and after cleanup both exit successfully with
