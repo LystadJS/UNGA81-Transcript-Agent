@@ -1,12 +1,13 @@
 # Current capability and acceptance matrix
 
-Updated 18 November 2026, America/New_York. **Release 1.73.0 is deployed and
-verified at both public URLs.** All 196 preferred-site files match expected hashes;
-fourteen reporting browser suites passed live with fictional sources. The expanded
-delayed-preference reporting suite also passed at the original URL. These are
-engineering race simulations, not government-browser policy, diplomat or model
-acceptance. Code, deployment, source coverage and empirical acceptance remain
-distinct. See the [current checkpoint](OVERNIGHT_WORK.md).
+Updated 18 November 2026, America/New_York. **Release 1.74.0 is deployed and
+verified at both public URLs.** All 197 preferred-site files match expected hashes;
+fifteen reporting browser workflows passed live with fictional sources. The new
+personal-draft and main reporting workflows also passed at the original URL.
+Local validation passes 264 Python tests and 2,077 retained package checksums.
+These are engineering checks, not real generative inference, government-browser
+policy or diplomat acceptance. Full DiploTools parity remains unestablished.
+See the [current checkpoint](OVERNIGHT_WORK.md).
 
 ## Reporting and execution
 
@@ -105,8 +106,8 @@ Six focused tests cover inventory maintenance and unsafe refresh cases.
 On Linux with R 4.5.0, Matrix 1.7.3, cluster 2.1.8.1 and igraph 2.1.4, the seven
 retained suites pass 453 default checks; explicit archived-run selection passes
 the two additional frozen-run checks (455 unique checks). This is personal-runtime
-validation, not Windows, live Shiny, PDF or scientific acceptance. The Python suite
-passes 256 tests.
+validation, not Windows, live Shiny, PDF or scientific acceptance. At that cleanup checkpoint, the Python suite
+passed 256 tests; the current total is recorded above.
 
 Fresh full offline replays before and after cleanup both exit successfully with
 identical validation: 39 country sections, 507 coding cells, five report packets,

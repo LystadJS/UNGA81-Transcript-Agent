@@ -12,13 +12,13 @@ This supersedes the former merge blocker. Merge tested project PRs and publish
 the required mirror without repeating that approval request; respect repository
 protections, later user instructions and the scientific/source gates in AGENTS.md.
 
-## Release 1.74.0 candidate: personal generated drafts
+## Verified release 1.74.0
 
 A new browser/Python sidecar implements optional question-based generated drafts.
 The browser exports a 64 KiB evidence packet with up to eight questions and 100
 literal-search-matched passages. Standard-library Python validates the context and
 text hashes, then calls a configured loopback OpenAI-compatible chat server once
-per answered question. Empty searches make no request. No runtime or model is
+per question with matching passages. Empty searches make no request. No runtime or model is
 selected, downloaded or bundled; local server configuration determines whether
 inference actually stays local. Environment proxies and redirects are refused.
 
@@ -38,15 +38,40 @@ citation and diplomat acceptance remain outstanding. No browser inference, model
 weights, dependencies, backend or Hugging Face storage are added. Existing report
 v4/preferences v2 and scientific/source gates remain unchanged.
 
+| PR | Change | Checked head / merge |
+| --- | --- | --- |
+| [Source #335](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/335) | Personal model draft input, Python generation and browser review | Three checks passed at `2b74150`; merged `7487e0a` |
+| [Source #336](https://github.com/LystadJS/UNGA81-Transcript-Agent/pull/336) | Visible collective/unverified-capacity quotation caveats | Three checks passed at `890a649`; merged `1e43029` |
+| [Website #188](https://github.com/LystadJS/LystadJS.github.io/pull/188) | Canonical mirror, source/release pins and deployed draft checks | Audit/regression passed at `dd0a2f9`; merged `6e2d403` |
+
+Both public URLs serve 1.74.0. All 197 preferred-site files match expected SHA-256
+hashes. Fifteen reporting browser workflows pass live with fictional sources:
+reporting, personal drafts, calendar, affiliation navigation, bulk appendix,
+inventory addition, saved-source addition, package opening, source removal,
+replacement, device library, packages, Word, print/PDF and archive handoff. The
+personal-draft and main reporting workflows also pass at the original URL, whose
+four changed assets match canonical source hashes. A local runner ended after
+eleven preferred-site suites completed; only the four unfinished suites were
+rerun, and all four passed. Skipped PR live jobs are not
+deployed test passes.
+
 Local validation passes 264 Python tests, fifteen reporting browser workflows,
 reporting/facilitator contracts, 2,077 retained checksums and the 205-entry public
-build. New checks cover synthetic chat transport, redirect/proxy refusal, byte
-bounds, exact citations, missing evidence, no overwrite, Unicode cross-runtime
-seals, stale browser work and ordinary-export isolation. Publication and deployed
-validation remain pending. The last verified deployment is 1.73.0: 196 preferred-site hashes, fourteen live reporting
-browser suites, 256 Python tests and 2,077 retained package checksums. The prior
-source-only QA consolidation keeps shared loopback/browser helpers and reduced
-its cohort by 4,333 bytes. New browser tests reuse that helper.
+build. The 196-file mirror synchronizes with zero copied/removed files on repeat.
+Synthetic chat checks cover transport, redirect/proxy refusal, byte bounds,
+private new output/no overwrite, exact citations and evidence gaps. Cross-runtime
+Unicode seals bind every selected passage identity, including unmatched source
+revisions. Browser checks cover context, safe text, question/scope mismatch,
+stale imports/exports/clear, ordinary-export isolation, dirty protection,
+optional-module failure and mobile. New browser tests reuse the shared QA helper.
+
+One JavaScript runtime module and one separate standard-library Python command
+are added, with focused tests and setup guidance. No generated output or model
+weights enter the source tree. The unchanged deterministic reader, saved-report
+schemas, retained R artifacts, publication gates and 37 unopened meetings preserve
+the previous scientific boundaries. This remains engineering validation; real
+model inference, diplomat sessions and government-browser policy acceptance have
+not been recorded. The prior QA consolidation reduced its cohort by 4,333 bytes.
 
 The [previous checkpoint](https://github.com/LystadJS/UNGA81-Transcript-Agent/blob/f0927f2541ea17578b24dd3176c124934abfc040/docs/OVERNIGHT_WORK.md)
 retains the verified 1.73.0 deployment and QA receipts, with links to earlier releases.
@@ -95,8 +120,9 @@ personal runtime paths are ignored. Frozen-run tests now require explicit archiv
 selection rather than following the user's latest run.
 
 Seven suites pass 453 default R checks plus two explicitly selected archived-run
-checks on Linux R 4.5.0 (Matrix 1.7.3, cluster 2.1.8.1, igraph 2.1.4). The Python
-suite passes 256 tests, including six inventory-maintenance checks. This does not
+checks on Linux R 4.5.0 (Matrix 1.7.3, cluster 2.1.8.1, igraph 2.1.4). At the cleanup checkpoint, the Python
+suite passed 256 tests, including six inventory-maintenance checks; the current
+264-test total is recorded above. This does not
 establish Windows, live Shiny, PDF or scientific acceptance.
 
 Fresh full offline replays before and after cleanup both exit successfully with
@@ -106,7 +132,7 @@ no released model or semantic-accuracy claim follows from structural QA.
 
 The R cleanup did not change browser assets or add Hugging Face storage.
 
-1. Complete deployment and personal-model acceptance for 1.74.0, then expand
+1. Complete personal-model factual/citation acceptance for 1.74.0, then expand
    broader workflows within the execution/storage constraints.
 2. Continue dependency-based cleanup with appropriate personal-runtime checks.
 3. Complete actual diplomat usability sessions; evaluate any optional generative
